@@ -1,0 +1,36 @@
+{
+  "labId": "LAB-[ID]",
+  "title": "[Lab Title (e.g., Service Configuration)]",
+  "difficulty": "Easy | Medium | Hard",
+  "category": "[Major Category]",
+  "topology": {
+    "description": "[Topology description]",
+    "asciiArt": "[Node1]--[Node2]"
+  },
+  "initialConfig": {
+    "Node1": "[Initial commands or state for Node 1]",
+    "Node2": "[Initial commands or state for Node 2]"
+  },
+  "tasks": [
+    {
+      "id": 1,
+      "description": "[Task 1 description - e.g., Enable service X]",
+      "validation_cmds": [
+        "[Command to verify task 1]"
+      ],
+      "success_regex": "[Expected output or state]",
+      "hint": "[Hint for task 1]"
+    },
+    {
+      "id": 2,
+      "description": "[Task 2 description - e.g., Configure parameter Y]",
+      "validation_cmds": [
+        "[Command to verify task 2]"
+      ],
+      "success_regex": "[Expected output or state]",
+      "hint": "[Hint for task 2]"
+    }
+  ],
+  "finalGoal": "[The ultimate goal of the lab exercise]",
+  "solution": "[Brief summary of the steps to achieve the final goal]"
+}

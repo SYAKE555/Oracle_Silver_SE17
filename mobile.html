@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8"/>
+    <!-- ← アクセシビリティ修正: user-scalable=no / maximum-scale=1.0 は
+         WCAG 2.1 達成基準 1.4.4（テキストのリサイズ）に違反するため削除。
+         Zero-Fail レイアウトは CSS で保証しており、ズーム禁止は不要。 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>{{ TEMPLATE_TITLE }} (Mobile Responsive Edition)</title>
+    <style>
+        /* Responsive Mobile CSS: High Stability, No Blurs, No Animations */
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: #fff; color: #111111; margin: 0; padding: 15px;
+            font-size: 16px; line-height: 1.6; -webkit-text-size-adjust: 100%;
+            overflow-x: hidden; /* Prevent horizontal scrolling on mobile */
+        }
+        
+        .header { border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px; }
+        .header h1 { font-size: 1.3rem; margin: 0; }
+        
+        /* Safe text wrapping constraints for injected dynamic content */
+        img { max-width: 100%; height: auto; display: block; margin: 10px 0; }
+        pre, code, table { max-width: 100%; overflow-x: auto; word-break: normal; white-space: pre-wrap; font-size: 0.85rem; }
+        p, li, div { overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; }
+
+        /* Structural Basics */
+        .section { margin-bottom: 30px; }
+        h2 { font-size: 1.15rem; background: #f4f4f5; padding: 8px 12px; border-radius: 4px; border-left: 4px solid #000; margin-top: 30px; }
+        h3 { font-size: 1.05rem; color: #333; }
+        p, ul, ol { margin-bottom: 15px; }
+
+        /* Mobile Native Quiz Overrides */
+        .quiz { border: 1px solid #ccc; border-radius: 8px; padding: 15px; margin-top: 15px; }
+        .option, .btn { display: block; width: 100%; text-align: left; background: #f8fafc; border: 1px solid #cbd5e1; padding: 12px; margin: 8px 0; border-radius: 6px; font-size: 1rem; color: #334155; }
+        details { background: #f0fdf4; border: 1px solid #bbf7d0; padding: 10px; border-radius: 6px; margin-top: 15px; }
+        summary { font-weight: bold; color: #166534; cursor: pointer; padding: 5px; }
+        .logic { margin-top: 10px; font-size: 0.95rem; color: #14532d; }
+        
+        /* Tabs (Fallback if needed, JS assumed lightweight or absent) */
+        .nav-tabs { display: flex; border-bottom: 1px solid #ddd; margin-bottom: 20px; }
+        .tab-btn { flex: 1; padding: 10px; border: none; background: none; font-weight: bold; color: #666; cursor: pointer; }
+        .tab-btn.active { color: #000; border-bottom: 2px solid #000; }
+        .content { display: block; }
+        .hidden { display: none; }
+        
+        footer { margin-top: 40px; border-top: 1px solid #eee; padding-top: 20px; text-align: center; font-size: 0.8rem; color: #94a3b8; }
+
+        /* === Basetract Responsive Mobile Layout (Architecture Standard Override) === */
+        /* If injected content attempts to build a sidebar or push margins, this absolutely crushes it. */
+        @media (max-width: 860px) {
+            #app, body { flex-direction: column !important; display: flex !important; }
+            #sidebar, .side-nav { position: relative !important; width: 100% !important; height: auto !important; transform: none !important; left: 0 !important; margin-left: 0 !important; border-bottom: 2px solid #000 !important; }
+            #main, .main-content, .content-viewport { margin-left: 0 !important; width: 100% !important; max-width: 100% !important; min-width: 0 !important; padding: 15px !important; }
+            pre, code, table, .table-wrapper { max-width: 100% !important; overflow-x: auto !important; word-wrap: normal !important; white-space: pre-wrap !important; -webkit-overflow-scrolling: touch !important; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>{{ TEMPLATE_TITLE }} (Mobile Version)</h1>
+        <p style="font-size: 0.85rem; color: #64748b;">JavaScriptを使用しない、完全安定のモバイル特化版（Pure HTML5）です。</p>
+    </header>
+
+    <main id="template-content-injection">
+        <!-- INFRASTRUCTURE: Pure dynamic payload injection. Zero hardcoded contextual data. -->
+        {{ TEMPLATE_CONTENT }}
+    </main>
+
+    <footer>
+        Basetract Standard // Stability Optimized Infrastructure
+    </footer>
+
+    <!-- Minimal UI Toggle Scripts (Optional/Degradable) -->
+    <script>
+        function showTab(m) {
+            var r = document.getElementById('view-read');
+            var t = document.getElementById('view-test');
+            var br = document.getElementById('btn-read');
+            var bt = document.getElementById('btn-test');
+            if(r) r.classList.toggle('hidden', m !== 'read');
+            if(t) t.classList.toggle('hidden', m !== 'test');
+            if(br) br.classList.toggle('active', m === 'read');
+            if(bt) bt.classList.toggle('active', m === 'test');
+        }
+    </script>
+</body>
+</html>

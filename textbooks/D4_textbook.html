@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>D4: グループ関数と集計 | Oracle SQL 教科書</title>
+<style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #f5f7fa; color: #2d3748; line-height: 1.7; }
+        .page-header {
+            background: linear-gradient(135deg, #c0392b 0%, #e74c3c 50%, #e67e22 100%);
+            color: white; padding: 40px 24px; text-align: center;
+        }
+        .page-header h1 { font-size: 2rem; margin-bottom: 8px; }
+        .page-header .subtitle { opacity: 0.9; font-size: 1rem; }
+        .container { max-width: 960px; margin: 0 auto; padding: 24px; }
+        .section-card {
+            background: white; border-radius: 12px; padding: 28px;
+            margin-bottom: 32px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .section-title {
+            font-size: 1.3rem; font-weight: 700; color: #c0392b;
+            margin-bottom: 16px; padding-bottom: 8px;
+            border-bottom: 3px solid #e74c3c;
+        }
+        .topic-chips { margin-bottom: 16px; display: flex; flex-wrap: wrap; gap: 6px; }
+        .chip {
+            background: #fdf2f8; color: #c0392b; border: 1px solid #f0a0a0;
+            padding: 2px 10px; border-radius: 20px; font-size: 0.8rem;
+        }
+        pre { background: #1e293b; color: #e2e8f0; padding: 16px; border-radius: 8px; overflow-x: auto; margin: 12px 0; }
+        code { font-family: 'Consolas', 'Monaco', monospace; font-size: 0.88rem; }
+        p code { background: #f0f4f8; color: #c0392b; padding: 1px 5px; border-radius: 4px; }
+        .tip-box {
+            background: #fffde7; border-left: 4px solid #f9a825;
+            padding: 12px 16px; border-radius: 0 8px 8px 0; margin: 12px 0;
+        }
+        .warning-box {
+            background: #fce4ec; border-left: 4px solid #e91e63;
+            padding: 12px 16px; border-radius: 0 8px 8px 0; margin: 12px 0;
+        }
+        .summary-table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 0.9rem; }
+        .summary-table th {
+            background: #c0392b; color: white; padding: 8px 12px; text-align: left;
+        }
+        .summary-table td { padding: 8px 12px; border-bottom: 1px solid #e2e8f0; }
+        .summary-table tr:nth-child(even) td { background: #f9fafb; }
+        h3 { font-size: 1.05rem; color: #2d3748; margin: 16px 0 8px; }
+        .problem-section-title {
+            font-size: 1.1rem; font-weight: 700; color: #2d3748;
+            margin: 28px 0 12px; padding-bottom: 6px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        .problem-card {
+            background: #f9fafb; border: 1px solid #e2e8f0;
+            border-radius: 8px; padding: 16px; margin-bottom: 16px;
+        }
+        .problem-header { font-weight: 700; color: #c0392b; margin-bottom: 8px; }
+        .qid { font-size: 0.8rem; color: #718096; font-weight: 400; margin-left: 8px; }
+        .problem-text { margin-bottom: 10px; }
+        .choices { padding-left: 20px; margin-bottom: 10px; }
+        .choices li { margin: 4px 0; }
+        .answer-details summary {
+            cursor: pointer; color: #c0392b; font-weight: 600;
+            padding: 6px 0; user-select: none;
+        }
+        .answer-content { background: white; padding: 12px; border-radius: 6px; margin-top: 8px; }
+        .breadcrumb { padding: 12px 24px; background: white; border-bottom: 1px solid #e2e8f0; font-size: 0.85rem; }
+        .breadcrumb a { color: #c0392b; text-decoration: none; }
+        .intro-box { background: #fff8f8; border: 1px solid #f0a0a0; border-radius: 8px; padding: 16px; margin-bottom: 24px; }
+        </style>
+</head>
+<body>
+<div class="breadcrumb">
+  <a href="index.html">Oracle SQL 教科書</a> &gt; D4: グループ関数と集計
+</div>
+<div class="page-header">
+  <h1>D4: グループ関数と集計</h1>
+  <div class="subtitle">Oracle Database SQL (1Z0-071) 対策</div>
+</div>
+<div class="container">
+  <div class="intro-box">複数行をまとめて集計するグループ関数と、GROUP BY / HAVING を使ったグループ集計を学びます。</div>
+  <div class="section-card"><div class="section-title">グループ関数</div><div class="topic-chips"><span class="chip">COUNT</span><span class="chip">SUM</span><span class="chip">AVG</span><span class="chip">MAX</span><span class="chip">MIN</span><span class="chip">グループ関数</span><span class="chip">NULL</span></div><div class="section-content"><h3>グループ関数とは</h3><p>グループ関数（集計関数）は複数の行をまとめて1つの結果を返す関数です。</p><table class='summary-table'><tr><th>関数</th><th>説明</th><th>NULL の扱い</th></tr><tr><td>COUNT(*)</td><td>行数を返す</td><td>NULL 行も含めてカウント</td></tr><tr><td>COUNT(列)</td><td>指定列の非 NULL 件数</td><td>NULL を無視</td></tr><tr><td>SUM(列)</td><td>合計値</td><td>NULL を無視</td></tr><tr><td>AVG(列)</td><td>平均値</td><td>NULL を無視（分母も減る）</td></tr><tr><td>MAX(列)</td><td>最大値</td><td>NULL を無視</td></tr><tr><td>MIN(列)</td><td>最小値</td><td>NULL を無視</td></tr></table><pre><code>SELECT COUNT(*) AS 総件数,
+       COUNT(COMMISSION_PCT) AS コミッションあり件数,
+       SUM(SALARY) AS 給与合計,
+       AVG(SALARY) AS 給与平均,
+       MAX(SALARY) AS 最高給与,
+       MIN(SALARY) AS 最低給与
+FROM   EMPLOYEES;</code></pre><h3>DISTINCT との組み合わせ</h3><pre><code>-- 重複を除いた件数
+SELECT COUNT(DISTINCT DEPARTMENT_ID) AS 部署数
+FROM   EMPLOYEES;</code></pre><div class='tip-box'><strong>試験のポイント：</strong> AVG(COMMISSION_PCT) は NULL を除いた平均です。全員での平均を求めるなら AVG(NVL(COMMISSION_PCT, 0)) を使います。COUNT(*) と COUNT(列) の違いは頻出です。</div></div><div class="problem-section-title">練習問題</div><div class="problem-card" id="prob-OSLV-D4-001"><div class="problem-header">問題 1 <span class="qid">#OSLV-D4-001</span></div><p class="problem-text">以下のSQL文の実行結果として正しいものはどれか。<br>```sql<br>SELECT COUNT(*), COUNT(commission_pct), AVG(commission_pct)<br>FROM employees;<br>```<br>全107行のうち commission_pct が NULL でない行が35行、NULLの行が72行あるとする。</p><ul class="choices"><li>A. 107, 107, 全107行の平均値</li><li>B. 107, 35, NULL以外の35行の平均値</li><li>C. 35, 35, NULL以外の35行の平均値</li><li>D. 107, 35, 0</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> B. 107, 35, NULL以外の35行の平均値</p><p>正解は「107, 35, NULL以外の35行の平均値」である。COUNT(*)はNULLを含む全行数を数えるので107。COUNT(列名)はNULL以外の行数を数えるので35。AVG(列名)もNULLを無視して計算するため、NULL以外の35行の合計÷35となる。グループ関数（COUNT, SUM, AVG, MAX, MIN）はCOUNT(*)以外すべてNULLを無視する。ただしCOUNT(*)のみNULLを含む全行を数える特別な動作をする。Oracle SQL Reference §グループ関数参照。</p></div></details></div><div class="problem-card" id="prob-OSLV-D4-002"><div class="problem-header">問題 2 <span class="qid">#OSLV-D4-002</span></div><p class="problem-text">以下のSQL文はエラーになる。その理由として正しいものはどれか。<br>```sql<br>SELECT department_id, last_name, AVG(salary)<br>FROM employees<br>GROUP BY department_id;<br>```</p><ul class="choices"><li>A. AVG関数はGROUP BYと一緒に使えないため</li><li>B. last_nameがGROUP BY句にもグループ関数にも含まれていないため</li><li>C. department_idとlast_nameを同時にSELECTできないため</li><li>D. エラーにはならない</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> B. last_nameがGROUP BY句にもグループ関数にも含まれていないため</p><p>正解は「last_nameがGROUP BY句にもグループ関数にも含まれていないため」である。GROUP BYを使う場合、SELECT句に書ける列は（1）GROUP BY句に含まれている列、または（2）グループ関数（AVG, COUNT等）で集計した列のみである。last_nameはGROUP BY department_idに含まれておらず、グループ関数でも囲まれていないため、ORA-00979エラーが発生する。department_idとAVG(salary)はルールを満たしているので問題ない。</p></div></details></div><div class="problem-card" id="prob-OSLV-D4-003"><div class="problem-header">問題 3 <span class="qid">#OSLV-D4-003</span></div><p class="problem-text">以下のSQL文の実行結果として正しいものはどれか。<br>```sql<br>SELECT department_id, AVG(salary)<br>FROM employees<br>GROUP BY department_id<br>HAVING AVG(salary) > 8000<br>ORDER BY AVG(salary) DESC;<br>```</p><ul class="choices"><li>A. 全社員の中から給与が8000超の社員を部署ごとに集計して降順表示</li><li>B. HAVING句はWHERE句の代わりなのでWHERE AVG(salary) > 8000 と同じ</li><li>C. 部署ごとの平均給与を計算し、平均が8000超の部署のみを降順で表示する</li><li>D. エラーになる（HAVING句にはグループ関数を使えない）</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> C. 部署ごとの平均給与を計算し、平均が8000超の部署のみを降順で表示する</p><p>正解は「部署ごとの平均給与を計算し、平均が8000超の部署のみを降順で表示する」である。SQL実行順序はFROM→WHERE→GROUP BY→HAVING→SELECT→ORDER BY。HAVING句はGROUP BYでグループ化された後の結果を絞り込む。選択肢AはHAVINGではなくWHEREを使った場合の説明で、個々の行を絞り込むもの。選択肢BはWHERE句にはグループ関数は書けないので誤り。HAVINGにはグループ関数の条件を書くことができる。</p></div></details></div></div><div class="section-card"><div class="section-title">GROUP BY と HAVING</div><div class="topic-chips"><span class="chip">GROUP BY</span><span class="chip">HAVING</span><span class="chip">SQL実行順序</span><span class="chip">ORA-00979</span></div><div class="section-content"><h3>GROUP BY の基本</h3><p>GROUP BY でグループに分けてから集計します。</p><pre><code>-- 部署ごとの給与合計
+SELECT DEPARTMENT_ID,
+       SUM(SALARY) AS 給与合計,
+       COUNT(*) AS 人数
+FROM   EMPLOYEES
+GROUP BY DEPARTMENT_ID;</code></pre><h3>HAVING 句</h3><p>HAVING はグループに対する条件を指定します（WHERE はグループ前の行への条件）。</p><pre><code>-- 平均給与が 8000 以上の部署
+SELECT DEPARTMENT_ID,
+       AVG(SALARY) AS 平均給与
+FROM   EMPLOYEES
+GROUP BY DEPARTMENT_ID
+HAVING AVG(SALARY) >= 8000;</code></pre><h3>SQL の実行順序</h3><table class='summary-table'><tr><th>順序</th><th>句</th><th>説明</th></tr><tr><td>1</td><td>FROM</td><td>テーブルの取得</td></tr><tr><td>2</td><td>WHERE</td><td>行の絞り込み</td></tr><tr><td>3</td><td>GROUP BY</td><td>グループ化</td></tr><tr><td>4</td><td>HAVING</td><td>グループの絞り込み</td></tr><tr><td>5</td><td>SELECT</td><td>列の選択</td></tr><tr><td>6</td><td>ORDER BY</td><td>ソート</td></tr></table><div class='tip-box'><strong>試験のポイント（ORA-00979）：</strong> SELECT に記述した列は GROUP BY にも含める必要があります。グループ関数以外の列が SELECT にあり、GROUP BY に含まれていない場合は ORA-00979 エラーになります。WHERE にはグループ関数を使えません（HAVING を使う）。</div></div><div class="problem-section-title">練習問題</div><div class="problem-card" id="prob-OSLV-D4-002"><div class="problem-header">問題 1 <span class="qid">#OSLV-D4-002</span></div><p class="problem-text">以下のSQL文はエラーになる。その理由として正しいものはどれか。<br>```sql<br>SELECT department_id, last_name, AVG(salary)<br>FROM employees<br>GROUP BY department_id;<br>```</p><ul class="choices"><li>A. AVG関数はGROUP BYと一緒に使えないため</li><li>B. last_nameがGROUP BY句にもグループ関数にも含まれていないため</li><li>C. department_idとlast_nameを同時にSELECTできないため</li><li>D. エラーにはならない</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> B. last_nameがGROUP BY句にもグループ関数にも含まれていないため</p><p>正解は「last_nameがGROUP BY句にもグループ関数にも含まれていないため」である。GROUP BYを使う場合、SELECT句に書ける列は（1）GROUP BY句に含まれている列、または（2）グループ関数（AVG, COUNT等）で集計した列のみである。last_nameはGROUP BY department_idに含まれておらず、グループ関数でも囲まれていないため、ORA-00979エラーが発生する。department_idとAVG(salary)はルールを満たしているので問題ない。</p></div></details></div><div class="problem-card" id="prob-OSLV-D4-003"><div class="problem-header">問題 2 <span class="qid">#OSLV-D4-003</span></div><p class="problem-text">以下のSQL文の実行結果として正しいものはどれか。<br>```sql<br>SELECT department_id, AVG(salary)<br>FROM employees<br>GROUP BY department_id<br>HAVING AVG(salary) > 8000<br>ORDER BY AVG(salary) DESC;<br>```</p><ul class="choices"><li>A. 全社員の中から給与が8000超の社員を部署ごとに集計して降順表示</li><li>B. HAVING句はWHERE句の代わりなのでWHERE AVG(salary) > 8000 と同じ</li><li>C. 部署ごとの平均給与を計算し、平均が8000超の部署のみを降順で表示する</li><li>D. エラーになる（HAVING句にはグループ関数を使えない）</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> C. 部署ごとの平均給与を計算し、平均が8000超の部署のみを降順で表示する</p><p>正解は「部署ごとの平均給与を計算し、平均が8000超の部署のみを降順で表示する」である。SQL実行順序はFROM→WHERE→GROUP BY→HAVING→SELECT→ORDER BY。HAVING句はGROUP BYでグループ化された後の結果を絞り込む。選択肢AはHAVINGではなくWHEREを使った場合の説明で、個々の行を絞り込むもの。選択肢BはWHERE句にはグループ関数は書けないので誤り。HAVINGにはグループ関数の条件を書くことができる。</p></div></details></div></div>
+</div>
+</body>
+</html>

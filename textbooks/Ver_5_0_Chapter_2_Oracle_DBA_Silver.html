@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ver 5.0 Chapter 2 | Oracle DBA Silver SQL</title>
+<style>
+:root{--bg:#f4f8fc;--card:#ffffff;--line:#d8e4f5;--pri:#1d4f91;--sec:#2f6fbe;--txt:#1f2d3d;--muted:#4c6077;--code:#f2f7fc;--kw:#1d4ed8;--obj:#0f172a;--str:#b45309}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--txt);font-family:"Segoe UI","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;line-height:1.95}
+a{color:var(--pri);text-decoration:none}
+.layout{display:grid;grid-template-columns:320px 1fr;gap:18px;max-width:1480px;margin:0 auto;padding:14px}
+.sidebar{position:sticky;top:8px;align-self:start;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;max-height:calc(100vh - 16px);overflow:auto}
+.sidebar h2{margin:0 0 10px;color:var(--pri);font-size:1.08rem}
+.sidebar ul{margin:0;padding-left:18px}
+.sidebar li{margin:6px 0}
+.main{min-width:0}
+.hero{background:linear-gradient(135deg,#1d4f91,#2f6fbe);color:#fff;border-radius:16px;padding:24px 20px;margin-bottom:14px}
+.hero h1{margin:0 0 8px;font-size:1.8rem}
+.hero p{margin:0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px;margin-bottom:14px}
+.card h2{margin:0 0 10px;color:var(--pri);font-size:1.35rem;border-bottom:2px solid #c8dcf7;padding-bottom:7px}
+.card h3{margin:18px 0 8px;color:var(--sec);font-size:1.12rem}
+.card p{margin:10px 0}
+.note{background:#eef6ff;border:1px solid #c8dcfb;border-left:4px solid #2f6fbe;border-radius:10px;padding:11px;margin:10px 0}
+.warn{background:#fff8f1;border:1px solid #fed7aa;border-left:4px solid #ea580c;border-radius:10px;padding:11px;margin:10px 0}
+.gloss{background:#f0f9ff;border:1px solid #bae6fd;border-radius:10px;padding:11px;margin:10px 0}
+.figure{border:1px dashed #94a3b8;border-radius:10px;padding:12px;background:#f9fbff;margin:10px 0}
+pre{background:var(--code);border:1px solid #dce8f8;border-radius:10px;padding:12px;overflow-x:auto;margin:10px 0}
+code{font-family:"Consolas","Monaco",monospace;font-size:.88rem}
+.kw{color:var(--kw);font-weight:700}.obj{color:var(--obj)}.str{color:var(--str)}
+.table-wrap{overflow-x:auto}
+table{width:100%;min-width:860px;border-collapse:collapse}
+th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef5ff}
+.top{text-align:right;margin-top:12px}
+@media(max-width:1120px){.layout{grid-template-columns:1fr}.sidebar{position:static;max-height:none}}
+</style>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <h2>第2章 目次</h2>
+    <ul>
+      <li><a href="#scope">スコープ宣言</a></li>
+      <li><a href="#intro">第2章の学習目的</a></li>
+      <li><a href="#select-basic">2.1 SELECT-FROMの基本構文</a></li>
+      <li><a href="#expr">2.2 算術式と列演算</a></li>
+      <li><a href="#alias">2.3 列別名（AS）</a></li>
+      <li><a href="#concat">2.4 文字列連結・リテラル・DUAL</a></li>
+      <li><a href="#distinct">2.5 DISTINCT</a></li>
+      <li><a href="#where">2.6 WHERE句と比較演算子</a></li>
+      <li><a href="#logic">2.7 論理演算子と優先順位</a></li>
+      <li><a href="#null">2.8 NULL判定（IS NULL / IS NOT NULL）</a></li>
+      <li><a href="#order">2.9 ORDER BY</a></li>
+      <li><a href="#logical-order">2.10 SELECTの論理処理順序</a></li>
+      <li><a href="#exam">試験ひっかけパターン集</a></li>
+      <li><a href="#practice">実務アンチパターン集</a></li>
+    </ul>
+  </aside>
+
+  <main class="main">
+    <section class="hero" id="scope">
+      <h1>Ver 5.0 | Oracle DBA Silver SQL（第2章のみ）</h1>
+      <p>本ファイルは第2章「SELECT文を使用したデータ取得」に全リソースを集中し、定義・役割・動作原理・制限事項/アンチパターン・試験/実務の急所を高密度で記述する。</p>
+    </section>
+
+    <section class="card" id="intro">
+      <h2>第2章の学習目的</h2>
+      <p>第2章は、Oracle SQL学習の実戦入口にあたる章である。第1章で理解した「データモデルと整合性」を、実際に観測し検証するための操作がSELECTである。SELECTを正しく書けないと、要件確認、障害調査、更新前件数確認、監査証跡確認のいずれも精度が落ちる。逆にSELECTを論理的に扱えると、後続の単一行関数、集約、結合、副問合せ、DMLの成功率が上がる。試験対策としても、単に結果を覚えるのではなく、どの句がどの順番で評価されるか、NULLが条件式へどう影響するかを説明できることが合格ラインになる。</p>
+      <div class="gloss"><strong>重要:</strong> 第2章は「見えるSQL」ではなく「壊れない参照設計」を学ぶ章。読み取る力が更新事故を防ぐ。</div>
+    </section>
+
+    <section class="card" id="select-basic">
+      <h2>2.1 SELECT-FROMの基本構文</h2>
+      <h3>1) 定義（300文字以上）</h3>
+      <p>SELECT文は、Oracle Databaseに保存された行集合から必要な列を投影し、条件に合致した結果セットを返す宣言型言語の中心構文である。宣言型であるため、利用者は「どのデータが欲しいか」を記述し、実行手順の具体化はオプティマイザへ委ねられる。最小構成はSELECT句とFROM句で、SELECT句が返却列、FROM句が参照対象を定義する。これにより、同じ表でも目的に応じて必要最小限の情報だけを取得できる。重要なのは、SELECTは単なる画面表示命令ではなく、業務判断に使う事実抽出の契約文であるという理解である。</p>
+      <h3>2) 役割（300文字以上）</h3>
+      <p>SELECTの役割は、業務データを意思決定可能な形へ取り出すことにある。売上確認、在庫照会、未処理案件抽出、請求突合、監査証跡確認など、実務のほぼ全工程でSELECT結果が判断材料になる。例えば更新バッチ前に対象件数をSELECTで確定しない運用は、誤更新の予兆を見落としやすい。逆に、SELECTで対象・条件・順序を明確にできれば、レビュー時に第三者が妥当性を検証しやすくなる。試験では基礎構文として扱われるが、実務では障害予防の最前線であり、読みやすく再現可能なSELECTを書く力が品質を左右する。</p>
+      <h3>3) 動作原理（300文字以上）</h3>
+      <p>SELECTは記述順と評価順が一致しない。FROMで対象集合を確定し、必要に応じてWHEREで行を絞り、最終的にSELECT句で列が出力される。ユーザーが「上から読む」感覚で理解すると誤解が生じやすいため、内部的な論理処理順序を常に意識することが重要である。Oracleは統計情報と索引情報を基に実行計画を生成し、最もコストが低いと推定されるアクセス経路を選択する。したがって同じSELECTでも表定義や統計状態で計画は変わる。SELECTの本質は、結果を得る命令であると同時に、実行計画と性能特性を伴う運用対象である点にある。</p>
+      <h3>4) 制限事項とアンチパターン（300文字以上）</h3>
+      <p>典型的アンチパターンは`SELECT *`の常用である。列追加によりアプリ側の列位置依存が壊れたり、不要列読み出しでI/O負荷が増えたりする。次に、FROM句の誤指定で別スキーマ同名表を参照し、検証環境では動くが本番で結果が変わる事故も多い。さらに、列名誤記によるORA-00904を軽視し、場当たりでSQLを修正すると原因追跡が遅れる。制約として、SELECTは参照命令でもロックや実行計画の影響を無視できない。最初から列明示、スキーマ認識、実行前件数確認を習慣化しないと、参照系でも運用品質は崩れる。</p>
+      <h3>5) 試験・実務の急所（300文字以上）</h3>
+      <p>試験では「最小構文」「句の役割」「列別名やDISTINCTとの位置関係」が頻出である。実務ではこれに加え、レビュー可能性が重要になる。具体的には、列を業務意味順で並べる、別名を統一する、WHERE条件を機能単位で改行する、といった書式規約が障害解析速度に直結する。新人が陥りやすい誤りは、見た目で正しそうなSQLを即実行することだが、実務では必ず同条件の件数確認SELECTを先に実行する。第2章でこの手順を定着させると、後続のDML実行前チェックが自然に行えるようになり、試験合格後の実務事故を大幅に減らせる。</p>
+      <pre><code><span class="kw">SELECT</span> <span class="obj">employee_id</span>, <span class="obj">last_name</span>, <span class="obj">salary</span>
+<span class="kw">FROM</span> <span class="obj">employees</span>;</code></pre>
+      <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+    </section>
+
+    <section class="card" id="expr">
+      <h2>2.2 算術式と列演算</h2>
+      <h3>1) 定義（300文字以上）</h3>
+      <p>SELECT句では、列値そのものだけでなく算術式を使って派生値を返せる。代表例は`salary * 12`の年収換算、`(salary + commission)`の合算などである。これは「保存値を直接変更せずに、問い合わせ時に必要な業務値を生成する」機能であり、データ分析と帳票出力の基礎となる。Oracleは式のデータ型整合を評価し、必要に応じて暗黙変換を行うが、変換不能なら実行時エラーになる。式は便利だが、型の扱いを理解せずに使うと結果誤りや性能低下を引き起こすため、定義と戻り値型をセットで理解する必要がある。</p>
+      <h3>2) 役割（300文字以上）</h3>
+      <p>算術式の役割は、業務判断で必要な値を「保存値から安全に再構成する」ことである。現場では月額給与を年額へ換算したり、単価と数量から見積金額を求めたり、税率適用後金額を表示したりする。これをアプリ側で毎回実装すると、計算式の重複と仕様差分が生まれやすい。SQL側で式を統一すると、参照経路が複数あっても計算ロジックを一貫できる。試験上は単純計算問題に見えるが、実務では「どの値を真実源とし、どこで計算するか」という設計問題である。第2章で演算子優先順位と型変換を押さえることが後続章の関数利用にも効く。</p>
+      <h3>3) 動作原理（300文字以上）</h3>
+      <p>Oracleは行ごとに式を評価し、演算子優先順位に従って結果を計算する。一般に乗除が加減より先で、括弧を使えば評価順を明示できる。NULLが式に含まれる場合、通常の算術結果はNULLへ伝播するため、期待値が得られないケースがある。これを制御するにはNVLやCOALESCEを使い代替値を与える。さらに、文字列列と数値演算を混在させると暗黙変換が発生し、NLS設定やデータ品質次第でエラーとなる。動作原理として重要なのは、式は見た目の計算記号ではなく、型規則、NULL規則、評価順序を同時に持つ実行単位であるという点である。</p>
+      <h3>4) 制限事項とアンチパターン（300文字以上）</h3>
+      <p>アンチパターンは、型が保証されていない列へ算術式を直接適用すること、括弧なしで複合式を書いて意図と異なる結果を返すこと、NULL補完方針を決めないことの3つである。例えば文字列型金額列に加算を行うと、開発環境では偶然動いても本番データで変換エラーが発生しやすい。さらに、計算結果をそのまま業務確定値として利用すると、丸め誤差や小数点規約違反が下流障害になる。対策は、型定義の正規化、明示的CAST、括弧による評価順固定、NULL補完ルールの文書化である。式は短く書くより、解釈が一意になるよう書くべきである。</p>
+      <h3>5) 試験・実務の急所（300文字以上）</h3>
+      <p>試験では演算子優先順位、NULL伝播、式への別名付与が繰り返し問われる。実務ではこれに「監査可能性」が加わる。計算列を使うSQLは、式がどの業務定義に対応するかコメントや別名で明確にしないと、後日レビューで意図が読めなくなる。特に金額や率計算は、丸め位置・除算時ゼロ対策・NULL扱いを明示しないと部門間で数値不一致が起きる。第2章時点で、式を1行で詰め込まず段階的に分解して書く習慣を持てば、試験問題の見抜き力が上がるだけでなく、実務の障害調査時に式のどこで誤差が出たかを短時間で切り分けられる。</p>
+      <pre><code><span class="kw">SELECT</span> <span class="obj">employee_id</span>,
+       <span class="obj">salary</span>,
+       <span class="obj">salary</span> * <span class="obj">12</span> <span class="kw">AS</span> <span class="obj">annual_salary</span>,
+       (<span class="obj">salary</span> + <span class="kw">NVL</span>(<span class="obj">commission_pct</span>, <span class="obj">0</span>) * <span class="obj">salary</span>) <span class="kw">AS</span> <span class="obj">monthly_total</span>
+<span class="kw">FROM</span> <span class="obj">employees</span>;</code></pre>
+      <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+    </section>
+
+    <section class="card" id="alias">
+      <h2>2.3 列別名（AS）</h2>
+      <h3>1) 定義（300文字以上）</h3>
+      <p>列別名は、SELECT結果に表示される列ラベルを任意の名称へ置き換える機能である。`AS`キーワードは省略可能だが、可読性とレビュー性を優先するなら明示が推奨される。別名は、計算式列、関数列、長い列名、業務用語へ変換したい列で特に有効である。ダブルクォート付き別名は大文字小文字や空白を保持できる一方、後続参照で同じ表記を要求するため扱いに注意が必要となる。定義として重要なのは、別名はデータ内容を変える機能ではなく、結果セットの意味を明示し、利用者側の解釈ブレを減らすメタ情報である点である。</p>
+      <h3>2) 役割（300文字以上）</h3>
+      <p>別名の役割は、SQLを読む人間の認知負荷を下げることにある。実務では同じ列を複数テーブルが持つため、`name`や`status`のような汎用列名だけでは何を示すか判別しにくい。`customer_status`、`order_status`のように別名で意味を補強すれば、集計結果の読み間違いを防げる。帳票連携やBIツール連携でも、別名がそのまま見出しになることが多く、命名品質が業務利用性へ直結する。試験では文法上の小項目に見えるが、実務では「伝わるSQL」を作る基礎技術であり、仕様共有コストを減らす効果が非常に大きい。</p>
+      <h3>3) 動作原理（300文字以上）</h3>
+      <p>OracleはSELECT句の各式に対して、列名または生成式テキストをデフォルト見出しとして返す。別名を指定すると、その見出しへ置換される。ORDER BYでは列位置番号または別名を利用できるが、WHERE句では別名を直接参照できない（論理処理順序上、WHERE評価時点でSELECT別名が未確定であるため）。この差を理解しないと、`WHERE annual_salary > ...`のような誤用でエラーを招く。ダブルクォート別名はケースセンシティブになるため、後続利用で引用表記を統一しなければならない。動作原理として、別名は表示層寄り機能だが、句ごとの参照可否にルールがあることを押さえる必要がある。</p>
+      <h3>4) 制限事項とアンチパターン（300文字以上）</h3>
+      <p>アンチパターンは、無意味な短縮別名、引用符乱用、チームで不統一な命名の3点である。例えば`a1`,`a2`のような別名は一時的には短いが、障害調査で意味復元に時間を要する。さらに、日本語別名と英語別名が混在し規約がない場合、帳票マッピングで列対応ミスが増える。ダブルクォート別名を多用すると、後続SQLで引用忘れによるORA-00904を誘発しやすい。制限として、別名は同一SELECT句で重複させると利用側が混乱する。対策は命名規約を定め、業務語彙と技術語彙の対応を固定し、レビューで別名の意味妥当性まで確認することである。</p>
+      <h3>5) 試験・実務の急所（300文字以上）</h3>
+      <p>試験ではAS省略可否、ダブルクォートの挙動、ORDER BYでの別名利用が典型論点となる。実務では、別名を使って「結果の契約」を明示することが重要で、APIやCSV出力へ直結するケースでは特に慎重さが求められる。例えば同一名称の列を複数返すと、連携先が後勝ちで上書きしてデータ欠落を起こす危険がある。別名設計はSQLの見た目調整ではなく、インタフェース設計の一部として扱うべきである。第2章でこの意識を持つと、後続のJOINや集約で列競合を早期に解消でき、試験だけでなく実装現場で即戦力になる。</p>
+      <pre><code><span class="kw">SELECT</span> <span class="obj">last_name</span> <span class="kw">AS</span> <span class="obj">employee_name</span>,
+       <span class="obj">salary</span> * <span class="obj">12</span> <span class="kw">AS</span> <span class="obj">annual_salary</span>
+<span class="kw">FROM</span> <span class="obj">employees</span>
+<span class="kw">ORDER BY</span> <span class="obj">annual_salary</span> <span class="kw">DESC</span>;</code></pre>
+      <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+    </section>
+
+    <section class="card" id="concat">
+      <h2>2.4 文字列連結・リテラル・DUAL</h2>
+      <h3>1) 定義（300文字以上）</h3>
+      <p>Oracle SQLでは文字列連結演算子`||`を使って複数値を1つの表示値へまとめられる。これに加え、リテラル（固定文字列や固定数値）をSELECT句へ直接記述することで、説明用列や識別用列を結果へ追加できる。`DUAL`はOracleが提供する1行1列の疑似表で、関数評価や式確認、環境確認に利用される。これらは一見補助機能だが、実務では診断SQL、簡易検証、帳票向け整形で頻繁に使う。定義として重要なのは、連結やリテラルは保存値を変更せず、出力表現を制御するための機能であり、データモデルそのものを汚さずに見せ方を最適化できる点である。</p>
+      <h3>2) 役割（300文字以上）</h3>
+      <p>役割は「業務利用しやすい表示へ変換すること」にある。例えば姓と名を結合して担当者表示名を作る、`'JPY'`を付けて通貨明示する、`SYSDATE`をDUALで確認してジョブ時刻検証を行う、といった場面で有効である。アプリ側で毎回文字列整形を実装すると、表示ルールが画面ごとに分散し不一致が起こる。SQL側で整形方針を定義すれば、レポートや一時確認の一貫性が高まる。試験では連結演算子の文法として出るが、実務では「データの意味を誤読させない」ための表示設計技術である。特に監査用途では、列の意味をリテラルで補う工夫が有効である。</p>
+      <h3>3) 動作原理（300文字以上）</h3>
+      <p>`||`は左から順に文字列を結合し、数値列などは必要に応じて文字列へ暗黙変換される。NULLと連結した場合、OracleではNULLが空文字扱いに近い挙動を取り、全体が完全NULLにならないケースがあるため、他DB製品との違いを意識する必要がある。フォーマット制御が必要な数値・日付はTO_CHARで明示変換しないと、NLS設定依存の表示差分が発生する。DUAL参照は1行固定であるため、式検証やシステム関数確認に適しているが、大量データとの結合用途には使わない。動作原理の要点は、連結・リテラルは「見せ方の計算」であり、型変換規則とNLS依存性を理解して初めて安定運用できることである。</p>
+      <h3>4) 制限事項とアンチパターン（300文字以上）</h3>
+      <p>アンチパターンは、連結結果をそのまま識別子として業務キー扱いすること、日付や数値の暗黙変換へ依存すること、DUALを実データ代替として誤用することにある。表示名連結は便利だが、重複や表記揺れが起こるため主キー代替にはならない。暗黙変換依存は環境移行時に表示崩れや変換エラーを誘発しやすい。さらに、DUALで確認した式が実テーブルでも同じ性能になると誤解し、索引やデータ分布を無視して本番適用するのも危険である。対策は、表示用途と識別用途の分離、明示変換の徹底、DUALは検証専用と位置付ける運用規約である。</p>
+      <h3>5) 試験・実務の急所（300文字以上）</h3>
+      <p>試験では`||`演算子、リテラル記述、DUAL利用が高確率で問われる。特に「文字列連結時のNULL挙動」「AS別名との組み合わせ」「関数確認SQL」が論点になる。実務では、連結列をWHERE条件へ使うと索引活用が難しくなるため、表示用列と検索用列を分離する設計判断が必要である。さらに、帳票作成時にSQLで過剰整形すると再利用性が下がるため、どこまでをSQLで行い、どこからを表示層へ委譲するかを決めることが重要になる。第2章でこの境界感覚を持つと、後続の関数章や性能調整時に適切な責務分離ができる。</p>
+      <pre><code><span class="kw">SELECT</span> <span class="obj">last_name</span> || <span class="str">', '</span> || <span class="obj">first_name</span> <span class="kw">AS</span> <span class="obj">full_name</span>,
+       <span class="str">'EMP'</span> || <span class="obj">employee_id</span> <span class="kw">AS</span> <span class="obj">employee_code</span>
+<span class="kw">FROM</span> <span class="obj">employees</span>;
+
+<span class="kw">SELECT</span> <span class="kw">CURRENT_DATE</span> <span class="kw">AS</span> <span class="obj">today_local</span>
+<span class="kw">FROM</span> <span class="obj">dual</span>;</code></pre>
+      <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+    </section>
+
+    <section class="card" id="distinct">
+      <h2>2.5 DISTINCT</h2>
+      <h3>1) 定義（300文字以上）</h3>
+      <p>DISTINCTはSELECT結果から重複行を除去し、ユニークな組み合わせのみを返す句である。`SELECT DISTINCT col1, col2`のように複数列指定した場合、重複判定は列組全体で行われる。つまり単一列だけが同じでも他列が異なれば別行として残る。DISTINCTは集合指向SQLの重複制御手段であり、重複が意味を持たない分析や一覧表示で有効である。一方で、データ品質問題を隠すためにDISTINCTを使うのは誤用である。定義上は「結果の重複除去」であり、元データの重複原因を修正する機能ではない点を明確に理解する必要がある。</p>
+      <h3>2) 役割（300文字以上）</h3>
+      <p>DISTINCTの役割は、業務判断に必要な「種類数」や「候補集合」を過不足なく返すことである。例えば部署IDの一覧、取扱商品カテゴリ一覧、有効なステータス値一覧など、重複が不要な用途ではDISTINCTが有効である。これによりアプリ側で重複排除処理を持たずに済み、処理の一貫性が高まる。試験では単純な重複排除として出題されるが、実務では「重複をなくして表示したい」のか「本当に重複が存在しないことを保証したい」のかを区別する判断が重要になる。後者はUNIQUE制約やデータクレンジングで対応すべきで、DISTINCTで見かけだけ整えると根本原因が温存される。</p>
+      <h3>3) 動作原理（300文字以上）</h3>
+      <p>OracleはDISTINCT指定時、対象列組に対して重複判定を行い、同一行を1件へ集約して返す。内部的にはソートまたはハッシュ処理が選択されることがあり、データ量が大きい場合はメモリ・TEMP領域使用量へ影響する。NULLを含む列でも重複判定対象となり、同じ列組のNULL行は1行にまとめられる。ORDER BYと併用する場合、最終並び順はORDER BYで決まるが、DISTINCTのために一度全体評価が必要になる。動作原理として重要なのは、DISTINCTは結果セットの形を変える演算であり、性能コストがゼロではないこと、また重複の意味解釈を誤ると業務判断を誤ることである。</p>
+      <h3>4) 制限事項とアンチパターン（300文字以上）</h3>
+      <p>アンチパターンとして最も多いのは、JOIN条件誤りによる重複発生をDISTINCTで隠す実装である。この方法は一時的に行数を減らせても、計算値の重複加算や欠損を見逃し、別帳票で不一致を生む。次に、重複要因を把握せず安易にDISTINCTを入れると性能が悪化し、ピーク時間帯の応答遅延原因になりやすい。制限として、DISTINCT対象列に不要な列を含めると重複除去効果が消える。対策は、まず重複の原因（データ重複かJOIN多重化か）を調査し、必要ならGROUP BYやEXISTS、制約追加など根本策を選ぶことである。DISTINCTは最後の整形手段であり、根治策の代替ではない。</p>
+      <h3>5) 試験・実務の急所（300文字以上）</h3>
+      <p>試験では「DISTINCTはSELECT直後に置く」「列組単位で重複判定」「NULLを含む挙動」が問われる。実務ではさらに、DISTINCTを使った理由を説明できるかが品質指標になる。レビューで「なぜ重複が生じたのか」が説明できないDISTINCTは高リスクであり、後続改修で破綻しやすい。重複排除の目的がUI表示だけなのか、業務計算の正当性担保なのかを分けて設計する必要がある。第2章の段階で、DISTINCTを便利句としてではなく「行集合を変形する演算」として理解しておけば、集約章・結合章でも誤用を避けられる。</p>
+      <pre><code><span class="kw">SELECT DISTINCT</span> <span class="obj">department_id</span>
+<span class="kw">FROM</span> <span class="obj">employees</span>
+<span class="kw">ORDER BY</span> <span class="obj">department_id</span>;</code></pre>
+      <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+    </section>
+
+    <section class="card" id="where">
+      <h2>2.6 WHERE句と比較演算子</h2>
+      <h3>1) 定義（300文字以上）</h3>
+      <p>WHERE句は、FROMで得た行集合に対して条件式を適用し、TRUEとなる行のみを残すフィルタ機能である。比較演算子には`=`、`<>`、`>`、`>=`、`<`、`<=`があり、範囲判定の`BETWEEN`、集合判定の`IN`、パターン判定の`LIKE`なども実務で多用される。WHEREはSELECT結果の正確性を決定する最重要句で、1文字の条件違いが対象件数を大きく変える。定義として重要なのは、WHEREは単なる絞り込みではなく、業務要件を機械可読条件へ翻訳する工程である点である。曖昧な要件を曖昧な条件へ落とすと、SQLは実行できても業務的には誤答を返す。</p>
+      <h3>2) 役割（300文字以上）</h3>
+      <p>WHERE句の役割は、必要な対象だけを抽出し、誤った業務判断を防ぐことにある。例えば「未処理かつ期限超過の申請」を抽出する際、条件のAND/ORを誤るだけで督促対象が過不足する。更新前の対象確認でもWHEREは生命線で、件数確認なしのUPDATE/DELETE事故の多くはWHERE理解不足に起因する。試験では比較演算子の使い分け問題として出るが、実務では「誰を対象にする処理か」を定義する契約そのものとなる。したがって、WHERE句は短く書くことより、条件粒度を論理単位で分け、要件文と一対一で対応づけることが重要である。</p>
+      <h3>3) 動作原理（300文字以上）</h3>
+      <p>WHERE句の各条件は3値論理（TRUE/FALSE/UNKNOWN）で評価される。OracleはTRUE行のみ採用し、FALSEとUNKNOWNは除外する。NULLを含む比較はUNKNOWNになりやすいため、`= NULL`は期待通り動かない。LIKEはワイルドカード`%`と`_`でパターン一致を評価し、INは候補集合との一致を判定する。BETWEENは境界値を含むため、時刻付き日付列で意図しない範囲漏れが起こりやすい。動作原理の核心は、WHEREが単一真偽値ではなく3値論理上で評価されること、そして演算子ごとに境界や一致規則が異なることを理解する点にある。</p>
+      <h3>4) 制限事項とアンチパターン（300文字以上）</h3>
+      <p>アンチパターンは、日付を文字列比較する、NULL比較を等号で行う、`LIKE '%xxx'`を多用して索引効率を落とす、`IN`リストへ大量値を直書きする、といった実装である。特に文字列日付比較はNLS依存で誤判定を招きやすい。さらに、条件式へ関数を過度に適用すると索引利用が難しくなり、フルスキャン増加で応答劣化を起こす。制限として、WHEREは要件の曖昧さを吸収できない。要件が「当月」なのか「直近30日」なのか不明なまま実装すると、正しいSQLは存在しない。対策は要件の時間境界とNULL方針を事前固定し、実行前に件数とサンプル行を検証することである。</p>
+      <h3>5) 試験・実務の急所（300文字以上）</h3>
+      <p>試験では`BETWEEN`の境界包含、`IN`と`OR`の等価性、`LIKE`のワイルドカード、NULL比較の誤りが高頻度で出題される。実務ではこれに加え、条件の再現性が問われる。すなわち、同じSQLを翌日に実行しても要件通りの対象が取れるかを確認する必要がある。`SYSDATE`依存条件は便利だが、監査や再実行時に結果差が出るため、基準日時をパラメータ化する設計が望ましい。第2章でWHERE句を厳密に扱う習慣を持てば、後続の結合や副問合せでも条件漏れ・過抽出を減らせる。試験対策としても、条件式を日本語要件へ逆翻訳できる力が得点を安定させる。</p>
+      <pre><code><span class="kw">SELECT</span> <span class="obj">employee_id</span>, <span class="obj">last_name</span>, <span class="obj">salary</span>
+<span class="kw">FROM</span> <span class="obj">employees</span>
+<span class="kw">WHERE</span> <span class="obj">department_id</span> <span class="kw">IN</span> (<span class="obj">50</span>, <span class="obj">60</span>)
+  <span class="kw">AND</span> <span class="obj">salary</span> <span class="kw">BETWEEN</span> <span class="obj">7000</span> <span class="kw">AND</span> <span class="obj">12000</span>
+  <span class="kw">AND</span> <span class="obj">last_name</span> <span class="kw">LIKE</span> <span class="str">'S%'</span>;</code></pre>
+      <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+    </section>
+
+    <section class="card" id="logic">
+      <h2>2.7 論理演算子と優先順位（AND / OR / NOT）</h2>
+      <h3>1) 定義（300文字以上）</h3>
+      <p>論理演算子は複数条件を結合し、最終的な採用行を決定するための構文である。`AND`は両条件成立時のみTRUE、`OR`はいずれか成立でTRUE、`NOT`は真偽を反転する。SQLにおける論理式は単純な真偽演算に見えるが、NULLが絡むため3値論理で評価される。さらに優先順位は一般に`NOT`、`AND`、`OR`の順で、括弧により明示変更できる。定義上のポイントは、条件を日本語で書いた時の意味と、SQLの評価規則が一致しているかを常に検証することにある。優先順位を誤解すると、文法上正しいSQLが業務的に誤答を返す。</p>
+      <h3>2) 役割（300文字以上）</h3>
+      <p>論理演算子の役割は、複雑な業務条件を再現可能な形で表現することにある。例えば「対象部署かつ在籍中、または特例フラグあり」といった条件は、括弧設計を誤ると対象が過剰に広がる。現場ではこの種の条件ミスが、通知誤送信、誤請求、誤抽出の直接原因になる。試験では優先順位問題として出るが、実務では要件定義の曖昧さを露呈させる検査器として機能する。条件を分解して段階的に真偽を確認できるSQLは、レビューや障害調査で強い。論理演算子を正しく使えることは、SQLの書き方というより業務ルールを正確に翻訳する能力そのものである。</p>
+      <h3>3) 動作原理（300文字以上）</h3>
+      <p>OracleはWHERE句内の論理式を優先順位に従って評価し、各行ごとに最終真偽値を決定する。`A OR B AND C`は`A OR (B AND C)`として解釈されるため、意図が`(A OR B) AND C`なら括弧必須である。NULLを含む条件ではUNKNOWNが発生し、`TRUE OR UNKNOWN`はTRUE、`FALSE AND UNKNOWN`はFALSEなど、3値論理規則に従う。これにより、人間の直感とズレる結果が出ることがある。動作原理として重要なのは、論理式は文章として読むのではなく、優先順位と3値真理値表で機械的に評価されると理解することである。ここを押さえると、複雑条件でも結果を事前予測できる。</p>
+      <h3>4) 制限事項とアンチパターン（300文字以上）</h3>
+      <p>アンチパターンは、括弧省略で意図を暗黙化すること、NOT条件を多重化して可読性を落とすこと、NULL可能列への否定条件を無検証で使うことである。特に`NOT IN`は候補集合にNULLが含まれると期待外れの結果を返しやすく、障害頻度が高い。複雑なOR条件を1文へ詰め込むと、レビュー時に条件漏れを発見しづらい。制限として、論理式が長くなるほど人間の検算精度が下がる。対策は、条件ブロックごとに括弧を明示し、要件文と同じ単位で改行すること、検証用に条件ごとの件数を段階的に確認すること、NULL混在の有無を先に把握することである。</p>
+      <h3>5) 試験・実務の急所（300文字以上）</h3>
+      <p>試験ではAND/OR優先順位、NOTの作用範囲、NULLを含む論理評価が頻出である。実務では、条件式レビュー時に「人間の読解順ではなくOracleの評価順」で検証する姿勢が必要になる。さらに運用SQLでは、要件変更が入るたびに条件を継ぎ足すことが多いため、初期から括弧と改行規約を統一しておかないと保守不能になる。第2章で論理式を厳密に扱う習慣を作ると、後続の副問合せ条件や結合条件でも誤判定を減らせる。試験対策としては、候補式を真理値表で比較する練習が有効であり、誤答の多くは優先順位思い込みで説明できる。</p>
+      <pre><code><span class="kw">SELECT</span> <span class="obj">employee_id</span>, <span class="obj">department_id</span>, <span class="obj">salary</span>
+<span class="kw">FROM</span> <span class="obj">employees</span>
+<span class="kw">WHERE</span> (<span class="obj">department_id</span> = <span class="obj">50</span> <span class="kw">OR</span> <span class="obj">department_id</span> = <span class="obj">60</span>)
+  <span class="kw">AND</span> <span class="obj">salary</span> &gt;= <span class="obj">8000</span>;
+
+<span class="kw">-- 括弧を外すと意味が変わる点に注意</span></code></pre>
+      <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+    </section>
+
+    <section class="card" id="null">
+      <h2>2.8 NULL判定（IS NULL / IS NOT NULL）</h2>
+      <h3>1) 定義（300文字以上）</h3>
+      <p>NULLは「値が未設定」「不明」「適用対象外」を表す特殊状態であり、0や空文字と同一ではない。Oracle SQLではNULL比較に`=`や`<>`を使えず、`IS NULL`または`IS NOT NULL`で判定する。NULLを含む通常比較はUNKNOWNとなり、WHERE句では採用されない。したがってNULL判定は、単なる文法差ではなく結果件数を直接左右する重要仕様である。定義上の要点は、NULLは値ではなく「値が確定していない状態」であるため、一般的な等価比較の前提が成り立たないということである。第2章ではこの理解が最重要の一つであり、誤ると抽出・更新の両方で事故が起こる。</p>
+      <h3>2) 役割（300文字以上）</h3>
+      <p>NULL判定の役割は、未入力や未確定の業務状態を正確に抽出し、処理対象を適切に分離することにある。例えば承認日NULLは「未承認」を意味し、請求日NULLは「未請求」を示す。これらを0や空文字へ置換すると、状態の意味が壊れ、監査や進捗管理で誤判定が起こる。実務では未設定件数を定期監視し、入力漏れや業務滞留を早期検知するためにIS NULL条件が多用される。試験では文法問題に見えるが、現場ではプロセス管理の基盤である。NULLを正しく扱えることは、データ品質の可視化と運用改善の出発点となる。</p>
+      <h3>3) 動作原理（300文字以上）</h3>
+      <p>WHERE句はTRUEの行だけ返すため、`column = NULL`はUNKNOWNとなり採用されない。`IS NULL`はNULL状態を明示判定しTRUE/FALSEを返す。計算式ではNULLが伝播しやすく、`salary + commission`でcommissionがNULLなら結果はNULLになる。これを防ぐにはNVLやCOALESCEで代替値を与える。ORDER BYではNULLの並び位置がデフォルトでASC時末尾、DESC時先頭となり、`NULLS FIRST/LAST`で制御できる。動作原理として、NULLは比較・算術・並び順すべてへ影響する横断概念であり、特定句だけの知識で済まない。第2章で横断的に理解しておくと、後続章の誤答を大きく減らせる。</p>
+      <h3>4) 制限事項とアンチパターン（300文字以上）</h3>
+      <p>アンチパターンは、NULL許容列へ`= ''`で判定する、未入力を0で保存して欠損を隠す、`NOT IN`へNULL混在集合を渡す、の3つが代表的である。これらは見た目上は動作しても、件数不一致や条件漏れを招き、障害時に原因特定が難しくなる。さらに、NULLを一律禁止して運用上必要な「未確定状態」まで失う設計も問題である。制限として、NULLの意味は列ごとに異なるため、共通ルールを無理に適用すると業務意味が破綻する。対策は、列単位でNULL許容理由を定義し、抽出時はIS NULL明示、演算時は補完方針明示、NOT IN利用時はNULL混在検査を必須化することである。</p>
+      <h3>5) 試験・実務の急所（300文字以上）</h3>
+      <p>試験ではNULL比較、IS NULL/IS NOT NULL、NULLを含む式結果が高頻度で出題される。実務ではこれに加えて、帳票不一致や対象漏れの一次原因としてNULL誤判定が非常に多い。障害解析時にはまずNULL条件の有無、NVL適用有無、NOT INの候補集合を確認するのが有効である。開発規約として「NULL判定は必ずIS句」「演算前に補完要否を判断」「NULL意味を列定義へ記述」を徹底すると再発率が下がる。第2章でこの規律を身につけると、後続の集約・結合・副問合せでも論理崩れを防げる。試験の得点だけでなく、実運用での信頼性を高める必須知識である。</p>
+      <pre><code><span class="kw">SELECT</span> <span class="obj">employee_id</span>, <span class="obj">last_name</span>
+<span class="kw">FROM</span> <span class="obj">employees</span>
+<span class="kw">WHERE</span> <span class="obj">commission_pct</span> <span class="kw">IS NULL</span>;
+
+<span class="kw">SELECT</span> <span class="obj">employee_id</span>,
+       <span class="obj">salary</span> + <span class="kw">NVL</span>(<span class="obj">commission_pct</span> * <span class="obj">salary</span>, <span class="obj">0</span>) <span class="kw">AS</span> <span class="obj">pay_total</span>
+<span class="kw">FROM</span> <span class="obj">employees</span>;</code></pre>
+      <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+    </section>
+
+    <section class="card" id="order">
+      <h2>2.9 ORDER BY</h2>
+      <h3>1) 定義（300文字以上）</h3>
+      <p>ORDER BY句はSELECT結果の並び順を明示的に定義する句であり、昇順（ASC）・降順（DESC）と複数キーを指定できる。SQLではORDER BYを省略すると行順は保証されないため、同じSQLでも実行タイミングや実行計画で順序が変わり得る。ORDER BYは見た目調整ではなく、結果再現性を担保するための必須仕様である。主キーを含む複合ソートを設計すれば、同値行の順序ゆらぎを抑制できる。定義として重要なのは、ORDER BYは「最後に並べる」操作であり、WHEREでの抽出条件とは責務が異なる点である。役割を混同すると性能と可読性の両方を損なう。</p>
+      <h3>2) 役割（300文字以上）</h3>
+      <p>ORDER BYの役割は、利用者が比較・検証しやすい順序へ結果を整え、業務判断を安定させることである。例えば売上上位確認では金額降順、監査一覧では更新日時降順、マスタ確認ではコード昇順など、目的ごとに適切な順序がある。並び順が不定だと、前回結果との差分確認が難しくなり、誤差検出が遅れる。試験ではASC/DESCやNULLS FIRST/LASTの仕様確認として出題されるが、実務ではページングやCSV比較の再現性確保に直結する。ORDER BYを明示する習慣は、結果の正しさだけでなく、運用チーム間で同じ観測結果を共有するための基盤になる。</p>
+      <h3>3) 動作原理（300文字以上）</h3>
+      <p>ORDER BYは論理処理の最終段階で適用され、すでに確定した結果セットを指定キーで並べ替える。複数キー指定時は左から順に優先され、先頭キーが同値の行に対して次キーが効く。NULL位置はデフォルト規則に従うが、`NULLS FIRST`や`NULLS LAST`で明示制御可能である。列名、別名、列位置番号で指定できるが、保守性の観点では列位置番号より列名・別名が望ましい。動作原理上、ORDER BYは結果を全体評価して並べるため、件数が多いとソートコストが顕在化する。必要最小限の列と適切な抽出条件を先に定義してから並べ替える設計が重要である。</p>
+      <h3>4) 制限事項とアンチパターン（300文字以上）</h3>
+      <p>アンチパターンは、ORDER BY省略で結果順を暗黙前提にすること、同値行の第2キーを指定しないこと、列位置番号に依存して後続改修で意味が変わることにある。例えば`ORDER BY 2`は短いが、SELECT列順を変更した瞬間に並び順が変わる。さらに、NULLの位置規則を理解せず比較すると、上位・下位抽出で期待外れ結果が出る。制限として、大規模結果への無条件ソートはTEMP領域負荷を高める。対策は、目的に合った複合キー定義、必要時のNULLS制御、列名指定、そして抽出件数をWHEREで絞ってからソートする手順である。順序は「偶然同じ」ではなく「意図的に同じ」にする必要がある。</p>
+      <h3>5) 試験・実務の急所（300文字以上）</h3>
+      <p>試験ではORDER BYの記述位置、昇降順、NULLS FIRST/LAST、別名指定可否が問われる。実務ではこれにページング安定性が加わり、同値行の順序固定が重要になる。例えば給与降順だけでは同給社員の表示順が毎回変わるため、`employee_id`など不変キーを第2ソートに入れるべきである。第2章でORDER BYを厳密に扱うと、後続のOFFSET/FETCHや分析SQLでも再現性を保ちやすい。試験対策としても、ORDER BYは「見栄え」ではなく「結果契約」の一部と認識することで、選択肢の誤りを論理的に排除できる。実務では監査比較の精度と説明可能性を高める基礎になる。</p>
+      <pre><code><span class="kw">SELECT</span> <span class="obj">employee_id</span>, <span class="obj">last_name</span>, <span class="obj">salary</span>, <span class="obj">commission_pct</span>
+<span class="kw">FROM</span> <span class="obj">employees</span>
+<span class="kw">WHERE</span> <span class="obj">department_id</span> = <span class="obj">50</span>
+<span class="kw">ORDER BY</span> <span class="obj">salary</span> <span class="kw">DESC</span>, <span class="obj">employee_id</span> <span class="kw">ASC</span>, <span class="obj">commission_pct</span> <span class="kw">NULLS LAST</span>;</code></pre>
+      <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+    </section>
+
+    <section class="card" id="logical-order">
+      <h2>2.10 SELECTの論理処理順序</h2>
+      <h3>1) 定義（300文字以上）</h3>
+      <p>SELECT文は記述順（SELECT→FROM→WHERE→ORDER BY）と、論理処理順序（FROM→WHERE→SELECT→ORDER BY）が異なる。この順序理解は、別名参照可否、条件式位置、集約との関係を正しく判断するための基盤である。多くの初学者は上から読んで解釈するため、WHEREで別名を使えると誤解したり、ORDER BYの責務を取り違えたりする。定義としての処理順序は「Oracle内部実装の全詳細」ではなく、SQLの結果を説明するための概念モデルである。試験でも実務でも、この概念モデルを使って文の意味を分解できるかが、誤りを避ける分岐点になる。</p>
+      <h3>2) 役割（300文字以上）</h3>
+      <p>処理順序の役割は、SQLを安定してデバッグ可能にすることにある。結果が想定と違うとき、FROM対象が正しいか、WHEREで除外されていないか、SELECT式で変換ミスがないか、ORDER BYで見え方が変わっていないかを順序どおり確認すれば原因を体系的に切り分けられる。順序理解がないと、誤った箇所へ修正を入れて副作用を増やしやすい。試験問題でも「どの句でエラーになるか」「なぜ別名が使えないか」を順序で説明できると正答しやすい。実務ではこの考え方がレビュー共通言語となり、チームで同じ視点でSQL品質を評価できる。</p>
+      <h3>3) 動作原理（300文字以上）</h3>
+      <p>FROMで行集合を確定し、WHEREで条件適合行へ絞り、SELECTで列投影と式評価を行い、最後にORDER BYで整列する。この順序に従うため、SELECT句で定義した別名はWHEREから参照できない一方、ORDER BYでは参照できる。さらにJOINやGROUP BYが加わると順序は拡張されるが、第2章範囲ではまず基本順序を正確に体得することが重要である。Oracleの物理実行計画は最適化で変わるが、論理結果はこのモデルで説明できる。動作原理として、論理順序は実装詳細を隠蔽しつつ、結果整合性を人間が検証するための強力な思考フレームである。</p>
+      <h3>4) 制限事項とアンチパターン（300文字以上）</h3>
+      <p>アンチパターンは、論理順序を無視して「とりあえず動くSQL」を継ぎ足すこと、別名参照エラーを場当たりで回避すること、ORDER BYで絞り込みが起きると誤解することにある。これらは短期的には修正できても、複雑化した瞬間に再発する。制限として、論理順序モデルだけでは性能問題を完全説明できないため、必要に応じて実行計画確認が必要になる。ただし順序理解がなければ実行計画読解も困難である。対策は、SQLレビュー時に必ず「FROM→WHERE→SELECT→ORDER BY」の順で説明し、各句の責務逸脱がないか確認する運用を標準化することだ。これが品質の最低ラインを作る。</p>
+      <h3>5) 試験・実務の急所（300文字以上）</h3>
+      <p>試験では処理順序そのものの暗記だけでなく、順序前提で解ける文法問題が多い。例えばWHEREで別名を使った選択肢、ORDER BY位置誤り、NULL判定の評価タイミングなどである。実務では順序理解があるだけで、誤SQLの修正速度が大幅に上がる。更新系SQLでもまず同条件SELECTで対象確認する運用は、この順序理解に基づく安全策である。第2章の完了基準は、任意のSELECTを見たとき「どの句がどの順に効き、どこで誤りが起きるか」を口頭説明できること。これができれば、後続章で文法が増えても破綻しにくい学習基盤になる。</p>
+      <div class="figure"><strong>図解テキスト:</strong><pre><code>記述順: SELECT -> FROM -> WHERE -> ORDER BY
+論理順: FROM -> WHERE -> SELECT -> ORDER BY
+
+(1) FROM で対象行集合を作る
+(2) WHERE で条件適合行のみ残す
+(3) SELECT で返却列・式を確定する
+(4) ORDER BY で最終表示順を決める</code></pre></div>
+      <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+    </section>
+
+    <section class="card" id="exam">
+      <h2>第2章 試験ひっかけパターン集</h2>
+      <div class="warn"><b>ひっかけ1:</b> `salary = NULL` でNULL判定できるか → できない（`IS NULL` が必要）。</div>
+      <div class="warn"><b>ひっかけ2:</b> `A OR B AND C` は `(A OR B) AND C` と同じか → 同じではない（AND優先）。</div>
+      <div class="warn"><b>ひっかけ3:</b> WHERE句でSELECT別名を使えるか → 原則使えない（論理順序のため）。</div>
+      <div class="warn"><b>ひっかけ4:</b> `DISTINCT col1, col2` はcol1だけ重複排除か → 列組全体で重複判定。</div>
+      <div class="warn"><b>ひっかけ5:</b> `ORDER BY` を省略しても同順序が保証されるか → 保証されない。</div>
+      <div class="warn"><b>ひっかけ6:</b> `BETWEEN` は境界を除外するか → 含む。</div>
+      <div class="warn"><b>ひっかけ7:</b> `LIKE '_A%'` の `_` は任意長か → 1文字だけ。</div>
+      <div class="warn"><b>ひっかけ8:</b> `SELECT *` は常に安全か → 列追加や性能面で危険。</div>
+      <div class="warn"><b>ひっかけ9:</b> DISTINCTはデータ重複を解消する機能か → いいえ、結果の重複を隠すだけ。</div>
+      <div class="warn"><b>ひっかけ10:</b> DUALは任意件数を返すか → 1行固定の疑似表。</div>
+      <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+    </section>
+
+    <section class="card" id="practice">
+      <h2>第2章 実務アンチパターン集</h2>
+      <div class="table-wrap"><table>
+        <tr><th>アンチパターン</th><th>起きる障害</th><th>予防策</th></tr>
+        <tr><td>`SELECT *` 常用</td><td>不要I/O増大、列追加時の連携破壊</td><td>必要列を明示し、契約列を固定する</td></tr>
+        <tr><td>NULLを`=`で比較</td><td>対象漏れ、件数不一致</td><td>`IS NULL / IS NOT NULL`を徹底する</td></tr>
+        <tr><td>括弧なし複合条件</td><td>誤抽出、通知誤送信</td><td>論理単位で括弧と改行を明示する</td></tr>
+        <tr><td>DISTINCTで重複原因を隠す</td><td>JOIN設計不備の温存、性能劣化</td><td>重複の根本原因を先に解消する</td></tr>
+        <tr><td>ORDER BY省略</td><td>結果順の再現性喪失、比較不能</td><td>目的別ソートキーを明示する</td></tr>
+        <tr><td>暗黙型変換依存</td><td>環境差による実行エラー</td><td>CAST/TO_CHAR等で明示変換する</td></tr>
+        <tr><td>検証なし本番実行</td><td>誤対象抽出、運用混乱</td><td>同条件件数確認SQLを必ず先に実行する</td></tr>
+      </table></div>
+      <div class="note"><strong>第2章完了基準:</strong> 任意のSELECT文を見て、論理処理順序・NULL影響・条件優先順位・重複除去の副作用を自力説明できること。</div>
+      <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+    </section>
+  </main>
+</div>
+</body>
+</html>

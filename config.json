@@ -1,0 +1,85 @@
+{
+    "project_name": "Basetract Oracle Database SQL Silver",
+    "subject": "Oracle Database SQL (1Z0-071)",
+    "exam_info": {
+        "exam_code": "1Z0-071",
+        "questions": 78,
+        "duration_minutes": 120,
+        "passing_score_percent": 63,
+        "passing_score_count": 49,
+        "language": "ja",
+        "credential": "Oracle Database SQL"
+    },
+    "domains": [
+        {
+            "id": "D1",
+            "name": "SQLとリレーショナルデータベースの基礎",
+            "name_en": "Relational DB & SQL Basics",
+            "topics": ["SELECT基本構文", "列の別名", "DISTINCT", "NULL", "連結演算子"]
+        },
+        {
+            "id": "D2",
+            "name": "データの絞り込みとソート",
+            "name_en": "Restricting and Sorting Data",
+            "topics": ["WHERE", "比較演算子", "BETWEEN", "IN", "LIKE", "IS NULL", "ORDER BY"]
+        },
+        {
+            "id": "D3",
+            "name": "単一行関数",
+            "name_en": "Single-Row Functions",
+            "topics": ["文字列関数", "数値関数", "日付関数", "NVL", "DECODE", "CASE", "NULL関数"]
+        },
+        {
+            "id": "D4",
+            "name": "グループ関数と集計",
+            "name_en": "Group Functions & Aggregation",
+            "topics": ["COUNT", "SUM", "AVG", "MAX", "MIN", "GROUP BY", "HAVING", "グループ関数とNULL"]
+        },
+        {
+            "id": "D5",
+            "name": "複数表の結合",
+            "name_en": "Joining Multiple Tables",
+            "topics": ["INNER JOIN", "LEFT OUTER JOIN", "RIGHT OUTER JOIN", "FULL OUTER JOIN", "CROSS JOIN", "自己結合", "NATURAL JOIN", "USING", "ON"]
+        },
+        {
+            "id": "D6",
+            "name": "サブクエリ",
+            "name_en": "Subqueries",
+            "topics": ["単一行サブクエリ", "複数行サブクエリ", "IN", "ANY", "ALL", "EXISTS", "相関サブクエリ"]
+        },
+        {
+            "id": "D7",
+            "name": "DML（データ操作言語）",
+            "name_en": "Data Manipulation Language",
+            "topics": ["INSERT", "UPDATE", "DELETE", "TRUNCATE", "COMMIT", "ROLLBACK", "SAVEPOINT", "トランザクション"]
+        },
+        {
+            "id": "D8",
+            "name": "DDL・オブジェクト管理",
+            "name_en": "DDL & Object Management",
+            "topics": ["CREATE TABLE", "ALTER TABLE", "DROP TABLE", "制約", "PRIMARY KEY", "FOREIGN KEY", "VIEW", "SEQUENCE", "INDEX"]
+        }
+    ],
+    "database_name": "basetract_learning.db",
+    "api_settings": {
+        "monthly_limit_yen": 100,
+        "model_name": "gemini-2.0-flash"
+    },
+    "prompts": {
+        "analysis_system_prompt": "あなたはOracle Database SQL (1Z0-071)の認定試験対策に特化した教育専門家です。学習者の思考プロセスを分析し、Oracle SQLの仕様に基づいた論理的デバッグを行ってください。",
+        "analysis_user_prompt_template": "以下の学習状況を分析してください:\n\n[トピック]: {topic}\n[問題]: {question_text}\n[選択肢]: {options}\n\n[学習者の回答]: {user_answer}\n[思考プロセス]: {thinking_process}"
+    },
+    "crawler_settings": {
+        "base_url": "https://docs.oracle.com/cd/F19136_01/sqlrf/index.html",
+        "topic_mapping": {
+            "D1": "https://docs.oracle.com/cd/F19136_01/sqlrf/SELECT.html",
+            "D2": "https://docs.oracle.com/cd/F19136_01/sqlrf/Conditions.html",
+            "D3": "https://docs.oracle.com/cd/F19136_01/sqlrf/Single-Row-Functions.html",
+            "D4": "https://docs.oracle.com/cd/F19136_01/sqlrf/Aggregate-Functions.html",
+            "D5": "https://docs.oracle.com/cd/F19136_01/sqlrf/Joins.html",
+            "D6": "https://docs.oracle.com/cd/F19136_01/sqlrf/SELECT.html",
+            "D7": "https://docs.oracle.com/cd/F19136_01/sqlrf/INSERT.html",
+            "D8": "https://docs.oracle.com/cd/F19136_01/sqlrf/CREATE-TABLE.html"
+        }
+    }
+}

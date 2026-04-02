@@ -1,0 +1,26 @@
+# Basetract Testing Requirements
+# テスト実行に必要な依存関係
+
+# Core testing framework
+pytest>=7.0.0
+pytest-cov>=4.0.0
+pytest-mock>=3.10.0
+
+# Performance testing
+pytest-benchmark>=4.0.0
+
+# Security testing
+bandit>=1.7.0
+safety>=2.3.0
+
+# Code quality
+flake8>=6.0.0
+black>=23.0.0
+isort>=5.12.0
+mypy>=1.5.0
+
+# Coverage reporting
+coverage>=7.2.0
+
+# Documentation testing
+pytest-docs>=0.3.0
