@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>D6: サブクエリ | Oracle SQL 教科書</title>
+<style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #f5f7fa; color: #2d3748; line-height: 1.7; }
+        .page-header {
+            background: linear-gradient(135deg, #c0392b 0%, #e74c3c 50%, #e67e22 100%);
+            color: white; padding: 40px 24px; text-align: center;
+        }
+        .page-header h1 { font-size: 2rem; margin-bottom: 8px; }
+        .page-header .subtitle { opacity: 0.9; font-size: 1rem; }
+        .container { max-width: 960px; margin: 0 auto; padding: 24px; }
+        .section-card {
+            background: white; border-radius: 12px; padding: 28px;
+            margin-bottom: 32px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .section-title {
+            font-size: 1.3rem; font-weight: 700; color: #c0392b;
+            margin-bottom: 16px; padding-bottom: 8px;
+            border-bottom: 3px solid #e74c3c;
+        }
+        .topic-chips { margin-bottom: 16px; display: flex; flex-wrap: wrap; gap: 6px; }
+        .chip {
+            background: #fdf2f8; color: #c0392b; border: 1px solid #f0a0a0;
+            padding: 2px 10px; border-radius: 20px; font-size: 0.8rem;
+        }
+        pre { background: #1e293b; color: #e2e8f0; padding: 16px; border-radius: 8px; overflow-x: auto; margin: 12px 0; }
+        code { font-family: 'Consolas', 'Monaco', monospace; font-size: 0.88rem; }
+        p code { background: #f0f4f8; color: #c0392b; padding: 1px 5px; border-radius: 4px; }
+        .tip-box {
+            background: #fffde7; border-left: 4px solid #f9a825;
+            padding: 12px 16px; border-radius: 0 8px 8px 0; margin: 12px 0;
+        }
+        .warning-box {
+            background: #fce4ec; border-left: 4px solid #e91e63;
+            padding: 12px 16px; border-radius: 0 8px 8px 0; margin: 12px 0;
+        }
+        .summary-table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 0.9rem; }
+        .summary-table th {
+            background: #c0392b; color: white; padding: 8px 12px; text-align: left;
+        }
+        .summary-table td { padding: 8px 12px; border-bottom: 1px solid #e2e8f0; }
+        .summary-table tr:nth-child(even) td { background: #f9fafb; }
+        h3 { font-size: 1.05rem; color: #2d3748; margin: 16px 0 8px; }
+        .problem-section-title {
+            font-size: 1.1rem; font-weight: 700; color: #2d3748;
+            margin: 28px 0 12px; padding-bottom: 6px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        .problem-card {
+            background: #f9fafb; border: 1px solid #e2e8f0;
+            border-radius: 8px; padding: 16px; margin-bottom: 16px;
+        }
+        .problem-header { font-weight: 700; color: #c0392b; margin-bottom: 8px; }
+        .qid { font-size: 0.8rem; color: #718096; font-weight: 400; margin-left: 8px; }
+        .problem-text { margin-bottom: 10px; }
+        .choices { padding-left: 20px; margin-bottom: 10px; }
+        .choices li { margin: 4px 0; }
+        .answer-details summary {
+            cursor: pointer; color: #c0392b; font-weight: 600;
+            padding: 6px 0; user-select: none;
+        }
+        .answer-content { background: white; padding: 12px; border-radius: 6px; margin-top: 8px; }
+        .breadcrumb { padding: 12px 24px; background: white; border-bottom: 1px solid #e2e8f0; font-size: 0.85rem; }
+        .breadcrumb a { color: #c0392b; text-decoration: none; }
+        .intro-box { background: #fff8f8; border: 1px solid #f0a0a0; border-radius: 8px; padding: 16px; margin-bottom: 24px; }
+        </style>
+</head>
+<body>
+<div class="breadcrumb">
+  <a href="index.html">Oracle SQL 教科書</a> &gt; D6: サブクエリ
+</div>
+<div class="page-header">
+  <h1>D6: サブクエリ</h1>
+  <div class="subtitle">Oracle Database SQL (1Z0-071) 対策</div>
+</div>
+<div class="container">
+  <div class="intro-box">SELECT 文の中に別の SELECT 文を入れ子にするサブクエリの書き方と使いどころを学びます。</div>
+  <div class="section-card"><div class="section-title">単一行サブクエリ</div><div class="topic-chips"><span class="chip">サブクエリ</span><span class="chip">単一行サブクエリ</span><span class="chip">スカラーサブクエリ</span></div><div class="section-content"><h3>サブクエリとは</h3><p>サブクエリは SELECT 文の中に入れ子にした別の SELECT 文です。内側のクエリ（サブクエリ）が先に実行され、その結果を外側のクエリが使います。</p><h3>単一行サブクエリ</h3><p>1行1列だけを返すサブクエリ。= や &gt; などの比較演算子と組み合わせます。</p><pre><code>-- Abel と同じ部署の従業員
+SELECT LAST_NAME, DEPARTMENT_ID
+FROM   EMPLOYEES
+WHERE  DEPARTMENT_ID = (
+    SELECT DEPARTMENT_ID
+    FROM   EMPLOYEES
+    WHERE  LAST_NAME = 'Abel'
+);
+
+-- 最低給与よりも多く稼ぐ従業員
+SELECT LAST_NAME, SALARY
+FROM   EMPLOYEES
+WHERE  SALARY > (
+    SELECT MIN(SALARY)
+    FROM   EMPLOYEES
+);</code></pre><h3>スカラーサブクエリ</h3><p>SELECT リストや WHERE 句で1値を返すサブクエリです。</p><pre><code>SELECT LAST_NAME,
+       SALARY,
+       (SELECT AVG(SALARY) FROM EMPLOYEES) AS 全体平均
+FROM   EMPLOYEES;</code></pre><div class='tip-box'><strong>試験のポイント：</strong> 単一行サブクエリが複数行を返すと ORA-01427 エラーになります。スカラーサブクエリが0行を返す場合は NULL が返ります。</div></div><div class="problem-section-title">練習問題</div><div class="problem-card" id="prob-OSLV-D6-001"><div class="problem-header">問題 1 <span class="qid">#OSLV-D6-001</span></div><p class="problem-text">以下のSQL文の動作として正しいものはどれか。<br>```sql<br>SELECT last_name, salary<br>FROM employees<br>WHERE salary > (SELECT AVG(salary) FROM employees);<br>```</p><ul class="choices"><li>A. 全社員の平均給与より高い給与を受け取る社員の名前と給与を返す</li><li>B. 部署ごとの平均給与より高い給与を受け取る社員を返す</li><li>C. エラーになる（WHERE句にサブクエリは使えない）</li><li>D. サブクエリが複数行返す場合にエラーになる</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> A. 全社員の平均給与より高い給与を受け取る社員の名前と給与を返す</p><p>正解は「全社員の平均給与より高い給与を受け取る社員の名前と給与を返す」である。このサブクエリは単一行サブクエリ（AVGは1つの値を返す）であり、=, >, <, >=, <=などの単一行比較演算子と使用できる。外側のクエリはサブクエリが返した平均値と各行のsalaryを比較する。WHERE句にサブクエリは使用可能。サブクエリが複数行を返す可能性がある場合はIN, ANY, ALLなどの複数行演算子を使う必要がある。</p></div></details></div><div class="problem-card" id="prob-OSLV-D6-002"><div class="problem-header">問題 2 <span class="qid">#OSLV-D6-002</span></div><p class="problem-text">以下のSQL文の動作として正しいものはどれか。<br>```sql<br>SELECT last_name, salary<br>FROM employees<br>WHERE salary = ANY (<br>  SELECT MIN(salary)<br>  FROM employees<br>  GROUP BY department_id<br>);<br>```</p><ul class="choices"><li>A. 全部署の最低給与と一致する給与を持つ社員のみを返す</li><li>B. いずれかの部署の最低給与と一致する給与を持つ社員を返す</li><li>C. 最低給与が最も低い部署の社員のみを返す</li><li>D. エラーになる（= ANY は不正な構文）</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> B. いずれかの部署の最低給与と一致する給与を持つ社員を返す</p><p>正解は「いずれかの部署の最低給与と一致する給与を持つ社員を返す」である。= ANY は複数行サブクエリで使用し、「いずれかの値と等しい」という意味になる（INと同等の動作）。サブクエリは部署ごとの最低給与をリストで返す。外側のクエリはそのリスト内のいずれかの値とsalaryが一致する社員を返す。= ALLは「すべての値と等しい」、> ANYは「いずれかの値より大きい（最小値より大きい）」、> ALLは「すべての値より大きい（最大値より大きい）」を意味する。</p></div></details></div><div class="problem-card" id="prob-OSLV-D6-003"><div class="problem-header">問題 3 <span class="qid">#OSLV-D6-003</span></div><p class="problem-text">以下のSQL文で EXISTS を使う効果として正しいものはどれか。<br>```sql<br>SELECT department_id, department_name<br>FROM departments d<br>WHERE EXISTS (<br>  SELECT 1 FROM employees e<br>  WHERE e.department_id = d.department_id<br>);<br>```</p><ul class="choices"><li>A. 全部署の社員数を返す</li><li>B. 社員が1名もいない部署のみを返す</li><li>C. 少なくとも1名の社員が所属する部署のみを返す</li><li>D. エラーになる（相関サブクエリのSELECTは * のみ使用可能）</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> C. 少なくとも1名の社員が所属する部署のみを返す</p><p>正解は「少なくとも1名の社員が所属する部署のみを返す（選択肢C）」である。EXISTSは相関サブクエリが1行以上の結果を返せばTRUE、0行ならFALSEとなる。SELECT 1（またはSELECT *）は実際の値ではなくEXISTSの存在チェックに使うため、列の内容は何でもよい。外側クエリのdをサブクエリ内で参照している（d.department_id）のが相関の部分。NOT EXISTSにすると社員が1名もいない部署を返す。</p></div></details></div></div><div class="section-card"><div class="section-title">複数行サブクエリ</div><div class="topic-chips"><span class="chip">複数行サブクエリ</span><span class="chip">IN</span><span class="chip">ANY</span><span class="chip">ALL</span><span class="chip">NOT IN</span></div><div class="section-content"><h3>複数行サブクエリ</h3><p>複数行を返すサブクエリには IN, ANY, ALL などの演算子を使います。</p><table class='summary-table'><tr><th>演算子</th><th>説明</th></tr><tr><td>IN</td><td>リストのどれかと等しい</td></tr><tr><td>NOT IN</td><td>リストのどれとも等しくない</td></tr><tr><td>ANY (SOME)</td><td>リストの少なくとも1つと比較条件を満たす</td></tr><tr><td>ALL</td><td>リストのすべての値と比較条件を満たす</td></tr></table><pre><code>-- 部署 20 または 50 のジョブ ID のいずれかに一致する従業員
+SELECT LAST_NAME, JOB_ID
+FROM   EMPLOYEES
+WHERE  JOB_ID IN (
+    SELECT JOB_ID
+    FROM   EMPLOYEES
+    WHERE  DEPARTMENT_ID IN (20, 50)
+);
+
+-- ANY: 部署 50 の誰かより給与が多い
+SELECT LAST_NAME, SALARY
+FROM   EMPLOYEES
+WHERE  SALARY > ANY (
+    SELECT SALARY
+    FROM   EMPLOYEES
+    WHERE  DEPARTMENT_ID = 50
+);
+
+-- ALL: 部署 50 の全員より給与が多い
+SELECT LAST_NAME, SALARY
+FROM   EMPLOYEES
+WHERE  SALARY > ALL (
+    SELECT SALARY
+    FROM   EMPLOYEES
+    WHERE  DEPARTMENT_ID = 50
+);</code></pre><div class='tip-box'><strong>試験のポイント：</strong> NOT IN のリストに NULL が含まれると、結果は0行になります（NULL との比較が不定のため）。&gt; ANY は「最小値より大きい」、&gt; ALL は「最大値より大きい」と覚えましょう。</div></div><div class="problem-section-title">練習問題</div><div class="problem-card" id="prob-OSLV-D6-001"><div class="problem-header">問題 1 <span class="qid">#OSLV-D6-001</span></div><p class="problem-text">以下のSQL文の動作として正しいものはどれか。<br>```sql<br>SELECT last_name, salary<br>FROM employees<br>WHERE salary > (SELECT AVG(salary) FROM employees);<br>```</p><ul class="choices"><li>A. 全社員の平均給与より高い給与を受け取る社員の名前と給与を返す</li><li>B. 部署ごとの平均給与より高い給与を受け取る社員を返す</li><li>C. エラーになる（WHERE句にサブクエリは使えない）</li><li>D. サブクエリが複数行返す場合にエラーになる</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> A. 全社員の平均給与より高い給与を受け取る社員の名前と給与を返す</p><p>正解は「全社員の平均給与より高い給与を受け取る社員の名前と給与を返す」である。このサブクエリは単一行サブクエリ（AVGは1つの値を返す）であり、=, >, <, >=, <=などの単一行比較演算子と使用できる。外側のクエリはサブクエリが返した平均値と各行のsalaryを比較する。WHERE句にサブクエリは使用可能。サブクエリが複数行を返す可能性がある場合はIN, ANY, ALLなどの複数行演算子を使う必要がある。</p></div></details></div><div class="problem-card" id="prob-OSLV-D6-002"><div class="problem-header">問題 2 <span class="qid">#OSLV-D6-002</span></div><p class="problem-text">以下のSQL文の動作として正しいものはどれか。<br>```sql<br>SELECT last_name, salary<br>FROM employees<br>WHERE salary = ANY (<br>  SELECT MIN(salary)<br>  FROM employees<br>  GROUP BY department_id<br>);<br>```</p><ul class="choices"><li>A. 全部署の最低給与と一致する給与を持つ社員のみを返す</li><li>B. いずれかの部署の最低給与と一致する給与を持つ社員を返す</li><li>C. 最低給与が最も低い部署の社員のみを返す</li><li>D. エラーになる（= ANY は不正な構文）</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> B. いずれかの部署の最低給与と一致する給与を持つ社員を返す</p><p>正解は「いずれかの部署の最低給与と一致する給与を持つ社員を返す」である。= ANY は複数行サブクエリで使用し、「いずれかの値と等しい」という意味になる（INと同等の動作）。サブクエリは部署ごとの最低給与をリストで返す。外側のクエリはそのリスト内のいずれかの値とsalaryが一致する社員を返す。= ALLは「すべての値と等しい」、> ANYは「いずれかの値より大きい（最小値より大きい）」、> ALLは「すべての値より大きい（最大値より大きい）」を意味する。</p></div></details></div></div><div class="section-card"><div class="section-title">集合演算子（UNION / INTERSECT / MINUS）</div><div class="topic-chips"><span class="chip">UNION</span><span class="chip">UNION ALL</span><span class="chip">INTERSECT</span><span class="chip">MINUS</span><span class="chip">集合演算子</span></div><div class="section-content"><h3>集合演算子の基本</h3><p>複数の SELECT 結果を集合として結合・比較します。SELECT の列数とデータ型互換が必要です。</p><table class='summary-table'><tr><th>演算子</th><th>説明</th></tr><tr><td>UNION</td><td>重複を除去して結合</td></tr><tr><td>UNION ALL</td><td>重複を保持して結合</td></tr><tr><td>INTERSECT</td><td>共通部分のみ抽出</td></tr><tr><td>MINUS</td><td>左にあり右にない行を抽出</td></tr></table><pre><code>-- 部署10と20の従業員IDを統合（重複除去）
+SELECT EMPLOYEE_ID FROM EMPLOYEES WHERE DEPARTMENT_ID = 10
+UNION
+SELECT EMPLOYEE_ID FROM EMPLOYEES WHERE DEPARTMENT_ID = 20;
+
+-- 重複を保持して統合
+SELECT EMPLOYEE_ID FROM EMPLOYEES WHERE DEPARTMENT_ID = 10
+UNION ALL
+SELECT EMPLOYEE_ID FROM EMPLOYEES WHERE DEPARTMENT_ID = 20;
+
+-- 共通する JOB_ID
+SELECT JOB_ID FROM EMPLOYEES WHERE DEPARTMENT_ID = 10
+INTERSECT
+SELECT JOB_ID FROM EMPLOYEES WHERE DEPARTMENT_ID = 20;
+
+-- 部署10にいて部署20にはいない従業員
+SELECT EMPLOYEE_ID FROM EMPLOYEES WHERE DEPARTMENT_ID = 10
+MINUS
+SELECT EMPLOYEE_ID FROM EMPLOYEES WHERE DEPARTMENT_ID = 20;</code></pre><div class='tip-box'><strong>試験のポイント：</strong> 重複排除が不要なら UNION ALL が高速です。ORDER BY は原則として最後の SELECT 全体に対して1回だけ指定します。</div></div></div><div class="section-card"><div class="section-title">相関サブクエリとEXISTS</div><div class="topic-chips"><span class="chip">EXISTS</span><span class="chip">NOT EXISTS</span><span class="chip">相関サブクエリ</span><span class="chip">相関</span></div><div class="section-content"><h3>相関サブクエリ</h3><p>外側のクエリの列を参照するサブクエリです。外側の行ごとに繰り返し実行されます。</p><pre><code>-- 自分の部署の平均給与より高い従業員
+SELECT o.LAST_NAME, o.SALARY, o.DEPARTMENT_ID
+FROM   EMPLOYEES o
+WHERE  o.SALARY > (
+    SELECT AVG(i.SALARY)
+    FROM   EMPLOYEES i
+    WHERE  i.DEPARTMENT_ID = o.DEPARTMENT_ID
+);</code></pre><h3>EXISTS / NOT EXISTS</h3><p>EXISTS はサブクエリが1行以上返す場合に真になります。IN より効率的な場合があります。</p><pre><code>-- 部下が存在する従業員（管理職）
+SELECT e.LAST_NAME, e.EMPLOYEE_ID
+FROM   EMPLOYEES e
+WHERE  EXISTS (
+    SELECT 1
+    FROM   EMPLOYEES sub
+    WHERE  sub.MANAGER_ID = e.EMPLOYEE_ID
+);
+
+-- 部下がいない従業員
+SELECT e.LAST_NAME, e.EMPLOYEE_ID
+FROM   EMPLOYEES e
+WHERE  NOT EXISTS (
+    SELECT 1
+    FROM   EMPLOYEES sub
+    WHERE  sub.MANAGER_ID = e.EMPLOYEE_ID
+);</code></pre><div class='tip-box'><strong>試験のポイント：</strong> EXISTS はサブクエリが行を返すかどうかだけを確認するため、SELECT リストは SELECT 1 や SELECT * でも問題ありません。NOT IN と NOT EXISTS は NULL の扱いが異なります。NOT IN は NULL が含まれると0行ですが、NOT EXISTS は NULL の影響を受けません。</div></div><div class="problem-section-title">練習問題</div><div class="problem-card" id="prob-OSLV-D6-003"><div class="problem-header">問題 1 <span class="qid">#OSLV-D6-003</span></div><p class="problem-text">以下のSQL文で EXISTS を使う効果として正しいものはどれか。<br>```sql<br>SELECT department_id, department_name<br>FROM departments d<br>WHERE EXISTS (<br>  SELECT 1 FROM employees e<br>  WHERE e.department_id = d.department_id<br>);<br>```</p><ul class="choices"><li>A. 全部署の社員数を返す</li><li>B. 社員が1名もいない部署のみを返す</li><li>C. 少なくとも1名の社員が所属する部署のみを返す</li><li>D. エラーになる（相関サブクエリのSELECTは * のみ使用可能）</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> C. 少なくとも1名の社員が所属する部署のみを返す</p><p>正解は「少なくとも1名の社員が所属する部署のみを返す（選択肢C）」である。EXISTSは相関サブクエリが1行以上の結果を返せばTRUE、0行ならFALSEとなる。SELECT 1（またはSELECT *）は実際の値ではなくEXISTSの存在チェックに使うため、列の内容は何でもよい。外側クエリのdをサブクエリ内で参照している（d.department_id）のが相関の部分。NOT EXISTSにすると社員が1名もいない部署を返す。</p></div></details></div></div>
+</div>
+</body>
+</html>

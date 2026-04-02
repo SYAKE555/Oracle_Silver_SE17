@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oracle Database SQL (1Z0-071) 教科書</title>
+<style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #f5f7fa; color: #2d3748; line-height: 1.7; }
+        .page-header {
+            background: linear-gradient(135deg, #c0392b 0%, #e74c3c 50%, #e67e22 100%);
+            color: white; padding: 40px 24px; text-align: center;
+        }
+        .page-header h1 { font-size: 2rem; margin-bottom: 8px; }
+        .page-header .subtitle { opacity: 0.9; font-size: 1rem; }
+        .container { max-width: 960px; margin: 0 auto; padding: 24px; }
+        .section-card {
+            background: white; border-radius: 12px; padding: 28px;
+            margin-bottom: 32px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .section-title {
+            font-size: 1.3rem; font-weight: 700; color: #c0392b;
+            margin-bottom: 16px; padding-bottom: 8px;
+            border-bottom: 3px solid #e74c3c;
+        }
+        .topic-chips { margin-bottom: 16px; display: flex; flex-wrap: wrap; gap: 6px; }
+        .chip {
+            background: #fdf2f8; color: #c0392b; border: 1px solid #f0a0a0;
+            padding: 2px 10px; border-radius: 20px; font-size: 0.8rem;
+        }
+        pre { background: #1e293b; color: #e2e8f0; padding: 16px; border-radius: 8px; overflow-x: auto; margin: 12px 0; }
+        code { font-family: 'Consolas', 'Monaco', monospace; font-size: 0.88rem; }
+        p code { background: #f0f4f8; color: #c0392b; padding: 1px 5px; border-radius: 4px; }
+        .tip-box {
+            background: #fffde7; border-left: 4px solid #f9a825;
+            padding: 12px 16px; border-radius: 0 8px 8px 0; margin: 12px 0;
+        }
+        .warning-box {
+            background: #fce4ec; border-left: 4px solid #e91e63;
+            padding: 12px 16px; border-radius: 0 8px 8px 0; margin: 12px 0;
+        }
+        .summary-table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 0.9rem; }
+        .summary-table th {
+            background: #c0392b; color: white; padding: 8px 12px; text-align: left;
+        }
+        .summary-table td { padding: 8px 12px; border-bottom: 1px solid #e2e8f0; }
+        .summary-table tr:nth-child(even) td { background: #f9fafb; }
+        h3 { font-size: 1.05rem; color: #2d3748; margin: 16px 0 8px; }
+        .problem-section-title {
+            font-size: 1.1rem; font-weight: 700; color: #2d3748;
+            margin: 28px 0 12px; padding-bottom: 6px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        .problem-card {
+            background: #f9fafb; border: 1px solid #e2e8f0;
+            border-radius: 8px; padding: 16px; margin-bottom: 16px;
+        }
+        .problem-header { font-weight: 700; color: #c0392b; margin-bottom: 8px; }
+        .qid { font-size: 0.8rem; color: #718096; font-weight: 400; margin-left: 8px; }
+        .problem-text { margin-bottom: 10px; }
+        .choices { padding-left: 20px; margin-bottom: 10px; }
+        .choices li { margin: 4px 0; }
+        .answer-details summary {
+            cursor: pointer; color: #c0392b; font-weight: 600;
+            padding: 6px 0; user-select: none;
+        }
+        .answer-content { background: white; padding: 12px; border-radius: 6px; margin-top: 8px; }
+        .breadcrumb { padding: 12px 24px; background: white; border-bottom: 1px solid #e2e8f0; font-size: 0.85rem; }
+        .breadcrumb a { color: #c0392b; text-decoration: none; }
+        .intro-box { background: #fff8f8; border: 1px solid #f0a0a0; border-radius: 8px; padding: 16px; margin-bottom: 24px; }
+        
+        .index-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; padding: 24px; max-width: 1100px; margin: 0 auto; }
+        .index-card { background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); overflow: hidden; transition: transform 0.2s, box-shadow 0.2s; }
+        .index-card:hover { transform: translateY(-4px); box-shadow: 0 6px 16px rgba(0,0,0,0.14); }
+        .index-card a { display: block; padding: 20px; text-decoration: none; color: inherit; }
+        .card-domain { font-size: 1.5rem; font-weight: 900; color: #c0392b; margin-bottom: 6px; }
+        .card-title { font-size: 1rem; font-weight: 700; color: #2d3748; margin-bottom: 8px; }
+        .card-sections { font-size: 0.78rem; color: #718096; line-height: 1.5; }
+        .index-intro { text-align: center; padding: 20px 24px 0; color: #4a5568; font-size: 0.95rem; }
+        </style>
+</head>
+<body>
+<div class="page-header">
+  <h1>Oracle Database SQL 教科書</h1>
+  <div class="subtitle">Oracle Database SQL (1Z0-071) 完全対策</div>
+</div>
+<p class="index-intro">8つのドメインを体系的に学習できます。各カードをクリックして学習を開始してください。</p>
+<div class="index-grid">
+  <div class="index-card"><a href="Ver_5_0_Chapter_1_Oracle_DBA_Silver.html"><div class="card-domain">FULL</div><div class="card-title">Oracle DBA Silver SQL 第1章 特化版 Ver 5.0</div><div class="card-sections">第1章を超高密度化 / 品証5項目準拠 / 図解テキスト・試験急所・実務アンチパターン</div></a></div>
+  <div class="index-card"><a href="Ver_5_0_Chapter_2_Oracle_DBA_Silver.html"><div class="card-domain">FULL</div><div class="card-title">Oracle DBA Silver SQL 第2章 特化版 Ver 5.0</div><div class="card-sections">第2章を超高密度化 / SELECT文を使用したデータ取得 / 論理処理順序・試験急所・実務アンチパターン</div></a></div>
+  <div class="index-card"><a href="Ver_5_0_Chapter_3_Oracle_DBA_Silver.html"><div class="card-domain">FULL</div><div class="card-title">Oracle DBA Silver SQL 第3章 特化版 Ver 5.0</div><div class="card-sections">第3章を超高密度化 / データ制限とソート / 条件設計・行制限・試験急所・実務アンチパターン</div></a></div>
+  <div class="index-card"><a href="Ver_5_0_Chapter_4_Oracle_DBA_Silver.html"><div class="card-domain">FULL</div><div class="card-title">Oracle DBA Silver SQL 第4章 特化版 Ver 5.0</div><div class="card-sections">第4章を超高密度化 / 単一行関数（文字・数値・日付） / 変換・NULL・性能観点・試験急所</div></a></div>
+  <div class="index-card"><a href="Ver_5_0_Chapter_5_Oracle_DBA_Silver.html"><div class="card-domain">FULL</div><div class="card-title">Oracle DBA Silver SQL 第5章 特化版 Ver 5.0</div><div class="card-sections">第5章を超高密度化 / 変換関数・NULL処理・条件式 / 型整合・CASE・典型エラー対策</div></a></div>
+  <div class="index-card"><a href="Ver_5_0_Chapter_6_Oracle_DBA_Silver.html"><div class="card-domain">FULL</div><div class="card-title">Oracle DBA Silver SQL 第6章 特化版 Ver 5.0</div><div class="card-sections">第6章を超高密度化 / 集計データのレポート / GROUP BY・HAVING・疑似列・集計検証</div></a></div>
+  <div class="index-card"><a href="Ver_5_0_Chapter_7_Oracle_DBA_Silver.html"><div class="card-domain">FULL</div><div class="card-title">Oracle DBA Silver SQL 第7章 特化版 Ver 5.0</div><div class="card-sections">第7章を超高密度化 / 複数表結合 / INNER・OUTER・CROSS・NATURAL・件数制御</div></a></div>
+  <div class="index-card"><a href="Ver_5_0_Chapter_8_Oracle_DBA_Silver.html"><div class="card-domain">FULL</div><div class="card-title">Oracle DBA Silver SQL 第8章 特化版 Ver 5.0</div><div class="card-sections">第8章を超高密度化 / 副問合せ / 単一行・複数行・相関・NOT INのNULL罠対策</div></a></div>
+  <div class="index-card"><a href="Ver_5_0_Chapter_9_Oracle_DBA_Silver.html"><div class="card-domain">FULL</div><div class="card-title">Oracle DBA Silver SQL 第9章 特化版 Ver 5.0</div><div class="card-sections">第9章を超高密度化 / 集合演算子 / UNION系・INTERSECT・MINUS・型整合と性能</div></a></div>
+  <div class="index-card"><a href="Ver_5_0_Chapter_10_Oracle_DBA_Silver.html"><div class="card-domain">FULL</div><div class="card-title">Oracle DBA Silver SQL 第10章 特化版 Ver 5.0</div><div class="card-sections">第10章を超高密度化 / DMLとトランザクション / COMMIT・ROLLBACK・SAVEPOINT・安全更新手順</div></a></div>
+  <div class="index-card"><a href="Ver_5_0_Chapter_11_Oracle_DBA_Silver.html"><div class="card-domain">FULL</div><div class="card-title">Oracle DBA Silver SQL 第11章 特化版 Ver 5.0</div><div class="card-sections">第11章を超高密度化 / DDLと制約 / CREATE・ALTER・DROP・TRUNCATE・辞書ビュー検証</div></a></div>
+  <div class="index-card"><a href="Ver_5_0_Chapter_12_Oracle_DBA_Silver.html"><div class="card-domain">FULL</div><div class="card-title">Oracle DBA Silver SQL 第12章 特化版 Ver 5.0</div><div class="card-sections">第12章を超高密度化 / ビューの管理 / 更新可否・CHECK OPTION・READ ONLY・依存管理</div></a></div>
+  <div class="index-card"><a href="Ver_5_0_Chapter_13_Oracle_DBA_Silver.html"><div class="card-domain">FULL</div><div class="card-title">Oracle DBA Silver SQL 第13章 特化版 Ver 5.0</div><div class="card-sections">第13章を超高密度化 / 索引・シノニム・シーケンス / 性能設計・命名抽象化・採番運用</div></a></div>
+  <div class="index-card"><a href="Ver_5_0_Chapter_14_Oracle_DBA_Silver.html"><div class="card-domain">FULL</div><div class="card-title">Oracle DBA Silver SQL 第14章 特化版 Ver 5.0</div><div class="card-sections">第14章を超高密度化 / ユーザーアクセス制御 / 権限・ロール・最小権限・監査証跡</div></a></div>
+  <div class="index-card"><a href="Ver_5_0_Chapter_15_Oracle_DBA_Silver.html"><div class="card-domain">FULL</div><div class="card-title">Oracle DBA Silver SQL 第15章 特化版 Ver 5.0</div><div class="card-sections">第15章を超高密度化 / データ・ディクショナリ・ビュー / USER・ALL・DBA系と監査活用</div></a></div>
+  <div class="index-card"><a href="Ver_5_0_Chapter_16_Oracle_DBA_Silver.html"><div class="card-domain">FULL</div><div class="card-title">Oracle DBA Silver SQL 第16章 特化版 Ver 5.0</div><div class="card-sections">第16章を超高密度化 / タイムゾーンと期間データ型 / TSTZ・TSLTZ・INTERVAL・時差設計</div></a></div>
+  <div class="index-card"><a href="D1_textbook.html"><div class="card-domain">D1</div><div class="card-title">SQLとリレーショナルデータベースの基礎</div><div class="card-sections">リレーショナルデータベースとSQL概要 / SELECT文の基本構文 / NULL の基礎</div></a></div>
+  <div class="index-card"><a href="D2_textbook.html"><div class="card-domain">D2</div><div class="card-title">データの絞り込みとソート</div><div class="card-sections">WHERE句と比較演算子 / LIKE演算子とワイルドカード / ORDER BY句 / 行制限と置換変数</div></a></div>
+  <div class="index-card"><a href="D3_textbook.html"><div class="card-domain">D3</div><div class="card-title">単一行関数</div><div class="card-sections">文字列関数 / 数値関数 / 日付関数 / NULL関数と条件式</div></a></div>
+  <div class="index-card"><a href="D4_textbook.html"><div class="card-domain">D4</div><div class="card-title">グループ関数と集計</div><div class="card-sections">グループ関数 / GROUP BY と HAVING</div></a></div>
+  <div class="index-card"><a href="D5_textbook.html"><div class="card-domain">D5</div><div class="card-title">複数表の結合</div><div class="card-sections">INNER JOIN / OUTER JOIN / 自己結合とクロス結合</div></a></div>
+  <div class="index-card"><a href="D6_textbook.html"><div class="card-domain">D6</div><div class="card-title">サブクエリ</div><div class="card-sections">単一行サブクエリ / 複数行サブクエリ / 集合演算子（UNION / INTERSECT / MINUS） / 相関サブクエリとEXISTS</div></a></div>
+  <div class="index-card"><a href="D7_textbook.html"><div class="card-domain">D7</div><div class="card-title">DML（データ操作言語）</div><div class="card-sections">INSERT と UPDATE / DELETE・TRUNCATE とトランザクション / MERGE とマルチテーブル挿入</div></a></div>
+  <div class="index-card"><a href="D8_textbook.html"><div class="card-domain">D8</div><div class="card-title">DDL・オブジェクト管理</div><div class="card-sections">CREATE TABLE と制約 / VIEW・SEQUENCE・INDEX / 権限・ロール・辞書ビュー・タイムゾーン</div></a></div>
+</div>
+</body>
+</html>

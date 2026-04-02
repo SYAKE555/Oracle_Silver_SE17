@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+
+<html lang="ja">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ver 5.0 Chapter 11 | Oracle DBA Silver SQL</title>
+<style>
+:root{--bg:#f4f8fc;--card:#ffffff;--line:#d8e4f5;--pri:#1d4f91;--sec:#2f6fbe;--txt:#1f2d3d;--code:#f2f7fc}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--txt);font-family:"Segoe UI","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;line-height:1.95}
+a{color:var(--pri);text-decoration:none}
+.layout{display:grid;grid-template-columns:320px 1fr;gap:18px;max-width:1480px;margin:0 auto;padding:14px}
+.sidebar{position:sticky;top:8px;align-self:start;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;max-height:calc(100vh - 16px);overflow:auto}
+.sidebar h2{margin:0 0 10px;color:var(--pri);font-size:1.08rem}.sidebar ul{margin:0;padding-left:18px}.sidebar li{margin:6px 0}
+.main{min-width:0}.hero{background:linear-gradient(135deg,#1d4f91,#2f6fbe);color:#fff;border-radius:16px;padding:24px 20px;margin-bottom:14px}
+.hero h1{margin:0 0 8px;font-size:1.8rem}.hero p{margin:0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px;margin-bottom:14px}
+.card h2{margin:0 0 10px;color:var(--pri);font-size:1.35rem;border-bottom:2px solid #c8dcf7;padding-bottom:7px}
+.card p{margin:10px 0}
+.note{background:#eef6ff;border:1px solid #c8dcfb;border-left:4px solid #2f6fbe;border-radius:10px;padding:11px;margin:10px 0}
+.warn{background:#fff8f1;border:1px solid #fed7aa;border-left:4px solid #ea580c;border-radius:10px;padding:11px;margin:10px 0}
+pre{background:var(--code);border:1px solid #dce8f8;border-radius:10px;padding:12px;overflow-x:auto;margin:10px 0}
+code{font-family:"Consolas","Monaco",monospace;font-size:.88rem}
+.table-wrap{overflow:auto}.table-wrap table{width:100%;border-collapse:collapse}.table-wrap th,.table-wrap td{border:1px solid #d8e4f5;padding:9px;vertical-align:top}.table-wrap th{background:#eef4fd;text-align:left}
+.top{text-align:right;margin-top:12px}
+@media(max-width:1120px){.layout{grid-template-columns:1fr}.sidebar{position:static;max-height:none}}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside class="sidebar">
+<h2>第11章 目次</h2>
+<ul>
+<li><a href="#scope">スコープ宣言</a></li>
+<li><a href="#intro">第11章の学習目的</a></li>
+<li><a href="#ddl">11.1 DDLの定義</a></li>
+<li><a href="#create">11.2 CREATE TABLE</a></li>
+<li><a href="#constraints">11.3 制約（PK/UK/NN/FK/CHECK）</a></li>
+<li><a href="#alter">11.4 ALTER TABLE</a></li>
+<li><a href="#drop">11.5 DROP</a></li>
+<li><a href="#truncate">11.6 TRUNCATE</a></li>
+<li><a href="#dict">11.7 データディクショナリで確認</a></li>
+<li><a href="#errors">11.8 典型エラーと修正</a></li>
+<li><a href="#patterns">11.9 実務運用パターン</a></li>
+<li><a href="#deep-dive-11">品質強化 超深掘り5項目</a></li><li><a href="#insights-11">出題傾向補強</a></li><li><a href="#exam">試験ひっかけパターン集</a></li>
+<li><a href="#practice">実務アンチパターン集</a></li>
+</ul>
+</aside>
+<main class="main">
+<section class="hero" id="scope">
+<h1>Ver 5.0 | Oracle DBA Silver SQL（第11章のみ）</h1>
+<p>本ファイルは第11章「DDL（CREATE/ALTER/DROP/TRUNCATE）と制約」に集中し、スキーマ変更の安全運用を高密度で解説する。</p>
+</section>
+<section class="card" id="intro">
+<h2>第11章の学習目的</h2>
+<p>第11章は、データを操作するDMLから一段進み、表定義そのものを作成・変更・削除するDDLを扱う。DDLは「構造」を変える命令であり、誤るとアプリ全体に影響する。試験ではCREATE TABLEの列定義、制約の種類、ALTER TABLEで何を変更できるか、TRUNCATEとDELETEの違いが繰り返し問われる。実務ではDDLは変更管理の中心で、事前レビュー、影響範囲調査、ロールバック方針の設計が不可欠である。到達点は、DDLの意味を暗記でなく運用視点で理解し、事故なく適用できる手順を説明できる状態である。</p>
+<div class="note"><strong>重要:</strong> DDLは暗黙COMMITと連動するため、DMLと同じ感覚で実行すると復旧不能を招く。</div>
+</section>
+<section class="card" id="ddl">
+<h2>11.1 DDLの定義</h2>
+<p>DDL（Data Definition Language）は、表・ビュー・索引などのオブジェクト構造を定義するSQL群である。DMLが「行データ」を変えるのに対し、DDLは「器そのもの」を変える。OracleではDDL実行時に暗黙COMMITが発生しうるため、未確定DMLを抱えたままDDLを打つ設計は危険である。試験では分類問題（これはDDLかDMLか）が基本だが、実務では分類に加えて「実行タイミング」「排他影響」「失敗時の復元手順」が評価対象となる。DDLを単なる構文問題として扱わず、変更管理の単位として扱うことが重要である。</p>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="create">
+<h2>11.2 CREATE TABLE</h2>
+<p>CREATE TABLEは、列名・データ型・制約を定義し、データ格納の契約を作る命令である。よくある失敗は、将来の値幅を考えずに桁を小さく定義し、後続で型変更を連発する設計である。実務では命名規約（`_ID`や`CREATED_AT`）を揃え、NULL可否を業務要件と一致させる。試験ではVARCHAR2の長さ、NUMBERの精度、DATE/TIMESTAMPの違い、列レベル制約と表レベル制約の書き方が狙われる。作成時点で品質を入れると、後続のDMLとアプリ実装コストが大幅に下がる。</p>
+<pre><code>CREATE TABLE project_tasks (
+  task_id        NUMBER(10)      CONSTRAINT pk_project_tasks PRIMARY KEY,
+  task_name      VARCHAR2(100)   CONSTRAINT nn_task_name NOT NULL,
+  owner_emp_id   NUMBER(6),
+  status_code    VARCHAR2(20)    CONSTRAINT ck_status CHECK (status_code IN ('NEW','DOING','DONE')),
+  created_at     DATE            DEFAULT SYSDATE
+);</code></pre>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="constraints">
+<h2>11.3 制約（PK/UK/NN/FK/CHECK）</h2>
+<p>制約は、データ品質をDB層で保証するルールである。PRIMARY KEYは行の一意識別、UNIQUEは候補キーの一意性、NOT NULLは必須入力、FOREIGN KEYは参照整合、CHECKは値域制御を担う。アプリ側だけで制御すると、バッチや直接SQLから不正データが混入するため、実務ではDB制約が最終防衛線になる。試験では各制約の役割差分と、FKで参照先が存在しない場合の挙動が頻出である。制約名を明示しておくと、違反時メッセージから原因特定しやすく運用効率が上がる。</p>
+<div class="warn"><b>注意:</b> FK未設計のまま運用すると孤児データが蓄積し、後で整合回復に大きな工数がかかる。</div>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="alter">
+<h2>11.4 ALTER TABLE</h2>
+<p>ALTER TABLEは既存表の列追加・列型変更・制約追加/削除を行う。オンライン業務中の変更は、既存データとの整合を崩しやすい。たとえばNOT NULL追加時は、既存NULL行があると失敗する。実務では「事前データ補正→制約追加」の2段階適用が定石である。試験ではADD/MODIFY/DROPの可否、列型変更時の制限、制約状態（ENABLE/DISABLE）が問われる。変更SQLは単体ではなく、検証SQLとセットで管理する。</p>
+<pre><code>ALTER TABLE project_tasks
+ADD (priority NUMBER(2) DEFAULT 3 CONSTRAINT ck_priority CHECK (priority BETWEEN 1 AND 5));</code></pre>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="drop">
+<h2>11.5 DROP</h2>
+<p>DROPはオブジェクト定義を削除する命令で、影響は大きい。DROP TABLEは表データも失うため、誤実行時の復旧コストが高い。参照関係がある表を安易にDROPすると、依存オブジェクトやアプリが連鎖的に障害化する。試験ではDROPとDELETE/TRUNCATEの違い、依存制約の存在時の挙動が出題される。実務では本番直打ちを避け、対象確認、依存調査、バックアップ確認後に実行する。DDLは「実行できる」ではなく「実行してよい状態か」で判断する。</p>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="truncate">
+<h2>11.6 TRUNCATE</h2>
+<p>TRUNCATEは表構造を残したまま全行を高速削除するDDLである。DELETEと違いWHERE句は使えず、全件対象のみである。多量データの初期化には有効だが、暗黙COMMIT性と復旧困難性を理解せず使うと事故化する。試験では「TRUNCATEはDDL」「ROLLBACK不可が原則」「高速性」の3点が定番。実務では一時表や検証環境での利用に限定し、本番では実行条件と承認手順を明文化する。速度だけで選ぶと、可逆性を失って運用リスクが上がる。</p>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="dict">
+<h2>11.7 データディクショナリで確認</h2>
+<p>DDL適用後は必ず辞書ビューで実体を確認する。`USER_TABLES`で表、`USER_TAB_COLUMNS`で列定義、`USER_CONSTRAINTS`で制約状態を検証する。手動確認を省略すると、想定と実体のずれを本番障害まで見逃す。試験でも辞書ビュー名は頻出なので、目的別に覚えると得点が安定する。実務では「適用SQL」だけでなく「確認SQL」も変更手順書に含め、誰が実行しても同一品質になるように標準化する。</p>
+<pre><code>SELECT constraint_name, constraint_type, status
+FROM user_constraints
+WHERE table_name = 'PROJECT_TASKS'
+ORDER BY constraint_name;</code></pre>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="errors">
+<h2>11.8 典型エラーと修正</h2>
+<div class="warn"><b>失敗1:</b> 既存NULL行がある列にNOT NULL追加。<b>修正:</b> 先にNULL補正してから制約追加。</div>
+<div class="warn"><b>失敗2:</b> FK無しで運用し孤児データ増加。<b>修正:</b> 参照整合制約を設計段階で導入。</div>
+<div class="warn"><b>失敗3:</b> TRUNCATEをDELETEと同じ感覚で使用。<b>修正:</b> DDL扱いと復旧困難性を前提化。</div>
+<div class="warn"><b>失敗4:</b> 変更後確認SQL未実施。<b>修正:</b> 辞書ビュー確認を手順必須にする。</div>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="patterns">
+<h2>11.9 実務運用パターン</h2>
+<p>推奨手順は「影響調査→DDLレビュー→メンテナンス窓確保→実行→辞書ビュー検証→アプリ疎通確認」である。特に制約追加は、既存データ品質に依存するため事前クレンジングが成功率を決める。DDLを運用するときは、可逆性の低い命令（DROP/TRUNCATE）を別管理し、承認レベルを上げるのが現実的である。試験対策としては分類暗記に加え、なぜその制約が必要かを説明できるようにしておくと、実務移行時に強い。</p>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="insights-11">
+<h2>出題傾向補強（第11章）</h2>
+<p>収集した過去問題データに基づく第11章対応分野「DDL文」の傾向補強である。収集問題数は70問で、出題傾向の核は「SELECT / WHERE / GROUP BY / ORDER BY / JOIN / 副問合せ / INSERT / DELETE / CREATE / ALTER」に集中する。試験対策では、構文暗記よりも条件差分と失敗時挙動の判定を優先することで正答率が上がる。実務では、同テーマに対して確認SQLと本実行SQLを対にして扱うと事故率を下げられる。</p>
+<div class="note"><strong>補強方針:</strong> 本章の例題を解く際は、同じ概念を「成功例」「失敗例」「修正例」の3パターンで比較し、判定根拠を言語化すること。</div>
+<p><strong>参照URL例（解説参照元）:</strong></p>
+<ul>
+<li><a href="https://docs.oracle.com/cd/E16338_01/server.112/b56306/tablecls.htm#i22627" rel="noopener noreferrer" target="_blank">https://docs.oracle.com/cd/E16338_01/server.112/b56306/tablecls.htm#i22627</a></li><li><a href="https://docs.oracle.com/cd/E16338_01/server.112/b56299/sql_elements007.htm#SQLRF51127" rel="noopener noreferrer" target="_blank">https://docs.oracle.com/cd/E16338_01/server.112/b56299/sql_elements007.htm#SQLRF51127</a></li><li><a href="https://docs.oracle.com/cd/E57425_01/121/ADMIN/tables.htm#GUID-C35B192C-1C8B-425F-A003-D36D0EABEB3A" rel="noopener noreferrer" target="_blank">https://docs.oracle.com/cd/E57425_01/121/ADMIN/tables.htm#GUID-C35B192C-1C8B-425F-A003-D36D0EABEB3A</a></li>
+</ul>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="deep-dive-11"><h2>品質強化：第11章 超深掘り5項目</h2><h3>1. 定義</h3><p>第11章の中心概念である「DDLと制約」は、単に構文を覚える学習単位ではなく、データの意味・一貫性・運用可能性を同時に成立させるための設計原則である。試験では語句の暗記だけで解ける問題もあるが、実務では入力値の品質、実行順序、例外時の復旧可能性まで含めて定義を扱う必要がある。つまりこの章の定義は「SQL文の形」ではなく「業務データを破壊せずに価値へ変換する規律」であり、ここを誤解すると正解できても現場で再現できない。 さらに、設計レビュー時には前提条件・入力境界・例外時挙動・確認SQL・証跡項目を明示し、実行者依存の判断を排除すること。学習段階でも、同一テーマを正常系と異常系の両方で検証し、なぜその結果になるかを言語化して再利用可能な知識へ変換する。</p><h3>2. 役割</h3><p>DDLと制約の役割は、データベース操作を偶発的な職人技から、再現可能な標準手順へ引き上げることにある。たとえば現場で引継ぎ担当が変わっても、同じ確認SQL・同じ判定基準・同じ実行順で処理できる状態を作るのがこの章の本質である。試験対策の観点でも、役割を理解していると「どの句がどの責務を持つか」を軸に消去法が機能し、難問での正答率が上がる。役割を文法の説明に矮小化せず、品質保証の仕組みとして把握することが重要である。 さらに、設計レビュー時には前提条件・入力境界・例外時挙動・確認SQL・証跡項目を明示し、実行者依存の判断を排除すること。学習段階でも、同一テーマを正常系と異常系の両方で検証し、なぜその結果になるかを言語化して再利用可能な知識へ変換する。</p><h3>3. 動作原理</h3><p>DDLと制約の動作原理は、入力条件の解釈、実行計画に基づく処理、結果または副作用の確定という三層で説明できる。SQLは記述順と論理評価順が一致しない場面が多く、特に結合・集計・更新系では前提条件を誤ると意図外結果になる。そこで原理理解では「どの時点で行が絞られ、どの時点で列が計算され、どの時点で変更が確定するか」を言語化する必要がある。試験ではこの順序差を突く設問が頻出であり、実務ではこの順序差が障害の直接原因になるため、原理を図として説明できるレベルまで落とし込むべきである。 さらに、設計レビュー時には前提条件・入力境界・例外時挙動・確認SQL・証跡項目を明示し、実行者依存の判断を排除すること。学習段階でも、同一テーマを正常系と異常系の両方で検証し、なぜその結果になるかを言語化して再利用可能な知識へ変換する。</p><h3>4. 制限事項とアンチパターン</h3><p>DDLと制約の制限事項を無視したアンチパターンとして、確認なし本実行、条件式の曖昧化、暗黙変換依存、復旧手順未設計がある。これらは短期的には作業を速く見せるが、中長期では誤更新や性能劣化、監査不適合に直結する。特に初学者は「動いたSQL」を正解と誤認しやすいが、品質上は「再実行可能」「失敗時に戻せる」「根拠を説明できる」ことが必須である。制限事項は足かせではなく安全柵であり、これを仕様として受け入れることが事故率低減の最短経路になる。 さらに、設計レビュー時には前提条件・入力境界・例外時挙動・確認SQL・証跡項目を明示し、実行者依存の判断を排除すること。学習段階でも、同一テーマを正常系と異常系の両方で検証し、なぜその結果になるかを言語化して再利用可能な知識へ変換する。</p><h3>5. 試験・実務の急所</h3><p>第11章の急所は、見た目が似た構文の意味差を判定できるかどうかである。試験では語順や句の位置、NULLや型変換、更新可否、暗黙コミットなどの境界条件が典型的なひっかけになる。実務では同じ境界条件が本番障害の発火点になるため、各処理に対して「想定件数」「失敗時挙動」「証跡」を先に決める運用が有効である。したがって急所対策は問題演習の量より、誤答理由を分類して再発防止ルールに変換する学習が効果的であり、これを章末の確認手順に固定することで合格後も通用する実力になる。 さらに、設計レビュー時には前提条件・入力境界・例外時挙動・確認SQL・証跡項目を明示し、実行者依存の判断を排除すること。学習段階でも、同一テーマを正常系と異常系の両方で検証し、なぜその結果になるかを言語化して再利用可能な知識へ変換する。</p><div class="top"><a href="#scope">▲ トップへ戻る</a></div></section><section class="card" id="exam">
+<h2>第11章 試験ひっかけパターン集</h2>
+<div class="warn"><b>ひっかけ1:</b> TRUNCATEはDMLか → いいえ、DDL。</div>
+<div class="warn"><b>ひっかけ2:</b> NOT NULLはUNIQUEと同義か → いいえ、役割が異なる。</div>
+<div class="warn"><b>ひっかけ3:</b> FKは性能低下だけで不要か → 不要ではない。整合性確保が目的。</div>
+<div class="warn"><b>ひっかけ4:</b> DDL後にROLLBACKで戻せるか → 通常は戻せない前提で設計。</div>
+<div class="warn"><b>ひっかけ5:</b> CHECK制約は文字列列に使えないか → 使える。条件式で定義可能。</div>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="practice">
+<h2>第11章 実務アンチパターン集</h2>
+<div class="table-wrap"><table>
+<tr><th>アンチパターン</th><th>起きる障害</th><th>予防策</th></tr>
+<tr><td>要件未確定でCREATE</td><td>ALTER連発・定義ぶれ</td><td>業務項目と制約を先に確定</td></tr>
+<tr><td>制約名を自動任せ</td><td>障害解析に時間</td><td>明示的命名規約を適用</td></tr>
+<tr><td>本番で直接DROP/TRUNCATE</td><td>復旧コスト増大</td><td>承認フローとバックアップ確認</td></tr>
+<tr><td>適用後の辞書確認省略</td><td>設計との差異見逃し</td><td>確認SQLを手順書へ組み込み</td></tr>
+</table></div>
+<div class="note"><strong>第11章完了基準:</strong> DDLと制約を安全手順で適用し、検証SQLまで説明できること。</div>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+</main>
+</div>
+</body>
+</html>

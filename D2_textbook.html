@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>D2: データの絞り込みとソート | Oracle SQL 教科書</title>
+<style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #f5f7fa; color: #2d3748; line-height: 1.7; }
+        .page-header {
+            background: linear-gradient(135deg, #c0392b 0%, #e74c3c 50%, #e67e22 100%);
+            color: white; padding: 40px 24px; text-align: center;
+        }
+        .page-header h1 { font-size: 2rem; margin-bottom: 8px; }
+        .page-header .subtitle { opacity: 0.9; font-size: 1rem; }
+        .container { max-width: 960px; margin: 0 auto; padding: 24px; }
+        .section-card {
+            background: white; border-radius: 12px; padding: 28px;
+            margin-bottom: 32px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .section-title {
+            font-size: 1.3rem; font-weight: 700; color: #c0392b;
+            margin-bottom: 16px; padding-bottom: 8px;
+            border-bottom: 3px solid #e74c3c;
+        }
+        .topic-chips { margin-bottom: 16px; display: flex; flex-wrap: wrap; gap: 6px; }
+        .chip {
+            background: #fdf2f8; color: #c0392b; border: 1px solid #f0a0a0;
+            padding: 2px 10px; border-radius: 20px; font-size: 0.8rem;
+        }
+        pre { background: #1e293b; color: #e2e8f0; padding: 16px; border-radius: 8px; overflow-x: auto; margin: 12px 0; }
+        code { font-family: 'Consolas', 'Monaco', monospace; font-size: 0.88rem; }
+        p code { background: #f0f4f8; color: #c0392b; padding: 1px 5px; border-radius: 4px; }
+        .tip-box {
+            background: #fffde7; border-left: 4px solid #f9a825;
+            padding: 12px 16px; border-radius: 0 8px 8px 0; margin: 12px 0;
+        }
+        .warning-box {
+            background: #fce4ec; border-left: 4px solid #e91e63;
+            padding: 12px 16px; border-radius: 0 8px 8px 0; margin: 12px 0;
+        }
+        .summary-table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 0.9rem; }
+        .summary-table th {
+            background: #c0392b; color: white; padding: 8px 12px; text-align: left;
+        }
+        .summary-table td { padding: 8px 12px; border-bottom: 1px solid #e2e8f0; }
+        .summary-table tr:nth-child(even) td { background: #f9fafb; }
+        h3 { font-size: 1.05rem; color: #2d3748; margin: 16px 0 8px; }
+        .problem-section-title {
+            font-size: 1.1rem; font-weight: 700; color: #2d3748;
+            margin: 28px 0 12px; padding-bottom: 6px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        .problem-card {
+            background: #f9fafb; border: 1px solid #e2e8f0;
+            border-radius: 8px; padding: 16px; margin-bottom: 16px;
+        }
+        .problem-header { font-weight: 700; color: #c0392b; margin-bottom: 8px; }
+        .qid { font-size: 0.8rem; color: #718096; font-weight: 400; margin-left: 8px; }
+        .problem-text { margin-bottom: 10px; }
+        .choices { padding-left: 20px; margin-bottom: 10px; }
+        .choices li { margin: 4px 0; }
+        .answer-details summary {
+            cursor: pointer; color: #c0392b; font-weight: 600;
+            padding: 6px 0; user-select: none;
+        }
+        .answer-content { background: white; padding: 12px; border-radius: 6px; margin-top: 8px; }
+        .breadcrumb { padding: 12px 24px; background: white; border-bottom: 1px solid #e2e8f0; font-size: 0.85rem; }
+        .breadcrumb a { color: #c0392b; text-decoration: none; }
+        .intro-box { background: #fff8f8; border: 1px solid #f0a0a0; border-radius: 8px; padding: 16px; margin-bottom: 24px; }
+        </style>
+</head>
+<body>
+<div class="breadcrumb">
+  <a href="index.html">Oracle SQL 教科書</a> &gt; D2: データの絞り込みとソート
+</div>
+<div class="page-header">
+  <h1>D2: データの絞り込みとソート</h1>
+  <div class="subtitle">Oracle Database SQL (1Z0-071) 対策</div>
+</div>
+<div class="container">
+  <div class="intro-box">WHERE 句を使ったデータの絞り込みと、ORDER BY を使ったデータのソート方法を学びます。</div>
+  <div class="section-card"><div class="section-title">WHERE句と比較演算子</div><div class="topic-chips"><span class="chip">WHERE</span><span class="chip">BETWEEN</span><span class="chip">IN</span><span class="chip">比較演算子</span><span class="chip">AND</span><span class="chip">OR</span><span class="chip">NOT</span></div><div class="section-content"><h3>WHERE 句の基本</h3><p>WHERE 句を使うと条件に合う行だけを取得できます。</p><pre><code>SELECT LAST_NAME, SALARY
+FROM   EMPLOYEES
+WHERE  SALARY >= 10000;</code></pre><h3>比較演算子一覧</h3><table class='summary-table'><tr><th>演算子</th><th>意味</th><th>例</th></tr><tr><td>=</td><td>等しい</td><td>SALARY = 5000</td></tr><tr><td>&lt;&gt; または !=</td><td>等しくない</td><td>SALARY &lt;&gt; 5000</td></tr><tr><td>&gt;</td><td>より大きい</td><td>SALARY &gt; 5000</td></tr><tr><td>&lt;</td><td>より小さい</td><td>SALARY &lt; 5000</td></tr><tr><td>&gt;=</td><td>以上</td><td>SALARY &gt;= 5000</td></tr><tr><td>&lt;=</td><td>以下</td><td>SALARY &lt;= 5000</td></tr></table><h3>BETWEEN ... AND</h3><pre><code>-- 5000 以上 10000 以下の給与（両端含む）
+SELECT LAST_NAME, SALARY
+FROM   EMPLOYEES
+WHERE  SALARY BETWEEN 5000 AND 10000;</code></pre><h3>IN 演算子</h3><pre><code>-- 部署 10, 20, 30 のいずれか
+SELECT LAST_NAME, DEPARTMENT_ID
+FROM   EMPLOYEES
+WHERE  DEPARTMENT_ID IN (10, 20, 30);</code></pre><h3>AND / OR / NOT</h3><pre><code>-- AND: 両方の条件を満たす
+SELECT LAST_NAME, SALARY, DEPARTMENT_ID
+FROM   EMPLOYEES
+WHERE  SALARY > 5000
+AND    DEPARTMENT_ID = 50;
+
+-- OR: どちらかの条件を満たす
+SELECT LAST_NAME, SALARY, DEPARTMENT_ID
+FROM   EMPLOYEES
+WHERE  SALARY > 10000
+OR     DEPARTMENT_ID = 10;</code></pre><div class='tip-box'><strong>試験のポイント：</strong> BETWEEN の値は「小さい値 AND 大きい値」の順で指定します。NOT IN に NULL が含まれる場合、全件が返りません（NULL との比較が不定のため）。AND は OR より優先度が高いため、OR を使う場合は括弧で明示的にグループ化を推奨。</div></div><div class="problem-section-title">練習問題</div><div class="problem-card" id="prob-OSLV-D2-001"><div class="problem-header">問題 1 <span class="qid">#OSLV-D2-001</span></div><p class="problem-text">以下のSQL文で返される行を正しく説明しているものはどれか。<br>```sql<br>SELECT employee_id, salary<br>FROM employees<br>WHERE salary BETWEEN 5000 AND 10000;<br>```</p><ul class="choices"><li>A. salary が 5000 より大きく 10000 より小さい行</li><li>B. salary が 5000 以上かつ 10000 以下の行</li><li>C. salary が 5000 未満または 10000 超の行</li><li>D. salary が 5000 または 10000 の行のみ</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> B. salary が 5000 以上かつ 10000 以下の行</p><p>正解は「salary が 5000 以上かつ 10000 以下の行」である。BETWEEN x AND y は x <= 値 <= y の範囲を意味し、両端の値を含む（inclusive）。したがって salary = 5000 および salary = 10000 の行も結果に含まれる。選択肢Aは両端を含まない（exclusive）の説明であり誤り。BETWEENはNOT BETWEENで否定でき、数値・日付・文字列のいずれにも使用可能。Oracle SQL Reference §BETWEEN条件参照。</p></div></details></div><div class="problem-card" id="prob-OSLV-D2-002"><div class="problem-header">問題 2 <span class="qid">#OSLV-D2-002</span></div><p class="problem-text">以下のSQL文の結果として正しいものはどれか。<br>```sql<br>SELECT last_name<br>FROM employees<br>WHERE last_name LIKE '_a%';<br>```</p><ul class="choices"><li>A. 'a' を含む全ての last_name</li><li>B. 'a' で始まる last_name</li><li>C. 2文字目が 'a' の last_name を持つ全行</li><li>D. 'a' で終わる last_name</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> C. 2文字目が 'a' の last_name を持つ全行</p><p>正解は「2文字目が 'a' の last_name を持つ全行」である。LIKEパターンの_（アンダースコア）は任意の1文字に一致し、%（パーセント）は0文字以上の任意の文字列に一致する。'_a%' は「1文字（何でもよい）」+「a」+「0文字以上（何でもよい）」のパターンであるため、2文字目が 'a' である文字列に一致する。例: 'James', 'Mary', 'Barry' 等。Oracle SQL Reference §LIKE条件参照。</p></div></details></div><div class="problem-card" id="prob-OSLV-D2-003"><div class="problem-header">問題 3 <span class="qid">#OSLV-D2-003</span></div><p class="problem-text">以下のSQL文の実行結果として正しいものはどれか。<br>```sql<br>SELECT last_name, salary<br>FROM employees<br>WHERE commission_pct IS NULL<br>ORDER BY salary DESC NULLS LAST;<br>```<br>commission_pctがNULLの行には salary = 8000, 5000, NULL の3行があるとする。</p><ul class="choices"><li>A. salary: NULL → 8000 → 5000 の順で3行</li><li>B. salary: 8000 → 5000 → NULL の順で3行</li><li>C. salary: 5000 → 8000 → NULL の順で3行</li><li>D. エラーになる（NULLをORDER BYに使えない）</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> B. salary: 8000 → 5000 → NULL の順で3行</p><p>正解は「salary: 8000 → 5000 → NULL の順で3行」である。ORDER BY salary DESC はsalaryを降順にソートする。NULLS LAST を指定すると、NULLの値を持つ行はソート結果の末尾に配置される。IS NULLはNULL値を持つ行を選択する正しい構文（= NULLは使えない）。ORDER BYのデフォルトNULL順序は昇順（ASC）ではNULLS LAST、降順（DESC）ではNULLS FIRSTとなる。NULLS FIRST/NULLS LASTで明示的に制御できる。</p></div></details></div></div><div class="section-card"><div class="section-title">LIKE演算子とワイルドカード</div><div class="topic-chips"><span class="chip">LIKE</span><span class="chip">ワイルドカード</span><span class="chip">アンダースコア</span><span class="chip">パーセント</span><span class="chip">ESCAPE</span></div><div class="section-content"><h3>LIKE 演算子</h3><p>LIKE は文字列のパターンマッチングに使います。2種類のワイルドカードがあります。</p><table class='summary-table'><tr><th>ワイルドカード</th><th>意味</th><th>例</th></tr><tr><td>%（パーセント）</td><td>0文字以上の任意の文字列</td><td>'A%' → A で始まる</td></tr><tr><td>_（アンダースコア）</td><td>任意の1文字</td><td>'_a%' → 2文字目が a</td></tr></table><pre><code>-- 'S' で始まる名前
+SELECT LAST_NAME
+FROM   EMPLOYEES
+WHERE  LAST_NAME LIKE 'S%';
+
+-- 2文字目が 'a' の名前
+SELECT LAST_NAME
+FROM   EMPLOYEES
+WHERE  LAST_NAME LIKE '_a%';
+
+-- 名前に 'an' を含む
+SELECT LAST_NAME
+FROM   EMPLOYEES
+WHERE  LAST_NAME LIKE '%an%';</code></pre><h3>ESCAPE オプション</h3><p>% や _ を文字として検索したい場合は ESCAPE を使います。</p><pre><code>-- JOB_ID に 'SA_' を含む（_ をリテラルとして扱う）
+SELECT JOB_ID
+FROM   EMPLOYEES
+WHERE  JOB_ID LIKE '%SA$_%' ESCAPE '$';</code></pre><div class='tip-box'><strong>試験のポイント：</strong> LIKE の比較は大文字小文字を区別します（Oracle のデフォルト）。ESCAPE に使う文字は任意の1文字で、慣例的に \ や $ が使われます。</div></div><div class="problem-section-title">練習問題</div><div class="problem-card" id="prob-OSLV-D2-002"><div class="problem-header">問題 1 <span class="qid">#OSLV-D2-002</span></div><p class="problem-text">以下のSQL文の結果として正しいものはどれか。<br>```sql<br>SELECT last_name<br>FROM employees<br>WHERE last_name LIKE '_a%';<br>```</p><ul class="choices"><li>A. 'a' を含む全ての last_name</li><li>B. 'a' で始まる last_name</li><li>C. 2文字目が 'a' の last_name を持つ全行</li><li>D. 'a' で終わる last_name</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> C. 2文字目が 'a' の last_name を持つ全行</p><p>正解は「2文字目が 'a' の last_name を持つ全行」である。LIKEパターンの_（アンダースコア）は任意の1文字に一致し、%（パーセント）は0文字以上の任意の文字列に一致する。'_a%' は「1文字（何でもよい）」+「a」+「0文字以上（何でもよい）」のパターンであるため、2文字目が 'a' である文字列に一致する。例: 'James', 'Mary', 'Barry' 等。Oracle SQL Reference §LIKE条件参照。</p></div></details></div></div><div class="section-card"><div class="section-title">ORDER BY句</div><div class="topic-chips"><span class="chip">ORDER BY</span><span class="chip">ASC</span><span class="chip">DESC</span><span class="chip">NULLS FIRST</span><span class="chip">NULLS LAST</span></div><div class="section-content"><h3>ORDER BY の基本</h3><p>ORDER BY 句で検索結果をソートします。デフォルトは昇順（ASC）です。</p><pre><code>-- 給与の昇順（デフォルト）
+SELECT LAST_NAME, SALARY
+FROM   EMPLOYEES
+ORDER BY SALARY;
+
+-- 給与の降順
+SELECT LAST_NAME, SALARY
+FROM   EMPLOYEES
+ORDER BY SALARY DESC;
+
+-- 複数列でのソート（部署昇順、給与降順）
+SELECT LAST_NAME, DEPARTMENT_ID, SALARY
+FROM   EMPLOYEES
+ORDER BY DEPARTMENT_ID ASC, SALARY DESC;</code></pre><h3>NULLS FIRST / NULLS LAST</h3><pre><code>-- NULL を最初に表示
+SELECT LAST_NAME, COMMISSION_PCT
+FROM   EMPLOYEES
+ORDER BY COMMISSION_PCT NULLS FIRST;
+
+-- NULL を最後に表示
+SELECT LAST_NAME, COMMISSION_PCT
+FROM   EMPLOYEES
+ORDER BY COMMISSION_PCT NULLS LAST;</code></pre><h3>列位置や別名でのソート</h3><pre><code>-- SELECT の列番号でソート（2列目 = SALARY）
+SELECT LAST_NAME, SALARY
+FROM   EMPLOYEES
+ORDER BY 2 DESC;
+
+-- 列別名でソート
+SELECT LAST_NAME, SALARY * 12 AS annual_sal
+FROM   EMPLOYEES
+ORDER BY annual_sal DESC;</code></pre><div class='tip-box'><strong>試験のポイント：</strong> NULL は昇順ソートではデフォルトで最後（NULLS LAST）、降順ソートではデフォルトで最初（NULLS FIRST）に表示されます。ORDER BY は SELECT リストにない列でもソートできます（DISTINCT 使用時を除く）。</div></div><div class="problem-section-title">練習問題</div><div class="problem-card" id="prob-OSLV-D2-003"><div class="problem-header">問題 1 <span class="qid">#OSLV-D2-003</span></div><p class="problem-text">以下のSQL文の実行結果として正しいものはどれか。<br>```sql<br>SELECT last_name, salary<br>FROM employees<br>WHERE commission_pct IS NULL<br>ORDER BY salary DESC NULLS LAST;<br>```<br>commission_pctがNULLの行には salary = 8000, 5000, NULL の3行があるとする。</p><ul class="choices"><li>A. salary: NULL → 8000 → 5000 の順で3行</li><li>B. salary: 8000 → 5000 → NULL の順で3行</li><li>C. salary: 5000 → 8000 → NULL の順で3行</li><li>D. エラーになる（NULLをORDER BYに使えない）</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> B. salary: 8000 → 5000 → NULL の順で3行</p><p>正解は「salary: 8000 → 5000 → NULL の順で3行」である。ORDER BY salary DESC はsalaryを降順にソートする。NULLS LAST を指定すると、NULLの値を持つ行はソート結果の末尾に配置される。IS NULLはNULL値を持つ行を選択する正しい構文（= NULLは使えない）。ORDER BYのデフォルトNULL順序は昇順（ASC）ではNULLS LAST、降順（DESC）ではNULLS FIRSTとなる。NULLS FIRST/NULLS LASTで明示的に制御できる。</p></div></details></div></div><div class="section-card"><div class="section-title">行制限と置換変数</div><div class="topic-chips"><span class="chip">OFFSET</span><span class="chip">FETCH</span><span class="chip">ROWNUM</span><span class="chip">置換変数</span><span class="chip">DEFINE</span><span class="chip">VERIFY</span></div><div class="section-content"><h3>OFFSET / FETCH（行制限）</h3><p>ORDER BY と組み合わせて、先頭から何行スキップし、何行取得するかを指定します。</p><pre><code>-- 給与の高い順に、上位5件を取得
+SELECT EMPLOYEE_ID, LAST_NAME, SALARY
+FROM   EMPLOYEES
+ORDER BY SALARY DESC
+FETCH FIRST 5 ROWS ONLY;
+
+-- 6〜10位を取得（5行スキップして5行取得）
+SELECT EMPLOYEE_ID, LAST_NAME, SALARY
+FROM   EMPLOYEES
+ORDER BY SALARY DESC
+OFFSET 5 ROWS FETCH NEXT 5 ROWS ONLY;</code></pre><h3>ROWNUM（疑似列）</h3><pre><code>-- 先頭10行（取得順）
+SELECT *
+FROM   EMPLOYEES
+WHERE  ROWNUM &lt;= 10;</code></pre><h3>置換変数（SQL*Plus系）</h3><p>実行時に値を入力させる変数です。学習・検証で使われます。</p><pre><code>-- &amp; で単発置換
+SELECT LAST_NAME, SALARY
+FROM   EMPLOYEES
+WHERE  DEPARTMENT_ID = &amp;dept_id;
+
+-- DEFINE で固定
+DEFINE dept_id = 50
+SELECT LAST_NAME FROM EMPLOYEES WHERE DEPARTMENT_ID = &amp;dept_id;
+
+-- VERIFY ON/OFF（置換前後の表示）
+SET VERIFY ON</code></pre><div class='tip-box'><strong>試験のポイント：</strong> 行制限は ORDER BY とセットで使わないと結果の順序が不定になります。ROWNUM は ORDER BY より前に付与されるため、上位N件抽出で誤用しやすいです。置換変数（DEFINE/VERIFY）は SQL*Plus 系の操作問題で問われることがあります。</div></div></div>
+</div>
+</body>
+</html>

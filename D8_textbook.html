@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>D8: DDL・オブジェクト管理 | Oracle SQL 教科書</title>
+<style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #f5f7fa; color: #2d3748; line-height: 1.7; }
+        .page-header {
+            background: linear-gradient(135deg, #c0392b 0%, #e74c3c 50%, #e67e22 100%);
+            color: white; padding: 40px 24px; text-align: center;
+        }
+        .page-header h1 { font-size: 2rem; margin-bottom: 8px; }
+        .page-header .subtitle { opacity: 0.9; font-size: 1rem; }
+        .container { max-width: 960px; margin: 0 auto; padding: 24px; }
+        .section-card {
+            background: white; border-radius: 12px; padding: 28px;
+            margin-bottom: 32px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .section-title {
+            font-size: 1.3rem; font-weight: 700; color: #c0392b;
+            margin-bottom: 16px; padding-bottom: 8px;
+            border-bottom: 3px solid #e74c3c;
+        }
+        .topic-chips { margin-bottom: 16px; display: flex; flex-wrap: wrap; gap: 6px; }
+        .chip {
+            background: #fdf2f8; color: #c0392b; border: 1px solid #f0a0a0;
+            padding: 2px 10px; border-radius: 20px; font-size: 0.8rem;
+        }
+        pre { background: #1e293b; color: #e2e8f0; padding: 16px; border-radius: 8px; overflow-x: auto; margin: 12px 0; }
+        code { font-family: 'Consolas', 'Monaco', monospace; font-size: 0.88rem; }
+        p code { background: #f0f4f8; color: #c0392b; padding: 1px 5px; border-radius: 4px; }
+        .tip-box {
+            background: #fffde7; border-left: 4px solid #f9a825;
+            padding: 12px 16px; border-radius: 0 8px 8px 0; margin: 12px 0;
+        }
+        .warning-box {
+            background: #fce4ec; border-left: 4px solid #e91e63;
+            padding: 12px 16px; border-radius: 0 8px 8px 0; margin: 12px 0;
+        }
+        .summary-table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 0.9rem; }
+        .summary-table th {
+            background: #c0392b; color: white; padding: 8px 12px; text-align: left;
+        }
+        .summary-table td { padding: 8px 12px; border-bottom: 1px solid #e2e8f0; }
+        .summary-table tr:nth-child(even) td { background: #f9fafb; }
+        h3 { font-size: 1.05rem; color: #2d3748; margin: 16px 0 8px; }
+        .problem-section-title {
+            font-size: 1.1rem; font-weight: 700; color: #2d3748;
+            margin: 28px 0 12px; padding-bottom: 6px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        .problem-card {
+            background: #f9fafb; border: 1px solid #e2e8f0;
+            border-radius: 8px; padding: 16px; margin-bottom: 16px;
+        }
+        .problem-header { font-weight: 700; color: #c0392b; margin-bottom: 8px; }
+        .qid { font-size: 0.8rem; color: #718096; font-weight: 400; margin-left: 8px; }
+        .problem-text { margin-bottom: 10px; }
+        .choices { padding-left: 20px; margin-bottom: 10px; }
+        .choices li { margin: 4px 0; }
+        .answer-details summary {
+            cursor: pointer; color: #c0392b; font-weight: 600;
+            padding: 6px 0; user-select: none;
+        }
+        .answer-content { background: white; padding: 12px; border-radius: 6px; margin-top: 8px; }
+        .breadcrumb { padding: 12px 24px; background: white; border-bottom: 1px solid #e2e8f0; font-size: 0.85rem; }
+        .breadcrumb a { color: #c0392b; text-decoration: none; }
+        .intro-box { background: #fff8f8; border: 1px solid #f0a0a0; border-radius: 8px; padding: 16px; margin-bottom: 24px; }
+        </style>
+</head>
+<body>
+<div class="breadcrumb">
+  <a href="index.html">Oracle SQL 教科書</a> &gt; D8: DDL・オブジェクト管理
+</div>
+<div class="page-header">
+  <h1>D8: DDL・オブジェクト管理</h1>
+  <div class="subtitle">Oracle Database SQL (1Z0-071) 対策</div>
+</div>
+<div class="container">
+  <div class="intro-box">テーブルやオブジェクトの作成・変更・削除など、データ定義言語（DDL）とデータベースオブジェクトの管理を学びます。</div>
+  <div class="section-card"><div class="section-title">CREATE TABLE と制約</div><div class="topic-chips"><span class="chip">CREATE TABLE</span><span class="chip">ALTER TABLE</span><span class="chip">DROP TABLE</span><span class="chip">PRIMARY KEY</span><span class="chip">FOREIGN KEY</span><span class="chip">NOT NULL</span><span class="chip">UNIQUE</span><span class="chip">CHECK</span><span class="chip">DEFAULT</span></div><div class="section-content"><h3>CREATE TABLE の基本</h3><pre><code>CREATE TABLE EMPLOYEES (
+    EMPLOYEE_ID   NUMBER(6)     CONSTRAINT emp_pk PRIMARY KEY,
+    FIRST_NAME    VARCHAR2(20),
+    LAST_NAME     VARCHAR2(25)  CONSTRAINT emp_lname_nn NOT NULL,
+    EMAIL         VARCHAR2(25)  CONSTRAINT emp_email_uk UNIQUE,
+    HIRE_DATE     DATE          DEFAULT SYSDATE,
+    SALARY        NUMBER(8,2)   CONSTRAINT emp_salary_ck CHECK (SALARY > 0),
+    DEPARTMENT_ID NUMBER(4)     CONSTRAINT emp_dept_fk
+                               REFERENCES DEPARTMENTS(DEPARTMENT_ID)
+);</code></pre><h3>制約の種類</h3><table class='summary-table'><tr><th>制約</th><th>説明</th></tr><tr><td>PRIMARY KEY</td><td>行を一意に識別。NOT NULL + UNIQUE の組み合わせ</td></tr><tr><td>FOREIGN KEY</td><td>別テーブルの主キーを参照。参照整合性を保証</td></tr><tr><td>UNIQUE</td><td>列の値を一意に保つ（NULL は複数可）</td></tr><tr><td>NOT NULL</td><td>NULL 値を禁止する</td></tr><tr><td>CHECK</td><td>列の値が条件を満たすことを保証</td></tr><tr><td>DEFAULT</td><td>値が指定されない場合のデフォルト値（制約ではなく列オプション）</td></tr></table><h3>ALTER TABLE / DROP TABLE</h3><pre><code>-- 列の追加
+ALTER TABLE EMPLOYEES ADD (NOTES VARCHAR2(100));
+
+-- 列の変更
+ALTER TABLE EMPLOYEES MODIFY (FIRST_NAME VARCHAR2(30));
+
+-- 列の削除
+ALTER TABLE EMPLOYEES DROP COLUMN NOTES;
+
+-- テーブルの削除（データも削除）
+DROP TABLE COPY_EMPLOYEES;
+
+-- テーブルの削除（PURGE: ごみ箱に入れない）
+DROP TABLE COPY_EMPLOYEES PURGE;</code></pre><div class='tip-box'><strong>試験のポイント：</strong> PRIMARY KEY は1テーブルに1つだけ設定可能です。UNIQUE は複数可。FOREIGN KEY の参照先テーブルを削除するには ON DELETE CASCADE または先に子テーブルを削除する必要があります。DROP TABLE はデフォルトでごみ箱（RECYCLEBIN）に入り、FLASHBACK TABLE で復元可能です。</div></div><div class="problem-section-title">練習問題</div><div class="problem-card" id="prob-OSLV-D8-001"><div class="problem-header">問題 1 <span class="qid">#OSLV-D8-001</span></div><p class="problem-text">以下のCREATE TABLE文で定義された制約の説明として正しいものはどれか。<br>```sql<br>CREATE TABLE orders (<br>  order_id    NUMBER(6)    CONSTRAINT pk_orders PRIMARY KEY,<br>  customer_id NUMBER(6)    NOT NULL,<br>  order_date  DATE         DEFAULT SYSDATE,<br>  status      VARCHAR2(10) CONSTRAINT chk_status<br>                           CHECK (status IN ('PENDING','SHIPPED','DONE'))<br>);<br>```</p><ul class="choices"><li>A. order_idは重複可能だがNOT NULL。statusはNULLも許可される</li><li>B. order_idは重複不可かつNOT NULL。order_dateは省略するとSYSDATEが入る。statusは3種の値のみ許可</li><li>C. customer_idはNULLを許可する。order_dateは省略するとNULLになる</li><li>D. PRIMARY KEY制約はNULLを許可するUNIQUE制約と同じ</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> B. order_idは重複不可かつNOT NULL。order_dateは省略するとSYSDATEが入る。statusは3種の値のみ許可</p><p>正解は「order_idは重複不可かつNOT NULL。order_dateは省略するとSYSDATEが入る。statusは3種の値のみ許可」である。PRIMARY KEY = UNIQUE + NOT NULL の制約。customer_idはNOT NULL制約があるのでNULL不可。order_dateのDEFAULT SYSDATEはINSERT時に値を省略した場合に現在日時が自動設定される。CHECK制約はstatusが'PENDING','SHIPPED','DONE'の3値のみ許可（NULLはCHECKをパスするためNOT NULLと組み合わせが推奨）。</p></div></details></div></div><div class="section-card"><div class="section-title">VIEW・SEQUENCE・INDEX</div><div class="topic-chips"><span class="chip">VIEW</span><span class="chip">CREATE VIEW</span><span class="chip">SEQUENCE</span><span class="chip">NEXTVAL</span><span class="chip">CURRVAL</span><span class="chip">INDEX</span><span class="chip">SYNONYM</span></div><div class="section-content"><h3>VIEW（ビュー）</h3><p>ビューは保存された SELECT 文です。テーブルのようにアクセスできます。</p><pre><code>-- ビューの作成
+CREATE VIEW emp_dept_vu AS
+    SELECT e.EMPLOYEE_ID, e.LAST_NAME, e.DEPARTMENT_ID,
+           d.DEPARTMENT_NAME
+    FROM   EMPLOYEES e
+    JOIN   DEPARTMENTS d
+    ON     e.DEPARTMENT_ID = d.DEPARTMENT_ID;
+
+-- ビューの使用
+SELECT * FROM emp_dept_vu WHERE DEPARTMENT_NAME = 'Sales';
+
+-- ビューの削除
+DROP VIEW emp_dept_vu;</code></pre><h3>SEQUENCE（シーケンス）</h3><p>シーケンスは連番を生成するオブジェクトです。主キーの自動採番に使います。</p><pre><code>-- シーケンスの作成
+CREATE SEQUENCE emp_seq
+    START WITH 1
+    INCREMENT BY 1
+    MAXVALUE 99999
+    NOCACHE
+    NOCYCLE;
+
+-- 次の値を取得（NEXTVAL）
+INSERT INTO EMPLOYEES (EMPLOYEE_ID, LAST_NAME)
+VALUES (emp_seq.NEXTVAL, 'Smith');
+
+-- 現在の値を確認（CURRVAL: NEXTVAL を1度呼んだ後のみ使用可）
+SELECT emp_seq.CURRVAL FROM DUAL;</code></pre><h3>INDEX（インデックス）</h3><pre><code>-- インデックスの作成
+CREATE INDEX emp_lname_idx
+ON EMPLOYEES (LAST_NAME);
+
+-- インデックスの削除
+DROP INDEX emp_lname_idx;</code></pre><h3>SYNONYM（シノニム）</h3><pre><code>-- パブリックシノニムの作成（DBA 権限が必要）
+CREATE PUBLIC SYNONYM emp FOR EMPLOYEES;
+
+-- プライベートシノニム
+CREATE SYNONYM emp FOR EMPLOYEES;
+
+-- シノニムの削除
+DROP SYNONYM emp;</code></pre><div class='tip-box'><strong>試験のポイント：</strong> CURRVAL は NEXTVAL を同じセッションで1回以上呼び出してから使用できます。シーケンスに CACHE を設定するとシステム障害時に番号が欠番になることがあります。INDEX は検索を高速化しますが、INSERT/UPDATE/DELETE は遅くなります。PRIMARY KEY と UNIQUE 制約を作成すると、自動的にインデックスが作成されます。</div></div><div class="problem-section-title">練習問題</div><div class="problem-card" id="prob-OSLV-D8-002"><div class="problem-header">問題 1 <span class="qid">#OSLV-D8-002</span></div><p class="problem-text">以下のビュー(VIEW)に関する説明として正しいものはどれか。<br>```sql<br>CREATE OR REPLACE VIEW emp_view AS<br>SELECT employee_id, last_name, salary<br>FROM employees<br>WHERE salary > 10000;<br>```</p><ul class="choices"><li>A. ビューはデータを物理的にコピーして保存するため、ベーステーブル変更後も古いデータを返す</li><li>B. このビューからはINSERT/UPDATEができない（ビューは常に読み取り専用）</li><li>C. ビューは実データを持たない仮想表。ベーステーブルが更新されると自動的に最新データを反映する</li><li>D. OR REPLACEを使うと既存のビューを削除して新規作成するためエラーが発生する</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> C. ビューは実データを持たない仮想表。ベーステーブルが更新されると自動的に最新データを反映する</p><p>正解は「ビューは実データを持たない仮想表。ベーステーブルが更新されると自動的に最新データを反映する」である。ビューはSELECT定義を保存するだけで実データは持たない。参照時にSQLを実行するためベーステーブルの変更をリアルタイムに反映する。OR REPLACEは既存ビューがあっても削除せずに置き換える（エラーにならない）。単純ビュー（グループ関数・DISTINCT・JOIN・演算列などがない）はDML操作も可能。</p></div></details></div><div class="problem-card" id="prob-OSLV-D8-003"><div class="problem-header">問題 2 <span class="qid">#OSLV-D8-003</span></div><p class="problem-text">以下のSQL文の実行結果として正しいものはどれか。<br>```sql<br>CREATE SEQUENCE emp_seq<br>  START WITH 100<br>  INCREMENT BY 10<br>  MAXVALUE 200<br>  NOCYCLE;<br><br>SELECT emp_seq.NEXTVAL FROM DUAL;<br>SELECT emp_seq.NEXTVAL FROM DUAL;<br>SELECT emp_seq.CURRVAL FROM DUAL;<br>```</p><ul class="choices"><li>A. 100, 110, 100</li><li>B. 100, 110, 110</li><li>C. 100, 100, 100</li><li>D. 110, 120, 120</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> B. 100, 110, 110</p><p>正解は「100, 110, 110」である。NEXTVALは呼び出すたびにシーケンスをINCREMENT BY分進めて現在値を返す。最初のNEXTVAL: START WITH 100 なので 100。2回目のNEXTVAL: 100 + 10 = 110。CURRVALは現在のシーケンス値を返す（進めない）ため 110。NOCYCLEはMAXVALUEに達した後さらに呼ぶとエラーになる設定（CYCLEならSTART WITHから再開）。CURRVALはNEXTVALを一度も呼んでいないセッションでは使用できない点に注意。</p></div></details></div></div><div class="section-card"><div class="section-title">権限・ロール・辞書ビュー・タイムゾーン</div><div class="topic-chips"><span class="chip">GRANT</span><span class="chip">REVOKE</span><span class="chip">ROLE</span><span class="chip">USER_TABLES</span><span class="chip">ALL_TAB_COLUMNS</span><span class="chip">CURRENT_TIMESTAMP</span><span class="chip">AT TIME ZONE</span><span class="chip">INTERVAL</span></div><div class="section-content"><h3>権限とロール</h3><pre><code>-- 権限付与
+GRANT SELECT, INSERT ON EMPLOYEES TO app_user;
+
+-- ロール作成と付与
+CREATE ROLE report_reader;
+GRANT SELECT ON EMPLOYEES TO report_reader;
+GRANT report_reader TO app_user;
+
+-- 権限の剥奪
+REVOKE INSERT ON EMPLOYEES FROM app_user;</code></pre><h3>データ・ディクショナリ・ビュー</h3><pre><code>-- 自スキーマの表一覧
+SELECT TABLE_NAME FROM USER_TABLES ORDER BY TABLE_NAME;
+
+-- 参照可能な列定義
+SELECT OWNER, TABLE_NAME, COLUMN_NAME, DATA_TYPE
+FROM   ALL_TAB_COLUMNS
+WHERE  TABLE_NAME = 'EMPLOYEES';</code></pre><h3>日時・タイムゾーン</h3><pre><code>-- 現在日時（セッションタイムゾーン）
+SELECT CURRENT_DATE, CURRENT_TIMESTAMP FROM DUAL;
+
+-- タイムゾーン変換
+SELECT CURRENT_TIMESTAMP AT TIME ZONE '+00:00' AS UTC_TIME
+FROM   DUAL;
+
+-- INTERVAL の利用例
+SELECT CURRENT_TIMESTAMP + INTERVAL '2' HOUR AS PLUS_2H
+FROM   DUAL;</code></pre><div class='tip-box'><strong>試験のポイント：</strong> 権限は最小権限で付与し、役割単位ではロールを使います。辞書ビュー（USER_/ALL_/DBA_）は参照範囲が異なります。CURRENT_TIMESTAMP はタイムゾーンを保持し、AT TIME ZONE で変換できます。</div></div></div>
+</div>
+</body>
+</html>

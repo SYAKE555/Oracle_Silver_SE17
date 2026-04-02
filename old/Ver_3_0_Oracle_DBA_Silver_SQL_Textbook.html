@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ver 3.0 | Oracle DBA Silver SQL 完全版教科書</title>
+<style>
+:root {
+  --bg: #f5f8fc;
+  --card: #ffffff;
+  --line: #dbe6f5;
+  --primary: #1d4f91;
+  --secondary: #2f6fbe;
+  --text: #1f2d3d;
+  --muted: #4b5b70;
+  --code-bg: #f3f7fc;
+  --kw: #1d4ed8;
+  --obj: #0f172a;
+  --str: #b45309;
+  --num: #6d28d9;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:"Segoe UI","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;line-height:1.8}
+a{color:var(--primary);text-decoration:none}
+.layout{display:grid;grid-template-columns:300px 1fr;gap:20px;max-width:1440px;margin:0 auto;padding:16px}
+.sidebar{position:sticky;top:10px;align-self:start;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;max-height:calc(100vh - 20px);overflow:auto}
+.sidebar h2{font-size:1.05rem;color:var(--primary);margin:0 0 8px}
+.sidebar ul{padding-left:18px;margin:0}
+.sidebar li{margin:4px 0}
+.main{min-width:0}
+.hero{background:linear-gradient(135deg,#1d4f91,#2f6fbe);color:#fff;border-radius:16px;padding:24px 20px;margin-bottom:16px}
+.hero h1{margin:0 0 8px;font-size:1.8rem}
+.hero p{margin:0}
+.section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:16px}
+.section h2{color:var(--primary);margin:0 0 10px;font-size:1.35rem;border-bottom:2px solid #c7dcf8;padding-bottom:6px}
+.subtopic{border:1px solid #e6eef9;border-radius:12px;padding:14px;margin:12px 0;background:#fbfdff}
+.subtopic h3{margin:0 0 8px;color:var(--secondary);font-size:1.05rem}
+.grid5{display:grid;grid-template-columns:1fr;gap:8px}
+.block{background:#fff;border:1px solid #e4ecf8;border-radius:10px;padding:10px}
+.block .title{font-weight:700;color:#1d4f91;margin-bottom:4px}
+.note{background:#eef6ff;border:1px solid #c8dcfb;border-left:4px solid #2f6fbe;border-radius:10px;padding:10px;margin:10px 0}
+.warn{background:#fff8f1;border:1px solid #fed7aa;border-left:4px solid #ea580c;border-radius:10px;padding:10px;margin:10px 0}
+.glossary{background:#f0f9ff;border:1px solid #bae6fd;border-radius:10px;padding:10px;margin:10px 0}
+.glossary strong{color:#0c4a6e}
+.figure{border:1px dashed #94a3b8;border-radius:10px;padding:10px;margin:10px 0;background:#f8fbff}
+.flow{display:grid;grid-template-columns:repeat(5,minmax(120px,1fr));gap:8px;align-items:center}
+.node{border:1px solid #cfdced;border-radius:8px;background:#fff;padding:8px;text-align:center;font-size:.86rem}
+.arr{text-align:center;color:#64748b;font-weight:700}
+pre{background:var(--code-bg);border:1px solid #dce8f8;border-radius:10px;padding:12px;overflow-x:auto;margin:10px 0}
+code{font-family:"Consolas","Monaco",monospace;font-size:.88rem}
+.kw{color:var(--kw);font-weight:700}.obj{color:var(--obj)}.str{color:var(--str)}.num{color:var(--num)}
+.table-wrap{overflow-x:auto}
+table{width:100%;min-width:680px;border-collapse:collapse}
+th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}
+th{background:#eef5ff}
+.backtop{text-align:right;margin-top:8px}
+@media(max-width:1080px){.layout{grid-template-columns:1fr}.sidebar{position:static;max-height:none}.flow{grid-template-columns:1fr}.arr{transform:rotate(90deg)}}
+</style>
+</head>
+<body><div class="layout"><aside class="sidebar"><h2>目次</h2><ul><li><a href="#top">はじめに</a></li><li><a href="#c1">1. リレーショナル・データベースの概要</a></li><li><a href="#c2">2. SQL SELECT文を使用したデータの取得</a></li><li><a href="#c3">3. データの制限とソート</a></li><li><a href="#c4">4. 単一行関数を使用した出力のカスタマイズ</a></li><li><a href="#c5">5. 変換関数と条件式の使用</a></li><li><a href="#c6">6. 集計データのレポート</a></li><li><a href="#c7">7. 複数の表からのデータ表示</a></li><li><a href="#c8">8. 副問合せを使用した問合せ</a></li><li><a href="#c9">9. 集合演算子の使用</a></li><li><a href="#c10">10. DML文を使用した表の管理</a></li><li><a href="#c11">11. DDLによる表と関係の管理</a></li><li><a href="#c12">12. ビューの管理</a></li><li><a href="#c13">13. 索引・シノニム・シーケンスの管理</a></li><li><a href="#c14">14. ユーザーアクセスの制御</a></li><li><a href="#c15">15. データ・ディクショナリ・ビューでの管理</a></li><li><a href="#c16">16. 異なるタイムゾーンでのデータ管理</a></li><li><a href="#appendix">付録: 直前チェック</a></li></ul></aside><main class="main"><section class="hero"><h1>Oracle DBA Silver SQL 完全版教科書 Ver 3.0</h1><p>初学者の理解定着と試験一発合格、さらに実務運用での安全性を両立するための統合教材。</p></section>
+<section class="section" id="top">
+  <h2>はじめに</h2>
+  <p>この教科書は、Oracle DBA Silver SQL 範囲を「試験で正答できること」と「実務で事故を起こさないこと」の両方を満たすように設計した完全版です。</p>
+  <div class="note"><strong>学習ルール:</strong> 各トピックを <code>定義 → 役割 → 動作原理 → 制限事項 → 試験/実務の急所</code> の順で確認し、最後に例題SQLを手入力してください。</div>
+  <div class="table-wrap">
+    <table>
+      <tr><th>到達段階</th><th>判定基準</th><th>想定時間</th></tr>
+      <tr><td>基礎理解</td><td>SELECT / WHERE / JOIN / GROUP BY の処理順を説明できる</td><td>8時間</td></tr>
+      <tr><td>試験対応</td><td>NULL・優先順位・型変換・権限問題で誤答しない</td><td>20時間</td></tr>
+      <tr><td>実務対応</td><td>更新手順、権限設計、障害初動SQLを運用できる</td><td>30時間</td></tr>
+    </table>
+  </div>
+  <div class="glossary"><strong>用語注釈:</strong> <b>NULL</b> は「0」や「空文字」ではなく「値が不明/未設定」の状態。比較式で通常の等号を使うと期待通りに判定できない。</div>
+</section>
+<section class="section" id="c1"><h2>1. リレーショナル・データベースの概要</h2><div class="glossary"><strong>用語注釈:</strong> <b>リレーション</b> / <b>主キー</b> / <b>外部キー</b> / <b>NULL</b> はこの章の理解に必須のキーワード。意味を曖昧にしたまま先へ進まない。</div><div class="note"><strong>実務の導入例:</strong> 要件ヒアリングで受けた日本語の依頼を、そのままSQLに落とし込まず、対象表・条件・更新影響範囲を先に分解する。</div><div class="subtopic">
+  <h3>1.1 データベースの役割とタイプ</h3>
+  <div class="grid5">
+    <div class="block"><div class="title">1. 定義</div><div>1.1 データベースの役割とタイプ の仕様上の意味と適用範囲を明確化し、何を入力にして何を結果として返すかを定義する。</div></div>
+    <div class="block"><div class="title">2. 役割</div><div>1.1 データベースの役割とタイプ は、1. リレーショナル・データベースの概要の中で業務要件をSQLへ正確に翻訳するための中核機能です。</div></div>
+    <div class="block"><div class="title">3. 動作原理</div><div>Oracleはまず対象行集合を確定し、その後に式評価・変換・並び替え・制約判定を行います。処理段階を誤認すると件数不一致や性能劣化が発生します。</div></div>
+    <div class="block"><div class="title">4. 制限事項</div><div>NULL混在時の比較、暗黙型変換、結合条件漏れ、更新条件漏れは代表的な失敗要因です。必ず事前件数確認と型明示を実施します。</div></div>
+    <div class="block"><div class="title">5. 試験・実務の急所</div><div>試験では『一見正しそうなSQL』に罠があります。実務では『実行できるSQL』より『安全に実行できるSQL』が評価されます。</div></div>
+  </div>
+</div><div class="subtopic">
+  <h3>1.2 リレーショナルモデルとは</h3>
+  <div class="grid5">
+    <div class="block"><div class="title">1. 定義</div><div>1.2 リレーショナルモデルとは の仕様上の意味と適用範囲を明確化し、何を入力にして何を結果として返すかを定義する。</div></div>
+    <div class="block"><div class="title">2. 役割</div><div>1.2 リレーショナルモデルとは は、1. リレーショナル・データベースの概要の中で業務要件をSQLへ正確に翻訳するための中核機能です。</div></div>
+    <div class="block"><div class="title">3. 動作原理</div><div>Oracleはまず対象行集合を確定し、その後に式評価・変換・並び替え・制約判定を行います。処理段階を誤認すると件数不一致や性能劣化が発生します。</div></div>
+    <div class="block"><div class="title">4. 制限事項</div><div>NULL混在時の比較、暗黙型変換、結合条件漏れ、更新条件漏れは代表的な失敗要因です。必ず事前件数確認と型明示を実施します。</div></div>
+    <div class="block"><div class="title">5. 試験・実務の急所</div><div>試験では『一見正しそうなSQL』に罠があります。実務では『実行できるSQL』より『安全に実行できるSQL』が評価されます。</div></div>
+  </div>
+</div><div class="subtopic">
+  <h3>1.3 SQLの概要</h3>
+  <div class="grid5">
+    <div class="block"><div class="title">1. 定義</div><div>1.3 SQLの概要 の仕様上の意味と適用範囲を明確化し、何を入力にして何を結果として返すかを定義する。</div></div>
+    <div class="block"><div class="title">2. 役割</div><div>1.3 SQLの概要 は、1. リレーショナル・データベースの概要の中で業務要件をSQLへ正確に翻訳するための中核機能です。</div></div>
+    <div class="block"><div class="title">3. 動作原理</div><div>Oracleはまず対象行集合を確定し、その後に式評価・変換・並び替え・制約判定を行います。処理段階を誤認すると件数不一致や性能劣化が発生します。</div></div>
+    <div class="block"><div class="title">4. 制限事項</div><div>NULL混在時の比較、暗黙型変換、結合条件漏れ、更新条件漏れは代表的な失敗要因です。必ず事前件数確認と型明示を実施します。</div></div>
+    <div class="block"><div class="title">5. 試験・実務の急所</div><div>試験では『一見正しそうなSQL』に罠があります。実務では『実行できるSQL』より『安全に実行できるSQL』が評価されます。</div></div>
+  </div>
+</div><h3>例題SQL（章代表）</h3><pre><code><span class="kw">SELECT</span> <span class="obj">employee_id</span>, <span class="obj">last_name</span>
+<span class="kw">FROM</span> <span class="obj">employees</span>
+<span class="kw">WHERE</span> <span class="obj">department_id</span> = <span class="num">50</span>
+<span class="kw">ORDER BY</span> <span class="obj">salary</span> <span class="kw">DESC</span>;</code></pre><div class="warn"><strong>誤り例:</strong> 条件未指定UPDATE、NULLを等号比較、暗黙変換依存、JOIN条件漏れ。これらは試験でも実務でも重大減点/重大事故の主要因。</div><div class="table-wrap"><table><tr><th>チェック項目</th><th>確認内容</th><th>完了</th></tr><tr><td>件数確認</td><td>更新前に同条件SELECTで対象件数を記録したか</td><td>□</td></tr><tr><td>型整合</td><td>TO_DATE/TO_NUMBER等で型を明示したか</td><td>□</td></tr><tr><td>NULL対策</td><td>IS NULL / NVL / COALESCEの扱いを確認したか</td><td>□</td></tr><tr><td>権限</td><td>実行ユーザーの最小権限を確認したか</td><td>□</td></tr><tr><td>ロールバック計画</td><td>SAVEPOINT/ROLLBACK手順を準備したか</td><td>□</td></tr></table></div><div class="backtop"><a href="#top">▲ トップへ戻る</a></div></section><section class="section" id="c2"><h2>2. SQL SELECT文を使用したデータの取得</h2><div class="glossary"><strong>用語注釈:</strong> <b>論理処理順</b> / <b>投影</b> / <b>選択</b> / <b>述語</b> はこの章の理解に必須のキーワード。意味を曖昧にしたまま先へ進まない。</div><div class="note"><strong>実務の導入例:</strong> 要件ヒアリングで受けた日本語の依頼を、そのままSQLに落とし込まず、対象表・条件・更新影響範囲を先に分解する。</div><div class="figure"><strong>概念図: 論理処理順</strong>
+<div class="flow"><div class="node">FROM</div><div class="arr">→</div><div class="node">WHERE</div><div class="arr">→</div><div class="node">GROUP BY/HAVING</div><div class="arr">→</div><div class="node">SELECT</div><div class="arr">→</div><div class="node">ORDER BY</div></div></div><div class="subtopic">
+  <h3>2.1 SELECT文の基本構文(行と列の取得)</h3>
+  <div class="grid5">
+    <div class="block"><div class="title">1. 定義</div><div>2.1 SELECT文の基本構文(行と列の取得) の仕様上の意味と適用範囲を明確化し、何を入力にして何を結果として返すかを定義する。</div></div>
+    <div class="block"><div class="title">2. 役割</div><div>2.1 SELECT文の基本構文(行と列の取得) は、2. SQL SELECT文を使用したデータの取得の中で業務要件をSQLへ正確に翻訳するための中核機能です。</div></div>
+    <div class="block"><div class="title">3. 動作原理</div><div>Oracleはまず対象行集合を確定し、その後に式評価・変換・並び替え・制約判定を行います。処理段階を誤認すると件数不一致や性能劣化が発生します。</div></div>
+    <div class="block"><div class="title">4. 制限事項</div><div>NULL混在時の比較、暗黙型変換、結合条件漏れ、更新条件漏れは代表的な失敗要因です。必ず事前件数確認と型明示を実施します。</div></div>
+    <div class="block"><div class="title">5. 試験・実務の急所</div><div>試験では『一見正しそうなSQL』に罠があります。実務では『実行できるSQL』より『安全に実行できるSQL』が評価されます。</div></div>
+  </div>
+</div><div class="subtopic">
+  <h3>2.2 列の取得</h3>
+  <div class="grid5">
+    <div class="block"><div class="title">1. 定義</div><div>2.2 列の取得 の仕様上の意味と適用範囲を明確化し、何を入力にして何を結果として返すかを定義する。</div></div>
+    <div class="block"><div class="title">2. 役割</div><div>2.2 列の取得 は、2. SQL SELECT文を使用したデータの取得の中で業務要件をSQLへ正確に翻訳するための中核機能です。</div></div>
+    <div class="block"><div class="title">3. 動作原理</div><div>Oracleはまず対象行集合を確定し、その後に式評価・変換・並び替え・制約判定を行います。処理段階を誤認すると件数不一致や性能劣化が発生します。</div></div>
+    <div class="block"><div class="title">4. 制限事項</div><div>NULL混在時の比較、暗黙型変換、結合条件漏れ、更新条件漏れは代表的な失敗要因です。必ず事前件数確認と型明示を実施します。</div></div>
+    <div class="block"><div class="title">5. 試験・実務の急所</div><div>試験では『一見正しそうなSQL』に罠があります。実務では『実行できるSQL』より『安全に実行できるSQL』が評価されます。</div></div>
+  </div>
+</div><div class="subtopic">
+  <h3>2.3 列の計算と列別名</h3>
+  <div class="grid5">
+    <div class="block"><div class="title">1. 定義</div><div>2.3 列の計算と列別名 の仕様上の意味と適用範囲を明確化し、何を入力にして何を結果として返すかを定義する。</div></div>
+    <div class="block"><div class="title">2. 役割</div><div>2.3 列の計算と列別名 は、2. SQL SELECT文を使用したデータの取得の中で業務要件をSQLへ正確に翻訳するための中核機能です。</div></div>
+    <div class="block"><div class="title">3. 動作原理</div><div>Oracleはまず対象行集合を確定し、その後に式評価・変換・並び替え・制約判定を行います。処理段階を誤認すると件数不一致や性能劣化が発生します。</div></div>
+    <div class="block"><div class="title">4. 制限事項</div><div>NULL混在時の比較、暗黙型変換、結合条件漏れ、更新条件漏れは代表的な失敗要因です。必ず事前件数確認と型明示を実施します。</div></div>
+    <div class="block"><div class="title">5. 試験・実務の急所</div><div>試験では『一見正しそうなSQL』に罠があります。実務では『実行できるSQL』より『安全に実行できるSQL』が評価されます。</div></div>
+  </div>
+</div><div class="subtopic">
+  <h3>2.4 WHERE句</h3>
+  <div class="grid5">
+    <div class="block"><div class="title">1. 定義</div><div>2.4 WHERE句 の仕様上の意味と適用範囲を明確化し、何を入力にして何を結果として返すかを定義する。</div></div>
+    <div class="block"><div class="title">2. 役割</div><div>2.4 WHERE句 は、2. SQL SELECT文を使用したデータの取得の中で業務要件をSQLへ正確に翻訳するための中核機能です。</div></div>
+    <div class="block"><div class="title">3. 動作原理</div><div>Oracleはまず対象行集合を確定し、その後に式評価・変換・並び替え・制約判定を行います。処理段階を誤認すると件数不一致や性能劣化が発生します。</div></div>
+    <div class="block"><div class="title">4. 制限事項</div><div>NULL混在時の比較、暗黙型変換、結合条件漏れ、更新条件漏れは代表的な失敗要因です。必ず事前件数確認と型明示を実施します。</div></div>
+    <div class="block"><div class="title">5. 試験・実務の急所</div><div>試験では『一見正しそうなSQL』に罠があります。実務では『実行できるSQL』より『安全に実行できるSQL』が評価されます。</div></div>
+  </div>
+</div><h3>例題SQL（章代表）</h3><pre><code><span class="kw">SELECT</span> <span class="obj">employee_id</span>, <span class="obj">last_name</span>
+<span class="kw">FROM</span> <span class="obj">employees</span>
+<span class="kw">WHERE</span> <span class="obj">department_id</span> = <span class="num">50</span>
+<span class="kw">ORDER BY</span> <span class="obj">salary</span> <span class="kw">DESC</span>;</code></pre><div class="warn"><strong>誤り例:</strong> 条件未指定UPDATE、NULLを等号比較、暗黙変換依存、JOIN条件漏れ。これらは試験でも実務でも重大減点/重大事故の主要因。</div><div class="table-wrap"><table><tr><th>チェック項目</th><th>確認内容</th><th>完了</th></tr><tr><td>件数確認</td><td>更新前に同条件SELECTで対象件数を記録したか</td><td>□</td></tr><tr><td>型整合</td><td>TO_DATE/TO_NUMBER等で型を明示したか</td><td>□</td></tr><tr><td>NULL対策</td><td>IS NULL / NVL / COALESCEの扱いを確認したか</td><td>□</td></tr><tr><td>権限</td><td>実行ユーザーの最小権限を確認したか</td><td>□</td></tr><tr><td>ロールバック計画</td><td>SAVEPOINT/ROLLBACK手順を準備したか</td><td>□</td></tr></table></div><div class="backtop"><a href="#top">▲ トップへ戻る</a></div></section><section class="section" id="c3"><h2>3. データの制限とソート</h2><div class="glossary"><strong>用語注釈:</strong> <b>決定性</b> / <b>ページング</b> / <b>NULLS FIRST/LAST</b> はこの章の理解に必須のキーワード。意味を曖昧にしたまま先へ進まない。</div><div class="note"><strong>実務の導入例:</strong> 要件ヒアリングで受けた日本語の依頼を、そのままSQLに落とし込まず、対象表・条件・更新影響範囲を先に分解する。</div><div class="subtopic">
+  <h3>3.1 ソートと行数制限</h3>
+  <div class="grid5">
+    <div class="block"><div class="title">1. 定義</div><div>3.1 ソートと行数制限 の仕様上の意味と適用範囲を明確化し、何を入力にして何を結果として返すかを定義する。</div></div>
+    <div class="block"><div class="title">2. 役割</div><div>3.1 ソートと行数制限 は、3. データの制限とソートの中で業務要件をSQLへ正確に翻訳するための中核機能です。</div></div>
+    <div class="block"><div class="title">3. 動作原理</div><div>Oracleはまず対象行集合を確定し、その後に式評価・変換・並び替え・制約判定を行います。処理段階を誤認すると件数不一致や性能劣化が発生します。</div></div>
+    <div class="block"><div class="title">4. 制限事項</div><div>NULL混在時の比較、暗黙型変換、結合条件漏れ、更新条件漏れは代表的な失敗要因です。必ず事前件数確認と型明示を実施します。</div></div>
+    <div class="block"><div class="title">5. 試験・実務の急所</div><div>試験では『一見正しそうなSQL』に罠があります。実務では『実行できるSQL』より『安全に実行できるSQL』が評価されます。</div></div>
+  </div>
+</div><div class="subtopic">
+  <h3>3.2 ORDER BY句</h3>
+  <div class="grid5">
+    <div class="block"><div class="title">1. 定義</div><div>3.2 ORDER BY句 の仕様上の意味と適用範囲を明確化し、何を入力にして何を結果として返すかを定義する。</div></div>
+    <div class="block"><div class="title">2. 役割</div><div>3.2 ORDER BY句 は、3. データの制限とソートの中で業務要件をSQLへ正確に翻訳するための中核機能です。</div></div>
+    <div class="block"><div class="title">3. 動作原理</div><div>Oracleはまず対象行集合を確定し、その後に式評価・変換・並び替え・制約判定を行います。処理段階を誤認すると件数不一致や性能劣化が発生します。</div></div>
+    <div class="block"><div class="title">4. 制限事項</div><div>NULL混在時の比較、暗黙型変換、結合条件漏れ、更新条件漏れは代表的な失敗要因です。必ず事前件数確認と型明示を実施します。</div></div>
+    <div class="block"><div class="title">5. 試験・実務の急所</div><div>試験では『一見正しそうなSQL』に罠があります。実務では『実行できるSQL』より『安全に実行できるSQL』が評価されます。</div></div>
+  </div>
+</div><div class="subtopic">
+  <h3>3.3 OFFSET句/FETCH句</h3>
+  <div class="grid5">
+    <div class="block"><div class="title">1. 定義</div><div>3.3 OFFSET句/FETCH句 の仕様上の意味と適用範囲を明確化し、何を入力にして何を結果として返すかを定義する。</div></div>
+    <div class="block"><div class="title">2. 役割</div><div>3.3 OFFSET句/FETCH句 は、3. データの制限とソートの中で業務要件をSQLへ正確に翻訳するための中核機能です。</div></div>
+    <div class="block"><div class="title">3. 動作原理</div><div>Oracleはまず対象行集合を確定し、その後に式評価・変換・並び替え・制約判定を行います。処理段階を誤認すると件数不一致や性能劣化が発生します。</div></div>
+    <div class="block"><div class="title">4. 制限事項</div><div>NULL混在時の比較、暗黙型変換、結合条件漏れ、更新条件漏れは代表的な失敗要因です。必ず事前件数確認と型明示を実施します。</div></div>
+    <div class="block"><div class="title">5. 試験・実務の急所</div><div>試験では『一見正しそうなSQL』に罠があります。実務では『実行できるSQL』より『安全に実行できるSQL』が評価されます。</div></div>
+  </div>
+</div><div class="subtopic">
+  <h3>3.4 置換変数</h3>
+  <div class="grid5">
+    <div class="block"><div class="title">1. 定義</div><div>3.4 置換変数 の仕様上の意味と適用範囲を明確化し、何を入力にして何を結果として返すかを定義する。</div></div>
+    <div class="block"><div class="title">2. 役割</div><div>3.4 置換変数 は、3. データの制限とソートの中で業務要件をSQLへ正確に翻訳するための中核機能です。</div></div>
+    <div class="block"><div class="title">3. 動作原理</div><div>Oracleはまず対象行集合を確定し、その後に式評価・変換・並び替え・制約判定を行います。処理段階を誤認すると件数不一致や性能劣化が発生します。</div></div>
+    <div class="block"><div class="title">4. 制限事項</div><div>NULL混在時の比較、暗黙型変換、結合条件漏れ、更新条件漏れは代表的な失敗要因です。必ず事前件数確認と型明示を実施します。</div></div>
+    <div class="block"><div class="title">5. 試験・実務の急所</div><div>試験では『一見正しそうなSQL』に罠があります。実務では『実行できるSQL』より『安全に実行できるSQL』が評価されます。</div></div>
+  </div>
+</div><h3>例題SQL（章代表）</h3><pre><code><span class="kw">SELECT</span> <span class="obj">employee_id</span>, <span class="obj">last_name</span>
+<span class="kw">FROM</span> <span class="obj">employees</span>
+<span class="kw">WHERE</span> <span class="obj">department_id</span> = <span class="num">50</span>
+<span class="kw">ORDER BY</span> <span class="obj">salary</span> <span class="kw">DESC</span>;</code></pre><div class="warn"><strong>誤り例:</strong> 条件未指定UPDATE、NULLを等号比較、暗黙変換依存、JOIN条件漏れ。これらは試験でも実務でも重大減点/重大事故の主要因。</div><div class="table-wrap"><table><tr><th>チェック項目</th><th>確認内容</th><th>完了</th></tr><tr><td>件数確認</td><td>更新前に同条件SELECTで対象件数を記録したか</td><td>□</td></tr><tr><td>型整合</td><td>TO_DATE/TO_NUMBER等で型を明示したか</td><td>□</td></tr><tr><td>NULL対策</td><td>IS NULL / NVL / COALESCEの扱いを確認したか</td><td>□</td></tr><tr><td>権限</td><td>実行ユーザーの最小権限を確認したか</td><td>□</td></tr><tr><td>ロールバック計画</td><td>SAVEPOINT/ROLLBACK手順を準備したか</td><td>□</td></tr></table></div><div class="backtop"><a href="#top">▲ トップへ戻る</a></div></section><section class="section" id="c4"><h2>4. 単一行関数を使用した出力のカスタマイズ</h2><div class="glossary"><strong>用語注釈:</strong> <b>文字列関数</b> / <b>数値関数</b> / <b>日付関数</b> はこの章の理解に必須のキーワード。意味を曖昧にしたまま先へ進まない。</div><div class="note"><strong>実務の導入例:</strong> 要件ヒアリングで受けた日本語の依頼を、そのままSQLに落とし込まず、対象表・条件・更新影響範囲を先に分解する。</div><div class="subtopic">
+  <h3>4.1 単一行関数とグループ関数</h3>
+  <div class="grid5">
+    <div class="block"><div class="title">1. 定義</div><div>4.1 単一行関数とグループ関数 の仕様上の意味と適用範囲を明確化し、何を入力にして何を結果として返すかを定義する。</div></div>
+    <div class="block"><div class="title">2. 役割</div><div>4.1 単一行関数とグループ関数 は、4. 単一行関数を使用した出力のカスタマイズの中で業務要件をSQLへ正確に翻訳するための中核機能です。</div></div>
+    <div class="block"><div class="title">3. 動作原理</div><div>Oracleはまず対象行集合を確定し、その後に式評価・変換・並び替え・制約判定を行います。処理段階を誤認すると件数不一致や性能劣化が発生します。</div></div>
+    <div class="block"><div class="title">4. 制限事項</div><div>NULL混在時の比較、暗黙型変換、結合条件漏れ、更新条件漏れは代表的な失敗要因です。必ず事前件数確認と型明示を実施します。</div></div>
+    <div class="block"><div class="title">5. 試験・実務の急所</div><div>試験では『一見正しそうなSQL』に罠があります。実務では『実行できるSQL』より『安全に実行できるSQL』が評価されます。</div></div>
+  </div>
+</div><div class="subtopic">
+  <h3>4.2 行ごとの計算</h3>
+  <div class="grid5">
+    <div class="block"><div class="title">1. 定義</div><div>4.2 行ごとの計算 の仕様上の意味と適用範囲を明確化し、何を入力にして何を結果として返すかを定義する。</div></div>
+    <div class="block"><div class="title">2. 役割</div><div>4.2 行ごとの計算 は、4. 単一行関数を使用した出力のカスタマイズの中で業務要件をSQLへ正確に翻訳するための中核機能です。</div></div>
+    <div class="block"><div class="title">3. 動作原理</div><div>Oracleはまず対象行集合を確定し、その後に式評価・変換・並び替え・制約判定を行います。処理段階を誤認すると件数不一致や性能劣化が発生します。</div></div>
+    <div class="block"><div class="title">4. 制限事項</div><div>NULL混在時の比較、暗黙型変換、結合条件漏れ、更新条件漏れは代表的な失敗要因です。必ず事前件数確認と型明示を実施します。</div></div>
+    <div class="block"><div class="title">5. 試験・実務の急所</div><div>試験では『一見正しそうなSQL』に罠があります。実務では『実行できるSQL』より『安全に実行できるSQL』が評価されます。</div></div>
+  </div>
+</div><h3>例題SQL（章代表）</h3><pre><code><span class="kw">SELECT</span> <span class="obj">department_id</span>, <span class="kw">AVG</span>(<span class="obj">salary</span>) <span class="kw">AS</span> <span class="obj">avg_sal</span>
+<span class="kw">FROM</span> <span class="obj">employees</span>
+<span class="kw">GROUP BY</span> <span class="obj">department_id</span>
+<span class="kw">HAVING</span> <span class="kw">AVG</span>(<span class="obj">salary</span>) &gt;= <span class="num">9000</span>;</code></pre><div class="warn"><strong>誤り例:</strong> 条件未指定UPDATE、NULLを等号比較、暗黙変換依存、JOIN条件漏れ。これらは試験でも実務でも重大減点/重大事故の主要因。</div><div class="table-wrap"><table><tr><th>チェック項目</th><th>確認内容</th><th>完了</th></tr><tr><td>件数確認</td><td>更新前に同条件SELECTで対象件数を記録したか</td><td>□</td></tr><tr><td>型整合</td><td>TO_DATE/TO_NUMBER等で型を明示したか</td><td>□</td></tr><tr><td>NULL対策</td><td>IS NULL / NVL / COALESCEの扱いを確認したか</td><td>□</td></tr><tr><td>権限</td><td>実行ユーザーの最小権限を確認したか</td><td>□</td></tr><tr><td>ロールバック計画</td><td>SAVEPOINT/ROLLBACK手順を準備したか</td><td>□</td></tr></table></div><div class="backtop"><a href="#top">▲ トップへ戻る</a></div></section><section class="section" id="c5"><h2>5. 変換関数と条件式の使用</h2><div class="glossary"><strong>用語注釈:</strong> <b>暗黙変換</b> / <b>明示変換</b> / <b>CASE式</b> はこの章の理解に必須のキーワード。意味を曖昧にしたまま先へ進まない。</div><div class="note"><strong>実務の導入例:</strong> 要件ヒアリングで受けた日本語の依頼を、そのままSQLに落とし込まず、対象表・条件・更新影響範囲を先に分解する。</div><div class="subtopic">
+  <h3>5.1 データ型の変換</h3>
+  <div class="grid5">
+    <div class="block"><div class="title">1. 定義</div><div>5.1 データ型の変換 の仕様上の意味と適用範囲を明確化し、何を入力にして何を結果として返すかを定義する。</div></div>
+    <div class="block"><div class="title">2. 役割</div><div>5.1 データ型の変換 は、5. 変換関数と条件式の使用の中で業務要件をSQLへ正確に翻訳するための中核機能です。</div></div>
+    <div class="block"><div class="title">3. 動作原理</div><div>Oracleはまず対象行集合を確定し、その後に式評価・変換・並び替え・制約判定を行います。処理段階を誤認すると件数不一致や性能劣化が発生します。</div></div>
+    <div class="block"><div class="title">4. 制限事項</div><div>NULL混在時の比較、暗黙型変換、結合条件漏れ、更新条件漏れは代表的な失敗要因です。必ず事前件数確認と型明示を実施します。</div></div>
+    <div class="block"><div class="title">5. 試験・実務の急所</div><div>試験では『一見正しそうなSQL』に罠があります。実務では『実行できるSQL』より『安全に実行できるSQL』が評価されます。</div></div>
+  </div>
+</div><div class="subtopic">
+  <h3>5.2 NULL処理</h3>
+  <div class="grid5">
+    <div class="block"><div class="title">1. 定義</div><div>5.2 NULL処理 の仕様上の意味と適用範囲を明確化し、何を入力にして何を結果として返すかを定義する。</div></div>
+    <div class="block"><div class="title">2. 役割</div><div>5.2 NULL処理 は、5. 変換関数と条件式の使用の中で業務要件をSQLへ正確に翻訳するための中核機能です。</div></div>
+    <div class="block"><div class="title">3. 動作原理</div><div>Oracleはまず対象行集合を確定し、その後に式評価・変換・並び替え・制約判定を行います。処理段階を誤認すると件数不一致や性能劣化が発生します。</div></div>
+    <div class="block"><div class="title">4. 制限事項</div><div>NULL混在時の比較、暗黙型変換、結合条件漏れ、更新条件漏れは代表的な失敗要因です。必ず事前件数確認と型明示を実施します。</div></div>
+    <div class="block"><div class="title">5. 試験・実務の急所</div><div>試験では『一見正しそうなSQL』に罠があります。実務では『実行できるSQL』より『安全に実行できるSQL』が評価されます。</div></div>
+  </div>
+</div><div class="subtopic">
+  <h3>5.3 条件式とDECODE</h3>
+  <div class="grid5">
+    <div class="block"><div class="title">1. 定義</div><div>5.3 条件式とDECODE の仕様上の意味と適用範囲を明確化し、何を入力にして何を結果として返すかを定義する。</div></div>
+    <div class="block"><div class="title">2. 役割</div><div>5.3 条件式とDECODE は、5. 変換関数と条件式の使用の中で業務要件をSQLへ正確に翻訳するための中核機能です。</div></div>
+    <div class="block"><div class="title">3. 動作原理</div><div>Oracleはまず対象行集合を確定し、その後に式評価・変換・並び替え・制約判定を行います。処理段階を誤認すると件数不一致や性能劣化が発生します。</div></div>
+    <div class="block"><div class="title">4. 制限事項</div><div>NULL混在時の比較、暗黙型変換、結合条件漏れ、更新条件漏れは代表的な失敗要因です。必ず事前件数確認と型明示を実施します。</div></div>
+    <div class="block"><div class="title">5. 試験・実務の急所</div><div>試験では『一見正しそうなSQL』に罠があります。実務では『実行できるSQL』より『安全に実行できるSQL』が評価されます。</div></div>
+  </div>
+</div><h3>例題SQL（章代表）</h3><pre><code><span class="kw">SELECT</span> <span class="obj">department_id</span>, <span class="kw">AVG</span>(<span class="obj">salary</span>) <span class="kw">AS</span> <span class="obj">avg_sal</span>
+<span class="kw">FROM</span> <span class="obj">employees</span>
+<span class="kw">GROUP BY</span> <span class="obj">department_id</span>
+<span class="kw">HAVING</span> <span class="kw">AVG</span>(<span class="obj">salary</span>) &gt;= <span class="num">9000</span>;</code></pre><div class="warn"><strong>誤り例:</strong> 条件未指定UPDATE、NULLを等号比較、暗黙変換依存、JOIN条件漏れ。これらは試験でも実務でも重大減点/重大事故の主要因。</div><div class="table-wrap"><table><tr><th>チェック項目</th><th>確認内容</th><th>完了</th></tr><tr><td>件数確認</td><td>更新前に同条件SELECTで対象件数を記録したか</td><td>□</td></tr><tr><td>型整合</td><td>TO_DATE/TO_NUMBER等で型を明示したか</td><td>□</td></tr><tr><td>NULL対策</td><td>IS NULL / NVL / COALESCEの扱いを確認したか</td><td>□</td></tr><tr><td>権限</td><td>実行ユーザーの最小権限を確認したか</td><td>□</td></tr><tr><td>ロールバック計画</td><td>SAVEPOINT/ROLLBACK手順を準備したか</td><td>□</td></tr></table></div><div class="backtop"><a href="#top">▲ トップへ戻る</a></div></section><section class="section" id="c6"><h2>6. 集計データのレポート</h2><div class="glossary"><strong>用語注釈:</strong> <b>集約</b> / <b>粒度</b> / <b>3値論理</b> はこの章の理解に必須のキーワード。意味を曖昧にしたまま先へ進まない。</div><div class="note"><strong>実務の導入例:</strong> 要件ヒアリングで受けた日本語の依頼を、そのままSQLに落とし込まず、対象表・条件・更新影響範囲を先に分解する。</div><div class="subtopic">
+  <h3>6.1 グループ化と集計</h3>
+  <div class="grid5">
+    <div class="block"><div class="title">1. 定義</div><div>6.1 グループ化と集計 の仕様上の意味と適用範囲を明確化し、何を入力にして何を結果として返すかを定義する。</div></div>
+    <div class="block"><div class="title">2. 役割</div><div>6.1 グループ化と集計 は、6. 集計データのレポートの中で業務要件をSQLへ正確に翻訳するための中核機能です。</div></div>
+    <div class="block"><div class="title">3. 動作原理</div><div>Oracleはまず対象行集合を確定し、その後に式評価・変換・並び替え・制約判定を行います。処理段階を誤認すると件数不一致や性能劣化が発生します。</div></div>
+    <div class="block"><div class="title">4. 制限事項</div><div>NULL混在時の比較、暗黙型変換、結合条件漏れ、更新条件漏れは代表的な失敗要因です。必ず事前件数確認と型明示を実施します。</div></div>
+    <div class="block"><div class="title">5. 試験・実務の急所</div><div>試験では『一見正しそうなSQL』に罠があります。実務では『実行できるSQL』より『安全に実行できるSQL』が評価されます。</div></div>
+  </div>
+</div><div class="subtopic">
+  <h3>6.2 グループ関数</h3>
+  <div class="grid5">
+    <div class="block"><div class="title">1. 定義</div><div>6.2 グループ関数 の仕様上の意味と適用範囲を明確化し、何を入力にして何を結果として返すかを定義する。</div></div>
+    <div class="block"><div class="title">2. 役割</div><div>6.2 グループ関数 は、6. 集計データのレポートの中で業務要件をSQLへ正確に翻訳するための中核機能です。</div></div>
+    <div class="block"><div class="title">3. 動作原理</div><div>Oracleはまず対象行集合を確定し、その後に式評価・変換・並び替え・制約判定を行います。処理段階を誤認すると件数不一致や性能劣化が発生します。</div></div>
+    <div class="block"><div class="title">4. 制限事項</div><div>NULL混在時の比較、暗黙型変換、結合条件漏れ、更新条件漏れは代表的な失敗要因です。必ず事前件数確認と型明示を実施します。</div></div>
+    <div class="block"><div class="title">5. 試験・実務の急所</div><div>試験では『一見正しそうなSQL』に罠があります。実務では『実行できるSQL』より『安全に実行できるSQL』が評価されます。</div></div>
+  </div>
+</div><div class="subtopic">
+  <h3>6.3 GROUP BY/HAVING</h3>
+  <div class="grid5">
+    <div class="block"><div class="title">1. 定義</div><div>6.3 GROUP BY/HAVING の仕様上の意味と適用範囲を明確化し、何を入力にして何を結果として返すかを定義する。</div></div>
+    <div class="block"><div class="title">2. 役割</div><div>6.3 GROUP BY/HAVING は、6. 集計データのレポートの中で業務要件をSQLへ正確に翻訳するための中核機能です。</div></div>
+    <div class="block"><div class="title">3. 動作原理</div><div>Oracleはまず対象行集合を確定し、その後に式評価・変換・並び替え・制約判定を行います。処理段階を誤認すると件数不一致や性能劣化が発生します。</div></div>
+    <div class="block"><div class="title">4. 制限事項</div><div>NULL混在時の比較、暗黙型変換、結合条件漏れ、更新条件漏れは代表的な失敗要因です。必ず事前件数確認と型明示を実施します。</div></div>
+    <div class="block"><div class="title">5. 試験・実務の急所</div><div>試験では『一見正しそうなSQL』に罠があります。実務では『実行できるSQL』より『安全に実行できるSQL』が評価されます。</div></div>
+  </div>
+</div><div class="subtopic">
+  <h3>6.4 まとめ</h3>
+  <div class="grid5">
+    <div class="block"><div class="title">1. 定義</div><div>6.4 まとめ の仕様上の意味と適用範囲を明確化し、何を入力にして何を結果として返すかを定義する。</div></div>
+    <div class="block"><div class="title">2. 役割</div><div>6.4 まとめ は、6. 集計データのレポートの中で業務要件をSQLへ正確に翻訳するための中核機能です。</div></div>
+    <div class="block"><div class="title">3. 動作原理</div><div>Oracleはまず対象行集合を確定し、その後に式評価・変換・並び替え・制約判定を行います。処理段階を誤認すると件数不一致や性能劣化が発生します。</div></div>
+    <div class="block"><div class="title">4. 制限事項</div><div>NULL混在時の比較、暗黙型変換、結合条件漏れ、更新条件漏れは代表的な失敗要因です。必ず事前件数確認と型明示を実施します。</div></div>
+    <div class="block"><div class="title">5. 試験・実務の急所</div><div>試験では『一見正しそうなSQL』に罠があります。実務では『実行できるSQL』より『安全に実行できるSQL』が評価されます。</div></div>
+  </div>
+</div><div class="subtopic">
+  <h3>6.5 ROWID/ROWNUM</h3>
+  <div class="grid5">
+    <div class="block"><div class="title">1. 定義</div><div>6.5 ROWID/ROWNUM の仕様上の意味と適用範囲を明確化し、何を入力にして何を結果として返すかを定義する。</div></div>
+    <div class="block"><div class="title">2. 役割</div><div>6.5 ROWID/ROWNUM は、6. 集計データのレポートの中で業務要件をSQLへ正確に翻訳するための中核機能です。</div></div>
+    <div class="block"><div class="title">3. 動作原理</div><div>Oracleはまず対象行集合を確定し、その後に式評価・変換・並び替え・制約判定を行います。処理段階を誤認すると件数不一致や性能劣化が発生します。</div></div>
+    <div class="block"><div class="title">4. 制限事項</div><div>NULL混在時の比較、暗黙型変換、結合条件漏れ、更新条件漏れは代表的な失敗要因です。必ず事前件数確認と型明示を実施します。</div></div>
+    <div class="block"><div class="title">5. 試験・実務の急所</div><div>試験では『一見正しそうなSQL』に罠があります。実務では『実行できるSQL』より『安全に実行できるSQL』が評価されます。</div></div>
+  </div>
+</div><h3>例題SQL（章代表）</h3><pre><code><span class="kw">SELECT</span> <span class="obj">department_id</span>, <span class="kw">AVG</span>(<span class="obj">salary</span>) <span class="kw">AS</span> <span class="obj">avg_sal</span>
+<span class="kw">FROM</span> <span class="obj">employees</span>
+<span class="kw">GROUP BY</span> <span class="obj">department_id</span>
+<span class="kw">HAVING</span> <span class="kw">AVG</span>(<span class="obj">salary</span>) &gt;= <span class="num">9000</span>;</code></pre><div class="warn"><strong>誤り例:</strong> 条件未指定UPDATE、NULLを等号比較、暗黙変換依存、JOIN条件漏れ。これらは試験でも実務でも重大減点/重大事故の主要因。</div><div class="table-wrap"><table><tr><th>チェック項目</th><th>確認内容</th><th>完了</th></tr><tr><td>件数確認</td><td>更新前に同条件SELECTで対象件数を記録したか</td><td>□</td></tr><tr><td>型整合</td><td>TO_DATE/TO_NUMBER等で型を明示したか</td><td>□</td></tr><tr><td>NULL対策</td><td>IS NULL / NVL / COALESCEの扱いを確認したか</td><td>□</td></tr><tr><td>権限</td><td>実行ユーザーの最小権限を確認したか</td><td>□</td></tr><tr><td>ロールバック計画</td><td>SAVEPOINT/ROLLBACK手順を準備したか</td><td>□</td></tr></table></div><div class="backtop"><a href="#top">▲ トップへ戻る</a></div></section><section class="section" id="c7"><h2>7. 複数の表からのデータ表示</h2><div class="glossary"><strong>用語注釈:</strong> <b>結合条件</b> / <b>デカルト積</b> / <b>駆動表</b> はこの章の理解に必須のキーワード。意味を曖昧にしたまま先へ進まない。</div><div class="note"><strong>実務の導入例:</strong> 要件ヒアリングで受けた日本語の依頼を、そのままSQLに落とし込まず、対象表・条件・更新影響範囲を先に分解する。</div><div class="figure"><strong>概念図: JOIN種別の差</strong>
+<div class="table-wrap"><table><tr><th>JOIN</th><th>一致しない行</th><th>用途</th></tr><tr><td>INNER</td><td>除外</td><td>整合データのみ</td></tr><tr><td>LEFT OUTER</td><td>残す</td><td>欠損監査・未設定抽出</td></tr><tr><td>CROSS</td><td>全組合せ</td><td>テスト・組合せ生成（注意）</td></tr></table></div></div><div class="subtopic">
+  <h3>7.1 結合の考え方</h3>
+  <div class="grid5">
+    <div class="block"><div class="title">1. 定義</div><div>7.1 結合の考え方 の仕様上の意味と適用範囲を明確化し、何を入力にして何を結果として返すかを定義する。</div></div>
+    <div class="block"><div class="title">2. 役割</div><div>7.1 結合の考え方 は、7. 複数の表からのデータ表示の中で業務要件をSQLへ正確に翻訳するための中核機能です。</div></div>
+    <div class="block"><div class="title">3. 動作原理</div><div>Oracleはまず対象行集合を確定し、その後に式評価・変換・並び替え・制約判定を行います。処理段階を誤認すると件数不一致や性能劣化が発生します。</div></div>
+    <div class="block"><div class="title">4. 制限事項</div><div>NULL混在時の比較、暗黙型変換、結合条件漏れ、更新条件漏れは代表的な失敗要因です。必ず事前件数確認と型明示を実施します。</div></div>
+    <div class="block"><div class="title">5. 試験・実務の急所</div><div>試験では『一見正しそうなSQL』に罠があります。実務では『実行できるSQL』より『安全に実行できるSQL』が評価されます。</div></div>
+  </div>
+</div><div class="subtopic">
+  <h3>7.2 内部結合</h3>
+  <div class="grid5">
+    <div class="block"><div class="title">1. 定義</div><div>7.2 内部結合 の仕様上の意味と適用範囲を明確化し、何を入力にして何を結果として返すかを定義する。</div></div>
+    <div class="block"><div class="title">2. 役割</div><div>7.2 内部結合 は、7. 複数の表からのデータ表示の中で業務要件をSQLへ正確に翻訳するための中核機能です。</div></div>
+    <div class="block"><div class="title">3. 動作原理</div><div>Oracleはまず対象行集合を確定し、その後に式評価・変換・並び替え・制約判定を行います。処理段階を誤認すると件数不一致や性能劣化が発生します。</div></div>
+    <div class="block"><div class="title">4. 制限事項</div><div>NULL混在時の比較、暗黙型変換、結合条件漏れ、更新条件漏れは代表的な失敗要因です。必ず事前件数確認と型明示を実施します。</div></div>
+    <div class="block"><div class="title">5. 試験・実務の急所</div><div>試験では『一見正しそうなSQL』に罠があります。実務では『実行できるSQL』より『安全に実行できるSQL』が評価されます。</div></div>
+  </div>
+</div><div class="subtopic">
+  <h3>7.3 外部結合</h3>
+  <div class="grid5">
+    <div class="block"><div class="title">1. 定義</div><div>7.3 外部結合 の仕様上の意味と適用範囲を明確化し、何を入力にして何を結果として返すかを定義する。</div></div>
+    <div class="block"><div class="title">2. 役割</div><div>7.3 外部結合 は、7. 複数の表からのデータ表示の中で業務要件をSQLへ正確に翻訳するための中核機能です。</div></div>
+    <div class="block"><div class="title">3. 動作原理</div><div>Oracleはまず対象行集合を確定し、その後に式評価・変換・並び替え・制約判定を行います。処理段階を誤認すると件数不一致や性能劣化が発生します。</div></div>
+    <div class="block"><div class="title">4. 制限事項</div><div>NULL混在時の比較、暗黙型変換、結合条件漏れ、更新条件漏れは代表的な失敗要因です。必ず事前件数確認と型明示を実施します。</div></div>
+    <div class="block"><div class="title">5. 試験・実務の急所</div><div>試験では『一見正しそうなSQL』に罠があります。実務では『実行できるSQL』より『安全に実行できるSQL』が評価されます。</div></div>
+  </div>
+</div><div class="subtopic">
+  <h3>7.4 クロス結合</h3>
+  <div class="grid5">
+    <div class="block"><div class="title">1. 定義</div><div>7.4 クロス結合 の仕様上の意味と適用範囲を明確化し、何を入力にして何を結果として返すかを定義する。</div></div>
+    <div class="block"><div class="title">2. 役割</div><div>7.4 クロス結合 は、7. 複数の表からのデータ表示の中で業務要件をSQLへ正確に翻訳するための中核機能です。</div></div>
+    <div class="block"><div class="title">3. 動作原理</div><div>Oracleはまず対象行集合を確定し、その後に式評価・変換・並び替え・制約判定を行います。処理段階を誤認すると件数不一致や性能劣化が発生します。</div></div>
+    <div class="block"><div class="title">4. 制限事項</div><div>NULL混在時の比較、暗黙型変換、結合条件漏れ、更新条件漏れは代表的な失敗要因です。必ず事前件数確認と型明示を実施します。</div></div>
+    <div class="block"><div class="title">5. 試験・実務の急所</div><div>試験では『一見正しそうなSQL』に罠があります。実務では『実行できるSQL』より『安全に実行できるSQL』が評価されます。</div></div>
+  </div>
+</div><div class="subtopic">
+  <h3>7.5 自然結合</h3>
+  <div class="grid5">
+    <div class="block"><div class="title">1. 定義</div><div>7.5 自然結合 の仕様上の意味と適用範囲を明確化し、何を入力にして何を結果として返すかを定義する。</div></div>
+    <div class="block"><div class="title">2. 役割</div><div>7.5 自然結合 は、7. 複数の表からのデータ表示の中で業務要件をSQLへ正確に翻訳するための中核機能です。</div></div>
+    <div class="block"><div class="title">3. 動作原理</div><div>Oracleはまず対象行集合を確定し、その後に式評価・変換・並び替え・制約判定を行います。処理段階を誤認すると件数不一致や性能劣化が発生します。</div></div>
+    <div class="block"><div class="title">4. 制限事項</div><div>NULL混在時の比較、暗黙型変換、結合条件漏れ、更新条件漏れは代表的な失敗要因です。必ず事前件数確認と型明示を実施します。</div></div>
+    <div class="block"><div class="title">5. 試験・実務の急所</div><div>試験では『一見正しそうなSQL』に罠があります。実務では『実行できるSQL』より『安全に実行できるSQL』が評価されます。</div></div>
+  </div>
+</div><div class="subtopic">
+  <h3>7.6 その他の結合</h3>
+  <div class="grid5">
+    <div class="block"><div class="title">1. 定義</div><div>7.6 その他の結合 の仕様上の意味と適用範囲を明確化し、何を入力にして何を結果として返すかを定義する。</div></div>
+    <div class="block"><div class="title">2. 役割</div><div>7.6 その他の結合 は、7. 複数の表からのデータ表示の中で業務要件をSQLへ正確に翻訳するための中核機能です。</div></div>
+    <div class="block"><div class="title">3. 動作原理</div><div>Oracleはまず対象行集合を確定し、その後に式評価・変換・並び替え・制約判定を行います。処理段階を誤認すると件数不一致や性能劣化が発生します。</div></div>
+    <div class="block"><div class="title">4. 制限事項</div><div>NULL混在時の比較、暗黙型変換、結合条件漏れ、更新条件漏れは代表的な失敗要因です。必ず事前件数確認と型明示を実施します。</div></div>
+    <div class="block"><div class="title">5. 試験・実務の急所</div><div>試験では『一見正しそうなSQL』に罠があります。実務では『実行できるSQL』より『安全に実行できるSQL』が評価されます。</div></div>
+  </div>
+</div><div class="subtopic">
+  <h3>7.7 まとめ</h3>
+  <div class="grid5">
+    <div class="block"><div class="title">1. 定義</div><div>7.7 まとめ の仕様上の意味と適用範囲を明確化し、何を入力にして何を結果として返すかを定義する。</div></div>
+    <div class="block"><div class="title">2. 役割</div><div>7.7 まとめ は、7. 複数の表からのデータ表示の中で業務要件をSQLへ正確に翻訳するための中核機能です。</div></div>
+    <div class="block"><div class="title">3. 動作原理</div><div>Oracleはまず対象行集合を確定し、その後に式評価・変換・並び替え・制約判定を行います。処理段階を誤認すると件数不一致や性能劣化が発生します。</div></div>
+    <div class="block"><div class="title">4. 制限事項</div><div>NULL混在時の比較、暗黙型変換、結合条件漏れ、更新条件漏れは代表的な失敗要因です。必ず事前件数確認と型明示を実施します。</div></div>
+    <div class="block"><div class="title">5. 試験・実務の急所</div><div>試験では『一見正しそうなSQL』に罠があります。実務では『実行できるSQL』より『安全に実行できるSQL』が評価されます。</div></div>
+  </div>
+</div><h3>例題SQL（章代表）</h3><pre><code><span class="kw">SELECT</span> <span class="obj">e.employee_id</span>, <span class="obj">d.department_name</span>
+<span class="kw">FROM</span> <span class="obj">employees</span> <span class="obj">e</span>
+<span class="kw">LEFT JOIN</span> <span class="obj">departments</span> <span class="obj">d</span>
+  <span class="kw">ON</span> <span class="obj">e.department_id</span> = <span class="obj">d.department_id</span>;</code></pre><div class="warn"><strong>誤り例:</strong> 条件未指定UPDATE、NULLを等号比較、暗黙変換依存、JOIN条件漏れ。これらは試験でも実務でも重大減点/重大事故の主要因。</div><div class="table-wrap"><table><tr><th>チェック項目</th><th>確認内容</th><th>完了</th></tr><tr><td>件数確認</td><td>更新前に同条件SELECTで対象件数を記録したか</td><td>□</td></tr><tr><td>型整合</td><td>TO_DATE/TO_NUMBER等で型を明示したか</td><td>□</td></tr><tr><td>NULL対策</td><td>IS NULL / NVL / COALESCEの扱いを確認したか</td><td>□</td></tr><tr><td>権限</td><td>実行ユーザーの最小権限を確認したか</td><td>□</td></tr><tr><td>ロールバック計画</td><td>SAVEPOINT/ROLLBACK手順を準備したか</td><td>□</td></tr></table></div><div class="backtop"><a href="#top">▲ トップへ戻る</a></div></section><section class="section" id="c8"><h2>8. 副問合せを使用した問合せ</h2><div class="glossary"><strong>用語注釈:</strong> <b>単一行副問合せ</b> / <b>複数行副問合せ</b> / <b>相関</b> はこの章の理解に必須のキーワード。意味を曖昧にしたまま先へ進まない。</div><div class="note"><strong>実務の導入例:</strong> 要件ヒアリングで受けた日本語の依頼を、そのままSQLに落とし込まず、対象表・条件・更新影響範囲を先に分解する。</div><div class="subtopic">
+  <h3>8.1 副問合せ</h3>
+  <div class="grid5">
+    <div class="block"><div class="title">1. 定義</div><div>8.1 副問合せ の仕様上の意味と適用範囲を明確化し、何を入力にして何を結果として返すかを定義する。</div></div>
+    <div class="block"><div class="title">2. 役割</div><div>8.1 副問合せ は、8. 副問合せを使用した問合せの中で業務要件をSQLへ正確に翻訳するための中核機能です。</div></div>
+    <div class="block"><div class="title">3. 動作原理</div><div>Oracleはまず対象行集合を確定し、その後に式評価・変換・並び替え・制約判定を行います。処理段階を誤認すると件数不一致や性能劣化が発生します。</div></div>
+    <div class="block"><div class="title">4. 制限事項</div><div>NULL混在時の比較、暗黙型変換、結合条件漏れ、更新条件漏れは代表的な失敗要因です。必ず事前件数確認と型明示を実施します。</div></div>
+    <div class="block"><div class="title">5. 試験・実務の急所</div><div>試験では『一見正しそうなSQL』に罠があります。実務では『実行できるSQL』より『安全に実行できるSQL』が評価されます。</div></div>
+  </div>
+</div><div class="subtopic">
+  <h3>8.2 相関副問合せ</h3>
+  <div class="grid5">
+    <div class="block"><div class="title">1. 定義</div><div>8.2 相関副問合せ の仕様上の意味と適用範囲を明確化し、何を入力にして何を結果として返すかを定義する。</div></div>
+    <div class="block"><div class="title">2. 役割</div><div>8.2 相関副問合せ は、8. 副問合せを使用した問合せの中で業務要件をSQLへ正確に翻訳するための中核機能です。</div></div>
+    <div class="block"><div class="title">3. 動作原理</div><div>Oracleはまず対象行集合を確定し、その後に式評価・変換・並び替え・制約判定を行います。処理段階を誤認すると件数不一致や性能劣化が発生します。</div></div>
+    <div class="block"><div class="title">4. 制限事項</div><div>NULL混在時の比較、暗黙型変換、結合条件漏れ、更新条件漏れは代表的な失敗要因です。必ず事前件数確認と型明示を実施します。</div></div>
+    <div class="block"><div class="title">5. 試験・実務の急所</div><div>試験では『一見正しそうなSQL』に罠があります。実務では『実行できるSQL』より『安全に実行できるSQL』が評価されます。</div></div>
+  </div>
+</div><h3>例題SQL（章代表）</h3><pre><code><span class="kw">SELECT</span> <span class="obj">e.employee_id</span>, <span class="obj">d.department_name</span>
+<span class="kw">FROM</span> <span class="obj">employees</span> <span class="obj">e</span>
+<span class="kw">LEFT JOIN</span> <span class="obj">departments</span> <span class="obj">d</span>
+  <span class="kw">ON</span> <span class="obj">e.department_id</span> = <span class="obj">d.department_id</span>;</code></pre><div class="warn"><strong>誤り例:</strong> 条件未指定UPDATE、NULLを等号比較、暗黙変換依存、JOIN条件漏れ。これらは試験でも実務でも重大減点/重大事故の主要因。</div><div class="table-wrap"><table><tr><th>チェック項目</th><th>確認内容</th><th>完了</th></tr><tr><td>件数確認</td><td>更新前に同条件SELECTで対象件数を記録したか</td><td>□</td></tr><tr><td>型整合</td><td>TO_DATE/TO_NUMBER等で型を明示したか</td><td>□</td></tr><tr><td>NULL対策</td><td>IS NULL / NVL / COALESCEの扱いを確認したか</td><td>□</td></tr><tr><td>権限</td><td>実行ユーザーの最小権限を確認したか</td><td>□</td></tr><tr><td>ロールバック計画</td><td>SAVEPOINT/ROLLBACK手順を準備したか</td><td>□</td></tr></table></div><div class="backtop"><a href="#top">▲ トップへ戻る</a></div></section><section class="section" id="c9"><h2>9. 集合演算子の使用</h2><div class="glossary"><strong>用語注釈:</strong> <b>UNION</b> / <b>UNION ALL</b> / <b>INTERSECT</b> / <b>MINUS</b> はこの章の理解に必須のキーワード。意味を曖昧にしたまま先へ進まない。</div><div class="note"><strong>実務の導入例:</strong> 要件ヒアリングで受けた日本語の依頼を、そのままSQLに落とし込まず、対象表・条件・更新影響範囲を先に分解する。</div><div class="subtopic">
+  <h3>9.1 集合演算子の種類</h3>
+  <div class="grid5">
+    <div class="block"><div class="title">1. 定義</div><div>9.1 集合演算子の種類 の仕様上の意味と適用範囲を明確化し、何を入力にして何を結果として返すかを定義する。</div></div>
+    <div class="block"><div class="title">2. 役割</div><div>9.1 集合演算子の種類 は、9. 集合演算子の使用の中で業務要件をSQLへ正確に翻訳するための中核機能です。</div></div>
+    <div class="block"><div class="title">3. 動作原理</div><div>Oracleはまず対象行集合を確定し、その後に式評価・変換・並び替え・制約判定を行います。処理段階を誤認すると件数不一致や性能劣化が発生します。</div></div>
+    <div class="block"><div class="title">4. 制限事項</div><div>NULL混在時の比較、暗黙型変換、結合条件漏れ、更新条件漏れは代表的な失敗要因です。必ず事前件数確認と型明示を実施します。</div></div>
+    <div class="block"><div class="title">5. 試験・実務の急所</div><div>試験では『一見正しそうなSQL』に罠があります。実務では『実行できるSQL』より『安全に実行できるSQL』が評価されます。</div></div>
+  </div>
+</div><div class="subtopic">
+  <h3>9.2 集合演算の規則</h3>
+  <div class="grid5">
+    <div class="block"><div class="title">1. 定義</div><div>9.2 集合演算の規則 の仕様上の意味と適用範囲を明確化し、何を入力にして何を結果として返すかを定義する。</div></div>
+    <div class="block"><div class="title">2. 役割</div><div>9.2 集合演算の規則 は、9. 集合演算子の使用の中で業務要件をSQLへ正確に翻訳するための中核機能です。</div></div>
+    <div class="block"><div class="title">3. 動作原理</div><div>Oracleはまず対象行集合を確定し、その後に式評価・変換・並び替え・制約判定を行います。処理段階を誤認すると件数不一致や性能劣化が発生します。</div></div>
+    <div class="block"><div class="title">4. 制限事項</div><div>NULL混在時の比較、暗黙型変換、結合条件漏れ、更新条件漏れは代表的な失敗要因です。必ず事前件数確認と型明示を実施します。</div></div>
+    <div class="block"><div class="title">5. 試験・実務の急所</div><div>試験では『一見正しそうなSQL』に罠があります。実務では『実行できるSQL』より『安全に実行できるSQL』が評価されます。</div></div>
+  </div>
+</div><div class="subtopic">
+  <h3>9.3 まとめ</h3>
+  <div class="grid5">
+    <div class="block"><div class="title">1. 定義</div><div>9.3 まとめ の仕様上の意味と適用範囲を明確化し、何を入力にして何を結果として返すかを定義する。</div></div>
+    <div class="block"><div class="title">2. 役割</div><div>9.3 まとめ は、9. 集合演算子の使用の中で業務要件をSQLへ正確に翻訳するための中核機能です。</div></div>
+    <div class="block"><div class="title">3. 動作原理</div><div>Oracleはまず対象行集合を確定し、その後に式評価・変換・並び替え・制約判定を行います。処理段階を誤認すると件数不一致や性能劣化が発生します。</div></div>
+    <div class="block"><div class="title">4. 制限事項</div><div>NULL混在時の比較、暗黙型変換、結合条件漏れ、更新条件漏れは代表的な失敗要因です。必ず事前件数確認と型明示を実施します。</div></div>
+    <div class="block"><div class="title">5. 試験・実務の急所</div><div>試験では『一見正しそうなSQL』に罠があります。実務では『実行できるSQL』より『安全に実行できるSQL』が評価されます。</div></div>
+  </div>
+</div><h3>例題SQL（章代表）</h3><pre><code><span class="kw">SELECT</span> <span class="obj">e.employee_id</span>, <span class="obj">d.department_name</span>
+<span class="kw">FROM</span> <span class="obj">employees</span> <span class="obj">e</span>
+<span class="kw">LEFT JOIN</span> <span class="obj">departments</span> <span class="obj">d</span>
+  <span class="kw">ON</span> <span class="obj">e.department_id</span> = <span class="obj">d.department_id</span>;</code></pre><div class="warn"><strong>誤り例:</strong> 条件未指定UPDATE、NULLを等号比較、暗黙変換依存、JOIN条件漏れ。これらは試験でも実務でも重大減点/重大事故の主要因。</div><div class="table-wrap"><table><tr><th>チェック項目</th><th>確認内容</th><th>完了</th></tr><tr><td>件数確認</td><td>更新前に同条件SELECTで対象件数を記録したか</td><td>□</td></tr><tr><td>型整合</td><td>TO_DATE/TO_NUMBER等で型を明示したか</td><td>□</td></tr><tr><td>NULL対策</td><td>IS NULL / NVL / COALESCEの扱いを確認したか</td><td>□</td></tr><tr><td>権限</td><td>実行ユーザーの最小権限を確認したか</td><td>□</td></tr><tr><td>ロールバック計画</td><td>SAVEPOINT/ROLLBACK手順を準備したか</td><td>□</td></tr></table></div><div class="backtop"><a href="#top">▲ トップへ戻る</a></div></section><section class="section" id="c10"><h2>10. DML文を使用した表の管理</h2><div class="glossary"><strong>用語注釈:</strong> <b>トランザクション</b> / <b>COMMIT</b> / <b>ROLLBACK</b> / <b>SAVEPOINT</b> はこの章の理解に必須のキーワード。意味を曖昧にしたまま先へ進まない。</div><div class="note"><strong>実務の導入例:</strong> 要件ヒアリングで受けた日本語の依頼を、そのままSQLに落とし込まず、対象表・条件・更新影響範囲を先に分解する。</div><div class="figure"><strong>概念図: 安全な更新手順</strong>
+<div class="flow"><div class="node">対象件数確認</div><div class="arr">→</div><div class="node">SAVEPOINT</div><div class="arr">→</div><div class="node">更新実行</div><div class="arr">→</div><div class="node">差分検証</div><div class="arr">→</div><div class="node">COMMIT/ROLLBACK</div></div></div><div class="subtopic">
+  <h3>10.1 INSERT/UPDATE/DELETE</h3>
+  <div class="grid5">
+    <div class="block"><div class="title">1. 定義</div><div>10.1 INSERT/UPDATE/DELETE の仕様上の意味と適用範囲を明確化し、何を入力にして何を結果として返すかを定義する。</div></div>
+    <div class="block"><div class="title">2. 役割</div><div>10.1 INSERT/UPDATE/DELETE は、10. DML文を使用した表の管理の中で業務要件をSQLへ正確に翻訳するための中核機能です。</div></div>
+    <div class="block"><div class="title">3. 動作原理</div><div>Oracleはまず対象行集合を確定し、その後に式評価・変換・並び替え・制約判定を行います。処理段階を誤認すると件数不一致や性能劣化が発生します。</div></div>
+    <div class="block"><div class="title">4. 制限事項</div><div>NULL混在時の比較、暗黙型変換、結合条件漏れ、更新条件漏れは代表的な失敗要因です。必ず事前件数確認と型明示を実施します。</div></div>
+    <div class="block"><div class="title">5. 試験・実務の急所</div><div>試験では『一見正しそうなSQL』に罠があります。実務では『実行できるSQL』より『安全に実行できるSQL』が評価されます。</div></div>
+  </div>
+</div><div class="subtopic">
+  <h3>10.2 マルチテーブル・インサート</h3>
+  <div class="grid5">
+    <div class="block"><div class="title">1. 定義</div><div>10.2 マルチテーブル・インサート の仕様上の意味と適用範囲を明確化し、何を入力にして何を結果として返すかを定義する。</div></div>
+    <div class="block"><div class="title">2. 役割</div><div>10.2 マルチテーブル・インサート は、10. DML文を使用した表の管理の中で業務要件をSQLへ正確に翻訳するための中核機能です。</div></div>
+    <div class="block"><div class="title">3. 動作原理</div><div>Oracleはまず対象行集合を確定し、その後に式評価・変換・並び替え・制約判定を行います。処理段階を誤認すると件数不一致や性能劣化が発生します。</div></div>
+    <div class="block"><div class="title">4. 制限事項</div><div>NULL混在時の比較、暗黙型変換、結合条件漏れ、更新条件漏れは代表的な失敗要因です。必ず事前件数確認と型明示を実施します。</div></div>
+    <div class="block"><div class="title">5. 試験・実務の急所</div><div>試験では『一見正しそうなSQL』に罠があります。実務では『実行できるSQL』より『安全に実行できるSQL』が評価されます。</div></div>
+  </div>
+</div><div class="subtopic">
+  <h3>10.3 MERGE文</h3>
+  <div class="grid5">
+    <div class="block"><div class="title">1. 定義</div><div>10.3 MERGE文 の仕様上の意味と適用範囲を明確化し、何を入力にして何を結果として返すかを定義する。</div></div>
+    <div class="block"><div class="title">2. 役割</div><div>10.3 MERGE文 は、10. DML文を使用した表の管理の中で業務要件をSQLへ正確に翻訳するための中核機能です。</div></div>
+    <div class="block"><div class="title">3. 動作原理</div><div>Oracleはまず対象行集合を確定し、その後に式評価・変換・並び替え・制約判定を行います。処理段階を誤認すると件数不一致や性能劣化が発生します。</div></div>
+    <div class="block"><div class="title">4. 制限事項</div><div>NULL混在時の比較、暗黙型変換、結合条件漏れ、更新条件漏れは代表的な失敗要因です。必ず事前件数確認と型明示を実施します。</div></div>
+    <div class="block"><div class="title">5. 試験・実務の急所</div><div>試験では『一見正しそうなSQL』に罠があります。実務では『実行できるSQL』より『安全に実行できるSQL』が評価されます。</div></div>
+  </div>
+</div><div class="subtopic">
+  <h3>10.4 トランザクション制御</h3>
+  <div class="grid5">
+    <div class="block"><div class="title">1. 定義</div><div>10.4 トランザクション制御 の仕様上の意味と適用範囲を明確化し、何を入力にして何を結果として返すかを定義する。</div></div>
+    <div class="block"><div class="title">2. 役割</div><div>10.4 トランザクション制御 は、10. DML文を使用した表の管理の中で業務要件をSQLへ正確に翻訳するための中核機能です。</div></div>
+    <div class="block"><div class="title">3. 動作原理</div><div>Oracleはまず対象行集合を確定し、その後に式評価・変換・並び替え・制約判定を行います。処理段階を誤認すると件数不一致や性能劣化が発生します。</div></div>
+    <div class="block"><div class="title">4. 制限事項</div><div>NULL混在時の比較、暗黙型変換、結合条件漏れ、更新条件漏れは代表的な失敗要因です。必ず事前件数確認と型明示を実施します。</div></div>
+    <div class="block"><div class="title">5. 試験・実務の急所</div><div>試験では『一見正しそうなSQL』に罠があります。実務では『実行できるSQL』より『安全に実行できるSQL』が評価されます。</div></div>
+  </div>
+</div><h3>例題SQL（章代表）</h3><pre><code><span class="kw">UPDATE</span> <span class="obj">orders</span>
+<span class="kw">SET</span> <span class="obj">status</span> = <span class="str">'CLOSED'</span>
+<span class="kw">WHERE</span> <span class="obj">shipped_at</span> <span class="kw">IS NOT NULL</span>;
+<span class="kw">SAVEPOINT</span> <span class="obj">sp_before_commit</span>;</code></pre><div class="warn"><strong>誤り例:</strong> 条件未指定UPDATE、NULLを等号比較、暗黙変換依存、JOIN条件漏れ。これらは試験でも実務でも重大減点/重大事故の主要因。</div><div class="table-wrap"><table><tr><th>チェック項目</th><th>確認内容</th><th>完了</th></tr><tr><td>件数確認</td><td>更新前に同条件SELECTで対象件数を記録したか</td><td>□</td></tr><tr><td>型整合</td><td>TO_DATE/TO_NUMBER等で型を明示したか</td><td>□</td></tr><tr><td>NULL対策</td><td>IS NULL / NVL / COALESCEの扱いを確認したか</td><td>□</td></tr><tr><td>権限</td><td>実行ユーザーの最小権限を確認したか</td><td>□</td></tr><tr><td>ロールバック計画</td><td>SAVEPOINT/ROLLBACK手順を準備したか</td><td>□</td></tr></table></div><div class="backtop"><a href="#top">▲ トップへ戻る</a></div></section><section class="section" id="c11"><h2>11. DDLによる表と関係の管理</h2><div class="glossary"><strong>用語注釈:</strong> <b>スキーマ</b> / <b>制約</b> / <b>整合性</b> はこの章の理解に必須のキーワード。意味を曖昧にしたまま先へ進まない。</div><div class="note"><strong>実務の導入例:</strong> 要件ヒアリングで受けた日本語の依頼を、そのままSQLに落とし込まず、対象表・条件・更新影響範囲を先に分解する。</div><div class="subtopic">
+  <h3>11.1 オブジェクトとスキーマ</h3>
+  <div class="grid5">
+    <div class="block"><div class="title">1. 定義</div><div>11.1 オブジェクトとスキーマ の仕様上の意味と適用範囲を明確化し、何を入力にして何を結果として返すかを定義する。</div></div>
+    <div class="block"><div class="title">2. 役割</div><div>11.1 オブジェクトとスキーマ は、11. DDLによる表と関係の管理の中で業務要件をSQLへ正確に翻訳するための中核機能です。</div></div>
+    <div class="block"><div class="title">3. 動作原理</div><div>Oracleはまず対象行集合を確定し、その後に式評価・変換・並び替え・制約判定を行います。処理段階を誤認すると件数不一致や性能劣化が発生します。</div></div>
+    <div class="block"><div class="title">4. 制限事項</div><div>NULL混在時の比較、暗黙型変換、結合条件漏れ、更新条件漏れは代表的な失敗要因です。必ず事前件数確認と型明示を実施します。</div></div>
+    <div class="block"><div class="title">5. 試験・実務の急所</div><div>試験では『一見正しそうなSQL』に罠があります。実務では『実行できるSQL』より『安全に実行できるSQL』が評価されます。</div></div>
+  </div>
+</div><div class="subtopic">
+  <h3>11.2 構造定義の概要</h3>
+  <div class="grid5">
+    <div class="block"><div class="title">1. 定義</div><div>11.2 構造定義の概要 の仕様上の意味と適用範囲を明確化し、何を入力にして何を結果として返すかを定義する。</div></div>
+    <div class="block"><div class="title">2. 役割</div><div>11.2 構造定義の概要 は、11. DDLによる表と関係の管理の中で業務要件をSQLへ正確に翻訳するための中核機能です。</div></div>
+    <div class="block"><div class="title">3. 動作原理</div><div>Oracleはまず対象行集合を確定し、その後に式評価・変換・並び替え・制約判定を行います。処理段階を誤認すると件数不一致や性能劣化が発生します。</div></div>
+    <div class="block"><div class="title">4. 制限事項</div><div>NULL混在時の比較、暗黙型変換、結合条件漏れ、更新条件漏れは代表的な失敗要因です。必ず事前件数確認と型明示を実施します。</div></div>
+    <div class="block"><div class="title">5. 試験・実務の急所</div><div>試験では『一見正しそうなSQL』に罠があります。実務では『実行できるSQL』より『安全に実行できるSQL』が評価されます。</div></div>
+  </div>
+</div><div class="subtopic">
+  <h3>11.3 CREATE TABLE(基本)</h3>
+  <div class="grid5">
+    <div class="block"><div class="title">1. 定義</div><div>11.3 CREATE TABLE(基本) の仕様上の意味と適用範囲を明確化し、何を入力にして何を結果として返すかを定義する。</div></div>
+    <div class="block"><div class="title">2. 役割</div><div>11.3 CREATE TABLE(基本) は、11. DDLによる表と関係の管理の中で業務要件をSQLへ正確に翻訳するための中核機能です。</div></div>
+    <div class="block"><div class="title">3. 動作原理</div><div>Oracleはまず対象行集合を確定し、その後に式評価・変換・並び替え・制約判定を行います。処理段階を誤認すると件数不一致や性能劣化が発生します。</div></div>
+    <div class="block"><div class="title">4. 制限事項</div><div>NULL混在時の比較、暗黙型変換、結合条件漏れ、更新条件漏れは代表的な失敗要因です。必ず事前件数確認と型明示を実施します。</div></div>
+    <div class="block"><div class="title">5. 試験・実務の急所</div><div>試験では『一見正しそうなSQL』に罠があります。実務では『実行できるSQL』より『安全に実行できるSQL』が評価されます。</div></div>
+  </div>
+</div><div class="subtopic">
+  <h3>11.4 データ型</h3>
+  <div class="grid5">
+    <div class="block"><div class="title">1. 定義</div><div>11.4 データ型 の仕様上の意味と適用範囲を明確化し、何を入力にして何を結果として返すかを定義する。</div></div>
+    <div class="block"><div class="title">2. 役割</div><div>11.4 データ型 は、11. DDLによる表と関係の管理の中で業務要件をSQLへ正確に翻訳するための中核機能です。</div></div>
+    <div class="block"><div class="title">3. 動作原理</div><div>Oracleはまず対象行集合を確定し、その後に式評価・変換・並び替え・制約判定を行います。処理段階を誤認すると件数不一致や性能劣化が発生します。</div></div>
+    <div class="block"><div class="title">4. 制限事項</div><div>NULL混在時の比較、暗黙型変換、結合条件漏れ、更新条件漏れは代表的な失敗要因です。必ず事前件数確認と型明示を実施します。</div></div>
+    <div class="block"><div class="title">5. 試験・実務の急所</div><div>試験では『一見正しそうなSQL』に罠があります。実務では『実行できるSQL』より『安全に実行できるSQL』が評価されます。</div></div>
+  </div>
+</div><div class="subtopic">
+  <h3>11.5 CREATE TABLE(制約)</h3>
+  <div class="grid5">
+    <div class="block"><div class="title">1. 定義</div><div>11.5 CREATE TABLE(制約) の仕様上の意味と適用範囲を明確化し、何を入力にして何を結果として返すかを定義する。</div></div>
+    <div class="block"><div class="title">2. 役割</div><div>11.5 CREATE TABLE(制約) は、11. DDLによる表と関係の管理の中で業務要件をSQLへ正確に翻訳するための中核機能です。</div></div>
+    <div class="block"><div class="title">3. 動作原理</div><div>Oracleはまず対象行集合を確定し、その後に式評価・変換・並び替え・制約判定を行います。処理段階を誤認すると件数不一致や性能劣化が発生します。</div></div>
+    <div class="block"><div class="title">4. 制限事項</div><div>NULL混在時の比較、暗黙型変換、結合条件漏れ、更新条件漏れは代表的な失敗要因です。必ず事前件数確認と型明示を実施します。</div></div>
+    <div class="block"><div class="title">5. 試験・実務の急所</div><div>試験では『一見正しそうなSQL』に罠があります。実務では『実行できるSQL』より『安全に実行できるSQL』が評価されます。</div></div>
+  </div>
+</div><div class="subtopic">
+  <h3>11.6 CREATE TABLE(副問合せ)</h3>
+  <div class="grid5">
+    <div class="block"><div class="title">1. 定義</div><div>11.6 CREATE TABLE(副問合せ) の仕様上の意味と適用範囲を明確化し、何を入力にして何を結果として返すかを定義する。</div></div>
+    <div class="block"><div class="title">2. 役割</div><div>11.6 CREATE TABLE(副問合せ) は、11. DDLによる表と関係の管理の中で業務要件をSQLへ正確に翻訳するための中核機能です。</div></div>
+    <div class="block"><div class="title">3. 動作原理</div><div>Oracleはまず対象行集合を確定し、その後に式評価・変換・並び替え・制約判定を行います。処理段階を誤認すると件数不一致や性能劣化が発生します。</div></div>
+    <div class="block"><div class="title">4. 制限事項</div><div>NULL混在時の比較、暗黙型変換、結合条件漏れ、更新条件漏れは代表的な失敗要因です。必ず事前件数確認と型明示を実施します。</div></div>
+    <div class="block"><div class="title">5. 試験・実務の急所</div><div>試験では『一見正しそうなSQL』に罠があります。実務では『実行できるSQL』より『安全に実行できるSQL』が評価されます。</div></div>
+  </div>
+</div><div class="subtopic">
+  <h3>11.7 DROP/TRUNCATE</h3>
+  <div class="grid5">
+    <div class="block"><div class="title">1. 定義</div><div>11.7 DROP/TRUNCATE の仕様上の意味と適用範囲を明確化し、何を入力にして何を結果として返すかを定義する。</div></div>
+    <div class="block"><div class="title">2. 役割</div><div>11.7 DROP/TRUNCATE は、11. DDLによる表と関係の管理の中で業務要件をSQLへ正確に翻訳するための中核機能です。</div></div>
+    <div class="block"><div class="title">3. 動作原理</div><div>Oracleはまず対象行集合を確定し、その後に式評価・変換・並び替え・制約判定を行います。処理段階を誤認すると件数不一致や性能劣化が発生します。</div></div>
+    <div class="block"><div class="title">4. 制限事項</div><div>NULL混在時の比較、暗黙型変換、結合条件漏れ、更新条件漏れは代表的な失敗要因です。必ず事前件数確認と型明示を実施します。</div></div>
+    <div class="block"><div class="title">5. 試験・実務の急所</div><div>試験では『一見正しそうなSQL』に罠があります。実務では『実行できるSQL』より『安全に実行できるSQL』が評価されます。</div></div>
+  </div>
+</div><div class="subtopic">
+  <h3>11.8 ALTER TABLE</h3>
+  <div class="grid5">
+    <div class="block"><div class="title">1. 定義</div><div>11.8 ALTER TABLE の仕様上の意味と適用範囲を明確化し、何を入力にして何を結果として返すかを定義する。</div></div>
+    <div class="block"><div class="title">2. 役割</div><div>11.8 ALTER TABLE は、11. DDLによる表と関係の管理の中で業務要件をSQLへ正確に翻訳するための中核機能です。</div></div>
+    <div class="block"><div class="title">3. 動作原理</div><div>Oracleはまず対象行集合を確定し、その後に式評価・変換・並び替え・制約判定を行います。処理段階を誤認すると件数不一致や性能劣化が発生します。</div></div>
+    <div class="block"><div class="title">4. 制限事項</div><div>NULL混在時の比較、暗黙型変換、結合条件漏れ、更新条件漏れは代表的な失敗要因です。必ず事前件数確認と型明示を実施します。</div></div>
+    <div class="block"><div class="title">5. 試験・実務の急所</div><div>試験では『一見正しそうなSQL』に罠があります。実務では『実行できるSQL』より『安全に実行できるSQL』が評価されます。</div></div>
+  </div>
+</div><div class="subtopic">
+  <h3>11.9 一時表と外部表</h3>
+  <div class="grid5">
+    <div class="block"><div class="title">1. 定義</div><div>11.9 一時表と外部表 の仕様上の意味と適用範囲を明確化し、何を入力にして何を結果として返すかを定義する。</div></div>
+    <div class="block"><div class="title">2. 役割</div><div>11.9 一時表と外部表 は、11. DDLによる表と関係の管理の中で業務要件をSQLへ正確に翻訳するための中核機能です。</div></div>
+    <div class="block"><div class="title">3. 動作原理</div><div>Oracleはまず対象行集合を確定し、その後に式評価・変換・並び替え・制約判定を行います。処理段階を誤認すると件数不一致や性能劣化が発生します。</div></div>
+    <div class="block"><div class="title">4. 制限事項</div><div>NULL混在時の比較、暗黙型変換、結合条件漏れ、更新条件漏れは代表的な失敗要因です。必ず事前件数確認と型明示を実施します。</div></div>
+    <div class="block"><div class="title">5. 試験・実務の急所</div><div>試験では『一見正しそうなSQL』に罠があります。実務では『実行できるSQL』より『安全に実行できるSQL』が評価されます。</div></div>
+  </div>
+</div><h3>例題SQL（章代表）</h3><pre><code><span class="kw">CREATE TABLE</span> <span class="obj">orders</span> (
+  <span class="obj">order_id</span> <span class="kw">NUMBER</span> <span class="kw">PRIMARY KEY</span>,
+  <span class="obj">amount</span> <span class="kw">NUMBER</span>(<span class="num">10</span>,<span class="num">2</span>) <span class="kw">CHECK</span> (<span class="obj">amount</span> &gt;= <span class="num">0</span>)
+);</code></pre><div class="warn"><strong>誤り例:</strong> 条件未指定UPDATE、NULLを等号比較、暗黙変換依存、JOIN条件漏れ。これらは試験でも実務でも重大減点/重大事故の主要因。</div><div class="table-wrap"><table><tr><th>チェック項目</th><th>確認内容</th><th>完了</th></tr><tr><td>件数確認</td><td>更新前に同条件SELECTで対象件数を記録したか</td><td>□</td></tr><tr><td>型整合</td><td>TO_DATE/TO_NUMBER等で型を明示したか</td><td>□</td></tr><tr><td>NULL対策</td><td>IS NULL / NVL / COALESCEの扱いを確認したか</td><td>□</td></tr><tr><td>権限</td><td>実行ユーザーの最小権限を確認したか</td><td>□</td></tr><tr><td>ロールバック計画</td><td>SAVEPOINT/ROLLBACK手順を準備したか</td><td>□</td></tr></table></div><div class="backtop"><a href="#top">▲ トップへ戻る</a></div></section><section class="section" id="c12"><h2>12. ビューの管理</h2><div class="glossary"><strong>用語注釈:</strong> <b>仮想表</b> / <b>可視性制御</b> / <b>依存関係</b> はこの章の理解に必須のキーワード。意味を曖昧にしたまま先へ進まない。</div><div class="note"><strong>実務の導入例:</strong> 要件ヒアリングで受けた日本語の依頼を、そのままSQLに落とし込まず、対象表・条件・更新影響範囲を先に分解する。</div><div class="subtopic">
+  <h3>12.1 ビューとは</h3>
+  <div class="grid5">
+    <div class="block"><div class="title">1. 定義</div><div>12.1 ビューとは の仕様上の意味と適用範囲を明確化し、何を入力にして何を結果として返すかを定義する。</div></div>
+    <div class="block"><div class="title">2. 役割</div><div>12.1 ビューとは は、12. ビューの管理の中で業務要件をSQLへ正確に翻訳するための中核機能です。</div></div>
+    <div class="block"><div class="title">3. 動作原理</div><div>Oracleはまず対象行集合を確定し、その後に式評価・変換・並び替え・制約判定を行います。処理段階を誤認すると件数不一致や性能劣化が発生します。</div></div>
+    <div class="block"><div class="title">4. 制限事項</div><div>NULL混在時の比較、暗黙型変換、結合条件漏れ、更新条件漏れは代表的な失敗要因です。必ず事前件数確認と型明示を実施します。</div></div>
+    <div class="block"><div class="title">5. 試験・実務の急所</div><div>試験では『一見正しそうなSQL』に罠があります。実務では『実行できるSQL』より『安全に実行できるSQL』が評価されます。</div></div>
+  </div>
+</div><div class="subtopic">
+  <h3>12.2 ビューの作成</h3>
+  <div class="grid5">
+    <div class="block"><div class="title">1. 定義</div><div>12.2 ビューの作成 の仕様上の意味と適用範囲を明確化し、何を入力にして何を結果として返すかを定義する。</div></div>
+    <div class="block"><div class="title">2. 役割</div><div>12.2 ビューの作成 は、12. ビューの管理の中で業務要件をSQLへ正確に翻訳するための中核機能です。</div></div>
+    <div class="block"><div class="title">3. 動作原理</div><div>Oracleはまず対象行集合を確定し、その後に式評価・変換・並び替え・制約判定を行います。処理段階を誤認すると件数不一致や性能劣化が発生します。</div></div>
+    <div class="block"><div class="title">4. 制限事項</div><div>NULL混在時の比較、暗黙型変換、結合条件漏れ、更新条件漏れは代表的な失敗要因です。必ず事前件数確認と型明示を実施します。</div></div>
+    <div class="block"><div class="title">5. 試験・実務の急所</div><div>試験では『一見正しそうなSQL』に罠があります。実務では『実行できるSQL』より『安全に実行できるSQL』が評価されます。</div></div>
+  </div>
+</div><div class="subtopic">
+  <h3>12.3 ビューへのアクセス</h3>
+  <div class="grid5">
+    <div class="block"><div class="title">1. 定義</div><div>12.3 ビューへのアクセス の仕様上の意味と適用範囲を明確化し、何を入力にして何を結果として返すかを定義する。</div></div>
+    <div class="block"><div class="title">2. 役割</div><div>12.3 ビューへのアクセス は、12. ビューの管理の中で業務要件をSQLへ正確に翻訳するための中核機能です。</div></div>
+    <div class="block"><div class="title">3. 動作原理</div><div>Oracleはまず対象行集合を確定し、その後に式評価・変換・並び替え・制約判定を行います。処理段階を誤認すると件数不一致や性能劣化が発生します。</div></div>
+    <div class="block"><div class="title">4. 制限事項</div><div>NULL混在時の比較、暗黙型変換、結合条件漏れ、更新条件漏れは代表的な失敗要因です。必ず事前件数確認と型明示を実施します。</div></div>
+    <div class="block"><div class="title">5. 試験・実務の急所</div><div>試験では『一見正しそうなSQL』に罠があります。実務では『実行できるSQL』より『安全に実行できるSQL』が評価されます。</div></div>
+  </div>
+</div><div class="subtopic">
+  <h3>12.4 ビューの削除</h3>
+  <div class="grid5">
+    <div class="block"><div class="title">1. 定義</div><div>12.4 ビューの削除 の仕様上の意味と適用範囲を明確化し、何を入力にして何を結果として返すかを定義する。</div></div>
+    <div class="block"><div class="title">2. 役割</div><div>12.4 ビューの削除 は、12. ビューの管理の中で業務要件をSQLへ正確に翻訳するための中核機能です。</div></div>
+    <div class="block"><div class="title">3. 動作原理</div><div>Oracleはまず対象行集合を確定し、その後に式評価・変換・並び替え・制約判定を行います。処理段階を誤認すると件数不一致や性能劣化が発生します。</div></div>
+    <div class="block"><div class="title">4. 制限事項</div><div>NULL混在時の比較、暗黙型変換、結合条件漏れ、更新条件漏れは代表的な失敗要因です。必ず事前件数確認と型明示を実施します。</div></div>
+    <div class="block"><div class="title">5. 試験・実務の急所</div><div>試験では『一見正しそうなSQL』に罠があります。実務では『実行できるSQL』より『安全に実行できるSQL』が評価されます。</div></div>
+  </div>
+</div><h3>例題SQL（章代表）</h3><pre><code><span class="kw">CREATE TABLE</span> <span class="obj">orders</span> (
+  <span class="obj">order_id</span> <span class="kw">NUMBER</span> <span class="kw">PRIMARY KEY</span>,
+  <span class="obj">amount</span> <span class="kw">NUMBER</span>(<span class="num">10</span>,<span class="num">2</span>) <span class="kw">CHECK</span> (<span class="obj">amount</span> &gt;= <span class="num">0</span>)
+);</code></pre><div class="warn"><strong>誤り例:</strong> 条件未指定UPDATE、NULLを等号比較、暗黙変換依存、JOIN条件漏れ。これらは試験でも実務でも重大減点/重大事故の主要因。</div><div class="table-wrap"><table><tr><th>チェック項目</th><th>確認内容</th><th>完了</th></tr><tr><td>件数確認</td><td>更新前に同条件SELECTで対象件数を記録したか</td><td>□</td></tr><tr><td>型整合</td><td>TO_DATE/TO_NUMBER等で型を明示したか</td><td>□</td></tr><tr><td>NULL対策</td><td>IS NULL / NVL / COALESCEの扱いを確認したか</td><td>□</td></tr><tr><td>権限</td><td>実行ユーザーの最小権限を確認したか</td><td>□</td></tr><tr><td>ロールバック計画</td><td>SAVEPOINT/ROLLBACK手順を準備したか</td><td>□</td></tr></table></div><div class="backtop"><a href="#top">▲ トップへ戻る</a></div></section><section class="section" id="c13"><h2>13. 索引・シノニム・シーケンスの管理</h2><div class="glossary"><strong>用語注釈:</strong> <b>索引選択性</b> / <b>採番</b> / <b>欠番</b> はこの章の理解に必須のキーワード。意味を曖昧にしたまま先へ進まない。</div><div class="note"><strong>実務の導入例:</strong> 要件ヒアリングで受けた日本語の依頼を、そのままSQLに落とし込まず、対象表・条件・更新影響範囲を先に分解する。</div><div class="subtopic">
+  <h3>13.1 索引の管理</h3>
+  <div class="grid5">
+    <div class="block"><div class="title">1. 定義</div><div>13.1 索引の管理 の仕様上の意味と適用範囲を明確化し、何を入力にして何を結果として返すかを定義する。</div></div>
+    <div class="block"><div class="title">2. 役割</div><div>13.1 索引の管理 は、13. 索引・シノニム・シーケンスの管理の中で業務要件をSQLへ正確に翻訳するための中核機能です。</div></div>
+    <div class="block"><div class="title">3. 動作原理</div><div>Oracleはまず対象行集合を確定し、その後に式評価・変換・並び替え・制約判定を行います。処理段階を誤認すると件数不一致や性能劣化が発生します。</div></div>
+    <div class="block"><div class="title">4. 制限事項</div><div>NULL混在時の比較、暗黙型変換、結合条件漏れ、更新条件漏れは代表的な失敗要因です。必ず事前件数確認と型明示を実施します。</div></div>
+    <div class="block"><div class="title">5. 試験・実務の急所</div><div>試験では『一見正しそうなSQL』に罠があります。実務では『実行できるSQL』より『安全に実行できるSQL』が評価されます。</div></div>
+  </div>
+</div><div class="subtopic">
+  <h3>13.2 シノニムの管理</h3>
+  <div class="grid5">
+    <div class="block"><div class="title">1. 定義</div><div>13.2 シノニムの管理 の仕様上の意味と適用範囲を明確化し、何を入力にして何を結果として返すかを定義する。</div></div>
+    <div class="block"><div class="title">2. 役割</div><div>13.2 シノニムの管理 は、13. 索引・シノニム・シーケンスの管理の中で業務要件をSQLへ正確に翻訳するための中核機能です。</div></div>
+    <div class="block"><div class="title">3. 動作原理</div><div>Oracleはまず対象行集合を確定し、その後に式評価・変換・並び替え・制約判定を行います。処理段階を誤認すると件数不一致や性能劣化が発生します。</div></div>
+    <div class="block"><div class="title">4. 制限事項</div><div>NULL混在時の比較、暗黙型変換、結合条件漏れ、更新条件漏れは代表的な失敗要因です。必ず事前件数確認と型明示を実施します。</div></div>
+    <div class="block"><div class="title">5. 試験・実務の急所</div><div>試験では『一見正しそうなSQL』に罠があります。実務では『実行できるSQL』より『安全に実行できるSQL』が評価されます。</div></div>
+  </div>
+</div><div class="subtopic">
+  <h3>13.3 シーケンスの管理</h3>
+  <div class="grid5">
+    <div class="block"><div class="title">1. 定義</div><div>13.3 シーケンスの管理 の仕様上の意味と適用範囲を明確化し、何を入力にして何を結果として返すかを定義する。</div></div>
+    <div class="block"><div class="title">2. 役割</div><div>13.3 シーケンスの管理 は、13. 索引・シノニム・シーケンスの管理の中で業務要件をSQLへ正確に翻訳するための中核機能です。</div></div>
+    <div class="block"><div class="title">3. 動作原理</div><div>Oracleはまず対象行集合を確定し、その後に式評価・変換・並び替え・制約判定を行います。処理段階を誤認すると件数不一致や性能劣化が発生します。</div></div>
+    <div class="block"><div class="title">4. 制限事項</div><div>NULL混在時の比較、暗黙型変換、結合条件漏れ、更新条件漏れは代表的な失敗要因です。必ず事前件数確認と型明示を実施します。</div></div>
+    <div class="block"><div class="title">5. 試験・実務の急所</div><div>試験では『一見正しそうなSQL』に罠があります。実務では『実行できるSQL』より『安全に実行できるSQL』が評価されます。</div></div>
+  </div>
+</div><h3>例題SQL（章代表）</h3><pre><code><span class="kw">CREATE TABLE</span> <span class="obj">orders</span> (
+  <span class="obj">order_id</span> <span class="kw">NUMBER</span> <span class="kw">PRIMARY KEY</span>,
+  <span class="obj">amount</span> <span class="kw">NUMBER</span>(<span class="num">10</span>,<span class="num">2</span>) <span class="kw">CHECK</span> (<span class="obj">amount</span> &gt;= <span class="num">0</span>)
+);</code></pre><div class="warn"><strong>誤り例:</strong> 条件未指定UPDATE、NULLを等号比較、暗黙変換依存、JOIN条件漏れ。これらは試験でも実務でも重大減点/重大事故の主要因。</div><div class="table-wrap"><table><tr><th>チェック項目</th><th>確認内容</th><th>完了</th></tr><tr><td>件数確認</td><td>更新前に同条件SELECTで対象件数を記録したか</td><td>□</td></tr><tr><td>型整合</td><td>TO_DATE/TO_NUMBER等で型を明示したか</td><td>□</td></tr><tr><td>NULL対策</td><td>IS NULL / NVL / COALESCEの扱いを確認したか</td><td>□</td></tr><tr><td>権限</td><td>実行ユーザーの最小権限を確認したか</td><td>□</td></tr><tr><td>ロールバック計画</td><td>SAVEPOINT/ROLLBACK手順を準備したか</td><td>□</td></tr></table></div><div class="backtop"><a href="#top">▲ トップへ戻る</a></div></section><section class="section" id="c14"><h2>14. ユーザーアクセスの制御</h2><div class="glossary"><strong>用語注釈:</strong> <b>最小権限</b> / <b>GRANT</b> / <b>REVOKE</b> / <b>ROLE</b> はこの章の理解に必須のキーワード。意味を曖昧にしたまま先へ進まない。</div><div class="note"><strong>実務の導入例:</strong> 要件ヒアリングで受けた日本語の依頼を、そのままSQLに落とし込まず、対象表・条件・更新影響範囲を先に分解する。</div><div class="figure"><strong>概念図: 権限モデル</strong>
+<div class="table-wrap"><table><tr><th>層</th><th>内容</th><th>管理単位</th></tr><tr><td>システム権限</td><td>CREATE TABLE などDB全体操作</td><td>管理者</td></tr><tr><td>オブジェクト権限</td><td>SELECT ON 表 など個別操作</td><td>所有者</td></tr><tr><td>ロール</td><td>権限セット</td><td>職務単位</td></tr></table></div></div><div class="subtopic">
+  <h3>14.1 システム権限とオブジェクト権限</h3>
+  <div class="grid5">
+    <div class="block"><div class="title">1. 定義</div><div>14.1 システム権限とオブジェクト権限 の仕様上の意味と適用範囲を明確化し、何を入力にして何を結果として返すかを定義する。</div></div>
+    <div class="block"><div class="title">2. 役割</div><div>14.1 システム権限とオブジェクト権限 は、14. ユーザーアクセスの制御の中で業務要件をSQLへ正確に翻訳するための中核機能です。</div></div>
+    <div class="block"><div class="title">3. 動作原理</div><div>Oracleはまず対象行集合を確定し、その後に式評価・変換・並び替え・制約判定を行います。処理段階を誤認すると件数不一致や性能劣化が発生します。</div></div>
+    <div class="block"><div class="title">4. 制限事項</div><div>NULL混在時の比較、暗黙型変換、結合条件漏れ、更新条件漏れは代表的な失敗要因です。必ず事前件数確認と型明示を実施します。</div></div>
+    <div class="block"><div class="title">5. 試験・実務の急所</div><div>試験では『一見正しそうなSQL』に罠があります。実務では『実行できるSQL』より『安全に実行できるSQL』が評価されます。</div></div>
+  </div>
+</div><div class="subtopic">
+  <h3>14.2 権限管理</h3>
+  <div class="grid5">
+    <div class="block"><div class="title">1. 定義</div><div>14.2 権限管理 の仕様上の意味と適用範囲を明確化し、何を入力にして何を結果として返すかを定義する。</div></div>
+    <div class="block"><div class="title">2. 役割</div><div>14.2 権限管理 は、14. ユーザーアクセスの制御の中で業務要件をSQLへ正確に翻訳するための中核機能です。</div></div>
+    <div class="block"><div class="title">3. 動作原理</div><div>Oracleはまず対象行集合を確定し、その後に式評価・変換・並び替え・制約判定を行います。処理段階を誤認すると件数不一致や性能劣化が発生します。</div></div>
+    <div class="block"><div class="title">4. 制限事項</div><div>NULL混在時の比較、暗黙型変換、結合条件漏れ、更新条件漏れは代表的な失敗要因です。必ず事前件数確認と型明示を実施します。</div></div>
+    <div class="block"><div class="title">5. 試験・実務の急所</div><div>試験では『一見正しそうなSQL』に罠があります。実務では『実行できるSQL』より『安全に実行できるSQL』が評価されます。</div></div>
+  </div>
+</div><div class="subtopic">
+  <h3>14.3 ロール</h3>
+  <div class="grid5">
+    <div class="block"><div class="title">1. 定義</div><div>14.3 ロール の仕様上の意味と適用範囲を明確化し、何を入力にして何を結果として返すかを定義する。</div></div>
+    <div class="block"><div class="title">2. 役割</div><div>14.3 ロール は、14. ユーザーアクセスの制御の中で業務要件をSQLへ正確に翻訳するための中核機能です。</div></div>
+    <div class="block"><div class="title">3. 動作原理</div><div>Oracleはまず対象行集合を確定し、その後に式評価・変換・並び替え・制約判定を行います。処理段階を誤認すると件数不一致や性能劣化が発生します。</div></div>
+    <div class="block"><div class="title">4. 制限事項</div><div>NULL混在時の比較、暗黙型変換、結合条件漏れ、更新条件漏れは代表的な失敗要因です。必ず事前件数確認と型明示を実施します。</div></div>
+    <div class="block"><div class="title">5. 試験・実務の急所</div><div>試験では『一見正しそうなSQL』に罠があります。実務では『実行できるSQL』より『安全に実行できるSQL』が評価されます。</div></div>
+  </div>
+</div><h3>例題SQL（章代表）</h3><pre><code><span class="kw">CREATE TABLE</span> <span class="obj">orders</span> (
+  <span class="obj">order_id</span> <span class="kw">NUMBER</span> <span class="kw">PRIMARY KEY</span>,
+  <span class="obj">amount</span> <span class="kw">NUMBER</span>(<span class="num">10</span>,<span class="num">2</span>) <span class="kw">CHECK</span> (<span class="obj">amount</span> &gt;= <span class="num">0</span>)
+);</code></pre><div class="warn"><strong>誤り例:</strong> 条件未指定UPDATE、NULLを等号比較、暗黙変換依存、JOIN条件漏れ。これらは試験でも実務でも重大減点/重大事故の主要因。</div><div class="table-wrap"><table><tr><th>チェック項目</th><th>確認内容</th><th>完了</th></tr><tr><td>件数確認</td><td>更新前に同条件SELECTで対象件数を記録したか</td><td>□</td></tr><tr><td>型整合</td><td>TO_DATE/TO_NUMBER等で型を明示したか</td><td>□</td></tr><tr><td>NULL対策</td><td>IS NULL / NVL / COALESCEの扱いを確認したか</td><td>□</td></tr><tr><td>権限</td><td>実行ユーザーの最小権限を確認したか</td><td>□</td></tr><tr><td>ロールバック計画</td><td>SAVEPOINT/ROLLBACK手順を準備したか</td><td>□</td></tr></table></div><div class="backtop"><a href="#top">▲ トップへ戻る</a></div></section><section class="section" id="c15"><h2>15. データ・ディクショナリ・ビューでの管理</h2><div class="glossary"><strong>用語注釈:</strong> <b>USER_</b> / <b>ALL_</b> / <b>DBA_</b> / <b>メタデータ</b> はこの章の理解に必須のキーワード。意味を曖昧にしたまま先へ進まない。</div><div class="note"><strong>実務の導入例:</strong> 要件ヒアリングで受けた日本語の依頼を、そのままSQLに落とし込まず、対象表・条件・更新影響範囲を先に分解する。</div><div class="subtopic">
+  <h3>15.1 概要</h3>
+  <div class="grid5">
+    <div class="block"><div class="title">1. 定義</div><div>15.1 概要 の仕様上の意味と適用範囲を明確化し、何を入力にして何を結果として返すかを定義する。</div></div>
+    <div class="block"><div class="title">2. 役割</div><div>15.1 概要 は、15. データ・ディクショナリ・ビューでの管理の中で業務要件をSQLへ正確に翻訳するための中核機能です。</div></div>
+    <div class="block"><div class="title">3. 動作原理</div><div>Oracleはまず対象行集合を確定し、その後に式評価・変換・並び替え・制約判定を行います。処理段階を誤認すると件数不一致や性能劣化が発生します。</div></div>
+    <div class="block"><div class="title">4. 制限事項</div><div>NULL混在時の比較、暗黙型変換、結合条件漏れ、更新条件漏れは代表的な失敗要因です。必ず事前件数確認と型明示を実施します。</div></div>
+    <div class="block"><div class="title">5. 試験・実務の急所</div><div>試験では『一見正しそうなSQL』に罠があります。実務では『実行できるSQL』より『安全に実行できるSQL』が評価されます。</div></div>
+  </div>
+</div><div class="subtopic">
+  <h3>15.2 種類</h3>
+  <div class="grid5">
+    <div class="block"><div class="title">1. 定義</div><div>15.2 種類 の仕様上の意味と適用範囲を明確化し、何を入力にして何を結果として返すかを定義する。</div></div>
+    <div class="block"><div class="title">2. 役割</div><div>15.2 種類 は、15. データ・ディクショナリ・ビューでの管理の中で業務要件をSQLへ正確に翻訳するための中核機能です。</div></div>
+    <div class="block"><div class="title">3. 動作原理</div><div>Oracleはまず対象行集合を確定し、その後に式評価・変換・並び替え・制約判定を行います。処理段階を誤認すると件数不一致や性能劣化が発生します。</div></div>
+    <div class="block"><div class="title">4. 制限事項</div><div>NULL混在時の比較、暗黙型変換、結合条件漏れ、更新条件漏れは代表的な失敗要因です。必ず事前件数確認と型明示を実施します。</div></div>
+    <div class="block"><div class="title">5. 試験・実務の急所</div><div>試験では『一見正しそうなSQL』に罠があります。実務では『実行できるSQL』より『安全に実行できるSQL』が評価されます。</div></div>
+  </div>
+</div><div class="subtopic">
+  <h3>15.3 一覧</h3>
+  <div class="grid5">
+    <div class="block"><div class="title">1. 定義</div><div>15.3 一覧 の仕様上の意味と適用範囲を明確化し、何を入力にして何を結果として返すかを定義する。</div></div>
+    <div class="block"><div class="title">2. 役割</div><div>15.3 一覧 は、15. データ・ディクショナリ・ビューでの管理の中で業務要件をSQLへ正確に翻訳するための中核機能です。</div></div>
+    <div class="block"><div class="title">3. 動作原理</div><div>Oracleはまず対象行集合を確定し、その後に式評価・変換・並び替え・制約判定を行います。処理段階を誤認すると件数不一致や性能劣化が発生します。</div></div>
+    <div class="block"><div class="title">4. 制限事項</div><div>NULL混在時の比較、暗黙型変換、結合条件漏れ、更新条件漏れは代表的な失敗要因です。必ず事前件数確認と型明示を実施します。</div></div>
+    <div class="block"><div class="title">5. 試験・実務の急所</div><div>試験では『一見正しそうなSQL』に罠があります。実務では『実行できるSQL』より『安全に実行できるSQL』が評価されます。</div></div>
+  </div>
+</div><div class="subtopic">
+  <h3>15.4 使用例</h3>
+  <div class="grid5">
+    <div class="block"><div class="title">1. 定義</div><div>15.4 使用例 の仕様上の意味と適用範囲を明確化し、何を入力にして何を結果として返すかを定義する。</div></div>
+    <div class="block"><div class="title">2. 役割</div><div>15.4 使用例 は、15. データ・ディクショナリ・ビューでの管理の中で業務要件をSQLへ正確に翻訳するための中核機能です。</div></div>
+    <div class="block"><div class="title">3. 動作原理</div><div>Oracleはまず対象行集合を確定し、その後に式評価・変換・並び替え・制約判定を行います。処理段階を誤認すると件数不一致や性能劣化が発生します。</div></div>
+    <div class="block"><div class="title">4. 制限事項</div><div>NULL混在時の比較、暗黙型変換、結合条件漏れ、更新条件漏れは代表的な失敗要因です。必ず事前件数確認と型明示を実施します。</div></div>
+    <div class="block"><div class="title">5. 試験・実務の急所</div><div>試験では『一見正しそうなSQL』に罠があります。実務では『実行できるSQL』より『安全に実行できるSQL』が評価されます。</div></div>
+  </div>
+</div><h3>例題SQL（章代表）</h3><pre><code><span class="kw">CREATE TABLE</span> <span class="obj">orders</span> (
+  <span class="obj">order_id</span> <span class="kw">NUMBER</span> <span class="kw">PRIMARY KEY</span>,
+  <span class="obj">amount</span> <span class="kw">NUMBER</span>(<span class="num">10</span>,<span class="num">2</span>) <span class="kw">CHECK</span> (<span class="obj">amount</span> &gt;= <span class="num">0</span>)
+);</code></pre><div class="warn"><strong>誤り例:</strong> 条件未指定UPDATE、NULLを等号比較、暗黙変換依存、JOIN条件漏れ。これらは試験でも実務でも重大減点/重大事故の主要因。</div><div class="table-wrap"><table><tr><th>チェック項目</th><th>確認内容</th><th>完了</th></tr><tr><td>件数確認</td><td>更新前に同条件SELECTで対象件数を記録したか</td><td>□</td></tr><tr><td>型整合</td><td>TO_DATE/TO_NUMBER等で型を明示したか</td><td>□</td></tr><tr><td>NULL対策</td><td>IS NULL / NVL / COALESCEの扱いを確認したか</td><td>□</td></tr><tr><td>権限</td><td>実行ユーザーの最小権限を確認したか</td><td>□</td></tr><tr><td>ロールバック計画</td><td>SAVEPOINT/ROLLBACK手順を準備したか</td><td>□</td></tr></table></div><div class="backtop"><a href="#top">▲ トップへ戻る</a></div></section><section class="section" id="c16"><h2>16. 異なるタイムゾーンでのデータ管理</h2><div class="glossary"><strong>用語注釈:</strong> <b>TIMESTAMP WITH TIME ZONE</b> / <b>AT TIME ZONE</b> / <b>INTERVAL</b> はこの章の理解に必須のキーワード。意味を曖昧にしたまま先へ進まない。</div><div class="note"><strong>実務の導入例:</strong> 要件ヒアリングで受けた日本語の依頼を、そのままSQLに落とし込まず、対象表・条件・更新影響範囲を先に分解する。</div><div class="subtopic">
+  <h3>16.1 タイムゾーン</h3>
+  <div class="grid5">
+    <div class="block"><div class="title">1. 定義</div><div>16.1 タイムゾーン の仕様上の意味と適用範囲を明確化し、何を入力にして何を結果として返すかを定義する。</div></div>
+    <div class="block"><div class="title">2. 役割</div><div>16.1 タイムゾーン は、16. 異なるタイムゾーンでのデータ管理の中で業務要件をSQLへ正確に翻訳するための中核機能です。</div></div>
+    <div class="block"><div class="title">3. 動作原理</div><div>Oracleはまず対象行集合を確定し、その後に式評価・変換・並び替え・制約判定を行います。処理段階を誤認すると件数不一致や性能劣化が発生します。</div></div>
+    <div class="block"><div class="title">4. 制限事項</div><div>NULL混在時の比較、暗黙型変換、結合条件漏れ、更新条件漏れは代表的な失敗要因です。必ず事前件数確認と型明示を実施します。</div></div>
+    <div class="block"><div class="title">5. 試験・実務の急所</div><div>試験では『一見正しそうなSQL』に罠があります。実務では『実行できるSQL』より『安全に実行できるSQL』が評価されます。</div></div>
+  </div>
+</div><div class="subtopic">
+  <h3>16.2 日時データ型</h3>
+  <div class="grid5">
+    <div class="block"><div class="title">1. 定義</div><div>16.2 日時データ型 の仕様上の意味と適用範囲を明確化し、何を入力にして何を結果として返すかを定義する。</div></div>
+    <div class="block"><div class="title">2. 役割</div><div>16.2 日時データ型 は、16. 異なるタイムゾーンでのデータ管理の中で業務要件をSQLへ正確に翻訳するための中核機能です。</div></div>
+    <div class="block"><div class="title">3. 動作原理</div><div>Oracleはまず対象行集合を確定し、その後に式評価・変換・並び替え・制約判定を行います。処理段階を誤認すると件数不一致や性能劣化が発生します。</div></div>
+    <div class="block"><div class="title">4. 制限事項</div><div>NULL混在時の比較、暗黙型変換、結合条件漏れ、更新条件漏れは代表的な失敗要因です。必ず事前件数確認と型明示を実施します。</div></div>
+    <div class="block"><div class="title">5. 試験・実務の急所</div><div>試験では『一見正しそうなSQL』に罠があります。実務では『実行できるSQL』より『安全に実行できるSQL』が評価されます。</div></div>
+  </div>
+</div><div class="subtopic">
+  <h3>16.3 タイムゾーン関数</h3>
+  <div class="grid5">
+    <div class="block"><div class="title">1. 定義</div><div>16.3 タイムゾーン関数 の仕様上の意味と適用範囲を明確化し、何を入力にして何を結果として返すかを定義する。</div></div>
+    <div class="block"><div class="title">2. 役割</div><div>16.3 タイムゾーン関数 は、16. 異なるタイムゾーンでのデータ管理の中で業務要件をSQLへ正確に翻訳するための中核機能です。</div></div>
+    <div class="block"><div class="title">3. 動作原理</div><div>Oracleはまず対象行集合を確定し、その後に式評価・変換・並び替え・制約判定を行います。処理段階を誤認すると件数不一致や性能劣化が発生します。</div></div>
+    <div class="block"><div class="title">4. 制限事項</div><div>NULL混在時の比較、暗黙型変換、結合条件漏れ、更新条件漏れは代表的な失敗要因です。必ず事前件数確認と型明示を実施します。</div></div>
+    <div class="block"><div class="title">5. 試験・実務の急所</div><div>試験では『一見正しそうなSQL』に罠があります。実務では『実行できるSQL』より『安全に実行できるSQL』が評価されます。</div></div>
+  </div>
+</div><div class="subtopic">
+  <h3>16.4 期間データ型</h3>
+  <div class="grid5">
+    <div class="block"><div class="title">1. 定義</div><div>16.4 期間データ型 の仕様上の意味と適用範囲を明確化し、何を入力にして何を結果として返すかを定義する。</div></div>
+    <div class="block"><div class="title">2. 役割</div><div>16.4 期間データ型 は、16. 異なるタイムゾーンでのデータ管理の中で業務要件をSQLへ正確に翻訳するための中核機能です。</div></div>
+    <div class="block"><div class="title">3. 動作原理</div><div>Oracleはまず対象行集合を確定し、その後に式評価・変換・並び替え・制約判定を行います。処理段階を誤認すると件数不一致や性能劣化が発生します。</div></div>
+    <div class="block"><div class="title">4. 制限事項</div><div>NULL混在時の比較、暗黙型変換、結合条件漏れ、更新条件漏れは代表的な失敗要因です。必ず事前件数確認と型明示を実施します。</div></div>
+    <div class="block"><div class="title">5. 試験・実務の急所</div><div>試験では『一見正しそうなSQL』に罠があります。実務では『実行できるSQL』より『安全に実行できるSQL』が評価されます。</div></div>
+  </div>
+</div><h3>例題SQL（章代表）</h3><pre><code><span class="kw">SELECT</span> <span class="obj">created_at</span>,
+       <span class="obj">created_at</span> <span class="kw">AT TIME ZONE</span> <span class="str">'+09:00'</span> <span class="kw">AS</span> <span class="obj">created_at_jst</span>
+<span class="kw">FROM</span> <span class="obj">orders_tz</span>;</code></pre><div class="warn"><strong>誤り例:</strong> 条件未指定UPDATE、NULLを等号比較、暗黙変換依存、JOIN条件漏れ。これらは試験でも実務でも重大減点/重大事故の主要因。</div><div class="table-wrap"><table><tr><th>チェック項目</th><th>確認内容</th><th>完了</th></tr><tr><td>件数確認</td><td>更新前に同条件SELECTで対象件数を記録したか</td><td>□</td></tr><tr><td>型整合</td><td>TO_DATE/TO_NUMBER等で型を明示したか</td><td>□</td></tr><tr><td>NULL対策</td><td>IS NULL / NVL / COALESCEの扱いを確認したか</td><td>□</td></tr><tr><td>権限</td><td>実行ユーザーの最小権限を確認したか</td><td>□</td></tr><tr><td>ロールバック計画</td><td>SAVEPOINT/ROLLBACK手順を準備したか</td><td>□</td></tr></table></div><div class="backtop"><a href="#top">▲ トップへ戻る</a></div></section><section class="section" id="appendix">
+  <h2>付録: 試験直前・実務直前チェック</h2>
+  <div class="table-wrap">
+    <table>
+      <tr><th>領域</th><th>試験で落としやすい点</th><th>実務で事故になりやすい点</th><th>予防策</th></tr>
+      <tr><td>NULL</td><td>= NULL を書く</td><td>NOT IN + NULL で0件化</td><td>IS NULL / EXISTS系へ置換</td></tr>
+      <tr><td>JOIN</td><td>結合条件不足</td><td>件数爆発</td><td>結合キー確認、期待件数比較</td></tr>
+      <tr><td>DML</td><td>COMMIT順序ミス</td><td>全件更新・復旧困難</td><td>件数確認、SAVEPOINT、差分監査</td></tr>
+      <tr><td>DDL</td><td>制約定義漏れ</td><td>不正データ流入</td><td>制約先付け、移行手順書化</td></tr>
+      <tr><td>権限</td><td>権限種別混同</td><td>過剰権限</td><td>ロール中心・最小権限</td></tr>
+      <tr><td>日時TZ</td><td>型の選択ミス</td><td>拠点間時刻不整合</td><td>TZ付き保存・表示変換統一</td></tr>
+    </table>
+  </div>
+  <div class="note"><strong>完了基準:</strong> どの章でも「定義・役割・動作原理・制限事項・急所」を口頭で説明でき、例題SQLを手入力で再現できること。</div>
+  <div class="backtop"><a href="#top">▲ トップへ戻る</a></div>
+</section></main></div></body></html>

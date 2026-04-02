@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+
+<html lang="ja">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ver 5.0 Chapter 13 | Oracle DBA Silver SQL</title>
+<style>
+:root{--bg:#f4f8fc;--card:#ffffff;--line:#d8e4f5;--pri:#1d4f91;--sec:#2f6fbe;--txt:#1f2d3d;--code:#f2f7fc}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--txt);font-family:"Segoe UI","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;line-height:1.95}
+a{color:var(--pri);text-decoration:none}
+.layout{display:grid;grid-template-columns:320px 1fr;gap:18px;max-width:1480px;margin:0 auto;padding:14px}
+.sidebar{position:sticky;top:8px;align-self:start;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;max-height:calc(100vh - 16px);overflow:auto}
+.sidebar h2{margin:0 0 10px;color:var(--pri);font-size:1.08rem}.sidebar ul{margin:0;padding-left:18px}.sidebar li{margin:6px 0}
+.main{min-width:0}.hero{background:linear-gradient(135deg,#1d4f91,#2f6fbe);color:#fff;border-radius:16px;padding:24px 20px;margin-bottom:14px}
+.hero h1{margin:0 0 8px;font-size:1.8rem}.hero p{margin:0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px;margin-bottom:14px}
+.card h2{margin:0 0 10px;color:var(--pri);font-size:1.35rem;border-bottom:2px solid #c8dcf7;padding-bottom:7px}
+.card p{margin:10px 0}
+.note{background:#eef6ff;border:1px solid #c8dcfb;border-left:4px solid #2f6fbe;border-radius:10px;padding:11px;margin:10px 0}
+.warn{background:#fff8f1;border:1px solid #fed7aa;border-left:4px solid #ea580c;border-radius:10px;padding:11px;margin:10px 0}
+pre{background:var(--code);border:1px solid #dce8f8;border-radius:10px;padding:12px;overflow-x:auto;margin:10px 0}
+code{font-family:"Consolas","Monaco",monospace;font-size:.88rem}
+.table-wrap{overflow:auto}.table-wrap table{width:100%;border-collapse:collapse}.table-wrap th,.table-wrap td{border:1px solid #d8e4f5;padding:9px;vertical-align:top}.table-wrap th{background:#eef4fd;text-align:left}
+.top{text-align:right;margin-top:12px}
+@media(max-width:1120px){.layout{grid-template-columns:1fr}.sidebar{position:static;max-height:none}}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside class="sidebar">
+<h2>第13章 目次</h2>
+<ul>
+<li><a href="#scope">スコープ宣言</a></li>
+<li><a href="#intro">第13章の学習目的</a></li>
+<li><a href="#index-basic">13.1 索引（INDEX）の定義</a></li>
+<li><a href="#index-create">13.2 索引作成と使われ方</a></li>
+<li><a href="#index-limit">13.3 索引の制限とアンチパターン</a></li>
+<li><a href="#synonym">13.4 シノニム（SYNONYM）</a></li>
+<li><a href="#sequence">13.5 シーケンス（SEQUENCE）</a></li>
+<li><a href="#seq-cache">13.6 シーケンスの運用注意点</a></li>
+<li><a href="#dict">13.7 辞書ビューで確認</a></li>
+<li><a href="#errors">13.8 典型エラーと修正</a></li>
+<li><a href="#patterns">13.9 実務運用パターン</a></li>
+<li><a href="#deep-dive-13">品質強化 超深掘り5項目</a></li><li><a href="#insights-13">出題傾向補強</a></li><li><a href="#exam">試験ひっかけパターン集</a></li>
+<li><a href="#practice">実務アンチパターン集</a></li>
+</ul>
+</aside>
+<main class="main">
+<section class="hero" id="scope">
+<h1>Ver 5.0 | Oracle DBA Silver SQL（第13章のみ）</h1>
+<p>本ファイルは第13章「索引・シノニム・シーケンス」に集中し、性能・可読性・採番運用の要点を高密度で解説する。</p>
+</section>
+<section class="card" id="intro">
+<h2>第13章の学習目的</h2>
+<p>第13章は、参照性能を高める索引、オブジェクト名の抽象化を行うシノニム、連番生成を担うシーケンスを扱う。いずれも構文は短いが、設計を誤ると性能劣化、命名混乱、重複キー事故へ直結する。試験では「索引が有効になりにくい条件」「PUBLIC SYNONYMの意味」「NEXTVAL/CURRVALの挙動」が狙われる。実務では、索引追加前の実行計画確認、シノニムの責務分離、シーケンスの欠番許容設計が必須である。到達点は、3要素を暗記ではなく運用上のトレードオフ込みで説明できる状態にすることである。</p>
+<div class="note"><strong>重要:</strong> 索引・シノニム・シーケンスは便利だが、乱用すると保守性と性能が同時に崩れる。</div>
+</section>
+<section class="card" id="index-basic">
+<h2>13.1 索引（INDEX）の定義</h2>
+<p>索引は特定列の検索効率を改善するための補助構造である。表全体を毎回走査する代わりに、索引経由で候補行を絞ることでI/Oを削減する。試験では「索引は検索を速くするが、DML時は更新負荷が増える」という両面理解が必須である。実務では検索頻度が高く選択性の高い列に作成し、なんでも索引化しない判断が求められる。索引は魔法ではなく、クエリ特性とデータ分布に合致したときに効果が出る道具である。</p>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="index-create">
+<h2>13.2 索引作成と使われ方</h2>
+<p>索引は`CREATE INDEX`で作成する。単一列・複合列のどちらを選ぶかは、WHERE条件や結合条件の実態に依存する。複合索引では列順序が重要で、先頭列が使われない検索では効果が落ちる。試験では構文と合わせて、LIKE先頭ワイルドカードや関数適用で索引利用が低下する点が出題される。実務では作成後に実行計画を確認し、期待通り利用されるかを検証することが必須である。</p>
+<pre><code>CREATE INDEX idx_emp_dept_hire
+ON employees(department_id, hire_date);</code></pre>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="index-limit">
+<h2>13.3 索引の制限とアンチパターン</h2>
+<p>索引は万能ではない。低選択性列（例: 性別フラグ）に索引を張っても効果が薄く、更新負荷だけ増えることがある。`WHERE UPPER(col)=...` のように列へ関数を直接適用すると通常索引が効きにくくなる。試験ではこの種の「索引が使われにくいSQL」を見抜く問題が出る。実務のアンチパターンは「遅いSQLが出るたび索引追加」で、索引過多によりINSERT/UPDATE/DELETEが遅くなる。索引はクエリ改善・統計情報・設計改善とセットで最適化するべきである。</p>
+<div class="warn"><b>注意:</b> 索引追加は副作用を伴う変更。読み取り性能だけで評価しない。</div>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="synonym">
+<h2>13.4 シノニム（SYNONYM）</h2>
+<p>シノニムはオブジェクトの別名を定義し、長いスキーマ修飾名を簡略化する。`PRIVATE SYNONYM`は作成者スキーマ内、`PUBLIC SYNONYM`は全体公開である。試験では公開範囲の違いと、シノニムが権限を付与する機能ではない点が重要である。実務ではシノニムを参照抽象化に使えるが、乱立すると実体追跡が困難になる。運用では命名規約と管理責任者を明確にし、参照先変更の影響を追える状態を維持することが必要である。</p>
+<pre><code>CREATE SYNONYM emp FOR hr.employees;
+CREATE PUBLIC SYNONYM dept FOR hr.departments;</code></pre>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="sequence">
+<h2>13.5 シーケンス（SEQUENCE）</h2>
+<p>シーケンスは重複しない連番を生成するオブジェクトで、主キー採番に広く使われる。`NEXTVAL`で次値取得、`CURRVAL`は同一セッションで一度NEXTVAL実行後に参照可能となる。試験ではこの順序制約が頻出である。実務ではトランザクションロールバック後も取得済み番号は戻らないため、欠番は通常仕様として扱う。連番に業務意味を持たせると欠番問題で混乱するため、識別子と業務番号を分離設計するのが安全である。</p>
+<pre><code>CREATE SEQUENCE seq_orders
+START WITH 1000
+INCREMENT BY 1
+CACHE 20
+NOCYCLE;</code></pre>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="seq-cache">
+<h2>13.6 シーケンスの運用注意点</h2>
+<p>シーケンスでは`CACHE`設定により性能が向上するが、インスタンス障害時に未使用番号が飛ぶ可能性がある。`NOCACHE`は番号連続性を期待しやすいが性能面の不利が出る。試験ではCYCLE/NOCYCLE、MAXVALUE/MINVALUEなどオプション比較が問われる。実務では「採番の一意性」が目的であり「完全連番」を厳格要件にしないことが重要である。どうしても連番帳票が必要な場合は、発番専用管理と欠番取扱規程を別途整備する。</p>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="dict">
+<h2>13.7 辞書ビューで確認</h2>
+<p>作成後は辞書ビューで定義確認する。索引は`USER_INDEXES`と`USER_IND_COLUMNS`、シノニムは`USER_SYNONYMS`、シーケンスは`USER_SEQUENCES`で確認できる。試験ではどの辞書ビューが何を保持するかの対応が問われる。実務では作成SQLだけでなく確認SQLを変更手順に含めると、定義漏れや環境差異を早期検知できる。オブジェクト管理は「作成したつもり」ではなく「確認済み」で初めて完了である。</p>
+<pre><code>SELECT sequence_name, increment_by, cache_size, last_number
+FROM user_sequences
+ORDER BY sequence_name;</code></pre>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="errors">
+<h2>13.8 典型エラーと修正</h2>
+<div class="warn"><b>失敗1:</b> 低選択性列へ無差別索引。<b>修正:</b> 実行計画とデータ分布で判断。</div>
+<div class="warn"><b>失敗2:</b> CURRVALを初回参照。<b>修正:</b> 先に同一セッションでNEXTVAL実行。</div>
+<div class="warn"><b>失敗3:</b> PUBLIC SYNONYM乱立。<b>修正:</b> 公開対象を最小化し規約管理。</div>
+<div class="warn"><b>失敗4:</b> 連番欠番を障害扱い。<b>修正:</b> 一意性目的へ要件再定義。</div>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="patterns">
+<h2>13.9 実務運用パターン</h2>
+<p>推奨運用は、索引追加前に対象SQLと実行計画を記録し、追加後に改善効果とDML影響を比較する方式である。シノニムは参照抽象化のために限定利用し、PUBLICは最小限に抑える。シーケンスは主キー一意性確保に集中し、欠番は許容仕様として文書化する。試験対策では構文暗記に加えて、なぜその設定が必要かを説明できるようにすることで応用問題に強くなる。第13章の本質は、便利機能を安全に運用する設計判断力である。</p>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="insights-13">
+<h2>出題傾向補強（第13章）</h2>
+<p>収集した過去問題データに基づく第13章対応分野「索引、シノニムおよびシーケンス」の傾向補強である。収集問題数は41問で、出題傾向の核は「SELECT / WHERE / GROUP BY / HAVING / ORDER BY / 副問合せ / UNION / INSERT / UPDATE / DELETE」に集中する。試験対策では、構文暗記よりも条件差分と失敗時挙動の判定を優先することで正答率が上がる。実務では、同テーマに対して確認SQLと本実行SQLを対にして扱うと事故率を下げられる。</p>
+<div class="note"><strong>補強方針:</strong> 本章の例題を解く際は、同じ概念を「成功例」「失敗例」「修正例」の3パターンで比較し、判定根拠を言語化すること。</div>
+<p><strong>参照URL例（解説参照元）:</strong></p>
+<ul>
+<li><a href="https://docs.oracle.com/cd/F19136_01/sqlrf/Sequence-Pseudocolumns.html#GUID-D438E28B-3E30-4B12-8D52-8DA5CFE2E0FF" rel="noopener noreferrer" target="_blank">https://docs.oracle.com/cd/F19136_01/sqlrf/Sequence-Pseudocolumns.html#GUID-D438E28B-3E30-4B12-8D52-8DA5CFE2E0FF</a></li><li><a href="https://docs.oracle.com/cd/E16338_01/server.112/b56299/statements_6015.htm#SQLRF01314" rel="noopener noreferrer" target="_blank">https://docs.oracle.com/cd/E16338_01/server.112/b56299/statements_6015.htm#SQLRF01314</a></li><li><a href="https://docs.oracle.com/cd/E96517_01/admin/managing-views-sequences-and-synonyms.html#GUID-83FA2D7D-6119-4182-94EA-60554024A2CE" rel="noopener noreferrer" target="_blank">https://docs.oracle.com/cd/E96517_01/admin/managing-views-sequences-and-synonyms.html#GUID-83FA2D7D-6119-4182-94EA-60554024A2CE</a></li>
+</ul>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="deep-dive-13"><h2>品質強化：第13章 超深掘り5項目</h2><h3>1. 定義</h3><p>第13章の中心概念である「索引・シノニム・シーケンス」は、単に構文を覚える学習単位ではなく、データの意味・一貫性・運用可能性を同時に成立させるための設計原則である。試験では語句の暗記だけで解ける問題もあるが、実務では入力値の品質、実行順序、例外時の復旧可能性まで含めて定義を扱う必要がある。つまりこの章の定義は「SQL文の形」ではなく「業務データを破壊せずに価値へ変換する規律」であり、ここを誤解すると正解できても現場で再現できない。 さらに、設計レビュー時には前提条件・入力境界・例外時挙動・確認SQL・証跡項目を明示し、実行者依存の判断を排除すること。学習段階でも、同一テーマを正常系と異常系の両方で検証し、なぜその結果になるかを言語化して再利用可能な知識へ変換する。</p><h3>2. 役割</h3><p>索引・シノニム・シーケンスの役割は、データベース操作を偶発的な職人技から、再現可能な標準手順へ引き上げることにある。たとえば現場で引継ぎ担当が変わっても、同じ確認SQL・同じ判定基準・同じ実行順で処理できる状態を作るのがこの章の本質である。試験対策の観点でも、役割を理解していると「どの句がどの責務を持つか」を軸に消去法が機能し、難問での正答率が上がる。役割を文法の説明に矮小化せず、品質保証の仕組みとして把握することが重要である。 さらに、設計レビュー時には前提条件・入力境界・例外時挙動・確認SQL・証跡項目を明示し、実行者依存の判断を排除すること。学習段階でも、同一テーマを正常系と異常系の両方で検証し、なぜその結果になるかを言語化して再利用可能な知識へ変換する。</p><h3>3. 動作原理</h3><p>索引・シノニム・シーケンスの動作原理は、入力条件の解釈、実行計画に基づく処理、結果または副作用の確定という三層で説明できる。SQLは記述順と論理評価順が一致しない場面が多く、特に結合・集計・更新系では前提条件を誤ると意図外結果になる。そこで原理理解では「どの時点で行が絞られ、どの時点で列が計算され、どの時点で変更が確定するか」を言語化する必要がある。試験ではこの順序差を突く設問が頻出であり、実務ではこの順序差が障害の直接原因になるため、原理を図として説明できるレベルまで落とし込むべきである。 さらに、設計レビュー時には前提条件・入力境界・例外時挙動・確認SQL・証跡項目を明示し、実行者依存の判断を排除すること。学習段階でも、同一テーマを正常系と異常系の両方で検証し、なぜその結果になるかを言語化して再利用可能な知識へ変換する。</p><h3>4. 制限事項とアンチパターン</h3><p>索引・シノニム・シーケンスの制限事項を無視したアンチパターンとして、確認なし本実行、条件式の曖昧化、暗黙変換依存、復旧手順未設計がある。これらは短期的には作業を速く見せるが、中長期では誤更新や性能劣化、監査不適合に直結する。特に初学者は「動いたSQL」を正解と誤認しやすいが、品質上は「再実行可能」「失敗時に戻せる」「根拠を説明できる」ことが必須である。制限事項は足かせではなく安全柵であり、これを仕様として受け入れることが事故率低減の最短経路になる。 さらに、設計レビュー時には前提条件・入力境界・例外時挙動・確認SQL・証跡項目を明示し、実行者依存の判断を排除すること。学習段階でも、同一テーマを正常系と異常系の両方で検証し、なぜその結果になるかを言語化して再利用可能な知識へ変換する。</p><h3>5. 試験・実務の急所</h3><p>第13章の急所は、見た目が似た構文の意味差を判定できるかどうかである。試験では語順や句の位置、NULLや型変換、更新可否、暗黙コミットなどの境界条件が典型的なひっかけになる。実務では同じ境界条件が本番障害の発火点になるため、各処理に対して「想定件数」「失敗時挙動」「証跡」を先に決める運用が有効である。したがって急所対策は問題演習の量より、誤答理由を分類して再発防止ルールに変換する学習が効果的であり、これを章末の確認手順に固定することで合格後も通用する実力になる。 さらに、設計レビュー時には前提条件・入力境界・例外時挙動・確認SQL・証跡項目を明示し、実行者依存の判断を排除すること。学習段階でも、同一テーマを正常系と異常系の両方で検証し、なぜその結果になるかを言語化して再利用可能な知識へ変換する。</p><div class="top"><a href="#scope">▲ トップへ戻る</a></div></section><section class="card" id="exam">
+<h2>第13章 試験ひっかけパターン集</h2>
+<div class="warn"><b>ひっかけ1:</b> 索引は作れば必ず速くなるか → いいえ。条件次第。</div>
+<div class="warn"><b>ひっかけ2:</b> CURRVALはいつでも参照可能か → いいえ。先にNEXTVALが必要。</div>
+<div class="warn"><b>ひっかけ3:</b> シノニム作成で権限も付与されるか → いいえ。権限は別。</div>
+<div class="warn"><b>ひっかけ4:</b> シーケンスはロールバックで番号が戻るか → いいえ。通常戻らない。</div>
+<div class="warn"><b>ひっかけ5:</b> PUBLIC SYNONYMは必ず推奨か → いいえ。管理負荷増に注意。</div>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="practice">
+<h2>第13章 実務アンチパターン集</h2>
+<div class="table-wrap"><table>
+<tr><th>アンチパターン</th><th>起きる障害</th><th>予防策</th></tr>
+<tr><td>遅いSQLごとに索引追加</td><td>索引過多でDML低下</td><td>計画確認と効果測定を必須化</td></tr>
+<tr><td>PUBLIC SYNONYMの乱用</td><td>実体追跡困難</td><td>公開範囲を厳格管理</td></tr>
+<tr><td>連番=無欠番と誤解</td><td>運用クレーム増</td><td>欠番許容を要件明文化</td></tr>
+<tr><td>辞書確認なしで本番反映</td><td>設定漏れ見逃し</td><td>USER_*ビュー確認を手順化</td></tr>
+</table></div>
+<div class="note"><strong>第13章完了基準:</strong> 索引・シノニム・シーケンスの設計意図と副作用を説明し、安全運用できること。</div>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+</main>
+</div>
+</body>
+</html>

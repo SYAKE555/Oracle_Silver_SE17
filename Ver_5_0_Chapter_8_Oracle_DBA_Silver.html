@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+
+<html lang="ja">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ver 5.0 Chapter 8 | Oracle DBA Silver SQL</title>
+<style>
+:root{--bg:#f4f8fc;--card:#ffffff;--line:#d8e4f5;--pri:#1d4f91;--sec:#2f6fbe;--txt:#1f2d3d;--muted:#4c6077;--code:#f2f7fc;--kw:#1d4ed8;--obj:#0f172a;--str:#b45309}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--txt);font-family:"Segoe UI","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;line-height:1.95}
+a{color:var(--pri);text-decoration:none}
+.layout{display:grid;grid-template-columns:320px 1fr;gap:18px;max-width:1480px;margin:0 auto;padding:14px}
+.sidebar{position:sticky;top:8px;align-self:start;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;max-height:calc(100vh - 16px);overflow:auto}
+.sidebar h2{margin:0 0 10px;color:var(--pri);font-size:1.08rem}
+.sidebar ul{margin:0;padding-left:18px}
+.sidebar li{margin:6px 0}
+.main{min-width:0}
+.hero{background:linear-gradient(135deg,#1d4f91,#2f6fbe);color:#fff;border-radius:16px;padding:24px 20px;margin-bottom:14px}
+.hero h1{margin:0 0 8px;font-size:1.8rem}
+.hero p{margin:0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px;margin-bottom:14px}
+.card h2{margin:0 0 10px;color:var(--pri);font-size:1.35rem;border-bottom:2px solid #c8dcf7;padding-bottom:7px}
+.card h3{margin:18px 0 8px;color:var(--sec);font-size:1.12rem}
+.card p{margin:10px 0}
+.note{background:#eef6ff;border:1px solid #c8dcfb;border-left:4px solid #2f6fbe;border-radius:10px;padding:11px;margin:10px 0}
+.warn{background:#fff8f1;border:1px solid #fed7aa;border-left:4px solid #ea580c;border-radius:10px;padding:11px;margin:10px 0}
+.gloss{background:#f0f9ff;border:1px solid #bae6fd;border-radius:10px;padding:11px;margin:10px 0}
+.figure{border:1px dashed #94a3b8;border-radius:10px;padding:12px;background:#f9fbff;margin:10px 0}
+pre{background:var(--code);border:1px solid #dce8f8;border-radius:10px;padding:12px;overflow-x:auto;margin:10px 0}
+code{font-family:"Consolas","Monaco",monospace;font-size:.88rem}
+.kw{color:var(--kw);font-weight:700}.obj{color:var(--obj)}.str{color:var(--str)}
+.table-wrap{overflow-x:auto}
+table{width:100%;min-width:860px;border-collapse:collapse}
+th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef5ff}
+.top{text-align:right;margin-top:12px}
+@media(max-width:1120px){.layout{grid-template-columns:1fr}.sidebar{position:static;max-height:none}}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside class="sidebar">
+<h2>第8章 目次</h2>
+<ul>
+<li><a href="#scope">スコープ宣言</a></li>
+<li><a href="#intro">第8章の学習目的</a></li>
+<li><a href="#subquery-basic">8.1 副問合せの定義と分類</a></li>
+<li><a href="#single-row">8.2 単一行副問合せ</a></li>
+<li><a href="#multi-row">8.3 複数行副問合せ（IN/ANY/ALL）</a></li>
+<li><a href="#exists">8.4 EXISTS / NOT EXISTS</a></li>
+<li><a href="#correlated">8.5 相関副問合せ</a></li>
+<li><a href="#position">8.6 副問合せの配置（WHERE/FROM/SELECT）</a></li>
+<li><a href="#null-trap">8.7 NOT IN + NULL の罠</a></li>
+<li><a href="#errors">8.8 典型エラー（ORA-01427等）</a></li>
+<li><a href="#rewrite">8.9 JOINへの書換え判断</a></li>
+<li><a href="#patterns">8.10 実務設計パターン</a></li>
+<li><a href="#deep-dive-8">品質強化 超深掘り5項目</a></li><li><a href="#insights-8">出題傾向補強</a></li><li><a href="#exam">試験ひっかけパターン集</a></li>
+<li><a href="#practice">実務アンチパターン集</a></li>
+</ul>
+</aside>
+<main class="main">
+<section class="hero" id="scope">
+<h1>Ver 5.0 | Oracle DBA Silver SQL（第8章のみ）</h1>
+<p>本ファイルは第8章「副問合せ（単一行/複数行/相関）」に集中し、演算子選択・件数整合・NULL罠回避を高密度で解説する。</p>
+</section>
+<section class="card" id="intro">
+<h2>第8章の学習目的</h2>
+<p>第8章は、1本のSELECTで表現しにくい条件を段階評価で記述する章である。例えば「部署平均以上の社員」「未注文明細の顧客」「存在判定」などは副問合せが有効である。試験では単一行/複数行の演算子選択、相関副問合せの評価順、NOT INとNULLの落とし穴が頻出となる。実務では副問合せの可読性と性能のバランス判断が重要で、場面によってJOINへ書換えるべきこともある。第8章の到達点は、副問合せが返す行数を事前に予測し、適切な比較演算子を選べる状態にすることである。</p>
+<div class="gloss"><strong>重要:</strong> 副問合せは「ネスト」ではなく「段階評価」。返る行数を読めないSQLは危険。</div>
+</section>
+<section class="card" id="subquery-basic">
+<h2>8.1 副問合せの定義と分類</h2>
+<p>副問合せはSQL文の内部に入れ子で記述されたSELECTである。戻り行数により単一行副問合せと複数行副問合せに分かれ、外側SQLとの依存有無で非相関と相関に分かれる。定義上の要点は、外側SQLが期待する値の形（1値か複数値か）と副問合せの実際の返却形を一致させることだ。これが一致しないと実行時エラーまたは論理誤りになる。副問合せは万能ではないが、段階的条件表現を明確にできる強力な道具である。</p>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="single-row">
+<h2>8.2 単一行副問合せ</h2>
+<p>単一行副問合せは1行1値を返し、`=`、`&gt;`、`&lt;`など単一値比較演算子と組み合わせる。典型例は「全体平均以上」「最大値と一致」などである。試験では単一行比較に複数行が返る誤り（ORA-01427）が頻出。実務では副問合せの結果が本当に単一になるかを先に単体実行して確認するのが安全である。単一前提が揺らぐならINやANY/ALLへ切替えるべきである。</p>
+<pre><code><span class="kw">SELECT</span> <span class="obj">employee_id</span>, <span class="obj">salary</span>
+<span class="kw">FROM</span> <span class="obj">employees</span>
+<span class="kw">WHERE</span> <span class="obj">salary</span> &gt; (
+  <span class="kw">SELECT</span> <span class="kw">AVG</span>(<span class="obj">salary</span>)
+  <span class="kw">FROM</span> <span class="obj">employees</span>
+);</code></pre>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="multi-row">
+<h2>8.3 複数行副問合せ（IN/ANY/ALL）</h2>
+<p>複数行副問合せには`IN`、`ANY`、`ALL`を使う。INは集合内いずれか一致、ANYは比較演算と組み合わせて「いずれかに対して成立」、ALLは「すべてに対して成立」を意味する。試験では演算子意味の取り違えが定番。実務では副問合せ結果の重複やNULL混在で挙動が変わるため、事前検証が必須である。単一行比較演算子と混用しないことが基本ルールとなる。</p>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="exists">
+<h2>8.4 EXISTS / NOT EXISTS</h2>
+<p>EXISTSは副問合せに1行でも存在すればTRUEとなる存在判定で、列値より「存在そのもの」を評価する。NOT EXISTSはその否定で、欠損検出に強い。NOT IN + NULL問題を避ける代替として実務で多用される。試験でもEXISTSの意味は頻出で、返却列内容より存在行の有無だけを見ている点が急所である。実務では参照整合の検証や未処理データ抽出に有効である。</p>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="correlated">
+<h2>8.5 相関副問合せ</h2>
+<p>相関副問合せは外側SQLの各行値を内側SQLで参照し、行ごとに再評価される。例として「同部署平均以上の社員抽出」がある。非相関より表現力は高いが、行ごと評価のため性能に注意が必要である。試験では評価順を問う設問が多く、内側が外側列を参照する構造を見抜けるかが鍵になる。実務では必要に応じてJOIN+集約へ書換え、実行計画を比較することが推奨される。</p>
+<pre><code><span class="kw">SELECT</span> <span class="obj">e.employee_id</span>
+<span class="kw">FROM</span> <span class="obj">employees</span> <span class="obj">e</span>
+<span class="kw">WHERE</span> <span class="obj">e.salary</span> &gt; (
+  <span class="kw">SELECT</span> <span class="kw">AVG</span>(<span class="obj">i.salary</span>)
+  <span class="kw">FROM</span> <span class="obj">employees</span> <span class="obj">i</span>
+  <span class="kw">WHERE</span> <span class="obj">i.department_id</span> = <span class="obj">e.department_id</span>
+);</code></pre>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="position">
+<h2>8.6 副問合せの配置（WHERE/FROM/SELECT）</h2>
+<p>副問合せはWHERE句以外にもFROM句（インラインビュー）やSELECT句（スカラー副問合せ）で使える。配置場所により責務が変わる。WHERE配置は抽出条件、FROM配置は中間集合構築、SELECT配置は列値導出に向く。試験では配置と挙動の対応が問われる。実務では可読性と性能観点から、最も意図が伝わる配置を選ぶべきである。</p>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="null-trap">
+<h2>8.7 NOT IN + NULL の罠</h2>
+<p>NOT INの副問合せ結果にNULLが含まれると、条件全体がUNKNOWN化し、期待外れの0件になりやすい。これは試験と実務で最重要の罠の一つである。回避策は副問合せでNULL除去を明示するか、NOT EXISTSへ置換すること。NULLを含む可能性がある集合には、原則としてNOT INを直接使わない運用が安全である。</p>
+<div class="warn"><b>要注意:</b> NOT INを使う前に副問合せ結果のNULL有無を必ず確認する。</div>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="errors">
+<h2>8.8 典型エラー（ORA-01427等）</h2>
+<div class="warn"><b>ORA-01427:</b> 単一行比較に複数行副問合せ。修正はIN/ANY/ALLへの変更か副問合せ単一化。</div>
+<div class="warn"><b>論理エラー:</b> NOT IN + NULLで0件化。修正はNULL除去またはNOT EXISTS化。</div>
+<div class="warn"><b>性能劣化:</b> 相関副問合せを無検証で多用。修正はJOIN書換え比較。</div>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="rewrite">
+<h2>8.9 JOINへの書換え判断</h2>
+<p>副問合せは可読性が高い一方、相関評価でコストが増える場合がある。大量データではJOIN+GROUP BYへ書換えたほうが計画が安定することが多い。逆に存在判定だけならEXISTSの方が意図が明確な場合もある。重要なのは「どちらが速いか」ではなく、要件に対し説明可能で再現性が高い構文を選ぶことだ。実務では実行計画と件数結果を比較して判断するのが定石である。</p>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="patterns">
+<h2>8.10 実務設計パターン</h2>
+<p>実務では、副問合せ単体を先に実行して返却行数を確認し、その後に外側SQLへ組み込む手順が有効である。さらに、副問合せ結果のNULL有無確認、演算子妥当性確認、実行計画確認をセットで実施すると事故を減らせる。副問合せは「書ける」より「検証できる」ことが価値であり、検証手順を省略すると障害時の切り分けが困難になる。</p>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="insights-8">
+<h2>出題傾向補強（第8章）</h2>
+<p>収集した過去問題データに基づく第8章対応分野「副問合せ」の傾向補強である。収集問題数は46問で、出題傾向の核は「SELECT / WHERE / GROUP BY / HAVING / ORDER BY / JOIN / 副問合せ / INSERT / UPDATE / DELETE」に集中する。試験対策では、構文暗記よりも条件差分と失敗時挙動の判定を優先することで正答率が上がる。実務では、同テーマに対して確認SQLと本実行SQLを対にして扱うと事故率を下げられる。</p>
+<div class="note"><strong>補強方針:</strong> 本章の例題を解く際は、同じ概念を「成功例」「失敗例」「修正例」の3パターンで比較し、判定根拠を言語化すること。</div>
+<p><strong>参照URL例（解説参照元）:</strong></p>
+<ul>
+<li><a href="https://docs.oracle.com/cd/E16338_01/server.112/b56299/queries007.htm#i2067858" rel="noopener noreferrer" target="_blank">https://docs.oracle.com/cd/E16338_01/server.112/b56299/queries007.htm#i2067858</a></li><li><a href="https://atmarkit.itmedia.co.jp/ait/articles/1208/06/news118.html" rel="noopener noreferrer" target="_blank">https://atmarkit.itmedia.co.jp/ait/articles/1208/06/news118.html</a></li><li><a href="http://docs.oracle.com/cd/E16338_01/server.112/b56299/conditions002.htm" rel="noopener noreferrer" target="_blank">http://docs.oracle.com/cd/E16338_01/server.112/b56299/conditions002.htm</a></li>
+</ul>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="deep-dive-8"><h2>品質強化：第8章 超深掘り5項目</h2><h3>1. 定義</h3><p>第8章の中心概念である「副問合せ」は、単に構文を覚える学習単位ではなく、データの意味・一貫性・運用可能性を同時に成立させるための設計原則である。試験では語句の暗記だけで解ける問題もあるが、実務では入力値の品質、実行順序、例外時の復旧可能性まで含めて定義を扱う必要がある。つまりこの章の定義は「SQL文の形」ではなく「業務データを破壊せずに価値へ変換する規律」であり、ここを誤解すると正解できても現場で再現できない。 さらに、設計レビュー時には前提条件・入力境界・例外時挙動・確認SQL・証跡項目を明示し、実行者依存の判断を排除すること。学習段階でも、同一テーマを正常系と異常系の両方で検証し、なぜその結果になるかを言語化して再利用可能な知識へ変換する。</p><h3>2. 役割</h3><p>副問合せの役割は、データベース操作を偶発的な職人技から、再現可能な標準手順へ引き上げることにある。たとえば現場で引継ぎ担当が変わっても、同じ確認SQL・同じ判定基準・同じ実行順で処理できる状態を作るのがこの章の本質である。試験対策の観点でも、役割を理解していると「どの句がどの責務を持つか」を軸に消去法が機能し、難問での正答率が上がる。役割を文法の説明に矮小化せず、品質保証の仕組みとして把握することが重要である。 さらに、設計レビュー時には前提条件・入力境界・例外時挙動・確認SQL・証跡項目を明示し、実行者依存の判断を排除すること。学習段階でも、同一テーマを正常系と異常系の両方で検証し、なぜその結果になるかを言語化して再利用可能な知識へ変換する。</p><h3>3. 動作原理</h3><p>副問合せの動作原理は、入力条件の解釈、実行計画に基づく処理、結果または副作用の確定という三層で説明できる。SQLは記述順と論理評価順が一致しない場面が多く、特に結合・集計・更新系では前提条件を誤ると意図外結果になる。そこで原理理解では「どの時点で行が絞られ、どの時点で列が計算され、どの時点で変更が確定するか」を言語化する必要がある。試験ではこの順序差を突く設問が頻出であり、実務ではこの順序差が障害の直接原因になるため、原理を図として説明できるレベルまで落とし込むべきである。 さらに、設計レビュー時には前提条件・入力境界・例外時挙動・確認SQL・証跡項目を明示し、実行者依存の判断を排除すること。学習段階でも、同一テーマを正常系と異常系の両方で検証し、なぜその結果になるかを言語化して再利用可能な知識へ変換する。</p><h3>4. 制限事項とアンチパターン</h3><p>副問合せの制限事項を無視したアンチパターンとして、確認なし本実行、条件式の曖昧化、暗黙変換依存、復旧手順未設計がある。これらは短期的には作業を速く見せるが、中長期では誤更新や性能劣化、監査不適合に直結する。特に初学者は「動いたSQL」を正解と誤認しやすいが、品質上は「再実行可能」「失敗時に戻せる」「根拠を説明できる」ことが必須である。制限事項は足かせではなく安全柵であり、これを仕様として受け入れることが事故率低減の最短経路になる。 さらに、設計レビュー時には前提条件・入力境界・例外時挙動・確認SQL・証跡項目を明示し、実行者依存の判断を排除すること。学習段階でも、同一テーマを正常系と異常系の両方で検証し、なぜその結果になるかを言語化して再利用可能な知識へ変換する。</p><h3>5. 試験・実務の急所</h3><p>第8章の急所は、見た目が似た構文の意味差を判定できるかどうかである。試験では語順や句の位置、NULLや型変換、更新可否、暗黙コミットなどの境界条件が典型的なひっかけになる。実務では同じ境界条件が本番障害の発火点になるため、各処理に対して「想定件数」「失敗時挙動」「証跡」を先に決める運用が有効である。したがって急所対策は問題演習の量より、誤答理由を分類して再発防止ルールに変換する学習が効果的であり、これを章末の確認手順に固定することで合格後も通用する実力になる。 さらに、設計レビュー時には前提条件・入力境界・例外時挙動・確認SQL・証跡項目を明示し、実行者依存の判断を排除すること。学習段階でも、同一テーマを正常系と異常系の両方で検証し、なぜその結果になるかを言語化して再利用可能な知識へ変換する。</p><div class="top"><a href="#scope">▲ トップへ戻る</a></div></section><section class="card" id="exam">
+<h2>第8章 試験ひっかけパターン集</h2>
+<div class="warn"><b>ひっかけ1:</b> 単一行副問合せに複数行が返っても比較できるか → できない。</div>
+<div class="warn"><b>ひっかけ2:</b> INとANYは常に同義か → 演算子次第で差が出る。</div>
+<div class="warn"><b>ひっかけ3:</b> EXISTSは列値を比較するか → 存在有無のみ評価。</div>
+<div class="warn"><b>ひっかけ4:</b> NOT INはNULL混在でも安全か → 危険。</div>
+<div class="warn"><b>ひっかけ5:</b> 相関副問合せは1回だけ評価か → 外側行ごと評価。</div>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="practice">
+<h2>第8章 実務アンチパターン集</h2>
+<div class="table-wrap"><table>
+<tr><th>アンチパターン</th><th>起きる障害</th><th>予防策</th></tr>
+<tr><td>副問合せ行数未検証</td><td>ORA-01427や誤判定</td><td>副問合せ単体で先行検証</td></tr>
+<tr><td>NOT IN + NULL混在</td><td>0件化</td><td>NULL除去/NOT EXISTS化</td></tr>
+<tr><td>相関副問合せの過用</td><td>性能劣化</td><td>JOIN書換えを比較検討</td></tr>
+<tr><td>演算子誤選択（= と IN）</td><td>件数不一致</td><td>返却行数に合わせて選択</td></tr>
+</table></div>
+<div class="note"><strong>第8章完了基準:</strong> 副問合せの返却行数を予測し、適切な演算子とNULL対策を説明できること。</div>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+</main>
+</div>
+</body>
+</html>

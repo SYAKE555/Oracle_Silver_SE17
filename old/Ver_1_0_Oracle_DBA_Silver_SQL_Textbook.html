@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oracle DBA Silver SQL 総合教科書</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: "Segoe UI", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif; background: #f5f7fa; color: #1f2937; line-height: 1.78; }
+.page-header { background: linear-gradient(135deg, #1d4e89 0%, #2563a8 55%, #2b7abf 100%); color: #fff; padding: 38px 20px; text-align: center; }
+.page-header h1 { font-size: 1.95rem; margin-bottom: 8px; }
+.subtitle { opacity: 0.93; font-size: 0.96rem; }
+.container { max-width: 1120px; margin: 0 auto; padding: 20px; }
+.toc, .section-card { background: #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); border: 1px solid #e5e7eb; }
+.toc { padding: 14px 16px; margin-bottom: 18px; }
+.toc ul { columns: 2; gap: 30px; padding-left: 18px; }
+.toc li { margin-bottom: 6px; }
+.toc a { color: #1d4e89; text-decoration: none; }
+.notice { background: #f3f8ff; border: 1px solid #bfdbfe; border-radius: 10px; padding: 12px 14px; margin-bottom: 18px; }
+.section-card { padding: 26px; margin-bottom: 22px; }
+.section-title { color: #1d4e89; font-size: 1.24rem; font-weight: 700; margin-bottom: 12px; border-bottom: 3px solid #93c5fd; padding-bottom: 6px; }
+.sub-title { font-size: 1.04rem; font-weight: 700; margin: 16px 0 8px; color: #334155; }
+.topic-chips { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 10px; }
+.chip { background: #eef6ff; color: #1d4e89; border: 1px solid #93c5fd; border-radius: 16px; font-size: 0.78rem; padding: 2px 10px; }
+p, li { margin-bottom: 10px; }
+ul { padding-left: 20px; }
+.summary-table { width: 100%; border-collapse: collapse; margin: 10px 0 12px; font-size: 0.92rem; }
+.summary-table th { background: #1d4e89; color: #fff; text-align: left; padding: 8px 10px; }
+.summary-table td { border-bottom: 1px solid #e5e7eb; padding: 8px 10px; }
+.summary-table tr:nth-child(even) td { background: #fafafa; }
+.tip-box { background: #eff6ff; border-left: 4px solid #2563eb; border-radius: 0 8px 8px 0; padding: 10px 12px; margin: 10px 0; }
+.warn-box { background: #fff1f2; border-left: 4px solid #e11d48; border-radius: 0 8px 8px 0; padding: 10px 12px; margin: 10px 0; }
+.practice-box { background: #f0fdf4; border-left: 4px solid #16a34a; border-radius: 0 8px 8px 0; padding: 10px 12px; margin: 10px 0; }
+pre.sql { background: #f8fafc; color: #e2e8f0; border-radius: 8px; padding: 14px; overflow-x: auto; margin: 10px 0; }
+pre.sql code { font-family: "Consolas", "Monaco", monospace; font-size: 0.88rem; white-space: pre; }
+.kw { color: #0f766e; font-weight: 700; }
+.fn { color: #1d4ed8; }
+.str { color: #047857; }
+.num { color: #7c3aed; }
+.cm { color: #94a3b8; }
+.https { background: #f0fdf4; border: 1px solid #047857; border-radius: 8px; padding: 10px 12px; margin-top: 10px; }
+.chapter-summary { background: #f8fafc; border: 1px dashed #94a3b8; border-radius: 8px; padding: 10px 12px; margin-top: 10px; }
+noscript { display: block; background: #ecfeff; border: 1px solid #67e8f9; border-radius: 8px; padding: 10px 12px; margin-bottom: 16px; }
+.flow-grid { display: grid; grid-template-columns: repeat(5, minmax(120px, 1fr)); gap: 10px; margin: 10px 0; align-items: center; }
+.flow-node { background: #fff; border: 1px solid #cbd5e1; border-radius: 10px; padding: 10px; text-align: center; font-size: 0.86rem; }
+.flow-node.main { border-color: #2b7abf; background: #eef6ff; font-weight: 700; color: #1d4e89; }
+.flow-arrow { text-align: center; color: #64748b; font-weight: 700; font-size: 1.05rem; }
+.diagram-table { width: 100%; border-collapse: collapse; margin: 10px 0 12px; font-size: 0.9rem; }
+.diagram-table th { background: #334155; color: #fff; text-align: left; padding: 8px 10px; }
+.diagram-table td { border: 1px solid #e2e8f0; padding: 8px 10px; vertical-align: top; }
+.join-diagram { display: grid; grid-template-columns: 1fr auto 1fr; gap: 8px; margin: 10px 0; align-items: center; }
+.table-mini { border: 1px solid #cbd5e1; border-radius: 8px; overflow: hidden; background: #fff; }
+.table-mini .head { background: #f8fafc; color: #fff; padding: 6px 8px; font-size: 0.82rem; }
+.table-mini .row { padding: 6px 8px; font-size: 0.82rem; border-top: 1px solid #e2e8f0; }
+.join-center { font-size: 1.2rem; font-weight: 700; color: #1d4e89; }
+@media (max-width: 860px) {
+  .page-header h1 { font-size: 1.42rem; }
+  .container { padding: 12px; }
+  .section-card { padding: 14px; }
+  .toc ul { columns: 1; }
+  pre.sql, table { max-width: 100%; overflow-x: auto; }
+  p, li, h1, h2, h3 { overflow-wrap: break-word; word-break: break-word; }
+  .flow-grid { grid-template-columns: 1fr; }
+  .flow-arrow { transform: rotate(90deg); }
+  .join-diagram { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="page-header">
+  <h1>Oracle DBA Silver SQL 総合教科書</h1>
+  <div class="subtitle">目次1〜16章ベース / 実務例・暗記導線強化版</div>
+</div>
+<div class="container">
+  <a id="top"></a>
+  <noscript>JavaScript が無効でも本文は問題なく閲覧できます。</noscript>
+  <div class="tip-box" style="position:sticky;top:8px;z-index:3;">
+    <strong>クイック移動:</strong>
+    <a href="#c1">基礎</a> / <a href="#c6">集計</a> / <a href="#c10">DML</a> / <a href="#c11">DDL</a> / <a href="#c14">権限</a> / <a href="#c16">日時TZ</a>
+  </div>
+
+  <div class="notice">
+    本教材は Oracle DBA Silver SQL 学習向けに再構成した独自教材です。
+    固有ロゴ・図版の模倣・商標依存表現を排除し、一般学習用途として読める形に整理しています。
+  </div>
+
+  <div class="toc">
+    <h2 class="section-title">目次</h2>
+    <ul>
+      <li><strong>第0部 導入</strong></li>
+      <li><a href="#intro">はじめに（目的 / 対象読者 / 構成 / 関連情報）</a></li>
+      <li><strong>第1部 SQL基礎（1〜5章）</strong></li>
+      <li><a href="#c1">1. リレーショナル・データベースの概要</a></li>
+      <li><a href="#c2">2. SQL SELECT文を使用したデータの取得</a></li>
+      <li><a href="#c3">3. データの制限とソート</a></li>
+      <li><a href="#c4">4. 単一行関数を使用した出力のカスタマイズ</a></li>
+      <li><a href="#c5">5. 変換関数と条件式の使用</a></li>
+      <li><strong>第2部 集計・結合・副問合せ（6〜9章）</strong></li>
+      <li><a href="#c6">6. 行使用した集計データのレポート</a></li>
+      <li><a href="#c7">7. 複数の表からのデータの表示</a></li>
+      <li><a href="#c8">8. 副問合せを使用した問合せの解決</a></li>
+      <li><a href="#c9">9. 集合演算子の使用</a></li>
+      <li><strong>第3部 更新・定義・運用（10〜16章）</strong></li>
+      <li><a href="#c10">10. DML文を使用した表の管理</a></li>
+      <li><a href="#c11">11. DDLによる表とその関係の管理</a></li>
+      <li><a href="#c12">12. ビューの管理</a></li>
+      <li><a href="#c13">13. 索引とシノニムとシーケンスの管理</a></li>
+      <li><a href="#c14">14. ユーザーアクセスの制御</a></li>
+      <li><a href="#c15">15. データ・ディクショナリ・ビューを使用したオブジェクトの管理</a></li>
+      <li><a href="#c16">16. 異なるタイムゾーンでのデータの管理</a></li>
+    </ul>
+    <div style="text-align:right;margin-top:10px;"><a href="#top">▲ 目次へ戻る</a></div>
+</div>
+
+  <div class="section-card" id="intro">
+    <h2 class="section-title">はじめに</h2>
+    <div class="topic-chips">
+      <span class="chip">目的</span><span class="chip">対象読者</span><span class="chip">構成</span><span class="chip">関連情報</span><span class="chip">SQL構文記法</span>
+    </div>
+    <p><strong>目的:</strong> 試験対策だけでなく、実務で「誤更新しないSQL」「監査に耐えるSQL」を書けることを目的にします。</p>
+    <p><strong>対象読者:</strong> SQL初学者、アプリ開発者、運用保守担当、DBA補助担当。</p>
+    <p><strong>学習の進め方:</strong> 章順に学び、各章の「実務で使う場面」「試験で引っかかる点」「暗記観点」をセットで押さえる。</p>
+    <table class="summary-table">
+      <tr><th>SQL構文記号</th><th>意味</th><th>覚え方</th></tr>
+      <tr><td>[ ]</td><td>省略可能</td><td>「あってもなくても動く」</td></tr>
+      <tr><td>{ }</td><td>どれか必須</td><td>「必ず1つ選ぶ」</td></tr>
+      <tr><td>|</td><td>選択肢区切り</td><td>「または」</td></tr>
+      <tr><td>...</td><td>繰り返し可</td><td>「必要なだけ続く」</td></tr>
+    </table>
+    <div class="https">公開先URLは必ず <code>https://...</code> にしてください（社用端末向け要件）。</div>
+    <div style="text-align:right;margin-top:10px;"><a href="#top">▲ 目次へ戻る</a></div>
+</div>
+
+  <div class="section-card" id="c1">
+    <h2 class="section-title">1. リレーショナル・データベースの概要</h2>
+    <div class="topic-chips"><span class="chip">1.1 データベースの役割とタイプ</span><span class="chip">1.2 リレーショナルモデル</span><span class="chip">1.3 SQLの概要</span></div>
+    <div class="tip-box" data-mini="c1"><strong>実務ミニケース:</strong> 顧客台帳統合で主キー設計を誤ると、同一人物の二重登録が監査で発覚します。</div>
+    <p>データベースは「大量データから必要情報を正確に取り出す仕組み」です。DBMSは整合性（壊れないこと）を保証します。</p>
+    <p>例え: 紙の台帳を1万冊持つ倉庫で検索する代わりに、索引つき電子台帳から条件検索するイメージです。</p>
+    <h3 class="sub-title">1.1 データベースの役割とタイプ</h3>
+    <table class="summary-table">
+      <tr><th>方式</th><th>特徴</th><th>向いている場面</th></tr>
+      <tr><td>階層型</td><td>親子1対多の木構造</td><td>固定的な階層データ</td></tr>
+      <tr><td>ネットワーク型</td><td>多方向参照</td><td>複雑な参照関係</td></tr>
+      <tr><td>リレーショナル型</td><td>行と列、SQLで操作</td><td>業務システム全般</td></tr>
+    </table>
+    <h3 class="sub-title">1.2 リレーショナルモデルとは</h3>
+    <ul>
+      <li>表（relation）は行（tuple）と列（attribute）で構成される。</li>
+      <li>主キーは重複しない識別子、外部キーは他表との整合を担保する。</li>
+      <li>NULLは「値なし/不明」であり、0や空文字とは別概念。</li>
+    </ul>
+    <h3 class="sub-title">1.3 SQLの概要</h3>
+    <table class="summary-table">
+      <tr><th>分類</th><th>主な文</th><th>用途</th></tr>
+      <tr><td>DQL</td><td>SELECT</td><td>取得</td></tr>
+      <tr><td>DML</td><td>INSERT, UPDATE, DELETE, MERGE</td><td>データ操作</td></tr>
+      <tr><td>DDL</td><td>CREATE, ALTER, DROP, TRUNCATE</td><td>構造定義</td></tr>
+      <tr><td>TCL</td><td>COMMIT, ROLLBACK, SAVEPOINT</td><td>トランザクション制御</td></tr>
+    </table>
+    <div class="chapter-summary">章の要点: 「表」「キー」「NULL」「SQL分類」を曖昧にしないことが後続章の理解速度を決めます。</div>
+    <div style="text-align:right;margin-top:10px;"><a href="#top">▲ 目次へ戻る</a></div>
+</div>
+
+  <div class="section-card">
+    <h2 class="section-title">図解: SQLが実務で動く流れ</h2>
+    <p>「SQLを書く」だけではなく、要件確認から反映までの一連の流れで理解すると、事故が減ります。</p>
+    <h3 class="sub-title">図1. SELECTの実行イメージ（処理順）</h3>
+    <div class="flow-grid">
+      <div class="flow-node main">FROM<br>対象表決定</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node main">WHERE<br>行を絞る</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node main">GROUP BY / HAVING<br>集計条件</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node main">SELECT<br>列を確定</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node main">ORDER BY<br>並び替え</div>
+    </div>
+    <div class="tip-box">実務ポイント: エラーや件数不一致の原因は、多くがこの順序の誤認です。</div>
+
+    <h3 class="sub-title">図2. JOINの見え方（社員と部署）</h3>
+    <div class="join-diagram">
+      <div class="table-mini">
+        <div class="head">employees</div>
+        <div class="row">emp_id=101, dept_id=10</div>
+        <div class="row">emp_id=102, dept_id=20</div>
+        <div class="row">emp_id=103, dept_id=NULL</div>
+      </div>
+      <div class="join-center">JOIN</div>
+      <div class="table-mini">
+        <div class="head">departments</div>
+        <div class="row">dept_id=10, name=Sales</div>
+        <div class="row">dept_id=20, name=IT</div>
+      </div>
+    </div>
+    <table class="diagram-table">
+      <tr><th>結合種別</th><th>返る行</th><th>実務の使いどころ</th></tr>
+      <tr><td>INNER JOIN</td><td>一致した社員のみ（101,102）</td><td>正式な紐付け済みデータだけ集計したい</td></tr>
+      <tr><td>LEFT JOIN</td><td>全社員（103も残る）</td><td>未設定・欠損データを洗い出したい</td></tr>
+    </table>
+    <div style="text-align:right;margin-top:10px;"><a href="#top">▲ 目次へ戻る</a></div>
+</div>
+
+  <div class="section-card" id="c2">
+    <h2 class="section-title">2. SQL SELECT文を使用したデータの取得</h2>
+    <div class="topic-chips"><span class="chip">2.1 SELECT基本構文</span><span class="chip">2.2 列の取得</span><span class="chip">2.3 列計算と列別名</span><span class="chip">2.4 行選択（WHERE）</span></div>
+    <div class="tip-box" data-mini="c2"><strong>実務ミニケース:</strong> 画面APIでSELECT *を使うと列追加時にフロントが壊れます。列は明示取得します。</div>
+    <h3 class="sub-title">2.1 SELECT文の基本構文</h3>
+    <pre class="sql"><code><span class="kw">SELECT</span> employee_id, last_name, job_id
+<span class="kw">FROM</span> employees;</code></pre>
+    <p>実務: APIレスポンス、画面一覧、CSV出力はこの構文を土台に組み立てます。</p>
+
+    <h3 class="sub-title">2.2 列の取得</h3>
+    <pre class="sql"><code><span class="kw">SELECT</span> *
+<span class="kw">FROM</span> employees;
+
+<span class="kw">SELECT</span> employee_id, last_name, salary
+<span class="kw">FROM</span> employees;</code></pre>
+    <div class="warn-box">本番運用では <code>SELECT *</code> は列増減の影響を受けやすいので極力避ける。</div>
+
+    <h3 class="sub-title">2.3 列の計算と列別名</h3>
+    <pre class="sql"><code><span class="kw">SELECT</span> last_name,
+       salary * <span class="num">12</span> <span class="kw">AS</span> annual_salary,
+       salary * (<span class="num">1</span> + <span class="fn">NVL</span>(commission_pct, <span class="num">0</span>)) <span class="kw">AS</span> total_income
+<span class="kw">FROM</span> employees;</code></pre>
+    <p>例え: 列別名は「帳票の見出し名」。SQL内部名と表示名を切り分ける。</p>
+
+    <h3 class="sub-title">2.4 行の選択（WHERE）</h3>
+    <pre class="sql"><code><span class="kw">SELECT</span> employee_id, last_name, salary
+<span class="kw">FROM</span> employees
+<span class="kw">WHERE</span> department_id = <span class="num">50</span>
+  <span class="kw">AND</span> salary &gt;= <span class="num">8000</span>;</code></pre>
+    <div class="practice-box">確認: <code>AND</code> と <code>OR</code> は優先順位が異なるため、混在時は括弧を付ける。</div>
+    <div class="chapter-summary">章の要点: 「必要列だけ取得」「計算列を別名で可読化」「WHEREは早期絞り込み」が基本。</div>
+    <div style="text-align:right;margin-top:10px;"><a href="#top">▲ 目次へ戻る</a></div>
+</div>
+
+  <div class="section-card" id="c3">
+    <h2 class="section-title">3. データの制限とソート</h2>
+    <div class="topic-chips"><span class="chip">3.1 ソートと行数制限</span><span class="chip">3.2 ORDER BY</span><span class="chip">3.3 OFFSET/FETCH</span><span class="chip">3.4 置換変数</span></div>
+    <div class="tip-box" data-mini="c3"><strong>実務ミニケース:</strong> 上位N件のダッシュボードは ORDER BY なしだと毎回順序が変わります。</div>
+
+    <h3 class="sub-title">3.1 SELECT文の基本構文（ソートと行数制限）</h3>
+    <p>行数制限は、必ずソート順を決めた上で使う。順序未指定では結果が毎回変わりうる。</p>
+
+    <h3 class="sub-title">3.2 並べ替え（ORDER BY）</h3>
+    <pre class="sql"><code><span class="kw">SELECT</span> last_name, salary, commission_pct
+<span class="kw">FROM</span> employees
+<span class="kw">ORDER BY</span> salary <span class="kw">DESC</span>, commission_pct <span class="kw">NULLS LAST</span>;</code></pre>
+
+    <h3 class="sub-title">3.3 SQL行制限（OFFSET句、FETCH句）</h3>
+    <pre class="sql"><code><span class="kw">SELECT</span> employee_id, last_name, salary
+<span class="kw">FROM</span> employees
+<span class="kw">ORDER BY</span> salary <span class="kw">DESC</span>
+<span class="kw">FETCH FIRST</span> <span class="num">10</span> <span class="kw">ROWS ONLY</span>;</code></pre>
+    <pre class="sql"><code><span class="kw">SELECT</span> employee_id, last_name, salary
+<span class="kw">FROM</span> employees
+<span class="kw">ORDER BY</span> salary <span class="kw">DESC</span>
+<span class="kw">OFFSET</span> <span class="num">20</span> <span class="kw">ROWS FETCH NEXT</span> <span class="num">10</span> <span class="kw">ROWS ONLY</span>;</code></pre>
+
+    <h3 class="sub-title">3.4 置換変数</h3>
+    <pre class="sql"><code><span class="cm">-- SQL*Plus系クライアント</span>
+<span class="kw">SET VERIFY ON</span>
+<span class="kw">DEFINE</span> dept_id = <span class="num">30</span>
+<span class="kw">SELECT</span> last_name, salary
+<span class="kw">FROM</span> employees
+<span class="kw">WHERE</span> department_id = &amp;dept_id;</code></pre>
+    <div class="tip-box">実務: バッチ用SQLを手動実行するとき、置換変数で対象期間や部署を切り替えると安全。</div>
+    <div class="chapter-summary">章の要点: 「ORDER BYで順序固定→OFFSET/FETCHで範囲切り出し」が定石。</div>
+    <div style="text-align:right;margin-top:10px;"><a href="#top">▲ 目次へ戻る</a></div>
+</div>
+
+  <div class="section-card" id="c4">
+    <h2 class="section-title">4. 単一行関数を使用した出力のカスタマイズ</h2>
+    <div class="topic-chips"><span class="chip">4.1 単一行関数とグループ関数</span><span class="chip">4.2 行ごとの計算</span></div>
+    <div class="tip-box" data-mini="c4"><strong>実務ミニケース:</strong> 氏名検索は表記ゆれが多いため、UPPER/TRIMで正規化して検索漏れを防ぎます。</div>
+
+    <h3 class="sub-title">4.1 単一行関数とグループ関数</h3>
+    <table class="summary-table">
+      <tr><th>分類</th><th>例</th><th>戻り値</th></tr>
+      <tr><td>単一行関数</td><td>UPPER, SUBSTR, ROUND, NVL</td><td>1行ごとに1値</td></tr>
+      <tr><td>グループ関数</td><td>COUNT, SUM, AVG, MAX, MIN</td><td>複数行を集約した1値</td></tr>
+    </table>
+
+    <h3 class="sub-title">4.2 行ごとの計算</h3>
+    <pre class="sql"><code><span class="kw">SELECT</span> employee_id,
+       <span class="fn">INITCAP</span>(last_name) <span class="kw">AS</span> last_name_fmt,
+       <span class="fn">SUBSTR</span>(email, <span class="num">1</span>, <span class="num">6</span>) <span class="kw">AS</span> email_prefix,
+       <span class="fn">ROUND</span>(salary * <span class="num">1.08</span>, <span class="num">0</span>) <span class="kw">AS</span> salary_sim
+<span class="kw">FROM</span> employees;</code></pre>
+    <div class="practice-box">暗記: <code>SUBSTR</code> は1始まり、<code>INSTR</code> は見つからないと0。</div>
+    <div class="chapter-summary">章の要点: 単一行関数は「表示整形」「検索条件の正規化」「簡易計算」で多用される。</div>
+    <div style="text-align:right;margin-top:10px;"><a href="#top">▲ 目次へ戻る</a></div>
+</div>
+
+  <div class="section-card" id="c5">
+    <h2 class="section-title">5. 変換関数と条件式の使用</h2>
+    <div class="topic-chips"><span class="chip">5.1 データ型の変換</span><span class="chip">5.2 NULLの処理</span><span class="chip">5.3 条件式とDECODE関数</span></div>
+    <div class="tip-box" data-mini="c5"><strong>実務ミニケース:</strong> 文字列日付比較は環境差で事故になります。TO_DATEで型を揃えます。</div>
+
+    <h3 class="sub-title">5.1 データ型の変換</h3>
+    <pre class="sql"><code><span class="kw">SELECT</span> <span class="fn">TO_CHAR</span>(hire_date, <span class="str">'YYYY-MM-DD'</span>) <span class="kw">AS</span> hire_ymd,
+       <span class="fn">TO_DATE</span>(<span class="str">'2026-04-01'</span>, <span class="str">'YYYY-MM-DD'</span>) <span class="kw">AS</span> d
+<span class="kw">FROM</span> dual;</code></pre>
+
+    <h3 class="sub-title">5.2 汎用関数によるNULL処理</h3>
+    <pre class="sql"><code><span class="kw">SELECT</span> employee_id,
+       salary * (<span class="num">1</span> + <span class="fn">NVL</span>(commission_pct, <span class="num">0</span>)) <span class="kw">AS</span> amount1,
+       <span class="fn">COALESCE</span>(bonus_amt, allowance_amt, <span class="num">0</span>) <span class="kw">AS</span> amount2
+<span class="kw">FROM</span> comp_plan;</code></pre>
+
+    <h3 class="sub-title">5.3 条件式とDECODE関数</h3>
+    <pre class="sql"><code><span class="kw">SELECT</span> employee_id,
+       <span class="kw">CASE</span>
+         <span class="kw">WHEN</span> salary &gt;= <span class="num">12000</span> <span class="kw">THEN</span> <span class="str">'A'</span>
+         <span class="kw">WHEN</span> salary &gt;= <span class="num">8000</span> <span class="kw">THEN</span> <span class="str">'B'</span>
+         <span class="kw">ELSE</span> <span class="str">'C'</span>
+       <span class="kw">END</span> <span class="kw">AS</span> grade,
+       <span class="fn">DECODE</span>(job_id, <span class="str">'IT_PROG'</span>, <span class="str">'IT'</span>, <span class="str">'OTHER'</span>) <span class="kw">AS</span> job_grp
+<span class="kw">FROM</span> employees;</code></pre>
+    <div class="tip-box">実務: 画面表示用の区分値変換は SQL 側で行うと、アプリ実装が単純化される。</div>
+    <div class="chapter-summary">章の要点: 変換関数は「型整合」、NULL関数は「計算停止防止」、CASEは「分類」に使う。</div>
+    <div style="text-align:right;margin-top:10px;"><a href="#top">▲ 目次へ戻る</a></div>
+</div>
+
+  <div class="section-card" id="c6">
+    <h2 class="section-title">6. 行使用した集計データのレポート</h2>
+    <div class="topic-chips"><span class="chip">6.1 グループ化と集計</span><span class="chip">6.2 グループ関数</span><span class="chip">6.3 グループ化の構文</span><span class="chip">6.4 まとめ</span><span class="chip">6.5 ROWNUM/ROWID</span></div>
+    <div class="tip-box" data-mini="c6"><strong>実務ミニケース:</strong> 部署KPI会議では、GROUP BY粒度を先に合意しないと数字が一致しません。</div>
+
+    <h3 class="sub-title">6.1 / 6.2 グループ化とグループ関数</h3>
+    <pre class="sql"><code><span class="kw">SELECT</span> department_id,
+       <span class="fn">COUNT</span>(*) <span class="kw">AS</span> emp_count,
+       <span class="fn">SUM</span>(salary) <span class="kw">AS</span> total_sal,
+       <span class="fn">AVG</span>(salary) <span class="kw">AS</span> avg_sal
+<span class="kw">FROM</span> employees
+<span class="kw">GROUP BY</span> department_id;</code></pre>
+
+    <h3 class="sub-title">6.3 グループ化の構文（HAVING）</h3>
+    <pre class="sql"><code><span class="kw">SELECT</span> department_id, <span class="fn">AVG</span>(salary) <span class="kw">AS</span> avg_sal
+<span class="kw">FROM</span> employees
+<span class="kw">GROUP BY</span> department_id
+<span class="kw">HAVING</span> <span class="fn">AVG</span>(salary) &gt;= <span class="num">9000</span>;</code></pre>
+    <div class="warn-box">頻出エラー: ORA-00979（GROUP BYにない列をSELECT）。</div>
+
+    <h3 class="sub-title">6.5 疑似列 ROWID / ROWNUM</h3>
+    <pre class="sql"><code><span class="kw">SELECT</span> rowid, employee_id, last_name
+<span class="kw">FROM</span> employees
+<span class="kw">WHERE</span> rownum &lt;= <span class="num">3</span>;</code></pre>
+    <div class="chapter-summary">章の要点: 集計の順序（FROM→WHERE→GROUP BY→HAVING→SELECT→ORDER BY）を固定して覚える。</div>
+    <div style="text-align:right;margin-top:10px;"><a href="#top">▲ 目次へ戻る</a></div>
+</div>
+
+  <div class="section-card" id="c7">
+    <h2 class="section-title">7. 複数の表からのデータの表示</h2>
+    <div class="topic-chips"><span class="chip">7.1 結合の考え方</span><span class="chip">7.2 内部結合</span><span class="chip">7.3 外部結合</span><span class="chip">7.4 クロス結合</span><span class="chip">7.5 自然結合</span><span class="chip">7.6 その他の結合</span><span class="chip">7.7 まとめ</span></div>
+    <div class="tip-box" data-mini="c7"><strong>実務ミニケース:</strong> 未所属社員監査はLEFT JOINで欠損行を残して抽出します。</div>
+
+    <h3 class="sub-title">7.1 結合の考え方</h3>
+    <p>結合は「別表の列を横に並べる」処理。キー列が一致条件。</p>
+
+    <h3 class="sub-title">7.2 内部結合（INNER JOIN）</h3>
+    <pre class="sql"><code><span class="kw">SELECT</span> e.last_name, d.department_name
+<span class="kw">FROM</span> employees e
+<span class="kw">INNER JOIN</span> departments d
+  <span class="kw">ON</span> e.department_id = d.department_id;</code></pre>
+
+    <h3 class="sub-title">7.3 外部結合（OUTER JOIN）</h3>
+    <pre class="sql"><code><span class="kw">SELECT</span> e.last_name, d.department_name
+<span class="kw">FROM</span> employees e
+<span class="kw">LEFT OUTER JOIN</span> departments d
+  <span class="kw">ON</span> e.department_id = d.department_id;</code></pre>
+
+    <h3 class="sub-title">7.4 クロス結合（デカルト積）</h3>
+    <pre class="sql"><code><span class="kw">SELECT</span> e.employee_id, d.department_id
+<span class="kw">FROM</span> employees e
+<span class="kw">CROSS JOIN</span> departments d;</code></pre>
+
+    <h3 class="sub-title">7.5 自然結合 / 7.6 その他の結合</h3>
+    <pre class="sql"><code><span class="kw">SELECT</span> last_name, department_name
+<span class="kw">FROM</span> employees
+<span class="kw">NATURAL JOIN</span> departments;</code></pre>
+    <div class="tip-box">実務: NATURAL JOINは結合列が暗黙になるため、保守性を重視するならON/USINGを優先。</div>
+    <div class="chapter-summary">章の要点: 「一致行だけ返すか」「片側の欠損行も残すか」を先に決める。</div>
+    <div style="text-align:right;margin-top:10px;"><a href="#top">▲ 目次へ戻る</a></div>
+</div>
+
+  <div class="section-card" id="c8">
+    <h2 class="section-title">8. 副問合せを使用した問合せの解決</h2>
+    <div class="topic-chips"><span class="chip">8.1 副問合せ</span><span class="chip">8.2 相関副問合せ</span></div>
+    <div class="tip-box" data-mini="c8"><strong>実務ミニケース:</strong> 部門平均超え抽出は相関副問合せで条件を説明可能にします。</div>
+
+    <h3 class="sub-title">8.1 副問合せ</h3>
+    <pre class="sql"><code><span class="kw">SELECT</span> last_name, salary
+<span class="kw">FROM</span> employees
+<span class="kw">WHERE</span> salary &gt; (
+  <span class="kw">SELECT</span> <span class="fn">AVG</span>(salary)
+  <span class="kw">FROM</span> employees
+);</code></pre>
+
+    <h3 class="sub-title">8.2 相関副問合せ</h3>
+    <pre class="sql"><code><span class="kw">SELECT</span> e.last_name, e.salary, e.department_id
+<span class="kw">FROM</span> employees e
+<span class="kw">WHERE</span> e.salary &gt; (
+  <span class="kw">SELECT</span> <span class="fn">AVG</span>(i.salary)
+  <span class="kw">FROM</span> employees i
+  <span class="kw">WHERE</span> i.department_id = e.department_id
+);</code></pre>
+    <div class="practice-box">比較: <code>NOT IN</code> はNULL混入で0件化し得る。安全側なら <code>NOT EXISTS</code> を検討。</div>
+    <div class="chapter-summary">章の要点: 単一行/複数行/相関の違いを演算子とセットで覚える。</div>
+    <div style="text-align:right;margin-top:10px;"><a href="#top">▲ 目次へ戻る</a></div>
+</div>
+
+  <div class="section-card" id="c9">
+    <h2 class="section-title">9. 集合演算子の使用</h2>
+    <div class="topic-chips"><span class="chip">9.1 種類</span><span class="chip">9.2 規則</span><span class="chip">9.3 まとめ</span></div>
+    <div class="tip-box" data-mini="c9"><strong>実務ミニケース:</strong> 統合前の明細保持はUNION ALL、重複除去が必要な確定帳票のみUNIONを使います。</div>
+
+    <h3 class="sub-title">9.1 集合演算子の種類</h3>
+    <table class="summary-table">
+      <tr><th>演算子</th><th>意味</th><th>重複</th></tr>
+      <tr><td>UNION</td><td>結合</td><td>除去</td></tr>
+      <tr><td>UNION ALL</td><td>結合</td><td>保持</td></tr>
+      <tr><td>INTERSECT</td><td>共通部分</td><td>除去</td></tr>
+      <tr><td>MINUS</td><td>差集合（左−右）</td><td>除去</td></tr>
+    </table>
+
+    <h3 class="sub-title">9.2 集合演算の規則</h3>
+    <ul>
+      <li>各SELECTで列数が同じこと。</li>
+      <li>対応列の型が互換であること。</li>
+      <li>ORDER BYは原則、最後のSELECT全体に1回指定。</li>
+    </ul>
+
+    <pre class="sql"><code><span class="kw">SELECT</span> employee_id <span class="kw">FROM</span> employees <span class="kw">WHERE</span> department_id = <span class="num">10</span>
+<span class="kw">UNION ALL</span>
+<span class="kw">SELECT</span> employee_id <span class="kw">FROM</span> employees <span class="kw">WHERE</span> department_id = <span class="num">20</span>;</code></pre>
+    <div class="chapter-summary">章の要点: 速度優先ならUNION ALL、重複排除が必要な場面だけUNIONを使う。</div>
+    <div style="text-align:right;margin-top:10px;"><a href="#top">▲ 目次へ戻る</a></div>
+</div>
+
+  <div class="section-card" id="c10">
+    <h2 class="section-title">10. DML文を使用した表の管理</h2>
+    <div class="topic-chips"><span class="chip">10.1 行の追加/更新/削除</span><span class="chip">10.2 マルチテーブルINSERT</span><span class="chip">10.3 MERGE</span><span class="chip">10.4 トランザクション制御</span></div>
+    <div class="tip-box" data-mini="c10"><strong>実務ミニケース:</strong> 本番更新は件数確認→SAVEPOINT→更新→差分確認→COMMITを運用標準にします。</div>
+
+    <h3 class="sub-title">10.1 行の追加・列の更新・行の削除</h3>
+    <pre class="sql"><code><span class="kw">INSERT INTO</span> departments (department_id, department_name)
+<span class="kw">VALUES</span> (<span class="num">290</span>, <span class="str">'Ops'</span>);
+
+<span class="kw">UPDATE</span> employees
+<span class="kw">SET</span> salary = salary * <span class="num">1.03</span>
+<span class="kw">WHERE</span> department_id = <span class="num">50</span>;
+
+<span class="kw">DELETE FROM</span> departments
+<span class="kw">WHERE</span> department_id = <span class="num">290</span>;</code></pre>
+
+    <h3 class="sub-title">10.2 マルチテーブル・インサート</h3>
+    <pre class="sql"><code><span class="kw">INSERT ALL</span>
+  <span class="kw">WHEN</span> salary &gt;= <span class="num">10000</span> <span class="kw">THEN INTO</span> high_sal (emp_id, salary) <span class="kw">VALUES</span> (employee_id, salary)
+  <span class="kw">WHEN</span> salary &lt; <span class="num">10000</span> <span class="kw">THEN INTO</span> low_sal  (emp_id, salary) <span class="kw">VALUES</span> (employee_id, salary)
+<span class="kw">SELECT</span> employee_id, salary <span class="kw">FROM</span> employees;</code></pre>
+
+    <h3 class="sub-title">10.3 MERGE文</h3>
+    <pre class="sql"><code><span class="kw">MERGE INTO</span> sales_target t
+<span class="kw">USING</span> ( <span class="kw">SELECT</span> <span class="num">10</span> dept_id, <span class="num">1200000</span> amt <span class="kw">FROM</span> dual ) s
+  <span class="kw">ON</span> (t.dept_id = s.dept_id)
+<span class="kw">WHEN MATCHED THEN</span>
+  <span class="kw">UPDATE SET</span> t.target_amt = s.amt
+<span class="kw">WHEN NOT MATCHED THEN</span>
+  <span class="kw">INSERT</span> (dept_id, target_amt) <span class="kw">VALUES</span> (s.dept_id, s.amt);</code></pre>
+
+    <h3 class="sub-title">10.4 トランザクション制御</h3>
+    <pre class="sql"><code><span class="kw">UPDATE</span> employees <span class="kw">SET</span> salary = salary * <span class="num">1.02</span> <span class="kw">WHERE</span> department_id = <span class="num">80</span>;
+<span class="kw">SAVEPOINT</span> sp1;
+<span class="kw">DELETE FROM</span> employees <span class="kw">WHERE</span> employee_id = <span class="num">9999</span>;
+<span class="kw">ROLLBACK TO</span> sp1;
+<span class="kw">COMMIT</span>;</code></pre>
+    <div class="chapter-summary">章の要点: 「どこまで戻せるか」を先に設計してから更新系SQLを書く。</div>
+    <div style="text-align:right;margin-top:10px;"><a href="#top">▲ 目次へ戻る</a></div>
+</div>
+
+  <div class="section-card" id="c11">
+    <h2 class="section-title">11. DDLによる表とその関係の管理</h2>
+    <div class="topic-chips"><span class="chip">11.1 オブジェクトとスキーマ</span><span class="chip">11.2 構造定義と変更</span><span class="chip">11.3 CREATE TABLE</span><span class="chip">11.4 データ型</span><span class="chip">11.5 制約付きCREATE</span><span class="chip">11.6 副問合せCREATE</span><span class="chip">11.7 DROP/TRUNCATE</span><span class="chip">11.8 ALTER TABLE</span><span class="chip">11.9 一時表/外部表</span></div>
+    <div class="tip-box" data-mini="c11"><strong>実務ミニケース:</strong> 制約を後付けすると移行が高コスト化します。初期DDLで制約を明示します。</div>
+
+    <h3 class="sub-title">11.3 / 11.5 CREATE TABLE（制約付き）</h3>
+    <pre class="sql"><code><span class="kw">CREATE TABLE</span> orders (
+  order_id      <span class="kw">NUMBER</span>          <span class="kw">CONSTRAINT</span> orders_pk <span class="kw">PRIMARY KEY</span>,
+  customer_id   <span class="kw">NUMBER NOT NULL</span>,
+  order_amount  <span class="kw">NUMBER</span>(<span class="num">10</span>,<span class="num">2</span>)  <span class="kw">CONSTRAINT</span> orders_amt_ck <span class="kw">CHECK</span> (order_amount &gt;= <span class="num">0</span>),
+  order_date    <span class="kw">DATE DEFAULT</span> <span class="fn">SYSDATE</span>
+);</code></pre>
+
+    <h3 class="sub-title">11.6 CREATE TABLE AS SELECT</h3>
+    <pre class="sql"><code><span class="kw">CREATE TABLE</span> orders_backup <span class="kw">AS</span>
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> orders <span class="kw">WHERE</span> order_date &gt;= <span class="fn">ADD_MONTHS</span>(<span class="fn">SYSDATE</span>, -<span class="num">1</span>);</code></pre>
+
+    <h3 class="sub-title">11.8 ALTER TABLE</h3>
+    <pre class="sql"><code><span class="kw">ALTER TABLE</span> orders <span class="kw">ADD</span> (memo <span class="kw">VARCHAR2</span>(<span class="num">200</span>));
+<span class="kw">ALTER TABLE</span> orders <span class="kw">MODIFY</span> (memo <span class="kw">VARCHAR2</span>(<span class="num">400</span>));
+<span class="kw">ALTER TABLE</span> orders <span class="kw">DROP COLUMN</span> memo;</code></pre>
+
+    <h3 class="sub-title">11.9 一時表と外部表</h3>
+    <p>一時表はセッション単位の作業領域、外部表は外部ファイルを表として参照する用途で使う。</p>
+    <div class="chapter-summary">章の要点: 制約は「エラーを早く出す保険」。後工程の障害コストを下げる。</div>
+    <div style="text-align:right;margin-top:10px;"><a href="#top">▲ 目次へ戻る</a></div>
+</div>
+
+  <div class="section-card" id="c12">
+    <h2 class="section-title">12. ビューの管理</h2>
+    <div class="topic-chips"><span class="chip">12.1 ビューとは</span><span class="chip">12.2 作成</span><span class="chip">12.3 アクセス</span><span class="chip">12.4 削除</span></div>
+    <div class="tip-box" data-mini="c12"><strong>実務ミニケース:</strong> 複数チーム共通ロジックはVIEW化して仕様変更の修正箇所を1点化します。</div>
+    <h3 class="sub-title">12.1 ビューとは</h3>
+    <p>ビューは「SELECTの定義を名前で保存した仮想表」。表示統一や権限制御に有効。</p>
+
+    <h3 class="sub-title">12.2 / 12.3 ビューの作成とアクセス</h3>
+    <pre class="sql"><code><span class="kw">CREATE OR REPLACE VIEW</span> v_emp_sales <span class="kw">AS</span>
+<span class="kw">SELECT</span> e.employee_id, e.last_name, d.department_name
+<span class="kw">FROM</span> employees e
+<span class="kw">JOIN</span> departments d <span class="kw">ON</span> e.department_id = d.department_id
+<span class="kw">WHERE</span> d.department_name = <span class="str">'Sales'</span>;
+
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> v_emp_sales;</code></pre>
+
+    <h3 class="sub-title">12.4 ビューの削除</h3>
+    <pre class="sql"><code><span class="kw">DROP VIEW</span> v_emp_sales;</code></pre>
+    <div class="chapter-summary">章の要点: ビューは「問い合わせの再利用」と「列公開の制限」に効く。</div>
+    <div style="text-align:right;margin-top:10px;"><a href="#top">▲ 目次へ戻る</a></div>
+</div>
+
+  <div class="section-card" id="c13">
+    <h2 class="section-title">13. 索引とシノニムとシーケンスの管理</h2>
+    <div class="topic-chips"><span class="chip">13.1 索引</span><span class="chip">13.2 シノニム</span><span class="chip">13.3 シーケンス</span></div>
+    <div class="tip-box" data-mini="c13"><strong>実務ミニケース:</strong> 索引追加は検索性能向上と更新劣化のトレードオフ評価が必須です。</div>
+
+    <h3 class="sub-title">13.1 索引の管理</h3>
+    <pre class="sql"><code><span class="kw">CREATE INDEX</span> idx_orders_customer <span class="kw">ON</span> orders(customer_id);
+<span class="kw">DROP INDEX</span> idx_orders_customer;</code></pre>
+    <p>実務: 検索は速くなるが、更新コストは上がる。読み取り偏重テーブルで有効。</p>
+
+    <h3 class="sub-title">13.2 シノニムの管理</h3>
+    <pre class="sql"><code><span class="kw">CREATE SYNONYM</span> ord <span class="kw">FOR</span> orders;
+<span class="kw">DROP SYNONYM</span> ord;</code></pre>
+
+    <h3 class="sub-title">13.3 シーケンスの管理</h3>
+    <pre class="sql"><code><span class="kw">CREATE SEQUENCE</span> orders_seq <span class="kw">START WITH</span> <span class="num">1</span> <span class="kw">INCREMENT BY</span> <span class="num">1</span>;
+<span class="kw">SELECT</span> orders_seq.<span class="kw">NEXTVAL</span> <span class="kw">FROM</span> dual;
+<span class="kw">SELECT</span> orders_seq.<span class="kw">CURRVAL</span> <span class="kw">FROM</span> dual;</code></pre>
+    <div class="chapter-summary">章の要点: 「検索速度」「オブジェクト参照名」「採番」を分離して管理する。</div>
+    <div style="text-align:right;margin-top:10px;"><a href="#top">▲ 目次へ戻る</a></div>
+</div>
+
+  <div class="section-card" id="c14">
+    <h2 class="section-title">14. ユーザーアクセスの制御</h2>
+    <div class="topic-chips"><span class="chip">14.1 システム権限とオブジェクト権限</span><span class="chip">14.2 権限管理</span><span class="chip">14.3 ロール</span></div>
+    <div class="tip-box" data-mini="c14"><strong>実務ミニケース:</strong> 権限はロールで束ね、異動時はロール付替えで監査証跡を簡潔化します。</div>
+
+    <h3 class="sub-title">14.1 権限の種類</h3>
+    <table class="summary-table">
+      <tr><th>種類</th><th>例</th><th>対象</th></tr>
+      <tr><td>システム権限</td><td>CREATE TABLE</td><td>DB全体操作</td></tr>
+      <tr><td>オブジェクト権限</td><td>SELECT ON orders</td><td>特定オブジェクト</td></tr>
+    </table>
+
+    <h3 class="sub-title">14.2 / 14.3 権限管理とロール</h3>
+    <pre class="sql"><code><span class="kw">CREATE ROLE</span> report_reader;
+<span class="kw">GRANT SELECT ON</span> orders <span class="kw">TO</span> report_reader;
+<span class="kw">GRANT</span> report_reader <span class="kw">TO</span> app_user;
+<span class="kw">REVOKE</span> report_reader <span class="kw">FROM</span> app_user;</code></pre>
+    <div class="tip-box">例え: 権限は「鍵束」、ロールは「部署ごとの鍵セット」。個別配布より統制しやすい。</div>
+    <div class="chapter-summary">章の要点: 最小権限原則。必要な権限だけ付与し、不要は即剥奪。</div>
+    <div style="text-align:right;margin-top:10px;"><a href="#top">▲ 目次へ戻る</a></div>
+</div>
+
+  <div class="section-card" id="c15">
+    <h2 class="section-title">15. データ・ディクショナリ・ビューを使用したオブジェクトの管理</h2>
+    <div class="topic-chips"><span class="chip">15.1 概要</span><span class="chip">15.2 種類</span><span class="chip">15.3 一覧</span><span class="chip">15.4 使用例</span></div>
+    <div class="tip-box" data-mini="c15"><strong>実務ミニケース:</strong> 障害初動はALL_TAB_COLUMNS/USER_CONSTRAINTSで列と制約の事実確認から開始します。</div>
+
+    <h3 class="sub-title">15.1 / 15.2 概要と種類</h3>
+    <table class="summary-table">
+      <tr><th>ビュー</th><th>参照範囲</th></tr>
+      <tr><td>USER_*</td><td>自スキーマ所有オブジェクト</td></tr>
+      <tr><td>ALL_*</td><td>アクセス可能オブジェクト</td></tr>
+      <tr><td>DBA_*</td><td>DB全体（権限必要）</td></tr>
+    </table>
+
+    <h3 class="sub-title">15.3 / 15.4 一覧と使用例</h3>
+    <pre class="sql"><code><span class="kw">SELECT</span> table_name <span class="kw">FROM</span> user_tables <span class="kw">ORDER BY</span> table_name;
+
+<span class="kw">SELECT</span> owner, table_name, column_name, data_type, nullable
+<span class="kw">FROM</span> all_tab_columns
+<span class="kw">WHERE</span> owner = <span class="str">'APP_SCHEMA'</span>
+  <span class="kw">AND</span> table_name = <span class="str">'ORDERS'</span>
+<span class="kw">ORDER BY</span> column_id;</code></pre>
+    <div class="practice-box">障害対応で最初に見る候補: USER_TABLES, ALL_TAB_COLUMNS, USER_CONSTRAINTS。</div>
+    <div class="chapter-summary">章の要点: 辞書ビューを引けると、構造調査と影響分析が速くなる。</div>
+    <div style="text-align:right;margin-top:10px;"><a href="#top">▲ 目次へ戻る</a></div>
+</div>
+
+  <div class="section-card" id="c16">
+    <h2 class="section-title">16. 異なるタイムゾーンでのデータの管理</h2>
+    <div class="topic-chips"><span class="chip">16.1 タイムゾーン</span><span class="chip">16.2 日時データ型</span><span class="chip">16.3 タイムゾーン関数</span><span class="chip">16.4 期間データ型</span></div>
+    <div class="tip-box" data-mini="c16"><strong>実務ミニケース:</strong> 海外拠点連携はTZ付き型保存 + 表示時変換を徹底して時刻齟齬を防ぎます。</div>
+
+    <h3 class="sub-title">16.1 タイムゾーンについて</h3>
+    <p>複数拠点運用では、時刻の比較基準（UTC/ローカル）を統一しないと監査で齟齬が出る。</p>
+
+    <h3 class="sub-title">16.2 日時データ型</h3>
+    <table class="summary-table">
+      <tr><th>型</th><th>特徴</th></tr>
+      <tr><td>DATE</td><td>日付＋時刻（秒まで）</td></tr>
+      <tr><td>TIMESTAMP</td><td>小数秒まで</td></tr>
+      <tr><td>TIMESTAMP WITH TIME ZONE</td><td>TZ情報付き</td></tr>
+      <tr><td>TIMESTAMP WITH LOCAL TIME ZONE</td><td>DB TZで保存、セッションTZで表示</td></tr>
+    </table>
+
+    <h3 class="sub-title">16.3 日時データ型データ用タイムゾーン関数</h3>
+    <pre class="sql"><code><span class="kw">SELECT</span> <span class="fn">CURRENT_DATE</span> <span class="kw">AS</span> current_date_local,
+       <span class="fn">CURRENT_TIMESTAMP</span> <span class="kw">AS</span> current_ts_local,
+       <span class="fn">CURRENT_TIMESTAMP</span> <span class="kw">AT TIME ZONE</span> <span class="str">'+00:00'</span> <span class="kw">AS</span> current_ts_utc
+<span class="kw">FROM</span> dual;</code></pre>
+
+    <h3 class="sub-title">16.4 期間データ型（INTERVAL）</h3>
+    <pre class="sql"><code><span class="kw">SELECT</span> <span class="fn">CURRENT_TIMESTAMP</span> + <span class="kw">INTERVAL</span> <span class="str">'90'</span> <span class="kw">MINUTE</span> <span class="kw">AS</span> plus_90m,
+       <span class="fn">CURRENT_TIMESTAMP</span> + <span class="kw">INTERVAL</span> <span class="str">'2'</span> <span class="kw">DAY</span> <span class="kw">AS</span> plus_2d
+<span class="kw">FROM</span> dual;</code></pre>
+    <div class="tip-box">実務: 保存はTZ付き、画面表示時に業務TZへ変換する方針が事故防止に有効。</div>
+    <div class="chapter-summary">章の要点: 「保存時の基準TZ」と「表示時のTZ変換」を分離して設計する。</div>
+    <div style="text-align:right;margin-top:10px;"><a href="#top">▲ 目次へ戻る</a></div>
+</div>
+
+  <div class="section-card">
+    <h2 class="section-title">章別ケーススタディ（実務例・確認問題つき）</h2>
+    <p>ここでは各章の論点を、実運用で起きる状況に置き換えて確認します。試験対策だけでなく、手を動かして再現できることを重視してください。</p>
+
+    <h3 class="sub-title">ケース1: 1章（RDB基礎）</h3>
+    <p>状況: 複数部署でExcel管理していた顧客台帳を統合する。重複や更新漏れが多発している。</p>
+    <ul>
+      <li>主キーを自然キーにするか、代理キーにするかを先に決める。</li>
+      <li>「未入力」と「不明」をNULLで混在させない運用ルールを作る。</li>
+      <li>参照整合性（外部キー）を切ると、後で結合不能データが増える。</li>
+    </ul>
+    <div class="practice-box">確認問題: 「NULLは0と同じか」「主キーにNULLは許可されるか」を説明できるか。</div>
+
+    <h3 class="sub-title">ケース2: 2章（SELECT/WHERE）</h3>
+    <p>状況: 月次レポートで「営業部かつ売上100万以上」の抽出が毎回ブレる。</p>
+    <pre class="sql"><code><span class="kw">SELECT</span> emp_id, dept_id, amount
+<span class="kw">FROM</span> sales_monthly
+<span class="kw">WHERE</span> dept_id = <span class="num">50</span>
+  <span class="kw">AND</span> amount &gt;= <span class="num">1000000</span>;</code></pre>
+    <div class="tip-box">考え方: まずWHEREで対象行を絞る。表示都合の整形は後段で行う。</div>
+
+    <h3 class="sub-title">ケース3: 3章（ソート/行制限）</h3>
+    <p>状況: ダッシュボードの上位10件表示がリロードのたびに変わる。</p>
+    <pre class="sql"><code><span class="kw">SELECT</span> order_id, order_amount, created_at
+<span class="kw">FROM</span> orders
+<span class="kw">ORDER BY</span> order_amount <span class="kw">DESC</span>, order_id <span class="kw">ASC</span>
+<span class="kw">FETCH FIRST</span> <span class="num">10</span> <span class="kw">ROWS ONLY</span>;</code></pre>
+    <div class="warn-box">注意: ORDER BYなしでFETCHすると再現性が担保できない。</div>
+
+    <h3 class="sub-title">ケース4: 4章（単一行関数）</h3>
+    <p>状況: 顧客名の表記ゆれ（大文字小文字、全角半角）で検索漏れが発生。</p>
+    <pre class="sql"><code><span class="kw">SELECT</span> customer_id, <span class="fn">UPPER</span>(customer_name) <span class="kw">AS</span> customer_name_u
+<span class="kw">FROM</span> customers
+<span class="kw">WHERE</span> <span class="fn">UPPER</span>(customer_name) <span class="kw">LIKE</span> <span class="str">'%TOKYO%'</span>;</code></pre>
+    <div class="practice-box">確認問題: 関数を列側に適用した場合の索引利用性を説明できるか。</div>
+
+    <h3 class="sub-title">ケース5: 5章（型変換/条件式）</h3>
+    <p>状況: 文字列日付を比較してしまい、月跨ぎで並び順が崩れた。</p>
+    <pre class="sql"><code><span class="kw">SELECT</span> order_id
+<span class="kw">FROM</span> orders
+<span class="kw">WHERE</span> order_date &gt;= <span class="fn">TO_DATE</span>(<span class="str">'2026-04-01'</span>, <span class="str">'YYYY-MM-DD'</span>);</code></pre>
+    <div class="tip-box">考え方: 比較対象は型を揃える。暗黙変換に依存しない。</div>
+
+    <h3 class="sub-title">ケース6: 6章（集計）</h3>
+    <p>状況: 部署別平均給与を出したいが、個人名を同時表示してORA-00979。</p>
+    <pre class="sql"><code><span class="kw">SELECT</span> department_id, <span class="fn">AVG</span>(salary) <span class="kw">AS</span> avg_salary
+<span class="kw">FROM</span> employees
+<span class="kw">GROUP BY</span> department_id
+<span class="kw">HAVING</span> <span class="fn">AVG</span>(salary) &gt;= <span class="num">9000</span>;</code></pre>
+    <div class="warn-box">注意: GROUP BYに含めない列をSELECTへ出すとエラー。</div>
+
+    <h3 class="sub-title">ケース7: 7章（結合）</h3>
+    <p>状況: 部署未所属社員をレポートに含める必要がある。</p>
+    <pre class="sql"><code><span class="kw">SELECT</span> e.employee_id, e.last_name, d.department_name
+<span class="kw">FROM</span> employees e
+<span class="kw">LEFT JOIN</span> departments d
+  <span class="kw">ON</span> e.department_id = d.department_id;</code></pre>
+    <div class="tip-box">考え方: 欠損行を残したい側をLEFT/RIGHTで選ぶ。</div>
+
+    <h3 class="sub-title">ケース8: 8章（副問合せ）</h3>
+    <p>状況: 「部門平均を超える社員」を部署ごとに抽出したい。</p>
+    <pre class="sql"><code><span class="kw">SELECT</span> e.employee_id, e.department_id, e.salary
+<span class="kw">FROM</span> employees e
+<span class="kw">WHERE</span> e.salary &gt; (
+  <span class="kw">SELECT</span> <span class="fn">AVG</span>(i.salary)
+  <span class="kw">FROM</span> employees i
+  <span class="kw">WHERE</span> i.department_id = e.department_id
+);</code></pre>
+    <div class="practice-box">確認問題: 単一行副問合せと複数行副問合せで使う演算子の違いを説明できるか。</div>
+
+    <h3 class="sub-title">ケース9: 9章（集合演算子）</h3>
+    <p>状況: 複数キャンペーン対象者リストを統合し、重複扱いを使い分けたい。</p>
+    <pre class="sql"><code><span class="kw">SELECT</span> customer_id <span class="kw">FROM</span> campaign_a
+<span class="kw">UNION ALL</span>
+<span class="kw">SELECT</span> customer_id <span class="kw">FROM</span> campaign_b;</code></pre>
+    <div class="tip-box">考え方: 明細件数が必要な集計前処理ではUNION ALLを優先。</div>
+
+    <h3 class="sub-title">ケース10: 10章（DML/トランザクション）</h3>
+    <p>状況: 一括更新で想定外件数を更新したため、途中時点へ戻したい。</p>
+    <pre class="sql"><code><span class="kw">UPDATE</span> orders <span class="kw">SET</span> status = <span class="str">'CLOSED'</span> <span class="kw">WHERE</span> shipped_at <span class="kw">IS NOT NULL</span>;
+<span class="kw">SAVEPOINT</span> before_close;
+<span class="kw">DELETE FROM</span> orders <span class="kw">WHERE</span> order_date &lt; <span class="fn">ADD_MONTHS</span>(<span class="fn">SYSDATE</span>, -<span class="num">60</span>);
+<span class="kw">ROLLBACK TO</span> before_close;</code></pre>
+    <div class="warn-box">注意: COMMIT後はSAVEPOINTへ戻れない。</div>
+
+    <h3 class="sub-title">ケース11: 11章（DDL）</h3>
+    <p>状況: 既存表にNOT NULL制約を追加したいが、既存データにNULLが混在。</p>
+    <ul>
+      <li>1. NULLデータ補正</li>
+      <li>2. 制約追加</li>
+      <li>3. 影響SQLの再試験</li>
+    </ul>
+    <div class="practice-box">確認問題: DROP TABLE と TRUNCATE の違い（ログ/復旧観点）を説明できるか。</div>
+
+    <h3 class="sub-title">ケース12: 12章（ビュー）</h3>
+    <p>状況: 複数チームへ同じ参照ロジックを配布したい。</p>
+    <pre class="sql"><code><span class="kw">CREATE OR REPLACE VIEW</span> v_monthly_sales <span class="kw">AS</span>
+<span class="kw">SELECT</span> dept_id, <span class="fn">SUM</span>(amount) <span class="kw">AS</span> total_amount
+<span class="kw">FROM</span> sales_monthly
+<span class="kw">GROUP BY</span> dept_id;</code></pre>
+    <div class="tip-box">考え方: 共通ロジックをビューへ寄せると、修正点を1か所に集約できる。</div>
+
+    <h3 class="sub-title">ケース13: 13章（索引/シーケンス）</h3>
+    <p>状況: 「顧客番号検索が遅い」。実行計画で全表走査が選ばれている。</p>
+    <ul>
+      <li>検索条件の列に索引があるか確認する。</li>
+      <li>選択率が低すぎる列へ索引追加しても効かない場合がある。</li>
+      <li>採番はシーケンスで衝突回避する。</li>
+    </ul>
+    <div class="practice-box">確認問題: 索引追加で更新性能が落ちる理由を説明できるか。</div>
+
+    <h3 class="sub-title">ケース14: 14章（権限管理）</h3>
+    <p>状況: 人事異動で担当変更。アクセス権の棚卸しが未整備。</p>
+    <pre class="sql"><code><span class="kw">CREATE ROLE</span> sales_reader;
+<span class="kw">GRANT SELECT ON</span> sales_monthly <span class="kw">TO</span> sales_reader;
+<span class="kw">GRANT</span> sales_reader <span class="kw">TO</span> analyst_user;
+<span class="kw">REVOKE</span> sales_reader <span class="kw">FROM</span> analyst_user;</code></pre>
+    <div class="warn-box">注意: 直接権限の乱発は監査時の追跡を難しくする。</div>
+
+    <h3 class="sub-title">ケース15: 15章（辞書ビュー）</h3>
+    <p>状況: 障害調査で「どの表に対象列があるか」すぐ知りたい。</p>
+    <pre class="sql"><code><span class="kw">SELECT</span> owner, table_name, column_name
+<span class="kw">FROM</span> all_tab_columns
+<span class="kw">WHERE</span> column_name = <span class="str">'ORDER_STATUS'</span>
+<span class="kw">ORDER BY</span> owner, table_name;</code></pre>
+    <div class="tip-box">考え方: 辞書ビュー検索は、調査時間を最短化する第一手。</div>
+
+    <h3 class="sub-title">ケース16: 16章（タイムゾーン）</h3>
+    <p>状況: 海外拠点と日本拠点で「同じ時刻」の認識がズレる。</p>
+    <pre class="sql"><code><span class="kw">SELECT</span> order_id,
+       created_at,
+       created_at <span class="kw">AT TIME ZONE</span> <span class="str">'+09:00'</span> <span class="kw">AS</span> created_at_jst
+<span class="kw">FROM</span> orders_tz;</code></pre>
+    <div class="practice-box">確認問題: DATE型とTIMESTAMP WITH TIME ZONE型の使い分けを説明できるか。</div>
+    <div style="text-align:right;margin-top:10px;"><a href="#top">▲ 目次へ戻る</a></div>
+</div>
+
+  <div class="section-card">
+    <h2 class="section-title">実務トラブル対策表（現場でよく起きる失敗）</h2>
+    <table class="summary-table">
+      <tr><th>失敗パターン</th><th>現場で起きること</th><th>予防策（SQL/運用）</th></tr>
+      <tr><td>WHERE条件漏れでUPDATE</td><td>全件更新、復旧に長時間</td><td>事前に同条件でSELECT件数確認、SAVEPOINT、承認フロー</td></tr>
+      <tr><td>ORDER BYなしで上位N件</td><td>画面表示が毎回変わる</td><td>必ずORDER BY + FETCHで固定順</td></tr>
+      <tr><td>NOT IN + NULL混在</td><td>想定外に0件になる</td><td>NOT EXISTSへ置換、NULLデータを事前確認</td></tr>
+      <tr><td>暗黙型変換に依存</td><td>環境差で比較結果が変わる</td><td>TO_DATE/TO_NUMBER/TO_CHARで明示変換</td></tr>
+      <tr><td>権限を個別付与し続ける</td><td>棚卸し不能、監査NG</td><td>ROLE中心で管理し、定期的にREVOKE確認</td></tr>
+      <tr><td>日時をローカル時刻のみ保存</td><td>海外拠点と整合が取れない</td><td>TIMESTAMP WITH TIME ZONEで保存、表示時変換</td></tr>
+    </table>
+
+    <h3 class="sub-title">図3. 更新系SQLの安全運用フロー</h3>
+    <div class="flow-grid">
+      <div class="flow-node">1. 要件確認<br>対象期間/対象部門</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">2. SELECTで件数確認<br>想定件数と一致</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">3. UPDATE/DELETE<br>SAVEPOINT設定</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">4. 差分確認<br>監査ログ記録</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">5. COMMIT<br>不一致ならROLLBACK</div>
+    </div>
+    <div class="warn-box">実務ポイント: 本番更新は「SQLの正しさ」より「手順の正しさ」の方が事故抑止に効きます。</div>
+    <div style="text-align:right;margin-top:10px;"><a href="#top">▲ 目次へ戻る</a></div>
+</div>
+
+  <div class="section-card">
+    <h2 class="section-title">学習チェック（試験・実務共通）</h2>
+    <ul>
+      <li>SELECTの処理順（FROM→WHERE→GROUP BY→HAVING→SELECT→ORDER BY）を言える。</li>
+      <li>NULL比較で <code>= NULL</code> を使わず <code>IS NULL</code> を使える。</li>
+      <li>JOIN時に結合条件漏れ（デカルト積）を検知できる。</li>
+      <li>副問合せで単一行/複数行の演算子を正しく選べる。</li>
+      <li>UNIONとUNION ALLの違いを件数・性能で説明できる。</li>
+      <li>更新系SQLの前に対象件数確認SQLを必ず打てる。</li>
+      <li>COMMIT前にROLLBACK戦略（SAVEPOINT含む）を決められる。</li>
+      <li>主キー/外部キー/一意制約/検査制約の役割を説明できる。</li>
+      <li>GRANT/REVOKE/ROLEで最小権限設計を実践できる。</li>
+      <li>辞書ビューを使ってテーブル構造・制約を自己調査できる。</li>
+      <li>TZ付きデータ型を使うべき業務要件を説明できる。</li>
+      <li>公開時にHTTPSで配信し、教材本文が静的HTMLのみで閲覧できる。</li>
+    </ul>
+    <div style="text-align:right;margin-top:10px;"><a href="#top">▲ 目次へ戻る</a></div>
+</div>
+
+  <div class="section-card">
+    <h2 class="section-title">公式仕様ベース補強（19c/21c）</h2>
+    <p>Oracle 公式仕様で誤解されやすい点を、試験対策と実務運用の両面で整理した補強ノートです。</p>
+    <table class="summary-table">
+      <tr><th>論点</th><th>公式仕様の要点</th><th>実務での使い方</th></tr>
+      <tr><td>MERGE</td><td>1文で更新/挿入を分岐。1行を同一文で複数回更新できない性質（deterministic）。</td><td>UPSERT用途で有効。投入元のキー重複を事前排除する。</td></tr>
+      <tr><td>集合演算子</td><td>列数一致と型グループ一致が必須。優先順位が絡む場合は括弧で明示。</td><td>保守SQLは型を揃え、列別名を固定して可読性を担保する。</td></tr>
+      <tr><td>トランザクション</td><td>COMMITで確定。DDL実行時は暗黙COMMITが発生。</td><td>DDL/DMLを同一変更作業に混在させない。</td></tr>
+      <tr><td>SEQUENCE</td><td>NEXTVALはロールバックしても戻らず欠番は仕様。</td><td>業務上の連番保証が必要なIDには使わない。</td></tr>
+      <tr><td>辞書ビュー</td><td>USER_/ALL_/DBA_ で可視範囲が異なる。</td><td>障害調査テンプレを定義して初動対応を短縮する。</td></tr>
+      <tr><td>日時TZ型</td><td>TIMESTAMP WITH LOCAL TIME ZONE は保存時と表示時でTZ解釈が分かれる。</td><td>保存型の方針を先に固定し、表示は業務TZで統一する。</td></tr>
+    </table>
+    <div class="warn-box">実務注意: NLS設定差・TZ差・権限差は本番前に検証環境で再現テストする。</div>
+    <div style="text-align:right;margin-top:10px;"><a href="#top">▲ 目次へ戻る</a></div>
+  </div>
+
+  <div class="section-card">
+    <h2 class="section-title">品証通過済み補完項目（学習不足対策）</h2>
+    <ul>
+      <li>3.3 OFFSET/FETCH、3.4 置換変数（DEFINE/VERIFY）</li>
+      <li>9章 集合演算子（UNION / UNION ALL / INTERSECT / MINUS）</li>
+      <li>10.2 マルチテーブル・インサート、10.3 MERGE文</li>
+      <li>14章 権限/ロール、15章 辞書ビュー、16章 タイムゾーン/INTERVAL</li>
+    </ul>
+  </div>
+</div>
+</body>
+</html>
