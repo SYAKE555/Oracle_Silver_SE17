@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+
+<html lang="ja">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ver 5.0 Chapter 10 | Oracle DBA Silver SQL</title>
+<style>
+:root{--bg:#f4f8fc;--card:#ffffff;--line:#d8e4f5;--pri:#1d4f91;--sec:#2f6fbe;--txt:#1f2d3d;--muted:#4c6077;--code:#f2f7fc;--kw:#1d4ed8;--obj:#0f172a;--str:#b45309}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--txt);font-family:"Segoe UI","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;line-height:1.95}
+a{color:var(--pri);text-decoration:none}
+.layout{display:grid;grid-template-columns:320px 1fr;gap:18px;max-width:1480px;margin:0 auto;padding:14px}
+.sidebar{position:sticky;top:8px;align-self:start;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;max-height:calc(100vh - 16px);overflow:auto}
+.sidebar h2{margin:0 0 10px;color:var(--pri);font-size:1.08rem}.sidebar ul{margin:0;padding-left:18px}.sidebar li{margin:6px 0}
+.main{min-width:0}.hero{background:linear-gradient(135deg,#1d4f91,#2f6fbe);color:#fff;border-radius:16px;padding:24px 20px;margin-bottom:14px}
+.hero h1{margin:0 0 8px;font-size:1.8rem}.hero p{margin:0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px;margin-bottom:14px}
+.card h2{margin:0 0 10px;color:var(--pri);font-size:1.35rem;border-bottom:2px solid #c8dcf7;padding-bottom:7px}
+.card h3{margin:18px 0 8px;color:var(--sec);font-size:1.12rem}.card p{margin:10px 0}
+.note{background:#eef6ff;border:1px solid #c8dcfb;border-left:4px solid #2f6fbe;border-radius:10px;padding:11px;margin:10px 0}
+.warn{background:#fff8f1;border:1px solid #fed7aa;border-left:4px solid #ea580c;border-radius:10px;padding:11px;margin:10px 0}
+pre{background:var(--code);border:1px solid #dce8f8;border-radius:10px;padding:12px;overflow-x:auto;margin:10px 0}
+code{font-family:"Consolas","Monaco",monospace;font-size:.88rem}.top{text-align:right;margin-top:12px}
+@media(max-width:1120px){.layout{grid-template-columns:1fr}.sidebar{position:static;max-height:none}}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside class="sidebar">
+<h2>第10章 目次</h2>
+<ul>
+<li><a href="#scope">スコープ宣言</a></li>
+<li><a href="#intro">第10章の学習目的</a></li>
+<li><a href="#dml-basic">10.1 DMLの定義</a></li>
+<li><a href="#insert">10.2 INSERT</a></li>
+<li><a href="#update">10.3 UPDATE</a></li>
+<li><a href="#delete">10.4 DELETE</a></li>
+<li><a href="#merge">10.5 MERGE</a></li>
+<li><a href="#tx">10.6 トランザクション（COMMIT/ROLLBACK）</a></li>
+<li><a href="#savepoint">10.7 SAVEPOINT</a></li>
+<li><a href="#implicit">10.8 暗黙COMMITとDDL混在リスク</a></li>
+<li><a href="#errors">10.9 典型エラーと修正</a></li>
+<li><a href="#patterns">10.10 実務運用パターン</a></li>
+<li><a href="#deep-dive-10">品質強化 超深掘り5項目</a></li><li><a href="#insights-10">出題傾向補強</a></li><li><a href="#exam">試験ひっかけパターン集</a></li>
+<li><a href="#practice">実務アンチパターン集</a></li>
+</ul>
+</aside>
+<main class="main">
+<section class="hero" id="scope">
+<h1>Ver 5.0 | Oracle DBA Silver SQL（第10章のみ）</h1>
+<p>本ファイルは第10章「DMLとトランザクション」に集中し、更新安全性と復旧可能性を高密度で解説する。</p>
+</section>
+<section class="card" id="intro">
+<h2>第10章の学習目的</h2>
+<p>第10章は参照中心のSQLから、実データを書き換える領域へ進む章である。INSERT/UPDATE/DELETE/MERGEはいずれも業務状態を直接変更するため、1つのWHERE漏れが重大事故になる。試験ではDML文法に加え、COMMIT/ROLLBACK/SAVEPOINT、DDLの暗黙COMMITとの関係が問われる。実務では「変更前件数確認」「差分確認」「復旧可能性の確保」が必須であり、SQLの正しさだけでなく手順の正しさが品質を決める。第10章の到達点は、変更系SQLを安全に実行する標準手順を説明し、再現可能に運用できる状態へ到達することである。</p>
+<div class="note"><strong>重要:</strong> DMLは書けるだけでは不十分。実行順と復旧手順をセットで設計する。</div>
+</section>
+<section class="card" id="dml-basic">
+<h2>10.1 DMLの定義</h2>
+<p>DMLは表データの追加・更新・削除を行う命令群である。変更はトランザクション単位で管理され、COMMITで確定、ROLLBACKで取消される。定義上の急所は「SQLが成功した」と「業務上安全に確定した」は別概念という点である。実務ではDMLの前後で検証SQLを実行し、対象件数と影響範囲を可視化する。</p>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="insert">
+<h2>10.2 INSERT</h2>
+<p>INSERTは新規行を追加する。列順省略時は表定義順依存になるため、実務では列名明示が原則である。NOT NULLやFK制約違反で失敗するため、入力検証と参照先確認が必要。試験ではVALUES句、INSERT SELECT、制約違反時挙動が頻出である。</p>
+<pre><code>INSERT INTO departments(department_id, department_name)
+VALUES(290, 'Ops');</code></pre>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="update">
+<h2>10.3 UPDATE</h2>
+<p>UPDATEは既存行を変更する。最大リスクはWHERE漏れ全件更新であり、実務では同条件SELECTで件数確認を必須化する。複数列更新や副問合せ更新では型整合・NULL補完も重要。試験では構文よりWHERE有無の影響理解が得点差になる。</p>
+<pre><code>UPDATE employees
+SET salary = salary * 1.03
+WHERE department_id = 50;</code></pre>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="delete">
+<h2>10.4 DELETE</h2>
+<p>DELETEは行削除を行う。参照整合制約により削除できない場合があり、子表存在を先に確認する必要がある。WHERE漏れは全件削除事故に直結する。試験ではDELETEとTRUNCATEの違い（DML/DDL、ROLLBACK可否）が重要論点になる。</p>
+<pre><code>DELETE FROM departments
+WHERE department_id = 290;</code></pre>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="merge">
+<h2>10.5 MERGE</h2>
+<p>MERGEは一致時UPDATE・不一致時INSERTを1文で行う。ETLやマスタ同期で有効だが、ON条件の誤りで意図外更新が発生しやすい。実務ではONキーの一意性確認が最重要で、重複キーを許したまま使うと品質が崩れる。試験ではWHEN MATCHED/NOT MATCHEDの意味理解が問われる。</p>
+<pre><code>MERGE INTO sales_target t
+USING (SELECT 10 dept_id, 1200000 amt FROM dual) s
+ON (t.dept_id = s.dept_id)
+WHEN MATCHED THEN UPDATE SET t.target_amt = s.amt
+WHEN NOT MATCHED THEN INSERT (dept_id, target_amt) VALUES (s.dept_id, s.amt);</code></pre>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="tx">
+<h2>10.6 トランザクション（COMMIT/ROLLBACK）</h2>
+<p>トランザクションは一連の変更をひとまとまりとして扱う単位である。COMMITで確定し、ROLLBACKで未確定変更を取消す。重要なのは確定タイミングを設計することで、早すぎるCOMMITは復旧不能化、遅すぎるCOMMITはロック保持時間増大を招く。試験では基本動作、実務では境界設計が急所となる。</p>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="savepoint">
+<h2>10.7 SAVEPOINT</h2>
+<p>SAVEPOINTはトランザクション内の中間復帰点を作る。部分的な失敗時に全取消ではなく段階巻戻しが可能になる。実務では大きな更新手順を安全化するため、事前件数確認→SAVEPOINT→更新→検証の流れを標準化すると有効。試験でもSAVEPOINTの役割は頻出である。</p>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="implicit">
+<h2>10.8 暗黙COMMITとDDL混在リスク</h2>
+<p>OracleではDDL実行時に暗黙COMMITが関わるため、DML途中でDDLを混在させると想定外に確定される危険がある。更新作業中はDDLを分離し、変更分類ごとに手順を分けるべきである。試験ではDML/DDL/TCLの違いと復旧可否が問われる。実務ではこの分類理解が事故防止の鍵になる。</p>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="errors">
+<h2>10.9 典型エラーと修正</h2>
+<div class="warn"><b>失敗1:</b> WHERE漏れUPDATE/DELETE。<b>修正:</b> 事前に同条件SELECTで件数確認。</div>
+<div class="warn"><b>失敗2:</b> COMMIT後に取消不能。<b>修正:</b> SAVEPOINTと確認手順を先に設計。</div>
+<div class="warn"><b>失敗3:</b> MERGEのON条件不備。<b>修正:</b> キー一意性を先に検証。</div>
+<div class="warn"><b>失敗4:</b> DML中のDDL混在。<b>修正:</b> 作業分類を分離。</div>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="patterns">
+<h2>10.10 実務運用パターン</h2>
+<p>推奨手順は「対象確認SELECT → SAVEPOINT → DML実行 → 差分確認SELECT → COMMIT」である。これにより誤更新を早期検知し、必要ならROLLBACKできる。更新SQLは単体で管理せず、確認SQLとセットで運用するのが安全である。監査向けには実行件数と実行時刻の記録を残すことが望ましい。</p>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="insights-10">
+<h2>出題傾向補強（第10章）</h2>
+<p>収集した過去問題データに基づく第10章対応分野「DML文」の傾向補強である。収集問題数は53問で、出題傾向の核は「SELECT / WHERE / JOIN / 副問合せ / INSERT / UPDATE / DELETE / MERGE / CREATE / DROP」に集中する。試験対策では、構文暗記よりも条件差分と失敗時挙動の判定を優先することで正答率が上がる。実務では、同テーマに対して確認SQLと本実行SQLを対にして扱うと事故率を下げられる。</p>
+<div class="note"><strong>補強方針:</strong> 本章の例題を解く際は、同じ概念を「成功例」「失敗例」「修正例」の3パターンで比較し、判定根拠を言語化すること。</div>
+<p><strong>参照URL例（解説参照元）:</strong></p>
+<ul>
+<li><a href="https://docs.oracle.com/cd/F19136_01/cncpt/transactions.html" rel="noopener noreferrer" target="_blank">https://docs.oracle.com/cd/F19136_01/cncpt/transactions.html</a></li><li><a href="http://docs.oracle.com/cd/E16338_01/server.112/b56299/statements_10007.htm#SQLRF01707" rel="noopener noreferrer" target="_blank">http://docs.oracle.com/cd/E16338_01/server.112/b56299/statements_10007.htm#SQLRF01707</a></li><li><a href="http://docs.oracle.com/cd/E16338_01/server.112/b56306/transact.htm#g11401" rel="noopener noreferrer" target="_blank">http://docs.oracle.com/cd/E16338_01/server.112/b56306/transact.htm#g11401</a></li>
+</ul>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="deep-dive-10"><h2>品質強化：第10章 超深掘り5項目</h2><h3>1. 定義</h3><p>第10章の中心概念である「DMLとトランザクション」は、単に構文を覚える学習単位ではなく、データの意味・一貫性・運用可能性を同時に成立させるための設計原則である。試験では語句の暗記だけで解ける問題もあるが、実務では入力値の品質、実行順序、例外時の復旧可能性まで含めて定義を扱う必要がある。つまりこの章の定義は「SQL文の形」ではなく「業務データを破壊せずに価値へ変換する規律」であり、ここを誤解すると正解できても現場で再現できない。 さらに、設計レビュー時には前提条件・入力境界・例外時挙動・確認SQL・証跡項目を明示し、実行者依存の判断を排除すること。学習段階でも、同一テーマを正常系と異常系の両方で検証し、なぜその結果になるかを言語化して再利用可能な知識へ変換する。</p><h3>2. 役割</h3><p>DMLとトランザクションの役割は、データベース操作を偶発的な職人技から、再現可能な標準手順へ引き上げることにある。たとえば現場で引継ぎ担当が変わっても、同じ確認SQL・同じ判定基準・同じ実行順で処理できる状態を作るのがこの章の本質である。試験対策の観点でも、役割を理解していると「どの句がどの責務を持つか」を軸に消去法が機能し、難問での正答率が上がる。役割を文法の説明に矮小化せず、品質保証の仕組みとして把握することが重要である。 さらに、設計レビュー時には前提条件・入力境界・例外時挙動・確認SQL・証跡項目を明示し、実行者依存の判断を排除すること。学習段階でも、同一テーマを正常系と異常系の両方で検証し、なぜその結果になるかを言語化して再利用可能な知識へ変換する。</p><h3>3. 動作原理</h3><p>DMLとトランザクションの動作原理は、入力条件の解釈、実行計画に基づく処理、結果または副作用の確定という三層で説明できる。SQLは記述順と論理評価順が一致しない場面が多く、特に結合・集計・更新系では前提条件を誤ると意図外結果になる。そこで原理理解では「どの時点で行が絞られ、どの時点で列が計算され、どの時点で変更が確定するか」を言語化する必要がある。試験ではこの順序差を突く設問が頻出であり、実務ではこの順序差が障害の直接原因になるため、原理を図として説明できるレベルまで落とし込むべきである。 さらに、設計レビュー時には前提条件・入力境界・例外時挙動・確認SQL・証跡項目を明示し、実行者依存の判断を排除すること。学習段階でも、同一テーマを正常系と異常系の両方で検証し、なぜその結果になるかを言語化して再利用可能な知識へ変換する。</p><h3>4. 制限事項とアンチパターン</h3><p>DMLとトランザクションの制限事項を無視したアンチパターンとして、確認なし本実行、条件式の曖昧化、暗黙変換依存、復旧手順未設計がある。これらは短期的には作業を速く見せるが、中長期では誤更新や性能劣化、監査不適合に直結する。特に初学者は「動いたSQL」を正解と誤認しやすいが、品質上は「再実行可能」「失敗時に戻せる」「根拠を説明できる」ことが必須である。制限事項は足かせではなく安全柵であり、これを仕様として受け入れることが事故率低減の最短経路になる。 さらに、設計レビュー時には前提条件・入力境界・例外時挙動・確認SQL・証跡項目を明示し、実行者依存の判断を排除すること。学習段階でも、同一テーマを正常系と異常系の両方で検証し、なぜその結果になるかを言語化して再利用可能な知識へ変換する。</p><h3>5. 試験・実務の急所</h3><p>第10章の急所は、見た目が似た構文の意味差を判定できるかどうかである。試験では語順や句の位置、NULLや型変換、更新可否、暗黙コミットなどの境界条件が典型的なひっかけになる。実務では同じ境界条件が本番障害の発火点になるため、各処理に対して「想定件数」「失敗時挙動」「証跡」を先に決める運用が有効である。したがって急所対策は問題演習の量より、誤答理由を分類して再発防止ルールに変換する学習が効果的であり、これを章末の確認手順に固定することで合格後も通用する実力になる。 さらに、設計レビュー時には前提条件・入力境界・例外時挙動・確認SQL・証跡項目を明示し、実行者依存の判断を排除すること。学習段階でも、同一テーマを正常系と異常系の両方で検証し、なぜその結果になるかを言語化して再利用可能な知識へ変換する。</p><div class="top"><a href="#scope">▲ トップへ戻る</a></div></section><section class="card" id="exam">
+<h2>第10章 試験ひっかけパターン集</h2>
+<div class="warn"><b>ひっかけ1:</b> COMMIT後にROLLBACKで戻せるか → 通常戻せない。</div>
+<div class="warn"><b>ひっかけ2:</b> TRUNCATEはDMLか → いいえ、DDL。</div>
+<div class="warn"><b>ひっかけ3:</b> MERGEは常に安全か → ON条件不備で危険。</div>
+<div class="warn"><b>ひっかけ4:</b> WHERE省略UPDATEは構文エラーか → エラーではなく全件更新。</div>
+<div class="warn"><b>ひっかけ5:</b> SAVEPOINTはCOMMIT後も有効か → 無効になる。</div>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="practice">
+<h2>第10章 実務アンチパターン集</h2>
+<div class="table-wrap"><table>
+<tr><th>アンチパターン</th><th>起きる障害</th><th>予防策</th></tr>
+<tr><td>確認なしDML実行</td><td>誤更新・誤削除</td><td>事前件数確認を必須化</td></tr>
+<tr><td>COMMITタイミング不明確</td><td>復旧不能/ロック長期化</td><td>トランザクション境界を設計</td></tr>
+<tr><td>MERGEキー未検証</td><td>意図外更新</td><td>ON条件の一意性を保証</td></tr>
+<tr><td>DDL/DML混在運用</td><td>暗黙COMMIT事故</td><td>作業分類と手順を分離</td></tr>
+</table></div>
+<div class="note"><strong>第10章完了基準:</strong> DMLを安全手順付きで実行し、復旧可能性を説明できること。</div>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+</main>
+</div>
+</body>
+</html>

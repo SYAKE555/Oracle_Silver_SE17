@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+
+<html lang="ja">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ver 5.0 Chapter 14 | Oracle DBA Silver SQL</title>
+<style>
+:root{--bg:#f4f8fc;--card:#ffffff;--line:#d8e4f5;--pri:#1d4f91;--sec:#2f6fbe;--txt:#1f2d3d;--code:#f2f7fc}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--txt);font-family:"Segoe UI","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;line-height:1.95}
+a{color:var(--pri);text-decoration:none}
+.layout{display:grid;grid-template-columns:320px 1fr;gap:18px;max-width:1480px;margin:0 auto;padding:14px}
+.sidebar{position:sticky;top:8px;align-self:start;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;max-height:calc(100vh - 16px);overflow:auto}
+.sidebar h2{margin:0 0 10px;color:var(--pri);font-size:1.08rem}.sidebar ul{margin:0;padding-left:18px}.sidebar li{margin:6px 0}
+.main{min-width:0}.hero{background:linear-gradient(135deg,#1d4f91,#2f6fbe);color:#fff;border-radius:16px;padding:24px 20px;margin-bottom:14px}
+.hero h1{margin:0 0 8px;font-size:1.8rem}.hero p{margin:0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px;margin-bottom:14px}
+.card h2{margin:0 0 10px;color:var(--pri);font-size:1.35rem;border-bottom:2px solid #c8dcf7;padding-bottom:7px}
+.card p{margin:10px 0}
+.note{background:#eef6ff;border:1px solid #c8dcfb;border-left:4px solid #2f6fbe;border-radius:10px;padding:11px;margin:10px 0}
+.warn{background:#fff8f1;border:1px solid #fed7aa;border-left:4px solid #ea580c;border-radius:10px;padding:11px;margin:10px 0}
+pre{background:var(--code);border:1px solid #dce8f8;border-radius:10px;padding:12px;overflow-x:auto;margin:10px 0}
+code{font-family:"Consolas","Monaco",monospace;font-size:.88rem}
+.table-wrap{overflow:auto}.table-wrap table{width:100%;border-collapse:collapse}.table-wrap th,.table-wrap td{border:1px solid #d8e4f5;padding:9px;vertical-align:top}.table-wrap th{background:#eef4fd;text-align:left}
+.top{text-align:right;margin-top:12px}
+@media(max-width:1120px){.layout{grid-template-columns:1fr}.sidebar{position:static;max-height:none}}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside class="sidebar">
+<h2>第14章 目次</h2>
+<ul>
+<li><a href="#scope">スコープ宣言</a></li>
+<li><a href="#intro">第14章の学習目的</a></li>
+<li><a href="#auth-basic">14.1 認可の基本概念</a></li>
+<li><a href="#sys-obj">14.2 システム権限とオブジェクト権限</a></li>
+<li><a href="#grant">14.3 GRANT</a></li>
+<li><a href="#revoke">14.4 REVOKE</a></li>
+<li><a href="#role-basic">14.5 ロールの定義</a></li>
+<li><a href="#role-design">14.6 ロール設計と最小権限</a></li>
+<li><a href="#dict">14.7 辞書ビューで確認</a></li>
+<li><a href="#errors">14.8 典型エラーと修正</a></li>
+<li><a href="#patterns">14.9 実務運用パターン</a></li>
+<li><a href="#deep-dive-14">品質強化 超深掘り5項目</a></li><li><a href="#insights-14">出題傾向補強</a></li><li><a href="#exam">試験ひっかけパターン集</a></li>
+<li><a href="#practice">実務アンチパターン集</a></li>
+</ul>
+</aside>
+<main class="main">
+<section class="hero" id="scope">
+<h1>Ver 5.0 | Oracle DBA Silver SQL（第14章のみ）</h1>
+<p>本ファイルは第14章「ユーザーアクセス制御（権限・ロール）」に集中し、安全な権限設計と運用統制を高密度で解説する。</p>
+</section>
+<section class="card" id="intro">
+<h2>第14章の学習目的</h2>
+<p>第14章は、誰に何を許可するかを制御する認可設計を扱う。SQLが正しくても権限設計が甘いと、情報漏えい、誤更新、監査指摘につながる。試験ではシステム権限とオブジェクト権限の違い、GRANT/REVOKE構文、ロールの役割が頻出である。実務では「最小権限」「職務分離」「権限棚卸し」が柱になり、開発都合で広い権限を配ると後で回収不能になる。到達点は、利用者ごとに必要最小限の権限を設計し、運用手順として継続的に維持できる状態にすることである。</p>
+<div class="note"><strong>重要:</strong> 権限管理は一度付与して終わりではない。付与・見直し・剥奪まで含めて設計する。</div>
+</section>
+<section class="card" id="auth-basic">
+<h2>14.1 認可の基本概念</h2>
+<p>認可は「認証済みユーザーにどの操作を許可するか」を決める仕組みである。Oracleではユーザー、権限、ロールの3層で管理する。権限は直接付与も可能だが、実務ではロール経由で束ねることで運用負荷を下げる。試験では認証と認可の違いを混同させる問題が出るため、概念分離が必須である。アクセス制御の目的は単なる制限ではなく、業務継続と監査適合の両立である。必要以上に厳しくして業務停止させるのも、広く許可して事故を起こすのもどちらも失敗である。</p>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="sys-obj">
+<h2>14.2 システム権限とオブジェクト権限</h2>
+<p>システム権限はDB全体操作に関わる権限（例: `CREATE SESSION`, `CREATE TABLE`）で、オブジェクト権限は特定表やビューに対する操作権限（例: `SELECT`, `INSERT`）である。試験ではこの分類を問う問題が定番である。実務では、開発者には必要最小限のシステム権限のみ、業務ユーザーには対象表限定のオブジェクト権限を与えるのが基本である。分類を誤ると、個別データ参照だけで済むユーザーに広範囲の作成権限を与えてしまい、統制不備を招く。</p>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="grant">
+<h2>14.3 GRANT</h2>
+<p>GRANTは権限を付与する命令である。`GRANT SELECT ON hr.employees TO app_user;` のように対象を限定して与えるのが原則である。試験ではシステム権限付与とオブジェクト権限付与の構文差、`WITH ADMIN OPTION`や`WITH GRANT OPTION`の意味が問われる。実務では再付与可能オプションを乱用すると権限拡散が起きるため、管理者限定で運用する。付与時には「誰が」「何の業務理由で」「いつまで」を記録し、期限付き運用へつなげるのが望ましい。</p>
+<pre><code>GRANT CREATE SESSION TO analyst_user;
+GRANT SELECT, INSERT ON sales.orders TO app_writer;</code></pre>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="revoke">
+<h2>14.4 REVOKE</h2>
+<p>REVOKEは付与済み権限を剥奪する命令である。運用で見落とされがちだが、異動・退職・役割変更時に即時回収できるかがセキュリティ品質を左右する。試験ではGRANTと対で構文理解が問われる。実務では剥奪による業務影響があるため、事前にアクセス実績と依存処理を確認し、必要なら段階的に回収する。付与だけ増えて剥奪が運用されない環境は、長期的に過剰権限の温床になり、監査で高確率で指摘される。</p>
+<pre><code>REVOKE INSERT ON sales.orders FROM app_writer;
+REVOKE CREATE TABLE FROM analyst_user;</code></pre>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="role-basic">
+<h2>14.5 ロールの定義</h2>
+<p>ロールは複数権限をまとめた論理グループであり、ユーザーへ一括適用するための仕組みである。試験ではロール作成、権限付与、ユーザー付与の順序が問われやすい。実務では職務単位でロールを定義し、個別ユーザーへの直接付与を最小化することで管理性を確保する。ロールがない環境では、数百ユーザーへ個別権限を配る運用になり、変更時に漏れが発生しやすい。ロールは可読性の高い命名（`ROLE_REPORT_VIEWER` など）で責務を明確化することが重要である。</p>
+<pre><code>CREATE ROLE role_report_viewer;
+GRANT SELECT ON sales.monthly_report TO role_report_viewer;
+GRANT role_report_viewer TO bi_user;</code></pre>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="role-design">
+<h2>14.6 ロール設計と最小権限</h2>
+<p>最小権限原則は「業務遂行に必要な最小限のみ許可する」考え方である。実務では閲覧専用、入力担当、運用管理など職務ごとにロールを分離する。試験では原則名そのものは出なくても、過剰権限の不適切性を問う設問が出る。設計時は「普段使わない強権限を含めない」「一時権限は期限管理」「定期棚卸しで不要権限を回収」の3点が有効である。権限は増やすより減らす方が難しいため、初期設計で保守しやすい粒度に分割することが長期運用を安定させる。</p>
+<div class="warn"><b>注意:</b> 便利だからと `DBA` 相当権限を配る運用は、最終的に回収不能になりやすい。</div>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="dict">
+<h2>14.7 辞書ビューで確認</h2>
+<p>権限状態は辞書ビューで確認する。ユーザーのシステム権限は`USER_SYS_PRIVS`/`DBA_SYS_PRIVS`、オブジェクト権限は`USER_TAB_PRIVS`/`DBA_TAB_PRIVS`、ロールは`USER_ROLE_PRIVS`/`DBA_ROLE_PRIVS`で追跡できる。試験ではビュー名と確認対象の対応が問われる。実務では権限変更後に差分確認SQLを実行し、申請内容と実体が一致するかを検証する。監査対応では「設定してあるはず」では通らないため、辞書ビュー出力を証跡として保管することが重要である。</p>
+<pre><code>SELECT granted_role, admin_option, default_role
+FROM user_role_privs
+ORDER BY granted_role;</code></pre>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="errors">
+<h2>14.8 典型エラーと修正</h2>
+<div class="warn"><b>失敗1:</b> 直接権限の乱発。<b>修正:</b> ロール経由付与へ集約。</div>
+<div class="warn"><b>失敗2:</b> ADMIN/GRANT OPTIONの過剰付与。<b>修正:</b> 管理者限定で厳格化。</div>
+<div class="warn"><b>失敗3:</b> 剥奪運用なし。<b>修正:</b> 異動・退職イベントでREVOKEを標準化。</div>
+<div class="warn"><b>失敗4:</b> 権限変更後の確認省略。<b>修正:</b> 辞書ビュー差分確認を必須化。</div>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="patterns">
+<h2>14.9 実務運用パターン</h2>
+<p>推奨運用は「申請→レビュー→GRANT/REVOKE実行→辞書確認→証跡保管→定期棚卸し」である。特にロール中心運用へ統一すると、担当変更時にユーザーをロールへ出し入れするだけで権限管理できる。試験対策ではGRANT/REVOKE構文暗記に加え、権限分類とロール化の意図を説明できるようにする。第14章の本質は、技術的正しさだけでなく統制可能な運用プロセスを設計する点にある。</p>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="insights-14">
+<h2>出題傾向補強（第14章）</h2>
+<p>収集した過去問題データに基づく第14章対応分野「ユーザ・アクセスの制御」の傾向補強である。収集問題数は23問で、出題傾向の核は「SELECT / INSERT / UPDATE / DELETE / CREATE / ALTER / DROP / TRUNCATE / VIEW / INDEX」に集中する。試験対策では、構文暗記よりも条件差分と失敗時挙動の判定を優先することで正答率が上がる。実務では、同テーマに対して確認SQLと本実行SQLを対にして扱うと事故率を下げられる。</p>
+<div class="note"><strong>補強方針:</strong> 本章の例題を解く際は、同じ概念を「成功例」「失敗例」「修正例」の3パターンで比較し、判定根拠を言語化すること。</div>
+<p><strong>参照URL例（解説参照元）:</strong></p>
+<ul>
+<li><a href="https://docs.oracle.com/cd/F19136_01/dbseg/configuring-privilege-and-role-authorization.html" rel="noopener noreferrer" target="_blank">https://docs.oracle.com/cd/F19136_01/dbseg/configuring-privilege-and-role-authorization.html</a></li><li><a href="https://docs.oracle.com/cd/F19136_01/sqlrf/GRANT.html#GUID-20B4E2C0-A7F8-4BC8-A5E8-BE61BDC41AC3__BABEFFEE" rel="noopener noreferrer" target="_blank">https://docs.oracle.com/cd/F19136_01/sqlrf/GRANT.html#GUID-20B4E2C0-A7F8-4BC8-A5E8-BE61BDC41AC3__BABEFFEE</a></li><li><a href="https://docs.oracle.com/cd/F19136_01/dbseg/configuring-privilege-and-role-authorization.html#GUID-6F401301-B5EA-482E-9615-21FD840CAF60" rel="noopener noreferrer" target="_blank">https://docs.oracle.com/cd/F19136_01/dbseg/configuring-privilege-and-role-authorization.html#GUID-6F401301-B5EA-482E-9615-21FD840CAF60</a></li>
+</ul>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="deep-dive-14"><h2>品質強化：第14章 超深掘り5項目</h2><h3>1. 定義</h3><p>第14章の中心概念である「ユーザーアクセス制御」は、単に構文を覚える学習単位ではなく、データの意味・一貫性・運用可能性を同時に成立させるための設計原則である。試験では語句の暗記だけで解ける問題もあるが、実務では入力値の品質、実行順序、例外時の復旧可能性まで含めて定義を扱う必要がある。つまりこの章の定義は「SQL文の形」ではなく「業務データを破壊せずに価値へ変換する規律」であり、ここを誤解すると正解できても現場で再現できない。 さらに、設計レビュー時には前提条件・入力境界・例外時挙動・確認SQL・証跡項目を明示し、実行者依存の判断を排除すること。学習段階でも、同一テーマを正常系と異常系の両方で検証し、なぜその結果になるかを言語化して再利用可能な知識へ変換する。</p><h3>2. 役割</h3><p>ユーザーアクセス制御の役割は、データベース操作を偶発的な職人技から、再現可能な標準手順へ引き上げることにある。たとえば現場で引継ぎ担当が変わっても、同じ確認SQL・同じ判定基準・同じ実行順で処理できる状態を作るのがこの章の本質である。試験対策の観点でも、役割を理解していると「どの句がどの責務を持つか」を軸に消去法が機能し、難問での正答率が上がる。役割を文法の説明に矮小化せず、品質保証の仕組みとして把握することが重要である。 さらに、設計レビュー時には前提条件・入力境界・例外時挙動・確認SQL・証跡項目を明示し、実行者依存の判断を排除すること。学習段階でも、同一テーマを正常系と異常系の両方で検証し、なぜその結果になるかを言語化して再利用可能な知識へ変換する。</p><h3>3. 動作原理</h3><p>ユーザーアクセス制御の動作原理は、入力条件の解釈、実行計画に基づく処理、結果または副作用の確定という三層で説明できる。SQLは記述順と論理評価順が一致しない場面が多く、特に結合・集計・更新系では前提条件を誤ると意図外結果になる。そこで原理理解では「どの時点で行が絞られ、どの時点で列が計算され、どの時点で変更が確定するか」を言語化する必要がある。試験ではこの順序差を突く設問が頻出であり、実務ではこの順序差が障害の直接原因になるため、原理を図として説明できるレベルまで落とし込むべきである。 さらに、設計レビュー時には前提条件・入力境界・例外時挙動・確認SQL・証跡項目を明示し、実行者依存の判断を排除すること。学習段階でも、同一テーマを正常系と異常系の両方で検証し、なぜその結果になるかを言語化して再利用可能な知識へ変換する。</p><h3>4. 制限事項とアンチパターン</h3><p>ユーザーアクセス制御の制限事項を無視したアンチパターンとして、確認なし本実行、条件式の曖昧化、暗黙変換依存、復旧手順未設計がある。これらは短期的には作業を速く見せるが、中長期では誤更新や性能劣化、監査不適合に直結する。特に初学者は「動いたSQL」を正解と誤認しやすいが、品質上は「再実行可能」「失敗時に戻せる」「根拠を説明できる」ことが必須である。制限事項は足かせではなく安全柵であり、これを仕様として受け入れることが事故率低減の最短経路になる。 さらに、設計レビュー時には前提条件・入力境界・例外時挙動・確認SQL・証跡項目を明示し、実行者依存の判断を排除すること。学習段階でも、同一テーマを正常系と異常系の両方で検証し、なぜその結果になるかを言語化して再利用可能な知識へ変換する。</p><h3>5. 試験・実務の急所</h3><p>第14章の急所は、見た目が似た構文の意味差を判定できるかどうかである。試験では語順や句の位置、NULLや型変換、更新可否、暗黙コミットなどの境界条件が典型的なひっかけになる。実務では同じ境界条件が本番障害の発火点になるため、各処理に対して「想定件数」「失敗時挙動」「証跡」を先に決める運用が有効である。したがって急所対策は問題演習の量より、誤答理由を分類して再発防止ルールに変換する学習が効果的であり、これを章末の確認手順に固定することで合格後も通用する実力になる。 さらに、設計レビュー時には前提条件・入力境界・例外時挙動・確認SQL・証跡項目を明示し、実行者依存の判断を排除すること。学習段階でも、同一テーマを正常系と異常系の両方で検証し、なぜその結果になるかを言語化して再利用可能な知識へ変換する。</p><div class="top"><a href="#scope">▲ トップへ戻る</a></div></section><section class="card" id="exam">
+<h2>第14章 試験ひっかけパターン集</h2>
+<div class="warn"><b>ひっかけ1:</b> シノニムで権限付与できるか → できない。権限はGRANT。</div>
+<div class="warn"><b>ひっかけ2:</b> ロールはユーザーにのみ付与可能か → 権限をロールに付与してからユーザーへ付与できる。</div>
+<div class="warn"><b>ひっかけ3:</b> CREATE TABLEはオブジェクト権限か → いいえ。システム権限。</div>
+<div class="warn"><b>ひっかけ4:</b> REVOKEは不要でGRANT上書きでよいか → 不適切。不要権限は回収する。</div>
+<div class="warn"><b>ひっかけ5:</b> 最小権限は運用効率を下げるだけか → いいえ。事故と監査リスクを下げる。</div>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="practice">
+<h2>第14章 実務アンチパターン集</h2>
+<div class="table-wrap"><table>
+<tr><th>アンチパターン</th><th>起きる障害</th><th>予防策</th></tr>
+<tr><td>個別GRANTの積み上げ</td><td>管理不能・回収漏れ</td><td>ロール中心へ再編</td></tr>
+<tr><td>強権限の常時付与</td><td>誤操作・内部不正リスク</td><td>必要時のみ期限付与</td></tr>
+<tr><td>異動時の権限見直し無し</td><td>過剰権限の恒常化</td><td>人事イベント連動で棚卸し</td></tr>
+<tr><td>証跡未保管</td><td>監査不適合</td><td>辞書ビュー出力を保管</td></tr>
+</table></div>
+<div class="note"><strong>第14章完了基準:</strong> 権限・ロールを最小権限原則で設計し、付与から回収まで運用できること。</div>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+</main>
+</div>
+</body>
+</html>

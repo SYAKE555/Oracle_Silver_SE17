@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+
+<html lang="ja">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ver 5.0 Chapter 9 | Oracle DBA Silver SQL</title>
+<style>
+:root{--bg:#f4f8fc;--card:#ffffff;--line:#d8e4f5;--pri:#1d4f91;--sec:#2f6fbe;--txt:#1f2d3d;--muted:#4c6077;--code:#f2f7fc;--kw:#1d4ed8;--obj:#0f172a;--str:#b45309}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--txt);font-family:"Segoe UI","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;line-height:1.95}
+a{color:var(--pri);text-decoration:none}
+.layout{display:grid;grid-template-columns:320px 1fr;gap:18px;max-width:1480px;margin:0 auto;padding:14px}
+.sidebar{position:sticky;top:8px;align-self:start;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;max-height:calc(100vh - 16px);overflow:auto}
+.sidebar h2{margin:0 0 10px;color:var(--pri);font-size:1.08rem}
+.sidebar ul{margin:0;padding-left:18px}
+.sidebar li{margin:6px 0}
+.main{min-width:0}
+.hero{background:linear-gradient(135deg,#1d4f91,#2f6fbe);color:#fff;border-radius:16px;padding:24px 20px;margin-bottom:14px}
+.hero h1{margin:0 0 8px;font-size:1.8rem}
+.hero p{margin:0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px;margin-bottom:14px}
+.card h2{margin:0 0 10px;color:var(--pri);font-size:1.35rem;border-bottom:2px solid #c8dcf7;padding-bottom:7px}
+.card h3{margin:18px 0 8px;color:var(--sec);font-size:1.12rem}
+.card p{margin:10px 0}
+.note{background:#eef6ff;border:1px solid #c8dcfb;border-left:4px solid #2f6fbe;border-radius:10px;padding:11px;margin:10px 0}
+.warn{background:#fff8f1;border:1px solid #fed7aa;border-left:4px solid #ea580c;border-radius:10px;padding:11px;margin:10px 0}
+.gloss{background:#f0f9ff;border:1px solid #bae6fd;border-radius:10px;padding:11px;margin:10px 0}
+.figure{border:1px dashed #94a3b8;border-radius:10px;padding:12px;background:#f9fbff;margin:10px 0}
+pre{background:var(--code);border:1px solid #dce8f8;border-radius:10px;padding:12px;overflow-x:auto;margin:10px 0}
+code{font-family:"Consolas","Monaco",monospace;font-size:.88rem}
+.kw{color:var(--kw);font-weight:700}.obj{color:var(--obj)}.str{color:var(--str)}
+.table-wrap{overflow-x:auto}
+table{width:100%;min-width:860px;border-collapse:collapse}
+th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef5ff}
+.top{text-align:right;margin-top:12px}
+@media(max-width:1120px){.layout{grid-template-columns:1fr}.sidebar{position:static;max-height:none}}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside class="sidebar">
+<h2>第9章 目次</h2>
+<ul>
+<li><a href="#scope">スコープ宣言</a></li>
+<li><a href="#intro">第9章の学習目的</a></li>
+<li><a href="#set-basic">9.1 集合演算子の定義</a></li>
+<li><a href="#union">9.2 UNION</a></li>
+<li><a href="#union-all">9.3 UNION ALL</a></li>
+<li><a href="#intersect">9.4 INTERSECT</a></li>
+<li><a href="#minus">9.5 MINUS</a></li>
+<li><a href="#type-rules">9.6 列数・型グループ整合</a></li>
+<li><a href="#order-by">9.7 ORDER BYの位置と制約</a></li>
+<li><a href="#performance">9.8 性能観点（重複除去コスト）</a></li>
+<li><a href="#errors">9.9 典型エラーと修正</a></li>
+<li><a href="#patterns">9.10 実務運用パターン</a></li>
+<li><a href="#deep-dive-9">品質強化 超深掘り5項目</a></li><li><a href="#insights-9">出題傾向補強</a></li><li><a href="#exam">試験ひっかけパターン集</a></li>
+<li><a href="#practice">実務アンチパターン集</a></li>
+</ul>
+</aside>
+<main class="main">
+<section class="hero" id="scope">
+<h1>Ver 5.0 | Oracle DBA Silver SQL（第9章のみ）</h1>
+<p>本ファイルは第9章「集合演算子（UNION / UNION ALL / INTERSECT / MINUS）」に集中し、集合論理と型整合を高密度で整理する。</p>
+</section>
+<section class="card" id="intro">
+<h2>第9章の学習目的</h2>
+<p>第9章は、複数SELECT結果を集合として統合・比較する章である。JOINが列結合を担うのに対し、集合演算子は行集合同士を合成する。試験ではUNIONとUNION ALLの違い、INTERSECT/MINUSの意味、列数と型整合、ORDER BYの配置が高頻度で問われる。実務では差分抽出、重複排除付き統合、監査比較で多用されるが、型整合ミスや重複除去コスト見落としで障害になりやすい。第9章の到達点は、要件に応じて適切な演算子を選び、結果件数と性能影響を説明できる状態にすることである。</p>
+<div class="gloss"><strong>重要:</strong> 集合演算子は「似たSELECTをつなぐ」機能ではない。結果集合の意味を変える演算そのもの。</div>
+</section>
+<section class="card" id="set-basic">
+<h2>9.1 集合演算子の定義</h2>
+<p>集合演算子は複数のSELECT結果を集合として結合・比較する機能で、UNION、UNION ALL、INTERSECT、MINUSが代表である。定義上の要点は、各SELECTの列数と型グループが整合していることが前提である点だ。列名は先頭SELECTに従う。JOINとの違いは、JOINが横方向（列追加）であるのに対し、集合演算子は縦方向（行集合統合）である。実務では同種データの統合や差分確認に有効であり、誤用すると重複処理や件数解釈を誤る。</p>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="union">
+<h2>9.2 UNION</h2>
+<p>UNIONは複数結果を統合し、重複行を除去して返す。重複除去処理が入るため、件数は単純加算にならない。試験ではUNION ALLとの差分が頻出。実務では「重複排除が要件か」を明確にしないと、必要行が消えたように見える誤認が起きる。重複排除が不要ならUNIONを使う理由は薄く、性能面でも不利になりやすい。</p>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="union-all">
+<h2>9.3 UNION ALL</h2>
+<p>UNION ALLは重複を除去せず結果を連結する。件数は通常、各SELECTの合計に近くなる。重複が業務上意味を持つログ系や監査系ではUNION ALLが自然である。試験では「性能重視はUNION ALL」が定番。実務でも重複排除が不要な場面ではまずUNION ALLを選び、必要時のみ別途重複処理を設計する方が明確である。</p>
+<pre><code><span class="kw">SELECT</span> <span class="obj">employee_id</span> <span class="kw">FROM</span> <span class="obj">employees</span> <span class="kw">WHERE</span> <span class="obj">department_id</span> = <span class="obj">10</span>
+<span class="kw">UNION ALL</span>
+<span class="kw">SELECT</span> <span class="obj">employee_id</span> <span class="kw">FROM</span> <span class="obj">employees</span> <span class="kw">WHERE</span> <span class="obj">department_id</span> = <span class="obj">20</span>;</code></pre>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="intersect">
+<h2>9.4 INTERSECT</h2>
+<p>INTERSECTは双方のSELECTに共通して存在する行のみ返す。共通集合抽出に使え、監査突合や一致確認に有効である。重複は集合として扱われるため結果で整理される。試験では演算意味の理解が中心。実務では比較基準列をどこまで含めるかで一致判定が変わるため、列選定を明確にする必要がある。</p>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="minus">
+<h2>9.5 MINUS</h2>
+<p>MINUSは1本目に存在し2本目に存在しない行を返す差分演算である。欠損抽出や未反映レコード確認に有効。順序が逆になると意味が反転するため、実務では「何から何を引くか」を明示する必要がある。試験では演算方向の取り違えがひっかけになる。差分抽出では列の正規化（前後空白・大文字小文字差）も合わせて検討するべきである。</p>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="type-rules">
+<h2>9.6 列数・型グループ整合</h2>
+<p>集合演算子の前提は列数一致と型グループ整合である。1本目NUMBER、2本目VARCHAR2などの不整合はエラー要因になる。実務ではCASTで型を揃えるのが定石で、書式付き文字列化は最終段で行うべきである。列順も一致させなければ意味が変わる。試験ではこの基本仕様が頻出のため、まず「列数」「型」「順序」を機械的に確認する癖をつけることが重要である。</p>
+<div class="warn"><b>失敗例:</b> 1本目NUMBER、2本目VARCHAR2混在。<b>修正:</b> CASTで型統一。</div>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="order-by">
+<h2>9.7 ORDER BYの位置と制約</h2>
+<p>集合演算子を使うSQLでは、ORDER BYは原則として最後に1回だけ適用する。途中SELECTに個別ORDER BYを置く設計は文法上・意味上の混乱を招きやすい。試験でもORDER BY位置は定番。実務では最終結果の並び順だけを定義し、途中並び順への依存を作らない方が保守しやすい。必要なら各SELECTをサブクエリ化して段階明示する。</p>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="performance">
+<h2>9.8 性能観点（重複除去コスト）</h2>
+<p>UNION、INTERSECT、MINUSは重複整理や比較のために追加処理が入り、データ量が多いとコストが増える。UNION ALLは比較的軽く、性能優先時に有利である。実務ではまずUNION ALLで必要件数を確認し、真に重複排除が必要な場面だけUNIONへ切替える方が合理的である。集合演算子の選択は意味だけでなくコストを含む設計判断である。</p>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="errors">
+<h2>9.9 典型エラーと修正</h2>
+<div class="warn"><b>失敗1:</b> 列数不一致。<b>修正:</b> SELECT列数を合わせる。</div>
+<div class="warn"><b>失敗2:</b> 型グループ不整合。<b>修正:</b> CASTで統一。</div>
+<div class="warn"><b>失敗3:</b> UNIONで件数が減る理由を説明できない。<b>修正:</b> 重複排除要否を要件化。</div>
+<div class="warn"><b>失敗4:</b> MINUSの方向を逆に記述。<b>修正:</b> 差分元と差分先を明示。</div>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="patterns">
+<h2>9.10 実務運用パターン</h2>
+<p>実務では「まずUNION ALLで生データ確認」「次に必要なら重複除去」「最後にORDER BY」で段階的に組むと検証しやすい。差分抽出ではMINUS前に正規化（TRIM/UPPER等）を行い、見た目差異での誤差分を避ける。監査用途では演算前後件数を記録し、結果再現性を担保する運用が有効である。集合演算子は短く書けるが、検証手順込みで設計することが重要である。</p>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="insights-9">
+<h2>出題傾向補強（第9章）</h2>
+<p>収集した過去問題データに基づく第9章対応分野「集合演算子」の傾向補強である。収集問題数は25問で、出題傾向の核は「SELECT / WHERE / GROUP BY / ORDER BY / JOIN / 副問合せ / UNION」に集中する。試験対策では、構文暗記よりも条件差分と失敗時挙動の判定を優先することで正答率が上がる。実務では、同テーマに対して確認SQLと本実行SQLを対にして扱うと事故率を下げられる。</p>
+<div class="note"><strong>補強方針:</strong> 本章の例題を解く際は、同じ概念を「成功例」「失敗例」「修正例」の3パターンで比較し、判定根拠を言語化すること。</div>
+<p><strong>参照URL例（解説参照元）:</strong></p>
+<ul>
+<li><a href="https://docs.oracle.com/cd/F19136_01/sqlrf/Set-Operators.html" rel="noopener noreferrer" target="_blank">https://docs.oracle.com/cd/F19136_01/sqlrf/Set-Operators.html</a></li><li><a href="https://docs.oracle.com/cd/F19136_01/sqlrf/The-UNION-ALL-INTERSECT-MINUS-Operators.html" rel="noopener noreferrer" target="_blank">https://docs.oracle.com/cd/F19136_01/sqlrf/The-UNION-ALL-INTERSECT-MINUS-Operators.html</a></li><li><a href="http://docs.oracle.com/cd/E16338_01/server.112/b56299/operators005.htm#i1035612" rel="noopener noreferrer" target="_blank">http://docs.oracle.com/cd/E16338_01/server.112/b56299/operators005.htm#i1035612</a></li>
+</ul>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="deep-dive-9"><h2>品質強化：第9章 超深掘り5項目</h2><h3>1. 定義</h3><p>第9章の中心概念である「集合演算子」は、単に構文を覚える学習単位ではなく、データの意味・一貫性・運用可能性を同時に成立させるための設計原則である。試験では語句の暗記だけで解ける問題もあるが、実務では入力値の品質、実行順序、例外時の復旧可能性まで含めて定義を扱う必要がある。つまりこの章の定義は「SQL文の形」ではなく「業務データを破壊せずに価値へ変換する規律」であり、ここを誤解すると正解できても現場で再現できない。 さらに、設計レビュー時には前提条件・入力境界・例外時挙動・確認SQL・証跡項目を明示し、実行者依存の判断を排除すること。学習段階でも、同一テーマを正常系と異常系の両方で検証し、なぜその結果になるかを言語化して再利用可能な知識へ変換する。</p><h3>2. 役割</h3><p>集合演算子の役割は、データベース操作を偶発的な職人技から、再現可能な標準手順へ引き上げることにある。たとえば現場で引継ぎ担当が変わっても、同じ確認SQL・同じ判定基準・同じ実行順で処理できる状態を作るのがこの章の本質である。試験対策の観点でも、役割を理解していると「どの句がどの責務を持つか」を軸に消去法が機能し、難問での正答率が上がる。役割を文法の説明に矮小化せず、品質保証の仕組みとして把握することが重要である。 さらに、設計レビュー時には前提条件・入力境界・例外時挙動・確認SQL・証跡項目を明示し、実行者依存の判断を排除すること。学習段階でも、同一テーマを正常系と異常系の両方で検証し、なぜその結果になるかを言語化して再利用可能な知識へ変換する。</p><h3>3. 動作原理</h3><p>集合演算子の動作原理は、入力条件の解釈、実行計画に基づく処理、結果または副作用の確定という三層で説明できる。SQLは記述順と論理評価順が一致しない場面が多く、特に結合・集計・更新系では前提条件を誤ると意図外結果になる。そこで原理理解では「どの時点で行が絞られ、どの時点で列が計算され、どの時点で変更が確定するか」を言語化する必要がある。試験ではこの順序差を突く設問が頻出であり、実務ではこの順序差が障害の直接原因になるため、原理を図として説明できるレベルまで落とし込むべきである。 さらに、設計レビュー時には前提条件・入力境界・例外時挙動・確認SQL・証跡項目を明示し、実行者依存の判断を排除すること。学習段階でも、同一テーマを正常系と異常系の両方で検証し、なぜその結果になるかを言語化して再利用可能な知識へ変換する。</p><h3>4. 制限事項とアンチパターン</h3><p>集合演算子の制限事項を無視したアンチパターンとして、確認なし本実行、条件式の曖昧化、暗黙変換依存、復旧手順未設計がある。これらは短期的には作業を速く見せるが、中長期では誤更新や性能劣化、監査不適合に直結する。特に初学者は「動いたSQL」を正解と誤認しやすいが、品質上は「再実行可能」「失敗時に戻せる」「根拠を説明できる」ことが必須である。制限事項は足かせではなく安全柵であり、これを仕様として受け入れることが事故率低減の最短経路になる。 さらに、設計レビュー時には前提条件・入力境界・例外時挙動・確認SQL・証跡項目を明示し、実行者依存の判断を排除すること。学習段階でも、同一テーマを正常系と異常系の両方で検証し、なぜその結果になるかを言語化して再利用可能な知識へ変換する。</p><h3>5. 試験・実務の急所</h3><p>第9章の急所は、見た目が似た構文の意味差を判定できるかどうかである。試験では語順や句の位置、NULLや型変換、更新可否、暗黙コミットなどの境界条件が典型的なひっかけになる。実務では同じ境界条件が本番障害の発火点になるため、各処理に対して「想定件数」「失敗時挙動」「証跡」を先に決める運用が有効である。したがって急所対策は問題演習の量より、誤答理由を分類して再発防止ルールに変換する学習が効果的であり、これを章末の確認手順に固定することで合格後も通用する実力になる。 さらに、設計レビュー時には前提条件・入力境界・例外時挙動・確認SQL・証跡項目を明示し、実行者依存の判断を排除すること。学習段階でも、同一テーマを正常系と異常系の両方で検証し、なぜその結果になるかを言語化して再利用可能な知識へ変換する。</p><div class="top"><a href="#scope">▲ トップへ戻る</a></div></section><section class="card" id="exam">
+<h2>第9章 試験ひっかけパターン集</h2>
+<div class="warn"><b>ひっかけ1:</b> UNION ALLは重複除去するか → しない。</div>
+<div class="warn"><b>ひっかけ2:</b> MINUSは左右どちらでも同じか → 同じではない。</div>
+<div class="warn"><b>ひっかけ3:</b> 集合演算子で列名は各SELECTで独立か → 先頭SELECTに従う。</div>
+<div class="warn"><b>ひっかけ4:</b> ORDER BYは各SELECTに書くか → 最後に1回が基本。</div>
+<div class="warn"><b>ひっかけ5:</b> 列型不整合でも暗黙で解決されるか → エラーになる場合がある。</div>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="practice">
+<h2>第9章 実務アンチパターン集</h2>
+<div class="table-wrap"><table>
+<tr><th>アンチパターン</th><th>起きる障害</th><th>予防策</th></tr>
+<tr><td>不要なUNION</td><td>性能劣化</td><td>要件がなければUNION ALL</td></tr>
+<tr><td>列順不一致で合成</td><td>意味の異なる列混在</td><td>列順・型を明示統一</td></tr>
+<tr><td>MINUS方向ミス</td><td>逆差分の出力</td><td>差分元/差分先を固定命名</td></tr>
+<tr><td>件数検証なし本番投入</td><td>誤集計・監査不一致</td><td>演算前後件数を必ず記録</td></tr>
+</table></div>
+<div class="note"><strong>第9章完了基準:</strong> 演算子ごとの結果差とコスト差を説明し、型整合を崩さず差分抽出できること。</div>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+</main>
+</div>
+</body>
+</html>

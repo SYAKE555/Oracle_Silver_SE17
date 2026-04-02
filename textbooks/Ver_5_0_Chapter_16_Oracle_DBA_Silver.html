@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+
+<html lang="ja">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ver 5.0 Chapter 16 | Oracle DBA Silver SQL</title>
+<style>
+:root{--bg:#f4f8fc;--card:#ffffff;--line:#d8e4f5;--pri:#1d4f91;--sec:#2f6fbe;--txt:#1f2d3d;--code:#f2f7fc}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--txt);font-family:"Segoe UI","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;line-height:1.95}
+a{color:var(--pri);text-decoration:none}
+.layout{display:grid;grid-template-columns:320px 1fr;gap:18px;max-width:1480px;margin:0 auto;padding:14px}
+.sidebar{position:sticky;top:8px;align-self:start;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;max-height:calc(100vh - 16px);overflow:auto}
+.sidebar h2{margin:0 0 10px;color:var(--pri);font-size:1.08rem}.sidebar ul{margin:0;padding-left:18px}.sidebar li{margin:6px 0}
+.main{min-width:0}.hero{background:linear-gradient(135deg,#1d4f91,#2f6fbe);color:#fff;border-radius:16px;padding:24px 20px;margin-bottom:14px}
+.hero h1{margin:0 0 8px;font-size:1.8rem}.hero p{margin:0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px;margin-bottom:14px}
+.card h2{margin:0 0 10px;color:var(--pri);font-size:1.35rem;border-bottom:2px solid #c8dcf7;padding-bottom:7px}
+.card p{margin:10px 0}
+.note{background:#eef6ff;border:1px solid #c8dcfb;border-left:4px solid #2f6fbe;border-radius:10px;padding:11px;margin:10px 0}
+.warn{background:#fff8f1;border:1px solid #fed7aa;border-left:4px solid #ea580c;border-radius:10px;padding:11px;margin:10px 0}
+pre{background:var(--code);border:1px solid #dce8f8;border-radius:10px;padding:12px;overflow-x:auto;margin:10px 0}
+code{font-family:"Consolas","Monaco",monospace;font-size:.88rem}
+.table-wrap{overflow:auto}.table-wrap table{width:100%;border-collapse:collapse}.table-wrap th,.table-wrap td{border:1px solid #d8e4f5;padding:9px;vertical-align:top}.table-wrap th{background:#eef4fd;text-align:left}
+.top{text-align:right;margin-top:12px}
+@media(max-width:1120px){.layout{grid-template-columns:1fr}.sidebar{position:static;max-height:none}}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside class="sidebar">
+<h2>第16章 目次</h2>
+<ul>
+<li><a href="#scope">スコープ宣言</a></li>
+<li><a href="#intro">第16章の学習目的</a></li>
+<li><a href="#tz-basic">16.1 タイムゾーンの基礎</a></li>
+<li><a href="#ts-types">16.2 TIMESTAMP系データ型</a></li>
+<li><a href="#tstz">16.3 TIMESTAMP WITH TIME ZONE</a></li>
+<li><a href="#tsltz">16.4 TIMESTAMP WITH LOCAL TIME ZONE</a></li>
+<li><a href="#interval">16.5 INTERVALデータ型</a></li>
+<li><a href="#calc">16.6 日時計算と変換</a></li>
+<li><a href="#session-db-tz">16.7 DBTZとSESSIONTIMEZONE</a></li>
+<li><a href="#errors">16.8 典型エラーと修正</a></li>
+<li><a href="#patterns">16.9 実務運用パターン</a></li>
+<li><a href="#deep-dive-16">品質強化 超深掘り5項目</a></li><li><a href="#insights-16">出題傾向補強</a></li><li><a href="#exam">試験ひっかけパターン集</a></li>
+<li><a href="#practice">実務アンチパターン集</a></li>
+</ul>
+</aside>
+<main class="main">
+<section class="hero" id="scope">
+<h1>Ver 5.0 | Oracle DBA Silver SQL（第16章のみ）</h1>
+<p>本ファイルは第16章「タイムゾーンと期間データ型」に集中し、国際運用で破綻しない日時設計を高密度で解説する。</p>
+</section>
+<section class="card" id="intro">
+<h2>第16章の学習目的</h2>
+<p>第16章は、日時データを正しく保存・表示・計算するための最終章である。単一拠点運用では見えにくいが、複数タイムゾーン環境では設計不備が即障害になる。試験では`TIMESTAMP WITH TIME ZONE`と`TIMESTAMP WITH LOCAL TIME ZONE`の違い、`INTERVAL YEAR TO MONTH`と`INTERVAL DAY TO SECOND`の用途差、`SESSIONTIMEZONE`関連が出題される。実務では夏時間、サーバ移設、利用者地域差を考慮し、保存形式と表示形式を分離することが重要である。到達点は、時差・期間を含む業務要件に対して安全なデータ型を選択し、誤解のないSQLを設計できることにある。</p>
+<div class="note"><strong>重要:</strong> 「日時が見えること」と「日時が正しいこと」は別問題。型選択と変換方針が品質を決める。</div>
+</section>
+<section class="card" id="tz-basic">
+<h2>16.1 タイムゾーンの基礎</h2>
+<p>タイムゾーンは地域ごとの時刻基準であり、同じ瞬間でも表示時刻は地域により異なる。試験ではUTC基準理解、セッション依存表示の概念が問われる。実務では「保存は絶対時刻」「表示は利用者ローカル時刻」という分離が基本である。これを混同すると、会議予定や締切時刻が地域ごとにずれて重大事故になる。とくに海外拠点・クラウド移行・夜間バッチ運用では、タイムゾーン設計を後回しにすると後工程で修正コストが急増する。</p>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="ts-types">
+<h2>16.2 TIMESTAMP系データ型</h2>
+<p>Oracleの日時型は`DATE`、`TIMESTAMP`、`TIMESTAMP WITH TIME ZONE`、`TIMESTAMP WITH LOCAL TIME ZONE`などがある。`DATE`は秒まで、`TIMESTAMP`は小数秒まで保持できるが、タイムゾーン情報は持たない。試験では各型の保持情報差が頻出である。実務では要件に応じて「時差の必要有無」「表示変換の責務」を明確にし、型を選ぶ必要がある。単純な更新日時なら`TIMESTAMP`で十分な場合もあるが、国際的なイベント時刻はタイムゾーン情報付き型を優先すべきである。</p>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="tstz">
+<h2>16.3 TIMESTAMP WITH TIME ZONE</h2>
+<p>`TIMESTAMP WITH TIME ZONE`は日時に加え、オフセットまたは地域情報を保持する。入力時のタイムゾーンを保持できるため、元の時刻文脈を追跡しやすい。試験では文字列リテラル変換や比較時の挙動が問われる。実務ではログ、監査イベント、外部連携時刻など「元のタイムゾーンを残したい」データに適している。欠点は表示や比較の理解コストが高いことで、運用チームへ仕様共有しないと誤読が発生する。保存ポリシーを明文化し、表示フォーマットを統一することが必要である。</p>
+<pre><code>CREATE TABLE audit_events (
+  event_id NUMBER PRIMARY KEY,
+  occurred_at TIMESTAMP WITH TIME ZONE
+);</code></pre>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="tsltz">
+<h2>16.4 TIMESTAMP WITH LOCAL TIME ZONE</h2>
+<p>`TIMESTAMP WITH LOCAL TIME ZONE`はDBタイムゾーンで正規化保存し、取得時にセッションタイムゾーンへ変換表示される型である。試験ではこの「保存時と表示時のタイムゾーン」の差が狙われる。実務ではユーザーごとにローカル表示したい業務で便利だが、SQLクライアントのセッション設定差で見える時刻が変わるため混乱しやすい。運用では`SESSIONTIMEZONE`を明示管理し、レポート系で固定表示が必要な場合は変換関数を併用する。便利さと可観測性のバランスを取ることが重要である。</p>
+<div class="warn"><b>注意:</b> 同じ行でもセッション設定が異なると表示時刻が変わる。障害解析時はセッション情報を必ず記録する。</div>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="interval">
+<h2>16.5 INTERVALデータ型</h2>
+<p>期間データは`INTERVAL YEAR TO MONTH`と`INTERVAL DAY TO SECOND`で保持する。前者は年・月単位、後者は日・時分秒単位の差分表現に適する。試験では両者の使い分けとリテラル構文が問われる。実務では「契約期間（年/月）」と「処理遅延（秒）」のように業務意味が異なるため、同じ数値列で代用しないことが重要である。INTERVAL型を使うと可読性と整合性が上がり、単位誤解によるバグを減らせる。</p>
+<pre><code>SELECT INTERVAL '2-3' YEAR TO MONTH AS contract_term,
+       INTERVAL '5 04:30:00' DAY TO SECOND AS process_delay
+FROM dual;</code></pre>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="calc">
+<h2>16.6 日時計算と変換</h2>
+<p>日時計算では`SYSTIMESTAMP`、`CURRENT_TIMESTAMP`、`FROM_TZ`、`AT TIME ZONE`などを使い分ける。試験では関数の返却型やセッション依存性が論点になる。実務では、保存時に統一基準へ変換し、画面表示時に利用者タイムゾーンへ変換する2段階運用が安定する。計算時に文字列変換を多用するとNLS設定差で不具合が出るため、内部は型のまま演算し最終出力で整形する。SQLレビューでは「どのタイムゾーン基準で比較しているか」を必ず確認する。</p>
+<pre><code>SELECT SYSTIMESTAMP AT TIME ZONE 'UTC' AS utc_now,
+       SYSTIMESTAMP AT TIME ZONE 'Asia/Tokyo' AS tokyo_now
+FROM dual;</code></pre>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="session-db-tz">
+<h2>16.7 DBTZとSESSIONTIMEZONE</h2>
+<p>`DBTIMEZONE`はDBの基準、`SESSIONTIMEZONE`は接続セッションの表示基準である。試験ではこの2つの違いを判別させる問題が出る。実務ではバッチ接続とアプリ接続でセッションタイムゾーンが異なるケースが多く、同一SQLでも表示差異が生じる。障害調査では、発生時刻の値だけでなく「どのセッション設定で見た値か」を必ず併記する。運用標準として接続時にセッションタイムゾーンを明示設定することで、環境差異による不具合を大幅に減らせる。</p>
+<pre><code>SELECT DBTIMEZONE, SESSIONTIMEZONE FROM dual;</code></pre>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="errors">
+<h2>16.8 典型エラーと修正</h2>
+<div class="warn"><b>失敗1:</b> 国際データをDATEで保存。<b>修正:</b> TIMESTAMP WITH TIME ZONEを検討。</div>
+<div class="warn"><b>失敗2:</b> セッション差異を無視して比較。<b>修正:</b> 変換基準を統一して比較。</div>
+<div class="warn"><b>失敗3:</b> 期間を数値列で雑管理。<b>修正:</b> INTERVAL型で単位を明示。</div>
+<div class="warn"><b>失敗4:</b> 文字列変換後に日時演算。<b>修正:</b> 型のまま演算し最後に整形。</div>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="patterns">
+<h2>16.9 実務運用パターン</h2>
+<p>推奨設計は「保存はタイムゾーン情報付き or UTC統一」「表示でローカル変換」「期間はINTERVALで保持」の3原則である。さらに接続時にセッションタイムゾーンを固定し、監査ログへ設定値を記録することで、時刻不一致障害の再現性を確保できる。試験対策では型名暗記だけでなく、どの業務データにどの型を使うかを説明できるようにする。第16章の本質は、時刻を単なる文字列でなく意味を持つデータとして扱い、地域差を吸収した設計を行うことにある。</p>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="insights-16">
+<h2>出題傾向補強（第16章）</h2>
+<p>収集した過去問題データに基づく第16章対応分野「異なるタイム・ゾーンでのデータ管理」の傾向補強である。収集問題数は23問で、出題傾向の核は「SELECT / WHERE / INSERT / UPDATE / CREATE / ALTER / TIMESTAMP / INTERVAL」に集中する。試験対策では、構文暗記よりも条件差分と失敗時挙動の判定を優先することで正答率が上がる。実務では、同テーマに対して確認SQLと本実行SQLを対にして扱うと事故率を下げられる。</p>
+<div class="note"><strong>補強方針:</strong> 本章の例題を解く際は、同じ概念を「成功例」「失敗例」「修正例」の3パターンで比較し、判定根拠を言語化すること。</div>
+<p><strong>参照URL例（解説参照元）:</strong></p>
+<ul>
+<li><a href="http://docs.oracle.com/cd/E16338_01/server.112/b56299/sql_elements001.htm#SQLRF00203" rel="noopener noreferrer" target="_blank">http://docs.oracle.com/cd/E16338_01/server.112/b56299/sql_elements001.htm#SQLRF00203</a></li><li><a href="https://docs.oracle.com/cd/F19136_01/sqlrf/DBTIMEZONE.html#GUID-F2368F72-7065-462F-80B9-E115F5A48025" rel="noopener noreferrer" target="_blank">https://docs.oracle.com/cd/F19136_01/sqlrf/DBTIMEZONE.html#GUID-F2368F72-7065-462F-80B9-E115F5A48025</a></li><li><a href="http://docs.oracle.com/cd/E16338_01/server.112/b56299/sql_elements001.htm#SQLRF00206" rel="noopener noreferrer" target="_blank">http://docs.oracle.com/cd/E16338_01/server.112/b56299/sql_elements001.htm#SQLRF00206</a></li>
+</ul>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="deep-dive-16"><h2>品質強化：第16章 超深掘り5項目</h2><h3>1. 定義</h3><p>第16章の中心概念である「タイムゾーンと期間データ型」は、単に構文を覚える学習単位ではなく、データの意味・一貫性・運用可能性を同時に成立させるための設計原則である。試験では語句の暗記だけで解ける問題もあるが、実務では入力値の品質、実行順序、例外時の復旧可能性まで含めて定義を扱う必要がある。つまりこの章の定義は「SQL文の形」ではなく「業務データを破壊せずに価値へ変換する規律」であり、ここを誤解すると正解できても現場で再現できない。 さらに、設計レビュー時には前提条件・入力境界・例外時挙動・確認SQL・証跡項目を明示し、実行者依存の判断を排除すること。学習段階でも、同一テーマを正常系と異常系の両方で検証し、なぜその結果になるかを言語化して再利用可能な知識へ変換する。</p><h3>2. 役割</h3><p>タイムゾーンと期間データ型の役割は、データベース操作を偶発的な職人技から、再現可能な標準手順へ引き上げることにある。たとえば現場で引継ぎ担当が変わっても、同じ確認SQL・同じ判定基準・同じ実行順で処理できる状態を作るのがこの章の本質である。試験対策の観点でも、役割を理解していると「どの句がどの責務を持つか」を軸に消去法が機能し、難問での正答率が上がる。役割を文法の説明に矮小化せず、品質保証の仕組みとして把握することが重要である。 さらに、設計レビュー時には前提条件・入力境界・例外時挙動・確認SQL・証跡項目を明示し、実行者依存の判断を排除すること。学習段階でも、同一テーマを正常系と異常系の両方で検証し、なぜその結果になるかを言語化して再利用可能な知識へ変換する。</p><h3>3. 動作原理</h3><p>タイムゾーンと期間データ型の動作原理は、入力条件の解釈、実行計画に基づく処理、結果または副作用の確定という三層で説明できる。SQLは記述順と論理評価順が一致しない場面が多く、特に結合・集計・更新系では前提条件を誤ると意図外結果になる。そこで原理理解では「どの時点で行が絞られ、どの時点で列が計算され、どの時点で変更が確定するか」を言語化する必要がある。試験ではこの順序差を突く設問が頻出であり、実務ではこの順序差が障害の直接原因になるため、原理を図として説明できるレベルまで落とし込むべきである。 さらに、設計レビュー時には前提条件・入力境界・例外時挙動・確認SQL・証跡項目を明示し、実行者依存の判断を排除すること。学習段階でも、同一テーマを正常系と異常系の両方で検証し、なぜその結果になるかを言語化して再利用可能な知識へ変換する。</p><h3>4. 制限事項とアンチパターン</h3><p>タイムゾーンと期間データ型の制限事項を無視したアンチパターンとして、確認なし本実行、条件式の曖昧化、暗黙変換依存、復旧手順未設計がある。これらは短期的には作業を速く見せるが、中長期では誤更新や性能劣化、監査不適合に直結する。特に初学者は「動いたSQL」を正解と誤認しやすいが、品質上は「再実行可能」「失敗時に戻せる」「根拠を説明できる」ことが必須である。制限事項は足かせではなく安全柵であり、これを仕様として受け入れることが事故率低減の最短経路になる。 さらに、設計レビュー時には前提条件・入力境界・例外時挙動・確認SQL・証跡項目を明示し、実行者依存の判断を排除すること。学習段階でも、同一テーマを正常系と異常系の両方で検証し、なぜその結果になるかを言語化して再利用可能な知識へ変換する。</p><h3>5. 試験・実務の急所</h3><p>第16章の急所は、見た目が似た構文の意味差を判定できるかどうかである。試験では語順や句の位置、NULLや型変換、更新可否、暗黙コミットなどの境界条件が典型的なひっかけになる。実務では同じ境界条件が本番障害の発火点になるため、各処理に対して「想定件数」「失敗時挙動」「証跡」を先に決める運用が有効である。したがって急所対策は問題演習の量より、誤答理由を分類して再発防止ルールに変換する学習が効果的であり、これを章末の確認手順に固定することで合格後も通用する実力になる。 さらに、設計レビュー時には前提条件・入力境界・例外時挙動・確認SQL・証跡項目を明示し、実行者依存の判断を排除すること。学習段階でも、同一テーマを正常系と異常系の両方で検証し、なぜその結果になるかを言語化して再利用可能な知識へ変換する。</p><div class="top"><a href="#scope">▲ トップへ戻る</a></div></section><section class="card" id="exam">
+<h2>第16章 試験ひっかけパターン集</h2>
+<div class="warn"><b>ひっかけ1:</b> TIMESTAMPはタイムゾーン情報を持つか → 持たない。</div>
+<div class="warn"><b>ひっかけ2:</b> TSLTZは入力値のタイムゾーンをそのまま表示するか → セッション依存で変換表示。</div>
+<div class="warn"><b>ひっかけ3:</b> INTERVALは数値型で代替して同等か → 同等ではない。単位意味が欠落する。</div>
+<div class="warn"><b>ひっかけ4:</b> DBTIMEZONEとSESSIONTIMEZONEは常に同じか → 同じとは限らない。</div>
+<div class="warn"><b>ひっかけ5:</b> 日時比較前に文字列化して問題ないか → 不適切。型のまま比較する。</div>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="practice">
+<h2>第16章 実務アンチパターン集</h2>
+<div class="table-wrap"><table>
+<tr><th>アンチパターン</th><th>起きる障害</th><th>予防策</th></tr>
+<tr><td>日時を文字列保存</td><td>比較・集計不整合</td><td>適切な日時型へ統一</td></tr>
+<tr><td>セッションTZ未固定</td><td>環境ごとに表示差異</td><td>接続時にTZ明示設定</td></tr>
+<tr><td>期間を単位不明数値で管理</td><td>計算ロジック混乱</td><td>INTERVAL型で意味保持</td></tr>
+<tr><td>UTC/ローカル混在比較</td><td>締切・実行時刻の誤判定</td><td>基準時刻を統一して比較</td></tr>
+</table></div>
+<div class="note"><strong>第16章完了基準:</strong> タイムゾーン差異と期間型の扱いを説明し、国際運用で破綻しない日時設計を実践できること。</div>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+</main>
+</div>
+</body>
+</html>

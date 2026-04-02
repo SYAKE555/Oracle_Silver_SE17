@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+
+<html lang="ja">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ver 5.0 Chapter 12 | Oracle DBA Silver SQL</title>
+<style>
+:root{--bg:#f4f8fc;--card:#ffffff;--line:#d8e4f5;--pri:#1d4f91;--sec:#2f6fbe;--txt:#1f2d3d;--code:#f2f7fc}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--txt);font-family:"Segoe UI","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;line-height:1.95}
+a{color:var(--pri);text-decoration:none}
+.layout{display:grid;grid-template-columns:320px 1fr;gap:18px;max-width:1480px;margin:0 auto;padding:14px}
+.sidebar{position:sticky;top:8px;align-self:start;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;max-height:calc(100vh - 16px);overflow:auto}
+.sidebar h2{margin:0 0 10px;color:var(--pri);font-size:1.08rem}.sidebar ul{margin:0;padding-left:18px}.sidebar li{margin:6px 0}
+.main{min-width:0}.hero{background:linear-gradient(135deg,#1d4f91,#2f6fbe);color:#fff;border-radius:16px;padding:24px 20px;margin-bottom:14px}
+.hero h1{margin:0 0 8px;font-size:1.8rem}.hero p{margin:0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px;margin-bottom:14px}
+.card h2{margin:0 0 10px;color:var(--pri);font-size:1.35rem;border-bottom:2px solid #c8dcf7;padding-bottom:7px}
+.card p{margin:10px 0}
+.note{background:#eef6ff;border:1px solid #c8dcfb;border-left:4px solid #2f6fbe;border-radius:10px;padding:11px;margin:10px 0}
+.warn{background:#fff8f1;border:1px solid #fed7aa;border-left:4px solid #ea580c;border-radius:10px;padding:11px;margin:10px 0}
+pre{background:var(--code);border:1px solid #dce8f8;border-radius:10px;padding:12px;overflow-x:auto;margin:10px 0}
+code{font-family:"Consolas","Monaco",monospace;font-size:.88rem}
+.table-wrap{overflow:auto}.table-wrap table{width:100%;border-collapse:collapse}.table-wrap th,.table-wrap td{border:1px solid #d8e4f5;padding:9px;vertical-align:top}.table-wrap th{background:#eef4fd;text-align:left}
+.top{text-align:right;margin-top:12px}
+@media(max-width:1120px){.layout{grid-template-columns:1fr}.sidebar{position:static;max-height:none}}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside class="sidebar">
+<h2>第12章 目次</h2>
+<ul>
+<li><a href="#scope">スコープ宣言</a></li>
+<li><a href="#intro">第12章の学習目的</a></li>
+<li><a href="#view-basic">12.1 ビューの定義と役割</a></li>
+<li><a href="#create-view">12.2 CREATE VIEW</a></li>
+<li><a href="#simple-complex">12.3 単純ビューと複雑ビュー</a></li>
+<li><a href="#dml-view">12.4 ビュー経由DMLの可否</a></li>
+<li><a href="#check-option">12.5 WITH CHECK OPTION</a></li>
+<li><a href="#read-only">12.6 WITH READ ONLY</a></li>
+<li><a href="#replace-drop">12.7 OR REPLACEとDROP VIEW</a></li>
+<li><a href="#dict">12.8 辞書ビューで確認</a></li>
+<li><a href="#errors">12.9 典型エラーと修正</a></li>
+<li><a href="#patterns">12.10 実務運用パターン</a></li>
+<li><a href="#deep-dive-12">品質強化 超深掘り5項目</a></li><li><a href="#insights-12">出題傾向補強</a></li><li><a href="#exam">試験ひっかけパターン集</a></li>
+<li><a href="#practice">実務アンチパターン集</a></li>
+</ul>
+</aside>
+<main class="main">
+<section class="hero" id="scope">
+<h1>Ver 5.0 | Oracle DBA Silver SQL（第12章のみ）</h1>
+<p>本ファイルは第12章「ビューの管理」に集中し、抽象化・権限制御・更新可否を実務目線で高密度に解説する。</p>
+</section>
+<section class="card" id="intro">
+<h2>第12章の学習目的</h2>
+<p>第12章では、表を直接公開せずに必要列・必要行だけを提供するビューを扱う。ビューは見た目上は表に近いが、実体データを持たない論理的オブジェクトであり、SELECT文を名前付きで再利用する仕組みである。試験では「単純ビューは更新可能になり得る」「集合関数やGROUP BYを含む複雑ビューは更新制約が強い」「WITH CHECK OPTIONとWITH READ ONLYの違い」が頻出である。実務ではセキュリティ境界、アプリ向け抽象化、SQL再利用性向上に効果が大きい。到達点は、どの場面でビューを使うべきか、どの条件で更新不可になるかを説明できることである。</p>
+<div class="note"><strong>重要:</strong> ビューは便利だが、基表変更の影響を受けるため依存管理を怠ると障害化する。</div>
+</section>
+<section class="card" id="view-basic">
+<h2>12.1 ビューの定義と役割</h2>
+<p>ビューは「SELECT文に名前を付けた仮想表」である。役割は主に3つあり、第一に複雑な結合や条件を隠蔽して利用者のSQLを簡素化すること、第二に列・行を制限して不要情報の露出を防ぐこと、第三にロジックを共通化して仕様変更時の修正箇所を減らすことである。試験では「ビューはデータを保持しない」が基本で、実務では「どの層で責務を持たせるか」が設計の急所になる。業務で使う際は、ビュー定義をAPI契約として扱い、後方互換を意識して変更することが重要である。</p>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="create-view">
+<h2>12.2 CREATE VIEW</h2>
+<p>CREATE VIEWはビュー定義を作成する命令である。列エイリアスを明示すると、利用側の可読性が上がり、後続の帳票・BI利用が安定する。試験では構文順序、列名指定、`OR REPLACE`の挙動が問われやすい。実務では基表の列名をそのまま出さず、ドメイン語彙へ置き換えることで仕様理解が進む。一方、SELECT * を使うと基表列追加時に意図しない露出が起きるため、列は明示が原則である。</p>
+<pre><code>CREATE VIEW v_active_employees AS
+SELECT employee_id, last_name, department_id, salary
+FROM employees
+WHERE status = 'ACTIVE';</code></pre>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="simple-complex">
+<h2>12.3 単純ビューと複雑ビュー</h2>
+<p>単純ビューは原則として1表ベースで、集合関数・GROUP BY・DISTINCTなどを含まない。条件次第でDML可能になる。一方、複雑ビューは複数表結合、集計、集合演算を含み、更新制約が強くなる。試験では「どの定義なら更新可能か」を判定させる問題が多い。実務では読み取り専用の分析ビューと、更新を許可する業務入力ビューを分離するのが安全である。用途を混在させると、運用時に権限設計が破綻しやすい。</p>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="dml-view">
+<h2>12.4 ビュー経由DMLの可否</h2>
+<p>ビュー経由のINSERT/UPDATE/DELETEは、定義内容に依存して可能または不可となる。単純ビューでも、必須列が露出していない、計算列を含む、キー保全性が崩れる場合は失敗する。試験では「更新不可要因の識別」が得点ポイントである。実務では更新用途ビューを設計する場合、必須列露出・制約整合・業務制約を先に確認する。エラー発生後に調整するのではなく、ビュー定義時に更新シナリオを検証しておくことが重要である。</p>
+<div class="warn"><b>注意:</b> 「ビュー=常に更新不可」でも「単純ビュー=常に更新可」でもない。条件判定が必要。</div>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="check-option">
+<h2>12.5 WITH CHECK OPTION</h2>
+<p>`WITH CHECK OPTION`は、ビュー定義の条件を満たす行だけ更新/挿入を許可する。例えば「部署50のみを表示するビュー」で部署60へ変更しようとすると拒否される。試験では「更新後もビュー条件を満たす必要がある」という意味理解が重要である。実務では業務境界の逸脱防止に有効で、担当部門以外のデータ改変を防げる。アプリ側バリデーションだけに依存せず、DB層で強制することで監査適合性も高まる。</p>
+<pre><code>CREATE OR REPLACE VIEW v_dept50 AS
+SELECT employee_id, last_name, department_id, salary
+FROM employees
+WHERE department_id = 50
+WITH CHECK OPTION;</code></pre>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="read-only">
+<h2>12.6 WITH READ ONLY</h2>
+<p>`WITH READ ONLY`はビュー経由DMLを全面禁止し、参照専用窓口として固定する。分析・配布用途では更新意図がないため、誤更新防止に有効である。試験ではCHECK OPTIONとの違いを問う比較問題が多い。CHECK OPTIONは条件内更新を許すが、READ ONLYは一切許さない。実務では権限管理と組み合わせて「参照は許可、更新は基表の管理者のみ」という分離を実現できる。運用事故の多くは「更新できる必要がない場所で更新できる」ことから起きるため、READ ONLYは安価で強い対策である。</p>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="replace-drop">
+<h2>12.7 OR REPLACEとDROP VIEW</h2>
+<p>`CREATE OR REPLACE VIEW`は既存ビュー定義を置換する。再作成に比べて権限再付与漏れを抑えやすいが、列仕様変更は依存オブジェクトへ影響するため注意が必要である。`DROP VIEW`は定義削除であり、利用中SQLやアプリが即時失敗しうる。試験ではOR REPLACEの意味、DROPの影響範囲が狙われる。実務では依存調査（パッケージ、レポート、ETL）を先に実施し、段階リリースで置換するのが安全である。</p>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="dict">
+<h2>12.8 辞書ビューで確認</h2>
+<p>ビュー管理では辞書ビュー確認が必須である。`USER_VIEWS`で定義SQL、`USER_TAB_COLUMNS`で公開列、`USER_UPDATABLE_COLUMNS`で更新可能列を確認できる。試験ではどの辞書ビューを使うかを問う問題があるため、目的別に覚える。実務では定義変更後に「想定列が公開されているか」「更新可否が意図通りか」を検証し、手順書へ記録する。ビューは論理層である分、見た目だけで正否判断しにくいので、辞書で客観確認する習慣が品質を支える。</p>
+<pre><code>SELECT column_name, updatable
+FROM user_updatable_columns
+WHERE table_name = 'V_ACTIVE_EMPLOYEES'
+ORDER BY column_name;</code></pre>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="errors">
+<h2>12.9 典型エラーと修正</h2>
+<div class="warn"><b>失敗1:</b> SELECT * でビュー作成し列増加で情報露出。<b>修正:</b> 公開列を明示する。</div>
+<div class="warn"><b>失敗2:</b> 更新不可ビューでDML実行。<b>修正:</b> 定義要因を確認し用途別に分離。</div>
+<div class="warn"><b>失敗3:</b> OR REPLACE時に依存影響未調査。<b>修正:</b> 依存オブジェクト一覧を事前確認。</div>
+<div class="warn"><b>失敗4:</b> READ ONLYを付けず誤更新。<b>修正:</b> 参照専用ビューは明示的に固定。</div>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="patterns">
+<h2>12.10 実務運用パターン</h2>
+<p>実務で推奨されるのは、用途別にビュー層を分割する方式である。外部公開・帳票向けはREAD ONLY、業務更新向けは単純ビュー＋CHECK OPTION、内部分析向けは複雑ビューとし、責務を混ぜない。これにより権限設計が単純化し、事故時切り分けも容易になる。試験対策としては、更新可能性の判定軸を言語化して覚えると応用問題にも対応できる。ビューは単なる省略記法ではなく、データ提供契約を設計する手段として扱うべきである。</p>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="insights-12">
+<h2>出題傾向補強（第12章）</h2>
+<p>収集した過去問題データに基づく第12章対応分野「ビュー」の傾向補強である。収集問題数は31問で、出題傾向の核は「SELECT / WHERE / GROUP BY / JOIN / 副問合せ / INSERT / UPDATE / DELETE / CREATE / ALTER」に集中する。試験対策では、構文暗記よりも条件差分と失敗時挙動の判定を優先することで正答率が上がる。実務では、同テーマに対して確認SQLと本実行SQLを対にして扱うと事故率を下げられる。</p>
+<div class="note"><strong>補強方針:</strong> 本章の例題を解く際は、同じ概念を「成功例」「失敗例」「修正例」の3パターンで比較し、判定根拠を言語化すること。</div>
+<p><strong>参照URL例（解説参照元）:</strong></p>
+<ul>
+<li><a href="https://docs.oracle.com/cd/E16338_01/server.112/b56306/schemaob.htm#i20690" rel="noopener noreferrer" target="_blank">https://docs.oracle.com/cd/E16338_01/server.112/b56306/schemaob.htm#i20690</a></li><li><a href="https://docs.oracle.com/cd/F23071_01/aeutl/managing-views.html#GUID-80EA2657-998D-47AD-908E-14CA108F8070" rel="noopener noreferrer" target="_blank">https://docs.oracle.com/cd/F23071_01/aeutl/managing-views.html#GUID-80EA2657-998D-47AD-908E-14CA108F8070</a></li><li><a href="https://docs.oracle.com/cd/E16338_01/server.112/b56299/statements_8004.htm#SQLRF01504" rel="noopener noreferrer" target="_blank">https://docs.oracle.com/cd/E16338_01/server.112/b56299/statements_8004.htm#SQLRF01504</a></li>
+</ul>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="deep-dive-12"><h2>品質強化：第12章 超深掘り5項目</h2><h3>1. 定義</h3><p>第12章の中心概念である「ビューの管理」は、単に構文を覚える学習単位ではなく、データの意味・一貫性・運用可能性を同時に成立させるための設計原則である。試験では語句の暗記だけで解ける問題もあるが、実務では入力値の品質、実行順序、例外時の復旧可能性まで含めて定義を扱う必要がある。つまりこの章の定義は「SQL文の形」ではなく「業務データを破壊せずに価値へ変換する規律」であり、ここを誤解すると正解できても現場で再現できない。 さらに、設計レビュー時には前提条件・入力境界・例外時挙動・確認SQL・証跡項目を明示し、実行者依存の判断を排除すること。学習段階でも、同一テーマを正常系と異常系の両方で検証し、なぜその結果になるかを言語化して再利用可能な知識へ変換する。</p><h3>2. 役割</h3><p>ビューの管理の役割は、データベース操作を偶発的な職人技から、再現可能な標準手順へ引き上げることにある。たとえば現場で引継ぎ担当が変わっても、同じ確認SQL・同じ判定基準・同じ実行順で処理できる状態を作るのがこの章の本質である。試験対策の観点でも、役割を理解していると「どの句がどの責務を持つか」を軸に消去法が機能し、難問での正答率が上がる。役割を文法の説明に矮小化せず、品質保証の仕組みとして把握することが重要である。 さらに、設計レビュー時には前提条件・入力境界・例外時挙動・確認SQL・証跡項目を明示し、実行者依存の判断を排除すること。学習段階でも、同一テーマを正常系と異常系の両方で検証し、なぜその結果になるかを言語化して再利用可能な知識へ変換する。</p><h3>3. 動作原理</h3><p>ビューの管理の動作原理は、入力条件の解釈、実行計画に基づく処理、結果または副作用の確定という三層で説明できる。SQLは記述順と論理評価順が一致しない場面が多く、特に結合・集計・更新系では前提条件を誤ると意図外結果になる。そこで原理理解では「どの時点で行が絞られ、どの時点で列が計算され、どの時点で変更が確定するか」を言語化する必要がある。試験ではこの順序差を突く設問が頻出であり、実務ではこの順序差が障害の直接原因になるため、原理を図として説明できるレベルまで落とし込むべきである。 さらに、設計レビュー時には前提条件・入力境界・例外時挙動・確認SQL・証跡項目を明示し、実行者依存の判断を排除すること。学習段階でも、同一テーマを正常系と異常系の両方で検証し、なぜその結果になるかを言語化して再利用可能な知識へ変換する。</p><h3>4. 制限事項とアンチパターン</h3><p>ビューの管理の制限事項を無視したアンチパターンとして、確認なし本実行、条件式の曖昧化、暗黙変換依存、復旧手順未設計がある。これらは短期的には作業を速く見せるが、中長期では誤更新や性能劣化、監査不適合に直結する。特に初学者は「動いたSQL」を正解と誤認しやすいが、品質上は「再実行可能」「失敗時に戻せる」「根拠を説明できる」ことが必須である。制限事項は足かせではなく安全柵であり、これを仕様として受け入れることが事故率低減の最短経路になる。 さらに、設計レビュー時には前提条件・入力境界・例外時挙動・確認SQL・証跡項目を明示し、実行者依存の判断を排除すること。学習段階でも、同一テーマを正常系と異常系の両方で検証し、なぜその結果になるかを言語化して再利用可能な知識へ変換する。</p><h3>5. 試験・実務の急所</h3><p>第12章の急所は、見た目が似た構文の意味差を判定できるかどうかである。試験では語順や句の位置、NULLや型変換、更新可否、暗黙コミットなどの境界条件が典型的なひっかけになる。実務では同じ境界条件が本番障害の発火点になるため、各処理に対して「想定件数」「失敗時挙動」「証跡」を先に決める運用が有効である。したがって急所対策は問題演習の量より、誤答理由を分類して再発防止ルールに変換する学習が効果的であり、これを章末の確認手順に固定することで合格後も通用する実力になる。 さらに、設計レビュー時には前提条件・入力境界・例外時挙動・確認SQL・証跡項目を明示し、実行者依存の判断を排除すること。学習段階でも、同一テーマを正常系と異常系の両方で検証し、なぜその結果になるかを言語化して再利用可能な知識へ変換する。</p><div class="top"><a href="#scope">▲ トップへ戻る</a></div></section><section class="card" id="exam">
+<h2>第12章 試験ひっかけパターン集</h2>
+<div class="warn"><b>ひっかけ1:</b> ビューは必ず更新不可か → いいえ。定義次第で可能。</div>
+<div class="warn"><b>ひっかけ2:</b> CHECK OPTIONはDML全面禁止か → いいえ。条件内は許可される。</div>
+<div class="warn"><b>ひっかけ3:</b> READ ONLYとCHECK OPTIONは同じか → いいえ。目的が異なる。</div>
+<div class="warn"><b>ひっかけ4:</b> OR REPLACEは依存影響ゼロか → いいえ。列変更で影響あり。</div>
+<div class="warn"><b>ひっかけ5:</b> ビュー定義確認はUSER_TABLESでよいか → いいえ。USER_VIEWS等を使う。</div>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="practice">
+<h2>第12章 実務アンチパターン集</h2>
+<div class="table-wrap"><table>
+<tr><th>アンチパターン</th><th>起きる障害</th><th>予防策</th></tr>
+<tr><td>用途混在の万能ビュー</td><td>権限設計が破綻</td><td>参照/更新/分析で分離</td></tr>
+<tr><td>列明示なしSELECT *</td><td>意図しない列公開</td><td>列を明示して契約化</td></tr>
+<tr><td>依存調査なしOR REPLACE</td><td>帳票・バッチ停止</td><td>依存一覧の事前確認</td></tr>
+<tr><td>更新可否未検証で本番投入</td><td>DML実行時エラー</td><td>USER_UPDATABLE_COLUMNSで検証</td></tr>
+</table></div>
+<div class="note"><strong>第12章完了基準:</strong> ビューの更新可否を判定し、用途別に安全な公開設計を説明できること。</div>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+</main>
+</div>
+</body>
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+
+<html lang="ja">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ver 5.0 Chapter 15 | Oracle DBA Silver SQL</title>
+<style>
+:root{--bg:#f4f8fc;--card:#ffffff;--line:#d8e4f5;--pri:#1d4f91;--sec:#2f6fbe;--txt:#1f2d3d;--code:#f2f7fc}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--txt);font-family:"Segoe UI","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;line-height:1.95}
+a{color:var(--pri);text-decoration:none}
+.layout{display:grid;grid-template-columns:320px 1fr;gap:18px;max-width:1480px;margin:0 auto;padding:14px}
+.sidebar{position:sticky;top:8px;align-self:start;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;max-height:calc(100vh - 16px);overflow:auto}
+.sidebar h2{margin:0 0 10px;color:var(--pri);font-size:1.08rem}.sidebar ul{margin:0;padding-left:18px}.sidebar li{margin:6px 0}
+.main{min-width:0}.hero{background:linear-gradient(135deg,#1d4f91,#2f6fbe);color:#fff;border-radius:16px;padding:24px 20px;margin-bottom:14px}
+.hero h1{margin:0 0 8px;font-size:1.8rem}.hero p{margin:0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px;margin-bottom:14px}
+.card h2{margin:0 0 10px;color:var(--pri);font-size:1.35rem;border-bottom:2px solid #c8dcf7;padding-bottom:7px}
+.card p{margin:10px 0}
+.note{background:#eef6ff;border:1px solid #c8dcfb;border-left:4px solid #2f6fbe;border-radius:10px;padding:11px;margin:10px 0}
+.warn{background:#fff8f1;border:1px solid #fed7aa;border-left:4px solid #ea580c;border-radius:10px;padding:11px;margin:10px 0}
+pre{background:var(--code);border:1px solid #dce8f8;border-radius:10px;padding:12px;overflow-x:auto;margin:10px 0}
+code{font-family:"Consolas","Monaco",monospace;font-size:.88rem}
+.table-wrap{overflow:auto}.table-wrap table{width:100%;border-collapse:collapse}.table-wrap th,.table-wrap td{border:1px solid #d8e4f5;padding:9px;vertical-align:top}.table-wrap th{background:#eef4fd;text-align:left}
+.top{text-align:right;margin-top:12px}
+@media(max-width:1120px){.layout{grid-template-columns:1fr}.sidebar{position:static;max-height:none}}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside class="sidebar">
+<h2>第15章 目次</h2>
+<ul>
+<li><a href="#scope">スコープ宣言</a></li>
+<li><a href="#intro">第15章の学習目的</a></li>
+<li><a href="#dict-basic">15.1 データ・ディクショナリの定義</a></li>
+<li><a href="#prefix">15.2 USER_/ALL_/DBA_ の違い</a></li>
+<li><a href="#objects">15.3 オブジェクト確認ビュー</a></li>
+<li><a href="#columns">15.4 列定義と制約確認ビュー</a></li>
+<li><a href="#privs">15.5 権限確認ビュー</a></li>
+<li><a href="#monitor">15.6 運用監視での活用</a></li>
+<li><a href="#errors">15.7 典型エラーと修正</a></li>
+<li><a href="#patterns">15.8 実務運用パターン</a></li>
+<li><a href="#deep-dive-15">品質強化 超深掘り5項目</a></li><li><a href="#insights-15">出題傾向補強</a></li><li><a href="#exam">試験ひっかけパターン集</a></li>
+<li><a href="#practice">実務アンチパターン集</a></li>
+</ul>
+</aside>
+<main class="main">
+<section class="hero" id="scope">
+<h1>Ver 5.0 | Oracle DBA Silver SQL（第15章のみ）</h1>
+<p>本ファイルは第15章「データ・ディクショナリ・ビュー」に集中し、確認SQLの設計と運用監査の実務知識を高密度で解説する。</p>
+</section>
+<section class="card" id="intro">
+<h2>第15章の学習目的</h2>
+<p>第15章では、Oracle内部メタデータを参照するデータ・ディクショナリ・ビューを学ぶ。表や制約、権限、索引、シーケンスの状態を正確に把握するために必須であり、試験でも頻出分野である。実務では「設定したつもり」を排除し、辞書ビューで実体確認することが変更品質を支える。特に障害調査や監査対応では、辞書ビューから客観証拠を取得できるかが重要である。到達点は、目的別に適切な辞書ビューを選び、確認SQLを自力で組み立てられる状態にすることである。</p>
+<div class="note"><strong>重要:</strong> DDL/DCL後の確認を省くと、設計書と本番実体の差異を長期間見逃す。</div>
+</section>
+<section class="card" id="dict-basic">
+<h2>15.1 データ・ディクショナリの定義</h2>
+<p>データ・ディクショナリは、Oracleが保持するオブジェクト定義・権限・統計などのメタ情報集合である。利用者は主にビュー経由で参照する。試験では「辞書ビューはDB管理情報を提供する」という基本理解が問われる。実務では、障害時の切り分けで「表は存在するか」「制約状態はどうか」「権限不足か」を即時確認するため、辞書参照能力が作業時間を大きく左右する。アプリデータを見るSQLと、DB状態を見るSQLを分けて考えることが重要である。</p>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="prefix">
+<h2>15.2 USER_/ALL_/DBA_ の違い</h2>
+<p>`USER_`は自スキーマ対象、`ALL_`はアクセス可能対象、`DBA_`はDB全体対象を示す。試験ではこの接頭辞の意味差が最重要ポイントである。実務では、権限不足で`DBA_`が見えない場面も多いため、まず`USER_`/`ALL_`で確認し、必要時に管理者へ依頼する運用が現実的である。接頭辞の意味を誤解すると、存在しないと誤判定したり、監査範囲を取り違えたりする。ビュー名暗記だけでなく「どの視点の情報か」を常に意識することが重要である。</p>
+<pre><code>SELECT table_name FROM user_tables;
+SELECT owner, table_name FROM all_tables WHERE table_name = 'EMPLOYEES';
+-- DBA権限がある場合
+SELECT owner, table_name FROM dba_tables WHERE table_name = 'EMPLOYEES';</code></pre>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="objects">
+<h2>15.3 オブジェクト確認ビュー</h2>
+<p>代表的な確認対象は表・ビュー・索引・シノニム・シーケンスである。`USER_TABLES`、`USER_VIEWS`、`USER_INDEXES`、`USER_SYNONYMS`、`USER_SEQUENCES`を使い分ける。試験では「どのビューで何が分かるか」を問う選択問題が多い。実務では変更作業後に対象オブジェクトの存在・状態・属性を1セットで確認し、証跡化する。1つのビューだけ見て完了扱いにすると、関連定義の漏れを見逃す可能性が高い。複数ビューを組み合わせて確認する癖が品質を上げる。</p>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="columns">
+<h2>15.4 列定義と制約確認ビュー</h2>
+<p>列定義確認は`USER_TAB_COLUMNS`、制約確認は`USER_CONSTRAINTS`と`USER_CONS_COLUMNS`が基本である。試験では制約種別コード（`P`主キー、`R`外部キー等）の意味が問われる場合がある。実務では「列は追加されたがNOT NULLが有効か」「FKは期待通り有効か」を検証するため、制約状態（ENABLED/DISABLED）まで確認する。DDL実行だけで満足すると、無効制約のまま本番運用に入り品質事故につながる。定義と状態を両方確認するのが実務の基本である。</p>
+<pre><code>SELECT constraint_name, constraint_type, status
+FROM user_constraints
+WHERE table_name = 'PROJECT_TASKS'
+ORDER BY constraint_name;</code></pre>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="privs">
+<h2>15.5 権限確認ビュー</h2>
+<p>権限周りは`USER_SYS_PRIVS`、`USER_TAB_PRIVS`、`USER_ROLE_PRIVS`が中心である。試験では「どのビューでシステム権限を見るか」など対応関係の知識が問われる。実務では権限申請対応後に、対象ユーザーへ必要権限が付与済みか、不要権限が残っていないかを確認する。権限エラー対応で手作業推測を続けると復旧が遅れるため、辞書ビューで事実確認する手順を固定化することが有効である。監査対応でもこの出力がそのまま証拠になる。</p>
+<pre><code>SELECT privilege FROM user_sys_privs ORDER BY privilege;
+SELECT table_name, privilege FROM user_tab_privs ORDER BY table_name, privilege;</code></pre>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="monitor">
+<h2>15.6 運用監視での活用</h2>
+<p>辞書ビューは試験対策だけでなく運用監視の中核でもある。例として「無効オブジェクト検知」「期限切れアカウント確認」「不要権限棚卸し」などを定期化できる。実務では日次/週次レポートに辞書SQLを組み込み、差分監視で異常を早期検知する。障害時はまず辞書で状態把握し、次にデータ層へ進む順序が効率的である。辞書ビューを知らないと、問題切り分けが経験依存になり再現性が落ちる。標準SQL化してチームで共有することが重要である。</p>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="errors">
+<h2>15.7 典型エラーと修正</h2>
+<div class="warn"><b>失敗1:</b> USER_とALL_の違いを誤解。<b>修正:</b> 参照視点を明確化して使い分け。</div>
+<div class="warn"><b>失敗2:</b> DDL後に辞書確認なし。<b>修正:</b> 確認SQLを変更手順へ固定。</div>
+<div class="warn"><b>失敗3:</b> 権限エラーを推測で対応。<b>修正:</b> USER_TAB_PRIVS等で事実確認。</div>
+<div class="warn"><b>失敗4:</b> 監査証跡未保存。<b>修正:</b> 辞書出力を定期保管。</div>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="patterns">
+<h2>15.8 実務運用パターン</h2>
+<p>推奨運用は「変更SQL」と「確認SQL」を常にペア管理し、適用後に辞書ビューで必ず検証する方式である。監査観点では、権限・制約・オブジェクトの定期棚卸しを自動化すると品質が安定する。試験対策としては代表ビュー名を丸暗記するだけでなく、どの業務場面で使うかを紐付けて覚えると定着しやすい。第15章の価値は、DB状態を客観データで説明できるようになる点にある。これは運用現場で最も評価される基礎能力である。</p>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="insights-15">
+<h2>出題傾向補強（第15章）</h2>
+<p>収集した過去問題データに基づく第15章対応分野「データ・ディクショナリ・ビュー」の傾向補強である。収集問題数は8問で、出題傾向の核は「SELECT / WHERE / ORDER BY / INDEX」に集中する。試験対策では、構文暗記よりも条件差分と失敗時挙動の判定を優先することで正答率が上がる。実務では、同テーマに対して確認SQLと本実行SQLを対にして扱うと事故率を下げられる。</p>
+<div class="note"><strong>補強方針:</strong> 本章の例題を解く際は、同じ概念を「成功例」「失敗例」「修正例」の3パターンで比較し、判定根拠を言語化すること。</div>
+<p><strong>参照URL例（解説参照元）:</strong></p>
+<ul>
+<li><a href="https://docs.oracle.com/cd/F19136_01/cncpt/data-dictionary-and-dynamic-performance-views.html#GUID-BDF5B748-EB43-4B48-938E-89099069C3BB" rel="noopener noreferrer" target="_blank">https://docs.oracle.com/cd/F19136_01/cncpt/data-dictionary-and-dynamic-performance-views.html#GUID-BDF5B748-EB43-4B48-938E-89099069C3BB</a></li><li><a href="https://docs.oracle.com/cd/F19136_01/cncpt/data-dictionary-and-dynamic-performance-views.html#CNCPT-GUID-6F1EA52F-C3AF-407C-B4FA-AE8C8651055E" rel="noopener noreferrer" target="_blank">https://docs.oracle.com/cd/F19136_01/cncpt/data-dictionary-and-dynamic-performance-views.html#CNCPT-GUID-6F1EA52F-C3AF-407C-B4FA-AE8C8651055E</a></li><li><a href="https://docs.oracle.com/cd/F19136_01/refrn/USER_TABLES.html" rel="noopener noreferrer" target="_blank">https://docs.oracle.com/cd/F19136_01/refrn/USER_TABLES.html</a></li>
+</ul>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="deep-dive-15"><h2>品質強化：第15章 超深掘り5項目</h2><h3>1. 定義</h3><p>第15章の中心概念である「データ・ディクショナリ・ビュー」は、単に構文を覚える学習単位ではなく、データの意味・一貫性・運用可能性を同時に成立させるための設計原則である。試験では語句の暗記だけで解ける問題もあるが、実務では入力値の品質、実行順序、例外時の復旧可能性まで含めて定義を扱う必要がある。つまりこの章の定義は「SQL文の形」ではなく「業務データを破壊せずに価値へ変換する規律」であり、ここを誤解すると正解できても現場で再現できない。 さらに、設計レビュー時には前提条件・入力境界・例外時挙動・確認SQL・証跡項目を明示し、実行者依存の判断を排除すること。学習段階でも、同一テーマを正常系と異常系の両方で検証し、なぜその結果になるかを言語化して再利用可能な知識へ変換する。</p><h3>2. 役割</h3><p>データ・ディクショナリ・ビューの役割は、データベース操作を偶発的な職人技から、再現可能な標準手順へ引き上げることにある。たとえば現場で引継ぎ担当が変わっても、同じ確認SQL・同じ判定基準・同じ実行順で処理できる状態を作るのがこの章の本質である。試験対策の観点でも、役割を理解していると「どの句がどの責務を持つか」を軸に消去法が機能し、難問での正答率が上がる。役割を文法の説明に矮小化せず、品質保証の仕組みとして把握することが重要である。 さらに、設計レビュー時には前提条件・入力境界・例外時挙動・確認SQL・証跡項目を明示し、実行者依存の判断を排除すること。学習段階でも、同一テーマを正常系と異常系の両方で検証し、なぜその結果になるかを言語化して再利用可能な知識へ変換する。</p><h3>3. 動作原理</h3><p>データ・ディクショナリ・ビューの動作原理は、入力条件の解釈、実行計画に基づく処理、結果または副作用の確定という三層で説明できる。SQLは記述順と論理評価順が一致しない場面が多く、特に結合・集計・更新系では前提条件を誤ると意図外結果になる。そこで原理理解では「どの時点で行が絞られ、どの時点で列が計算され、どの時点で変更が確定するか」を言語化する必要がある。試験ではこの順序差を突く設問が頻出であり、実務ではこの順序差が障害の直接原因になるため、原理を図として説明できるレベルまで落とし込むべきである。 さらに、設計レビュー時には前提条件・入力境界・例外時挙動・確認SQL・証跡項目を明示し、実行者依存の判断を排除すること。学習段階でも、同一テーマを正常系と異常系の両方で検証し、なぜその結果になるかを言語化して再利用可能な知識へ変換する。</p><h3>4. 制限事項とアンチパターン</h3><p>データ・ディクショナリ・ビューの制限事項を無視したアンチパターンとして、確認なし本実行、条件式の曖昧化、暗黙変換依存、復旧手順未設計がある。これらは短期的には作業を速く見せるが、中長期では誤更新や性能劣化、監査不適合に直結する。特に初学者は「動いたSQL」を正解と誤認しやすいが、品質上は「再実行可能」「失敗時に戻せる」「根拠を説明できる」ことが必須である。制限事項は足かせではなく安全柵であり、これを仕様として受け入れることが事故率低減の最短経路になる。 さらに、設計レビュー時には前提条件・入力境界・例外時挙動・確認SQL・証跡項目を明示し、実行者依存の判断を排除すること。学習段階でも、同一テーマを正常系と異常系の両方で検証し、なぜその結果になるかを言語化して再利用可能な知識へ変換する。</p><h3>5. 試験・実務の急所</h3><p>第15章の急所は、見た目が似た構文の意味差を判定できるかどうかである。試験では語順や句の位置、NULLや型変換、更新可否、暗黙コミットなどの境界条件が典型的なひっかけになる。実務では同じ境界条件が本番障害の発火点になるため、各処理に対して「想定件数」「失敗時挙動」「証跡」を先に決める運用が有効である。したがって急所対策は問題演習の量より、誤答理由を分類して再発防止ルールに変換する学習が効果的であり、これを章末の確認手順に固定することで合格後も通用する実力になる。 さらに、設計レビュー時には前提条件・入力境界・例外時挙動・確認SQL・証跡項目を明示し、実行者依存の判断を排除すること。学習段階でも、同一テーマを正常系と異常系の両方で検証し、なぜその結果になるかを言語化して再利用可能な知識へ変換する。</p><div class="top"><a href="#scope">▲ トップへ戻る</a></div></section><section class="card" id="exam">
+<h2>第15章 試験ひっかけパターン集</h2>
+<div class="warn"><b>ひっかけ1:</b> `USER_TABLES`で他スキーマ表を確認できるか → 通常できない。</div>
+<div class="warn"><b>ひっかけ2:</b> `DBA_`ビューは誰でも参照可能か → いいえ。権限が必要。</div>
+<div class="warn"><b>ひっかけ3:</b> 制約確認は`USER_TAB_COLUMNS`だけで十分か → 不十分。`USER_CONSTRAINTS`も必要。</div>
+<div class="warn"><b>ひっかけ4:</b> 辞書ビューは試験専用知識か → いいえ。運用実務で必須。</div>
+<div class="warn"><b>ひっかけ5:</b> 変更後確認は任意か → 不適切。品質保証の必須手順。</div>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="practice">
+<h2>第15章 実務アンチパターン集</h2>
+<div class="table-wrap"><table>
+<tr><th>アンチパターン</th><th>起きる障害</th><th>予防策</th></tr>
+<tr><td>確認SQLなしで本番適用</td><td>設定漏れ見逃し</td><td>変更と確認をセット化</td></tr>
+<tr><td>接頭辞の誤用</td><td>存在誤判定・調査遅延</td><td>USER_/ALL_/DBA_を目的で使い分け</td></tr>
+<tr><td>監査時に証跡なし</td><td>統制不備指摘</td><td>辞書出力の定期保存</td></tr>
+<tr><td>属人的な障害調査</td><td>復旧時間のばらつき</td><td>標準辞書SQLをチーム共有</td></tr>
+</table></div>
+<div class="note"><strong>第15章完了基準:</strong> 目的に応じて辞書ビューを選び、設定検証と監査証跡取得を実行できること。</div>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+</main>
+</div>
+</body>
+</html>

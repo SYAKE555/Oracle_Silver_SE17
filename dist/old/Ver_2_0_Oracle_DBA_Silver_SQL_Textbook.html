@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ver 2.0 | Oracle DBA Silver SQL 決定版教科書</title>
+<style>
+:root {
+  --primary: #1e40af;
+  --secondary: #3b82f6;
+  --bg: #f8fafc;
+  --text: #1e293b;
+  --muted: #475569;
+  --code-bg: #f1f5f9;
+  --card: #ffffff;
+  --line: #dbeafe;
+}
+* { box-sizing: border-box; }
+body { font-family: "Helvetica Neue", Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.82; margin: 0; }
+.container { max-width: 1080px; margin: 0 auto; padding: 28px 16px 40px; }
+.sticky-nav { position: sticky; top: 0; background: #fff; border-bottom: 2px solid var(--primary); padding: 10px 12px; z-index: 100; box-shadow: 0 2px 6px rgba(0,0,0,.08); }
+.nav-links { display:flex; gap:10px; flex-wrap:wrap; margin-top:6px; }
+.nav-links a { color: var(--primary); text-decoration: none; font-size: .9rem; padding: 2px 8px; border:1px solid #bfdbfe; border-radius: 999px; background:#eff6ff; }
+.summary { background:#fff; border:1px solid var(--line); border-radius:12px; padding:16px; margin:16px 0 24px; }
+.toc { background:#fff; border:1px solid var(--line); border-radius:12px; padding:16px; margin-bottom:20px; }
+.toc ul { columns:2; gap:24px; padding-left:20px; }
+.toc li { margin-bottom:8px; }
+.toc a { color: var(--primary); text-decoration:none; }
+.part { color:#0f172a; font-weight:700; margin-top:8px; }
+.chapter { background: var(--card); border-radius: 16px; padding: 24px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,.06); border-left: 6px solid var(--primary); }
+h1 { color: var(--primary); border-bottom: 2px solid var(--primary); padding-bottom:8px; }
+h2 { color: var(--secondary); margin: 8px 0 12px; font-size: 1.3rem; }
+h3 { color:#0f172a; margin: 14px 0 8px; font-size: 1.05rem; }
+p { margin: 8px 0; }
+.definition-box { background: #eff6ff; border: 1px solid #bfdbfe; padding: 14px; border-radius: 8px; margin: 12px 0; }
+.definition-box strong { color: var(--primary); }
+.exam-point { background: #fff7ed; border: 1px solid #ffedd5; padding: 12px; border-radius: 8px; margin: 12px 0; }
+.exam-title { font-weight: 700; color: #9a3412; margin-bottom: 6px; }
+.practice { background:#f0f9ff; border:1px solid #bae6fd; padding: 12px; border-radius:8px; margin: 12px 0; }
+.flow { display:grid; grid-template-columns: repeat(5, minmax(120px,1fr)); gap:8px; align-items:center; margin:10px 0; }
+.node { border:1px solid #cbd5e1; border-radius:8px; background:#fff; padding:8px; text-align:center; font-size:.85rem; }
+.arr { text-align:center; color:#475569; font-weight:700; }
+pre { background: var(--code-bg); padding: 12px; border-radius: 8px; overflow-x: auto; font-family: "Consolas", monospace; border: 1px solid #e2e8f0; line-height:1.6; }
+.kwd { color: #2563eb; font-weight: 700; }
+.obj { color: #0f172a; }
+.str { color: #b45309; }
+.num { color: #7c3aed; }
+.table-wrap { overflow-x:auto; }
+table { width:100%; border-collapse: collapse; min-width: 620px; }
+th, td { border:1px solid #e2e8f0; padding:8px; text-align:left; vertical-align:top; }
+th { background:#eff6ff; }
+.back { text-align:right; margin-top:10px; }
+.back a { color:var(--primary); text-decoration:none; }
+.small { color: var(--muted); font-size:.92rem; }
+@media (max-width: 860px) {
+  .toc ul { columns:1; }
+  .chapter { padding: 16px; }
+  .flow { grid-template-columns:1fr; }
+  .arr { transform: rotate(90deg); }
+}
+</style>
+</head>
+<body>
+<div class="sticky-nav">
+  <strong>Ver 2.0 | Oracle DBA Silver SQL 学習ナビゲーション</strong>
+  <div class="nav-links">
+    <a href="#top">はじめに</a><a href="#ch2">SELECT</a><a href="#ch7">JOIN</a><a href="#ch10">DML</a><a href="#ch11">DDL</a><a href="#ch14">権限</a><a href="#ch16">日時TZ</a>
+  </div>
+</div>
+<div class="container">
+  <h1>Oracle Database SQL 総合教科書（Ver 2.0）</h1>
+  <p class="small">PC/スマホ対応・JavaScript非依存・単一HTML構成</p>
+  
+<section class="summary" id="top">
+  <h2>はじめに</h2>
+  <p>この教科書は、SQL未経験者が Oracle DBA Silver 試験の合格ラインを超え、実務で安全にSQLを運用できる状態を目指すための教材です。</p>
+  <div class="definition-box"><strong>この教材の使い方</strong><br>
+  1章ずつ「役割→原理→制限→試験急所→実務ケース」の順で学習してください。<br>
+  実務で使う場合は、更新系SQLの章（10章）を先に確認してから作業するのが安全です。</div>
+  <div class="table-wrap">
+    <table>
+      <tr><th>学習レベル</th><th>到達目標</th><th>確認基準</th></tr>
+      <tr><td>基礎</td><td>SELECT/WHERE/GROUP BY/JOINを説明できる</td><td>処理順を口頭で説明できる</td></tr>
+      <tr><td>試験</td><td>NULL/優先順位/型変換のひっかけを回避できる</td><td>章末の急所を再現できる</td></tr>
+      <tr><td>実務</td><td>誤更新を防ぐ手順でDMLを実行できる</td><td>件数確認→保存点→反映→検証を実施</td></tr>
+    </table>
+  </div>
+</section>
+
+  <nav class="toc" aria-label="目次">
+    <h2>目次</h2>
+    <ul><li class="part">第1部 SQL基礎（1〜5章）</li><li><a href="#ch1">第1章：RDBとSQLの役割</a></li><li><a href="#ch2">第2章：SELECT文と処理順</a></li><li><a href="#ch3">第3章：絞り込み・ソート・行制限</a></li><li><a href="#ch4">第4章：単一行関数</a></li><li><a href="#ch5">第5章：型変換・NULL処理・条件式</a></li><li class="part">第2部 集計・結合・副問合せ（6〜9章）</li><li><a href="#ch6">第6章：集計とGROUP BY/HAVING</a></li><li><a href="#ch7">第7章：結合（JOIN）</a></li><li><a href="#ch8">第8章：副問合せ</a></li><li><a href="#ch9">第9章：集合演算子</a></li><li class="part">第3部 更新・定義・運用（10〜16章）</li><li><a href="#ch10">第10章：DMLとトランザクション</a></li><li><a href="#ch11">第11章：DDLと制約</a></li><li><a href="#ch12">第12章：ビュー</a></li><li><a href="#ch13">第13章：索引・シノニム・シーケンス</a></li><li><a href="#ch14">第14章：権限とロール</a></li><li><a href="#ch15">第15章：データ・ディクショナリ・ビュー</a></li><li><a href="#ch16">第16章：日時・タイムゾーン・INTERVAL</a></li></ul>
+  </nav>
+  <section class="chapter" id="ch1">
+  <h2>第1章：RDBとSQLの役割</h2>
+  <div class="definition-box"><strong>役割:</strong> データの交通整理と依頼の言語</div>
+  <p><strong>動作原理:</strong> SQLは『どう作るか』ではなく『何を得るか』を宣言する。</p>
+  <p><strong>制限事項/注意:</strong> 主キー・外部キー・NULLの意味を曖昧にしない。</p>
+  <div class="practice"><strong>実務ケース:</strong> 要件定義でキー不備を放置すると後続システム連携で突合不能データが増える。</div>
+  
+  <h3>試験・実務の急所</h3>
+  <div class="exam-point"><div class="exam-title">ひっかけポイント</div><ul><li>NULLは0でも空文字でもない</li><li>主キー列にNULLは不可</li><li>外部キーは整合性ルール</li></ul></div>
+  <h3>例題SQL</h3>
+  <pre><span class="kwd">SELECT</span> <span class="obj">employee_id</span>, <span class="obj">last_name</span>
+<span class="kwd">FROM</span> <span class="obj">employees</span>;</pre>
+  <div class="back"><a href="#top">▲ 目次へ戻る</a></div>
+</section><section class="chapter" id="ch2">
+  <h2>第2章：SELECT文と処理順</h2>
+  <div class="definition-box"><strong>役割:</strong> 必要な列と行を抽出する</div>
+  <p><strong>動作原理:</strong> 論理処理順は FROM→WHERE→GROUP BY→HAVING→SELECT→ORDER BY。</p>
+  <p><strong>制限事項/注意:</strong> SELECT * 依存は仕様変更耐性が低い。列明示を基本とする。</p>
+  <div class="practice"><strong>実務ケース:</strong> 画面APIで列追加が入った時にSELECT *だと予期せぬフィールドが混入し不具合化する。</div>
+  <h3>概念図（処理順）</h3>
+<div class="flow"><div class="node">FROM</div><div class="arr">→</div><div class="node">WHERE</div><div class="arr">→</div><div class="node">GROUP BY/HAVING</div><div class="arr">→</div><div class="node">SELECT</div><div class="arr">→</div><div class="node">ORDER BY</div></div>
+  <h3>試験・実務の急所</h3>
+  <div class="exam-point"><div class="exam-title">ひっかけポイント</div><ul><li>= NULL は不可、IS NULL を使う</li><li>AND/OR混在は括弧で優先順位を固定</li><li>ORDER BYなしで上位N件は再現性がない</li></ul></div>
+  <h3>例題SQL</h3>
+  <pre><span class="kwd">SELECT</span> <span class="obj">employee_name</span>, <span class="obj">salary</span>
+<span class="kwd">FROM</span> <span class="obj">employees</span>
+<span class="kwd">WHERE</span> <span class="obj">salary</span> &gt; <span class="num">500000</span>;</pre>
+  <div class="back"><a href="#top">▲ 目次へ戻る</a></div>
+</section><section class="chapter" id="ch3">
+  <h2>第3章：絞り込み・ソート・行制限</h2>
+  <div class="definition-box"><strong>役割:</strong> 必要な範囲だけ読む</div>
+  <p><strong>動作原理:</strong> WHEREで行を減らし、ORDER BYで順序を確定してからFETCH/OFFSETを使う。</p>
+  <p><strong>制限事項/注意:</strong> ページングSQLは順序未確定だと結果が揺れる。</p>
+  <div class="practice"><strong>実務ケース:</strong> 管理画面の2ページ目が更新ごとに違う行を表示する障害をORDER BY固定で防止。</div>
+  
+  <h3>試験・実務の急所</h3>
+  <div class="exam-point"><div class="exam-title">ひっかけポイント</div><ul><li>FETCH FIRSTの前にORDER BY</li><li>NULLS FIRST/LASTを明示</li><li>置換変数は実行前確認を必須</li></ul></div>
+  <h3>例題SQL</h3>
+  <pre><span class="kwd">SELECT</span> <span class="obj">order_id</span>, <span class="obj">amount</span>
+<span class="kwd">FROM</span> <span class="obj">orders</span>
+<span class="kwd">ORDER BY</span> <span class="obj">amount</span> <span class="kwd">DESC</span>
+<span class="kwd">FETCH FIRST</span> <span class="num">10</span> <span class="kwd">ROWS ONLY</span>;</pre>
+  <div class="back"><a href="#top">▲ 目次へ戻る</a></div>
+</section><section class="chapter" id="ch4">
+  <h2>第4章：単一行関数</h2>
+  <div class="definition-box"><strong>役割:</strong> 行ごとに整形・計算する</div>
+  <p><strong>動作原理:</strong> 文字列/数値/日付関数で表示や検索の精度を上げる。</p>
+  <p><strong>制限事項/注意:</strong> 列側へ関数適用すると索引が効きにくい場合がある。</p>
+  <div class="practice"><strong>実務ケース:</strong> 顧客名表記ゆれをUPPER/TRIMで吸収し検索漏れを抑える。</div>
+  
+  <h3>試験・実務の急所</h3>
+  <div class="exam-point"><div class="exam-title">ひっかけポイント</div><ul><li>SUBSTRは1始まり</li><li>INSTR未検出は0</li><li>ROUND/TRUNCの違い</li></ul></div>
+  <h3>例題SQL</h3>
+  <pre><span class="kwd">SELECT</span> <span class="fn">UPPER</span>(<span class="obj">customer_name</span>) <span class="kwd">AS</span> <span class="obj">name_u</span>
+<span class="kwd">FROM</span> <span class="obj">customers</span>;</pre>
+  <div class="back"><a href="#top">▲ 目次へ戻る</a></div>
+</section><section class="chapter" id="ch5">
+  <h2>第5章：型変換・NULL処理・条件式</h2>
+  <div class="definition-box"><strong>役割:</strong> 型不整合による事故を防ぐ</div>
+  <p><strong>動作原理:</strong> TO_DATE/TO_CHAR/NVL/COALESCE/CASEで評価を安定化。</p>
+  <p><strong>制限事項/注意:</strong> 暗黙変換依存はNLS設定差で不具合化しやすい。</p>
+  <div class="practice"><strong>実務ケース:</strong> 文字列日付比較をTO_DATEへ統一して本番差異を防止。</div>
+  
+  <h3>試験・実務の急所</h3>
+  <div class="exam-point"><div class="exam-title">ひっかけポイント</div><ul><li>TO_DATEは書式指定を省略しない</li><li>NVLとCOALESCEの引数評価を理解</li><li>DECODEよりCASE優先</li></ul></div>
+  <h3>例題SQL</h3>
+  <pre><span class="kwd">SELECT</span> <span class="fn">TO_DATE</span>(<span class="str">'2026-04-01'</span>, <span class="str">'YYYY-MM-DD'</span>) <span class="kwd">FROM</span> <span class="obj">dual</span>;</pre>
+  <div class="back"><a href="#top">▲ 目次へ戻る</a></div>
+</section><section class="chapter" id="ch6">
+  <h2>第6章：集計とGROUP BY/HAVING</h2>
+  <div class="definition-box"><strong>役割:</strong> 明細を指標へ変換する</div>
+  <p><strong>動作原理:</strong> GROUP BYは粒度定義、HAVINGは集計後条件。</p>
+  <p><strong>制限事項/注意:</strong> GROUP BYにない列をSELECTするとエラー。</p>
+  <div class="practice"><strong>実務ケース:</strong> KPI会議で部門平均が一致しない問題を粒度固定で解消。</div>
+  
+  <h3>試験・実務の急所</h3>
+  <div class="exam-point"><div class="exam-title">ひっかけポイント</div><ul><li>COUNT(*)とCOUNT(col)の差</li><li>WHEREとHAVINGの違い</li><li>ROWNUM/ROWIDの用途</li></ul></div>
+  <h3>例題SQL</h3>
+  <pre><span class="kwd">SELECT</span> <span class="obj">department_id</span>, <span class="fn">AVG</span>(<span class="obj">salary</span>) <span class="kwd">AS</span> <span class="obj">avg_sal</span>
+<span class="kwd">FROM</span> <span class="obj">employees</span>
+<span class="kwd">GROUP BY</span> <span class="obj">department_id</span>
+<span class="kwd">HAVING</span> <span class="fn">AVG</span>(<span class="obj">salary</span>) &gt;= <span class="num">9000</span>;</pre>
+  <div class="back"><a href="#top">▲ 目次へ戻る</a></div>
+</section><section class="chapter" id="ch7">
+  <h2>第7章：結合（JOIN）</h2>
+  <div class="definition-box"><strong>役割:</strong> 複数表を業務データとして再構成する</div>
+  <p><strong>動作原理:</strong> INNER/OUTER/CROSS/NATURALの違いを目的で使い分ける。</p>
+  <p><strong>制限事項/注意:</strong> 結合条件漏れはデカルト積を生む。</p>
+  <div class="practice"><strong>実務ケース:</strong> 未所属社員監査でLEFT JOINを使い欠損を可視化。</div>
+  <h3>概念図（INNER と LEFT の違い）</h3>
+<div class="table-wrap"><table><tr><th>JOIN種別</th><th>一致しない行</th><th>使いどころ</th></tr><tr><td>INNER JOIN</td><td>落ちる</td><td>整合済みデータのみ対象</td></tr><tr><td>LEFT JOIN</td><td>残る</td><td>欠損・未設定の監査</td></tr></table></div>
+  <h3>試験・実務の急所</h3>
+  <div class="exam-point"><div class="exam-title">ひっかけポイント</div><ul><li>ON条件漏れは行爆発</li><li>NATURAL JOINは保守性低下に注意</li><li>USINGとONの使い分け</li></ul></div>
+  <h3>例題SQL</h3>
+  <pre><span class="kwd">SELECT</span> <span class="obj">e.employee_id</span>, <span class="obj">d.department_name</span>
+<span class="kwd">FROM</span> <span class="obj">employees</span> <span class="obj">e</span>
+<span class="kwd">LEFT JOIN</span> <span class="obj">departments</span> <span class="obj">d</span>
+  <span class="kwd">ON</span> <span class="obj">e.department_id</span> = <span class="obj">d.department_id</span>;</pre>
+  <div class="back"><a href="#top">▲ 目次へ戻る</a></div>
+</section><section class="chapter" id="ch8">
+  <h2>第8章：副問合せ</h2>
+  <div class="definition-box"><strong>役割:</strong> 1つのSQLで段階的に判断する</div>
+  <p><strong>動作原理:</strong> 単一行・複数行・相関副問合せを演算子とセットで使う。</p>
+  <p><strong>制限事項/注意:</strong> NOT IN はNULL混入時に意図せず0件化する。</p>
+  <div class="practice"><strong>実務ケース:</strong> 部門平均超え社員の抽出を相関副問合せで実装。</div>
+  
+  <h3>試験・実務の急所</h3>
+  <div class="exam-point"><div class="exam-title">ひっかけポイント</div><ul><li>単一行に=、複数行にIN/ANY/ALL</li><li>EXISTSは存在確認に強い</li><li>相関副問合せは性能確認必須</li></ul></div>
+  <h3>例題SQL</h3>
+  <pre><span class="kwd">SELECT</span> <span class="obj">e.employee_id</span>
+<span class="kwd">FROM</span> <span class="obj">employees</span> <span class="obj">e</span>
+<span class="kwd">WHERE</span> <span class="obj">e.salary</span> &gt; (
+  <span class="kwd">SELECT</span> <span class="fn">AVG</span>(<span class="obj">i.salary</span>)
+  <span class="kwd">FROM</span> <span class="obj">employees</span> <span class="obj">i</span>
+  <span class="kwd">WHERE</span> <span class="obj">i.department_id</span> = <span class="obj">e.department_id</span>
+);</pre>
+  <div class="back"><a href="#top">▲ 目次へ戻る</a></div>
+</section><section class="chapter" id="ch9">
+  <h2>第9章：集合演算子</h2>
+  <div class="definition-box"><strong>役割:</strong> 複数結果セットを統合・比較する</div>
+  <p><strong>動作原理:</strong> UNION/UNION ALL/INTERSECT/MINUSの重複扱いを理解する。</p>
+  <p><strong>制限事項/注意:</strong> 列数・型グループ一致が前提。</p>
+  <div class="practice"><strong>実務ケース:</strong> キャンペーン対象統合でUNION ALLを使い件数を保持。</div>
+  
+  <h3>試験・実務の急所</h3>
+  <div class="exam-point"><div class="exam-title">ひっかけポイント</div><ul><li>UNIONは重複除去コスト</li><li>ORDER BYは最後に1回</li><li>型が合わないとエラー</li></ul></div>
+  <h3>例題SQL</h3>
+  <pre><span class="kwd">SELECT</span> <span class="obj">customer_id</span> <span class="kwd">FROM</span> <span class="obj">campaign_a</span>
+<span class="kwd">UNION ALL</span>
+<span class="kwd">SELECT</span> <span class="obj">customer_id</span> <span class="kwd">FROM</span> <span class="obj">campaign_b</span>;</pre>
+  <div class="back"><a href="#top">▲ 目次へ戻る</a></div>
+</section><section class="chapter" id="ch10">
+  <h2>第10章：DMLとトランザクション</h2>
+  <div class="definition-box"><strong>役割:</strong> データ更新を安全に行う</div>
+  <p><strong>動作原理:</strong> INSERT/UPDATE/DELETE/MERGE + COMMIT/ROLLBACK/SAVEPOINT。</p>
+  <p><strong>制限事項/注意:</strong> COMMIT後は巻き戻せない。DDL前後の暗黙COMMITも注意。</p>
+  <div class="practice"><strong>実務ケース:</strong> 本番更新作業を手順化し誤更新事故を抑止。</div>
+  <h3>概念図（安全な更新手順）</h3>
+<div class="flow"><div class="node">件数確認</div><div class="arr">→</div><div class="node">SAVEPOINT</div><div class="arr">→</div><div class="node">更新</div><div class="arr">→</div><div class="node">差分確認</div><div class="arr">→</div><div class="node">COMMIT/ROLLBACK</div></div>
+  <h3>試験・実務の急所</h3>
+  <div class="exam-point"><div class="exam-title">ひっかけポイント</div><ul><li>更新前に同条件SELECTで件数確認</li><li>SAVEPOINTで部分巻き戻し</li><li>MERGE前にキー重複排除</li></ul></div>
+  <h3>例題SQL</h3>
+  <pre><span class="kwd">UPDATE</span> <span class="obj">orders</span> <span class="kwd">SET</span> <span class="obj">status</span> = <span class="str">'CLOSED'</span>;
+<span class="kwd">SAVEPOINT</span> <span class="obj">sp1</span>;
+<span class="kwd">ROLLBACK TO</span> <span class="obj">sp1</span>;</pre>
+  <div class="back"><a href="#top">▲ 目次へ戻る</a></div>
+</section><section class="chapter" id="ch11">
+  <h2>第11章：DDLと制約</h2>
+  <div class="definition-box"><strong>役割:</strong> 壊れにくい構造を先に作る</div>
+  <p><strong>動作原理:</strong> CREATE/ALTER/DROP/TRUNCATE、PK/FK/UNIQUE/CHECK/NOT NULL。</p>
+  <p><strong>制限事項/注意:</strong> DDL実行の影響範囲を必ず確認する。</p>
+  <div class="practice"><strong>実務ケース:</strong> 制約不足による不正データ流入を初期DDLで防ぐ。</div>
+  
+  <h3>試験・実務の急所</h3>
+  <div class="exam-point"><div class="exam-title">ひっかけポイント</div><ul><li>CTASで構造複製</li><li>DROPとTRUNCATEの違い</li><li>ALTERでの制約追加手順</li></ul></div>
+  <h3>例題SQL</h3>
+  <pre><span class="kwd">CREATE TABLE</span> <span class="obj">orders</span> (
+  <span class="obj">order_id</span> <span class="kwd">NUMBER PRIMARY KEY</span>,
+  <span class="obj">amount</span> <span class="kwd">NUMBER</span> <span class="kwd">CHECK</span> (<span class="obj">amount</span> &gt;= <span class="num">0</span>)
+);</pre>
+  <div class="back"><a href="#top">▲ 目次へ戻る</a></div>
+</section><section class="chapter" id="ch12">
+  <h2>第12章：ビュー</h2>
+  <div class="definition-box"><strong>役割:</strong> 問い合わせロジックを再利用する</div>
+  <p><strong>動作原理:</strong> SELECT定義を仮想表として管理し公開列を制御。</p>
+  <p><strong>制限事項/注意:</strong> 更新可能ビュー条件を誤るとDML不可。</p>
+  <div class="practice"><strong>実務ケース:</strong> 分析チームへ同一定義を配布し指標差異を排除。</div>
+  
+  <h3>試験・実務の急所</h3>
+  <div class="exam-point"><div class="exam-title">ひっかけポイント</div><ul><li>CREATE OR REPLACE活用</li><li>セキュリティ境界として利用</li><li>依存オブジェクトの把握</li></ul></div>
+  <h3>例題SQL</h3>
+  <pre><span class="kwd">CREATE OR REPLACE VIEW</span> <span class="obj">v_sales</span> <span class="kwd">AS</span>
+<span class="kwd">SELECT</span> <span class="obj">dept_id</span>, <span class="fn">SUM</span>(<span class="obj">amount</span>) <span class="kwd">AS</span> <span class="obj">total_amt</span>
+<span class="kwd">FROM</span> <span class="obj">sales</span> <span class="kwd">GROUP BY</span> <span class="obj">dept_id</span>;</pre>
+  <div class="back"><a href="#top">▲ 目次へ戻る</a></div>
+</section><section class="chapter" id="ch13">
+  <h2>第13章：索引・シノニム・シーケンス</h2>
+  <div class="definition-box"><strong>役割:</strong> 性能と命名、採番を管理する</div>
+  <p><strong>動作原理:</strong> 索引は読取改善、シーケンスは一意採番、シノニムは参照名抽象化。</p>
+  <p><strong>制限事項/注意:</strong> 索引増やしすぎは更新性能を落とす。</p>
+  <div class="practice"><strong>実務ケース:</strong> 検索遅延に対して選択率を見て索引追加可否を判断。</div>
+  
+  <h3>試験・実務の急所</h3>
+  <div class="exam-point"><div class="exam-title">ひっかけポイント</div><ul><li>NEXTVALは欠番が仕様</li><li>索引は実行計画で検証</li><li>シノニム乱用は可読性低下</li></ul></div>
+  <h3>例題SQL</h3>
+  <pre><span class="kwd">CREATE INDEX</span> <span class="obj">idx_orders_customer</span> <span class="kwd">ON</span> <span class="obj">orders</span>(<span class="obj">customer_id</span>);</pre>
+  <div class="back"><a href="#top">▲ 目次へ戻る</a></div>
+</section><section class="chapter" id="ch14">
+  <h2>第14章：権限とロール</h2>
+  <div class="definition-box"><strong>役割:</strong> 最小権限で運用する</div>
+  <p><strong>動作原理:</strong> システム権限・オブジェクト権限・ロールで統制する。</p>
+  <p><strong>制限事項/注意:</strong> 個別GRANTの乱発は棚卸し困難。</p>
+  <div class="practice"><strong>実務ケース:</strong> 異動時にロール単位で付替え、監査対応を迅速化。</div>
+  
+  <h3>試験・実務の急所</h3>
+  <div class="exam-point"><div class="exam-title">ひっかけポイント</div><ul><li>GRANT/REVOKEを記録</li><li>ロールで権限束ねる</li><li>不要権限の定期剥奪</li></ul></div>
+  <h3>例題SQL</h3>
+  <pre><span class="kwd">CREATE ROLE</span> <span class="obj">report_reader</span>;
+<span class="kwd">GRANT SELECT ON</span> <span class="obj">orders</span> <span class="kwd">TO</span> <span class="obj">report_reader</span>;</pre>
+  <div class="back"><a href="#top">▲ 目次へ戻る</a></div>
+</section><section class="chapter" id="ch15">
+  <h2>第15章：データ・ディクショナリ・ビュー</h2>
+  <div class="definition-box"><strong>役割:</strong> 構造調査と影響分析を高速化する</div>
+  <p><strong>動作原理:</strong> USER_/ALL_/DBA_ ビューで可視範囲を使い分ける。</p>
+  <p><strong>制限事項/注意:</strong> 権限不足だと取得できる情報が変わる。</p>
+  <div class="practice"><strong>実務ケース:</strong> 障害初動で対象列・制約・依存を即時調査。</div>
+  
+  <h3>試験・実務の急所</h3>
+  <div class="exam-point"><div class="exam-title">ひっかけポイント</div><ul><li>USER_TABLES/ALL_TAB_COLUMNSの使い分け</li><li>制約確認はUSER_CONSTRAINTS</li><li>辞書ビューを調査テンプレ化</li></ul></div>
+  <h3>例題SQL</h3>
+  <pre><span class="kwd">SELECT</span> <span class="obj">owner</span>, <span class="obj">table_name</span>, <span class="obj">column_name</span>
+<span class="kwd">FROM</span> <span class="obj">all_tab_columns</span>
+<span class="kwd">WHERE</span> <span class="obj">column_name</span> = <span class="str">'ORDER_STATUS'</span>;</pre>
+  <div class="back"><a href="#top">▲ 目次へ戻る</a></div>
+</section><section class="chapter" id="ch16">
+  <h2>第16章：日時・タイムゾーン・INTERVAL</h2>
+  <div class="definition-box"><strong>役割:</strong> 時刻齟齬を防ぐ</div>
+  <p><strong>動作原理:</strong> 保存時の基準TZと表示時TZ変換を分離して設計する。</p>
+  <p><strong>制限事項/注意:</strong> DATEだけで国際運用すると監査時系列が崩れる。</p>
+  <div class="practice"><strong>実務ケース:</strong> 海外拠点連携ではTZ付き型で保存し画面で地域表示。</div>
+  
+  <h3>試験・実務の急所</h3>
+  <div class="exam-point"><div class="exam-title">ひっかけポイント</div><ul><li>CURRENT_TIMESTAMPとCURRENT_DATEの差</li><li>AT TIME ZONEの活用</li><li>INTERVALで期間演算</li></ul></div>
+  <h3>例題SQL</h3>
+  <pre><span class="kwd">SELECT</span> <span class="obj">created_at</span>,
+       <span class="obj">created_at</span> <span class="kwd">AT TIME ZONE</span> <span class="str">'+09:00'</span> <span class="kwd">AS</span> <span class="obj">created_at_jst</span>
+<span class="kwd">FROM</span> <span class="obj">orders_tz</span>;</pre>
+  <div class="back"><a href="#top">▲ 目次へ戻る</a></div>
+</section>
+</div>
+</body>
+</html>

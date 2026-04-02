@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>D7: DML（データ操作言語） | Oracle SQL 教科書</title>
+<style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #f5f7fa; color: #2d3748; line-height: 1.7; }
+        .page-header {
+            background: linear-gradient(135deg, #c0392b 0%, #e74c3c 50%, #e67e22 100%);
+            color: white; padding: 40px 24px; text-align: center;
+        }
+        .page-header h1 { font-size: 2rem; margin-bottom: 8px; }
+        .page-header .subtitle { opacity: 0.9; font-size: 1rem; }
+        .container { max-width: 960px; margin: 0 auto; padding: 24px; }
+        .section-card {
+            background: white; border-radius: 12px; padding: 28px;
+            margin-bottom: 32px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .section-title {
+            font-size: 1.3rem; font-weight: 700; color: #c0392b;
+            margin-bottom: 16px; padding-bottom: 8px;
+            border-bottom: 3px solid #e74c3c;
+        }
+        .topic-chips { margin-bottom: 16px; display: flex; flex-wrap: wrap; gap: 6px; }
+        .chip {
+            background: #fdf2f8; color: #c0392b; border: 1px solid #f0a0a0;
+            padding: 2px 10px; border-radius: 20px; font-size: 0.8rem;
+        }
+        pre { background: #1e293b; color: #e2e8f0; padding: 16px; border-radius: 8px; overflow-x: auto; margin: 12px 0; }
+        code { font-family: 'Consolas', 'Monaco', monospace; font-size: 0.88rem; }
+        p code { background: #f0f4f8; color: #c0392b; padding: 1px 5px; border-radius: 4px; }
+        .tip-box {
+            background: #fffde7; border-left: 4px solid #f9a825;
+            padding: 12px 16px; border-radius: 0 8px 8px 0; margin: 12px 0;
+        }
+        .warning-box {
+            background: #fce4ec; border-left: 4px solid #e91e63;
+            padding: 12px 16px; border-radius: 0 8px 8px 0; margin: 12px 0;
+        }
+        .summary-table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 0.9rem; }
+        .summary-table th {
+            background: #c0392b; color: white; padding: 8px 12px; text-align: left;
+        }
+        .summary-table td { padding: 8px 12px; border-bottom: 1px solid #e2e8f0; }
+        .summary-table tr:nth-child(even) td { background: #f9fafb; }
+        h3 { font-size: 1.05rem; color: #2d3748; margin: 16px 0 8px; }
+        .problem-section-title {
+            font-size: 1.1rem; font-weight: 700; color: #2d3748;
+            margin: 28px 0 12px; padding-bottom: 6px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        .problem-card {
+            background: #f9fafb; border: 1px solid #e2e8f0;
+            border-radius: 8px; padding: 16px; margin-bottom: 16px;
+        }
+        .problem-header { font-weight: 700; color: #c0392b; margin-bottom: 8px; }
+        .qid { font-size: 0.8rem; color: #718096; font-weight: 400; margin-left: 8px; }
+        .problem-text { margin-bottom: 10px; }
+        .choices { padding-left: 20px; margin-bottom: 10px; }
+        .choices li { margin: 4px 0; }
+        .answer-details summary {
+            cursor: pointer; color: #c0392b; font-weight: 600;
+            padding: 6px 0; user-select: none;
+        }
+        .answer-content { background: white; padding: 12px; border-radius: 6px; margin-top: 8px; }
+        .breadcrumb { padding: 12px 24px; background: white; border-bottom: 1px solid #e2e8f0; font-size: 0.85rem; }
+        .breadcrumb a { color: #c0392b; text-decoration: none; }
+        .intro-box { background: #fff8f8; border: 1px solid #f0a0a0; border-radius: 8px; padding: 16px; margin-bottom: 24px; }
+        </style>
+</head>
+<body>
+<div class="breadcrumb">
+  <a href="index.html">Oracle SQL 教科書</a> &gt; D7: DML（データ操作言語）
+</div>
+<div class="page-header">
+  <h1>D7: DML（データ操作言語）</h1>
+  <div class="subtitle">Oracle Database SQL (1Z0-071) 対策</div>
+</div>
+<div class="container">
+  <div class="intro-box">INSERT, UPDATE, DELETE でデータを変更する方法と、COMMIT/ROLLBACK によるトランザクション管理を学びます。</div>
+  <div class="section-card"><div class="section-title">INSERT と UPDATE</div><div class="topic-chips"><span class="chip">INSERT</span><span class="chip">UPDATE</span><span class="chip">SET</span><span class="chip">VALUES</span><span class="chip">INSERT INTO SELECT</span></div><div class="section-content"><h3>INSERT 文</h3><p>テーブルに新しい行を追加します。</p><pre><code>-- 全列に値を挿入（列リストを省略）
+INSERT INTO DEPARTMENTS
+VALUES (280, 'New Dept', 100, 1700);
+
+-- 指定した列のみ挿入
+INSERT INTO DEPARTMENTS (DEPARTMENT_ID, DEPARTMENT_NAME)
+VALUES (290, 'Another Dept');
+
+-- サブクエリを使った一括挿入
+INSERT INTO SALES_REPS (EMP_ID, NAME, SALARY)
+SELECT EMPLOYEE_ID, LAST_NAME, SALARY
+FROM   EMPLOYEES
+WHERE  JOB_ID = 'SA_REP';</code></pre><h3>UPDATE 文</h3><p>既存の行のデータを変更します。WHERE がないと全行が更新されます。</p><pre><code>-- 特定の行を更新
+UPDATE EMPLOYEES
+SET    SALARY = SALARY * 1.1,
+       COMMISSION_PCT = 0.05
+WHERE  DEPARTMENT_ID = 50;
+
+-- サブクエリを使った更新
+UPDATE EMPLOYEES
+SET    DEPARTMENT_ID = (
+           SELECT DEPARTMENT_ID
+           FROM   DEPARTMENTS
+           WHERE  DEPARTMENT_NAME = 'Sales'
+       )
+WHERE  EMPLOYEE_ID = 100;</code></pre><div class='tip-box'><strong>試験のポイント：</strong> INSERT の列リストを省略する場合は、テーブル定義の列順に全列分の値を指定する必要があります。UPDATE で WHERE を省略すると全行が更新されます（意図しない全件更新に注意）。</div></div><div class="problem-section-title">練習問題</div><div class="problem-card" id="prob-OSLV-D7-001"><div class="problem-header">問題 1 <span class="qid">#OSLV-D7-001</span></div><p class="problem-text">以下のSQL操作を実行した後の状態として正しいものはどれか。<br>```sql<br>INSERT INTO departments VALUES (280, 'Training', NULL, NULL);<br>SAVEPOINT sp1;<br>UPDATE departments SET department_name = 'Education' WHERE department_id = 280;<br>ROLLBACK TO sp1;<br>```</p><ul class="choices"><li>A. department_id=280 の行は存在しない（ROLLBACKで全て取り消された）</li><li>B. department_id=280 のdepartment_nameは 'Training' になる（UPDATEがロールバックされた）</li><li>C. department_id=280 のdepartment_nameは 'Education' のままになる</li><li>D. エラーになる（SAVEPOINTとROLLBACKは同一トランザクションで使えない）</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> B. department_id=280 のdepartment_nameは 'Training' になる（UPDATEがロールバックされた）</p><p>正解は「department_id=280 のdepartment_nameは 'Training' になる（UPDATEがロールバックされた）」である。SAVEPOINT sp1はsp1という中間保存点をトランザクション内に設定する。ROLLBACK TO sp1はsp1以降の変更（UPDATEのみ）を取り消し、sp1設定時点（INSERTの後）の状態に戻す。したがってINSERTは残り、UPDATEは取り消される。ROLLBACK（TO なし）は全変更を取り消す。COMMIT後はROLLBACKできない。Oracle SQL Reference §SAVEPOINT, ROLLBACK参照。</p></div></details></div><div class="problem-card" id="prob-OSLV-D7-003"><div class="problem-header">問題 2 <span class="qid">#OSLV-D7-003</span></div><p class="problem-text">以下のUPDATE文の実行結果として正しいものはどれか。<br>```sql<br>UPDATE employees<br>SET salary = salary * 1.1,<br>    commission_pct = NVL(commission_pct, 0) + 0.05<br>WHERE department_id = 80;<br>```<br>department_id=80 の社員5名のうち commission_pctがNULLの社員が2名いるとする。</p><ul class="choices"><li>A. commission_pctがNULLの社員はUPDATE対象外になる</li><li>B. NVLはUPDATE文では使えないためエラーになる</li><li>C. 5名全員のsalaryが10%増加し、NULLの社員のcommission_pctは0.05になる</li><li>D. commission_pctがNULLの社員のsalaryはNULLになる</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> C. 5名全員のsalaryが10%増加し、NULLの社員のcommission_pctは0.05になる</p><p>正解は「5名全員のsalaryが10%増加し、NULLの社員のcommission_pctは0.05になる」である。SET句では単一行関数（NVLなど）を使用できる。NVL(commission_pct, 0)はcommission_pctがNULLの場合0を返すので、0 + 0.05 = 0.05 が設定される。NULL以外の社員は既存値 + 0.05 となる。salary = salary * 1.1 も全行に適用される。WHERE句はdepartment_id = 80 の絞り込みのみ。</p></div></details></div></div><div class="section-card"><div class="section-title">DELETE・TRUNCATE とトランザクション</div><div class="topic-chips"><span class="chip">DELETE</span><span class="chip">TRUNCATE</span><span class="chip">COMMIT</span><span class="chip">ROLLBACK</span><span class="chip">SAVEPOINT</span><span class="chip">トランザクション</span></div><div class="section-content"><h3>DELETE 文</h3><pre><code>-- 条件に合う行を削除
+DELETE FROM DEPARTMENTS
+WHERE  DEPARTMENT_ID = 290;
+
+-- 全行削除（ROLLBACK 可能）
+DELETE FROM COPY_EMPLOYEES;</code></pre><h3>TRUNCATE 文</h3><pre><code>-- テーブルの全データを高速削除（DDL、ROLLBACK 不可）
+TRUNCATE TABLE COPY_EMPLOYEES;</code></pre><table class='summary-table'><tr><th>比較</th><th>DELETE</th><th>TRUNCATE</th></tr><tr><td>分類</td><td>DML</td><td>DDL</td></tr><tr><td>ROLLBACK</td><td>可能</td><td>不可</td></tr><tr><td>WHERE 句</td><td>使用可能</td><td>使用不可（全件削除のみ）</td></tr><tr><td>処理速度</td><td>低速（ログ記録あり）</td><td>高速（ログ記録なし）</td></tr><tr><td>AUTOCOMMIT</td><td>なし</td><td>あり（暗黙的COMMIT）</td></tr></table><h3>トランザクション制御</h3><pre><code>-- データ変更
+UPDATE EMPLOYEES SET SALARY = 5000 WHERE EMPLOYEE_ID = 100;
+
+-- セーブポイント設定
+SAVEPOINT update_done;
+
+-- 追加の変更
+DELETE FROM EMPLOYEES WHERE EMPLOYEE_ID = 200;
+
+-- セーブポイントまで戻す
+ROLLBACK TO update_done;
+
+-- 確定
+COMMIT;</code></pre><div class='tip-box'><strong>試験のポイント：</strong> TRUNCATE は DDL なので暗黙的 COMMIT が行われます。ROLLBACK できません。DDL 文（CREATE, ALTER, DROP 等）を実行すると、直前の未コミットの DML が自動的に COMMIT されます。SAVEPOINT はトランザクション内の特定の時点に戻すためのマーカーです。</div></div><div class="problem-section-title">練習問題</div><div class="problem-card" id="prob-OSLV-D7-001"><div class="problem-header">問題 1 <span class="qid">#OSLV-D7-001</span></div><p class="problem-text">以下のSQL操作を実行した後の状態として正しいものはどれか。<br>```sql<br>INSERT INTO departments VALUES (280, 'Training', NULL, NULL);<br>SAVEPOINT sp1;<br>UPDATE departments SET department_name = 'Education' WHERE department_id = 280;<br>ROLLBACK TO sp1;<br>```</p><ul class="choices"><li>A. department_id=280 の行は存在しない（ROLLBACKで全て取り消された）</li><li>B. department_id=280 のdepartment_nameは 'Training' になる（UPDATEがロールバックされた）</li><li>C. department_id=280 のdepartment_nameは 'Education' のままになる</li><li>D. エラーになる（SAVEPOINTとROLLBACKは同一トランザクションで使えない）</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> B. department_id=280 のdepartment_nameは 'Training' になる（UPDATEがロールバックされた）</p><p>正解は「department_id=280 のdepartment_nameは 'Training' になる（UPDATEがロールバックされた）」である。SAVEPOINT sp1はsp1という中間保存点をトランザクション内に設定する。ROLLBACK TO sp1はsp1以降の変更（UPDATEのみ）を取り消し、sp1設定時点（INSERTの後）の状態に戻す。したがってINSERTは残り、UPDATEは取り消される。ROLLBACK（TO なし）は全変更を取り消す。COMMIT後はROLLBACKできない。Oracle SQL Reference §SAVEPOINT, ROLLBACK参照。</p></div></details></div><div class="problem-card" id="prob-OSLV-D7-002"><div class="problem-header">問題 2 <span class="qid">#OSLV-D7-002</span></div><p class="problem-text">DELETEとTRUNCATEの違いとして正しいものはどれか。</p><ul class="choices"><li>A. TRUNCATEはWHERE句で削除する行を指定できる</li><li>B. TRUNCATEはDDL文でありROLLBACKできない。DELETEはDML文でROLLBACK可能</li><li>C. DELETEはテーブル定義ごと削除するがTRUNCATEはデータのみ削除する</li><li>D. TRUNCATEもDELETEも同じくROLLBACKできる</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> B. TRUNCATEはDDL文でありROLLBACKできない。DELETEはDML文でROLLBACK可能</p><p>正解は「TRUNCATEはDDL文でありROLLBACKできない。DELETEはDML文でROLLBACK可能」である。TRUNCATE TABLEはDDL（データ定義言語）であり、実行時に暗黙的COMMITが行われるためROLLBACKできない。また全行を高速に削除するがWHERE句は使えない。DELETE FROMはDML（データ操作言語）であり、WHERE句で対象行を指定でき、COMMIT前ならROLLBACKで取り消せる。テーブル定義を削除するのはDROP TABLE。</p></div></details></div></div><div class="section-card"><div class="section-title">MERGE とマルチテーブル挿入</div><div class="topic-chips"><span class="chip">MERGE</span><span class="chip">WHEN MATCHED</span><span class="chip">WHEN NOT MATCHED</span><span class="chip">マルチテーブルINSERT</span></div><div class="section-content"><h3>MERGE 文（UPSERT）</h3><p>一致すれば UPDATE、なければ INSERT を1文で実行します。</p><pre><code>MERGE INTO SALES_TARGET t
+USING (SELECT 10 AS DEPT_ID, 1200000 AS TARGET_AMT FROM DUAL) s
+ON (t.DEPT_ID = s.DEPT_ID)
+WHEN MATCHED THEN
+  UPDATE SET t.TARGET_AMT = s.TARGET_AMT
+WHEN NOT MATCHED THEN
+  INSERT (DEPT_ID, TARGET_AMT)
+  VALUES (s.DEPT_ID, s.TARGET_AMT);</code></pre><h3>マルチテーブル INSERT</h3><p>1つのソース結果を条件で複数テーブルへ振り分けます。</p><pre><code>INSERT ALL
+  WHEN SALARY &gt;= 10000 THEN
+    INTO HIGH_SAL (EMP_ID, SALARY) VALUES (EMPLOYEE_ID, SALARY)
+  WHEN SALARY &lt; 10000 THEN
+    INTO LOW_SAL (EMP_ID, SALARY) VALUES (EMPLOYEE_ID, SALARY)
+SELECT EMPLOYEE_ID, SALARY
+FROM   EMPLOYEES;</code></pre><div class='tip-box'><strong>試験のポイント：</strong> MERGE は ON 条件で一致判定し、WHEN MATCHED / WHEN NOT MATCHED を使い分けます。大量同期処理で UPDATE+INSERT を分けるより保守しやすいケースが多いです。</div></div></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+
+<html lang="ja">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ver 5.0 Chapter 6 | Oracle DBA Silver SQL</title>
+<style>
+:root{--bg:#f4f8fc;--card:#ffffff;--line:#d8e4f5;--pri:#1d4f91;--sec:#2f6fbe;--txt:#1f2d3d;--muted:#4c6077;--code:#f2f7fc;--kw:#1d4ed8;--obj:#0f172a;--str:#b45309}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--txt);font-family:"Segoe UI","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;line-height:1.95}
+a{color:var(--pri);text-decoration:none}
+.layout{display:grid;grid-template-columns:320px 1fr;gap:18px;max-width:1480px;margin:0 auto;padding:14px}
+.sidebar{position:sticky;top:8px;align-self:start;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;max-height:calc(100vh - 16px);overflow:auto}
+.sidebar h2{margin:0 0 10px;color:var(--pri);font-size:1.08rem}
+.sidebar ul{margin:0;padding-left:18px}
+.sidebar li{margin:6px 0}
+.main{min-width:0}
+.hero{background:linear-gradient(135deg,#1d4f91,#2f6fbe);color:#fff;border-radius:16px;padding:24px 20px;margin-bottom:14px}
+.hero h1{margin:0 0 8px;font-size:1.8rem}
+.hero p{margin:0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px;margin-bottom:14px}
+.card h2{margin:0 0 10px;color:var(--pri);font-size:1.35rem;border-bottom:2px solid #c8dcf7;padding-bottom:7px}
+.card h3{margin:18px 0 8px;color:var(--sec);font-size:1.12rem}
+.card p{margin:10px 0}
+.note{background:#eef6ff;border:1px solid #c8dcfb;border-left:4px solid #2f6fbe;border-radius:10px;padding:11px;margin:10px 0}
+.warn{background:#fff8f1;border:1px solid #fed7aa;border-left:4px solid #ea580c;border-radius:10px;padding:11px;margin:10px 0}
+.gloss{background:#f0f9ff;border:1px solid #bae6fd;border-radius:10px;padding:11px;margin:10px 0}
+.figure{border:1px dashed #94a3b8;border-radius:10px;padding:12px;background:#f9fbff;margin:10px 0}
+pre{background:var(--code);border:1px solid #dce8f8;border-radius:10px;padding:12px;overflow-x:auto;margin:10px 0}
+code{font-family:"Consolas","Monaco",monospace;font-size:.88rem}
+.kw{color:var(--kw);font-weight:700}.obj{color:var(--obj)}.str{color:var(--str)}
+.table-wrap{overflow-x:auto}
+table{width:100%;min-width:860px;border-collapse:collapse}
+th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef5ff}
+.top{text-align:right;margin-top:12px}
+@media(max-width:1120px){.layout{grid-template-columns:1fr}.sidebar{position:static;max-height:none}}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside class="sidebar">
+<h2>第6章 目次</h2>
+<ul>
+<li><a href="#scope">スコープ宣言</a></li>
+<li><a href="#intro">第6章の学習目的</a></li>
+<li><a href="#group-func">6.1 グループ関数の定義</a></li>
+<li><a href="#count-diff">6.2 COUNT(*) と COUNT(col)</a></li>
+<li><a href="#groupby">6.3 GROUP BY</a></li>
+<li><a href="#having">6.4 HAVING</a></li>
+<li><a href="#where-vs-having">6.5 WHEREとHAVINGの責務分離</a></li>
+<li><a href="#null-agg">6.6 集約時のNULL挙動</a></li>
+<li><a href="#pseudo">6.7 疑似列（ROWID / ROWNUM）</a></li>
+<li><a href="#errors">6.8 典型エラー（ORA-00979等）</a></li>
+<li><a href="#patterns">6.9 実務集計パターン</a></li>
+<li><a href="#catalog">6.10 関数比較表</a></li>
+<li><a href="#deep-dive-6">品質強化 超深掘り5項目</a></li><li><a href="#insights-6">出題傾向補強</a></li><li><a href="#exam">試験ひっかけパターン集</a></li>
+<li><a href="#practice">実務アンチパターン集</a></li>
+</ul>
+</aside>
+<main class="main">
+<section class="hero" id="scope">
+<h1>Ver 5.0 | Oracle DBA Silver SQL（第6章のみ）</h1>
+<p>本ファイルは第6章「集計データのレポート（GROUP BY / HAVING / 疑似列）」に集中し、集約の正確性と再現性を高密度で解説する。</p>
+</section>
+<section class="card" id="intro">
+<h2>第6章の学習目的</h2>
+<p>第6章は、明細行をそのまま読む段階から「意味のある集計値を作る」段階へ進む章である。実務では部門別平均、件数、売上集計などKPIの基礎が集約SQLで作られるため、ここで誤ると経営判断まで誤る。試験でもCOUNTの差分、GROUP BY制約、HAVINGの評価位置、NULL除外挙動が頻出で、文法暗記だけでは対応できない。第6章の目標は、どの列を集約し、どの列をグループキーにするかを論理的に説明し、SQL結果の妥当性を件数ベースで検証できる状態に到達することである。</p>
+<div class="gloss"><strong>重要:</strong> 集計SQLは「見た目の数字」ではなく「意思決定の根拠」。1行の誤りが方針を誤らせる。</div>
+</section>
+<section class="card" id="group-func">
+<h2>6.1 グループ関数の定義</h2>
+<p>グループ関数は複数行を1値へ集約する関数群で、COUNT、SUM、AVG、MAX、MINが中核である。単一行関数と異なり、入力は集合で出力は集約値となる。定義上の重要点は、どの行集合を集約対象にするかがSQL全体の意味を決める点である。WHEREで先に行を絞るか、HAVINGで集約後に絞るかで結果は変わる。実務では、集計単位を誤ると同じ指標名でも中身が異なるため、グループ関数は式より文脈で理解する必要がある。</p>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="count-diff">
+<h2>6.2 COUNT(*) と COUNT(col)</h2>
+<p>COUNT(*)は行数を数え、COUNT(col)はNULLを除いた非NULL行数を数える。この差は試験の定番論点であり、実務でも監査件数不一致の原因になる。例えば「登録件数」をCOUNT(col)で算出すると、NULL行が除外され想定より少なく見える。要件が「全件数」か「有効値件数」かを明示し、関数選択を固定しなければならない。集計式は短いが意味差が大きいため、定義書にCOUNTの種類を明記する運用が有効である。</p>
+<pre><code><span class="kw">SELECT</span> <span class="kw">COUNT</span>(*) <span class="kw">AS</span> <span class="obj">all_rows</span>,
+       <span class="kw">COUNT</span>(<span class="obj">commission_pct</span>) <span class="kw">AS</span> <span class="obj">non_null_comm</span>
+<span class="kw">FROM</span> <span class="obj">employees</span>;</code></pre>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="groupby">
+<h2>6.3 GROUP BY</h2>
+<p>GROUP BYは集約単位を定義する句であり、同じキー値を持つ行をひとつのグループとして扱う。GROUP BYに含まれない非集約列をSELECTするとORA-00979が発生する。これは制約ではなく、集約結果の一意性を守るための仕様である。実務では、キー粒度が粗すぎると情報が潰れ、細かすぎると指標が分散するため、業務要件に合う粒度設計が必要になる。GROUP BYは文法ではなく「何を1単位として語るか」の定義である。</p>
+<pre><code><span class="kw">SELECT</span> <span class="obj">department_id</span>, <span class="kw">AVG</span>(<span class="obj">salary</span>) <span class="kw">AS</span> <span class="obj">avg_sal</span>
+<span class="kw">FROM</span> <span class="obj">employees</span>
+<span class="kw">GROUP BY</span> <span class="obj">department_id</span>;</code></pre>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="having">
+<h2>6.4 HAVING</h2>
+<p>HAVINGは集約後のグループに対する条件句であり、集約値を使った絞り込みに使う。WHEREは行を絞る、HAVINGはグループを絞るという役割分離が基本である。実務ではHAVINGへ行条件を入れてしまい、無駄に集約して性能を落とすケースが多い。試験ではWHEREとの違いが頻出で、評価段階を理解していないと誤答しやすい。HAVINGを使う時は「この条件は集約後でしか判定できないか」を確認するのが定石である。</p>
+<pre><code><span class="kw">SELECT</span> <span class="obj">department_id</span>, <span class="kw">AVG</span>(<span class="obj">salary</span>) <span class="kw">AS</span> <span class="obj">avg_sal</span>
+<span class="kw">FROM</span> <span class="obj">employees</span>
+<span class="kw">GROUP BY</span> <span class="obj">department_id</span>
+<span class="kw">HAVING</span> <span class="kw">AVG</span>(<span class="obj">salary</span>) &gt;= <span class="obj">9000</span>;</code></pre>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="where-vs-having">
+<h2>6.5 WHEREとHAVINGの責務分離</h2>
+<p>WHEREは集約前、HAVINGは集約後の条件である。これを混同すると件数と性能の両方が崩れる。例えば「退職者除外」はWHEREで行い、「平均給与9000以上」はHAVINGで行うべきである。すべてHAVINGへ寄せると、不要行まで集約してから捨てるためコストが増える。試験ではこの責務差を選択肢で問う問題が多く、実務ではクエリレビュー時の最重要チェック項目になる。条件を配置する前に「判定対象は行かグループか」を必ず言語化することが重要だ。</p>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="null-agg">
+<h2>6.6 集約時のNULL挙動</h2>
+<p>SUM、AVG、COUNT(col)、MAX、MINは基本的にNULLを計算対象から除外する。COUNT(*)のみNULLを含む全行を数える。この差を理解せずに指標を作ると、欠損データが見えなくなる。実務ではNULL件数を別指標として出す運用が有効で、品質監視に直結する。試験でもNULL除外は定番で、式を見た瞬間にNULLの影響を想起できるかが得点を左右する。</p>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="pseudo">
+<h2>6.7 疑似列（ROWID / ROWNUM）</h2>
+<p>ROWIDは行の物理的な位置識別子、ROWNUMは取得順に付与される疑似列である。ROWNUMはORDER BY適用前に評価される文脈があるため、上位N件抽出で誤解されやすい。実務ではROWIDを更新対象特定に使う場面があるが、永続キー代替として使うべきではない。試験では疑似列の用途差と制約が問われるため、通常列と同等に扱わないことが重要である。</p>
+<pre><code><span class="kw">SELECT</span> <span class="obj">rowid</span>, <span class="obj">employee_id</span>
+<span class="kw">FROM</span> <span class="obj">employees</span>
+<span class="kw">WHERE</span> <span class="obj">rownum</span> &lt;= <span class="obj">5</span>;</code></pre>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="errors">
+<h2>6.8 典型エラー（ORA-00979等）</h2>
+<div class="warn"><b>ORA-00979:</b> GROUP BYにない非集約列をSELECTした場合に発生。修正は集約化またはGROUP BY追加。</div>
+<div class="warn"><b>論理エラー:</b> WHEREとHAVINGの配置誤りで件数が変わる。修正は条件責務の再分離。</div>
+<div class="warn"><b>件数誤解:</b> COUNT(col)を全件数として使う。修正はCOUNT(*)との使い分け明示。</div>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="patterns">
+<h2>6.9 実務集計パターン</h2>
+<p>実務では「前処理WHERE」「集約GROUP BY」「閾値HAVING」「出力ORDER BY」の順で組み立てると再利用しやすい。まず不要行を除外し、次に集約粒度を定義し、最後に閾値条件を掛ける。このパターンを標準化するとレビュー効率が上がる。さらに件数検証用SQLを並行作成しておくと、集計結果の妥当性確認が早い。集約SQLは単発で書くのではなく、検証手順込みでテンプレート化するべきである。</p>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="catalog">
+<h2>6.10 関数比較表</h2>
+<div class="table-wrap"><table>
+<tr><th>関数</th><th>意味</th><th>NULL扱い</th><th>代表用途</th></tr>
+<tr><td>COUNT(*)</td><td>全行数</td><td>NULL含む</td><td>母数確認</td></tr>
+<tr><td>COUNT(col)</td><td>非NULL行数</td><td>NULL除外</td><td>入力充足率</td></tr>
+<tr><td>SUM(col)</td><td>合計</td><td>NULL除外</td><td>売上・数量集計</td></tr>
+<tr><td>AVG(col)</td><td>平均</td><td>NULL除外</td><td>KPI平均値</td></tr>
+<tr><td>MAX/MIN</td><td>最大/最小</td><td>NULL除外</td><td>レンジ確認</td></tr>
+</table></div>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="insights-6">
+<h2>出題傾向補強（第6章）</h2>
+<p>収集した過去問題データに基づく第6章対応分野「グループ関数」の傾向補強である。収集問題数は36問で、出題傾向の核は「SELECT / WHERE / GROUP BY / HAVING / ORDER BY」に集中する。試験対策では、構文暗記よりも条件差分と失敗時挙動の判定を優先することで正答率が上がる。実務では、同テーマに対して確認SQLと本実行SQLを対にして扱うと事故率を下げられる。</p>
+<div class="note"><strong>補強方針:</strong> 本章の例題を解く際は、同じ概念を「成功例」「失敗例」「修正例」の3パターンで比較し、判定根拠を言語化すること。</div>
+<p><strong>参照URL例（解説参照元）:</strong></p>
+<ul>
+<li><a href="http://docs.oracle.com/cd/E16338_01/server.112/b56299/functions003.htm#i89203" rel="noopener noreferrer" target="_blank">http://docs.oracle.com/cd/E16338_01/server.112/b56299/functions003.htm#i89203</a></li><li><a href="http://docs.oracle.com/cd/E16338_01/server.112/b56299/functions039.htm#i82697" rel="noopener noreferrer" target="_blank">http://docs.oracle.com/cd/E16338_01/server.112/b56299/functions039.htm#i82697</a></li><li><a href="https://docs.oracle.com/cd/E16338_01/server.112/b56299/statements_10002.htm#SQLRF20038" rel="noopener noreferrer" target="_blank">https://docs.oracle.com/cd/E16338_01/server.112/b56299/statements_10002.htm#SQLRF20038</a></li>
+</ul>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="deep-dive-6"><h2>品質強化：第6章 超深掘り5項目</h2><h3>1. 定義</h3><p>第6章の中心概念である「グループ関数と集計」は、単に構文を覚える学習単位ではなく、データの意味・一貫性・運用可能性を同時に成立させるための設計原則である。試験では語句の暗記だけで解ける問題もあるが、実務では入力値の品質、実行順序、例外時の復旧可能性まで含めて定義を扱う必要がある。つまりこの章の定義は「SQL文の形」ではなく「業務データを破壊せずに価値へ変換する規律」であり、ここを誤解すると正解できても現場で再現できない。 さらに、設計レビュー時には前提条件・入力境界・例外時挙動・確認SQL・証跡項目を明示し、実行者依存の判断を排除すること。学習段階でも、同一テーマを正常系と異常系の両方で検証し、なぜその結果になるかを言語化して再利用可能な知識へ変換する。</p><h3>2. 役割</h3><p>グループ関数と集計の役割は、データベース操作を偶発的な職人技から、再現可能な標準手順へ引き上げることにある。たとえば現場で引継ぎ担当が変わっても、同じ確認SQL・同じ判定基準・同じ実行順で処理できる状態を作るのがこの章の本質である。試験対策の観点でも、役割を理解していると「どの句がどの責務を持つか」を軸に消去法が機能し、難問での正答率が上がる。役割を文法の説明に矮小化せず、品質保証の仕組みとして把握することが重要である。 さらに、設計レビュー時には前提条件・入力境界・例外時挙動・確認SQL・証跡項目を明示し、実行者依存の判断を排除すること。学習段階でも、同一テーマを正常系と異常系の両方で検証し、なぜその結果になるかを言語化して再利用可能な知識へ変換する。</p><h3>3. 動作原理</h3><p>グループ関数と集計の動作原理は、入力条件の解釈、実行計画に基づく処理、結果または副作用の確定という三層で説明できる。SQLは記述順と論理評価順が一致しない場面が多く、特に結合・集計・更新系では前提条件を誤ると意図外結果になる。そこで原理理解では「どの時点で行が絞られ、どの時点で列が計算され、どの時点で変更が確定するか」を言語化する必要がある。試験ではこの順序差を突く設問が頻出であり、実務ではこの順序差が障害の直接原因になるため、原理を図として説明できるレベルまで落とし込むべきである。 さらに、設計レビュー時には前提条件・入力境界・例外時挙動・確認SQL・証跡項目を明示し、実行者依存の判断を排除すること。学習段階でも、同一テーマを正常系と異常系の両方で検証し、なぜその結果になるかを言語化して再利用可能な知識へ変換する。</p><h3>4. 制限事項とアンチパターン</h3><p>グループ関数と集計の制限事項を無視したアンチパターンとして、確認なし本実行、条件式の曖昧化、暗黙変換依存、復旧手順未設計がある。これらは短期的には作業を速く見せるが、中長期では誤更新や性能劣化、監査不適合に直結する。特に初学者は「動いたSQL」を正解と誤認しやすいが、品質上は「再実行可能」「失敗時に戻せる」「根拠を説明できる」ことが必須である。制限事項は足かせではなく安全柵であり、これを仕様として受け入れることが事故率低減の最短経路になる。 さらに、設計レビュー時には前提条件・入力境界・例外時挙動・確認SQL・証跡項目を明示し、実行者依存の判断を排除すること。学習段階でも、同一テーマを正常系と異常系の両方で検証し、なぜその結果になるかを言語化して再利用可能な知識へ変換する。</p><h3>5. 試験・実務の急所</h3><p>第6章の急所は、見た目が似た構文の意味差を判定できるかどうかである。試験では語順や句の位置、NULLや型変換、更新可否、暗黙コミットなどの境界条件が典型的なひっかけになる。実務では同じ境界条件が本番障害の発火点になるため、各処理に対して「想定件数」「失敗時挙動」「証跡」を先に決める運用が有効である。したがって急所対策は問題演習の量より、誤答理由を分類して再発防止ルールに変換する学習が効果的であり、これを章末の確認手順に固定することで合格後も通用する実力になる。 さらに、設計レビュー時には前提条件・入力境界・例外時挙動・確認SQL・証跡項目を明示し、実行者依存の判断を排除すること。学習段階でも、同一テーマを正常系と異常系の両方で検証し、なぜその結果になるかを言語化して再利用可能な知識へ変換する。</p><div class="top"><a href="#scope">▲ トップへ戻る</a></div></section><section class="card" id="exam">
+<h2>第6章 試験ひっかけパターン集</h2>
+<div class="warn"><b>ひっかけ1:</b> COUNT(*) と COUNT(col) は同じか → 違う。</div>
+<div class="warn"><b>ひっかけ2:</b> HAVINGは行レベル条件か → いいえ、グループ条件。</div>
+<div class="warn"><b>ひっかけ3:</b> GROUP BY外の列をSELECTできるか → できない。</div>
+<div class="warn"><b>ひっかけ4:</b> SUMはNULLを0扱いで加算するか → 除外する。</div>
+<div class="warn"><b>ひっかけ5:</b> ROWNUMはORDER BY後に付与されるか → 文脈依存で誤解注意。</div>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+<section class="card" id="practice">
+<h2>第6章 実務アンチパターン集</h2>
+<div class="table-wrap"><table>
+<tr><th>アンチパターン</th><th>起きる障害</th><th>予防策</th></tr>
+<tr><td>GROUP BY粒度の誤設定</td><td>指標が過粗/過細</td><td>業務単位を先に定義</td></tr>
+<tr><td>HAVINGへ行条件を記述</td><td>性能劣化</td><td>行条件はWHEREへ移動</td></tr>
+<tr><td>COUNT(col)を全件数扱い</td><td>件数不一致</td><td>COUNT(*)と用途分離</td></tr>
+<tr><td>ORA-00979を場当たり修正</td><td>意図不明SQL化</td><td>集約ロジックを再設計</td></tr>
+</table></div>
+<div class="note"><strong>第6章完了基準:</strong> 集約粒度・条件責務・NULL挙動を説明し、集計値の妥当性を件数で検証できること。</div>
+<div class="top"><a href="#scope">▲ トップへ戻る</a></div>
+</section>
+</main>
+</div>
+</body>
+</html>
