@@ -80,23 +80,157 @@
 </div>
 <div class="container">
   <div class="intro-box">INSERT, UPDATE, DELETE でデータを変更する方法と、COMMIT/ROLLBACK によるトランザクション管理を学びます。</div>
+
+  <!-- コマンド覚え方リファレンス表 -->
+  <div class="section-card">
+    <div class="section-title">コマンド覚え方リファレンス</div>
+    <table class="summary-table">
+      <tr>
+        <th>コマンド/句</th>
+        <th>意味（日本語）</th>
+        <th>覚え方（語呂合わせや連想）</th>
+        <th>主な用途</th>
+        <th>実務での使用</th>
+        <th>試験での出方（頻出パターン）</th>
+      </tr>
+      <tr>
+        <td><code>INSERT INTO</code></td>
+        <td>テーブルに新しい行を追加する</td>
+        <td>「INSERTはデータを差し込む—テーブルに行を挿入」</td>
+        <td>新規レコードの登録</td>
+        <td>使う（アプリケーションでの新規データ登録に必須）</td>
+        <td>列リスト省略時の列順一致、サブクエリINSERTのVALUES不要</td>
+      </tr>
+      <tr>
+        <td><code>UPDATE...SET</code></td>
+        <td>既存の行のデータを変更する</td>
+        <td>「UPDATEはデータをセット（SET）し直す」</td>
+        <td>既存レコードの値変更</td>
+        <td>使う（データ修正・一括更新など頻繁に使用）</td>
+        <td>WHERE省略で全行更新、SET句での複数列指定</td>
+      </tr>
+      <tr>
+        <td><code>DELETE FROM</code></td>
+        <td>条件に一致する行をテーブルから削除する</td>
+        <td>「DELETEはデータを消す—WHEREがないと全消し」</td>
+        <td>不要レコードの削除</td>
+        <td>使う（論理削除ではなく物理削除が必要な場合）</td>
+        <td>TRUNCATEとの違い（DML/DDL、ROLLBACK可否）</td>
+      </tr>
+      <tr>
+        <td><code>TRUNCATE</code></td>
+        <td>テーブルの全データを高速削除する（DDL）</td>
+        <td>「TRUNCATEは切り捨て—高速だが取り消し不可」</td>
+        <td>テーブルの全データ一括削除・初期化</td>
+        <td>条件付き（テスト環境や初期化処理で使用、本番は慎重に）</td>
+        <td>DDLなのでROLLBACK不可、暗黙COMMITが発生する</td>
+      </tr>
+      <tr>
+        <td><code>COMMIT</code></td>
+        <td>トランザクションの変更を確定・永続化する</td>
+        <td>「COMMITはコミット（確約）—変更を確定して公開」</td>
+        <td>DML変更の確定</td>
+        <td>使う（変更を反映するために必須）</td>
+        <td>COMMIT後はROLLBACK不可、他のセッションに変更が見える</td>
+      </tr>
+      <tr>
+        <td><code>ROLLBACK</code></td>
+        <td>トランザクションの変更を取り消す</td>
+        <td>「ROLLBACKはロール（巻き戻し）—変更をなかったことに」</td>
+        <td>誤操作やエラー時の変更取り消し</td>
+        <td>使う（エラー時の安全なデータ復元）</td>
+        <td>COMMIT後は不可、DDL実行後も不可（暗黙COMMIT）</td>
+      </tr>
+      <tr>
+        <td><code>SAVEPOINT</code></td>
+        <td>トランザクション内の中間保存点を設定する</td>
+        <td>「SAVEPOINTはセーブポイント—ゲームの途中セーブ」</td>
+        <td>長いトランザクションの途中でのロールバック地点設定</td>
+        <td>条件付き（複数ステップのバッチ処理で活用）</td>
+        <td>ROLLBACK TO SAVEPOINTで特定時点まで戻れること</td>
+      </tr>
+      <tr>
+        <td><code>MERGE INTO</code></td>
+        <td>条件一致で UPDATE、不一致で INSERT を1文で実行（UPSERT）</td>
+        <td>「MERGEは合体—UPDATE と INSERT を1つにまとめる」</td>
+        <td>マスタデータの同期処理、差分更新</td>
+        <td>使う（データ移行や定期同期バッチで活用）</td>
+        <td>WHEN MATCHED/WHEN NOT MATCHEDの使い分け</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- 略称・用語定義 -->
+  <div class="section-card">
+    <div class="section-title">略称・用語定義</div>
+    <table class="summary-table">
+      <tr>
+        <th>略称</th>
+        <th>正式名称</th>
+        <th>意味</th>
+      </tr>
+      <tr>
+        <td><code>DML</code></td>
+        <td>Data Manipulation Language（データ操作言語）</td>
+        <td>テーブルのデータを操作するSQL文の総称。INSERT、UPDATE、DELETE、MERGEが該当する。COMMIT前はROLLBACK可能。</td>
+      </tr>
+      <tr>
+        <td><code>TCL</code></td>
+        <td>Transaction Control Language（トランザクション制御言語）</td>
+        <td>トランザクションを制御するSQL文の総称。COMMIT、ROLLBACK、SAVEPOINTが該当する。DMLの変更を確定または取り消す。</td>
+      </tr>
+      <tr>
+        <td><code>COMMIT</code></td>
+        <td>Commit（確定・コミット）</td>
+        <td>現在のトランザクションで行われたすべての変更を永続化する。COMMITされた変更は他のセッションから参照可能になり、ROLLBACKで取り消せなくなる。</td>
+      </tr>
+      <tr>
+        <td><code>ROLLBACK</code></td>
+        <td>Rollback（巻き戻し・取り消し）</td>
+        <td>現在のトランザクションで行われた変更を取り消し、直前のCOMMIT時点に戻す。ROLLBACK TO SAVEPOINTで特定の中間点まで部分的に戻すことも可能。</td>
+      </tr>
+      <tr>
+        <td><code>SAVEPOINT</code></td>
+        <td>Savepoint（セーブポイント・中間保存点）</td>
+        <td>トランザクション内に名前付きの中間保存点を設定する。ROLLBACK TO &lt;名前&gt; で、その時点以降の変更のみを取り消せる。</td>
+      </tr>
+      <tr>
+        <td><code>MERGE</code></td>
+        <td>Merge（マージ・統合）</td>
+        <td>UPSERT（UPDATE + INSERT）操作を1文で実現するSQL文。ON条件で一致する行はUPDATE、一致しない行はINSERTする。Oracle 9i以降で使用可能。</td>
+      </tr>
+    </table>
+  </div>
+
   <div class="section-card"><div class="section-title">INSERT と UPDATE</div><div class="topic-chips"><span class="chip">INSERT</span><span class="chip">UPDATE</span><span class="chip">SET</span><span class="chip">VALUES</span><span class="chip">INSERT INTO SELECT</span></div><div class="section-content"><h3>INSERT 文</h3><p>テーブルに新しい行を追加します。</p><pre><code>-- 全列に値を挿入（列リストを省略）
 INSERT INTO DEPARTMENTS
 VALUES (280, 'New Dept', 100, 1700);
+-- 実行結果例：
+-- 1 行が挿入されました。
+-- （DEPARTMENT_ID=280の行がDEPARTMENTSテーブルに追加される）
 
 -- 指定した列のみ挿入
 INSERT INTO DEPARTMENTS (DEPARTMENT_ID, DEPARTMENT_NAME)
 VALUES (290, 'Another Dept');
+-- 実行結果例：
+-- 1 行が挿入されました。
+-- （MANAGER_IDとLOCATION_IDはNULLで挿入される）
 
 -- サブクエリを使った一括挿入
 INSERT INTO SALES_REPS (EMP_ID, NAME, SALARY)
 SELECT EMPLOYEE_ID, LAST_NAME, SALARY
 FROM   EMPLOYEES
-WHERE  JOB_ID = 'SA_REP';</code></pre><h3>UPDATE 文</h3><p>既存の行のデータを変更します。WHERE がないと全行が更新されます。</p><pre><code>-- 特定の行を更新
+WHERE  JOB_ID = 'SA_REP';
+-- 実行結果例：
+-- 35 行が挿入されました。
+-- （JOB_ID='SA_REP'の全社員がSALES_REPSテーブルに一括挿入される。VALUESは不要）</code></pre><h3>UPDATE 文</h3><p>既存の行のデータを変更します。WHERE がないと全行が更新されます。</p><pre><code>-- 特定の行を更新
 UPDATE EMPLOYEES
 SET    SALARY = SALARY * 1.1,
        COMMISSION_PCT = 0.05
 WHERE  DEPARTMENT_ID = 50;
+-- 実行結果例：
+-- 45 行が更新されました。
+-- （部署50の全社員のSALARYが10%増加し、COMMISSION_PCTが0.05に設定される）
 
 -- サブクエリを使った更新
 UPDATE EMPLOYEES
@@ -105,39 +239,66 @@ SET    DEPARTMENT_ID = (
            FROM   DEPARTMENTS
            WHERE  DEPARTMENT_NAME = 'Sales'
        )
-WHERE  EMPLOYEE_ID = 100;</code></pre><div class='tip-box'><strong>試験のポイント：</strong> INSERT の列リストを省略する場合は、テーブル定義の列順に全列分の値を指定する必要があります。UPDATE で WHERE を省略すると全行が更新されます（意図しない全件更新に注意）。</div></div><div class="problem-section-title">練習問題</div><div class="problem-card" id="prob-OSLV-D7-001"><div class="problem-header">問題 1 <span class="qid">#OSLV-D7-001</span></div><p class="problem-text">以下のSQL操作を実行した後の状態として正しいものはどれか。<br>```sql<br>INSERT INTO departments VALUES (280, 'Training', NULL, NULL);<br>SAVEPOINT sp1;<br>UPDATE departments SET department_name = 'Education' WHERE department_id = 280;<br>ROLLBACK TO sp1;<br>```</p><ul class="choices"><li>A. department_id=280 の行は存在しない（ROLLBACKで全て取り消された）</li><li>B. department_id=280 のdepartment_nameは 'Training' になる（UPDATEがロールバックされた）</li><li>C. department_id=280 のdepartment_nameは 'Education' のままになる</li><li>D. エラーになる（SAVEPOINTとROLLBACKは同一トランザクションで使えない）</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> B. department_id=280 のdepartment_nameは 'Training' になる（UPDATEがロールバックされた）</p><p>正解は「department_id=280 のdepartment_nameは 'Training' になる（UPDATEがロールバックされた）」である。SAVEPOINT sp1はsp1という中間保存点をトランザクション内に設定する。ROLLBACK TO sp1はsp1以降の変更（UPDATEのみ）を取り消し、sp1設定時点（INSERTの後）の状態に戻す。したがってINSERTは残り、UPDATEは取り消される。ROLLBACK（TO なし）は全変更を取り消す。COMMIT後はROLLBACKできない。Oracle SQL Reference §SAVEPOINT, ROLLBACK参照。</p></div></details></div><div class="problem-card" id="prob-OSLV-D7-003"><div class="problem-header">問題 2 <span class="qid">#OSLV-D7-003</span></div><p class="problem-text">以下のUPDATE文の実行結果として正しいものはどれか。<br>```sql<br>UPDATE employees<br>SET salary = salary * 1.1,<br>    commission_pct = NVL(commission_pct, 0) + 0.05<br>WHERE department_id = 80;<br>```<br>department_id=80 の社員5名のうち commission_pctがNULLの社員が2名いるとする。</p><ul class="choices"><li>A. commission_pctがNULLの社員はUPDATE対象外になる</li><li>B. NVLはUPDATE文では使えないためエラーになる</li><li>C. 5名全員のsalaryが10%増加し、NULLの社員のcommission_pctは0.05になる</li><li>D. commission_pctがNULLの社員のsalaryはNULLになる</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> C. 5名全員のsalaryが10%増加し、NULLの社員のcommission_pctは0.05になる</p><p>正解は「5名全員のsalaryが10%増加し、NULLの社員のcommission_pctは0.05になる」である。SET句では単一行関数（NVLなど）を使用できる。NVL(commission_pct, 0)はcommission_pctがNULLの場合0を返すので、0 + 0.05 = 0.05 が設定される。NULL以外の社員は既存値 + 0.05 となる。salary = salary * 1.1 も全行に適用される。WHERE句はdepartment_id = 80 の絞り込みのみ。</p></div></details></div></div><div class="section-card"><div class="section-title">DELETE・TRUNCATE とトランザクション</div><div class="topic-chips"><span class="chip">DELETE</span><span class="chip">TRUNCATE</span><span class="chip">COMMIT</span><span class="chip">ROLLBACK</span><span class="chip">SAVEPOINT</span><span class="chip">トランザクション</span></div><div class="section-content"><h3>DELETE 文</h3><pre><code>-- 条件に合う行を削除
+WHERE  EMPLOYEE_ID = 100;
+-- 実行結果例：
+-- 1 行が更新されました。
+-- （社員ID=100のDEPARTMENT_IDがSalesのDEPARTMENT_IDに変更される）</code></pre><div class='tip-box'><strong>試験のポイント：</strong> INSERT の列リストを省略する場合は、テーブル定義の列順に全列分の値を指定する必要があります。UPDATE で WHERE を省略すると全行が更新されます（意図しない全件更新に注意）。</div></div><div class="problem-section-title">練習問題</div><div class="problem-card" id="prob-OSLV-D7-001"><div class="problem-header">問題 1 <span class="qid">#OSLV-D7-001</span></div><p class="problem-text">以下のSQL操作を実行した後の状態として正しいものはどれか。<br>```sql<br>INSERT INTO departments VALUES (280, 'Training', NULL, NULL);<br>SAVEPOINT sp1;<br>UPDATE departments SET department_name = 'Education' WHERE department_id = 280;<br>ROLLBACK TO sp1;<br>```</p><ul class="choices"><li>A. department_id=280 の行は存在しない（ROLLBACKで全て取り消された）</li><li>B. department_id=280 のdepartment_nameは 'Training' になる（UPDATEがロールバックされた）</li><li>C. department_id=280 のdepartment_nameは 'Education' のままになる</li><li>D. エラーになる（SAVEPOINTとROLLBACKは同一トランザクションで使えない）</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> B. department_id=280 のdepartment_nameは 'Training' になる（UPDATEがロールバックされた）</p><p>正解は「department_id=280 のdepartment_nameは 'Training' になる（UPDATEがロールバックされた）」である。SAVEPOINT sp1はsp1という中間保存点をトランザクション内に設定する。ROLLBACK TO sp1はsp1以降の変更（UPDATEのみ）を取り消し、sp1設定時点（INSERTの後）の状態に戻す。したがってINSERTは残り、UPDATEは取り消される。ROLLBACK（TO なし）は全変更を取り消す。COMMIT後はROLLBACKできない。Oracle SQL Reference §SAVEPOINT, ROLLBACK参照。</p></div></details></div><div class="problem-card" id="prob-OSLV-D7-003"><div class="problem-header">問題 2 <span class="qid">#OSLV-D7-003</span></div><p class="problem-text">以下のUPDATE文の実行結果として正しいものはどれか。<br>```sql<br>UPDATE employees<br>SET salary = salary * 1.1,<br>    commission_pct = NVL(commission_pct, 0) + 0.05<br>WHERE department_id = 80;<br>```<br>department_id=80 の社員5名のうち commission_pctがNULLの社員が2名いるとする。</p><ul class="choices"><li>A. commission_pctがNULLの社員はUPDATE対象外になる</li><li>B. NVLはUPDATE文では使えないためエラーになる</li><li>C. 5名全員のsalaryが10%増加し、NULLの社員のcommission_pctは0.05になる</li><li>D. commission_pctがNULLの社員のsalaryはNULLになる</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> C. 5名全員のsalaryが10%増加し、NULLの社員のcommission_pctは0.05になる</p><p>正解は「5名全員のsalaryが10%増加し、NULLの社員のcommission_pctは0.05になる」である。SET句では単一行関数（NVLなど）を使用できる。NVL(commission_pct, 0)はcommission_pctがNULLの場合0を返すので、0 + 0.05 = 0.05 が設定される。NULL以外の社員は既存値 + 0.05 となる。salary = salary * 1.1 も全行に適用される。WHERE句はdepartment_id = 80 の絞り込みのみ。</p></div></details></div></div><div class="section-card"><div class="section-title">DELETE・TRUNCATE とトランザクション</div><div class="topic-chips"><span class="chip">DELETE</span><span class="chip">TRUNCATE</span><span class="chip">COMMIT</span><span class="chip">ROLLBACK</span><span class="chip">SAVEPOINT</span><span class="chip">トランザクション</span></div><div class="section-content"><h3>DELETE 文</h3><pre><code>-- 条件に合う行を削除
 DELETE FROM DEPARTMENTS
 WHERE  DEPARTMENT_ID = 290;
+-- 実行結果例：
+-- 1 行が削除されました。
+-- （DEPARTMENT_ID=290の行のみ削除される。COMMIT前はROLLBACK可能）
 
 -- 全行削除（ROLLBACK 可能）
-DELETE FROM COPY_EMPLOYEES;</code></pre><h3>TRUNCATE 文</h3><pre><code>-- テーブルの全データを高速削除（DDL、ROLLBACK 不可）
-TRUNCATE TABLE COPY_EMPLOYEES;</code></pre><table class='summary-table'><tr><th>比較</th><th>DELETE</th><th>TRUNCATE</th></tr><tr><td>分類</td><td>DML</td><td>DDL</td></tr><tr><td>ROLLBACK</td><td>可能</td><td>不可</td></tr><tr><td>WHERE 句</td><td>使用可能</td><td>使用不可（全件削除のみ）</td></tr><tr><td>処理速度</td><td>低速（ログ記録あり）</td><td>高速（ログ記録なし）</td></tr><tr><td>AUTOCOMMIT</td><td>なし</td><td>あり（暗黙的COMMIT）</td></tr></table><h3>トランザクション制御</h3><pre><code>-- データ変更
+DELETE FROM COPY_EMPLOYEES;
+-- 実行結果例：
+-- 107 行が削除されました。
+-- （全行削除だがDMLなのでCOMMIT前はROLLBACK可能。TRUNCATEより低速）</code></pre><h3>TRUNCATE 文</h3><pre><code>-- テーブルの全データを高速削除（DDL、ROLLBACK 不可）
+TRUNCATE TABLE COPY_EMPLOYEES;
+-- 実行結果例：
+-- テーブルが切り捨てられました。
+-- （全行が即時削除される。DDLのため暗黙COMMITが発生し、ROLLBACKは不可）</code></pre><table class='summary-table'><tr><th>比較</th><th>DELETE</th><th>TRUNCATE</th></tr><tr><td>分類</td><td>DML</td><td>DDL</td></tr><tr><td>ROLLBACK</td><td>可能</td><td>不可</td></tr><tr><td>WHERE 句</td><td>使用可能</td><td>使用不可（全件削除のみ）</td></tr><tr><td>処理速度</td><td>低速（ログ記録あり）</td><td>高速（ログ記録なし）</td></tr><tr><td>AUTOCOMMIT</td><td>なし</td><td>あり（暗黙的COMMIT）</td></tr></table><h3>トランザクション制御</h3><pre><code>-- データ変更
 UPDATE EMPLOYEES SET SALARY = 5000 WHERE EMPLOYEE_ID = 100;
+-- 実行結果例：1 行が更新されました。
 
 -- セーブポイント設定
 SAVEPOINT update_done;
+-- 実行結果例：セーブポイントが作成されました。
 
 -- 追加の変更
 DELETE FROM EMPLOYEES WHERE EMPLOYEE_ID = 200;
+-- 実行結果例：1 行が削除されました。
 
 -- セーブポイントまで戻す
 ROLLBACK TO update_done;
+-- 実行結果例：ロールバックが完了しました。
+-- （DELETEだけが取り消され、UPDATEはSAVEPOINT前なので残る）
 
 -- 確定
-COMMIT;</code></pre><div class='tip-box'><strong>試験のポイント：</strong> TRUNCATE は DDL なので暗黙的 COMMIT が行われます。ROLLBACK できません。DDL 文（CREATE, ALTER, DROP 等）を実行すると、直前の未コミットの DML が自動的に COMMIT されます。SAVEPOINT はトランザクション内の特定の時点に戻すためのマーカーです。</div></div><div class="problem-section-title">練習問題</div><div class="problem-card" id="prob-OSLV-D7-001"><div class="problem-header">問題 1 <span class="qid">#OSLV-D7-001</span></div><p class="problem-text">以下のSQL操作を実行した後の状態として正しいものはどれか。<br>```sql<br>INSERT INTO departments VALUES (280, 'Training', NULL, NULL);<br>SAVEPOINT sp1;<br>UPDATE departments SET department_name = 'Education' WHERE department_id = 280;<br>ROLLBACK TO sp1;<br>```</p><ul class="choices"><li>A. department_id=280 の行は存在しない（ROLLBACKで全て取り消された）</li><li>B. department_id=280 のdepartment_nameは 'Training' になる（UPDATEがロールバックされた）</li><li>C. department_id=280 のdepartment_nameは 'Education' のままになる</li><li>D. エラーになる（SAVEPOINTとROLLBACKは同一トランザクションで使えない）</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> B. department_id=280 のdepartment_nameは 'Training' になる（UPDATEがロールバックされた）</p><p>正解は「department_id=280 のdepartment_nameは 'Training' になる（UPDATEがロールバックされた）」である。SAVEPOINT sp1はsp1という中間保存点をトランザクション内に設定する。ROLLBACK TO sp1はsp1以降の変更（UPDATEのみ）を取り消し、sp1設定時点（INSERTの後）の状態に戻す。したがってINSERTは残り、UPDATEは取り消される。ROLLBACK（TO なし）は全変更を取り消す。COMMIT後はROLLBACKできない。Oracle SQL Reference §SAVEPOINT, ROLLBACK参照。</p></div></details></div><div class="problem-card" id="prob-OSLV-D7-002"><div class="problem-header">問題 2 <span class="qid">#OSLV-D7-002</span></div><p class="problem-text">DELETEとTRUNCATEの違いとして正しいものはどれか。</p><ul class="choices"><li>A. TRUNCATEはWHERE句で削除する行を指定できる</li><li>B. TRUNCATEはDDL文でありROLLBACKできない。DELETEはDML文でROLLBACK可能</li><li>C. DELETEはテーブル定義ごと削除するがTRUNCATEはデータのみ削除する</li><li>D. TRUNCATEもDELETEも同じくROLLBACKできる</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> B. TRUNCATEはDDL文でありROLLBACKできない。DELETEはDML文でROLLBACK可能</p><p>正解は「TRUNCATEはDDL文でありROLLBACKできない。DELETEはDML文でROLLBACK可能」である。TRUNCATE TABLEはDDL（データ定義言語）であり、実行時に暗黙的COMMITが行われるためROLLBACKできない。また全行を高速に削除するがWHERE句は使えない。DELETE FROMはDML（データ操作言語）であり、WHERE句で対象行を指定でき、COMMIT前ならROLLBACKで取り消せる。テーブル定義を削除するのはDROP TABLE。</p></div></details></div></div><div class="section-card"><div class="section-title">MERGE とマルチテーブル挿入</div><div class="topic-chips"><span class="chip">MERGE</span><span class="chip">WHEN MATCHED</span><span class="chip">WHEN NOT MATCHED</span><span class="chip">マルチテーブルINSERT</span></div><div class="section-content"><h3>MERGE 文（UPSERT）</h3><p>一致すれば UPDATE、なければ INSERT を1文で実行します。</p><pre><code>MERGE INTO SALES_TARGET t
+COMMIT;
+-- 実行結果例：コミットが完了しました。
+-- （UPDATEが永続化される。この後ROLLBACKしても元に戻せない）</code></pre><div class='tip-box'><strong>試験のポイント：</strong> TRUNCATE は DDL なので暗黙的 COMMIT が行われます。ROLLBACK できません。DDL 文（CREATE, ALTER, DROP 等）を実行すると、直前の未コミットの DML が自動的に COMMIT されます。SAVEPOINT はトランザクション内の特定の時点に戻すためのマーカーです。</div></div><div class="problem-section-title">練習問題</div><div class="problem-card" id="prob-OSLV-D7-001"><div class="problem-header">問題 1 <span class="qid">#OSLV-D7-001</span></div><p class="problem-text">以下のSQL操作を実行した後の状態として正しいものはどれか。<br>```sql<br>INSERT INTO departments VALUES (280, 'Training', NULL, NULL);<br>SAVEPOINT sp1;<br>UPDATE departments SET department_name = 'Education' WHERE department_id = 280;<br>ROLLBACK TO sp1;<br>```</p><ul class="choices"><li>A. department_id=280 の行は存在しない（ROLLBACKで全て取り消された）</li><li>B. department_id=280 のdepartment_nameは 'Training' になる（UPDATEがロールバックされた）</li><li>C. department_id=280 のdepartment_nameは 'Education' のままになる</li><li>D. エラーになる（SAVEPOINTとROLLBACKは同一トランザクションで使えない）</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> B. department_id=280 のdepartment_nameは 'Training' になる（UPDATEがロールバックされた）</p><p>正解は「department_id=280 のdepartment_nameは 'Training' になる（UPDATEがロールバックされた）」である。SAVEPOINT sp1はsp1という中間保存点をトランザクション内に設定する。ROLLBACK TO sp1はsp1以降の変更（UPDATEのみ）を取り消し、sp1設定時点（INSERTの後）の状態に戻す。したがってINSERTは残り、UPDATEは取り消される。ROLLBACK（TO なし）は全変更を取り消す。COMMIT後はROLLBACKできない。Oracle SQL Reference §SAVEPOINT, ROLLBACK参照。</p></div></details></div><div class="problem-card" id="prob-OSLV-D7-002"><div class="problem-header">問題 2 <span class="qid">#OSLV-D7-002</span></div><p class="problem-text">DELETEとTRUNCATEの違いとして正しいものはどれか。</p><ul class="choices"><li>A. TRUNCATEはWHERE句で削除する行を指定できる</li><li>B. TRUNCATEはDDL文でありROLLBACKできない。DELETEはDML文でROLLBACK可能</li><li>C. DELETEはテーブル定義ごと削除するがTRUNCATEはデータのみ削除する</li><li>D. TRUNCATEもDELETEも同じくROLLBACKできる</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> B. TRUNCATEはDDL文でありROLLBACKできない。DELETEはDML文でROLLBACK可能</p><p>正解は「TRUNCATEはDDL文でありROLLBACKできない。DELETEはDML文でROLLBACK可能」である。TRUNCATE TABLEはDDL（データ定義言語）であり、実行時に暗黙的COMMITが行われるためROLLBACKできない。また全行を高速に削除するがWHERE句は使えない。DELETE FROMはDML（データ操作言語）であり、WHERE句で対象行を指定でき、COMMIT前ならROLLBACKで取り消せる。テーブル定義を削除するのはDROP TABLE。</p></div></details></div></div><div class="section-card"><div class="section-title">MERGE とマルチテーブル挿入</div><div class="topic-chips"><span class="chip">MERGE</span><span class="chip">WHEN MATCHED</span><span class="chip">WHEN NOT MATCHED</span><span class="chip">マルチテーブルINSERT</span></div><div class="section-content"><h3>MERGE 文（UPSERT）</h3><p>一致すれば UPDATE、なければ INSERT を1文で実行します。</p><pre><code>MERGE INTO SALES_TARGET t
 USING (SELECT 10 AS DEPT_ID, 1200000 AS TARGET_AMT FROM DUAL) s
 ON (t.DEPT_ID = s.DEPT_ID)
 WHEN MATCHED THEN
   UPDATE SET t.TARGET_AMT = s.TARGET_AMT
 WHEN NOT MATCHED THEN
   INSERT (DEPT_ID, TARGET_AMT)
-  VALUES (s.DEPT_ID, s.TARGET_AMT);</code></pre><h3>マルチテーブル INSERT</h3><p>1つのソース結果を条件で複数テーブルへ振り分けます。</p><pre><code>INSERT ALL
+  VALUES (s.DEPT_ID, s.TARGET_AMT);
+-- 実行結果例：
+-- DEPT_ID=10 の行が既に存在する場合 → 1 行が更新されました。
+-- DEPT_ID=10 の行が存在しない場合  → 1 行が挿入されました。
+-- （ON条件の一致・不一致によってUPDATEかINSERTが自動選択される）</code></pre><h3>マルチテーブル INSERT</h3><p>1つのソース結果を条件で複数テーブルへ振り分けます。</p><pre><code>INSERT ALL
   WHEN SALARY &gt;= 10000 THEN
     INTO HIGH_SAL (EMP_ID, SALARY) VALUES (EMPLOYEE_ID, SALARY)
   WHEN SALARY &lt; 10000 THEN
     INTO LOW_SAL (EMP_ID, SALARY) VALUES (EMPLOYEE_ID, SALARY)
 SELECT EMPLOYEE_ID, SALARY
-FROM   EMPLOYEES;</code></pre><div class='tip-box'><strong>試験のポイント：</strong> MERGE は ON 条件で一致判定し、WHEN MATCHED / WHEN NOT MATCHED を使い分けます。大量同期処理で UPDATE+INSERT を分けるより保守しやすいケースが多いです。</div></div></div>
+FROM   EMPLOYEES;
+-- 実行結果例：
+-- 107 行が挿入されました。
+-- （給与10000以上の社員はHIGH_SALへ、10000未満の社員はLOW_SALへ振り分けられる。
+--  合計挿入行数はソースの全行数に等しい）</code></pre><div class='tip-box'><strong>試験のポイント：</strong> MERGE は ON 条件で一致判定し、WHEN MATCHED / WHEN NOT MATCHED を使い分けます。大量同期処理で UPDATE+INSERT を分けるより保守しやすいケースが多いです。</div></div></div>
 </div>
 </body>
 </html>
