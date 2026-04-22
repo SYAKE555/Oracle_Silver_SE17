@@ -41,15 +41,19 @@
   .block-title { font-size: .85rem; font-weight: 800; color: #c0392b; margin: 10px 0 6px; }
   pre { white-space: pre-wrap; word-break: break-word; background: #0f172a; color: #e2e8f0; border-radius: 12px; padding: 14px; font-size: .84rem; overflow-x: auto; }
   .analysis-block p { color: #334155; font-size: .9rem; margin-bottom: 8px; }
-  .option-review-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 10px; margin-bottom: 8px; }
-  .option-review { border-radius: 14px; padding: 12px; border: 1px solid #dbe4ef; background: white; }
-  .option-review.correct { border-left: 5px solid #16a34a; }
-  .option-review.wrong { border-left: 5px solid #c0392b; }
-  .option-review-head { display: flex; justify-content: space-between; gap: 10px; align-items: center; margin-bottom: 8px; }
-  .option-review-key { font-size: .92rem; font-weight: 900; color: #0f172a; }
-  .option-review-badges span { display: inline-block; background: #eef2f7; color: #334155; font-size: .74rem; font-weight: 800; border-radius: 999px; padding: 3px 8px; margin-left: 6px; }
-  .option-review-text { color: #1f2937; font-size: .88rem; margin-bottom: 8px; }
-  .option-review-reason { color: #475569; font-size: .86rem; }
+  .option-review-grid { display: flex; flex-direction: column; gap: 12px; margin-bottom: 8px; }
+  .option-review { border-radius: 14px; padding: 16px 18px; border: 1px solid #dbe4ef; background: white; }
+  .option-review.correct { border-left: 6px solid #16a34a; background: #f6fdf8; }
+  .option-review.wrong { border-left: 6px solid #c0392b; background: #fffafa; }
+  .option-review-head { display: flex; justify-content: flex-start; gap: 12px; align-items: center; margin-bottom: 10px; }
+  .option-review-key { font-size: 1.05rem; font-weight: 900; color: #0f172a; min-width: 1.8em; }
+  .option-review-badges span { display: inline-block; background: #eef2f7; color: #334155; font-size: .74rem; font-weight: 800; border-radius: 999px; padding: 3px 10px; margin-left: 4px; }
+  .option-review-text { color: #1f2937; font-size: .98rem; line-height: 1.65; margin-bottom: 10px; font-weight: 600; }
+  .option-review-reason { color: #334155; font-size: .92rem; line-height: 1.75; }
+  .clause-order { background: #0f172a; color: #e2e8f0; border-radius: 12px; padding: 14px 16px; font-family: 'SFMono-Regular', Menlo, Consolas, monospace; font-size: .86rem; line-height: 1.8; white-space: pre; overflow-x: auto; }
+  .clause-order .kw { color: #fbbf24; font-weight: 800; }
+  .clause-order .desc { color: #93c5fd; }
+  .clause-order .note { color: #86efac; font-style: italic; }
   .study-step-list { padding-left: 20px; color: #334155; font-size: .9rem; }
   .study-step-list li { margin-bottom: 5px; }
   @media (max-width: 720px) {
@@ -101,8 +105,15 @@
         <div class="guide-title">論点の定義</div>
         <p>DATE 型の減算結果は日数であり、月単位の計算には MONTHS_BETWEEN や ADD_MONTHS を用いる。表示形式の整形は TO_CHAR、演算前の型変換は TO_DATE や TO_NUMBER が担当する。</p>
       </div>
+      <div class="guide-block"><div class="guide-title">句の並び順（Oracle 正式構文）</div><div class="clause-order"><span class="kw">SELECT</span> 単一行関数(列)        <span class="desc">-- 値の変換・整形（列ごとに結果）</span>
+<span class="kw">FROM</span>   表
+<span class="kw">WHERE</span>  単一行関数(列) 比較演算子 値
+<span class="kw">ORDER BY</span> 単一行関数(列);
+<span class="note">-- 単一行関数は SELECT / WHERE / ORDER BY のどれにも書ける（GROUP BY 後の HAVING 内でも可）。</span>
+<span class="note">-- 変換順序: 演算前に TO_NUMBER / TO_DATE、表示直前に TO_CHAR。</span>
+<span class="note">-- NULL 処理: NVL(式, 代替) / NVL2(式, 非NULL, NULL) / COALESCE / CASE。</span></div></div>
       <div class="guide-block">
-        <div class="guide-title">正式構文・基本形</div>
+        <div class="guide-title">この論点の基本形</div>
         <pre>SELECT ADD_MONTHS(made_date, 24) AS two_years_later,
        MONTHS_BETWEEN(SYSDATE, made_date) AS elapsed_months,
        TO_CHAR(made_date, &#x27;YYYY-MM-DD&#x27;) AS made_ymd
@@ -399,8 +410,15 @@ SQLでこれらの列を含むデータ型変換について正しい記述は�
         <div class="guide-title">論点の定義</div>
         <p>型変換関数は、内部計算のために元の型へ戻す処理と、表示形式へ整える処理を分けて書く。数値演算の前に TO_NUMBER、日付演算の前に TO_DATE、表示の直前に TO_CHAR を使う。</p>
       </div>
+      <div class="guide-block"><div class="guide-title">句の並び順（Oracle 正式構文）</div><div class="clause-order"><span class="kw">SELECT</span> 単一行関数(列)        <span class="desc">-- 値の変換・整形（列ごとに結果）</span>
+<span class="kw">FROM</span>   表
+<span class="kw">WHERE</span>  単一行関数(列) 比較演算子 値
+<span class="kw">ORDER BY</span> 単一行関数(列);
+<span class="note">-- 単一行関数は SELECT / WHERE / ORDER BY のどれにも書ける（GROUP BY 後の HAVING 内でも可）。</span>
+<span class="note">-- 変換順序: 演算前に TO_NUMBER / TO_DATE、表示直前に TO_CHAR。</span>
+<span class="note">-- NULL 処理: NVL(式, 代替) / NVL2(式, 非NULL, NULL) / COALESCE / CASE。</span></div></div>
       <div class="guide-block">
-        <div class="guide-title">正式構文・基本形</div>
+        <div class="guide-title">この論点の基本形</div>
         <pre>SELECT TO_CHAR(
          TO_NUMBER(shohin_kakaku, &#x27;999,999.99&#x27;) * 0.30,
          &#x27;999,999.00&#x27;
@@ -620,8 +638,15 @@ SQL文についてエラーとならないものはどれですか。（2つ選�
         <div class="guide-title">論点の定義</div>
         <p>単一行関数は各行に対して 1 つの結果を返し、文字列・数値・日付・NULL・条件分岐の各カテゴリで役割が分かれる。</p>
       </div>
+      <div class="guide-block"><div class="guide-title">句の並び順（Oracle 正式構文）</div><div class="clause-order"><span class="kw">SELECT</span> 単一行関数(列)        <span class="desc">-- 値の変換・整形（列ごとに結果）</span>
+<span class="kw">FROM</span>   表
+<span class="kw">WHERE</span>  単一行関数(列) 比較演算子 値
+<span class="kw">ORDER BY</span> 単一行関数(列);
+<span class="note">-- 単一行関数は SELECT / WHERE / ORDER BY のどれにも書ける（GROUP BY 後の HAVING 内でも可）。</span>
+<span class="note">-- 変換順序: 演算前に TO_NUMBER / TO_DATE、表示直前に TO_CHAR。</span>
+<span class="note">-- NULL 処理: NVL(式, 代替) / NVL2(式, 非NULL, NULL) / COALESCE / CASE。</span></div></div>
       <div class="guide-block">
-        <div class="guide-title">正式構文・基本形</div>
+        <div class="guide-title">この論点の基本形</div>
         <pre>SELECT ROUND(price, 2),
        NVL(discount, 0),
        CASE WHEN quantity IS NULL THEN 0 ELSE quantity END
@@ -732,8 +757,15 @@ SELECT ROUND(TRUNC(345.16, 1), 0) FROM DUAL;
         <div class="guide-title">論点の定義</div>
         <p>文字列関数は 1 行ずつ入力を受け取り、変換後の文字列または位置情報を返す。大文字小文字の正規化、部分抽出、位置探索は役割を分けて扱う。</p>
       </div>
+      <div class="guide-block"><div class="guide-title">句の並び順（Oracle 正式構文）</div><div class="clause-order"><span class="kw">SELECT</span> 単一行関数(列)        <span class="desc">-- 値の変換・整形（列ごとに結果）</span>
+<span class="kw">FROM</span>   表
+<span class="kw">WHERE</span>  単一行関数(列) 比較演算子 値
+<span class="kw">ORDER BY</span> 単一行関数(列);
+<span class="note">-- 単一行関数は SELECT / WHERE / ORDER BY のどれにも書ける（GROUP BY 後の HAVING 内でも可）。</span>
+<span class="note">-- 変換順序: 演算前に TO_NUMBER / TO_DATE、表示直前に TO_CHAR。</span>
+<span class="note">-- NULL 処理: NVL(式, 代替) / NVL2(式, 非NULL, NULL) / COALESCE / CASE。</span></div></div>
       <div class="guide-block">
-        <div class="guide-title">正式構文・基本形</div>
+        <div class="guide-title">この論点の基本形</div>
         <pre>SELECT UPPER(item_name),
        SUBSTR(item_name, 1, 3),
        INSTR(item_name, &#x27; &#x27;) 

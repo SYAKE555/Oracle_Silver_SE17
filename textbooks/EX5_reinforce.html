@@ -41,15 +41,19 @@
   .block-title { font-size: .85rem; font-weight: 800; color: #e67e22; margin: 10px 0 6px; }
   pre { white-space: pre-wrap; word-break: break-word; background: #0f172a; color: #e2e8f0; border-radius: 12px; padding: 14px; font-size: .84rem; overflow-x: auto; }
   .analysis-block p { color: #334155; font-size: .9rem; margin-bottom: 8px; }
-  .option-review-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 10px; margin-bottom: 8px; }
-  .option-review { border-radius: 14px; padding: 12px; border: 1px solid #dbe4ef; background: white; }
-  .option-review.correct { border-left: 5px solid #16a34a; }
-  .option-review.wrong { border-left: 5px solid #c0392b; }
-  .option-review-head { display: flex; justify-content: space-between; gap: 10px; align-items: center; margin-bottom: 8px; }
-  .option-review-key { font-size: .92rem; font-weight: 900; color: #0f172a; }
-  .option-review-badges span { display: inline-block; background: #eef2f7; color: #334155; font-size: .74rem; font-weight: 800; border-radius: 999px; padding: 3px 8px; margin-left: 6px; }
-  .option-review-text { color: #1f2937; font-size: .88rem; margin-bottom: 8px; }
-  .option-review-reason { color: #475569; font-size: .86rem; }
+  .option-review-grid { display: flex; flex-direction: column; gap: 12px; margin-bottom: 8px; }
+  .option-review { border-radius: 14px; padding: 16px 18px; border: 1px solid #dbe4ef; background: white; }
+  .option-review.correct { border-left: 6px solid #16a34a; background: #f6fdf8; }
+  .option-review.wrong { border-left: 6px solid #c0392b; background: #fffafa; }
+  .option-review-head { display: flex; justify-content: flex-start; gap: 12px; align-items: center; margin-bottom: 10px; }
+  .option-review-key { font-size: 1.05rem; font-weight: 900; color: #0f172a; min-width: 1.8em; }
+  .option-review-badges span { display: inline-block; background: #eef2f7; color: #334155; font-size: .74rem; font-weight: 800; border-radius: 999px; padding: 3px 10px; margin-left: 4px; }
+  .option-review-text { color: #1f2937; font-size: .98rem; line-height: 1.65; margin-bottom: 10px; font-weight: 600; }
+  .option-review-reason { color: #334155; font-size: .92rem; line-height: 1.75; }
+  .clause-order { background: #0f172a; color: #e2e8f0; border-radius: 12px; padding: 14px 16px; font-family: 'SFMono-Regular', Menlo, Consolas, monospace; font-size: .86rem; line-height: 1.8; white-space: pre; overflow-x: auto; }
+  .clause-order .kw { color: #fbbf24; font-weight: 800; }
+  .clause-order .desc { color: #93c5fd; }
+  .clause-order .note { color: #86efac; font-style: italic; }
   .study-step-list { padding-left: 20px; color: #334155; font-size: .9rem; }
   .study-step-list li { margin-bottom: 5px; }
   @media (max-width: 720px) {
@@ -101,8 +105,19 @@
         <div class="guide-title">論点の定義</div>
         <p>Oracle のオブジェクト管理問題では、ビュー、索引、シーケンス、シノニム、権限、日時型のそれぞれに固有の成立条件がある。</p>
       </div>
+      <div class="guide-block"><div class="guide-title">句の並び順（Oracle 正式構文）</div><div class="clause-order"><span class="kw">CREATE TABLE</span> 表 (
+  列 型 [<span class="kw">DEFAULT</span> 値] [<span class="kw">NOT NULL</span>] [<span class="kw">CONSTRAINT</span> 名 <span class="kw">PRIMARY KEY</span> | …]
+);
+<span class="kw">ALTER TABLE</span> 表 <span class="kw">ADD</span>      (列 型 [DEFAULT …] [NOT NULL]);  <span class="desc">-- 既存行ありでNOT NULLなら DEFAULT 必須</span>
+<span class="kw">ALTER TABLE</span> 表 <span class="kw">MODIFY</span>   (列 型 | DEFAULT | NOT NULL);
+<span class="kw">ALTER TABLE</span> 表 <span class="kw">DROP COLUMN</span> 列;
+<span class="kw">CREATE VIEW</span> v <span class="kw">AS SELECT</span> …;              <span class="desc">-- 定義保持。基表複製ではない</span>
+<span class="kw">CREATE SEQUENCE</span> s <span class="kw">START WITH</span> 1 <span class="kw">INCREMENT BY</span> 1;  <span class="desc">-- CURRVAL は NEXTVAL 実行後のみ有効</span>
+<span class="kw">CREATE INDEX</span> idx <span class="kw">ON</span> 表(列);
+<span class="kw">GRANT</span> 権限 <span class="kw">ON</span> 表 <span class="kw">TO</span> ユーザ [<span class="kw">WITH GRANT OPTION</span>];
+<span class="note">-- DDL はすべて暗黙 COMMIT を伴う。DEFAULT は値省略時 / VALUES(DEFAULT) で補完。</span></div></div>
       <div class="guide-block">
-        <div class="guide-title">正式構文・基本形</div>
+        <div class="guide-title">この論点の基本形</div>
         <pre>CREATE VIEW v_item AS
 SELECT item_id, item_name FROM item;
 
@@ -919,8 +934,19 @@ INSERTした行をSELECTによって表示したとき、生成したシーケ�
         <div class="guide-title">論点の定義</div>
         <p>Oracle のオブジェクト管理問題では、ビュー、索引、シーケンス、シノニム、権限、日時型のそれぞれに固有の成立条件がある。</p>
       </div>
+      <div class="guide-block"><div class="guide-title">句の並び順（Oracle 正式構文）</div><div class="clause-order"><span class="kw">CREATE TABLE</span> 表 (
+  列 型 [<span class="kw">DEFAULT</span> 値] [<span class="kw">NOT NULL</span>] [<span class="kw">CONSTRAINT</span> 名 <span class="kw">PRIMARY KEY</span> | …]
+);
+<span class="kw">ALTER TABLE</span> 表 <span class="kw">ADD</span>      (列 型 [DEFAULT …] [NOT NULL]);  <span class="desc">-- 既存行ありでNOT NULLなら DEFAULT 必須</span>
+<span class="kw">ALTER TABLE</span> 表 <span class="kw">MODIFY</span>   (列 型 | DEFAULT | NOT NULL);
+<span class="kw">ALTER TABLE</span> 表 <span class="kw">DROP COLUMN</span> 列;
+<span class="kw">CREATE VIEW</span> v <span class="kw">AS SELECT</span> …;              <span class="desc">-- 定義保持。基表複製ではない</span>
+<span class="kw">CREATE SEQUENCE</span> s <span class="kw">START WITH</span> 1 <span class="kw">INCREMENT BY</span> 1;  <span class="desc">-- CURRVAL は NEXTVAL 実行後のみ有効</span>
+<span class="kw">CREATE INDEX</span> idx <span class="kw">ON</span> 表(列);
+<span class="kw">GRANT</span> 権限 <span class="kw">ON</span> 表 <span class="kw">TO</span> ユーザ [<span class="kw">WITH GRANT OPTION</span>];
+<span class="note">-- DDL はすべて暗黙 COMMIT を伴う。DEFAULT は値省略時 / VALUES(DEFAULT) で補完。</span></div></div>
       <div class="guide-block">
-        <div class="guide-title">正式構文・基本形</div>
+        <div class="guide-title">この論点の基本形</div>
         <pre>CREATE VIEW v_item AS
 SELECT item_id, item_name FROM item;
 
@@ -1553,8 +1579,19 @@ GRANT SELECT ON item TO user_name;</pre>
         <div class="guide-title">論点の定義</div>
         <p>Oracle のオブジェクト管理問題では、ビュー、索引、シーケンス、シノニム、権限、日時型のそれぞれに固有の成立条件がある。</p>
       </div>
+      <div class="guide-block"><div class="guide-title">句の並び順（Oracle 正式構文）</div><div class="clause-order"><span class="kw">CREATE TABLE</span> 表 (
+  列 型 [<span class="kw">DEFAULT</span> 値] [<span class="kw">NOT NULL</span>] [<span class="kw">CONSTRAINT</span> 名 <span class="kw">PRIMARY KEY</span> | …]
+);
+<span class="kw">ALTER TABLE</span> 表 <span class="kw">ADD</span>      (列 型 [DEFAULT …] [NOT NULL]);  <span class="desc">-- 既存行ありでNOT NULLなら DEFAULT 必須</span>
+<span class="kw">ALTER TABLE</span> 表 <span class="kw">MODIFY</span>   (列 型 | DEFAULT | NOT NULL);
+<span class="kw">ALTER TABLE</span> 表 <span class="kw">DROP COLUMN</span> 列;
+<span class="kw">CREATE VIEW</span> v <span class="kw">AS SELECT</span> …;              <span class="desc">-- 定義保持。基表複製ではない</span>
+<span class="kw">CREATE SEQUENCE</span> s <span class="kw">START WITH</span> 1 <span class="kw">INCREMENT BY</span> 1;  <span class="desc">-- CURRVAL は NEXTVAL 実行後のみ有効</span>
+<span class="kw">CREATE INDEX</span> idx <span class="kw">ON</span> 表(列);
+<span class="kw">GRANT</span> 権限 <span class="kw">ON</span> 表 <span class="kw">TO</span> ユーザ [<span class="kw">WITH GRANT OPTION</span>];
+<span class="note">-- DDL はすべて暗黙 COMMIT を伴う。DEFAULT は値省略時 / VALUES(DEFAULT) で補完。</span></div></div>
       <div class="guide-block">
-        <div class="guide-title">正式構文・基本形</div>
+        <div class="guide-title">この論点の基本形</div>
         <pre>CREATE VIEW v_item AS
 SELECT item_id, item_name FROM item;
 
@@ -2196,8 +2233,19 @@ ITEMとMAKER表の所有者とGRANT文の実行ユーザーは一般ユーザー
         <div class="guide-title">論点の定義</div>
         <p>DDL は表定義や制約を変更する文であり、列定義・制約定義・既存データへの影響を同時に読む必要がある。DEFAULT は値省略時に補完されるが、列指定や VALUES 個数との対応は別に守られる。</p>
       </div>
+      <div class="guide-block"><div class="guide-title">句の並び順（Oracle 正式構文）</div><div class="clause-order"><span class="kw">CREATE TABLE</span> 表 (
+  列 型 [<span class="kw">DEFAULT</span> 値] [<span class="kw">NOT NULL</span>] [<span class="kw">CONSTRAINT</span> 名 <span class="kw">PRIMARY KEY</span> | …]
+);
+<span class="kw">ALTER TABLE</span> 表 <span class="kw">ADD</span>      (列 型 [DEFAULT …] [NOT NULL]);  <span class="desc">-- 既存行ありでNOT NULLなら DEFAULT 必須</span>
+<span class="kw">ALTER TABLE</span> 表 <span class="kw">MODIFY</span>   (列 型 | DEFAULT | NOT NULL);
+<span class="kw">ALTER TABLE</span> 表 <span class="kw">DROP COLUMN</span> 列;
+<span class="kw">CREATE VIEW</span> v <span class="kw">AS SELECT</span> …;              <span class="desc">-- 定義保持。基表複製ではない</span>
+<span class="kw">CREATE SEQUENCE</span> s <span class="kw">START WITH</span> 1 <span class="kw">INCREMENT BY</span> 1;  <span class="desc">-- CURRVAL は NEXTVAL 実行後のみ有効</span>
+<span class="kw">CREATE INDEX</span> idx <span class="kw">ON</span> 表(列);
+<span class="kw">GRANT</span> 権限 <span class="kw">ON</span> 表 <span class="kw">TO</span> ユーザ [<span class="kw">WITH GRANT OPTION</span>];
+<span class="note">-- DDL はすべて暗黙 COMMIT を伴う。DEFAULT は値省略時 / VALUES(DEFAULT) で補完。</span></div></div>
       <div class="guide-block">
-        <div class="guide-title">正式構文・基本形</div>
+        <div class="guide-title">この論点の基本形</div>
         <pre>ALTER TABLE item
 ADD status VARCHAR2(10) DEFAULT &#x27;NEW&#x27; NOT NULL;
 
@@ -2760,8 +2808,19 @@ COMMIT;
         <div class="guide-title">論点の定義</div>
         <p>Oracle のオブジェクト管理問題では、ビュー、索引、シーケンス、シノニム、権限、日時型のそれぞれに固有の成立条件がある。</p>
       </div>
+      <div class="guide-block"><div class="guide-title">句の並び順（Oracle 正式構文）</div><div class="clause-order"><span class="kw">CREATE TABLE</span> 表 (
+  列 型 [<span class="kw">DEFAULT</span> 値] [<span class="kw">NOT NULL</span>] [<span class="kw">CONSTRAINT</span> 名 <span class="kw">PRIMARY KEY</span> | …]
+);
+<span class="kw">ALTER TABLE</span> 表 <span class="kw">ADD</span>      (列 型 [DEFAULT …] [NOT NULL]);  <span class="desc">-- 既存行ありでNOT NULLなら DEFAULT 必須</span>
+<span class="kw">ALTER TABLE</span> 表 <span class="kw">MODIFY</span>   (列 型 | DEFAULT | NOT NULL);
+<span class="kw">ALTER TABLE</span> 表 <span class="kw">DROP COLUMN</span> 列;
+<span class="kw">CREATE VIEW</span> v <span class="kw">AS SELECT</span> …;              <span class="desc">-- 定義保持。基表複製ではない</span>
+<span class="kw">CREATE SEQUENCE</span> s <span class="kw">START WITH</span> 1 <span class="kw">INCREMENT BY</span> 1;  <span class="desc">-- CURRVAL は NEXTVAL 実行後のみ有効</span>
+<span class="kw">CREATE INDEX</span> idx <span class="kw">ON</span> 表(列);
+<span class="kw">GRANT</span> 権限 <span class="kw">ON</span> 表 <span class="kw">TO</span> ユーザ [<span class="kw">WITH GRANT OPTION</span>];
+<span class="note">-- DDL はすべて暗黙 COMMIT を伴う。DEFAULT は値省略時 / VALUES(DEFAULT) で補完。</span></div></div>
       <div class="guide-block">
-        <div class="guide-title">正式構文・基本形</div>
+        <div class="guide-title">この論点の基本形</div>
         <pre>CREATE VIEW v_item AS
 SELECT item_id, item_name FROM item;
 
@@ -3203,8 +3262,19 @@ SELECT CURRENT_TIMESTAMP, SYSTIMESTAMP FROM DUAL;
         <div class="guide-title">論点の定義</div>
         <p>DDL は表定義や制約を変更する文であり、列定義・制約定義・既存データへの影響を同時に読む必要がある。DEFAULT は値省略時に補完されるが、列指定や VALUES 個数との対応は別に守られる。</p>
       </div>
+      <div class="guide-block"><div class="guide-title">句の並び順（Oracle 正式構文）</div><div class="clause-order"><span class="kw">CREATE TABLE</span> 表 (
+  列 型 [<span class="kw">DEFAULT</span> 値] [<span class="kw">NOT NULL</span>] [<span class="kw">CONSTRAINT</span> 名 <span class="kw">PRIMARY KEY</span> | …]
+);
+<span class="kw">ALTER TABLE</span> 表 <span class="kw">ADD</span>      (列 型 [DEFAULT …] [NOT NULL]);  <span class="desc">-- 既存行ありでNOT NULLなら DEFAULT 必須</span>
+<span class="kw">ALTER TABLE</span> 表 <span class="kw">MODIFY</span>   (列 型 | DEFAULT | NOT NULL);
+<span class="kw">ALTER TABLE</span> 表 <span class="kw">DROP COLUMN</span> 列;
+<span class="kw">CREATE VIEW</span> v <span class="kw">AS SELECT</span> …;              <span class="desc">-- 定義保持。基表複製ではない</span>
+<span class="kw">CREATE SEQUENCE</span> s <span class="kw">START WITH</span> 1 <span class="kw">INCREMENT BY</span> 1;  <span class="desc">-- CURRVAL は NEXTVAL 実行後のみ有効</span>
+<span class="kw">CREATE INDEX</span> idx <span class="kw">ON</span> 表(列);
+<span class="kw">GRANT</span> 権限 <span class="kw">ON</span> 表 <span class="kw">TO</span> ユーザ [<span class="kw">WITH GRANT OPTION</span>];
+<span class="note">-- DDL はすべて暗黙 COMMIT を伴う。DEFAULT は値省略時 / VALUES(DEFAULT) で補完。</span></div></div>
       <div class="guide-block">
-        <div class="guide-title">正式構文・基本形</div>
+        <div class="guide-title">この論点の基本形</div>
         <pre>ALTER TABLE item
 ADD status VARCHAR2(10) DEFAULT &#x27;NEW&#x27; NOT NULL;
 
@@ -3640,8 +3710,19 @@ CREATE TABLE reservations (
         <div class="guide-title">論点の定義</div>
         <p>DDL は表定義や制約を変更する文であり、列定義・制約定義・既存データへの影響を同時に読む必要がある。DEFAULT は値省略時に補完されるが、列指定や VALUES 個数との対応は別に守られる。</p>
       </div>
+      <div class="guide-block"><div class="guide-title">句の並び順（Oracle 正式構文）</div><div class="clause-order"><span class="kw">CREATE TABLE</span> 表 (
+  列 型 [<span class="kw">DEFAULT</span> 値] [<span class="kw">NOT NULL</span>] [<span class="kw">CONSTRAINT</span> 名 <span class="kw">PRIMARY KEY</span> | …]
+);
+<span class="kw">ALTER TABLE</span> 表 <span class="kw">ADD</span>      (列 型 [DEFAULT …] [NOT NULL]);  <span class="desc">-- 既存行ありでNOT NULLなら DEFAULT 必須</span>
+<span class="kw">ALTER TABLE</span> 表 <span class="kw">MODIFY</span>   (列 型 | DEFAULT | NOT NULL);
+<span class="kw">ALTER TABLE</span> 表 <span class="kw">DROP COLUMN</span> 列;
+<span class="kw">CREATE VIEW</span> v <span class="kw">AS SELECT</span> …;              <span class="desc">-- 定義保持。基表複製ではない</span>
+<span class="kw">CREATE SEQUENCE</span> s <span class="kw">START WITH</span> 1 <span class="kw">INCREMENT BY</span> 1;  <span class="desc">-- CURRVAL は NEXTVAL 実行後のみ有効</span>
+<span class="kw">CREATE INDEX</span> idx <span class="kw">ON</span> 表(列);
+<span class="kw">GRANT</span> 権限 <span class="kw">ON</span> 表 <span class="kw">TO</span> ユーザ [<span class="kw">WITH GRANT OPTION</span>];
+<span class="note">-- DDL はすべて暗黙 COMMIT を伴う。DEFAULT は値省略時 / VALUES(DEFAULT) で補完。</span></div></div>
       <div class="guide-block">
-        <div class="guide-title">正式構文・基本形</div>
+        <div class="guide-title">この論点の基本形</div>
         <pre>ALTER TABLE item
 ADD status VARCHAR2(10) DEFAULT &#x27;NEW&#x27; NOT NULL;
 
@@ -3948,8 +4029,19 @@ VALUES (&#x27;1001&#x27;, &#x27;ITEM1&#x27;);</pre>
         <div class="guide-title">論点の定義</div>
         <p>MERGE は一致時 UPDATE、非一致時 INSERT を 1 文で行う DML である。更新対象は 1 表だけで、USING には比較元の表や副問合せを置く。</p>
       </div>
+      <div class="guide-block"><div class="guide-title">句の並び順（Oracle 正式構文）</div><div class="clause-order"><span class="kw">CREATE TABLE</span> 表 (
+  列 型 [<span class="kw">DEFAULT</span> 値] [<span class="kw">NOT NULL</span>] [<span class="kw">CONSTRAINT</span> 名 <span class="kw">PRIMARY KEY</span> | …]
+);
+<span class="kw">ALTER TABLE</span> 表 <span class="kw">ADD</span>      (列 型 [DEFAULT …] [NOT NULL]);  <span class="desc">-- 既存行ありでNOT NULLなら DEFAULT 必須</span>
+<span class="kw">ALTER TABLE</span> 表 <span class="kw">MODIFY</span>   (列 型 | DEFAULT | NOT NULL);
+<span class="kw">ALTER TABLE</span> 表 <span class="kw">DROP COLUMN</span> 列;
+<span class="kw">CREATE VIEW</span> v <span class="kw">AS SELECT</span> …;              <span class="desc">-- 定義保持。基表複製ではない</span>
+<span class="kw">CREATE SEQUENCE</span> s <span class="kw">START WITH</span> 1 <span class="kw">INCREMENT BY</span> 1;  <span class="desc">-- CURRVAL は NEXTVAL 実行後のみ有効</span>
+<span class="kw">CREATE INDEX</span> idx <span class="kw">ON</span> 表(列);
+<span class="kw">GRANT</span> 権限 <span class="kw">ON</span> 表 <span class="kw">TO</span> ユーザ [<span class="kw">WITH GRANT OPTION</span>];
+<span class="note">-- DDL はすべて暗黙 COMMIT を伴う。DEFAULT は値省略時 / VALUES(DEFAULT) で補完。</span></div></div>
       <div class="guide-block">
-        <div class="guide-title">正式構文・基本形</div>
+        <div class="guide-title">この論点の基本形</div>
         <pre>MERGE INTO target t
 USING source s
 ON (t.id = s.id)

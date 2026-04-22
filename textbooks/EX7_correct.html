@@ -41,15 +41,19 @@
   .block-title { font-size: .85rem; font-weight: 800; color: #f1c40f; margin: 10px 0 6px; }
   pre { white-space: pre-wrap; word-break: break-word; background: #0f172a; color: #e2e8f0; border-radius: 12px; padding: 14px; font-size: .84rem; overflow-x: auto; }
   .analysis-block p { color: #334155; font-size: .9rem; margin-bottom: 8px; }
-  .option-review-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 10px; margin-bottom: 8px; }
-  .option-review { border-radius: 14px; padding: 12px; border: 1px solid #dbe4ef; background: white; }
-  .option-review.correct { border-left: 5px solid #16a34a; }
-  .option-review.wrong { border-left: 5px solid #c0392b; }
-  .option-review-head { display: flex; justify-content: space-between; gap: 10px; align-items: center; margin-bottom: 8px; }
-  .option-review-key { font-size: .92rem; font-weight: 900; color: #0f172a; }
-  .option-review-badges span { display: inline-block; background: #eef2f7; color: #334155; font-size: .74rem; font-weight: 800; border-radius: 999px; padding: 3px 8px; margin-left: 6px; }
-  .option-review-text { color: #1f2937; font-size: .88rem; margin-bottom: 8px; }
-  .option-review-reason { color: #475569; font-size: .86rem; }
+  .option-review-grid { display: flex; flex-direction: column; gap: 12px; margin-bottom: 8px; }
+  .option-review { border-radius: 14px; padding: 16px 18px; border: 1px solid #dbe4ef; background: white; }
+  .option-review.correct { border-left: 6px solid #16a34a; background: #f6fdf8; }
+  .option-review.wrong { border-left: 6px solid #c0392b; background: #fffafa; }
+  .option-review-head { display: flex; justify-content: flex-start; gap: 12px; align-items: center; margin-bottom: 10px; }
+  .option-review-key { font-size: 1.05rem; font-weight: 900; color: #0f172a; min-width: 1.8em; }
+  .option-review-badges span { display: inline-block; background: #eef2f7; color: #334155; font-size: .74rem; font-weight: 800; border-radius: 999px; padding: 3px 10px; margin-left: 4px; }
+  .option-review-text { color: #1f2937; font-size: .98rem; line-height: 1.65; margin-bottom: 10px; font-weight: 600; }
+  .option-review-reason { color: #334155; font-size: .92rem; line-height: 1.75; }
+  .clause-order { background: #0f172a; color: #e2e8f0; border-radius: 12px; padding: 14px 16px; font-family: 'SFMono-Regular', Menlo, Consolas, monospace; font-size: .86rem; line-height: 1.8; white-space: pre; overflow-x: auto; }
+  .clause-order .kw { color: #fbbf24; font-weight: 800; }
+  .clause-order .desc { color: #93c5fd; }
+  .clause-order .note { color: #86efac; font-style: italic; }
   .study-step-list { padding-left: 20px; color: #334155; font-size: .9rem; }
   .study-step-list li { margin-bottom: 5px; }
   @media (max-width: 720px) {
@@ -101,8 +105,15 @@
         <div class="guide-title">論点の定義</div>
         <p>SQL と RDB の基礎問題では、制約、キー、ER 図、SQL 分類など、文法以前のデータベース原則を正確に押さえる必要がある。</p>
       </div>
+      <div class="guide-block"><div class="guide-title">句の並び順（Oracle 正式構文）</div><div class="clause-order"><span class="kw">CREATE TABLE</span> 表名 (
+  列名 データ型 [<span class="kw">DEFAULT</span> 既定値] [列制約 …],
+  …,
+  [<span class="kw">CONSTRAINT</span> 名称 <span class="kw">PRIMARY KEY</span> | <span class="kw">FOREIGN KEY</span> | <span class="kw">UNIQUE</span> | <span class="kw">CHECK</span> (条件)]
+);
+<span class="note">-- 主キーは NOT NULL かつ UNIQUE。外部キーは NULL を許容可。</span>
+<span class="note">-- DDL/DML/DCL/TCL は役割で分類する（CREATE=DDL、INSERT=DML、GRANT=DCL、COMMIT=TCL）。</span></div></div>
       <div class="guide-block">
-        <div class="guide-title">正式構文・基本形</div>
+        <div class="guide-title">この論点の基本形</div>
         <pre>CREATE TABLE child (
   child_id NUMBER PRIMARY KEY,
   parent_id NUMBER REFERENCES parent(parent_id)
@@ -893,8 +904,15 @@
         <div class="guide-title">論点の定義</div>
         <p>SQL と RDB の基礎問題では、制約、キー、ER 図、SQL 分類など、文法以前のデータベース原則を正確に押さえる必要がある。</p>
       </div>
+      <div class="guide-block"><div class="guide-title">句の並び順（Oracle 正式構文）</div><div class="clause-order"><span class="kw">CREATE TABLE</span> 表名 (
+  列名 データ型 [<span class="kw">DEFAULT</span> 既定値] [列制約 …],
+  …,
+  [<span class="kw">CONSTRAINT</span> 名称 <span class="kw">PRIMARY KEY</span> | <span class="kw">FOREIGN KEY</span> | <span class="kw">UNIQUE</span> | <span class="kw">CHECK</span> (条件)]
+);
+<span class="note">-- 主キーは NOT NULL かつ UNIQUE。外部キーは NULL を許容可。</span>
+<span class="note">-- DDL/DML/DCL/TCL は役割で分類する（CREATE=DDL、INSERT=DML、GRANT=DCL、COMMIT=TCL）。</span></div></div>
       <div class="guide-block">
-        <div class="guide-title">正式構文・基本形</div>
+        <div class="guide-title">この論点の基本形</div>
         <pre>CREATE TABLE child (
   child_id NUMBER PRIMARY KEY,
   parent_id NUMBER REFERENCES parent(parent_id)
@@ -1206,8 +1224,15 @@ ENGINEER_ID ENGINEER_NAME TEAM_ID TEAM_NAME
         <div class="guide-title">論点の定義</div>
         <p>SQL と RDB の基礎問題では、制約、キー、ER 図、SQL 分類など、文法以前のデータベース原則を正確に押さえる必要がある。</p>
       </div>
+      <div class="guide-block"><div class="guide-title">句の並び順（Oracle 正式構文）</div><div class="clause-order"><span class="kw">CREATE TABLE</span> 表名 (
+  列名 データ型 [<span class="kw">DEFAULT</span> 既定値] [列制約 …],
+  …,
+  [<span class="kw">CONSTRAINT</span> 名称 <span class="kw">PRIMARY KEY</span> | <span class="kw">FOREIGN KEY</span> | <span class="kw">UNIQUE</span> | <span class="kw">CHECK</span> (条件)]
+);
+<span class="note">-- 主キーは NOT NULL かつ UNIQUE。外部キーは NULL を許容可。</span>
+<span class="note">-- DDL/DML/DCL/TCL は役割で分類する（CREATE=DDL、INSERT=DML、GRANT=DCL、COMMIT=TCL）。</span></div></div>
       <div class="guide-block">
-        <div class="guide-title">正式構文・基本形</div>
+        <div class="guide-title">この論点の基本形</div>
         <pre>CREATE TABLE child (
   child_id NUMBER PRIMARY KEY,
   parent_id NUMBER REFERENCES parent(parent_id)

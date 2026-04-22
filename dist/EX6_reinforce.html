@@ -41,15 +41,19 @@
   .block-title { font-size: .85rem; font-weight: 800; color: #e67e22; margin: 10px 0 6px; }
   pre { white-space: pre-wrap; word-break: break-word; background: #0f172a; color: #e2e8f0; border-radius: 12px; padding: 14px; font-size: .84rem; overflow-x: auto; }
   .analysis-block p { color: #334155; font-size: .9rem; margin-bottom: 8px; }
-  .option-review-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 10px; margin-bottom: 8px; }
-  .option-review { border-radius: 14px; padding: 12px; border: 1px solid #dbe4ef; background: white; }
-  .option-review.correct { border-left: 5px solid #16a34a; }
-  .option-review.wrong { border-left: 5px solid #c0392b; }
-  .option-review-head { display: flex; justify-content: space-between; gap: 10px; align-items: center; margin-bottom: 8px; }
-  .option-review-key { font-size: .92rem; font-weight: 900; color: #0f172a; }
-  .option-review-badges span { display: inline-block; background: #eef2f7; color: #334155; font-size: .74rem; font-weight: 800; border-radius: 999px; padding: 3px 8px; margin-left: 6px; }
-  .option-review-text { color: #1f2937; font-size: .88rem; margin-bottom: 8px; }
-  .option-review-reason { color: #475569; font-size: .86rem; }
+  .option-review-grid { display: flex; flex-direction: column; gap: 12px; margin-bottom: 8px; }
+  .option-review { border-radius: 14px; padding: 16px 18px; border: 1px solid #dbe4ef; background: white; }
+  .option-review.correct { border-left: 6px solid #16a34a; background: #f6fdf8; }
+  .option-review.wrong { border-left: 6px solid #c0392b; background: #fffafa; }
+  .option-review-head { display: flex; justify-content: flex-start; gap: 12px; align-items: center; margin-bottom: 10px; }
+  .option-review-key { font-size: 1.05rem; font-weight: 900; color: #0f172a; min-width: 1.8em; }
+  .option-review-badges span { display: inline-block; background: #eef2f7; color: #334155; font-size: .74rem; font-weight: 800; border-radius: 999px; padding: 3px 10px; margin-left: 4px; }
+  .option-review-text { color: #1f2937; font-size: .98rem; line-height: 1.65; margin-bottom: 10px; font-weight: 600; }
+  .option-review-reason { color: #334155; font-size: .92rem; line-height: 1.75; }
+  .clause-order { background: #0f172a; color: #e2e8f0; border-radius: 12px; padding: 14px 16px; font-family: 'SFMono-Regular', Menlo, Consolas, monospace; font-size: .86rem; line-height: 1.8; white-space: pre; overflow-x: auto; }
+  .clause-order .kw { color: #fbbf24; font-weight: 800; }
+  .clause-order .desc { color: #93c5fd; }
+  .clause-order .note { color: #86efac; font-style: italic; }
   .study-step-list { padding-left: 20px; color: #334155; font-size: .9rem; }
   .study-step-list li { margin-bottom: 5px; }
   @media (max-width: 720px) {
@@ -101,8 +105,15 @@
         <div class="guide-title">論点の定義</div>
         <p>集計問題では、行条件は WHERE、グループ条件は HAVING、集計関数以外の列は GROUP BY に含める、という基本規則を守る必要がある。</p>
       </div>
+      <div class="guide-block"><div class="guide-title">句の並び順（Oracle 正式構文）</div><div class="clause-order"><span class="kw">SELECT</span>   グループ列, 集計関数(列) <span class="desc">-- 集計結果</span>
+<span class="kw">FROM</span>     表
+<span class="kw">WHERE</span>    行条件                 <span class="desc">-- ← 集計“前”。集計関数は書けない</span>
+<span class="kw">GROUP BY</span> グループ化列          <span class="desc">-- SELECT の非集計列はすべてここに含める</span>
+<span class="kw">HAVING</span>   集計条件               <span class="desc">-- ← 集計“後”。COUNT(*) 等はここに書く</span>
+<span class="kw">ORDER BY</span> 集計列 / 位置番号
+<span class="note">-- COUNT(*) は全行、COUNT(列) は NULL を除く。SUM/AVG/MIN/MAX は NULL を無視。</span></div></div>
       <div class="guide-block">
-        <div class="guide-title">正式構文・基本形</div>
+        <div class="guide-title">この論点の基本形</div>
         <pre>SELECT department_id, COUNT(*)
 FROM   employees
 WHERE  salary IS NOT NULL
@@ -400,8 +411,15 @@ Employees表に対して以下のクエリを実行する場合、エラーと�
         <div class="guide-title">論点の定義</div>
         <p>集計問題では、行条件は WHERE、グループ条件は HAVING、集計関数以外の列は GROUP BY に含める、という基本規則を守る必要がある。</p>
       </div>
+      <div class="guide-block"><div class="guide-title">句の並び順（Oracle 正式構文）</div><div class="clause-order"><span class="kw">SELECT</span>   グループ列, 集計関数(列) <span class="desc">-- 集計結果</span>
+<span class="kw">FROM</span>     表
+<span class="kw">WHERE</span>    行条件                 <span class="desc">-- ← 集計“前”。集計関数は書けない</span>
+<span class="kw">GROUP BY</span> グループ化列          <span class="desc">-- SELECT の非集計列はすべてここに含める</span>
+<span class="kw">HAVING</span>   集計条件               <span class="desc">-- ← 集計“後”。COUNT(*) 等はここに書く</span>
+<span class="kw">ORDER BY</span> 集計列 / 位置番号
+<span class="note">-- COUNT(*) は全行、COUNT(列) は NULL を除く。SUM/AVG/MIN/MAX は NULL を無視。</span></div></div>
       <div class="guide-block">
-        <div class="guide-title">正式構文・基本形</div>
+        <div class="guide-title">この論点の基本形</div>
         <pre>SELECT department_id, COUNT(*)
 FROM   employees
 WHERE  salary IS NOT NULL

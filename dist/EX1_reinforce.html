@@ -41,15 +41,19 @@
   .block-title { font-size: .85rem; font-weight: 800; color: #e67e22; margin: 10px 0 6px; }
   pre { white-space: pre-wrap; word-break: break-word; background: #0f172a; color: #e2e8f0; border-radius: 12px; padding: 14px; font-size: .84rem; overflow-x: auto; }
   .analysis-block p { color: #334155; font-size: .9rem; margin-bottom: 8px; }
-  .option-review-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 10px; margin-bottom: 8px; }
-  .option-review { border-radius: 14px; padding: 12px; border: 1px solid #dbe4ef; background: white; }
-  .option-review.correct { border-left: 5px solid #16a34a; }
-  .option-review.wrong { border-left: 5px solid #c0392b; }
-  .option-review-head { display: flex; justify-content: space-between; gap: 10px; align-items: center; margin-bottom: 8px; }
-  .option-review-key { font-size: .92rem; font-weight: 900; color: #0f172a; }
-  .option-review-badges span { display: inline-block; background: #eef2f7; color: #334155; font-size: .74rem; font-weight: 800; border-radius: 999px; padding: 3px 8px; margin-left: 6px; }
-  .option-review-text { color: #1f2937; font-size: .88rem; margin-bottom: 8px; }
-  .option-review-reason { color: #475569; font-size: .86rem; }
+  .option-review-grid { display: flex; flex-direction: column; gap: 12px; margin-bottom: 8px; }
+  .option-review { border-radius: 14px; padding: 16px 18px; border: 1px solid #dbe4ef; background: white; }
+  .option-review.correct { border-left: 6px solid #16a34a; background: #f6fdf8; }
+  .option-review.wrong { border-left: 6px solid #c0392b; background: #fffafa; }
+  .option-review-head { display: flex; justify-content: flex-start; gap: 12px; align-items: center; margin-bottom: 10px; }
+  .option-review-key { font-size: 1.05rem; font-weight: 900; color: #0f172a; min-width: 1.8em; }
+  .option-review-badges span { display: inline-block; background: #eef2f7; color: #334155; font-size: .74rem; font-weight: 800; border-radius: 999px; padding: 3px 10px; margin-left: 4px; }
+  .option-review-text { color: #1f2937; font-size: .98rem; line-height: 1.65; margin-bottom: 10px; font-weight: 600; }
+  .option-review-reason { color: #334155; font-size: .92rem; line-height: 1.75; }
+  .clause-order { background: #0f172a; color: #e2e8f0; border-radius: 12px; padding: 14px 16px; font-family: 'SFMono-Regular', Menlo, Consolas, monospace; font-size: .86rem; line-height: 1.8; white-space: pre; overflow-x: auto; }
+  .clause-order .kw { color: #fbbf24; font-weight: 800; }
+  .clause-order .desc { color: #93c5fd; }
+  .clause-order .note { color: #86efac; font-style: italic; }
   .study-step-list { padding-left: 20px; color: #334155; font-size: .9rem; }
   .study-step-list li { margin-bottom: 5px; }
   @media (max-width: 720px) {
@@ -101,8 +105,18 @@
         <div class="guide-title">論点の定義</div>
         <p>結合問題では、どの表の行を残すか、同名列をどう結び付けるか、自己結合か外部結合かを区別して読む必要がある。</p>
       </div>
+      <div class="guide-block"><div class="guide-title">句の並び順（Oracle 正式構文）</div><div class="clause-order"><span class="kw">SELECT</span> e.col, d.col
+<span class="kw">FROM</span>   employees e
+<span class="kw">[INNER | LEFT | RIGHT | FULL] OUTER JOIN</span> departments d
+<span class="kw">ON</span>     e.dept_id = d.dept_id     <span class="desc">-- ON は任意の結合条件</span>
+   -- または --
+<span class="kw">JOIN</span>   departments <span class="kw">USING</span> (dept_id) <span class="desc">-- USING は同名列限定、別名不可</span>
+<span class="kw">NATURAL JOIN</span> departments             <span class="desc">-- 同名列を自動結合（ON/USING 不可）</span>
+<span class="kw">WHERE</span>  … <span class="kw">ORDER BY</span> …;
+<span class="note">-- 自己結合は同じ表を別名 2 回で FROM に書く。JOIN 種類は INNER でも外部でも可。</span>
+<span class="note">-- Oracle 独自 (+) は FULL OUTER JOIN と NATURAL JOIN をサポートしない。</span></div></div>
       <div class="guide-block">
-        <div class="guide-title">正式構文・基本形</div>
+        <div class="guide-title">この論点の基本形</div>
         <pre>SELECT e.employee_id, m.employee_id AS manager_id
 FROM   employees e
 JOIN   employees m
@@ -396,8 +410,18 @@ ON     e.manager_id = m.employee_id;</pre>
         <div class="guide-title">論点の定義</div>
         <p>結合問題では、どの表の行を残すか、同名列をどう結び付けるか、自己結合か外部結合かを区別して読む必要がある。</p>
       </div>
+      <div class="guide-block"><div class="guide-title">句の並び順（Oracle 正式構文）</div><div class="clause-order"><span class="kw">SELECT</span> e.col, d.col
+<span class="kw">FROM</span>   employees e
+<span class="kw">[INNER | LEFT | RIGHT | FULL] OUTER JOIN</span> departments d
+<span class="kw">ON</span>     e.dept_id = d.dept_id     <span class="desc">-- ON は任意の結合条件</span>
+   -- または --
+<span class="kw">JOIN</span>   departments <span class="kw">USING</span> (dept_id) <span class="desc">-- USING は同名列限定、別名不可</span>
+<span class="kw">NATURAL JOIN</span> departments             <span class="desc">-- 同名列を自動結合（ON/USING 不可）</span>
+<span class="kw">WHERE</span>  … <span class="kw">ORDER BY</span> …;
+<span class="note">-- 自己結合は同じ表を別名 2 回で FROM に書く。JOIN 種類は INNER でも外部でも可。</span>
+<span class="note">-- Oracle 独自 (+) は FULL OUTER JOIN と NATURAL JOIN をサポートしない。</span></div></div>
       <div class="guide-block">
-        <div class="guide-title">正式構文・基本形</div>
+        <div class="guide-title">この論点の基本形</div>
         <pre>SELECT e.employee_id, m.employee_id AS manager_id
 FROM   employees e
 JOIN   employees m

@@ -1193,20 +1193,116 @@ def concept_teaching_pack(domain: str, concept_id: str) -> dict[str, object]:
     }
 
 
+DOMAIN_CLAUSE_ORDER = {
+    "D1": (
+        '<span class="kw">CREATE TABLE</span> 表名 (\n'
+        '  列名 データ型 [<span class="kw">DEFAULT</span> 既定値] [列制約 …],\n'
+        '  …,\n'
+        '  [<span class="kw">CONSTRAINT</span> 名称 <span class="kw">PRIMARY KEY</span> | <span class="kw">FOREIGN KEY</span> | <span class="kw">UNIQUE</span> | <span class="kw">CHECK</span> (条件)]\n'
+        ');\n'
+        '<span class="note">-- 主キーは NOT NULL かつ UNIQUE。外部キーは NULL を許容可。</span>\n'
+        '<span class="note">-- DDL/DML/DCL/TCL は役割で分類する（CREATE=DDL、INSERT=DML、GRANT=DCL、COMMIT=TCL）。</span>'
+    ),
+    "D2": (
+        '<span class="kw">SELECT</span>    列リスト / 式 / DISTINCT <span class="desc">-- 出力する列</span>\n'
+        '<span class="kw">FROM</span>      表 [別名]                <span class="desc">-- 取得元</span>\n'
+        '<span class="kw">WHERE</span>     行フィルタ条件            <span class="desc">-- 行を絞り込み（集約前）</span>\n'
+        '<span class="kw">ORDER BY</span>  列 / 位置 / 式 [ASC|DESC] <span class="desc">-- 並べ替え</span>\n'
+        '<span class="kw">FETCH FIRST</span> n <span class="kw">ROWS ONLY</span>   <span class="desc">-- 行制限（12c 以降）</span>\n'
+        '<span class="note">-- NULL 判定は = NULL ではなく IS [NOT] NULL。AND は OR より優先。</span>\n'
+        '<span class="note">-- ROWNUM は ORDER BY より先に振られるため、並び替え後の上位取得は副問合せか FETCH。</span>'
+    ),
+    "D3": (
+        '<span class="kw">SELECT</span> 単一行関数(列)        <span class="desc">-- 値の変換・整形（列ごとに結果）</span>\n'
+        '<span class="kw">FROM</span>   表\n'
+        '<span class="kw">WHERE</span>  単一行関数(列) 比較演算子 値\n'
+        '<span class="kw">ORDER BY</span> 単一行関数(列);\n'
+        '<span class="note">-- 単一行関数は SELECT / WHERE / ORDER BY のどれにも書ける（GROUP BY 後の HAVING 内でも可）。</span>\n'
+        '<span class="note">-- 変換順序: 演算前に TO_NUMBER / TO_DATE、表示直前に TO_CHAR。</span>\n'
+        '<span class="note">-- NULL 処理: NVL(式, 代替) / NVL2(式, 非NULL, NULL) / COALESCE / CASE。</span>'
+    ),
+    "D4": (
+        '<span class="kw">SELECT</span>   グループ列, 集計関数(列) <span class="desc">-- 集計結果</span>\n'
+        '<span class="kw">FROM</span>     表\n'
+        '<span class="kw">WHERE</span>    行条件                 <span class="desc">-- ← 集計“前”。集計関数は書けない</span>\n'
+        '<span class="kw">GROUP BY</span> グループ化列          <span class="desc">-- SELECT の非集計列はすべてここに含める</span>\n'
+        '<span class="kw">HAVING</span>   集計条件               <span class="desc">-- ← 集計“後”。COUNT(*) 等はここに書く</span>\n'
+        '<span class="kw">ORDER BY</span> 集計列 / 位置番号\n'
+        '<span class="note">-- COUNT(*) は全行、COUNT(列) は NULL を除く。SUM/AVG/MIN/MAX は NULL を無視。</span>'
+    ),
+    "D5": (
+        '<span class="kw">SELECT</span> e.col, d.col\n'
+        '<span class="kw">FROM</span>   employees e\n'
+        '<span class="kw">[INNER | LEFT | RIGHT | FULL] OUTER JOIN</span> departments d\n'
+        '<span class="kw">ON</span>     e.dept_id = d.dept_id     <span class="desc">-- ON は任意の結合条件</span>\n'
+        '   -- または --\n'
+        '<span class="kw">JOIN</span>   departments <span class="kw">USING</span> (dept_id) <span class="desc">-- USING は同名列限定、別名不可</span>\n'
+        '<span class="kw">NATURAL JOIN</span> departments             <span class="desc">-- 同名列を自動結合（ON/USING 不可）</span>\n'
+        '<span class="kw">WHERE</span>  … <span class="kw">ORDER BY</span> …;\n'
+        '<span class="note">-- 自己結合は同じ表を別名 2 回で FROM に書く。JOIN 種類は INNER でも外部でも可。</span>\n'
+        '<span class="note">-- Oracle 独自 (+) は FULL OUTER JOIN と NATURAL JOIN をサポートしない。</span>'
+    ),
+    "D6": (
+        '<span class="kw">SELECT</span> 列, (<span class="kw">SELECT</span> … <span class="kw">FROM</span> …) <span class="desc">-- スカラサブクエリ（SELECT句：1行1列必須）</span>\n'
+        '<span class="kw">FROM</span>   (<span class="kw">SELECT</span> … <span class="kw">FROM</span> …) v <span class="desc">-- インラインビュー（FROM句）</span>\n'
+        '<span class="kw">WHERE</span>  列 = (<span class="kw">SELECT</span> … )      <span class="desc">-- 単一行サブクエリ：=, &lt;, &gt;</span>\n'
+        '  <span class="kw">OR</span> 列 <span class="kw">IN</span>  (<span class="kw">SELECT</span> …)       <span class="desc">-- 複数行サブクエリ：IN / ANY / ALL</span>\n'
+        '  <span class="kw">OR EXISTS</span> (<span class="kw">SELECT</span> 1 <span class="kw">FROM</span> … <span class="kw">WHERE</span> o.k = i.k) <span class="desc">-- 相関・存在判定</span>\n'
+        '<span class="kw">UNION</span> [<span class="kw">ALL</span>] | <span class="kw">INTERSECT</span> | <span class="kw">MINUS</span>\n'
+        '<span class="kw">SELECT</span> …\n'
+        '<span class="kw">ORDER BY</span> 1;                   <span class="desc">-- ORDER BY は最後に 1 回だけ</span>\n'
+        '<span class="note">-- 相関：外側列を内側が参照 → 行ごとに再実行。非相関：内側が 1 回だけ実行。</span>\n'
+        '<span class="note">-- 集合演算は各 SELECT の列数・型が一致。列名は先頭 SELECT 基準。</span>'
+    ),
+    "D7": (
+        '<span class="kw">INSERT INTO</span> 表 [(列リスト)] <span class="kw">VALUES</span> (値リスト);   <span class="desc">-- 列数と順序を一致</span>\n'
+        '<span class="kw">UPDATE</span> 表 <span class="kw">SET</span> 列 = 値 [, …] [<span class="kw">WHERE</span> 条件];        <span class="desc">-- WHERE 省略で全行更新</span>\n'
+        '<span class="kw">DELETE FROM</span> 表 [<span class="kw">WHERE</span> 条件];                       <span class="desc">-- DML：ロールバック可能</span>\n'
+        '<span class="kw">MERGE INTO</span> 対象 t <span class="kw">USING</span> 比較元 s <span class="kw">ON</span> (条件)\n'
+        '  <span class="kw">WHEN MATCHED THEN UPDATE SET</span> … \n'
+        '  <span class="kw">WHEN NOT MATCHED THEN INSERT</span> (…) <span class="kw">VALUES</span> (…);\n'
+        '-- TCL --\n'
+        '<span class="kw">SAVEPOINT</span> 名称; … <span class="kw">ROLLBACK TO</span> 名称; <span class="kw">COMMIT</span>;\n'
+        '<span class="note">-- DDL (CREATE/ALTER/DROP/TRUNCATE) は暗黙 COMMIT。TRUNCATE はロールバック不可。</span>\n'
+        '<span class="note">-- COMMIT でロック解放・SAVEPOINT 消去。ROLLBACK TO は指定地点以降のみ取消。</span>'
+    ),
+    "D8": (
+        '<span class="kw">CREATE TABLE</span> 表 (\n'
+        '  列 型 [<span class="kw">DEFAULT</span> 値] [<span class="kw">NOT NULL</span>] [<span class="kw">CONSTRAINT</span> 名 <span class="kw">PRIMARY KEY</span> | …]\n'
+        ');\n'
+        '<span class="kw">ALTER TABLE</span> 表 <span class="kw">ADD</span>      (列 型 [DEFAULT …] [NOT NULL]);  <span class="desc">-- 既存行ありでNOT NULLなら DEFAULT 必須</span>\n'
+        '<span class="kw">ALTER TABLE</span> 表 <span class="kw">MODIFY</span>   (列 型 | DEFAULT | NOT NULL);\n'
+        '<span class="kw">ALTER TABLE</span> 表 <span class="kw">DROP COLUMN</span> 列;\n'
+        '<span class="kw">CREATE VIEW</span> v <span class="kw">AS SELECT</span> …;              <span class="desc">-- 定義保持。基表複製ではない</span>\n'
+        '<span class="kw">CREATE SEQUENCE</span> s <span class="kw">START WITH</span> 1 <span class="kw">INCREMENT BY</span> 1;  <span class="desc">-- CURRVAL は NEXTVAL 実行後のみ有効</span>\n'
+        '<span class="kw">CREATE INDEX</span> idx <span class="kw">ON</span> 表(列);\n'
+        '<span class="kw">GRANT</span> 権限 <span class="kw">ON</span> 表 <span class="kw">TO</span> ユーザ [<span class="kw">WITH GRANT OPTION</span>];\n'
+        '<span class="note">-- DDL はすべて暗黙 COMMIT を伴う。DEFAULT は値省略時 / VALUES(DEFAULT) で補完。</span>'
+    ),
+}
+
+
 def render_concept_guide(domain: str, concept_id: str, color: str) -> str:
     meta = CONCEPT_META[concept_id]
     pack = concept_teaching_pack(domain, concept_id)
     syntax_html = html.escape(str(pack["syntax"]))
     principles = "".join(f"<li>{html.escape(item)}</li>" for item in pack["principles"])
     procedure = "".join(f"<li>{html.escape(item)}</li>" for item in pack["procedure"])
+    clause_order = DOMAIN_CLAUSE_ORDER.get(domain, "")
+    clause_html = (
+        f'<div class="guide-block"><div class="guide-title">句の並び順（Oracle 正式構文）</div>'
+        f'<div class="clause-order">{clause_order}</div></div>'
+        if clause_order else ""
+    )
     return f"""
     <div class="concept-guide" style="border-top-color:{color}">
       <div class="guide-block">
         <div class="guide-title">論点の定義</div>
         <p>{html.escape(str(pack["definition"]))}</p>
       </div>
+      {clause_html}
       <div class="guide-block">
-        <div class="guide-title">正式構文・基本形</div>
+        <div class="guide-title">この論点の基本形</div>
         <pre>{syntax_html}</pre>
       </div>
       <div class="guide-grid">
@@ -1633,15 +1729,19 @@ def build_domain_page(domain_info: dict, review_mode: str = "wrong") -> str:
   .block-title {{ font-size: .85rem; font-weight: 800; color: {color}; margin: 10px 0 6px; }}
   pre {{ white-space: pre-wrap; word-break: break-word; background: #0f172a; color: #e2e8f0; border-radius: 12px; padding: 14px; font-size: .84rem; overflow-x: auto; }}
   .analysis-block p {{ color: #334155; font-size: .9rem; margin-bottom: 8px; }}
-  .option-review-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 10px; margin-bottom: 8px; }}
-  .option-review {{ border-radius: 14px; padding: 12px; border: 1px solid #dbe4ef; background: white; }}
-  .option-review.correct {{ border-left: 5px solid #16a34a; }}
-  .option-review.wrong {{ border-left: 5px solid #c0392b; }}
-  .option-review-head {{ display: flex; justify-content: space-between; gap: 10px; align-items: center; margin-bottom: 8px; }}
-  .option-review-key {{ font-size: .92rem; font-weight: 900; color: #0f172a; }}
-  .option-review-badges span {{ display: inline-block; background: #eef2f7; color: #334155; font-size: .74rem; font-weight: 800; border-radius: 999px; padding: 3px 8px; margin-left: 6px; }}
-  .option-review-text {{ color: #1f2937; font-size: .88rem; margin-bottom: 8px; }}
-  .option-review-reason {{ color: #475569; font-size: .86rem; }}
+  .option-review-grid {{ display: flex; flex-direction: column; gap: 12px; margin-bottom: 8px; }}
+  .option-review {{ border-radius: 14px; padding: 16px 18px; border: 1px solid #dbe4ef; background: white; }}
+  .option-review.correct {{ border-left: 6px solid #16a34a; background: #f6fdf8; }}
+  .option-review.wrong {{ border-left: 6px solid #c0392b; background: #fffafa; }}
+  .option-review-head {{ display: flex; justify-content: flex-start; gap: 12px; align-items: center; margin-bottom: 10px; }}
+  .option-review-key {{ font-size: 1.05rem; font-weight: 900; color: #0f172a; min-width: 1.8em; }}
+  .option-review-badges span {{ display: inline-block; background: #eef2f7; color: #334155; font-size: .74rem; font-weight: 800; border-radius: 999px; padding: 3px 10px; margin-left: 4px; }}
+  .option-review-text {{ color: #1f2937; font-size: .98rem; line-height: 1.65; margin-bottom: 10px; font-weight: 600; }}
+  .option-review-reason {{ color: #334155; font-size: .92rem; line-height: 1.75; }}
+  .clause-order {{ background: #0f172a; color: #e2e8f0; border-radius: 12px; padding: 14px 16px; font-family: 'SFMono-Regular', Menlo, Consolas, monospace; font-size: .86rem; line-height: 1.8; white-space: pre; overflow-x: auto; }}
+  .clause-order .kw {{ color: #fbbf24; font-weight: 800; }}
+  .clause-order .desc {{ color: #93c5fd; }}
+  .clause-order .note {{ color: #86efac; font-style: italic; }}
   .study-step-list {{ padding-left: 20px; color: #334155; font-size: .9rem; }}
   .study-step-list li {{ margin-bottom: 5px; }}
   @media (max-width: 720px) {{

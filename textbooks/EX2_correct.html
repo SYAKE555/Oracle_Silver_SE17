@@ -41,15 +41,19 @@
   .block-title { font-size: .85rem; font-weight: 800; color: #c0392b; margin: 10px 0 6px; }
   pre { white-space: pre-wrap; word-break: break-word; background: #0f172a; color: #e2e8f0; border-radius: 12px; padding: 14px; font-size: .84rem; overflow-x: auto; }
   .analysis-block p { color: #334155; font-size: .9rem; margin-bottom: 8px; }
-  .option-review-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 10px; margin-bottom: 8px; }
-  .option-review { border-radius: 14px; padding: 12px; border: 1px solid #dbe4ef; background: white; }
-  .option-review.correct { border-left: 5px solid #16a34a; }
-  .option-review.wrong { border-left: 5px solid #c0392b; }
-  .option-review-head { display: flex; justify-content: space-between; gap: 10px; align-items: center; margin-bottom: 8px; }
-  .option-review-key { font-size: .92rem; font-weight: 900; color: #0f172a; }
-  .option-review-badges span { display: inline-block; background: #eef2f7; color: #334155; font-size: .74rem; font-weight: 800; border-radius: 999px; padding: 3px 8px; margin-left: 6px; }
-  .option-review-text { color: #1f2937; font-size: .88rem; margin-bottom: 8px; }
-  .option-review-reason { color: #475569; font-size: .86rem; }
+  .option-review-grid { display: flex; flex-direction: column; gap: 12px; margin-bottom: 8px; }
+  .option-review { border-radius: 14px; padding: 16px 18px; border: 1px solid #dbe4ef; background: white; }
+  .option-review.correct { border-left: 6px solid #16a34a; background: #f6fdf8; }
+  .option-review.wrong { border-left: 6px solid #c0392b; background: #fffafa; }
+  .option-review-head { display: flex; justify-content: flex-start; gap: 12px; align-items: center; margin-bottom: 10px; }
+  .option-review-key { font-size: 1.05rem; font-weight: 900; color: #0f172a; min-width: 1.8em; }
+  .option-review-badges span { display: inline-block; background: #eef2f7; color: #334155; font-size: .74rem; font-weight: 800; border-radius: 999px; padding: 3px 10px; margin-left: 4px; }
+  .option-review-text { color: #1f2937; font-size: .98rem; line-height: 1.65; margin-bottom: 10px; font-weight: 600; }
+  .option-review-reason { color: #334155; font-size: .92rem; line-height: 1.75; }
+  .clause-order { background: #0f172a; color: #e2e8f0; border-radius: 12px; padding: 14px 16px; font-family: 'SFMono-Regular', Menlo, Consolas, monospace; font-size: .86rem; line-height: 1.8; white-space: pre; overflow-x: auto; }
+  .clause-order .kw { color: #fbbf24; font-weight: 800; }
+  .clause-order .desc { color: #93c5fd; }
+  .clause-order .note { color: #86efac; font-style: italic; }
   .study-step-list { padding-left: 20px; color: #334155; font-size: .9rem; }
   .study-step-list li { margin-bottom: 5px; }
   @media (max-width: 720px) {
@@ -101,8 +105,18 @@
         <div class="guide-title">論点の定義</div>
         <p>集合演算は、複数の SELECT 文の結果を 1 つの結果集合として扱う構文である。各 SELECT で列数を一致させ、対応する列のデータ型も互換にする必要がある。</p>
       </div>
+      <div class="guide-block"><div class="guide-title">句の並び順（Oracle 正式構文）</div><div class="clause-order"><span class="kw">SELECT</span> 列, (<span class="kw">SELECT</span> … <span class="kw">FROM</span> …) <span class="desc">-- スカラサブクエリ（SELECT句：1行1列必須）</span>
+<span class="kw">FROM</span>   (<span class="kw">SELECT</span> … <span class="kw">FROM</span> …) v <span class="desc">-- インラインビュー（FROM句）</span>
+<span class="kw">WHERE</span>  列 = (<span class="kw">SELECT</span> … )      <span class="desc">-- 単一行サブクエリ：=, &lt;, &gt;</span>
+  <span class="kw">OR</span> 列 <span class="kw">IN</span>  (<span class="kw">SELECT</span> …)       <span class="desc">-- 複数行サブクエリ：IN / ANY / ALL</span>
+  <span class="kw">OR EXISTS</span> (<span class="kw">SELECT</span> 1 <span class="kw">FROM</span> … <span class="kw">WHERE</span> o.k = i.k) <span class="desc">-- 相関・存在判定</span>
+<span class="kw">UNION</span> [<span class="kw">ALL</span>] | <span class="kw">INTERSECT</span> | <span class="kw">MINUS</span>
+<span class="kw">SELECT</span> …
+<span class="kw">ORDER BY</span> 1;                   <span class="desc">-- ORDER BY は最後に 1 回だけ</span>
+<span class="note">-- 相関：外側列を内側が参照 → 行ごとに再実行。非相関：内側が 1 回だけ実行。</span>
+<span class="note">-- 集合演算は各 SELECT の列数・型が一致。列名は先頭 SELECT 基準。</span></div></div>
       <div class="guide-block">
-        <div class="guide-title">正式構文・基本形</div>
+        <div class="guide-title">この論点の基本形</div>
         <pre>SELECT col1, col2
 FROM   table_a
 UNION | UNION ALL | INTERSECT | MINUS
@@ -283,8 +297,18 @@ Employees テーブルにはまだ所属者がいない部門（Departments テ�
         <div class="guide-title">論点の定義</div>
         <p>副問合せは、外側の検索条件や出力列で利用する値集合を別の SELECT 文で求める構文である。単一行・複数行・相関の区別が先に必要になる。</p>
       </div>
+      <div class="guide-block"><div class="guide-title">句の並び順（Oracle 正式構文）</div><div class="clause-order"><span class="kw">SELECT</span> 列, (<span class="kw">SELECT</span> … <span class="kw">FROM</span> …) <span class="desc">-- スカラサブクエリ（SELECT句：1行1列必須）</span>
+<span class="kw">FROM</span>   (<span class="kw">SELECT</span> … <span class="kw">FROM</span> …) v <span class="desc">-- インラインビュー（FROM句）</span>
+<span class="kw">WHERE</span>  列 = (<span class="kw">SELECT</span> … )      <span class="desc">-- 単一行サブクエリ：=, &lt;, &gt;</span>
+  <span class="kw">OR</span> 列 <span class="kw">IN</span>  (<span class="kw">SELECT</span> …)       <span class="desc">-- 複数行サブクエリ：IN / ANY / ALL</span>
+  <span class="kw">OR EXISTS</span> (<span class="kw">SELECT</span> 1 <span class="kw">FROM</span> … <span class="kw">WHERE</span> o.k = i.k) <span class="desc">-- 相関・存在判定</span>
+<span class="kw">UNION</span> [<span class="kw">ALL</span>] | <span class="kw">INTERSECT</span> | <span class="kw">MINUS</span>
+<span class="kw">SELECT</span> …
+<span class="kw">ORDER BY</span> 1;                   <span class="desc">-- ORDER BY は最後に 1 回だけ</span>
+<span class="note">-- 相関：外側列を内側が参照 → 行ごとに再実行。非相関：内側が 1 回だけ実行。</span>
+<span class="note">-- 集合演算は各 SELECT の列数・型が一致。列名は先頭 SELECT 基準。</span></div></div>
       <div class="guide-block">
-        <div class="guide-title">正式構文・基本形</div>
+        <div class="guide-title">この論点の基本形</div>
         <pre>SELECT o.col
 FROM   outer_table o
 WHERE  o.value &gt; (
@@ -377,8 +401,18 @@ WHERE  o.value &gt; (
         <div class="guide-title">論点の定義</div>
         <p>集合演算は、複数の SELECT 文の結果を 1 つの結果集合として扱う構文である。各 SELECT で列数を一致させ、対応する列のデータ型も互換にする必要がある。</p>
       </div>
+      <div class="guide-block"><div class="guide-title">句の並び順（Oracle 正式構文）</div><div class="clause-order"><span class="kw">SELECT</span> 列, (<span class="kw">SELECT</span> … <span class="kw">FROM</span> …) <span class="desc">-- スカラサブクエリ（SELECT句：1行1列必須）</span>
+<span class="kw">FROM</span>   (<span class="kw">SELECT</span> … <span class="kw">FROM</span> …) v <span class="desc">-- インラインビュー（FROM句）</span>
+<span class="kw">WHERE</span>  列 = (<span class="kw">SELECT</span> … )      <span class="desc">-- 単一行サブクエリ：=, &lt;, &gt;</span>
+  <span class="kw">OR</span> 列 <span class="kw">IN</span>  (<span class="kw">SELECT</span> …)       <span class="desc">-- 複数行サブクエリ：IN / ANY / ALL</span>
+  <span class="kw">OR EXISTS</span> (<span class="kw">SELECT</span> 1 <span class="kw">FROM</span> … <span class="kw">WHERE</span> o.k = i.k) <span class="desc">-- 相関・存在判定</span>
+<span class="kw">UNION</span> [<span class="kw">ALL</span>] | <span class="kw">INTERSECT</span> | <span class="kw">MINUS</span>
+<span class="kw">SELECT</span> …
+<span class="kw">ORDER BY</span> 1;                   <span class="desc">-- ORDER BY は最後に 1 回だけ</span>
+<span class="note">-- 相関：外側列を内側が参照 → 行ごとに再実行。非相関：内側が 1 回だけ実行。</span>
+<span class="note">-- 集合演算は各 SELECT の列数・型が一致。列名は先頭 SELECT 基準。</span></div></div>
       <div class="guide-block">
-        <div class="guide-title">正式構文・基本形</div>
+        <div class="guide-title">この論点の基本形</div>
         <pre>SELECT col1, col2
 FROM   table_a
 UNION | UNION ALL | INTERSECT | MINUS
@@ -486,8 +520,18 @@ ORDER BY 1;</pre>
         <div class="guide-title">論点の定義</div>
         <p>副問合せは、外側の検索条件や出力列で利用する値集合を別の SELECT 文で求める構文である。単一行・複数行・相関の区別が先に必要になる。</p>
       </div>
+      <div class="guide-block"><div class="guide-title">句の並び順（Oracle 正式構文）</div><div class="clause-order"><span class="kw">SELECT</span> 列, (<span class="kw">SELECT</span> … <span class="kw">FROM</span> …) <span class="desc">-- スカラサブクエリ（SELECT句：1行1列必須）</span>
+<span class="kw">FROM</span>   (<span class="kw">SELECT</span> … <span class="kw">FROM</span> …) v <span class="desc">-- インラインビュー（FROM句）</span>
+<span class="kw">WHERE</span>  列 = (<span class="kw">SELECT</span> … )      <span class="desc">-- 単一行サブクエリ：=, &lt;, &gt;</span>
+  <span class="kw">OR</span> 列 <span class="kw">IN</span>  (<span class="kw">SELECT</span> …)       <span class="desc">-- 複数行サブクエリ：IN / ANY / ALL</span>
+  <span class="kw">OR EXISTS</span> (<span class="kw">SELECT</span> 1 <span class="kw">FROM</span> … <span class="kw">WHERE</span> o.k = i.k) <span class="desc">-- 相関・存在判定</span>
+<span class="kw">UNION</span> [<span class="kw">ALL</span>] | <span class="kw">INTERSECT</span> | <span class="kw">MINUS</span>
+<span class="kw">SELECT</span> …
+<span class="kw">ORDER BY</span> 1;                   <span class="desc">-- ORDER BY は最後に 1 回だけ</span>
+<span class="note">-- 相関：外側列を内側が参照 → 行ごとに再実行。非相関：内側が 1 回だけ実行。</span>
+<span class="note">-- 集合演算は各 SELECT の列数・型が一致。列名は先頭 SELECT 基準。</span></div></div>
       <div class="guide-block">
-        <div class="guide-title">正式構文・基本形</div>
+        <div class="guide-title">この論点の基本形</div>
         <pre>SELECT o.col
 FROM   outer_table o
 WHERE  o.value &gt; (
@@ -589,8 +633,18 @@ WHERE  o.value &gt; (
         <div class="guide-title">論点の定義</div>
         <p>副問合せは、外側の検索条件や出力列で利用する値集合を別の SELECT 文で求める構文である。単一行・複数行・相関の区別が先に必要になる。</p>
       </div>
+      <div class="guide-block"><div class="guide-title">句の並び順（Oracle 正式構文）</div><div class="clause-order"><span class="kw">SELECT</span> 列, (<span class="kw">SELECT</span> … <span class="kw">FROM</span> …) <span class="desc">-- スカラサブクエリ（SELECT句：1行1列必須）</span>
+<span class="kw">FROM</span>   (<span class="kw">SELECT</span> … <span class="kw">FROM</span> …) v <span class="desc">-- インラインビュー（FROM句）</span>
+<span class="kw">WHERE</span>  列 = (<span class="kw">SELECT</span> … )      <span class="desc">-- 単一行サブクエリ：=, &lt;, &gt;</span>
+  <span class="kw">OR</span> 列 <span class="kw">IN</span>  (<span class="kw">SELECT</span> …)       <span class="desc">-- 複数行サブクエリ：IN / ANY / ALL</span>
+  <span class="kw">OR EXISTS</span> (<span class="kw">SELECT</span> 1 <span class="kw">FROM</span> … <span class="kw">WHERE</span> o.k = i.k) <span class="desc">-- 相関・存在判定</span>
+<span class="kw">UNION</span> [<span class="kw">ALL</span>] | <span class="kw">INTERSECT</span> | <span class="kw">MINUS</span>
+<span class="kw">SELECT</span> …
+<span class="kw">ORDER BY</span> 1;                   <span class="desc">-- ORDER BY は最後に 1 回だけ</span>
+<span class="note">-- 相関：外側列を内側が参照 → 行ごとに再実行。非相関：内側が 1 回だけ実行。</span>
+<span class="note">-- 集合演算は各 SELECT の列数・型が一致。列名は先頭 SELECT 基準。</span></div></div>
       <div class="guide-block">
-        <div class="guide-title">正式構文・基本形</div>
+        <div class="guide-title">この論点の基本形</div>
         <pre>SELECT o.col
 FROM   outer_table o
 WHERE  o.value &gt; (

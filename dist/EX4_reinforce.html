@@ -41,15 +41,19 @@
   .block-title { font-size: .85rem; font-weight: 800; color: #f1c40f; margin: 10px 0 6px; }
   pre { white-space: pre-wrap; word-break: break-word; background: #0f172a; color: #e2e8f0; border-radius: 12px; padding: 14px; font-size: .84rem; overflow-x: auto; }
   .analysis-block p { color: #334155; font-size: .9rem; margin-bottom: 8px; }
-  .option-review-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 10px; margin-bottom: 8px; }
-  .option-review { border-radius: 14px; padding: 12px; border: 1px solid #dbe4ef; background: white; }
-  .option-review.correct { border-left: 5px solid #16a34a; }
-  .option-review.wrong { border-left: 5px solid #c0392b; }
-  .option-review-head { display: flex; justify-content: space-between; gap: 10px; align-items: center; margin-bottom: 8px; }
-  .option-review-key { font-size: .92rem; font-weight: 900; color: #0f172a; }
-  .option-review-badges span { display: inline-block; background: #eef2f7; color: #334155; font-size: .74rem; font-weight: 800; border-radius: 999px; padding: 3px 8px; margin-left: 6px; }
-  .option-review-text { color: #1f2937; font-size: .88rem; margin-bottom: 8px; }
-  .option-review-reason { color: #475569; font-size: .86rem; }
+  .option-review-grid { display: flex; flex-direction: column; gap: 12px; margin-bottom: 8px; }
+  .option-review { border-radius: 14px; padding: 16px 18px; border: 1px solid #dbe4ef; background: white; }
+  .option-review.correct { border-left: 6px solid #16a34a; background: #f6fdf8; }
+  .option-review.wrong { border-left: 6px solid #c0392b; background: #fffafa; }
+  .option-review-head { display: flex; justify-content: flex-start; gap: 12px; align-items: center; margin-bottom: 10px; }
+  .option-review-key { font-size: 1.05rem; font-weight: 900; color: #0f172a; min-width: 1.8em; }
+  .option-review-badges span { display: inline-block; background: #eef2f7; color: #334155; font-size: .74rem; font-weight: 800; border-radius: 999px; padding: 3px 10px; margin-left: 4px; }
+  .option-review-text { color: #1f2937; font-size: .98rem; line-height: 1.65; margin-bottom: 10px; font-weight: 600; }
+  .option-review-reason { color: #334155; font-size: .92rem; line-height: 1.75; }
+  .clause-order { background: #0f172a; color: #e2e8f0; border-radius: 12px; padding: 14px 16px; font-family: 'SFMono-Regular', Menlo, Consolas, monospace; font-size: .86rem; line-height: 1.8; white-space: pre; overflow-x: auto; }
+  .clause-order .kw { color: #fbbf24; font-weight: 800; }
+  .clause-order .desc { color: #93c5fd; }
+  .clause-order .note { color: #86efac; font-style: italic; }
   .study-step-list { padding-left: 20px; color: #334155; font-size: .9rem; }
   .study-step-list li { margin-bottom: 5px; }
   @media (max-width: 720px) {
@@ -101,8 +105,18 @@
         <div class="guide-title">論点の定義</div>
         <p>トランザクションは COMMIT または ROLLBACK で区切られる 1 まとまりの処理である。DML は未確定状態を持てるが、DDL 実行時には暗黙 COMMIT が発生する。</p>
       </div>
+      <div class="guide-block"><div class="guide-title">句の並び順（Oracle 正式構文）</div><div class="clause-order"><span class="kw">INSERT INTO</span> 表 [(列リスト)] <span class="kw">VALUES</span> (値リスト);   <span class="desc">-- 列数と順序を一致</span>
+<span class="kw">UPDATE</span> 表 <span class="kw">SET</span> 列 = 値 [, …] [<span class="kw">WHERE</span> 条件];        <span class="desc">-- WHERE 省略で全行更新</span>
+<span class="kw">DELETE FROM</span> 表 [<span class="kw">WHERE</span> 条件];                       <span class="desc">-- DML：ロールバック可能</span>
+<span class="kw">MERGE INTO</span> 対象 t <span class="kw">USING</span> 比較元 s <span class="kw">ON</span> (条件)
+  <span class="kw">WHEN MATCHED THEN UPDATE SET</span> … 
+  <span class="kw">WHEN NOT MATCHED THEN INSERT</span> (…) <span class="kw">VALUES</span> (…);
+-- TCL --
+<span class="kw">SAVEPOINT</span> 名称; … <span class="kw">ROLLBACK TO</span> 名称; <span class="kw">COMMIT</span>;
+<span class="note">-- DDL (CREATE/ALTER/DROP/TRUNCATE) は暗黙 COMMIT。TRUNCATE はロールバック不可。</span>
+<span class="note">-- COMMIT でロック解放・SAVEPOINT 消去。ROLLBACK TO は指定地点以降のみ取消。</span></div></div>
       <div class="guide-block">
-        <div class="guide-title">正式構文・基本形</div>
+        <div class="guide-title">この論点の基本形</div>
         <pre>SAVEPOINT before_update;
 UPDATE invoices
 SET    status = &#x27;PAID&#x27;
@@ -397,8 +411,18 @@ COMMIT;</pre>
         <div class="guide-title">論点の定義</div>
         <p>DML 文は、対象行の決定、変更内容の記述、確定/取消の可否を文法どおりに記述する必要がある。UPDATE や INSERT ALL/FIRST、MERGE は句の位置が崩れると不成立になる。</p>
       </div>
+      <div class="guide-block"><div class="guide-title">句の並び順（Oracle 正式構文）</div><div class="clause-order"><span class="kw">INSERT INTO</span> 表 [(列リスト)] <span class="kw">VALUES</span> (値リスト);   <span class="desc">-- 列数と順序を一致</span>
+<span class="kw">UPDATE</span> 表 <span class="kw">SET</span> 列 = 値 [, …] [<span class="kw">WHERE</span> 条件];        <span class="desc">-- WHERE 省略で全行更新</span>
+<span class="kw">DELETE FROM</span> 表 [<span class="kw">WHERE</span> 条件];                       <span class="desc">-- DML：ロールバック可能</span>
+<span class="kw">MERGE INTO</span> 対象 t <span class="kw">USING</span> 比較元 s <span class="kw">ON</span> (条件)
+  <span class="kw">WHEN MATCHED THEN UPDATE SET</span> … 
+  <span class="kw">WHEN NOT MATCHED THEN INSERT</span> (…) <span class="kw">VALUES</span> (…);
+-- TCL --
+<span class="kw">SAVEPOINT</span> 名称; … <span class="kw">ROLLBACK TO</span> 名称; <span class="kw">COMMIT</span>;
+<span class="note">-- DDL (CREATE/ALTER/DROP/TRUNCATE) は暗黙 COMMIT。TRUNCATE はロールバック不可。</span>
+<span class="note">-- COMMIT でロック解放・SAVEPOINT 消去。ROLLBACK TO は指定地点以降のみ取消。</span></div></div>
       <div class="guide-block">
-        <div class="guide-title">正式構文・基本形</div>
+        <div class="guide-title">この論点の基本形</div>
         <pre>UPDATE invoices i
 SET    amount = (
          SELECT SUM(l.amount)
@@ -652,8 +676,18 @@ FROM
         <div class="guide-title">論点の定義</div>
         <p>DML 文は、対象行の決定、変更内容の記述、確定/取消の可否を文法どおりに記述する必要がある。UPDATE や INSERT ALL/FIRST、MERGE は句の位置が崩れると不成立になる。</p>
       </div>
+      <div class="guide-block"><div class="guide-title">句の並び順（Oracle 正式構文）</div><div class="clause-order"><span class="kw">INSERT INTO</span> 表 [(列リスト)] <span class="kw">VALUES</span> (値リスト);   <span class="desc">-- 列数と順序を一致</span>
+<span class="kw">UPDATE</span> 表 <span class="kw">SET</span> 列 = 値 [, …] [<span class="kw">WHERE</span> 条件];        <span class="desc">-- WHERE 省略で全行更新</span>
+<span class="kw">DELETE FROM</span> 表 [<span class="kw">WHERE</span> 条件];                       <span class="desc">-- DML：ロールバック可能</span>
+<span class="kw">MERGE INTO</span> 対象 t <span class="kw">USING</span> 比較元 s <span class="kw">ON</span> (条件)
+  <span class="kw">WHEN MATCHED THEN UPDATE SET</span> … 
+  <span class="kw">WHEN NOT MATCHED THEN INSERT</span> (…) <span class="kw">VALUES</span> (…);
+-- TCL --
+<span class="kw">SAVEPOINT</span> 名称; … <span class="kw">ROLLBACK TO</span> 名称; <span class="kw">COMMIT</span>;
+<span class="note">-- DDL (CREATE/ALTER/DROP/TRUNCATE) は暗黙 COMMIT。TRUNCATE はロールバック不可。</span>
+<span class="note">-- COMMIT でロック解放・SAVEPOINT 消去。ROLLBACK TO は指定地点以降のみ取消。</span></div></div>
       <div class="guide-block">
-        <div class="guide-title">正式構文・基本形</div>
+        <div class="guide-title">この論点の基本形</div>
         <pre>UPDATE invoices i
 SET    amount = (
          SELECT SUM(l.amount)
@@ -828,8 +862,18 @@ MERGE文の実行結果として正しい記述はどれでしょうか。
         <div class="guide-title">論点の定義</div>
         <p>トランザクションは COMMIT または ROLLBACK で区切られる 1 まとまりの処理である。DML は未確定状態を持てるが、DDL 実行時には暗黙 COMMIT が発生する。</p>
       </div>
+      <div class="guide-block"><div class="guide-title">句の並び順（Oracle 正式構文）</div><div class="clause-order"><span class="kw">INSERT INTO</span> 表 [(列リスト)] <span class="kw">VALUES</span> (値リスト);   <span class="desc">-- 列数と順序を一致</span>
+<span class="kw">UPDATE</span> 表 <span class="kw">SET</span> 列 = 値 [, …] [<span class="kw">WHERE</span> 条件];        <span class="desc">-- WHERE 省略で全行更新</span>
+<span class="kw">DELETE FROM</span> 表 [<span class="kw">WHERE</span> 条件];                       <span class="desc">-- DML：ロールバック可能</span>
+<span class="kw">MERGE INTO</span> 対象 t <span class="kw">USING</span> 比較元 s <span class="kw">ON</span> (条件)
+  <span class="kw">WHEN MATCHED THEN UPDATE SET</span> … 
+  <span class="kw">WHEN NOT MATCHED THEN INSERT</span> (…) <span class="kw">VALUES</span> (…);
+-- TCL --
+<span class="kw">SAVEPOINT</span> 名称; … <span class="kw">ROLLBACK TO</span> 名称; <span class="kw">COMMIT</span>;
+<span class="note">-- DDL (CREATE/ALTER/DROP/TRUNCATE) は暗黙 COMMIT。TRUNCATE はロールバック不可。</span>
+<span class="note">-- COMMIT でロック解放・SAVEPOINT 消去。ROLLBACK TO は指定地点以降のみ取消。</span></div></div>
       <div class="guide-block">
-        <div class="guide-title">正式構文・基本形</div>
+        <div class="guide-title">この論点の基本形</div>
         <pre>SAVEPOINT before_update;
 UPDATE invoices
 SET    status = &#x27;PAID&#x27;
@@ -1025,8 +1069,18 @@ WHEN NOT MATCHED THEN
         <div class="guide-title">論点の定義</div>
         <p>DML 文は、対象行の決定、変更内容の記述、確定/取消の可否を文法どおりに記述する必要がある。UPDATE や INSERT ALL/FIRST、MERGE は句の位置が崩れると不成立になる。</p>
       </div>
+      <div class="guide-block"><div class="guide-title">句の並び順（Oracle 正式構文）</div><div class="clause-order"><span class="kw">INSERT INTO</span> 表 [(列リスト)] <span class="kw">VALUES</span> (値リスト);   <span class="desc">-- 列数と順序を一致</span>
+<span class="kw">UPDATE</span> 表 <span class="kw">SET</span> 列 = 値 [, …] [<span class="kw">WHERE</span> 条件];        <span class="desc">-- WHERE 省略で全行更新</span>
+<span class="kw">DELETE FROM</span> 表 [<span class="kw">WHERE</span> 条件];                       <span class="desc">-- DML：ロールバック可能</span>
+<span class="kw">MERGE INTO</span> 対象 t <span class="kw">USING</span> 比較元 s <span class="kw">ON</span> (条件)
+  <span class="kw">WHEN MATCHED THEN UPDATE SET</span> … 
+  <span class="kw">WHEN NOT MATCHED THEN INSERT</span> (…) <span class="kw">VALUES</span> (…);
+-- TCL --
+<span class="kw">SAVEPOINT</span> 名称; … <span class="kw">ROLLBACK TO</span> 名称; <span class="kw">COMMIT</span>;
+<span class="note">-- DDL (CREATE/ALTER/DROP/TRUNCATE) は暗黙 COMMIT。TRUNCATE はロールバック不可。</span>
+<span class="note">-- COMMIT でロック解放・SAVEPOINT 消去。ROLLBACK TO は指定地点以降のみ取消。</span></div></div>
       <div class="guide-block">
-        <div class="guide-title">正式構文・基本形</div>
+        <div class="guide-title">この論点の基本形</div>
         <pre>UPDATE invoices i
 SET    amount = (
          SELECT SUM(l.amount)
@@ -1204,8 +1258,18 @@ WHERE client_id = i.client_id);
         <div class="guide-title">論点の定義</div>
         <p>DML 文は、対象行の決定、変更内容の記述、確定/取消の可否を文法どおりに記述する必要がある。UPDATE や INSERT ALL/FIRST、MERGE は句の位置が崩れると不成立になる。</p>
       </div>
+      <div class="guide-block"><div class="guide-title">句の並び順（Oracle 正式構文）</div><div class="clause-order"><span class="kw">INSERT INTO</span> 表 [(列リスト)] <span class="kw">VALUES</span> (値リスト);   <span class="desc">-- 列数と順序を一致</span>
+<span class="kw">UPDATE</span> 表 <span class="kw">SET</span> 列 = 値 [, …] [<span class="kw">WHERE</span> 条件];        <span class="desc">-- WHERE 省略で全行更新</span>
+<span class="kw">DELETE FROM</span> 表 [<span class="kw">WHERE</span> 条件];                       <span class="desc">-- DML：ロールバック可能</span>
+<span class="kw">MERGE INTO</span> 対象 t <span class="kw">USING</span> 比較元 s <span class="kw">ON</span> (条件)
+  <span class="kw">WHEN MATCHED THEN UPDATE SET</span> … 
+  <span class="kw">WHEN NOT MATCHED THEN INSERT</span> (…) <span class="kw">VALUES</span> (…);
+-- TCL --
+<span class="kw">SAVEPOINT</span> 名称; … <span class="kw">ROLLBACK TO</span> 名称; <span class="kw">COMMIT</span>;
+<span class="note">-- DDL (CREATE/ALTER/DROP/TRUNCATE) は暗黙 COMMIT。TRUNCATE はロールバック不可。</span>
+<span class="note">-- COMMIT でロック解放・SAVEPOINT 消去。ROLLBACK TO は指定地点以降のみ取消。</span></div></div>
       <div class="guide-block">
-        <div class="guide-title">正式構文・基本形</div>
+        <div class="guide-title">この論点の基本形</div>
         <pre>UPDATE invoices i
 SET    amount = (
          SELECT SUM(l.amount)
