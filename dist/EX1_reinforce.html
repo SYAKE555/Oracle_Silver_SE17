@@ -32,16 +32,16 @@
   .question-meta { font-size: .8rem; color: #64748b; margin-bottom: 10px; font-weight: 700; }
   .block-title { font-size: .85rem; font-weight: 800; color: #e67e22; margin: 10px 0 6px; }
   pre { white-space: pre-wrap; word-break: break-word; background: #0f172a; color: #e2e8f0; border-radius: 12px; padding: 14px; font-size: .84rem; overflow-x: auto; }
-  .options-grid { display: grid; gap: 10px; }
-  .option-card { border: 1px solid #dbe4ef; border-radius: 14px; overflow: hidden; background: white; }
+  .options-grid { display: grid; gap: 8px; }
+  .option-card { display: grid; grid-template-columns: 32px 1fr; gap: 10px; align-items: start; border: 1px solid #dbe4ef; border-radius: 12px; padding: 10px 12px; background: white; }
   .option-card.correct { border-color: #22c55e; box-shadow: inset 0 0 0 1px #22c55e; }
   .option-card.selected { background: #fff7ed; }
   .option-card.correct.selected { background: #f0fdf4; }
-  .option-label { padding: 8px 12px; font-size: .82rem; font-weight: 900; background: #e2e8f0; color: #0f172a; }
-  .option-card.correct .option-label { background: #dcfce7; color: #166534; }
-  .option-card.selected .option-label { background: #ffedd5; color: #9a3412; }
-  .option-card.correct.selected .option-label { background: linear-gradient(90deg,#dcfce7,#ffedd5); color: #166534; }
-  .option-body pre { margin: 0; border-radius: 0; background: #f8fafc; color: #1f2937; }
+  .option-key { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 999px; font-size: .82rem; font-weight: 900; background: #e2e8f0; color: #0f172a; }
+  .option-card.correct .option-key { background: #dcfce7; color: #166534; }
+  .option-card.selected .option-key { background: #ffedd5; color: #9a3412; }
+  .option-card.correct.selected .option-key { background: linear-gradient(90deg,#dcfce7,#ffedd5); color: #166534; }
+  .option-text { font-size: .88rem; color: #1f2937; line-height: 1.6; padding-top: 3px; word-break: break-word; }
   .analysis-block p { color: #334155; font-size: .9rem; margin-bottom: 8px; }
   .rebuild-list { padding-left: 20px; color: #334155; font-size: .9rem; }
   .rebuild-list li { margin-bottom: 5px; }
@@ -89,41 +89,33 @@
               
                 <article class="question-card">
                   <div class="question-meta">第1回 模擬試験 / 問24 / 正答 B.E / 自己回答 A.B</div>
-                  <div class="block-title">記録原文（省略なし）</div>
-                  <pre>自己結合について正しい記述はどれでしょうか。（2つ選択）
-
-(1)		A.　USING句を指定することができます。
-(2)		B.　表別名が必要です。
-(3)		C.　LEFT OUTER JOIN、もしくはRIGHT OUTER JOINにする必要があります。
-(4)		D.　FULL OUTER JOINにする必要があります。
-(5)		E.　INNER JOINにすることができます。</pre>
-                  <div class="block-title">問題文（抽出）</div>
+                  <div class="block-title">問題文</div>
                   <pre>自己結合について正しい記述はどれでしょうか。（2つ選択）</pre>
-                  <div class="block-title">選択肢（抽出）</div>
+                  <div class="block-title">選択肢</div>
                   <div class="options-grid">
             <div class="option-card selected">
-              <div class="option-label">A</div>
-              <div class="option-body"><pre>USING句を指定することができます。</pre></div>
+              <div class="option-key">A</div>
+              <div class="option-text">USING句を指定することができます。</div>
             </div>
             
             <div class="option-card correct selected">
-              <div class="option-label">B</div>
-              <div class="option-body"><pre>表別名が必要です。</pre></div>
+              <div class="option-key">B</div>
+              <div class="option-text">表別名が必要です。</div>
             </div>
             
             <div class="option-card">
-              <div class="option-label">C</div>
-              <div class="option-body"><pre>LEFT OUTER JOIN、もしくはRIGHT OUTER JOINにする必要があります。</pre></div>
+              <div class="option-key">C</div>
+              <div class="option-text">LEFT OUTER JOIN、もしくはRIGHT OUTER JOINにする必要があります。</div>
             </div>
             
             <div class="option-card">
-              <div class="option-label">D</div>
-              <div class="option-body"><pre>FULL OUTER JOINにする必要があります。</pre></div>
+              <div class="option-key">D</div>
+              <div class="option-text">FULL OUTER JOINにする必要があります。</div>
             </div>
             
             <div class="option-card correct">
-              <div class="option-label">E</div>
-              <div class="option-body"><pre>INNER JOINにすることができます。</pre></div>
+              <div class="option-key">E</div>
+              <div class="option-text">INNER JOINにすることができます。</div>
             </div>
             </div>
                   <div class="analysis-block">
@@ -140,40 +132,33 @@
                 
                 <article class="question-card">
                   <div class="question-meta">第2回 模擬試験 / 問57 / 正答 AD / 自己回答 AB</div>
-                  <div class="block-title">記録原文（省略なし）</div>
-                  <pre>次のうち、FULL OUTER JOINの特徴として正しいものはどれでしょうか。（2つ選択）
-(1)		A. 両方の表の全行を出力し、結合条件に一致しない行はNULLで埋める
-(2)		B. 実行結果はデカルト積と同じになる
-(3)		C. 結合条件に一致する行のみを返し、一致しない行は含まれない
-(4)		D. Oracle独自結合構文ではサポートされていない
-(5)		E. OUTER JOIN にFULLを付けた場合、INNER JOINと同義である</pre>
-                  <div class="block-title">問題文（抽出）</div>
+                  <div class="block-title">問題文</div>
                   <pre>次のうち、FULL OUTER JOINの特徴として正しいものはどれでしょうか。（2つ選択）</pre>
-                  <div class="block-title">選択肢（抽出）</div>
+                  <div class="block-title">選択肢</div>
                   <div class="options-grid">
             <div class="option-card correct selected">
-              <div class="option-label">A</div>
-              <div class="option-body"><pre>両方の表の全行を出力し、結合条件に一致しない行はNULLで埋める</pre></div>
+              <div class="option-key">A</div>
+              <div class="option-text">両方の表の全行を出力し、結合条件に一致しない行はNULLで埋める</div>
             </div>
             
             <div class="option-card selected">
-              <div class="option-label">B</div>
-              <div class="option-body"><pre>実行結果はデカルト積と同じになる</pre></div>
+              <div class="option-key">B</div>
+              <div class="option-text">実行結果はデカルト積と同じになる</div>
             </div>
             
             <div class="option-card">
-              <div class="option-label">C</div>
-              <div class="option-body"><pre>結合条件に一致する行のみを返し、一致しない行は含まれない</pre></div>
+              <div class="option-key">C</div>
+              <div class="option-text">結合条件に一致する行のみを返し、一致しない行は含まれない</div>
             </div>
             
             <div class="option-card correct">
-              <div class="option-label">D</div>
-              <div class="option-body"><pre>Oracle独自結合構文ではサポートされていない</pre></div>
+              <div class="option-key">D</div>
+              <div class="option-text">Oracle独自結合構文ではサポートされていない</div>
             </div>
             
             <div class="option-card">
-              <div class="option-label">E</div>
-              <div class="option-body"><pre>OUTER JOIN にFULLを付けた場合、INNER JOINと同義である</pre></div>
+              <div class="option-key">E</div>
+              <div class="option-text">OUTER JOIN にFULLを付けた場合、INNER JOINと同義である</div>
             </div>
             </div>
                   <div class="analysis-block">
@@ -190,40 +175,33 @@
                 
                 <article class="question-card">
                   <div class="question-meta">第3回 模擬試験 / 問74 / 正答 BD / 自己回答 AB</div>
-                  <div class="block-title">記録原文（省略なし）</div>
-                  <pre>内部結合と外部結合 についての次の記載のうち、正しいものを2つ選んでください。
-(1)		A. Oracle独自構文ではFULL OUTER JOIN と同等機能をサポートしている。
-(2)		B. FULL OUTER JOIN は、一致する行と一致しない行の両方を返す。
-(3)		C. RIGHT OUTER JOIN は、一致しない行のみを返す。
-(4)		D. INNER JOIN は、2つのテーブル間で複数の結合条件を指定する場合に使用できる。
-(5)		E. OUTER JOIN は、クエリごとに2つのテーブル間のみで使用できる。</pre>
-                  <div class="block-title">問題文（抽出）</div>
+                  <div class="block-title">問題文</div>
                   <pre>内部結合と外部結合 についての次の記載のうち、正しいものを2つ選んでください。</pre>
-                  <div class="block-title">選択肢（抽出）</div>
+                  <div class="block-title">選択肢</div>
                   <div class="options-grid">
             <div class="option-card selected">
-              <div class="option-label">A</div>
-              <div class="option-body"><pre>Oracle独自構文ではFULL OUTER JOIN と同等機能をサポートしている。</pre></div>
+              <div class="option-key">A</div>
+              <div class="option-text">Oracle独自構文ではFULL OUTER JOIN と同等機能をサポートしている。</div>
             </div>
             
             <div class="option-card correct selected">
-              <div class="option-label">B</div>
-              <div class="option-body"><pre>FULL OUTER JOIN は、一致する行と一致しない行の両方を返す。</pre></div>
+              <div class="option-key">B</div>
+              <div class="option-text">FULL OUTER JOIN は、一致する行と一致しない行の両方を返す。</div>
             </div>
             
             <div class="option-card">
-              <div class="option-label">C</div>
-              <div class="option-body"><pre>RIGHT OUTER JOIN は、一致しない行のみを返す。</pre></div>
+              <div class="option-key">C</div>
+              <div class="option-text">RIGHT OUTER JOIN は、一致しない行のみを返す。</div>
             </div>
             
             <div class="option-card correct">
-              <div class="option-label">D</div>
-              <div class="option-body"><pre>INNER JOIN は、2つのテーブル間で複数の結合条件を指定する場合に使用できる。</pre></div>
+              <div class="option-key">D</div>
+              <div class="option-text">INNER JOIN は、2つのテーブル間で複数の結合条件を指定する場合に使用できる。</div>
             </div>
             
             <div class="option-card">
-              <div class="option-label">E</div>
-              <div class="option-body"><pre>OUTER JOIN は、クエリごとに2つのテーブル間のみで使用できる。</pre></div>
+              <div class="option-key">E</div>
+              <div class="option-text">OUTER JOIN は、クエリごとに2つのテーブル間のみで使用できる。</div>
             </div>
             </div>
                   <div class="analysis-block">
@@ -240,34 +218,28 @@
                 
                 <article class="question-card">
                   <div class="question-meta">第3回 模擬試験 / 問77 / 正答 A / 自己回答 C</div>
-                  <div class="block-title">記録原文（省略なし）</div>
-                  <pre>ANSI JOIN 構文と比較した場合のOracle独自JOIN 構文の記載について、正しいものを1つ選んでください。
-(1)		A. Oracle 独自の JOIN 構文とANSI JOIN 構文では、性能に大きな差はない。
-(2)		B. Oracle 独自の JOIN 構文では 、自然結合をサポートしている。
-(3)		C. Oracle 独自の JOIN 構文では、 FULL OUTER JOIN 機能をサポートしている。
-(4)		D. Oracle独自 の JOIN 構文は、右外部結合のみをサポートしている。</pre>
-                  <div class="block-title">問題文（抽出）</div>
+                  <div class="block-title">問題文</div>
                   <pre>ANSI JOIN 構文と比較した場合のOracle独自JOIN 構文の記載について、正しいものを1つ選んでください。</pre>
-                  <div class="block-title">選択肢（抽出）</div>
+                  <div class="block-title">選択肢</div>
                   <div class="options-grid">
             <div class="option-card correct">
-              <div class="option-label">A</div>
-              <div class="option-body"><pre>Oracle 独自の JOIN 構文とANSI JOIN 構文では、性能に大きな差はない。</pre></div>
+              <div class="option-key">A</div>
+              <div class="option-text">Oracle 独自の JOIN 構文とANSI JOIN 構文では、性能に大きな差はない。</div>
             </div>
             
             <div class="option-card">
-              <div class="option-label">B</div>
-              <div class="option-body"><pre>Oracle 独自の JOIN 構文では 、自然結合をサポートしている。</pre></div>
+              <div class="option-key">B</div>
+              <div class="option-text">Oracle 独自の JOIN 構文では 、自然結合をサポートしている。</div>
             </div>
             
             <div class="option-card selected">
-              <div class="option-label">C</div>
-              <div class="option-body"><pre>Oracle 独自の JOIN 構文では、 FULL OUTER JOIN 機能をサポートしている。</pre></div>
+              <div class="option-key">C</div>
+              <div class="option-text">Oracle 独自の JOIN 構文では、 FULL OUTER JOIN 機能をサポートしている。</div>
             </div>
             
             <div class="option-card">
-              <div class="option-label">D</div>
-              <div class="option-body"><pre>Oracle独自 の JOIN 構文は、右外部結合のみをサポートしている。</pre></div>
+              <div class="option-key">D</div>
+              <div class="option-text">Oracle独自 の JOIN 構文は、右外部結合のみをサポートしている。</div>
             </div>
             </div>
                   <div class="analysis-block">
@@ -290,40 +262,33 @@
               
                 <article class="question-card">
                   <div class="question-meta">第3回 模擬試験 / 問54 / 正答 ABE / 自己回答 ADE</div>
-                  <div class="block-title">記録原文（省略なし）</div>
-                  <pre>自己結合の説明として、正しいものはどれですか。3つ選択してください。
-(1)		A. INNER JOINにすることができます。
-(2)		B. ON句を指定することができます。
-(3)		C. 特定列を指定した絞り込みはできません。
-(4)		D. 等価結合にする必要があります。
-(5)		E. 表別名が必要です。</pre>
-                  <div class="block-title">問題文（抽出）</div>
+                  <div class="block-title">問題文</div>
                   <pre>自己結合の説明として、正しいものはどれですか。3つ選択してください。</pre>
-                  <div class="block-title">選択肢（抽出）</div>
+                  <div class="block-title">選択肢</div>
                   <div class="options-grid">
             <div class="option-card correct selected">
-              <div class="option-label">A</div>
-              <div class="option-body"><pre>INNER JOINにすることができます。</pre></div>
+              <div class="option-key">A</div>
+              <div class="option-text">INNER JOINにすることができます。</div>
             </div>
             
             <div class="option-card correct">
-              <div class="option-label">B</div>
-              <div class="option-body"><pre>ON句を指定することができます。</pre></div>
+              <div class="option-key">B</div>
+              <div class="option-text">ON句を指定することができます。</div>
             </div>
             
             <div class="option-card">
-              <div class="option-label">C</div>
-              <div class="option-body"><pre>特定列を指定した絞り込みはできません。</pre></div>
+              <div class="option-key">C</div>
+              <div class="option-text">特定列を指定した絞り込みはできません。</div>
             </div>
             
             <div class="option-card selected">
-              <div class="option-label">D</div>
-              <div class="option-body"><pre>等価結合にする必要があります。</pre></div>
+              <div class="option-key">D</div>
+              <div class="option-text">等価結合にする必要があります。</div>
             </div>
             
             <div class="option-card correct selected">
-              <div class="option-label">E</div>
-              <div class="option-body"><pre>表別名が必要です。</pre></div>
+              <div class="option-key">E</div>
+              <div class="option-text">表別名が必要です。</div>
             </div>
             </div>
                   <div class="analysis-block">
