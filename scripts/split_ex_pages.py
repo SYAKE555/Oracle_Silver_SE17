@@ -786,7 +786,7 @@ def option_lookup(parsed: dict) -> dict[str, dict]:
 
 def render_options(parsed: dict, correct_keys: list[str], self_keys: list[str]) -> str:
     if not parsed["options"]:
-        return f'<div class="raw-block"><div class="block-title">問題文・選択肢（原文）</div>{html_pre(parsed["raw"])}</div>'
+        return ""
 
     rendered = []
     for option in parsed["options"]:
@@ -795,11 +795,12 @@ def render_options(parsed: dict, correct_keys: list[str], self_keys: list[str]) 
             classes.append("correct")
         if option["key"] in self_keys:
             classes.append("selected")
+        option_text = html.escape(option["text"]).replace("\n", "<br>")
         rendered.append(
             f"""
             <div class="{' '.join(classes)}">
-              <div class="option-label">{html.escape(option['key'])}</div>
-              <div class="option-body">{html_pre(option['text'])}</div>
+              <div class="option-key">{html.escape(option['key'])}</div>
+              <div class="option-text">{option_text}</div>
             </div>
             """
         )
@@ -933,11 +934,9 @@ def build_domain_page(domain_info: dict) -> str:
                 f"""
                 <article class="question-card">
                   <div class="question-meta">{html.escape(question['exam_title'])} / 問{question['q']} / 正答 {html.escape(question['ans'] or '-')} / 自己回答 {html.escape(question.get('self_ans') or '-')}</div>
-                  <div class="block-title">記録原文（省略なし）</div>
-                  {html_pre(question['text'])}
-                  <div class="block-title">問題文（抽出）</div>
+                  <div class="block-title">問題文</div>
                   {html_pre(question['parsed']['stem'] or question['text'])}
-                  <div class="block-title">選択肢（抽出）</div>
+                  <div class="block-title">選択肢</div>
                   {render_options(question['parsed'], correct_keys, self_keys)}
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
@@ -1000,16 +999,16 @@ def build_domain_page(domain_info: dict) -> str:
   .question-meta {{ font-size: .8rem; color: #64748b; margin-bottom: 10px; font-weight: 700; }}
   .block-title {{ font-size: .85rem; font-weight: 800; color: {color}; margin: 10px 0 6px; }}
   pre {{ white-space: pre-wrap; word-break: break-word; background: #0f172a; color: #e2e8f0; border-radius: 12px; padding: 14px; font-size: .84rem; overflow-x: auto; }}
-  .options-grid {{ display: grid; gap: 10px; }}
-  .option-card {{ border: 1px solid #dbe4ef; border-radius: 14px; overflow: hidden; background: white; }}
+  .options-grid {{ display: grid; gap: 8px; }}
+  .option-card {{ display: grid; grid-template-columns: 32px 1fr; gap: 10px; align-items: start; border: 1px solid #dbe4ef; border-radius: 12px; padding: 10px 12px; background: white; }}
   .option-card.correct {{ border-color: #22c55e; box-shadow: inset 0 0 0 1px #22c55e; }}
   .option-card.selected {{ background: #fff7ed; }}
   .option-card.correct.selected {{ background: #f0fdf4; }}
-  .option-label {{ padding: 8px 12px; font-size: .82rem; font-weight: 900; background: #e2e8f0; color: #0f172a; }}
-  .option-card.correct .option-label {{ background: #dcfce7; color: #166534; }}
-  .option-card.selected .option-label {{ background: #ffedd5; color: #9a3412; }}
-  .option-card.correct.selected .option-label {{ background: linear-gradient(90deg,#dcfce7,#ffedd5); color: #166534; }}
-  .option-body pre {{ margin: 0; border-radius: 0; background: #f8fafc; color: #1f2937; }}
+  .option-key {{ display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 999px; font-size: .82rem; font-weight: 900; background: #e2e8f0; color: #0f172a; }}
+  .option-card.correct .option-key {{ background: #dcfce7; color: #166534; }}
+  .option-card.selected .option-key {{ background: #ffedd5; color: #9a3412; }}
+  .option-card.correct.selected .option-key {{ background: linear-gradient(90deg,#dcfce7,#ffedd5); color: #166534; }}
+  .option-text {{ font-size: .88rem; color: #1f2937; line-height: 1.6; padding-top: 3px; word-break: break-word; }}
   .analysis-block p {{ color: #334155; font-size: .9rem; margin-bottom: 8px; }}
   .rebuild-list {{ padding-left: 20px; color: #334155; font-size: .9rem; }}
   .rebuild-list li {{ margin-bottom: 5px; }}

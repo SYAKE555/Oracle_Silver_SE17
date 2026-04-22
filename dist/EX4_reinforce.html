@@ -32,16 +32,16 @@
   .question-meta { font-size: .8rem; color: #64748b; margin-bottom: 10px; font-weight: 700; }
   .block-title { font-size: .85rem; font-weight: 800; color: #f1c40f; margin: 10px 0 6px; }
   pre { white-space: pre-wrap; word-break: break-word; background: #0f172a; color: #e2e8f0; border-radius: 12px; padding: 14px; font-size: .84rem; overflow-x: auto; }
-  .options-grid { display: grid; gap: 10px; }
-  .option-card { border: 1px solid #dbe4ef; border-radius: 14px; overflow: hidden; background: white; }
+  .options-grid { display: grid; gap: 8px; }
+  .option-card { display: grid; grid-template-columns: 32px 1fr; gap: 10px; align-items: start; border: 1px solid #dbe4ef; border-radius: 12px; padding: 10px 12px; background: white; }
   .option-card.correct { border-color: #22c55e; box-shadow: inset 0 0 0 1px #22c55e; }
   .option-card.selected { background: #fff7ed; }
   .option-card.correct.selected { background: #f0fdf4; }
-  .option-label { padding: 8px 12px; font-size: .82rem; font-weight: 900; background: #e2e8f0; color: #0f172a; }
-  .option-card.correct .option-label { background: #dcfce7; color: #166534; }
-  .option-card.selected .option-label { background: #ffedd5; color: #9a3412; }
-  .option-card.correct.selected .option-label { background: linear-gradient(90deg,#dcfce7,#ffedd5); color: #166534; }
-  .option-body pre { margin: 0; border-radius: 0; background: #f8fafc; color: #1f2937; }
+  .option-key { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 999px; font-size: .82rem; font-weight: 900; background: #e2e8f0; color: #0f172a; }
+  .option-card.correct .option-key { background: #dcfce7; color: #166534; }
+  .option-card.selected .option-key { background: #ffedd5; color: #9a3412; }
+  .option-card.correct.selected .option-key { background: linear-gradient(90deg,#dcfce7,#ffedd5); color: #166534; }
+  .option-text { font-size: .88rem; color: #1f2937; line-height: 1.6; padding-top: 3px; word-break: break-word; }
   .analysis-block p { color: #334155; font-size: .9rem; margin-bottom: 8px; }
   .rebuild-list { padding-left: 20px; color: #334155; font-size: .9rem; }
   .rebuild-list li { margin-bottom: 5px; }
@@ -89,34 +89,28 @@
               
                 <article class="question-card">
                   <div class="question-meta">第1回 模擬試験 / 問39 / 正答 2.4 / 自己回答 3.4</div>
-                  <div class="block-title">記録原文（省略なし）</div>
-                  <pre>トランザクション制御言語について正しいのはどれでしょうか。（2つ選択）
-(1)		COMMITを発行しても、SAVEPOINTは消去しません。
-(2)		ROLLBACK TO SAVEPOINTは、指定したSAVEPOINT以降に取得された行および表のロックをすべて解除します。
-(3)		ROLLBACK TO SAVEPOINTは、指定したSAVEPOINT以降の変更を取り消しますが、SAVEPOINTは消去しません。
-(4)		COMMITは、変更を確定し、行および表のロックをすべて解除します。</pre>
-                  <div class="block-title">問題文（抽出）</div>
+                  <div class="block-title">問題文</div>
                   <pre>トランザクション制御言語について正しいのはどれでしょうか。（2つ選択）</pre>
-                  <div class="block-title">選択肢（抽出）</div>
+                  <div class="block-title">選択肢</div>
                   <div class="options-grid">
             <div class="option-card">
-              <div class="option-label">1</div>
-              <div class="option-body"><pre>COMMITを発行しても、SAVEPOINTは消去しません。</pre></div>
+              <div class="option-key">1</div>
+              <div class="option-text">COMMITを発行しても、SAVEPOINTは消去しません。</div>
             </div>
             
             <div class="option-card correct">
-              <div class="option-label">2</div>
-              <div class="option-body"><pre>ROLLBACK TO SAVEPOINTは、指定したSAVEPOINT以降に取得された行および表のロックをすべて解除します。</pre></div>
+              <div class="option-key">2</div>
+              <div class="option-text">ROLLBACK TO SAVEPOINTは、指定したSAVEPOINT以降に取得された行および表のロックをすべて解除します。</div>
             </div>
             
             <div class="option-card selected">
-              <div class="option-label">3</div>
-              <div class="option-body"><pre>ROLLBACK TO SAVEPOINTは、指定したSAVEPOINT以降の変更を取り消しますが、SAVEPOINTは消去しません。</pre></div>
+              <div class="option-key">3</div>
+              <div class="option-text">ROLLBACK TO SAVEPOINTは、指定したSAVEPOINT以降の変更を取り消しますが、SAVEPOINTは消去しません。</div>
             </div>
             
             <div class="option-card correct selected">
-              <div class="option-label">4</div>
-              <div class="option-body"><pre>COMMITは、変更を確定し、行および表のロックをすべて解除します。</pre></div>
+              <div class="option-key">4</div>
+              <div class="option-text">COMMITは、変更を確定し、行および表のロックをすべて解除します。</div>
             </div>
             </div>
                   <div class="analysis-block">
@@ -133,40 +127,33 @@
                 
                 <article class="question-card">
                   <div class="question-meta">第2回 模擬試験 / 問38 / 正答 ABD / 自己回答 ABE</div>
-                  <div class="block-title">記録原文（省略なし）</div>
-                  <pre>トランザクションが終了するのは以下のどの場合でしょうか。（3つ選択）
-(1)		A.　COMMITが発行された後
-(2)		B.　ROLLBACKが発行された後
-(3)		C.　SAVEPOINTが発行された後
-(4)		D.　DROPが発行された後
-(5)		E.　INSERTが発行された後</pre>
-                  <div class="block-title">問題文（抽出）</div>
+                  <div class="block-title">問題文</div>
                   <pre>トランザクションが終了するのは以下のどの場合でしょうか。（3つ選択）</pre>
-                  <div class="block-title">選択肢（抽出）</div>
+                  <div class="block-title">選択肢</div>
                   <div class="options-grid">
             <div class="option-card correct selected">
-              <div class="option-label">A</div>
-              <div class="option-body"><pre>COMMITが発行された後</pre></div>
+              <div class="option-key">A</div>
+              <div class="option-text">COMMITが発行された後</div>
             </div>
             
             <div class="option-card correct selected">
-              <div class="option-label">B</div>
-              <div class="option-body"><pre>ROLLBACKが発行された後</pre></div>
+              <div class="option-key">B</div>
+              <div class="option-text">ROLLBACKが発行された後</div>
             </div>
             
             <div class="option-card">
-              <div class="option-label">C</div>
-              <div class="option-body"><pre>SAVEPOINTが発行された後</pre></div>
+              <div class="option-key">C</div>
+              <div class="option-text">SAVEPOINTが発行された後</div>
             </div>
             
             <div class="option-card correct">
-              <div class="option-label">D</div>
-              <div class="option-body"><pre>DROPが発行された後</pre></div>
+              <div class="option-key">D</div>
+              <div class="option-text">DROPが発行された後</div>
             </div>
             
             <div class="option-card selected">
-              <div class="option-label">E</div>
-              <div class="option-body"><pre>INSERTが発行された後</pre></div>
+              <div class="option-key">E</div>
+              <div class="option-text">INSERTが発行された後</div>
             </div>
             </div>
                   <div class="analysis-block">
@@ -183,34 +170,28 @@
                 
                 <article class="question-card">
                   <div class="question-meta">第2回 模擬試験 / 問42 / 正答 A / 自己回答 C</div>
-                  <div class="block-title">記録原文（省略なし）</div>
-                  <pre>DELETEコマンドに関して正しい記述はどれでしょうか。
-(1)		A.　1つのDELETE文では、1つの表からのみ行を削除できます。
-(2)		B.　1つのDELETE文では、複数の表から行を削除できます。
-(3)		C.　DELETEを使用して、特定の列のデータを削除できます。
-(4)		D.　DELETEを実行すると自動的にCOMMITされます。</pre>
-                  <div class="block-title">問題文（抽出）</div>
+                  <div class="block-title">問題文</div>
                   <pre>DELETEコマンドに関して正しい記述はどれでしょうか。</pre>
-                  <div class="block-title">選択肢（抽出）</div>
+                  <div class="block-title">選択肢</div>
                   <div class="options-grid">
             <div class="option-card correct">
-              <div class="option-label">A</div>
-              <div class="option-body"><pre>1つのDELETE文では、1つの表からのみ行を削除できます。</pre></div>
+              <div class="option-key">A</div>
+              <div class="option-text">1つのDELETE文では、1つの表からのみ行を削除できます。</div>
             </div>
             
             <div class="option-card">
-              <div class="option-label">B</div>
-              <div class="option-body"><pre>1つのDELETE文では、複数の表から行を削除できます。</pre></div>
+              <div class="option-key">B</div>
+              <div class="option-text">1つのDELETE文では、複数の表から行を削除できます。</div>
             </div>
             
             <div class="option-card selected">
-              <div class="option-label">C</div>
-              <div class="option-body"><pre>DELETEを使用して、特定の列のデータを削除できます。</pre></div>
+              <div class="option-key">C</div>
+              <div class="option-text">DELETEを使用して、特定の列のデータを削除できます。</div>
             </div>
             
             <div class="option-card">
-              <div class="option-label">D</div>
-              <div class="option-body"><pre>DELETEを実行すると自動的にCOMMITされます。</pre></div>
+              <div class="option-key">D</div>
+              <div class="option-text">DELETEを実行すると自動的にCOMMITされます。</div>
             </div>
             </div>
                   <div class="analysis-block">
@@ -227,46 +208,38 @@
                 
                 <article class="question-card">
                   <div class="question-meta">第3回 模擬試験 / 問44 / 正答 BCDF / 自己回答 ACDF</div>
-                  <div class="block-title">記録原文（省略なし）</div>
-                  <pre>グローバル一時テーブル（GLOBAL TEMPORARY TABLES）について、正しいものを4つ選んでください。
-(1)		A. グローバル一時テーブルの領域は、セッション開始時に確保される。
-(2)		B. あるセッションで挿入された行は、他のセッションから参照できない。
-(3)		C. TRUNCATE コマンドを実行すると、そのセッションのグローバル一時テーブルのすべての行が削除される。
-(4)		D. セッションが終了すると、グローバル一時テーブルのデータは削除される。
-(5)		E. DELETE コマンドはグローバル一時テーブル上で ROLLBACK できない。
-(6)		F. グローバル一時テーブルの定義は、複数のセッションで利用できる。</pre>
-                  <div class="block-title">問題文（抽出）</div>
+                  <div class="block-title">問題文</div>
                   <pre>グローバル一時テーブル（GLOBAL TEMPORARY TABLES）について、正しいものを4つ選んでください。</pre>
-                  <div class="block-title">選択肢（抽出）</div>
+                  <div class="block-title">選択肢</div>
                   <div class="options-grid">
             <div class="option-card selected">
-              <div class="option-label">A</div>
-              <div class="option-body"><pre>グローバル一時テーブルの領域は、セッション開始時に確保される。</pre></div>
+              <div class="option-key">A</div>
+              <div class="option-text">グローバル一時テーブルの領域は、セッション開始時に確保される。</div>
             </div>
             
             <div class="option-card correct">
-              <div class="option-label">B</div>
-              <div class="option-body"><pre>あるセッションで挿入された行は、他のセッションから参照できない。</pre></div>
+              <div class="option-key">B</div>
+              <div class="option-text">あるセッションで挿入された行は、他のセッションから参照できない。</div>
             </div>
             
             <div class="option-card correct selected">
-              <div class="option-label">C</div>
-              <div class="option-body"><pre>TRUNCATE コマンドを実行すると、そのセッションのグローバル一時テーブルのすべての行が削除される。</pre></div>
+              <div class="option-key">C</div>
+              <div class="option-text">TRUNCATE コマンドを実行すると、そのセッションのグローバル一時テーブルのすべての行が削除される。</div>
             </div>
             
             <div class="option-card correct selected">
-              <div class="option-label">D</div>
-              <div class="option-body"><pre>セッションが終了すると、グローバル一時テーブルのデータは削除される。</pre></div>
+              <div class="option-key">D</div>
+              <div class="option-text">セッションが終了すると、グローバル一時テーブルのデータは削除される。</div>
             </div>
             
             <div class="option-card">
-              <div class="option-label">E</div>
-              <div class="option-body"><pre>DELETE コマンドはグローバル一時テーブル上で ROLLBACK できない。</pre></div>
+              <div class="option-key">E</div>
+              <div class="option-text">DELETE コマンドはグローバル一時テーブル上で ROLLBACK できない。</div>
             </div>
             
             <div class="option-card correct selected">
-              <div class="option-label">F</div>
-              <div class="option-body"><pre>グローバル一時テーブルの定義は、複数のセッションで利用できる。</pre></div>
+              <div class="option-key">F</div>
+              <div class="option-text">グローバル一時テーブルの定義は、複数のセッションで利用できる。</div>
             </div>
             </div>
                   <div class="analysis-block">
@@ -289,40 +262,33 @@
               
                 <article class="question-card">
                   <div class="question-meta">第1回 模擬試験 / 問44 / 正答 B.D / 自己回答 A.D</div>
-                  <div class="block-title">記録原文（省略なし）</div>
-                  <pre>条件付きマルチテーブル・インサート（INSERT ALL）について正しい記述はどれでしょうか。（2つ選択）
-(1)		A.　一つのマルチテーブル・インサートに指定できるWHEN句に上限はありません。
-(2)		B.　ELSE句を使用できます。
-(3)		C.　副問合せによって返される各行は、一つの表にのみ挿入できます。
-(4)		D.　WHEN条件の各式は、副問合せのSELECT構文のリストによって戻される列を参照する必要があります。
-(5)		E.　一つのWHEN条件には一つのINTO句を使用できます。</pre>
-                  <div class="block-title">問題文（抽出）</div>
+                  <div class="block-title">問題文</div>
                   <pre>条件付きマルチテーブル・インサート（INSERT ALL）について正しい記述はどれでしょうか。（2つ選択）</pre>
-                  <div class="block-title">選択肢（抽出）</div>
+                  <div class="block-title">選択肢</div>
                   <div class="options-grid">
             <div class="option-card selected">
-              <div class="option-label">A</div>
-              <div class="option-body"><pre>一つのマルチテーブル・インサートに指定できるWHEN句に上限はありません。</pre></div>
+              <div class="option-key">A</div>
+              <div class="option-text">一つのマルチテーブル・インサートに指定できるWHEN句に上限はありません。</div>
             </div>
             
             <div class="option-card correct">
-              <div class="option-label">B</div>
-              <div class="option-body"><pre>ELSE句を使用できます。</pre></div>
+              <div class="option-key">B</div>
+              <div class="option-text">ELSE句を使用できます。</div>
             </div>
             
             <div class="option-card">
-              <div class="option-label">C</div>
-              <div class="option-body"><pre>副問合せによって返される各行は、一つの表にのみ挿入できます。</pre></div>
+              <div class="option-key">C</div>
+              <div class="option-text">副問合せによって返される各行は、一つの表にのみ挿入できます。</div>
             </div>
             
             <div class="option-card correct selected">
-              <div class="option-label">D</div>
-              <div class="option-body"><pre>WHEN条件の各式は、副問合せのSELECT構文のリストによって戻される列を参照する必要があります。</pre></div>
+              <div class="option-key">D</div>
+              <div class="option-text">WHEN条件の各式は、副問合せのSELECT構文のリストによって戻される列を参照する必要があります。</div>
             </div>
             
             <div class="option-card">
-              <div class="option-label">E</div>
-              <div class="option-body"><pre>一つのWHEN条件には一つのINTO句を使用できます。</pre></div>
+              <div class="option-key">E</div>
+              <div class="option-text">一つのWHEN条件には一つのINTO句を使用できます。</div>
             </div>
             </div>
                   <div class="analysis-block">
@@ -339,40 +305,33 @@
                 
                 <article class="question-card">
                   <div class="question-meta">第2回 模擬試験 / 問43 / 正答 BE / 自己回答 DE</div>
-                  <div class="block-title">記録原文（省略なし）</div>
-                  <pre>マルチテーブル・インサートについて正しい記述を2つ選択してください。
-(1)		A.　一つの副問合せで返される各行は、一つの表にのみインサートできます。
-(2)		B.　無条件インサートでは、VALUES句が使用できます。
-(3)		C.　無条件インサートでは、ELSE句が使用できます。
-(4)		D.　条件付きインサートでは、条件が成立したものすべてのインサート処理が実行されます。
-(5)		E.　条件付きインサートでは、WHEN条件の各式は、副問合せのSELECT構文のリストによって戻される列を参照します。</pre>
-                  <div class="block-title">問題文（抽出）</div>
+                  <div class="block-title">問題文</div>
                   <pre>マルチテーブル・インサートについて正しい記述を2つ選択してください。</pre>
-                  <div class="block-title">選択肢（抽出）</div>
+                  <div class="block-title">選択肢</div>
                   <div class="options-grid">
             <div class="option-card">
-              <div class="option-label">A</div>
-              <div class="option-body"><pre>一つの副問合せで返される各行は、一つの表にのみインサートできます。</pre></div>
+              <div class="option-key">A</div>
+              <div class="option-text">一つの副問合せで返される各行は、一つの表にのみインサートできます。</div>
             </div>
             
             <div class="option-card correct">
-              <div class="option-label">B</div>
-              <div class="option-body"><pre>無条件インサートでは、VALUES句が使用できます。</pre></div>
+              <div class="option-key">B</div>
+              <div class="option-text">無条件インサートでは、VALUES句が使用できます。</div>
             </div>
             
             <div class="option-card">
-              <div class="option-label">C</div>
-              <div class="option-body"><pre>無条件インサートでは、ELSE句が使用できます。</pre></div>
+              <div class="option-key">C</div>
+              <div class="option-text">無条件インサートでは、ELSE句が使用できます。</div>
             </div>
             
             <div class="option-card selected">
-              <div class="option-label">D</div>
-              <div class="option-body"><pre>条件付きインサートでは、条件が成立したものすべてのインサート処理が実行されます。</pre></div>
+              <div class="option-key">D</div>
+              <div class="option-text">条件付きインサートでは、条件が成立したものすべてのインサート処理が実行されます。</div>
             </div>
             
             <div class="option-card correct selected">
-              <div class="option-label">E</div>
-              <div class="option-body"><pre>条件付きインサートでは、WHEN条件の各式は、副問合せのSELECT構文のリストによって戻される列を参照します。</pre></div>
+              <div class="option-key">E</div>
+              <div class="option-text">条件付きインサートでは、WHEN条件の各式は、副問合せのSELECT構文のリストによって戻される列を参照します。</div>
             </div>
             </div>
                   <div class="analysis-block">
@@ -389,30 +348,7 @@
                 
                 <article class="question-card">
                   <div class="question-meta">第2回 模擬試験 / 問70 / 正答 BD / 自己回答 BE</div>
-                  <div class="block-title">記録原文（省略なし）</div>
-                  <pre>以下のINSERT ALL文について、正しい記述を2つ選択してください。（Employees表には3行のデータが存在しています）
-
-INSERT ALL
-　INTO Employees_History(EMP_ID, NAME, DEPT_ID)
-　　VALUES(emp_id, name, dept_id)
-　INTO Employee_Salaries(EMP_ID, SALARY)
-　　VALUES(emp_id, salary)
-　INTO Employee_Bonuses(EMP_ID, BONUS)
-　　VALUES(emp_id, bonus)
-SELECT
-　emp_id,
-　name,
-　salary,
-　bonus,
-　dept_id
-FROM
-　Employees;
-(1)		A.　INSERT ALLは同一テーブルにしか挿入できないためエラーとなる
-(2)		B.　Employees_Historyには3行分のデータが追加される
-(3)		C.　一つのINSERT ALL句に複数のINTO句を使用しているためエラーとなる
-(4)		D.　INTO句にVALUES句が指定できる
-(5)		E.　INSERT ALL実行後、自動的にコミットが行われる</pre>
-                  <div class="block-title">問題文（抽出）</div>
+                  <div class="block-title">問題文</div>
                   <pre>以下のINSERT ALL文について、正しい記述を2つ選択してください。（Employees表には3行のデータが存在しています）
 INSERT ALL
  INTO Employees_History(EMP_ID, NAME, DEPT_ID)
@@ -429,31 +365,31 @@ SELECT
  dept_id
 FROM
  Employees;</pre>
-                  <div class="block-title">選択肢（抽出）</div>
+                  <div class="block-title">選択肢</div>
                   <div class="options-grid">
             <div class="option-card">
-              <div class="option-label">A</div>
-              <div class="option-body"><pre>INSERT ALLは同一テーブルにしか挿入できないためエラーとなる</pre></div>
+              <div class="option-key">A</div>
+              <div class="option-text">INSERT ALLは同一テーブルにしか挿入できないためエラーとなる</div>
             </div>
             
             <div class="option-card correct selected">
-              <div class="option-label">B</div>
-              <div class="option-body"><pre>Employees_Historyには3行分のデータが追加される</pre></div>
+              <div class="option-key">B</div>
+              <div class="option-text">Employees_Historyには3行分のデータが追加される</div>
             </div>
             
             <div class="option-card">
-              <div class="option-label">C</div>
-              <div class="option-body"><pre>一つのINSERT ALL句に複数のINTO句を使用しているためエラーとなる</pre></div>
+              <div class="option-key">C</div>
+              <div class="option-text">一つのINSERT ALL句に複数のINTO句を使用しているためエラーとなる</div>
             </div>
             
             <div class="option-card correct">
-              <div class="option-label">D</div>
-              <div class="option-body"><pre>INTO句にVALUES句が指定できる</pre></div>
+              <div class="option-key">D</div>
+              <div class="option-text">INTO句にVALUES句が指定できる</div>
             </div>
             
             <div class="option-card selected">
-              <div class="option-label">E</div>
-              <div class="option-body"><pre>INSERT ALL実行後、自動的にコミットが行われる</pre></div>
+              <div class="option-key">E</div>
+              <div class="option-text">INSERT ALL実行後、自動的にコミットが行われる</div>
             </div>
             </div>
                   <div class="analysis-block">
@@ -476,25 +412,7 @@ FROM
               
                 <article class="question-card">
                   <div class="question-meta">第1回 模擬試験 / 問46 / 正答 B / 自己回答 C</div>
-                  <div class="block-title">記録原文（省略なし）</div>
-                  <pre>次の文を実行するとします。
-
-MERGE INTO ITEM_TARGET t
-　　USING ITEM i
-　　ON (i.ITEM_ID = t.ITEM_ID)
-WHEN MATCHED THEN
-　　UPDATE SET t.ITEM_ID = i.ITEM_ID, t.ITEM_NAME = i.ITEM_NAME, t.ITEM_TYPE = i.ITEM_TYPE
-WHEN NOT MATCHED THEN
-　　INSERT (t.ITEM_ID, t.ITEM_NAME, t.ITEM_PRICE)
-　　VALUES (i.ITEM_ID, i.ITEM_NAME, i.ITEM_PRICE)
-　　WHERE i.ITEM_PRICE &gt; 1000;
-
-MERGE文を実行する際の正しい記述はどれでしょうか。
-(1)		A.　INSERTでWHERE句は指定できません。
-(2)		B.　ITEM_ID列は更新できません。
-(3)		C.　ITEM_ID列は挿入できません。
-(4)		D.　WHERE句の表指定は&#x27;t&#x27;にする必要があります。</pre>
-                  <div class="block-title">問題文（抽出）</div>
+                  <div class="block-title">問題文</div>
                   <pre>次の文を実行するとします。
 MERGE INTO ITEM_TARGET t
   USING ITEM i
@@ -506,26 +424,26 @@ WHEN NOT MATCHED THEN
   VALUES (i.ITEM_ID, i.ITEM_NAME, i.ITEM_PRICE)
   WHERE i.ITEM_PRICE &gt; 1000;
 MERGE文を実行する際の正しい記述はどれでしょうか。</pre>
-                  <div class="block-title">選択肢（抽出）</div>
+                  <div class="block-title">選択肢</div>
                   <div class="options-grid">
             <div class="option-card">
-              <div class="option-label">A</div>
-              <div class="option-body"><pre>INSERTでWHERE句は指定できません。</pre></div>
+              <div class="option-key">A</div>
+              <div class="option-text">INSERTでWHERE句は指定できません。</div>
             </div>
             
             <div class="option-card correct">
-              <div class="option-label">B</div>
-              <div class="option-body"><pre>ITEM_ID列は更新できません。</pre></div>
+              <div class="option-key">B</div>
+              <div class="option-text">ITEM_ID列は更新できません。</div>
             </div>
             
             <div class="option-card selected">
-              <div class="option-label">C</div>
-              <div class="option-body"><pre>ITEM_ID列は挿入できません。</pre></div>
+              <div class="option-key">C</div>
+              <div class="option-text">ITEM_ID列は挿入できません。</div>
             </div>
             
             <div class="option-card">
-              <div class="option-label">D</div>
-              <div class="option-body"><pre>WHERE句の表指定は&#x27;t&#x27;にする必要があります。</pre></div>
+              <div class="option-key">D</div>
+              <div class="option-text">WHERE句の表指定は&#x27;t&#x27;にする必要があります。</div>
             </div>
             </div>
                   <div class="analysis-block">
@@ -542,26 +460,7 @@ MERGE文を実行する際の正しい記述はどれでしょうか。</pre>
                 
                 <article class="question-card">
                   <div class="question-meta">第2回 模擬試験 / 問46 / 正答 A / 自己回答 B</div>
-                  <div class="block-title">記録原文（省略なし）</div>
-                  <pre>次の文を実行するとします。
-
-MERGE INTO ITEM_MERGE m
-　USING ITEM i
-　ON (i.ITEM_ID = m.ITEM_ID)
-WHEN MATCHED THEN
-　UPDATE SET m.ITEM_NAME = i.ITEM_NAME, m.ITEM_TYPE = i.ITEM_TYPE
-WHEN NOT MATCHED THEN
-　INSERT (m.ITEM_ID, m.ITEM_NAME, m.ITEM_TYPE, m.ITEM_PRICE)
-　VALUES (i.ITEM_ID, i.ITEM_NAME, i.ITEM_TYPE, i.ITEM_PRICE)
-　WHERE i.ITEM_PRICE &gt; 1000;
-
-MERGE文の実行結果として正しい記述はどれでしょうか。
-　
-(1)		A.　ITEM_MERGE表には、ORDER_ID 2,3,5,6,7が存在します。
-(2)		B.　ITEM_MERGE表には、ORDER_ID 1,2,3,4,5,6,7が存在します。
-(3)		C.　ITEM表には、ORDER_ID 1,2,3,4,6,7が存在します。
-(4)		D.　ITEM表には、ORDER_ID 1,2,3,4,5,6,7が存在します。</pre>
-                  <div class="block-title">問題文（抽出）</div>
+                  <div class="block-title">問題文</div>
                   <pre>次の文を実行するとします。
 MERGE INTO ITEM_MERGE m
  USING ITEM i
@@ -573,26 +472,26 @@ WHEN NOT MATCHED THEN
  VALUES (i.ITEM_ID, i.ITEM_NAME, i.ITEM_TYPE, i.ITEM_PRICE)
  WHERE i.ITEM_PRICE &gt; 1000;
 MERGE文の実行結果として正しい記述はどれでしょうか。</pre>
-                  <div class="block-title">選択肢（抽出）</div>
+                  <div class="block-title">選択肢</div>
                   <div class="options-grid">
             <div class="option-card correct">
-              <div class="option-label">A</div>
-              <div class="option-body"><pre>ITEM_MERGE表には、ORDER_ID 2,3,5,6,7が存在します。</pre></div>
+              <div class="option-key">A</div>
+              <div class="option-text">ITEM_MERGE表には、ORDER_ID 2,3,5,6,7が存在します。</div>
             </div>
             
             <div class="option-card selected">
-              <div class="option-label">B</div>
-              <div class="option-body"><pre>ITEM_MERGE表には、ORDER_ID 1,2,3,4,5,6,7が存在します。</pre></div>
+              <div class="option-key">B</div>
+              <div class="option-text">ITEM_MERGE表には、ORDER_ID 1,2,3,4,5,6,7が存在します。</div>
             </div>
             
             <div class="option-card">
-              <div class="option-label">C</div>
-              <div class="option-body"><pre>ITEM表には、ORDER_ID 1,2,3,4,6,7が存在します。</pre></div>
+              <div class="option-key">C</div>
+              <div class="option-text">ITEM表には、ORDER_ID 1,2,3,4,6,7が存在します。</div>
             </div>
             
             <div class="option-card">
-              <div class="option-label">D</div>
-              <div class="option-body"><pre>ITEM表には、ORDER_ID 1,2,3,4,5,6,7が存在します。</pre></div>
+              <div class="option-key">D</div>
+              <div class="option-text">ITEM表には、ORDER_ID 1,2,3,4,5,6,7が存在します。</div>
             </div>
             </div>
                   <div class="analysis-block">
@@ -615,60 +514,7 @@ MERGE文の実行結果として正しい記述はどれでしょうか。</pre>
               
                 <article class="question-card">
                   <div class="question-meta">第2回 模擬試験 / 問45 / 正答 C / 自己回答 D</div>
-                  <div class="block-title">記録原文（省略なし）</div>
-                  <pre>次のMERGE文について、正しい記述を1つ選択してください。
-MERGE INTO ITEM_TARGET t
-    USING ITEM i
-    ON (i.ITEM_ID = t.ITEM_ID)
-WHEN MATCHED THEN
-    INSERT (t.ITEM_ID, t.ITEM_NAME, t.ITEM_PRICE)
-    VALUES (i.ITEM_ID, i.ITEM_NAME, i.ITEM_PRICE);
-WHEN NOT MATCHED AND i.ITEM_PRICE &gt; 1000 THEN
-    UPDATE
-    SET t.ITEM_NAME = i.ITEM_NAME,
-        t.ITEM_TYPE = i.ITEM_TYPE
-
-
-MERGE INTO ITEM_TARGET t
-    USING ITEM i
-    ON (i.ITEM_ID = t.ITEM_ID)
-WHEN MATCHED THEN
-    UPDATE
-    SET t.ITEM_ID = i.ITEM_ID,
-        t.ITEM_NAME = i.ITEM_NAME,
-        t.ITEM_TYPE = i.ITEM_TYPE
-WHEN NOT MATCHED THEN
-    INSERT (t.ITEM_ID, t.ITEM_NAME, t.ITEM_PRICE)
-    VALUES (i.ITEM_ID, i.ITEM_NAME, i.ITEM_PRICE);
-
-
-MERGE INTO ITEM_TARGET t
-    USING ITEM i
-    ON (i.ITEM_ID = t.ITEM_ID)
-WHEN MATCHED THEN
-    UPDATE
-    SET t.ITEM_NAME = i.ITEM_NAME,
-        t.ITEM_TYPE = i.ITEM_TYPE
-WHEN NOT MATCHED AND i.ITEM_PRICE &gt; 1000 THEN
-    INSERT (t.ITEM_ID, t.ITEM_NAME, t.ITEM_PRICE)
-    VALUES (i.ITEM_ID, i.ITEM_NAME, i.ITEM_PRICE);
-
-
-
-MERGE INTO ITEM_TARGET t
-    USING ITEM i
-    ON (i.ITEM_ID = t.ITEM_ID)
-WHEN MATCHED THEN
-    DELETE WHERE i.ITEM_ID IS NULL
-WHEN NOT MATCHED THEN
-    INSERT (t.ITEM_ID, t.ITEM_NAME, t.ITEM_PRICE)
-    VALUES (i.ITEM_ID, i.ITEM_NAME, i.ITEM_PRICE);
-
-(1)		A
-(2)		B
-(3)		C
-(4)		D</pre>
-                  <div class="block-title">問題文（抽出）</div>
+                  <div class="block-title">問題文</div>
                   <pre>次のMERGE文について、正しい記述を1つ選択してください。
 MERGE INTO ITEM_TARGET t
     USING ITEM i
@@ -709,26 +555,26 @@ WHEN MATCHED THEN
 WHEN NOT MATCHED THEN
     INSERT (t.ITEM_ID, t.ITEM_NAME, t.ITEM_PRICE)
     VALUES (i.ITEM_ID, i.ITEM_NAME, i.ITEM_PRICE);</pre>
-                  <div class="block-title">選択肢（抽出）</div>
+                  <div class="block-title">選択肢</div>
                   <div class="options-grid">
             <div class="option-card">
-              <div class="option-label">1</div>
-              <div class="option-body"><pre>A</pre></div>
+              <div class="option-key">1</div>
+              <div class="option-text">A</div>
             </div>
             
             <div class="option-card">
-              <div class="option-label">2</div>
-              <div class="option-body"><pre>B</pre></div>
+              <div class="option-key">2</div>
+              <div class="option-text">B</div>
             </div>
             
             <div class="option-card">
-              <div class="option-label">3</div>
-              <div class="option-body"><pre>C</pre></div>
+              <div class="option-key">3</div>
+              <div class="option-text">C</div>
             </div>
             
             <div class="option-card">
-              <div class="option-label">4</div>
-              <div class="option-body"><pre>D</pre></div>
+              <div class="option-key">4</div>
+              <div class="option-text">D</div>
             </div>
             </div>
                   <div class="analysis-block">
@@ -745,34 +591,28 @@ WHEN NOT MATCHED THEN
                 
                 <article class="question-card">
                   <div class="question-meta">第3回 模擬試験 / 問7 / 正答 AC / 自己回答 BC</div>
-                  <div class="block-title">記録原文（省略なし）</div>
-                  <pre>次のSQLのうち、Products表から在庫数が0のカテゴリと同じカテゴリに属する商品をすべて削除する処理として正しいものはどれですか。2つ選択してください。
-(1)		A. DELETE FROM Products p WHERE EXISTS (SELECT 1 FROM Products sub WHERE sub.stock = 0 AND sub.category = p.category );
-(2)		B. DELETE FROM Products WHERE EXISTS (SELECT stock FROM Products WHERE stock = 0 AND Products.category = category);
-(3)		C. DELETE FROM Products WHERE category IN (SELECT category FROM Products WHERE stock = 0);
-(4)		D. DELETE FROM Products WHERE category = (SELECT category FROM Products WHERE stock = 0);</pre>
-                  <div class="block-title">問題文（抽出）</div>
+                  <div class="block-title">問題文</div>
                   <pre>次のSQLのうち、Products表から在庫数が0のカテゴリと同じカテゴリに属する商品をすべて削除する処理として正しいものはどれですか。2つ選択してください。</pre>
-                  <div class="block-title">選択肢（抽出）</div>
+                  <div class="block-title">選択肢</div>
                   <div class="options-grid">
             <div class="option-card correct">
-              <div class="option-label">A</div>
-              <div class="option-body"><pre>DELETE FROM Products p WHERE EXISTS (SELECT 1 FROM Products sub WHERE sub.stock = 0 AND sub.category = p.category );</pre></div>
+              <div class="option-key">A</div>
+              <div class="option-text">DELETE FROM Products p WHERE EXISTS (SELECT 1 FROM Products sub WHERE sub.stock = 0 AND sub.category = p.category );</div>
             </div>
             
             <div class="option-card selected">
-              <div class="option-label">B</div>
-              <div class="option-body"><pre>DELETE FROM Products WHERE EXISTS (SELECT stock FROM Products WHERE stock = 0 AND Products.category = category);</pre></div>
+              <div class="option-key">B</div>
+              <div class="option-text">DELETE FROM Products WHERE EXISTS (SELECT stock FROM Products WHERE stock = 0 AND Products.category = category);</div>
             </div>
             
             <div class="option-card correct selected">
-              <div class="option-label">C</div>
-              <div class="option-body"><pre>DELETE FROM Products WHERE category IN (SELECT category FROM Products WHERE stock = 0);</pre></div>
+              <div class="option-key">C</div>
+              <div class="option-text">DELETE FROM Products WHERE category IN (SELECT category FROM Products WHERE stock = 0);</div>
             </div>
             
             <div class="option-card">
-              <div class="option-label">D</div>
-              <div class="option-body"><pre>DELETE FROM Products WHERE category = (SELECT category FROM Products WHERE stock = 0);</pre></div>
+              <div class="option-key">D</div>
+              <div class="option-text">DELETE FROM Products WHERE category = (SELECT category FROM Products WHERE stock = 0);</div>
             </div>
             </div>
                   <div class="analysis-block">
@@ -795,22 +635,7 @@ WHEN NOT MATCHED THEN
               
                 <article class="question-card">
                   <div class="question-meta">第3回 模擬試験 / 問21 / 正答 AD / 自己回答 BD</div>
-                  <div class="block-title">記録原文（省略なし）</div>
-                  <pre>以下のSQLステートメントを確認してください。
-
-UPDATE invoices i
-SET client_name =
-(SELECT last_name
-FROM clients
-WHERE client_id = i.client_id);
-
-次のうち、正しいものを2つ選んでください。
-(1)		A. INVOICES テーブル内のすべての行が更新される。
-(2)		B. UPDATE ステートメントが実行される前に、サブクエリが実行される。
-(3)		C. サブクエリは相関サブクエリではない。
-(4)		D. サブクエリは INVOICES テーブルの更新されるすべての行に対して実行される。
-(5)		E. サブクエリが複数行を返した場合でも、UPDATE ステートメントはエラーなく実行される。</pre>
-                  <div class="block-title">問題文（抽出）</div>
+                  <div class="block-title">問題文</div>
                   <pre>以下のSQLステートメントを確認してください。
 UPDATE invoices i
 SET client_name =
@@ -818,31 +643,31 @@ SET client_name =
 FROM clients
 WHERE client_id = i.client_id);
 次のうち、正しいものを2つ選んでください。</pre>
-                  <div class="block-title">選択肢（抽出）</div>
+                  <div class="block-title">選択肢</div>
                   <div class="options-grid">
             <div class="option-card correct">
-              <div class="option-label">A</div>
-              <div class="option-body"><pre>INVOICES テーブル内のすべての行が更新される。</pre></div>
+              <div class="option-key">A</div>
+              <div class="option-text">INVOICES テーブル内のすべての行が更新される。</div>
             </div>
             
             <div class="option-card selected">
-              <div class="option-label">B</div>
-              <div class="option-body"><pre>UPDATE ステートメントが実行される前に、サブクエリが実行される。</pre></div>
+              <div class="option-key">B</div>
+              <div class="option-text">UPDATE ステートメントが実行される前に、サブクエリが実行される。</div>
             </div>
             
             <div class="option-card">
-              <div class="option-label">C</div>
-              <div class="option-body"><pre>サブクエリは相関サブクエリではない。</pre></div>
+              <div class="option-key">C</div>
+              <div class="option-text">サブクエリは相関サブクエリではない。</div>
             </div>
             
             <div class="option-card correct selected">
-              <div class="option-label">D</div>
-              <div class="option-body"><pre>サブクエリは INVOICES テーブルの更新されるすべての行に対して実行される。</pre></div>
+              <div class="option-key">D</div>
+              <div class="option-text">サブクエリは INVOICES テーブルの更新されるすべての行に対して実行される。</div>
             </div>
             
             <div class="option-card">
-              <div class="option-label">E</div>
-              <div class="option-body"><pre>サブクエリが複数行を返した場合でも、UPDATE ステートメントはエラーなく実行される。</pre></div>
+              <div class="option-key">E</div>
+              <div class="option-text">サブクエリが複数行を返した場合でも、UPDATE ステートメントはエラーなく実行される。</div>
             </div>
             </div>
                   <div class="analysis-block">
@@ -859,40 +684,33 @@ WHERE client_id = i.client_id);
                 
                 <article class="question-card">
                   <div class="question-meta">第3回 模擬試験 / 問67 / 正答 BE / 自己回答 AC</div>
-                  <div class="block-title">記録原文（省略なし）</div>
-                  <pre>つぎの集合演算子(UNION, UNION ALL, INTERSECT, MINUS) の説明について、正しいものを2つ選んでください。
-(1)		A. それぞれの SELECT 文に ORDER BY 句を指定できる。
-(2)		B. CLOB 型の列には、集合演算子を使用できない。
-(3)		C. FOR UPDATE 句を指定できる。
-(4)		D. 最初の SELECT リストの各列の名前は、後続の SELECT リストの対応する列と一致していなければならない。
-(5)		E. SELECT リストの列数は、すべての SELECT 文で同じでなければならない。</pre>
-                  <div class="block-title">問題文（抽出）</div>
+                  <div class="block-title">問題文</div>
                   <pre>つぎの集合演算子(UNION, UNION ALL, INTERSECT, MINUS) の説明について、正しいものを2つ選んでください。</pre>
-                  <div class="block-title">選択肢（抽出）</div>
+                  <div class="block-title">選択肢</div>
                   <div class="options-grid">
             <div class="option-card selected">
-              <div class="option-label">A</div>
-              <div class="option-body"><pre>それぞれの SELECT 文に ORDER BY 句を指定できる。</pre></div>
+              <div class="option-key">A</div>
+              <div class="option-text">それぞれの SELECT 文に ORDER BY 句を指定できる。</div>
             </div>
             
             <div class="option-card correct">
-              <div class="option-label">B</div>
-              <div class="option-body"><pre>CLOB 型の列には、集合演算子を使用できない。</pre></div>
+              <div class="option-key">B</div>
+              <div class="option-text">CLOB 型の列には、集合演算子を使用できない。</div>
             </div>
             
             <div class="option-card selected">
-              <div class="option-label">C</div>
-              <div class="option-body"><pre>FOR UPDATE 句を指定できる。</pre></div>
+              <div class="option-key">C</div>
+              <div class="option-text">FOR UPDATE 句を指定できる。</div>
             </div>
             
             <div class="option-card">
-              <div class="option-label">D</div>
-              <div class="option-body"><pre>最初の SELECT リストの各列の名前は、後続の SELECT リストの対応する列と一致していなければならない。</pre></div>
+              <div class="option-key">D</div>
+              <div class="option-text">最初の SELECT リストの各列の名前は、後続の SELECT リストの対応する列と一致していなければならない。</div>
             </div>
             
             <div class="option-card correct">
-              <div class="option-label">E</div>
-              <div class="option-body"><pre>SELECT リストの列数は、すべての SELECT 文で同じでなければならない。</pre></div>
+              <div class="option-key">E</div>
+              <div class="option-text">SELECT リストの列数は、すべての SELECT 文で同じでなければならない。</div>
             </div>
             </div>
                   <div class="analysis-block">
@@ -915,40 +733,33 @@ WHERE client_id = i.client_id);
               
                 <article class="question-card">
                   <div class="question-meta">第1回 模擬試験 / 問42 / 正答 A.D / 自己回答 A.C</div>
-                  <div class="block-title">記録原文（省略なし）</div>
-                  <pre>この表の更新を行う場合、有効なSQLはどれでしょうか。（2つ選択）
-(1)		A.　UPDATE ITEM SET MADE_DATE = &#x27;23-JUN-2021&#x27;, ITEM_PRICE = NULL WHERE ITEM_ID = 2;
-(2)		B.　UPDATE ITEM SET MADE_DATE = &#x27;23-JUN-2021&#x27;, AND ITEM_PRICE = NULL WHERE ITEM_ID = 2;
-(3)		C.　UPDATE ITEM SET MADE_DATE = &#x27;23-JUN-2021&#x27; AND SET ITEM_PRICE = NULL WHERE ITEM_ID = 2;
-(4)		D.　UPDATE ITEM SET MADE_DATE = SYSDATE, ITEM_PRICE = NULL WHERE ITEM_ID = 2;
-(5)		E.　UPDATE ITEM SET MADE_DATE = &#x27;23-JUN-2021&#x27;, ITEM_PRICE = ZERO WHERE ITEM_ID = 2;</pre>
-                  <div class="block-title">問題文（抽出）</div>
+                  <div class="block-title">問題文</div>
                   <pre>この表の更新を行う場合、有効なSQLはどれでしょうか。（2つ選択）</pre>
-                  <div class="block-title">選択肢（抽出）</div>
+                  <div class="block-title">選択肢</div>
                   <div class="options-grid">
             <div class="option-card correct selected">
-              <div class="option-label">A</div>
-              <div class="option-body"><pre>UPDATE ITEM SET MADE_DATE = &#x27;23-JUN-2021&#x27;, ITEM_PRICE = NULL WHERE ITEM_ID = 2;</pre></div>
+              <div class="option-key">A</div>
+              <div class="option-text">UPDATE ITEM SET MADE_DATE = &#x27;23-JUN-2021&#x27;, ITEM_PRICE = NULL WHERE ITEM_ID = 2;</div>
             </div>
             
             <div class="option-card">
-              <div class="option-label">B</div>
-              <div class="option-body"><pre>UPDATE ITEM SET MADE_DATE = &#x27;23-JUN-2021&#x27;, AND ITEM_PRICE = NULL WHERE ITEM_ID = 2;</pre></div>
+              <div class="option-key">B</div>
+              <div class="option-text">UPDATE ITEM SET MADE_DATE = &#x27;23-JUN-2021&#x27;, AND ITEM_PRICE = NULL WHERE ITEM_ID = 2;</div>
             </div>
             
             <div class="option-card selected">
-              <div class="option-label">C</div>
-              <div class="option-body"><pre>UPDATE ITEM SET MADE_DATE = &#x27;23-JUN-2021&#x27; AND SET ITEM_PRICE = NULL WHERE ITEM_ID = 2;</pre></div>
+              <div class="option-key">C</div>
+              <div class="option-text">UPDATE ITEM SET MADE_DATE = &#x27;23-JUN-2021&#x27; AND SET ITEM_PRICE = NULL WHERE ITEM_ID = 2;</div>
             </div>
             
             <div class="option-card correct">
-              <div class="option-label">D</div>
-              <div class="option-body"><pre>UPDATE ITEM SET MADE_DATE = SYSDATE, ITEM_PRICE = NULL WHERE ITEM_ID = 2;</pre></div>
+              <div class="option-key">D</div>
+              <div class="option-text">UPDATE ITEM SET MADE_DATE = SYSDATE, ITEM_PRICE = NULL WHERE ITEM_ID = 2;</div>
             </div>
             
             <div class="option-card">
-              <div class="option-label">E</div>
-              <div class="option-body"><pre>UPDATE ITEM SET MADE_DATE = &#x27;23-JUN-2021&#x27;, ITEM_PRICE = ZERO WHERE ITEM_ID = 2;</pre></div>
+              <div class="option-key">E</div>
+              <div class="option-text">UPDATE ITEM SET MADE_DATE = &#x27;23-JUN-2021&#x27;, ITEM_PRICE = ZERO WHERE ITEM_ID = 2;</div>
             </div>
             </div>
                   <div class="analysis-block">
