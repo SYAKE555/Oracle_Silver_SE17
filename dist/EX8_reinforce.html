@@ -3,72 +3,569 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EX8 データの絞り込みとソート - 弱点強化ユニット</title>
-<style>* { box-sizing: border-box; margin: 0; padding: 0; }
- body { font-family: 'Segoe UI', 'Hiragino Sans', Arial, sans-serif; background: #f5f7fa; color: #2d3748; line-height: 1.7; }
- .page-header { background: linear-gradient(135deg, #8e2de2 0%, #4a00e0 50%, #c0392b 100%); color: white; padding: 36px 24px; text-align: center; }
- .page-header h1 { font-size: 1.7rem; margin-bottom: 6px; }
- .page-header .subtitle { opacity: .9; font-size: .92rem; }
- .container { max-width: 1000px; margin: 0 auto; padding: 24px; }
- .nav-back { display: inline-block; padding: 8px 16px; background: white; border-radius: 6px; text-decoration: none; color: #2d3748; box-shadow: 0 2px 4px rgba(0,0,0,.08); font-size: .88rem; margin-bottom: 16px; }
-
- .toc { background: white; border-radius: 12px; padding: 18px 22px; box-shadow: 0 2px 8px rgba(0,0,0,.08); margin-bottom: 28px; }
- .toc h2 { font-size: 1rem; margin-bottom: 10px; color: #4a00e0; }
- .toc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; }
- .toc a { display: block; padding: 8px 12px; background: #f7fafc; border-radius: 6px; text-decoration: none; color: #2d3748; font-size: .88rem; border-left: 3px solid #cbd5e0; }
- .toc a:hover { background: #edf2f7; border-left-color: #4a00e0; }
- .toc a.high { border-left-color: #c0392b; background: #fef5f5; }
- .toc a.mid { border-left-color: #e67e22; background: #fef8f0; }
-
- .domain-block { background: white; border-radius: 14px; padding: 28px 30px; box-shadow: 0 3px 12px rgba(0,0,0,.08); margin-bottom: 28px; scroll-margin-top: 16px; }
- .domain-block h2 { font-size: 1.4rem; padding-bottom: 10px; border-bottom: 3px solid; margin-bottom: 18px; display: flex; align-items: center; gap: 12px; }
- .d-tag { background: #4a00e0; color: white; padding: 3px 10px; border-radius: 6px; font-size: 1rem; font-weight: 900; }
- .priority-pill { margin-left: auto; font-size: .8rem; padding: 4px 10px; border-radius: 10px; font-weight: 700; }
- .p-high { background: #c0392b; color: white; }
- .p-mid { background: #e67e22; color: white; }
- .p-low { background: #f1c40f; color: #4a3800; }
- .p-ok { background: #2ecc71; color: white; }
-
- .domain-block h3 { font-size: 1.05rem; margin: 20px 0 10px; padding: 8px 12px; background: #f7fafc; border-left: 4px solid #4a00e0; border-radius: 4px; }
- .domain-block h3.mistakes { border-left-color: #c0392b; }
- .domain-block h3.rules { border-left-color: #2ecc71; }
- .domain-block h3.check { border-left-color: #3498db; }
- .domain-block h3.quiz { border-left-color: #e67e22; }
-
- .mistake-list { list-style: none; padding: 0; }
- .mistake-list li { padding: 8px 0 8px 28px; border-bottom: 1px dashed #e2e8f0; position: relative; font-size: .92rem; }
- .mistake-list li::before { content: "!"; position: absolute; left: 6px; top: 8px; color: #c0392b; font-weight: 700; }
- .mistake-list b.correct { color: #2ecc71; }
- .mistake-list b.wrong { color: #c0392b; text-decoration: line-through; }
-
- .rule-list { padding-left: 22px; font-size: .92rem; }
- .rule-list li { margin-bottom: 6px; }
- .rule-list code { background: #edf2f7; padding: 1px 6px; border-radius: 4px; font-size: .85em; color: #2d3748; }
-
- table.check-tbl { width: 100%; border-collapse: collapse; font-size: .88rem; margin-top: 6px; }
- table.check-tbl th, table.check-tbl td { padding: 8px 10px; border: 1px solid #e2e8f0; text-align: left; vertical-align: top; }
- table.check-tbl th { background: #f7fafc; font-weight: 700; }
- table.check-tbl td code { background: #edf2f7; padding: 1px 4px; border-radius: 3px; font-size: .92em; }
-
- .quiz { background: #fef5eb; padding: 12px 16px; border-radius: 8px; margin-bottom: 10px; }
- .quiz .q { font-weight: 700; font-size: .92rem; margin-bottom: 6px; }
- .quiz .a { font-size: .88rem; color: #4a5568; padding-top: 6px; border-top: 1px dashed #e2e8f0; }
- .quiz .a b { color: #2ecc71; }
-
- pre { background: #2d3748; color: #f7fafc; padding: 10px 14px; border-radius: 6px; overflow-x: auto; font-size: .82rem; margin: 6px 0; }
- code.inline { background: #edf2f7; padding: 1px 6px; border-radius: 3px; font-size: .9em; }
-
- @media (max-width: 640px) {
- .domain-block { padding: 18px; }
- .domain-block h2 { font-size: 1.1rem; flex-wrap: wrap; }
- }
+<title>EX8 データの絞り込みとソート - 全誤答徹底解説</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans JP', 'Hiragino Sans', sans-serif; background: #eef2f7; color: #1f2937; line-height: 1.7; }
+  a { color: inherit; }
+  .page-header { background: linear-gradient(135deg,#10243f 0%,#1f3d63 55%,#f1c40f 100%); color: white; padding: 42px 24px; text-align: center; }
+  .page-header h1 { font-size: 1.9rem; margin-bottom: 8px; }
+  .page-header .subtitle { opacity: 0.92; font-size: 0.95rem; }
+  .container { max-width: 1180px; margin: 0 auto; padding: 24px; }
+  .nav-back { display: inline-block; padding: 8px 16px; background: white; border-radius: 999px; text-decoration: none; color: #1f2937; box-shadow: 0 4px 14px rgba(15,23,42,.08); font-size: .9rem; margin: 0 8px 16px 0; }
+  .hero-card, .toc, .concept-section { background: white; border-radius: 18px; box-shadow: 0 10px 26px rgba(15,23,42,.08); }
+  .hero-card { padding: 20px 22px; margin-bottom: 18px; border-top: 6px solid #f1c40f; }
+  .hero-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-top: 14px; }
+  .metric { background: #f8fafc; border-radius: 14px; padding: 14px; }
+  .metric .label { color: #64748b; font-size: .82rem; }
+  .metric .value { font-size: 1.35rem; font-weight: 900; color: #0f172a; margin-top: 4px; }
+  .toc { padding: 18px 22px; margin-bottom: 22px; }
+  .toc h2 { font-size: 1rem; color: #f1c40f; margin-bottom: 10px; }
+  .toc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; }
+  .toc a { display: flex; justify-content: space-between; gap: 10px; align-items: center; text-decoration: none; padding: 10px 12px; border-radius: 12px; background: #f8fafc; border-left: 4px solid #f1c40f; font-size: .88rem; }
+  .toc a:hover { background: #eef2f7; }
+  .concept-section { padding: 22px; margin-bottom: 24px; }
+  .concept-section h3 { display: flex; justify-content: space-between; gap: 12px; align-items: center; font-size: 1.15rem; margin-bottom: 8px; color: #0f172a; }
+  .concept-section h3 span { font-size: .82rem; padding: 5px 10px; border-radius: 999px; background: #f1c40f; color: white; }
+  .concept-copy { color: #475569; font-size: .92rem; margin-bottom: 16px; }
+  .question-card { border: 1px solid #dbe4ef; border-radius: 16px; padding: 16px; margin-bottom: 14px; background: #fcfdff; }
+  .question-meta { font-size: .8rem; color: #64748b; margin-bottom: 10px; font-weight: 700; }
+  .block-title { font-size: .85rem; font-weight: 800; color: #f1c40f; margin: 10px 0 6px; }
+  pre { white-space: pre-wrap; word-break: break-word; background: #0f172a; color: #e2e8f0; border-radius: 12px; padding: 14px; font-size: .84rem; overflow-x: auto; }
+  .options-grid { display: grid; gap: 10px; }
+  .option-card { border: 1px solid #dbe4ef; border-radius: 14px; overflow: hidden; background: white; }
+  .option-card.correct { border-color: #22c55e; box-shadow: inset 0 0 0 1px #22c55e; }
+  .option-card.selected { background: #fff7ed; }
+  .option-card.correct.selected { background: #f0fdf4; }
+  .option-label { padding: 8px 12px; font-size: .82rem; font-weight: 900; background: #e2e8f0; color: #0f172a; }
+  .option-card.correct .option-label { background: #dcfce7; color: #166534; }
+  .option-card.selected .option-label { background: #ffedd5; color: #9a3412; }
+  .option-card.correct.selected .option-label { background: linear-gradient(90deg,#dcfce7,#ffedd5); color: #166534; }
+  .option-body pre { margin: 0; border-radius: 0; background: #f8fafc; color: #1f2937; }
+  .analysis-block p { color: #334155; font-size: .9rem; margin-bottom: 8px; }
+  .rebuild-list { padding-left: 20px; color: #334155; font-size: .9rem; }
+  .rebuild-list li { margin-bottom: 5px; }
+  @media (max-width: 720px) {
+    .page-header h1 { font-size: 1.55rem; }
+    .container { padding: 18px; }
+    .concept-section h3 { flex-direction: column; align-items: flex-start; }
+  }
 </style>
 </head>
 <body>
-<div class="page-header" style="background:linear-gradient(135deg,#2c3e50 0%,#2ecc71 100%)"> <h1>EX8 弱点強化ユニット</h1> <div class="subtitle">データの絞り込みとソート（独立EXユニット）</div>
+<div class="page-header">
+  <h1>EX8 全誤答徹底解説</h1>
+  <div class="subtitle">データの絞り込みとソート / Phase 3 基礎の取りこぼし回収 / 演習を省き、失点した設問だけを叩き直すページ</div>
 </div>
-<div class="container"> <a class="nav-back" href="mock_exam_report.html">← 結果レポート</a><a class="nav-back" href="index.html" style="margin-left:8px">教科書トップ</a><a class="nav-back" href="mock_exam_reinforce.html" style="margin-left:8px">EX 一覧</a> <div style="background:linear-gradient(135deg,#2ecc7115,#2ecc7108);border-radius:12px;padding:18px 22px;margin-bottom:20px;border-left:6px solid #2ecc71"> <div style="font-size:.85rem;color:#2ecc71;font-weight:700;letter-spacing:.1em">EX8 / 弱点強化ユニット（独立）</div> <div style="font-size:1.4rem;font-weight:800;margin-top:4px">データの絞り込みとソート</div> <div style="font-size:.85rem;color:#718096;margin-top:4px">元ドメイン: D2 ／ 優先度: <b style="color:#2ecc71">維持</b></div> </div> <div class="domain-block" id="d2" style="border-top:5px solid #2ecc71"> <h2 style="border-bottom-color:#2ecc71"><span class="d-tag" style="background:#2ecc71">D2</span>データの絞り込みとソート<span class="priority-pill p-ok">維持</span></h2> <h3 class="mistakes">模試で落とした典型ミス</h3> <ul class="mistake-list"> <li>VERIFY コマンドの機能を「置換変数の値を作成」と誤認。<b class="correct">正：置換変数使用時に変更前／変更後の値を表示する（SQL*Plus 専用）。</b></li> <li>AND と OR の優先順位：<b class="correct">AND が先に評価される</b>。括弧で優先順位を明示する。</li> <li>ROWNUM と ORDER BY の組合せ：<code class="inline">WHERE ROWNUM &lt;= 3 ORDER BY ...</code>は<b>登録順の先頭3件</b>を取って後ソート。想定と違う結果になる。</li> </ul> <h3 class="rules">必修ルール</h3> <ul class="rule-list"> <li><b>LIKE：</b><code>%</code>＝0文字以上、<code>_</code>＝1文字。ESCAPE 指定で % や _ をリテラル扱い可。</li> <li><b>BETWEEN a AND b：</b>a &lt;= x &lt;= b（両端含む）。</li> <li><b>IN リスト：</b>NULL を含むと NOT IN は常に空集合になる罠。</li> <li><b>ORDER BY：</b>既定 ASC、NULL は既定で ASC なら末尾・DESC なら先頭。<code>NULLS FIRST/LAST</code>で明示。</li> <li><b>行制限：</b>12c以降は <code>OFFSET m ROWS FETCH NEXT n ROWS ONLY</code>。ROWNUM はソート前に評価されるため、Top-N には <code>(SELECT ... ORDER BY ...)</code>の外側で使う。</li> <li><b>置換変数：</b><code>&</code>＝毎回プロンプト・SQL後破棄、<code>&&</code>＝1回入力で永続・SQL後も値保持。DEFINE/UNDEFINE で明示管理。</li> <li><b>SQL*Plus コマンド：</b>DEFINE / SET VERIFY / SET DEFINE ON は SQL*Plus 専用（SQL Developer でも一部使える）。</li> </ul> <h3 class="quiz">ミニ演習（2問）</h3> <div class="quiz"> <div class="q">Q1. Top-N を正しく取る書き方（安い順3件）は？</div> <div class="a">A. <code class="inline">SELECT * FROM (SELECT ... ORDER BY price) WHERE ROWNUM &lt;= 3;</code>または <code class="inline">FETCH FIRST 3 ROWS ONLY</code>。</div> </div> <div class="quiz"> <div class="q">Q2. <code class="inline">&var</code>と <code class="inline">&&var</code>の違いは？</div> <div class="a">A. <b>&</b>は実行ごとに入力を求める・実行後破棄、<b>&&</b>は1度入力すればセッション終了まで保持。</div> </div> </div> <div style="margin-top:20px;padding:14px 18px;background:white;border-radius:8px;box-shadow:0 2px 6px rgba(0,0,0,.06);font-size:.88rem;color:#4a5568"> <b>次のユニット：</b> <a href="mock_exam_reinforce.html">EX 一覧へ戻る</a> </div> <div style="text-align:center;color:#a0aec0;font-size:.78rem;margin-top:30px;padding-top:16px;border-top:1px solid #e2e8f0">EX8 / 弱点強化ユニット — 模擬試験 Phase 2
- </div>
+<div class="container">
+  <a class="nav-back" href="mock_exam_report.html">結果レポート</a>
+  <a class="nav-back" href="mock_exam_reinforce.html">EX ハブ</a>
+  <a class="nav-back" href="phase3_reinforce.html">このフェーズへ戻る</a>
+  <a class="nav-back" href="index.html">教科書トップ</a>
+
+  <div class="hero-card">
+    <div style="font-size:.9rem;color:#64748b;font-weight:700">D2 / 要復習</div>
+    <div style="font-size:1.4rem;font-weight:900;margin-top:4px">データの絞り込みとソート</div>
+    <p style="margin-top:8px;color:#334155">このページは、実際に間違えた設問をカテゴリ別に並べ、問題文・選択肢・正答理由・誤答理由・叩き直しポイントまで一気に確認するための再構築教材です。</p>
+    <div class="hero-grid">
+      <div class="metric"><div class="label">フェーズ</div><div class="value">Phase 3</div></div>
+      <div class="metric"><div class="label">進捗率</div><div class="value">60.0%</div></div>
+      <div class="metric"><div class="label">誤答数</div><div class="value">10問</div></div>
+      <div class="metric"><div class="label">カテゴリ数</div><div class="value">4</div></div>
+    </div>
+  </div>
+
+  <div class="toc">
+    <h2>カテゴリ別目次</h2>
+    <div class="toc-grid">
+      <a href="#d2-1" class="low">置換変数と VERIFY <span>4問</span></a><a href="#d2-2" class="low">ORDER BY・ROWNUM・FETCH <span>3問</span></a><a href="#d2-3" class="low">NULL 判定と WHERE 条件 <span>2問</span></a><a href="#d2-4" class="low">演算子優先順位 <span>1問</span></a>
+    </div>
+  </div>
+
+  
+            <section class="concept-section" id="d2-1">
+              <h3>置換変数と VERIFY<span>4問</span></h3>
+              <p class="concept-copy">SQL*Plus 系の置換変数では &amp; は毎回入力、&amp;&amp; は再利用される。DEFINE 済みかどうか、VERIFY の役割も含めて読む必要がある。</p>
+              
+                <article class="question-card">
+                  <div class="question-meta">第1回 模擬試験 / 問12 / 正答 A.C / 自己回答 B.C</div>
+                  <div class="block-title">問題文</div>
+                  <pre>VERIFYコマンドについて正しい記述はどれでしょうか。(2つ選択)</pre>
+                  <div class="block-title">選択肢</div>
+                  <div class="options-grid">
+            <div class="option-card correct">
+              <div class="option-label">A</div>
+              <div class="option-body"><pre>置換変数の値を表示します。</pre></div>
+            </div>
+            
+            <div class="option-card selected">
+              <div class="option-label">B</div>
+              <div class="option-body"><pre>置換変数の値を作成します。</pre></div>
+            </div>
+            
+            <div class="option-card correct selected">
+              <div class="option-label">C</div>
+              <div class="option-body"><pre>SQL DeveloperおよびSQL*Plusで使用できます。</pre></div>
+            </div>
+            
+            <div class="option-card">
+              <div class="option-label">D</div>
+              <div class="option-body"><pre>SQL Developerでのみ使用できます。</pre></div>
+            </div>
+            
+            <div class="option-card">
+              <div class="option-label">E</div>
+              <div class="option-body"><pre>SQL*Plusでのみ使用できます。</pre></div>
+            </div>
+            </div>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「置換変数と VERIFY」です。SQL*Plus 系の置換変数では & は毎回入力、&& は再利用される。DEFINE 済みかどうか、VERIFY の役割も含めて読む必要がある。 したがって正答は A「置換変数の値を表示します。」 / C「SQL DeveloperおよびSQL*Plusで使用できます。」 になります。</p>
+                    <div class="block-title">今回の誤り</div>
+                    <p>自己回答は B「置換変数の値を作成します。」 / C「SQL DeveloperおよびSQL*Plusで使用できます。」 でした。一部は当たっていますが、B「置換変数の値を作成します。」 に引っ張られて取りこぼしています。DEFINE の有無を見ずにプロンプト発生を判断したり、VERIFY を変数定義と混同しやすい。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>&amp; は都度入力、&amp;&amp; は定義保持と覚える。</li><li>DEFINE 済みならプロンプトが出ない可能性を確認する。</li><li>VERIFY は置換前後の表示であり、変数作成ではない。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第2回 模擬試験 / 問10 / 正答 C / 自己回答 E</div>
+                  <div class="block-title">問題文</div>
+                  <pre>以下のSQLを作成する必要があります。
+・SQL実行時に必ず列名を入力する
+・最初のSQL実行時に表名を入力し、次回以降のSQL実行時に表名の入力不要
+上記の条件を満たすSQLはどれでしょうか。</pre>
+                  <div class="block-title">選択肢</div>
+                  <div class="options-grid">
+            <div class="option-card">
+              <div class="option-label">A</div>
+              <div class="option-body"><pre>SELECT &amp;column FROM &amp;table;</pre></div>
+            </div>
+            
+            <div class="option-card">
+              <div class="option-label">B</div>
+              <div class="option-body"><pre>SELECT &amp;&amp;column FROM &amp;table;</pre></div>
+            </div>
+            
+            <div class="option-card correct">
+              <div class="option-label">C</div>
+              <div class="option-body"><pre>SELECT &amp;column FROM &amp;&amp;table;</pre></div>
+            </div>
+            
+            <div class="option-card">
+              <div class="option-label">D</div>
+              <div class="option-body"><pre>SELECT &amp;&amp;column FROM &amp;&amp;table;
+以下のコマンドとSQLを実行するとします。
+DEFINE ITEMPRICE = &#x27;1000&#x27;
+DEFINE ITEMID = &#x27;1&#x27;
+SELECT * FROM ITEM WHERE ITEM_ID = &#x27;&amp;ITEMID&#x27; AND ITEM_PRICE = &amp;ITEMPRICE;
+実行結果として正しい記述はどれでしょうか。</pre></div>
+            </div>
+            
+            <div class="option-card">
+              <div class="option-label">A</div>
+              <div class="option-body"><pre>文字入力のプロンプトが表示されません。</pre></div>
+            </div>
+            
+            <div class="option-card">
+              <div class="option-label">B</div>
+              <div class="option-body"><pre>ITEMIDの文字入力プロンプトが表示されます。</pre></div>
+            </div>
+            
+            <div class="option-card correct">
+              <div class="option-label">C</div>
+              <div class="option-body"><pre>ITEMPRICEの文字入力プロンプトが表示されます。</pre></div>
+            </div>
+            
+            <div class="option-card">
+              <div class="option-label">D</div>
+              <div class="option-body"><pre>ITEMPRICEとITEMIDの両方の文字入力プロンプトが表示されます。</pre></div>
+            </div>
+            
+            <div class="option-card selected">
+              <div class="option-label">E</div>
+              <div class="option-body"><pre>エラーとなります。
+Ans.A</pre></div>
+            </div>
+            </div>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「置換変数と VERIFY」です。SQL*Plus 系の置換変数では & は毎回入力、&& は再利用される。DEFINE 済みかどうか、VERIFY の役割も含めて読む必要がある。 したがって正答は C「ITEMPRICEの文字入力プロンプトが表示されます。」 になります。</p>
+                    <div class="block-title">今回の誤り</div>
+                    <p>自己回答は E「エラーとなります。 Ans.A」 でした。DEFINE の有無を見ずにプロンプト発生を判断したり、VERIFY を変数定義と混同しやすい。 正答との差は、条件の向き、句の置き場所、またはオブジェクトの性質を正確に読み切れていない点にあります。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>&amp; は都度入力、&amp;&amp; は定義保持と覚える。</li><li>DEFINE 済みならプロンプトが出ない可能性を確認する。</li><li>VERIFY は置換前後の表示であり、変数作成ではない。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第2回 模擬試験 / 問39 / 正答 D / 自己回答 A</div>
+                  <div class="block-title">問題文</div>
+                  <pre>以下の文を実行した場合、置換変数x とy はそれぞれ何回プロンプト（入力要求）されるでしょうか。最も適切なものを1つ選択してください。
+SET VERIFY ON
+DEFINE x = 100
+SELECT &amp;x AS x_value, &amp;&amp;y AS y_value FROM dual;
+UNDEFINE x
+SELECT &amp;x AS x_value, &amp;&amp;y AS y_value FROM dual;</pre>
+                  <div class="block-title">選択肢</div>
+                  <div class="options-grid">
+            <div class="option-card selected">
+              <div class="option-label">A</div>
+              <div class="option-body"><pre>x:0回、y:0回</pre></div>
+            </div>
+            
+            <div class="option-card">
+              <div class="option-label">B</div>
+              <div class="option-body"><pre>x:0回、y:1回</pre></div>
+            </div>
+            
+            <div class="option-card">
+              <div class="option-label">C</div>
+              <div class="option-body"><pre>x:1回、y:0回</pre></div>
+            </div>
+            
+            <div class="option-card correct">
+              <div class="option-label">D</div>
+              <div class="option-body"><pre>x:1回、y:1回</pre></div>
+            </div>
+            
+            <div class="option-card">
+              <div class="option-label">E</div>
+              <div class="option-body"><pre>x:2回、y:1回</pre></div>
+            </div>
+            
+            <div class="option-card">
+              <div class="option-label">F</div>
+              <div class="option-body"><pre>x:2回、y:2回</pre></div>
+            </div>
+            </div>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「置換変数と VERIFY」です。SQL*Plus 系の置換変数では & は毎回入力、&& は再利用される。DEFINE 済みかどうか、VERIFY の役割も含めて読む必要がある。 したがって正答は D「x:1回、y:1回」 になります。</p>
+                    <div class="block-title">今回の誤り</div>
+                    <p>自己回答は A「x:0回、y:0回」 でした。DEFINE の有無を見ずにプロンプト発生を判断したり、VERIFY を変数定義と混同しやすい。 正答との差は、条件の向き、句の置き場所、またはオブジェクトの性質を正確に読み切れていない点にあります。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>&amp; は都度入力、&amp;&amp; は定義保持と覚える。</li><li>DEFINE 済みならプロンプトが出ない可能性を確認する。</li><li>VERIFY は置換前後の表示であり、変数作成ではない。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第3回 模擬試験 / 問45 / 正答 CD / 自己回答 BD</div>
+                  <div class="block-title">問題文</div>
+                  <pre>SET VERIFY ON コマンドについて、正しいものを2つ選んでください。</pre>
+                  <div class="block-title">選択肢</div>
+                  <div class="options-grid">
+            <div class="option-card">
+              <div class="option-label">A</div>
+              <div class="option-body"><pre>WHERE 句で使用される変数の値のみを表示する。</pre></div>
+            </div>
+            
+            <div class="option-card selected">
+              <div class="option-label">B</div>
+              <div class="option-body"><pre>DEFINE コマンドで作成された変数の値を表示する。</pre></div>
+            </div>
+            
+            <div class="option-card correct">
+              <div class="option-label">C</div>
+              <div class="option-body"><pre>SQL*Plus で使用できる。</pre></div>
+            </div>
+            
+            <div class="option-card correct selected">
+              <div class="option-label">D</div>
+              <div class="option-body"><pre>&amp;&amp; で始まる変数の値を表示する。</pre></div>
+            </div>
+            </div>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「置換変数と VERIFY」です。SQL*Plus 系の置換変数では & は毎回入力、&& は再利用される。DEFINE 済みかどうか、VERIFY の役割も含めて読む必要がある。 したがって正答は C「SQL*Plus で使用できる。」 / D「&amp;&amp; で始まる変数の値を表示する。」 になります。</p>
+                    <div class="block-title">今回の誤り</div>
+                    <p>自己回答は B「DEFINE コマンドで作成された変数の値を表示する。」 / D「&amp;&amp; で始まる変数の値を表示する。」 でした。一部は当たっていますが、B「DEFINE コマンドで作成された変数の値を表示する。」 に引っ張られて取りこぼしています。DEFINE の有無を見ずにプロンプト発生を判断したり、VERIFY を変数定義と混同しやすい。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>&amp; は都度入力、&amp;&amp; は定義保持と覚える。</li><li>DEFINE 済みならプロンプトが出ない可能性を確認する。</li><li>VERIFY は置換前後の表示であり、変数作成ではない。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+            </section>
+            
+            <section class="concept-section" id="d2-2">
+              <h3>ORDER BY・ROWNUM・FETCH<span>3問</span></h3>
+              <p class="concept-copy">ROWNUM は ORDER BY より前に振られるため、並べ替えてから上位 n 件を取りたいなら副問合せや FETCH FIRST を使う。ORDER BY の列別名や位置番号も正しく使う必要がある。</p>
+              
+                <article class="question-card">
+                  <div class="question-meta">第2回 模擬試験 / 問24 / 正答 B / 自己回答 C</div>
+                  <div class="block-title">問題文</div>
+                  <pre>ITEM_TYPE=FOODの商品を&quot;;&quot;区切りで1行に表示するためのSQLはどれでしょうか。
+なお、ソートは製造年月日（MADE_DATE）の順とします。</pre>
+                  <div class="block-title">選択肢</div>
+                  <div class="options-grid">
+            <div class="option-card">
+              <div class="option-label">A</div>
+              <div class="option-body"><pre>SELECT LISTAGG(ITEM_NAME) WITHIN GROUP (ORDER BY MADE_DATE) &quot;FoodList&quot; FROM ITEM WHERE ITEM_TYPE = &#x27;FOOD&#x27;;</pre></div>
+            </div>
+            
+            <div class="option-card correct">
+              <div class="option-label">B</div>
+              <div class="option-body"><pre>SELECT LISTAGG(ITEM_NAME, &#x27;; &#x27;) WITHIN GROUP (ORDER BY MADE_DATE) &quot;FoodList&quot; FROM ITEM WHERE ITEM_TYPE = &#x27;FOOD&#x27;;</pre></div>
+            </div>
+            
+            <div class="option-card selected">
+              <div class="option-label">C</div>
+              <div class="option-body"><pre>SELECT LISTAGG(ITEM_NAME, &#x27;; &#x27;) &quot;FoodList&quot; FROM ITEM WHERE ITEM_TYPE = &#x27;FOOD&#x27;; WITHIN GROUP (ORDER BY MADE_DATE);</pre></div>
+            </div>
+            
+            <div class="option-card">
+              <div class="option-label">D</div>
+              <div class="option-body"><pre>SELECT LISTAGG(ITEM_NAME) WITHIN GROUP ORDER BY (MADE_DATE) &quot;FoodList&quot; FROM ITEM WHERE ITEM_TYPE = &#x27;FOOD&#x27;;</pre></div>
+            </div>
+            </div>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「ORDER BY・ROWNUM・FETCH」です。ROWNUM は ORDER BY より前に振られるため、並べ替えてから上位 n 件を取りたいなら副問合せや FETCH FIRST を使う。ORDER BY の列別名や位置番号も正しく使う必要がある。 したがって正答は B「SELECT LISTAGG(ITEM_NAME, &#x27;; &#x27;) WITHIN GROUP (ORDER BY …」 になります。</p>
+                    <div class="block-title">今回の誤り</div>
+                    <p>自己回答は C「SELECT LISTAGG(ITEM_NAME, &#x27;; &#x27;) &quot;FoodList&quot; FROM ITEM WH…」 でした。ROWNUM と ORDER BY の評価順を逆に読んだり、FETCH/ORDER BY の構文順を崩しやすい。 正答との差は、条件の向き、句の置き場所、またはオブジェクトの性質を正確に読み切れていない点にあります。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>先に並べ替えたいなら副問合せか FETCH FIRST を使う。</li><li>ORDER BY の位置番号は SELECT 列順に対応する。</li><li>FETCH / OFFSET は ORDER BY の後に続ける。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第3回 模擬試験 / 問3 / 正答 A / 自己回答 D</div>
+                  <div class="block-title">問題文</div>
+                  <pre>次のInventory表を対象とするSQLを実行した結果として正しいものはどれですか。1つ選択してください。
+---- 実行するSQL ----
+SELECT item_id FROM Inventory
+WHERE NOT (tax &gt; 80 OR quantity &lt; 2)
+ORDER BY (selling_price + tax) ASC, (discount * quantity) DESC;
+| item_id | selling_price | tax | discount | quantity |
+|---------|----------------|-----|----------|----------|
+| 101     | 1000           | 80  | 50       | 2        |
+| 102     | 900            | 100 | 30       | 3        |
+| 103     | 950            | 50  | 70       | 1        |
+| 104     | 950            | 50  | 40       | 4        |</pre>
+                  <div class="block-title">選択肢</div>
+                  <div class="options-grid">
+            <div class="option-card correct">
+              <div class="option-label">A</div>
+              <div class="option-body"><pre>104, 101</pre></div>
+            </div>
+            
+            <div class="option-card">
+              <div class="option-label">B</div>
+              <div class="option-body"><pre>101, 104</pre></div>
+            </div>
+            
+            <div class="option-card">
+              <div class="option-label">C</div>
+              <div class="option-body"><pre>103, 104</pre></div>
+            </div>
+            
+            <div class="option-card selected">
+              <div class="option-label">D</div>
+              <div class="option-body"><pre>104, 102</pre></div>
+            </div>
+            </div>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「ORDER BY・ROWNUM・FETCH」です。ROWNUM は ORDER BY より前に振られるため、並べ替えてから上位 n 件を取りたいなら副問合せや FETCH FIRST を使う。ORDER BY の列別名や位置番号も正しく使う必要がある。 したがって正答は A「104, 101」 になります。</p>
+                    <div class="block-title">今回の誤り</div>
+                    <p>自己回答は D「104, 102」 でした。ROWNUM と ORDER BY の評価順を逆に読んだり、FETCH/ORDER BY の構文順を崩しやすい。 正答との差は、条件の向き、句の置き場所、またはオブジェクトの性質を正確に読み切れていない点にあります。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>先に並べ替えたいなら副問合せか FETCH FIRST を使う。</li><li>ORDER BY の位置番号は SELECT 列順に対応する。</li><li>FETCH / OFFSET は ORDER BY の後に続ける。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第3回 模擬試験 / 問6 / 正答 AD / 自己回答 BC</div>
+                  <div class="block-title">問題文</div>
+                  <pre>次のSQLのうち、Employees表から給与の高い順に並べたうえで、先頭から5件を抽出する処理として正しいものはどれですか。2つ選択してください。</pre>
+                  <div class="block-title">選択肢</div>
+                  <div class="options-grid">
+            <div class="option-card correct">
+              <div class="option-label">A</div>
+              <div class="option-body"><pre>SELECT * FROM Employees ORDER BY salary DESC OFFSET 0 ROWS FETCH FIRST 5 ROWS ONLY;</pre></div>
+            </div>
+            
+            <div class="option-card selected">
+              <div class="option-label">B</div>
+              <div class="option-body"><pre>SELECT * FROM Employees FETCH FIRST 5 ROWS ONLY OFFSET 0 ROWS ORDER BY salary DESC;</pre></div>
+            </div>
+            
+            <div class="option-card selected">
+              <div class="option-label">C</div>
+              <div class="option-body"><pre>SELECT * FROM Employees WHERE ROWNUM &lt;= 5 ORDER BY salary DESC;</pre></div>
+            </div>
+            
+            <div class="option-card correct">
+              <div class="option-label">D</div>
+              <div class="option-body"><pre>SELECT * FROM (SELECT * FROM Employees ORDER BY salary DESC) WHERE ROWNUM &lt;= 5;</pre></div>
+            </div>
+            </div>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「ORDER BY・ROWNUM・FETCH」です。ROWNUM は ORDER BY より前に振られるため、並べ替えてから上位 n 件を取りたいなら副問合せや FETCH FIRST を使う。ORDER BY の列別名や位置番号も正しく使う必要がある。 したがって正答は A「SELECT * FROM Employees ORDER BY salary DESC OFFSET 0 R…」 / D「SELECT * FROM (SELECT * FROM Employees ORDER BY salary …」 になります。</p>
+                    <div class="block-title">今回の誤り</div>
+                    <p>自己回答は B「SELECT * FROM Employees FETCH FIRST 5 ROWS ONLY OFFSET …」 / C「SELECT * FROM Employees WHERE ROWNUM &lt;= 5 ORDER BY sala…」 でした。ROWNUM と ORDER BY の評価順を逆に読んだり、FETCH/ORDER BY の構文順を崩しやすい。 正答との差は、条件の向き、句の置き場所、またはオブジェクトの性質を正確に読み切れていない点にあります。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>先に並べ替えたいなら副問合せか FETCH FIRST を使う。</li><li>ORDER BY の位置番号は SELECT 列順に対応する。</li><li>FETCH / OFFSET は ORDER BY の後に続ける。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+            </section>
+            
+            <section class="concept-section" id="d2-3">
+              <h3>NULL 判定と WHERE 条件<span>2問</span></h3>
+              <p class="concept-copy">NULL 判定は = NULL ではなく IS NULL / IS NOT NULL を使う。複数列の NULL 条件は列ごとに明示する必要がある。</p>
+              
+                <article class="question-card">
+                  <div class="question-meta">第1回 模擬試験 / 問8 / 正答 D / 自己回答 C</div>
+                  <div class="block-title">問題文</div>
+                  <pre>次の条件に合ったSQLを作成する必要があります。
+1. ITEM_NAMEと消費税（10%積算）を含めた価格を表示します。
+2. ITEM_PRICEがNULLではない商品が対象です。
+3. ITEM_NAMEがNULLの商品は対象外です。
+上記の条件に合ったSQLはどれでしょうか。</pre>
+                  <div class="block-title">選択肢</div>
+                  <div class="options-grid">
+            <div class="option-card">
+              <div class="option-label">A</div>
+              <div class="option-body"><pre>SELECT ITEM_NAME, ITEM_PRICE * 1.10 FROM ITEM WHERE ITEM_NAME AND ITEM_PRICE IS NOT NULL;</pre></div>
+            </div>
+            
+            <div class="option-card">
+              <div class="option-label">B</div>
+              <div class="option-body"><pre>SELECT ITEM_NAME, ITEM_PRICE * 1.10 FROM ITEM WHERE ITEM_NAME IS NOT NULL AND ITEM_TYPE IS NOT NULL;</pre></div>
+            </div>
+            
+            <div class="option-card selected">
+              <div class="option-label">C</div>
+              <div class="option-body"><pre>SELECT ITEM_NAME, ITEM_PRICE * 1.10 FROM ITEM WHERE ITEM_NAME, ITEM_PRICE IS NOT NULL;</pre></div>
+            </div>
+            
+            <div class="option-card correct">
+              <div class="option-label">D</div>
+              <div class="option-body"><pre>SELECT ITEM_NAME, ITEM_PRICE * 1.10 FROM ITEM WHERE ITEM_NAME IS NOT NULL AND ITEM_PRICE IS NOT NULL;</pre></div>
+            </div>
+            </div>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「NULL 判定と WHERE 条件」です。NULL 判定は = NULL ではなく IS NULL / IS NOT NULL を使う。複数列の NULL 条件は列ごとに明示する必要がある。 したがって正答は D「SELECT ITEM_NAME, ITEM_PRICE * 1.10 FROM ITEM WHERE ITE…」 になります。</p>
+                    <div class="block-title">今回の誤り</div>
+                    <p>自己回答は C「SELECT ITEM_NAME, ITEM_PRICE * 1.10 FROM ITEM WHERE ITE…」 でした。NULL を通常の値のように比較したり、複数列をまとめて IS NOT NULL にできると誤認しやすい。 正答との差は、条件の向き、句の置き場所、またはオブジェクトの性質を正確に読み切れていない点にあります。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>NULL 比較は必ず IS NULL / IS NOT NULL。</li><li>複数列条件は AND で列ごとに書く。</li><li>COUNT や算術演算で NULL がどう扱われるかも合わせて確認する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第3回 模擬試験 / 問42 / 正答 AC / 自己回答 AB</div>
+                  <div class="block-title">問題文</div>
+                  <pre>COUNT 関数について、正しいものを2つ選んでください。</pre>
+                  <div class="block-title">選択肢</div>
+                  <div class="options-grid">
+            <div class="option-card correct selected">
+              <div class="option-label">A</div>
+              <div class="option-body"><pre>COUNT(DISTINCT name) は、重複を排除し、NAME 列に NULL がある場合はカウントしない。</pre></div>
+            </div>
+            
+            <div class="option-card selected">
+              <div class="option-label">B</div>
+              <div class="option-body"><pre>DISTINCT を使用した COUNT 関数は、WHERE 句を指定できない。</pre></div>
+            </div>
+            
+            <div class="option-card correct">
+              <div class="option-label">C</div>
+              <div class="option-body"><pre>COUNT(*) は、重複を含む行、および NULL を含む列のある行もカウントする。</pre></div>
+            </div>
+            
+            <div class="option-card">
+              <div class="option-label">D</div>
+              <div class="option-body"><pre>COUNT関数は NUMBER型とDATE型のデータに対してのみ使用できる。</pre></div>
+            </div>
+            
+            <div class="option-card">
+              <div class="option-label">E</div>
+              <div class="option-body"><pre>COUNT(name) は、NAME 列に NULL がある場合でもカウントする。</pre></div>
+            </div>
+            </div>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「NULL 判定と WHERE 条件」です。NULL 判定は = NULL ではなく IS NULL / IS NOT NULL を使う。複数列の NULL 条件は列ごとに明示する必要がある。 したがって正答は A「COUNT(DISTINCT name) は、重複を排除し、NAME 列に NULL がある場合はカウントしな…」 / C「COUNT(*) は、重複を含む行、および NULL を含む列のある行もカウントする。」 になります。</p>
+                    <div class="block-title">今回の誤り</div>
+                    <p>自己回答は A「COUNT(DISTINCT name) は、重複を排除し、NAME 列に NULL がある場合はカウントしな…」 / B「DISTINCT を使用した COUNT 関数は、WHERE 句を指定できない。」 でした。一部は当たっていますが、B「DISTINCT を使用した COUNT 関数は、WHERE 句を指定できない。」 に引っ張られて取りこぼしています。NULL を通常の値のように比較したり、複数列をまとめて IS NOT NULL にできると誤認しやすい。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>NULL 比較は必ず IS NULL / IS NOT NULL。</li><li>複数列条件は AND で列ごとに書く。</li><li>COUNT や算術演算で NULL がどう扱われるかも合わせて確認する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+            </section>
+            
+            <section class="concept-section" id="d2-4">
+              <h3>演算子優先順位<span>1問</span></h3>
+              <p class="concept-copy">AND は OR より先、算術演算は比較より先など、優先順位を知らないと WHERE 条件の意味が変わる。必要なら括弧で明示する。</p>
+              
+                <article class="question-card">
+                  <div class="question-meta">第1回 模擬試験 / 問26 / 正答 C.E / 自己回答 B.C</div>
+                  <div class="block-title">問題文</div>
+                  <pre>非等価結合のパフォーマンスについて正しい記述はどれでしょうか。（2つ選択）</pre>
+                  <div class="block-title">選択肢</div>
+                  <div class="options-grid">
+            <div class="option-card">
+              <div class="option-label">A</div>
+              <div class="option-body"><pre>BETWEEN条件は、等号・不等号条件よりもパフォーマンスが低下します。</pre></div>
+            </div>
+            
+            <div class="option-card selected">
+              <div class="option-label">B</div>
+              <div class="option-body"><pre>BETWEEN条件は、等号・不等号条件よりもパフォーマンスが優れています。</pre></div>
+            </div>
+            
+            <div class="option-card correct selected">
+              <div class="option-label">C</div>
+              <div class="option-body"><pre>ANSI結合構文とOracle結合構文では、パフォーマンスに違いはありません。</pre></div>
+            </div>
+            
+            <div class="option-card">
+              <div class="option-label">D</div>
+              <div class="option-body"><pre>ANSI結合構文よりもOracle結合構文の方がパフォーマンスは優れています。</pre></div>
+            </div>
+            
+            <div class="option-card correct">
+              <div class="option-label">E</div>
+              <div class="option-body"><pre>表に別名をつけて列を表別名で修飾すると、パフォーマンスが向上します。</pre></div>
+            </div>
+            </div>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「演算子優先順位」です。AND は OR より先、算術演算は比較より先など、優先順位を知らないと WHERE 条件の意味が変わる。必要なら括弧で明示する。 したがって正答は C「ANSI結合構文とOracle結合構文では、パフォーマンスに違いはありません。」 / E「表に別名をつけて列を表別名で修飾すると、パフォーマンスが向上します。」 になります。</p>
+                    <div class="block-title">今回の誤り</div>
+                    <p>自己回答は B「BETWEEN条件は、等号・不等号条件よりもパフォーマンスが優れています。」 / C「ANSI結合構文とOracle結合構文では、パフォーマンスに違いはありません。」 でした。一部は当たっていますが、B「BETWEEN条件は、等号・不等号条件よりもパフォーマンスが優れています。」 に引っ張られて取りこぼしています。自然言語の読み順で解釈してしまい、SQL の実際の評価順とずれやすい。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>迷ったら括弧で意味を固定する。</li><li>AND が OR より強いことをまず確認する。</li><li>IN、BETWEEN、LIKE は比較条件として塊で読む。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+            </section>
+            
 </div>
 </body>
 </html>

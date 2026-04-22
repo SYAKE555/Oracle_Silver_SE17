@@ -2,6 +2,7 @@
 """Regression tests for mock exam parsing and aggregation."""
 
 import importlib.util
+import json
 import unittest
 from pathlib import Path
 
@@ -17,6 +18,7 @@ def load_module(module_name: str, relative_path: str):
 
 
 parse_mock_exams = load_module("parse_mock_exams", "scripts/parse_mock_exams.py")
+split_ex_pages = load_module("split_ex_pages", "scripts/split_ex_pages.py")
 
 
 class TestMockExamPipeline(unittest.TestCase):
@@ -38,6 +40,58 @@ class TestMockExamPipeline(unittest.TestCase):
         self.assertEqual(third_question["self_ans"], "D")
         self.assertFalse(third_question["correct"])
         self.assertEqual(exam["correct_questions"], 27)
+
+    def test_phase_priority_order_matches_weak_domains(self):
+        ranked = split_ex_pages.priority_data()
+        phases = split_ex_pages.assign_phases(ranked)
+
+        self.assertEqual([item["ex_id"] for item in ranked[:3]], ["EX2", "EX3", "EX5"])
+        self.assertEqual([len(phase["items"]) for phase in phases], [3, 3, 2])
+
+    def test_domain_pages_cover_all_wrong_questions(self):
+        ranked = split_ex_pages.priority_data()
+        split_ex_pages.assign_phases(ranked)
+
+        for item in ranked:
+            html = split_ex_pages.build_domain_page(item)
+            self.assertEqual(html.count('class="question-card"'), item["wrong_count"])
+
+    def test_detect_concept_for_known_quality_sensitive_questions(self):
+        dataset = json.loads((ROOT / "dist" / "mock_exam_data.json").read_text(encoding="utf-8"))
+        expected = {
+            (2, 25): "self_join_vs_subquery",
+            (2, 34): "set_operator_general",
+            (2, 60): "set_operator_general",
+            (2, 62): "subquery_usage",
+            (3, 39): "single_row_function_basics",
+            (3, 63): "set_operator_general",
+            (3, 69): "multiple_row_subquery",
+            (1, 42): "update_syntax",
+        }
+
+        actual = {}
+        for exam in dataset["exams"]:
+            for question in exam["questions"]:
+                key = (exam["exam_id"], question["q"])
+                if key in expected:
+                    actual[key] = split_ex_pages.detect_concept(question["domain"], question["text"])
+
+        self.assertEqual(actual, expected)
+
+    def test_hub_and_phase_pages_link_expected_ex_pages(self):
+        ranked = split_ex_pages.priority_data()
+        phases = split_ex_pages.assign_phases(ranked)
+
+        hub_html = split_ex_pages.build_hub_page(phases)
+        self.assertIn("Phase 1 最優先再構築", hub_html)
+        self.assertIn("phase1_reinforce.html", hub_html)
+        self.assertIn("EX2_reinforce.html", hub_html)
+        self.assertIn("EX8_reinforce.html", hub_html)
+
+        phase1_html = split_ex_pages.build_phase_page(phases[0])
+        self.assertIn("EX2_reinforce.html", phase1_html)
+        self.assertIn("EX3_reinforce.html", phase1_html)
+        self.assertIn("EX5_reinforce.html", phase1_html)
 
 
 if __name__ == "__main__":

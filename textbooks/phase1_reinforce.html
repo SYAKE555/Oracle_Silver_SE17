@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phase 1 最優先再構築 - EX 強化学習</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans JP', 'Hiragino Sans', sans-serif; background: #eef2f7; color: #1f2937; line-height: 1.7; }
+  .page-header { background: linear-gradient(135deg,#10243f 0%,#1f3d63 55%,#c0392b 100%); color: white; padding: 42px 24px; text-align: center; }
+  .page-header h1 { font-size: 1.8rem; margin-bottom: 8px; }
+  .container { max-width: 980px; margin: 0 auto; padding: 24px; }
+  .nav-back { display: inline-block; padding: 8px 16px; background: white; border-radius: 999px; text-decoration: none; color: #1f2937; box-shadow: 0 4px 14px rgba(15,23,42,.08); font-size: .9rem; margin: 0 8px 16px 0; }
+  .intro, .phase-card { background: white; border-radius: 18px; box-shadow: 0 10px 26px rgba(15,23,42,.08); }
+  .intro { padding: 20px 22px; margin-bottom: 18px; border-top: 6px solid #c0392b; }
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-top: 14px; }
+  .stat { background: #f8fafc; border-radius: 14px; padding: 14px; }
+  .stat .label { color: #64748b; font-size: .82rem; }
+  .stat .value { font-size: 1.32rem; font-weight: 900; color: #0f172a; margin-top: 4px; }
+  .phase-grid { display: grid; gap: 14px; }
+  .phase-card { display: grid; grid-template-columns: 84px 1fr; gap: 14px; align-items: center; padding: 16px 18px; text-decoration: none; color: inherit; }
+  .phase-tag { color: white; font-weight: 900; text-align: center; padding: 10px 0; border-radius: 12px; font-size: 1rem; }
+  .phase-title { font-size: 1rem; font-weight: 800; }
+  .phase-meta { font-size: .86rem; color: #475569; margin-top: 4px; }
+</style>
+</head>
+<body>
+<div class="page-header">
+  <h1>Phase 1 最優先再構築</h1>
+  <div>このフェーズで扱う EX を先に潰し、次のフェーズへ進むための導線ページ</div>
+</div>
+<div class="container">
+  <a class="nav-back" href="mock_exam_reinforce.html">EX ハブ</a>
+  <a class="nav-back" href="mock_exam_report.html">結果レポート</a>
+  <a class="nav-back" href="index.html">教科書トップ</a>
+  <div class="intro">
+    <div style="font-size:.95rem;color:#64748b;font-weight:700">Phase 1</div>
+    <div style="font-size:1.35rem;font-weight:900;margin-top:4px">Phase 1 最優先再構築</div>
+    <p style="margin-top:8px;color:#334155">このフェーズでは、進捗が特に低い領域を先に潰します。各 EX ページは、模擬試験で落とした全設問をカテゴリ別に再解説しています。</p>
+    <div class="stats">
+      <div class="stat"><div class="label">対象 EX 数</div><div class="value">3</div></div>
+      <div class="stat"><div class="label">合計誤答数</div><div class="value">92</div></div>
+      <div class="stat"><div class="label">平均進捗率</div><div class="value">28.8%</div></div>
+    </div>
+  </div>
+  <div class="phase-grid">
+    
+    <a class="phase-card" href="EX2_reinforce.html" style="border-left:6px solid #c0392b">
+      <div class="phase-tag" style="background:#c0392b">EX2</div>
+      <div class="phase-body">
+        <div class="phase-title">サブクエリ・集合演算</div>
+        <div class="phase-meta">元ドメイン D6 / 優先度 最優先 / 進捗 24.0% / 誤答 19問</div>
+      </div>
+    </a>
+    
+    <a class="phase-card" href="EX3_reinforce.html" style="border-left:6px solid #c0392b">
+      <div class="phase-tag" style="background:#c0392b">EX3</div>
+      <div class="phase-body">
+        <div class="phase-title">単一行関数</div>
+        <div class="phase-meta">元ドメイン D3 / 優先度 最優先 / 進捗 30.0% / 誤答 21問</div>
+      </div>
+    </a>
+    
+    <a class="phase-card" href="EX5_reinforce.html" style="border-left:6px solid #e67e22">
+      <div class="phase-tag" style="background:#e67e22">EX5</div>
+      <div class="phase-body">
+        <div class="phase-title">DDL・オブジェクト管理</div>
+        <div class="phase-meta">元ドメイン D8 / 優先度 優先 / 進捗 32.5% / 誤答 52問</div>
+      </div>
+    </a>
+    
+  </div>
+</div>
+</body>
+</html>
