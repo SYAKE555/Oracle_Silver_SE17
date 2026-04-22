@@ -93,6 +93,17 @@ class TestMockExamPipeline(unittest.TestCase):
         self.assertIn("EX3_reinforce.html", phase1_html)
         self.assertIn("EX5_reinforce.html", phase1_html)
 
+    def test_domain_page_embeds_full_recorded_question_text_without_omission(self):
+        ranked = split_ex_pages.priority_data()
+        split_ex_pages.assign_phases(ranked)
+        ex2 = next(item for item in ranked if item["ex_id"] == "EX2")
+
+        html = split_ex_pages.build_domain_page(ex2)
+
+        self.assertIn("記録原文（省略なし）", html)
+        self.assertIn('SELECT dummy &quot;DUMMY1&quot; FROM DUAL', html)
+        self.assertIn("INTERSECT", html)
+
 
 if __name__ == "__main__":
     unittest.main()

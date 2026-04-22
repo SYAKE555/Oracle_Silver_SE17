@@ -89,10 +89,20 @@
               
                 <article class="question-card">
                   <div class="question-meta">第1回 模擬試験 / 問23 / 正答 A.C / 自己回答 A.B</div>
-                  <div class="block-title">問題文</div>
+                  <div class="block-title">記録原文（省略なし）</div>
+                  <pre>図のような表があります。
+
+以下のSQLで正常に実行されるものはどれでしょうか。（2つ選択）
+　
+拡大する
+(1)		A.　SELECT SUM(ITEM_TYPE1+ITEM_TYPE2) FROM ITEM WHERE ITEM_NAME LIKE &#x27;R%&#x27;;
+(2)		B.　SELECT SUM(ITEM_TYPE1+ITEM_TYPE2),ITEM_NAME FROM ITEM WHERE ITEM_NAME LIKE &#x27;R%&#x27;;
+(3)		C.　SELECT SUM(DISTINCT ITEM_TYPE1), MIN(ITEM_TYPE1) FROM ITEM WHERE ITEM_NAME LIKE &#x27;R%&#x27;;
+(4)		D.　SELECT AVG(ITEM_PRICE) FROM ITEM WHERE AVG(ITEM_PRICE) &gt;= 500 GROUP BY ITEM_ID;</pre>
+                  <div class="block-title">問題文（抽出）</div>
                   <pre>図のような表があります。
 以下のSQLで正常に実行されるものはどれでしょうか。（2つ選択）</pre>
-                  <div class="block-title">選択肢</div>
+                  <div class="block-title">選択肢（抽出）</div>
                   <div class="options-grid">
             <div class="option-card correct selected">
               <div class="option-label">A</div>
@@ -128,9 +138,15 @@
                 
                 <article class="question-card">
                   <div class="question-meta">第3回 模擬試験 / 問38 / 正答 AB / 自己回答 BC</div>
-                  <div class="block-title">問題文</div>
+                  <div class="block-title">記録原文（省略なし）</div>
+                  <pre>EMPLOYEES テーブルには、NUMBER型の DEPT_ID 列と SALARY 列があります。 次のうち、正常に実行できるクエリを2つ選んでください。
+(1)		A. SELECT dept_id, COUNT(dept_id) FROM employees WHERE salary &gt; 215000 GROUP BY dept_id HAVING COUNT(*) &gt; 5;
+(2)		B. SELECT dept_id FROM employees WHERE salary &gt; 215000 GROUP BY dept_id HAVING COUNT(*) &gt; 5;
+(3)		C. SELECT COUNT(dept_id) FROM employees GROUP BY dept_id WHERE salary &gt; 215000;
+(4)		D. SELECT dept_id FROM employees WHERE salary &gt; 215000 AND COUNT(*) &gt; 5 GROUP BY COUNT(*);</pre>
+                  <div class="block-title">問題文（抽出）</div>
                   <pre>EMPLOYEES テーブルには、NUMBER型の DEPT_ID 列と SALARY 列があります。 次のうち、正常に実行できるクエリを2つ選んでください。</pre>
-                  <div class="block-title">選択肢</div>
+                  <div class="block-title">選択肢（抽出）</div>
                   <div class="options-grid">
             <div class="option-card correct">
               <div class="option-label">A</div>
@@ -166,14 +182,27 @@
                 
                 <article class="question-card">
                   <div class="question-meta">第3回 模擬試験 / 問51 / 正答 B / 自己回答 C</div>
-                  <div class="block-title">問題文</div>
+                  <div class="block-title">記録原文（省略なし）</div>
+                  <pre>次のSQLはエラーが発生します。その理由を1つ選択してください。
+
+SELECT dept_id AS &quot;Department&quot;, AVG(salary) AS AvgSal, MAX(salary) AS &quot;MaxSal&quot;
+FROM employees
+WHERE salary &gt; 23000
+GROUP BY &quot;Department&quot;
+ORDER BY AvgSal;
+
+(1)		A. 別名は常に二重引用符で指定しなければならない。
+(2)		B. 別名は GROUP BY 句で使用できない。
+(3)		C. 別名は ORDER BY 句で使用できない。
+(4)		D. 別名（alias）はスペースを含めてはならない。</pre>
+                  <div class="block-title">問題文（抽出）</div>
                   <pre>次のSQLはエラーが発生します。その理由を1つ選択してください。
 SELECT dept_id AS &quot;Department&quot;, AVG(salary) AS AvgSal, MAX(salary) AS &quot;MaxSal&quot;
 FROM employees
 WHERE salary &gt; 23000
 GROUP BY &quot;Department&quot;
 ORDER BY AvgSal;</pre>
-                  <div class="block-title">選択肢</div>
+                  <div class="block-title">選択肢（抽出）</div>
                   <div class="options-grid">
             <div class="option-card">
               <div class="option-label">A</div>
@@ -209,7 +238,7 @@ ORDER BY AvgSal;</pre>
                 
                 <article class="question-card">
                   <div class="question-meta">第3回 模擬試験 / 問60 / 正答 B / 自己回答 D</div>
-                  <div class="block-title">問題文</div>
+                  <div class="block-title">記録原文（省略なし）</div>
                   <pre>A.
 SELECT dept_id, COUNT(*) FROM employees
 GROUP BY dept_id
@@ -238,7 +267,36 @@ Employees表に対して以下のクエリを実行する場合、エラーと�
 (2)		B
 (3)		C
 (4)		D</pre>
-                  <div class="block-title">選択肢</div>
+                  <div class="block-title">問題文（抽出）</div>
+                  <pre>A.
+SELECT dept_id, COUNT(*) FROM employees
+GROUP BY dept_id
+HAVING COUNT(*) &gt;= 4
+ORDER BY dept_id;
+
+B.
+SELECT dept_id, COUNT(*) FROM employees
+WHERE dept_id &lt;&gt; 100 AND COUNT(*) &gt;= 4
+GROUP BY dept_id;
+
+C.
+SELECT dept_id, COUNT(*) FROM employees
+WHERE dept_id &lt;&gt; 100
+GROUP BY dept_id
+HAVING COUNT(*) &gt;= 4;
+
+D.
+SELECT dept_id, COUNT(*) FROM employees
+GROUP BY dept_id
+HAVING COUNT(*) &gt;= 4;
+
+Employees表に対して以下のクエリを実行する場合、エラーとなるものはどれですか。1つ選択してください。
+
+(1)		A
+(2)		B
+(3)		C
+(4)		D</pre>
+                  <div class="block-title">選択肢（抽出）</div>
                   <div class="options-grid">
             <div class="option-card">
               <div class="option-label">A</div>
@@ -291,9 +349,16 @@ Employees表に対して以下のクエリを実行する場合、エラーと�
               
                 <article class="question-card">
                   <div class="question-meta">第2回 模擬試験 / 問23 / 正答 AC / 自己回答 AB</div>
-                  <div class="block-title">問題文</div>
+                  <div class="block-title">記録原文（省略なし）</div>
+                  <pre>以下のSQLで正常に実行されるものはどれでしょうか。（2つ選択）
+
+(1)		A.　SELECT ITEM_ID,MADE_DATE,AVG(ITEM_PRICE) FROM ITEM GROUP BY ITEM_ID,MADE_DATE;
+(2)		B.　SELECT ITEM_ID,MADE_DATE,SUM(ITEM_PRICE) FROM ITEM GROUP BY ITEM_ID;
+(3)		C.　SELECT MIN(AVG(ITEM_PRICE)) FROM ITEM GROUP BY ITEM_ID;
+(4)		D.　SELECT ITEM_ID,MAX(AVG(ITEM_PRICE)) FROM ITEM GROUP BY ITEM_ID;</pre>
+                  <div class="block-title">問題文（抽出）</div>
                   <pre>以下のSQLで正常に実行されるものはどれでしょうか。（2つ選択）</pre>
-                  <div class="block-title">選択肢</div>
+                  <div class="block-title">選択肢（抽出）</div>
                   <div class="options-grid">
             <div class="option-card correct selected">
               <div class="option-label">A</div>
@@ -329,9 +394,17 @@ Employees表に対して以下のクエリを実行する場合、エラーと�
                 
                 <article class="question-card">
                   <div class="question-meta">第2回 模擬試験 / 問59 / 正答 ADE / 自己回答 ABC</div>
-                  <div class="block-title">問題文</div>
+                  <div class="block-title">記録原文（省略なし）</div>
+                  <pre>次のSQL文のうち、正しく動作するものはどれでしょうか。3つ選んでください。
+(1)		A. SELECT dept_id, COUNT(*) FROM employees GROUP BY dept_id;
+(2)		B. SELECT dept_id, name, COUNT(*) FROM employees GROUP BY dept_id;
+(3)		C. SELECT dept_id, MAX(SUM(salary)) FROM employees GROUP BY dept_id;
+(4)		D. SELECT MAX(SUM(salary)) FROM employees GROUP BY dept_id;
+(5)		E. SELECT MAX(salary),SUM(salary) FROM employees GROUP BY dept_id;
+(6)		F. SELECT AVG(MAX(SUM(salary))) FROM employees;</pre>
+                  <div class="block-title">問題文（抽出）</div>
                   <pre>次のSQL文のうち、正しく動作するものはどれでしょうか。3つ選んでください。</pre>
-                  <div class="block-title">選択肢</div>
+                  <div class="block-title">選択肢（抽出）</div>
                   <div class="options-grid">
             <div class="option-card correct selected">
               <div class="option-label">A</div>

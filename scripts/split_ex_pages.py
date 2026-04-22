@@ -933,9 +933,11 @@ def build_domain_page(domain_info: dict) -> str:
                 f"""
                 <article class="question-card">
                   <div class="question-meta">{html.escape(question['exam_title'])} / 問{question['q']} / 正答 {html.escape(question['ans'] or '-')} / 自己回答 {html.escape(question.get('self_ans') or '-')}</div>
-                  <div class="block-title">問題文</div>
+                  <div class="block-title">記録原文（省略なし）</div>
+                  {html_pre(question['text'])}
+                  <div class="block-title">問題文（抽出）</div>
                   {html_pre(question['parsed']['stem'] or question['text'])}
-                  <div class="block-title">選択肢</div>
+                  <div class="block-title">選択肢（抽出）</div>
                   {render_options(question['parsed'], correct_keys, self_keys)}
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
