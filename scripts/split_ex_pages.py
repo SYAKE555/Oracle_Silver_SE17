@@ -51,8 +51,8 @@ def make_page(ex_id: str, dom: str, label: str, prio: str, block_html: str) -> s
     color = PRIORITY_COLOR[prio]
     nav = (
         '<a class="nav-back" href="mock_exam_report.html">← 結果レポート</a>'
-        '<a class="nav-back" href="index.html" style="margin-left:8px">📚 教科書トップ</a>'
-        '<a class="nav-back" href="mock_exam_reinforce.html" style="margin-left:8px">🗂 EX 一覧</a>'
+        '<a class="nav-back" href="index.html" style="margin-left:8px"> 教科書トップ</a>'
+        '<a class="nav-back" href="mock_exam_reinforce.html" style="margin-left:8px"> EX 一覧</a>'
     )
     # Replace the EX tag at the top of the block
     header_banner = f"""
@@ -80,7 +80,7 @@ def make_page(ex_id: str, dom: str, label: str, prio: str, block_html: str) -> s
   {header_banner}
   {block_html}
   <div style="margin-top:20px;padding:14px 18px;background:white;border-radius:8px;box-shadow:0 2px 6px rgba(0,0,0,.06);font-size:.88rem;color:#4a5568">
-    <b>次のユニット：</b> <a href="mock_exam_reinforce.html">🗂 EX 一覧へ戻る</a>
+    <b>次のユニット：</b> <a href="mock_exam_reinforce.html"> EX 一覧へ戻る</a>
   </div>
   <div style="text-align:center;color:#a0aec0;font-size:.78rem;margin-top:30px;padding-top:16px;border-top:1px solid #e2e8f0">
     {ex_id} / 弱点強化ユニット — 模擬試験 Phase 2
@@ -103,7 +103,7 @@ def make_ex_index() -> str:
         <div class="ex-title">{label}</div>
         <div class="ex-meta">優先度 <b style="color:{color}">{PRIORITY_LABEL[prio]}</b> ／ 元ドメイン {dom}</div>
       </div>
-      <div class="ex-arrow">→</div>
+      <div class="ex-arrow"></div>
     </a>"""
     extra_style = """
     .ex-grid { display: grid; gap: 12px; }
@@ -140,10 +140,10 @@ def make_ex_index() -> str:
 </div>
 <div class="container">
   <a class="nav-back" href="mock_exam_report.html">← 結果レポート</a>
-  <a class="nav-back" href="index.html" style="margin-left:8px">📚 教科書トップ</a>
+  <a class="nav-back" href="index.html" style="margin-left:8px"> 教科書トップ</a>
 
   <div class="intro">
-    <h2>🗂 このページについて</h2>
+    <h2> このページについて</h2>
     各 <b>EX ユニット</b> は、模擬試験の弱点領域に対する独立した強化教材。D1〜D8 教科書とは別系統で、失点の多い順に EX1〜EX8 として並ぶ。優先度「最優先」の EX1／EX2 から着手し、試験直前は全ユニットを通読する想定。
   </div>
 

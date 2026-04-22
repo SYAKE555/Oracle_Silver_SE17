@@ -141,7 +141,7 @@ for exam in DATA["exams"]:
     if u:
         unclear_html += f'<li>第{exam["exam_id"]}回：{", ".join(f"問{q}" for q in u)}</li>'
 if unclear_html:
-    unclear_html = f'<div class="memo-box"><h4>⚠ 本人メモ「わかっていない問題」</h4><ul>{unclear_html}</ul></div>'
+    unclear_html = f'<div class="memo-box"><h4> 本人メモ「わかっていない問題」</h4><ul>{unclear_html}</ul></div>'
 
 HTML = f"""<!DOCTYPE html>
 <html lang="ja">
@@ -227,31 +227,31 @@ HTML = f"""<!DOCTYPE html>
 <div class="container">
   <a class="nav-back" href="index.html">← 教科書トップへ戻る</a>
 
-  <div class="section-heading">📊 総合スコア</div>
+  <div class="section-heading"> 総合スコア</div>
   <div class="summary-row">
     {"".join(exam_card(e) for e in exam_totals)}
     <div class="exam-card">
       <div class="exam-title">合計正答率の推移</div>
-      <div style="font-size:1.8rem;font-weight:700;margin-top:12px">{exam_totals[0]['accuracy']:.0f}% → {exam_totals[1]['accuracy']:.0f}%</div>
-      <div class="exam-sub">第1回 → 第2回</div>
+      <div style="font-size:1.8rem;font-weight:700;margin-top:12px">{exam_totals[0]['accuracy']:.0f}%  {exam_totals[1]['accuracy']:.0f}%</div>
+      <div class="exam-sub">第1回  第2回</div>
       <div style="margin-top:10px;font-size:.85rem;color:#c0392b;font-weight:600">
-        {'⚠ 下降傾向 — 復習優先度を上げる' if exam_totals[1]['accuracy'] < exam_totals[0]['accuracy'] else '✅ 改善傾向'}
+        {' 下降傾向 — 復習優先度を上げる' if exam_totals[1]['accuracy'] < exam_totals[0]['accuracy'] else ' 改善傾向'}
       </div>
     </div>
   </div>
 
   {unclear_html}
 
-  <div class="section-heading">🎯 弱点ランキング（2回合計ベース）</div>
+  <div class="section-heading"> 弱点ランキング（2回合計ベース）</div>
   <div class="card">
     <p style="font-size:.85rem;color:#4a5568;margin-bottom:12px">正答率の低い順にドメインをランキング。<b>最優先</b>と<b>優先</b>の4領域を重点的に復習する。</p>
     <div class="weakness-grid">
       {weakness_html}
     </div>
-    <a href="mock_exam_reinforce.html" class="action-link">📚 弱点強化学習ページへ（Phase 2）</a>
+    <a href="mock_exam_reinforce.html" class="action-link"> 弱点強化学習ページへ（Phase 2）</a>
   </div>
 
-  <div class="section-heading">📈 ドメイン別・詳細分析</div>
+  <div class="section-heading"> ドメイン別・詳細分析</div>
   <div class="card">
     <div class="tab-bar">
       <button class="tab active" onclick="showTab('combined')">合計</button>
@@ -269,7 +269,7 @@ HTML = f"""<!DOCTYPE html>
     </div>
   </div>
 
-  <div class="section-heading">📝 所感と次アクション</div>
+  <div class="section-heading"> 所感と次アクション</div>
   <div class="card">
     <ul style="padding-left: 20px; font-size: .92rem; color: #2d3748;">
       <li style="margin-bottom:8px"><b>最優先復習領域：</b>正答率40%未満のドメインは、教科書D章 + 関連DBA章を読み直した上で、該当問題を改めて解く。</li>
