@@ -69,16 +69,26 @@
         .breadcrumb a { color: #c0392b; text-decoration: none; }
         .intro-box { background: #fff8f8; border: 1px solid #f0a0a0; border-radius: 8px; padding: 16px; margin-bottom: 24px; }
         
-  pre .sql-kw { color: #fbbf24; font-weight: 700; }
-  pre .sql-fn { color: #60a5fa; font-weight: 600; }
+
+  /* sql-highlight-v3 */
+  /* default (light bg): warm tone */
+  .sql-kw  { color: #92400e; font-weight: 700; }
+  .sql-fn  { color: #1e40af; font-weight: 600; }
+  .sql-str { color: #065f46; }
+  .sql-num { color: #991b1b; }
+  .sql-cmt { color: #64748b; font-style: italic; }
+  /* dark bg override (pre / code) */
+  pre .sql-kw  { color: #fbbf24; }
+  pre .sql-fn  { color: #60a5fa; }
   pre .sql-str { color: #86efac; }
   pre .sql-num { color: #fca5a5; }
-  pre .sql-cmt { color: #94a3b8; font-style: italic; }
-  code .sql-kw { color: #b45309; font-weight: 700; }
-  code .sql-fn { color: #1d4ed8; font-weight: 600; }
-  code .sql-str { color: #047857; }
-  code .sql-num { color: #b91c1c; }
-  code .sql-cmt { color: #64748b; font-style: italic; }
+  pre .sql-cmt { color: #94a3b8; }
+  code .sql-kw  { color: #fbbf24; }
+  code .sql-fn  { color: #60a5fa; }
+  code .sql-str { color: #86efac; }
+  code .sql-num { color: #fca5a5; }
+  code .sql-cmt { color: #94a3b8; }
+  /* clause-order div uses its own kw/fn/desc/note classes — no override needed */
 </style>
 </head>
 <body>
@@ -87,10 +97,10 @@
 </div>
 <div class="page-header">
   <h1>D5: 複数表の結合</h1>
-  <div class="subtitle">Oracle Database SQL (1Z0-071) 対策</div>
+  <div class="subtitle">Oracle Database SQL (1Z0-<span class="sql-num">071</span>) 対策</div>
 </div>
 <div class="container">
-  <div class="intro-box">複数のテーブルを結合してデータを取得する JOIN 構文を学びます。内部結合、外部結合、自己結合など様々な結合方法を習得します。</div>
+  <div class="intro-box">複数のテーブルを結合してデータを取得する <span class="sql-kw">JOIN</span> 構文を学びます。<br>内部結合、外部結合、自己結合など様々な結合方法を習得します。</div>
 
   <!-- コマンド覚え方リファレンス表 -->
   <div class="section-card">
@@ -115,7 +125,7 @@
       <tr>
         <td><code><span class="sql-kw">LEFT OUTER JOIN</span></code></td>
         <td>左外部結合：左テーブルの全行＋右に一致しなければNULL</td>
-        <td>「左側（LEFT）は全員参加、右はNULLで穴埋め」</td>
+        <td>「左側（<span class="sql-kw">LEFT</span>）は全員参加、右はNULLで穴埋め」</td>
         <td>左テーブルの全データを保持しつつ、右テーブルと結合</td>
         <td>使う（親テーブル主体の検索でよく使用）</td>
         <td>行数の計算問題、NULLが含まれるパターン</td>
@@ -123,10 +133,10 @@
       <tr>
         <td><code><span class="sql-kw">RIGHT OUTER JOIN</span></code></td>
         <td>右外部結合：右テーブルの全行＋左に一致しなければNULL</td>
-        <td>「RIGHT は右側全員参加」—LEFT JOINのテーブル順を入れ替えた形</td>
+        <td>「<span class="sql-kw">RIGHT</span> は右側全員参加」—<span class="sql-kw">LEFT</span> JOINのテーブル順を入れ替えた形</td>
         <td>右テーブルの全データを保持しつつ、左テーブルと結合</td>
-        <td>条件付き（LEFT JOINで代替されることが多い）</td>
-        <td>LEFT JOINとの違い、(+) 記法との対応</td>
+        <td>条件付き（<span class="sql-kw">LEFT</span> JOINで代替されることが多い）</td>
+        <td><span class="sql-kw">LEFT</span> JOINとの違い、(+) 記法との対応</td>
       </tr>
       <tr>
         <td><code><span class="sql-kw">FULL OUTER JOIN</span></code></td>
@@ -166,12 +176,12 @@
         <td>「ONは条件のスイッチをONにする」</td>
         <td>異なる列名での結合、複数条件での結合</td>
         <td>使う（最も柔軟な結合条件指定）</td>
-        <td>USING句・NATURAL JOINとの使い分け</td>
+        <td>USING句・<span class="sql-kw">NATURAL</span> JOINとの使い分け</td>
       </tr>
       <tr>
         <td><code><span class="sql-kw">USING</span></code></td>
         <td>同名列を指定して等結合する句</td>
-        <td>「USING は指定した列名だけ使う」—ONより簡潔</td>
+        <td>「<span class="sql-kw">USING</span> は指定した列名だけ使う」—ONより簡潔</td>
         <td>両テーブルに同名の結合列がある場合</td>
         <td>使う（列名が同じ場合はUSINGで簡潔に書ける）</td>
         <td>テーブル名修飾（e.DEPT_ID）がエラーになること</td>
@@ -191,37 +201,37 @@
       <tr>
         <td><code><span class="sql-kw">JOIN</span></code></td>
         <td>Table Join / テーブル結合</td>
-        <td>複数のテーブルを関連する列の値を使って組み合わせる操作。INNER JOINのINNERは省略可能。</td>
+        <td>複数のテーブルを関連する列の値を使って組み合わせる操作。<br><span class="sql-kw">INNER</span> JOINのINNERは省略可能。</td>
       </tr>
       <tr>
         <td><code><span class="sql-kw">INNER</span></code></td>
         <td>Inner（内側）</td>
-        <td>内部結合を表す修飾語。省略しても同じ意味（JOIN のみ = INNER JOIN）。</td>
+        <td>内部結合を表す修飾語。<br>省略しても同じ意味（<span class="sql-kw">JOIN</span> のみ = <span class="sql-kw">INNER JOIN</span>）。</td>
       </tr>
       <tr>
         <td><code><span class="sql-kw">OUTER</span></code></td>
         <td>Outer（外側）</td>
-        <td>外部結合を表す修飾語。LEFT/RIGHT/FULL JOINの場合、OUTERは省略可能。</td>
+        <td>外部結合を表す修飾語。<br><span class="sql-kw">LEFT</span>/<span class="sql-kw">RIGHT</span>/<span class="sql-kw">FULL</span> JOINの場合、OUTERは省略可能。</td>
       </tr>
       <tr>
         <td><code><span class="sql-kw">LEFT</span> / <span class="sql-kw">RIGHT</span> / <span class="sql-kw">FULL</span></code></td>
         <td>左外部結合 / 右外部結合 / 完全外部結合</td>
-        <td>どちらのテーブルを基準にするかを指定する。LEFTは左テーブル全行、RIGHTは右テーブル全行、FULLは両方全行を保持。</td>
+        <td>どちらのテーブルを基準にするかを指定する。<br>LEFTは左テーブル全行、RIGHTは右テーブル全行、FULLは両方全行を保持。</td>
       </tr>
       <tr>
         <td><code><span class="sql-kw">NATURAL</span></code></td>
         <td>Natural Join（自然結合）</td>
-        <td>両テーブルの同名の列を自動的に結合条件として使用する結合。列名の修飾（テーブル名.列名）は不可。</td>
+        <td>両テーブルの同名の列を自動的に結合条件として使用する結合。<br>列名の修飾（テーブル名.列名）は不可。</td>
       </tr>
       <tr>
         <td><code><span class="sql-kw">CROSS</span></code></td>
         <td>Cross Join（交差結合・直積）</td>
-        <td>2つのテーブルのすべての行の組み合わせを返す。結果行数は「左の行数 × 右の行数」になる。</td>
+        <td>2つのテーブルのすべての行の組み合わせを返す。<br>結果行数は「左の行数 × 右の行数」になる。</td>
       </tr>
     </table>
   </div>
 
-  <div class="section-card"><div class="section-title">INNER JOIN</div><div class="topic-chips"><span class="chip">INNER JOIN</span><span class="chip">JOIN</span><span class="chip">ON</span><span class="chip">USING</span><span class="chip">NATURAL JOIN</span><span class="chip">等結合</span></div><div class="section-content"><h3>INNER JOIN の基本</h3><p>INNER JOIN は両方のテーブルで条件が一致する行だけを返します。</p><pre><code><span class="sql-cmt">-- ON 句を使った結合</span>
+  <div class="section-card"><div class="section-title"><span class="sql-kw">INNER JOIN</span></div><div class="topic-chips"><span class="chip">INNER JOIN</span><span class="chip">JOIN</span><span class="chip">ON</span><span class="chip">USING</span><span class="chip">NATURAL JOIN</span><span class="chip">等結合</span></div><div class="section-content"><h3><span class="sql-kw">INNER JOIN</span> の基本</h3><p><span class="sql-kw">INNER JOIN</span> は両方のテーブルで条件が一致する行だけを返します。</p><pre><code><span class="sql-cmt">-- ON 句を使った結合</span>
 <span class="sql-kw">SELECT</span> e.LAST_NAME, e.DEPARTMENT_ID, d.DEPARTMENT_NAME
 <span class="sql-kw">FROM</span>   EMPLOYEES e
 <span class="sql-kw">INNER JOIN</span> DEPARTMENTS d
@@ -264,7 +274,7 @@
 <span class="sql-cmt">-- -------------------- ---------------</span>
 <span class="sql-cmt">-- King                 Executive</span>
 <span class="sql-cmt">-- Kochhar              Executive</span>
-<span class="sql-cmt">-- ...（INNER JOINと同じ結果、NULLの社員は除外される）</span></code></pre><div class='tip-box'><strong>試験のポイント：</strong> USING 句を使う場合、結合に使った列にはテーブル名（またはエイリアス）を付けてはいけません。NATURAL JOIN は結合列を明示しないため、予期しない結合が起きる危険があります。INNER は省略可能（JOIN のみでも内部結合になる）。</div></div><div class="problem-section-title">練習問題</div><div class="problem-card" id="prob-OSLV-D5-001"><div class="problem-header">問題 1 <span class="qid">#OSLV-D5-001</span></div><p class="problem-text">以下のSQL文の結果として正しいものはどれか。<br>```sql<br>SELECT e.last_name, d.department_name<br>FROM employees e<br>JOIN departments d ON e.department_id = d.department_id;<br>```<br>employeesに department_id = NULL の社員が2名いるとする。</p><ul class="choices"><li>A. department_idがNULLの社員2名もNULLとして結果に含まれる</li><li>B. department_idがNULLの社員2名は結果に含まれない</li><li>C. エラーになる（NULLを持つ列はJOINに使えない）</li><li>D. NULLとNULLが一致するとみなされdepartmentsのNULL行と結合される</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> B. department_idがNULLの社員2名は結果に含まれない</p><p>正解は「department_idがNULLの社員2名は結果に含まれない」である。INNER JOIN（JOINとだけ書いた場合もINNER JOIN）は結合条件に一致する行のみを返す。NULLは何とも等しくないため（NULL = NULLはUNKNOWN）、ON e.department_id = d.department_idはNULLの場合に一致しない。NULLの社員も含めたい場合はLEFT OUTER JOINを使う。選択肢DはNULL同士を等しいとみなすことはないため誤り。</p></div></details></div><div class="problem-card" id="prob-OSLV-D5-002"><div class="problem-header">問題 2 <span class="qid">#OSLV-D5-002</span></div><p class="problem-text">以下のSQL文の実行結果の行数として正しいものはどれか。<br>```sql<br>SELECT e.last_name, d.department_name<br>FROM employees e<br>LEFT OUTER JOIN departments d<br>ON e.department_id = d.department_id;<br>```<br>employees: 107行（うち department_id = NULL が2行）、departments: 27行</p><ul class="choices"><li>A. 107行（NULLの社員2名はdepartment_nameがNULLで表示）</li><li>B. 105行（NULLの社員は除外）</li><li>C. 27行（departmentsの行数に合わせる）</li><li>D. 134行（107 + 27）</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> A. 107行（NULLの社員2名はdepartment_nameがNULLで表示）</p><p>正解は「107行（NULLの社員2名はdepartment_nameがNULLで表示）」である。LEFT OUTER JOINは左表（employees）の全行を必ず結果に含める。右表（departments）で対応する行がない場合（NULLの社員の場合）、右表の列はNULLとして表示される。したがって employees の全107行が返され、department_id = NULLの2名はdepartment_nameがNULLとなる。INNER JOINなら105行、RIGHT OUTER JOINなら右表基準。</p></div></details></div><div class="problem-card" id="prob-OSLV-D5-003"><div class="problem-header">問題 3 <span class="qid">#OSLV-D5-003</span></div><p class="problem-text">以下のSQL文（自己結合）の目的として正しいものはどれか。<br>```sql<br>SELECT e.last_name AS 社員名,<br>       m.last_name AS 上司名<br>FROM employees e<br>JOIN employees m ON e.manager_id = m.employee_id;<br>```</p><ul class="choices"><li>A. 全社員の部下一覧を表示する</li><li>B. manager_idがNULLの社員のみを表示する</li><li>C. 社員とその上司の名前を同じテーブルから取得する</li><li>D. エラーになる（同じテーブルをJOINできない）</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> C. 社員とその上司の名前を同じテーブルから取得する</p><p>正解は「社員とその上司の名前を同じテーブルから取得する」である。自己結合（SELF JOIN）は同一テーブルに対して別名（エイリアス）を2つ付けてJOINする手法。ここではemployeesテーブルをe（社員側）とm（上司側）として結合し、e.manager_id = m.employee_idで社員の上司IDと上司のemployee_idを一致させる。manager_idがNULLの社員（最上位管理者）はINNER JOINなので結果に含まれない。LEFT JOINにすれば全社員＋上司名NULLの行が含まれる。</p></div></details></div></div><div class="section-card"><div class="section-title">OUTER JOIN</div><div class="topic-chips"><span class="chip">LEFT OUTER JOIN</span><span class="chip">RIGHT OUTER JOIN</span><span class="chip">FULL OUTER JOIN</span><span class="chip">外部結合</span></div><div class="section-content"><h3>外部結合（OUTER JOIN）</h3><p>一方のテーブルに一致する行がなくても、NULL として結果に含めます。</p><table class='summary-table'><tr><th>種類</th><th>説明</th></tr><tr><td>LEFT OUTER JOIN</td><td>左テーブルの全行を返す。右に一致なければ NULL</td></tr><tr><td>RIGHT OUTER JOIN</td><td>右テーブルの全行を返す。左に一致なければ NULL</td></tr><tr><td>FULL OUTER JOIN</td><td>両テーブルの全行を返す。一致なければ NULL</td></tr></table><pre><code><span class="sql-cmt">-- 部署なし従業員も含めて表示（LEFT OUTER JOIN）</span>
+<span class="sql-cmt">-- ...（INNER JOINと同じ結果、NULLの社員は除外される）</span></code></pre><div class='tip-box'><strong>試験のポイント：</strong> <span class="sql-kw">USING</span> 句を使う場合、結合に使った列にはテーブル名（またはエイリアス）を付けてはいけません。<br><span class="sql-kw">NATURAL JOIN</span> は結合列を明示しないため、予期しない結合が起きる危険があります。<br><span class="sql-kw">INNER</span> は省略可能（<span class="sql-kw">JOIN</span> のみでも内部結合になる）。</div></div><div class="problem-section-title">練習問題</div><div class="problem-card" id="prob-OSLV-D5-001"><div class="problem-header">問題 <span class="sql-num">1</span> <span class="qid">#OSLV-D5-001</span></div><p class="problem-text">以下のSQL文の結果として正しいものはどれか。<br>```sql<br><span class="sql-kw">SELECT</span> e.last_name, d.department_name<br><span class="sql-kw">FROM</span> employees e<br><span class="sql-kw">JOIN</span> departments d <span class="sql-kw">ON</span> e.department_id = d.department_id;<br>```<br>employeesに department_id = <span class="sql-kw">NULL</span> の社員が2名いるとする。</p><ul class="choices"><li>A. department_idがNULLの社員2名もNULLとして結果に含まれる</li><li>B. department_idがNULLの社員2名は結果に含まれない</li><li>C. エラーになる（NULLを持つ列はJOINに使えない）</li><li>D. NULLとNULLが一致するとみなされdepartmentsのNULL行と結合される</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> B. department_idがNULLの社員2名は結果に含まれない</p><p>正解は「department_idがNULLの社員2名は結果に含まれない」である。<br><span class="sql-kw">INNER JOIN</span>（JOINとだけ書いた場合もINNER <span class="sql-kw">JOIN</span>）は結合条件に一致する行のみを返す。<br>NULLは何とも等しくないため（<span class="sql-kw">NULL</span> = NULLはUNKNOWN）、<span class="sql-kw">ON</span> e.department_id = d.department_idはNULLの場合に一致しない。<br>NULLの社員も含めたい場合はLEFT <span class="sql-kw">OUTER</span> JOINを使う。<br>選択肢DはNULL同士を等しいとみなすことはないため誤り。</p></div></details></div><div class="problem-card" id="prob-OSLV-D5-002"><div class="problem-header">問題 <span class="sql-num">2</span> <span class="qid">#OSLV-D5-002</span></div><p class="problem-text">以下のSQL文の実行結果の行数として正しいものはどれか。<br>```sql<br><span class="sql-kw">SELECT</span> e.last_name, d.department_name<br><span class="sql-kw">FROM</span> employees e<br><span class="sql-kw">LEFT OUTER JOIN</span> departments d<br><span class="sql-kw">ON</span> e.department_id = d.department_id;<br>```<br>employees: 107行（うち department_id = <span class="sql-kw">NULL</span> が2行）、departments: 27行</p><ul class="choices"><li>A. 107行（NULLの社員2名はdepartment_nameがNULLで表示）</li><li>B. 105行（NULLの社員は除外）</li><li>C. 27行（departmentsの行数に合わせる）</li><li>D. 134行（<span class="sql-num">107</span> + <span class="sql-num">27</span>）</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> A. 107行（NULLの社員2名はdepartment_nameがNULLで表示）</p><p>正解は「107行（NULLの社員2名はdepartment_nameがNULLで表示）」である。<br><span class="sql-kw">LEFT</span> <span class="sql-kw">OUTER</span> JOINは左表（employees）の全行を必ず結果に含める。<br>右表（departments）で対応する行がない場合（NULLの社員の場合）、右表の列はNULLとして表示される。<br>したがって employees の全107行が返され、department_id = NULLの2名はdepartment_nameがNULLとなる。<br><span class="sql-kw">INNER</span> JOINなら105行、<span class="sql-kw">RIGHT</span> <span class="sql-kw">OUTER</span> JOINなら右表基準。</p></div></details></div><div class="problem-card" id="prob-OSLV-D5-003"><div class="problem-header">問題 <span class="sql-num">3</span> <span class="qid">#OSLV-D5-003</span></div><p class="problem-text">以下のSQL文（自己結合）の目的として正しいものはどれか。<br>```sql<br><span class="sql-kw">SELECT</span> e.last_name <span class="sql-kw">AS</span> 社員名,<br>       m.last_name <span class="sql-kw">AS</span> 上司名<br><span class="sql-kw">FROM</span> employees e<br><span class="sql-kw">JOIN</span> employees m <span class="sql-kw">ON</span> e.manager_id = m.employee_id;<br>```</p><ul class="choices"><li>A. 全社員の部下一覧を表示する</li><li>B. manager_idがNULLの社員のみを表示する</li><li>C. 社員とその上司の名前を同じテーブルから取得する</li><li>D. エラーになる（同じテーブルをJOINできない）</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> C. 社員とその上司の名前を同じテーブルから取得する</p><p>正解は「社員とその上司の名前を同じテーブルから取得する」である。<br>自己結合（SELF <span class="sql-kw">JOIN</span>）は同一テーブルに対して別名（エイリアス）を2つ付けてJOINする手法。<br>ここではemployeesテーブルをe（社員側）とm（上司側）として結合し、e.manager_id = m.employee_idで社員の上司IDと上司のemployee_idを一致させる。<br>manager_idがNULLの社員（最上位管理者）はINNER JOINなので結果に含まれない。<br><span class="sql-kw">LEFT</span> JOINにすれば全社員＋上司名NULLの行が含まれる。</p></div></details></div></div><div class="section-card"><div class="section-title"><span class="sql-kw">OUTER JOIN</span></div><div class="topic-chips"><span class="chip">LEFT OUTER JOIN</span><span class="chip">RIGHT OUTER JOIN</span><span class="chip">FULL OUTER JOIN</span><span class="chip">外部結合</span></div><div class="section-content"><h3>外部結合（<span class="sql-kw">OUTER JOIN</span>）</h3><p>一方のテーブルに一致する行がなくても、<span class="sql-kw">NULL</span> として結果に含めます。</p><table class='summary-table'><tr><th>種類</th><th>説明</th></tr><tr><td><span class="sql-kw">LEFT OUTER JOIN</span></td><td>左テーブルの全行を返す。<br>右に一致なければ <span class="sql-kw">NULL</span></td></tr><tr><td><span class="sql-kw">RIGHT OUTER JOIN</span></td><td>右テーブルの全行を返す。<br>左に一致なければ <span class="sql-kw">NULL</span></td></tr><tr><td><span class="sql-kw">FULL OUTER JOIN</span></td><td>両テーブルの全行を返す。<br>一致なければ <span class="sql-kw">NULL</span></td></tr></table><pre><code><span class="sql-cmt">-- 部署なし従業員も含めて表示（LEFT OUTER JOIN）</span>
 <span class="sql-kw">SELECT</span> e.LAST_NAME, d.DEPARTMENT_NAME
 <span class="sql-kw">FROM</span>   EMPLOYEES e
 <span class="sql-kw">LEFT OUTER JOIN</span> DEPARTMENTS d
@@ -297,7 +307,7 @@
 <span class="sql-cmt">-- -------------------- ---------------</span>
 <span class="sql-cmt">-- King                 Executive</span>
 <span class="sql-cmt">-- Grant                （NULL）</span>
-<span class="sql-cmt">-- ...（LEFT OUTER JOINと同じ結果。(+)はNULL補完側に付ける）</span></code></pre><div class='tip-box'><strong>試験のポイント：</strong> Oracle 独自の (+) 記法では、NULL を補完したい側（右テーブル相当）に (+) を付けます。FULL OUTER JOIN は (+) 記法では表現できません。OUTER は省略可能（LEFT JOIN でも外部結合になる）。</div></div><div class="problem-section-title">練習問題</div><div class="problem-card" id="prob-OSLV-D5-001"><div class="problem-header">問題 1 <span class="qid">#OSLV-D5-001</span></div><p class="problem-text">以下のSQL文の結果として正しいものはどれか。<br>```sql<br>SELECT e.last_name, d.department_name<br>FROM employees e<br>JOIN departments d ON e.department_id = d.department_id;<br>```<br>employeesに department_id = NULL の社員が2名いるとする。</p><ul class="choices"><li>A. department_idがNULLの社員2名もNULLとして結果に含まれる</li><li>B. department_idがNULLの社員2名は結果に含まれない</li><li>C. エラーになる（NULLを持つ列はJOINに使えない）</li><li>D. NULLとNULLが一致するとみなされdepartmentsのNULL行と結合される</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> B. department_idがNULLの社員2名は結果に含まれない</p><p>正解は「department_idがNULLの社員2名は結果に含まれない」である。INNER JOIN（JOINとだけ書いた場合もINNER JOIN）は結合条件に一致する行のみを返す。NULLは何とも等しくないため（NULL = NULLはUNKNOWN）、ON e.department_id = d.department_idはNULLの場合に一致しない。NULLの社員も含めたい場合はLEFT OUTER JOINを使う。選択肢DはNULL同士を等しいとみなすことはないため誤り。</p></div></details></div><div class="problem-card" id="prob-OSLV-D5-002"><div class="problem-header">問題 2 <span class="qid">#OSLV-D5-002</span></div><p class="problem-text">以下のSQL文の実行結果の行数として正しいものはどれか。<br>```sql<br>SELECT e.last_name, d.department_name<br>FROM employees e<br>LEFT OUTER JOIN departments d<br>ON e.department_id = d.department_id;<br>```<br>employees: 107行（うち department_id = NULL が2行）、departments: 27行</p><ul class="choices"><li>A. 107行（NULLの社員2名はdepartment_nameがNULLで表示）</li><li>B. 105行（NULLの社員は除外）</li><li>C. 27行（departmentsの行数に合わせる）</li><li>D. 134行（107 + 27）</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> A. 107行（NULLの社員2名はdepartment_nameがNULLで表示）</p><p>正解は「107行（NULLの社員2名はdepartment_nameがNULLで表示）」である。LEFT OUTER JOINは左表（employees）の全行を必ず結果に含める。右表（departments）で対応する行がない場合（NULLの社員の場合）、右表の列はNULLとして表示される。したがって employees の全107行が返され、department_id = NULLの2名はdepartment_nameがNULLとなる。INNER JOINなら105行、RIGHT OUTER JOINなら右表基準。</p></div></details></div></div><div class="section-card"><div class="section-title">自己結合とクロス結合</div><div class="topic-chips"><span class="chip">自己結合</span><span class="chip">SELF JOIN</span><span class="chip">CROSS JOIN</span><span class="chip">クロス結合</span><span class="chip">エイリアス</span></div><div class="section-content"><h3>自己結合（SELF JOIN）</h3><p>同じテーブルを異なるエイリアスで2回参照して結合します。階層データ（上司-部下など）の取得に使います。</p><pre><code><span class="sql-cmt">-- 従業員とその上司の名前を表示</span>
+<span class="sql-cmt">-- ...（LEFT OUTER JOINと同じ結果。(+)はNULL補完側に付ける）</span></code></pre><div class='tip-box'><strong>試験のポイント：</strong> Oracle 独自の (+) 記法では、<span class="sql-kw">NULL</span> を補完したい側（右テーブル相当）に (+) を付けます。<br><span class="sql-kw">FULL OUTER JOIN</span> は (+) 記法では表現できません。<br><span class="sql-kw">OUTER</span> は省略可能（<span class="sql-kw">LEFT JOIN</span> でも外部結合になる）。</div></div><div class="problem-section-title">練習問題</div><div class="problem-card" id="prob-OSLV-D5-001"><div class="problem-header">問題 <span class="sql-num">1</span> <span class="qid">#OSLV-D5-001</span></div><p class="problem-text">以下のSQL文の結果として正しいものはどれか。<br>```sql<br><span class="sql-kw">SELECT</span> e.last_name, d.department_name<br><span class="sql-kw">FROM</span> employees e<br><span class="sql-kw">JOIN</span> departments d <span class="sql-kw">ON</span> e.department_id = d.department_id;<br>```<br>employeesに department_id = <span class="sql-kw">NULL</span> の社員が2名いるとする。</p><ul class="choices"><li>A. department_idがNULLの社員2名もNULLとして結果に含まれる</li><li>B. department_idがNULLの社員2名は結果に含まれない</li><li>C. エラーになる（NULLを持つ列はJOINに使えない）</li><li>D. NULLとNULLが一致するとみなされdepartmentsのNULL行と結合される</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> B. department_idがNULLの社員2名は結果に含まれない</p><p>正解は「department_idがNULLの社員2名は結果に含まれない」である。<br><span class="sql-kw">INNER JOIN</span>（JOINとだけ書いた場合もINNER <span class="sql-kw">JOIN</span>）は結合条件に一致する行のみを返す。<br>NULLは何とも等しくないため（<span class="sql-kw">NULL</span> = NULLはUNKNOWN）、<span class="sql-kw">ON</span> e.department_id = d.department_idはNULLの場合に一致しない。<br>NULLの社員も含めたい場合はLEFT <span class="sql-kw">OUTER</span> JOINを使う。<br>選択肢DはNULL同士を等しいとみなすことはないため誤り。</p></div></details></div><div class="problem-card" id="prob-OSLV-D5-002"><div class="problem-header">問題 <span class="sql-num">2</span> <span class="qid">#OSLV-D5-002</span></div><p class="problem-text">以下のSQL文の実行結果の行数として正しいものはどれか。<br>```sql<br><span class="sql-kw">SELECT</span> e.last_name, d.department_name<br><span class="sql-kw">FROM</span> employees e<br><span class="sql-kw">LEFT OUTER JOIN</span> departments d<br><span class="sql-kw">ON</span> e.department_id = d.department_id;<br>```<br>employees: 107行（うち department_id = <span class="sql-kw">NULL</span> が2行）、departments: 27行</p><ul class="choices"><li>A. 107行（NULLの社員2名はdepartment_nameがNULLで表示）</li><li>B. 105行（NULLの社員は除外）</li><li>C. 27行（departmentsの行数に合わせる）</li><li>D. 134行（<span class="sql-num">107</span> + <span class="sql-num">27</span>）</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> A. 107行（NULLの社員2名はdepartment_nameがNULLで表示）</p><p>正解は「107行（NULLの社員2名はdepartment_nameがNULLで表示）」である。<br><span class="sql-kw">LEFT</span> <span class="sql-kw">OUTER</span> JOINは左表（employees）の全行を必ず結果に含める。<br>右表（departments）で対応する行がない場合（NULLの社員の場合）、右表の列はNULLとして表示される。<br>したがって employees の全107行が返され、department_id = NULLの2名はdepartment_nameがNULLとなる。<br><span class="sql-kw">INNER</span> JOINなら105行、<span class="sql-kw">RIGHT</span> <span class="sql-kw">OUTER</span> JOINなら右表基準。</p></div></details></div></div><div class="section-card"><div class="section-title">自己結合とクロス結合</div><div class="topic-chips"><span class="chip">自己結合</span><span class="chip">SELF JOIN</span><span class="chip">CROSS JOIN</span><span class="chip">クロス結合</span><span class="chip">エイリアス</span></div><div class="section-content"><h3>自己結合（SELF <span class="sql-kw">JOIN</span>）</h3><p>同じテーブルを異なるエイリアスで2回参照して結合します。<br>階層データ（上司-部下など）の取得に使います。</p><pre><code><span class="sql-cmt">-- 従業員とその上司の名前を表示</span>
 <span class="sql-kw">SELECT</span> e.LAST_NAME <span class="sql-kw">AS</span> 従業員,
        m.LAST_NAME <span class="sql-kw">AS</span> 上司
 <span class="sql-kw">FROM</span>   EMPLOYEES e
@@ -309,7 +319,7 @@
 <span class="sql-cmt">-- Kochhar              King</span>
 <span class="sql-cmt">-- De Haan              King</span>
 <span class="sql-cmt">-- King                 （NULL）← 最上位のため上司なし</span>
-<span class="sql-cmt">-- ...（LEFT JOINなので上司のいない社員もNULLで表示）</span></code></pre><h3>クロス結合（CROSS JOIN）</h3><p>CROSS JOIN は全行の組み合わせを返します（直積）。結果行数 = テーブル1の行数 x テーブル2の行数。</p><pre><code><span class="sql-cmt">-- CROSS JOIN（ANSI 形式）</span>
+<span class="sql-cmt">-- ...（LEFT JOINなので上司のいない社員もNULLで表示）</span></code></pre><h3>クロス結合（<span class="sql-kw">CROSS JOIN</span>）</h3><p><span class="sql-kw">CROSS JOIN</span> は全行の組み合わせを返します（直積）。<br>結果行数 = テーブル1の行数 x テーブル2の行数。</p><pre><code><span class="sql-cmt">-- CROSS JOIN（ANSI 形式）</span>
 <span class="sql-kw">SELECT</span> e.LAST_NAME, d.DEPARTMENT_NAME
 <span class="sql-kw">FROM</span>   EMPLOYEES e
 <span class="sql-kw">CROSS JOIN</span> DEPARTMENTS d;
@@ -329,7 +339,7 @@
 <span class="sql-cmt">-- -------------------- ---------------</span>
 <span class="sql-cmt">-- King                 Administration</span>
 <span class="sql-cmt">-- King                 Marketing</span>
-<span class="sql-cmt">-- ...（CROSS JOINと同じ結果。WHERE句の書き忘れによる意図しない直積に注意）</span></code></pre><div class='tip-box'><strong>試験のポイント：</strong> 自己結合では必ずテーブルエイリアスが必要です。クロス結合は意図せず WHERE を省略した場合にも発生するため注意が必要です。上司が存在しない場合（社長など）は MANAGER_ID が NULL になるため、INNER JOIN ではなく LEFT JOIN を使うと全員が表示されます。</div></div><div class="problem-section-title">練習問題</div><div class="problem-card" id="prob-OSLV-D5-003"><div class="problem-header">問題 1 <span class="qid">#OSLV-D5-003</span></div><p class="problem-text">以下のSQL文（自己結合）の目的として正しいものはどれか。<br>```sql<br>SELECT e.last_name AS 社員名,<br>       m.last_name AS 上司名<br>FROM employees e<br>JOIN employees m ON e.manager_id = m.employee_id;<br>```</p><ul class="choices"><li>A. 全社員の部下一覧を表示する</li><li>B. manager_idがNULLの社員のみを表示する</li><li>C. 社員とその上司の名前を同じテーブルから取得する</li><li>D. エラーになる（同じテーブルをJOINできない）</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> C. 社員とその上司の名前を同じテーブルから取得する</p><p>正解は「社員とその上司の名前を同じテーブルから取得する」である。自己結合（SELF JOIN）は同一テーブルに対して別名（エイリアス）を2つ付けてJOINする手法。ここではemployeesテーブルをe（社員側）とm（上司側）として結合し、e.manager_id = m.employee_idで社員の上司IDと上司のemployee_idを一致させる。manager_idがNULLの社員（最上位管理者）はINNER JOINなので結果に含まれない。LEFT JOINにすれば全社員＋上司名NULLの行が含まれる。</p></div></details></div></div>
+<span class="sql-cmt">-- ...（CROSS JOINと同じ結果。WHERE句の書き忘れによる意図しない直積に注意）</span></code></pre><div class='tip-box'><strong>試験のポイント：</strong> 自己結合では必ずテーブルエイリアスが必要です。<br>クロス結合は意図せず <span class="sql-kw">WHERE</span> を省略した場合にも発生するため注意が必要です。<br>上司が存在しない場合（社長など）は MANAGER_ID が <span class="sql-kw">NULL</span> になるため、<span class="sql-kw">INNER JOIN</span> ではなく <span class="sql-kw">LEFT JOIN</span> を使うと全員が表示されます。</div></div><div class="problem-section-title">練習問題</div><div class="problem-card" id="prob-OSLV-D5-003"><div class="problem-header">問題 <span class="sql-num">1</span> <span class="qid">#OSLV-D5-003</span></div><p class="problem-text">以下のSQL文（自己結合）の目的として正しいものはどれか。<br>```sql<br><span class="sql-kw">SELECT</span> e.last_name <span class="sql-kw">AS</span> 社員名,<br>       m.last_name <span class="sql-kw">AS</span> 上司名<br><span class="sql-kw">FROM</span> employees e<br><span class="sql-kw">JOIN</span> employees m <span class="sql-kw">ON</span> e.manager_id = m.employee_id;<br>```</p><ul class="choices"><li>A. 全社員の部下一覧を表示する</li><li>B. manager_idがNULLの社員のみを表示する</li><li>C. 社員とその上司の名前を同じテーブルから取得する</li><li>D. エラーになる（同じテーブルをJOINできない）</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> C. 社員とその上司の名前を同じテーブルから取得する</p><p>正解は「社員とその上司の名前を同じテーブルから取得する」である。<br>自己結合（SELF <span class="sql-kw">JOIN</span>）は同一テーブルに対して別名（エイリアス）を2つ付けてJOINする手法。<br>ここではemployeesテーブルをe（社員側）とm（上司側）として結合し、e.manager_id = m.employee_idで社員の上司IDと上司のemployee_idを一致させる。<br>manager_idがNULLの社員（最上位管理者）はINNER JOINなので結果に含まれない。<br><span class="sql-kw">LEFT</span> JOINにすれば全社員＋上司名NULLの行が含まれる。</p></div></details></div></div>
 </div>
 </body>
 </html>

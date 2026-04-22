@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Chapter 4 | SQL参考資料</title>
+<title>Chapter <span class="sql-num">4</span> | SQL参考資料</title>
 <style>
 :root{--bg:#f4f8fc;--card:#ffffff;--line:#d8e4f5;--pri:#1d4f91;--sec:#2f6fbe;--txt:#1f2d3d;--muted:#4c6077;--code:#f2f7fc;--kw:#1d4ed8;--obj:#0f172a;--str:#b45309}
 *{box-sizing:border-box}
@@ -36,16 +36,26 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 .top{text-align:right;margin-top:12px}
 @media(max-width:1120px){.layout{grid-template-columns:1fr}.sidebar{position:static;max-height:none}}
 
-  pre .sql-kw { color: #fbbf24; font-weight: 700; }
-  pre .sql-fn { color: #60a5fa; font-weight: 600; }
+
+  /* sql-highlight-v3 */
+  /* default (light bg): warm tone */
+  .sql-kw  { color: #92400e; font-weight: 700; }
+  .sql-fn  { color: #1e40af; font-weight: 600; }
+  .sql-str { color: #065f46; }
+  .sql-num { color: #991b1b; }
+  .sql-cmt { color: #64748b; font-style: italic; }
+  /* dark bg override (pre / code) */
+  pre .sql-kw  { color: #fbbf24; }
+  pre .sql-fn  { color: #60a5fa; }
   pre .sql-str { color: #86efac; }
   pre .sql-num { color: #fca5a5; }
-  pre .sql-cmt { color: #94a3b8; font-style: italic; }
-  code .sql-kw { color: #b45309; font-weight: 700; }
-  code .sql-fn { color: #1d4ed8; font-weight: 600; }
-  code .sql-str { color: #047857; }
-  code .sql-num { color: #b91c1c; }
-  code .sql-cmt { color: #64748b; font-style: italic; }
+  pre .sql-cmt { color: #94a3b8; }
+  code .sql-kw  { color: #fbbf24; }
+  code .sql-fn  { color: #60a5fa; }
+  code .sql-str { color: #86efac; }
+  code .sql-num { color: #fca5a5; }
+  code .sql-cmt { color: #94a3b8; }
+  /* clause-order div uses its own kw/fn/desc/note classes — no override needed */
 </style>
 </head>
 <body>
@@ -55,16 +65,16 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 <ul>
 <li><a href="#scope">スコープ宣言</a></li>
 <li><a href="#intro">第4章の学習目的</a></li>
-<li><a href="#single-row">4.1 単一行関数の定義と全体像</a></li>
-<li><a href="#char-func">4.2 文字関数</a></li>
-<li><a href="#num-func">4.3 数値関数</a></li>
-<li><a href="#date-func">4.4 日付関数</a></li>
-<li><a href="#nesting">4.5 関数のネストと評価順</a></li>
-<li><a href="#null-behavior">4.6 NULLと関数戻り値の挙動</a></li>
-<li><a href="#type-conv">4.7 暗黙変換と明示変換の境界</a></li>
-<li><a href="#index-impact">4.8 関数適用と索引利用</a></li>
-<li><a href="#catalog">4.9 主要関数カタログ</a></li>
-<li><a href="#patterns">4.10 典型失敗と修正パターン</a></li>
+<li><a href="#single-row"><span class="sql-num">4.1</span> 単一行関数の定義と全体像</a></li>
+<li><a href="#char-func"><span class="sql-num">4.2</span> 文字関数</a></li>
+<li><a href="#num-func"><span class="sql-num">4.3</span> 数値関数</a></li>
+<li><a href="#date-func"><span class="sql-num">4.4</span> 日付関数</a></li>
+<li><a href="#nesting"><span class="sql-num">4.5</span> 関数のネストと評価順</a></li>
+<li><a href="#null-behavior"><span class="sql-num">4.6</span> NULLと関数戻り値の挙動</a></li>
+<li><a href="#type-conv"><span class="sql-num">4.7</span> 暗黙変換と明示変換の境界</a></li>
+<li><a href="#index-impact"><span class="sql-num">4.8</span> 関数適用と索引利用</a></li>
+<li><a href="#catalog"><span class="sql-num">4.9</span> 主要関数カタログ</a></li>
+<li><a href="#patterns"><span class="sql-num">4.10</span> 典型失敗と修正パターン</a></li>
 <li><a href="#exam">試験ひっかけパターン集</a></li>
 <li><a href="#practice">実務アンチパターン集</a></li>
 </ul>
@@ -74,37 +84,37 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 <h1>Oracle DBA Silver SQL（第4章のみ）</h1>
 <p>本ファイルは第4章「単一行関数（文字・数値・日付）」に特化し、定義・役割・動作原理・制限事項・試験急所を実務基準で高密度に整理する。</p>
 </section>
-<div style="background:#fff3cd;border:1px solid #ffc107;border-left:5px solid #fd7e14;border-radius:8px;padding:12px 16px;margin:14px 0;font-size:0.88rem;color:#856404;"><strong>【参考資料】</strong> このファイルは Oracle Master Silver SQL (1Z0-071) の試験範囲外の内容を含みます。OracleアーキテクチャなどDBAに関する内容は実務参考としてご利用ください。試験対策には <a href="index.html" style="color:#856404;">トップページ D1〜D8</a> を使用してください。</div>
+<div style="background:#fff3cd;border:1px solid #ffc107;border-left:5px solid #fd7e14;border-radius:8px;padding:12px 16px;margin:14px 0;font-size:0.88rem;color:#856404;"><strong>【参考資料】</strong> このファイルは Oracle Master Silver SQL (1Z0-<span class="sql-num">071</span>) の試験範囲外の内容を含みます。<br>OracleアーキテクチャなどDBAに関する内容は実務参考としてご利用ください。<br>試験対策には <a href="index.html" style="color:#856404;">トップページ D1〜D8</a> を使用してください。</div>
 <section class="card" id="intro">
 <h2>第4章の学習目的</h2>
-<p>第4章の本質は、取得したデータを「そのまま見る」段階から「意味ある形へ整える」段階へ進むことにある。実務では画面表示、帳票、抽出条件、監査レポートのほぼ全てで関数が使われるため、関数理解が浅いとSQL自体は動いても結果の意味が崩れる。特にOracle SQL試験では、関数名暗記だけでは対応できない。引数順、戻り値型、NULL挙動、日付書式、暗黙変換エラーを横断的に問われる。第4章の完了基準は、関数を単発テクニックとしてではなく、型・NULL・性能を伴う設計要素として説明できる状態に到達することである。</p>
-<div class="gloss"><strong>重要:</strong> 関数は飾りではない。入力型・戻り型・NULL挙動を誤ると、静かに誤データを作る。</div>
+<p>第4章の本質は、取得したデータを「そのまま見る」段階から「意味ある形へ整える」段階へ進むことにある。<br>実務では画面表示、帳票、抽出条件、監査レポートのほぼ全てで関数が使われるため、関数理解が浅いとSQL自体は動いても結果の意味が崩れる。<br>特にOracle SQL試験では、関数名暗記だけでは対応できない。<br>引数順、戻り値型、NULL挙動、日付書式、暗黙変換エラーを横断的に問われる。<br>第4章の完了基準は、関数を単発テクニックとしてではなく、型・<span class="sql-kw">NULL</span>・性能を伴う設計要素として説明できる状態に到達することである。</p>
+<div class="gloss"><strong>重要:</strong> 関数は飾りではない。<br>入力型・戻り型・NULL挙動を誤ると、静かに誤データを作る。</div>
 </section>
 <section class="card" id="single-row">
-<h2>4.1 単一行関数の定義と全体像</h2>
-<h3>1) 定義</h3>
-<p>単一行関数は、入力1行に対して出力1値を返す関数群であり、SELECT句、WHERE句、ORDER BY句など複数箇所で利用できる。集約関数が複数行を1値へまとめるのに対し、単一行関数は各行を独立に処理する。Oracleでは文字、数値、日付、一般関数など多彩なカテゴリがあり、表示整形だけでなく条件評価そのものを担う。定義として重要なのは、単一行関数は見た目の整形機能ではなく、行単位の意味変換器である点だ。入力型と戻り型が一致しない場合は変換規則が介在し、誤用時には実行エラーまたは誤判定を引き起こす。</p>
-<h3>2) 役割</h3>
-<p>役割は、保存された生データを業務解釈可能な形へ変換することにある。例えば氏名の大文字正規化、金額の丸め、締め日計算、勤務月数算出などは関数なしでは安定して書けない。アプリ側で都度処理すると表現が分散し、出力不一致が起こるため、SQL側で統一する価値が高い。試験では機能知識として問われるが、実務では「同じデータをどこでも同じ意味で出す」ための標準化手段である。関数を使いこなせる人は、帳票差異や抽出不一致の原因を短時間で特定できる。一方、関数理解が浅いと、見た目だけ合うSQLを量産して運用障害を生む。</p>
-<h3>3) 動作原理</h3>
-<p>Oracleは対象行ごとに関数を評価し、引数の型確認、必要な変換、関数処理、戻り値生成を実施する。関数は入れ子にでき、内側から順に評価される。入力がNULLの場合、関数によりNULLを返すものと代替処理を行うものがあり挙動は一律ではない。さらに関数の適用位置がWHERE句にある場合、判定結果に直接影響し、抽出件数が変化する。動作原理として押さえるべきは、関数は静的置換ではなく実行時評価であり、データ内容とNLS設定に依存して結果が変わり得る点である。したがって関数SQLは境界値テストを伴って検証する必要がある。</p>
-<h3>4) 制限事項とアンチパターン</h3>
-<p>アンチパターンは、戻り値型を確認せず比較へ流用すること、列側に関数を多用して索引活用を阻害すること、暗黙変換任せで実行環境依存にすることの3つが代表的である。例えば`TO_CHAR(date_col)`をWHEREで乱用すると、日付索引が効きにくくなり大規模表で性能劣化しやすい。さらに、関数の結果を業務確定値として保存すると、後から関数仕様変更時に整合性問題が起きる。対策は、表示用途と判定用途を分離し、必要時のみ明示変換を使い、関数利用の目的をSQL内で明確化することだ。関数は便利だが、設計意図なしに使うと保守性を下げる。</p>
-<h3>5) 試験・実務の急所</h3>
-<p>試験では関数名と引数順の暗記問題に見えるが、実際は型整合とNULL挙動の理解が得点差になる。実務ではこれに加えて、関数適用位置（SELECTかWHEREか）による意味差を説明できることが重要だ。レビュー時に「なぜここで関数が必要か」「関数を外すと何が壊れるか」を示せるSQLは強い。第4章でこの視点を固めると、第5章の変換関数やCASE式、第6章以降の集約条件でも誤用が減る。関数学習を単発で終わらせず、型・NULL・性能をまとめて扱う姿勢が、合格後の実務適応力を左右する。</p>
+<h2><span class="sql-num">4.1</span> 単一行関数の定義と全体像</h2>
+<h3><span class="sql-num">1</span>) 定義</h3>
+<p>単一行関数は、入力1行に対して出力1値を返す関数群であり、SELECT句、WHERE句、ORDER BY句など複数箇所で利用できる。<br>集約関数が複数行を1値へまとめるのに対し、単一行関数は各行を独立に処理する。<br>Oracleでは文字、数値、日付、一般関数など多彩なカテゴリがあり、表示整形だけでなく条件評価そのものを担う。<br>定義として重要なのは、単一行関数は見た目の整形機能ではなく、行単位の意味変換器である点だ。<br>入力型と戻り型が一致しない場合は変換規則が介在し、誤用時には実行エラーまたは誤判定を引き起こす。</p>
+<h3><span class="sql-num">2</span>) 役割</h3>
+<p>役割は、保存された生データを業務解釈可能な形へ変換することにある。<br>例えば氏名の大文字正規化、金額の丸め、締め日計算、勤務月数算出などは関数なしでは安定して書けない。<br>アプリ側で都度処理すると表現が分散し、出力不一致が起こるため、SQL側で統一する価値が高い。<br>試験では機能知識として問われるが、実務では「同じデータをどこでも同じ意味で出す」ための標準化手段である。<br>関数を使いこなせる人は、帳票差異や抽出不一致の原因を短時間で特定できる。<br>一方、関数理解が浅いと、見た目だけ合うSQLを量産して運用障害を生む。</p>
+<h3><span class="sql-num">3</span>) 動作原理</h3>
+<p>Oracleは対象行ごとに関数を評価し、引数の型確認、必要な変換、関数処理、戻り値生成を実施する。<br>関数は入れ子にでき、内側から順に評価される。<br>入力がNULLの場合、関数によりNULLを返すものと代替処理を行うものがあり挙動は一律ではない。<br>さらに関数の適用位置がWHERE句にある場合、判定結果に直接影響し、抽出件数が変化する。<br>動作原理として押さえるべきは、関数は静的置換ではなく実行時評価であり、データ内容とNLS設定に依存して結果が変わり得る点である。<br>したがって関数SQLは境界値テストを伴って検証する必要がある。</p>
+<h3><span class="sql-num">4</span>) 制限事項とアンチパターン</h3>
+<p>アンチパターンは、戻り値型を確認せず比較へ流用すること、列側に関数を多用して索引活用を阻害すること、暗黙変換任せで実行環境依存にすることの3つが代表的である。<br>例えば`<span class="sql-fn">TO_CHAR</span>(date_col)`をWHEREで乱用すると、日付索引が効きにくくなり大規模表で性能劣化しやすい。<br>さらに、関数の結果を業務確定値として保存すると、後から関数仕様変更時に整合性問題が起きる。<br>対策は、表示用途と判定用途を分離し、必要時のみ明示変換を使い、関数利用の目的をSQL内で明確化することだ。<br>関数は便利だが、設計意図なしに使うと保守性を下げる。</p>
+<h3><span class="sql-num">5</span>) 試験・実務の急所</h3>
+<p>試験では関数名と引数順の暗記問題に見えるが、実際は型整合とNULL挙動の理解が得点差になる。<br>実務ではこれに加えて、関数適用位置（SELECTかWHEREか）による意味差を説明できることが重要だ。<br>レビュー時に「なぜここで関数が必要か」「関数を外すと何が壊れるか」を示せるSQLは強い。<br>第4章でこの視点を固めると、第5章の変換関数やCASE式、第6章以降の集約条件でも誤用が減る。<br>関数学習を単発で終わらせず、型・<span class="sql-kw">NULL</span>・性能をまとめて扱う姿勢が、合格後の実務適応力を左右する。</p>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="char-func">
-<h2>4.2 文字関数</h2>
-<p>文字関数は表記揺れを抑え、検索精度と表示品質を上げる。`UPPER`/`LOWER`/`INITCAP`で文字種を揃え、`SUBSTR`/`INSTR`で位置と部分抽出を扱い、`TRIM`/`REPLACE`で不要文字を除去する。注意点は、WHERE句で列に直接文字関数を適用すると索引が効きにくくなること、またNLS比較規則によって一致判定が変わり得ることだ。試験では戻り値型や引数順が問われる。実務では入力標準化を保存時に行うか参照時に行うかを決める必要があり、運用方針が曖昧だと検索漏れが多発する。</p>
+<h2><span class="sql-num">4.2</span> 文字関数</h2>
+<p>文字関数は表記揺れを抑え、検索精度と表示品質を上げる。<br>`UPPER`/`LOWER`/`INITCAP`で文字種を揃え、`SUBSTR`/`INSTR`で位置と部分抽出を扱い、`TRIM`/`REPLACE`で不要文字を除去する。<br>注意点は、WHERE句で列に直接文字関数を適用すると索引が効きにくくなること、またNLS比較規則によって一致判定が変わり得ることだ。<br>試験では戻り値型や引数順が問われる。<br>実務では入力標準化を保存時に行うか参照時に行うかを決める必要があり、運用方針が曖昧だと検索漏れが多発する。</p>
 <pre><code><span class="kw"><span class="sql-kw">SELECT</span></span> <span class="kw">UPPER</span>(<span class="obj">last_name</span>) <span class="kw"><span class="sql-kw">AS</span></span> <span class="obj">last_name_upper</span>,
        <span class="kw">SUBSTR</span>(<span class="obj">email</span>, <span class="obj"><span class="sql-num">1</span></span>, <span class="obj"><span class="sql-num">5</span></span>) <span class="kw"><span class="sql-kw">AS</span></span> <span class="obj">email_head</span>
 <span class="kw"><span class="sql-kw">FROM</span></span> <span class="obj">employees</span>;</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="num-func">
-<h2>4.3 数値関数</h2>
-<p>数値関数は計算精度と表示ルールを制御する。`ROUND`と`TRUNC`は似て非なる関数で、端数処理方針の違いが会計値に影響する。`MOD`は周期判定、`ABS`は差分比較で有効だ。アンチパターンは丸め位置を決めずに部署ごとに異なる計算式を使うこと。これにより部門間で数値不一致が発生する。試験ではROUND/TRUNCの挙動差が頻出。実務では「計算」「表示」「保存」のどこで丸めるかを規約化しないと、同じデータでも出力値が揺れる。数値関数は短いが、品質影響が大きい機能である。</p>
+<h2><span class="sql-num">4.3</span> 数値関数</h2>
+<p>数値関数は計算精度と表示ルールを制御する。<br>`ROUND`と`TRUNC`は似て非なる関数で、端数処理方針の違いが会計値に影響する。<br>`MOD`は周期判定、`ABS`は差分比較で有効だ。<br>アンチパターンは丸め位置を決めずに部署ごとに異なる計算式を使うこと。<br>これにより部門間で数値不一致が発生する。<br>試験ではROUND/TRUNCの挙動差が頻出。<br>実務では「計算」「表示」「保存」のどこで丸めるかを規約化しないと、同じデータでも出力値が揺れる。<br>数値関数は短いが、品質影響が大きい機能である。</p>
 <pre><code><span class="kw"><span class="sql-kw">SELECT</span></span> <span class="obj">salary</span>,
        <span class="kw">ROUND</span>(<span class="obj">salary</span>, <span class="obj">-<span class="sql-num">3</span></span>) <span class="kw"><span class="sql-kw">AS</span></span> <span class="obj">salary_round</span>,
        <span class="kw">TRUNC</span>(<span class="obj">salary</span>, <span class="obj">-<span class="sql-num">3</span></span>) <span class="kw"><span class="sql-kw">AS</span></span> <span class="obj">salary_trunc</span>
@@ -112,8 +122,8 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="date-func">
-<h2>4.4 日付関数</h2>
-<p>日付関数は締め処理や有効期限判定の基盤である。`SYSDATE`、`CURRENT_DATE`、`ADD_MONTHS`、`MONTHS_BETWEEN`、`LAST_DAY`、`NEXT_DAY`を正しく使うことで期間演算を安定化できる。注意点は、日付と時刻の混在、タイムゾーン差、書式変換エラーである。`TO_DATE`の書式不一致はORA-01861の典型原因になる。試験では関数意味と戻り型が問われる。実務では「何時点を基準にするか（DBサーバ時刻かセッション時刻か）」を仕様として固定することが重要で、ここが曖昧だとバッチ結果が環境ごとに変わる。</p>
+<h2><span class="sql-num">4.4</span> 日付関数</h2>
+<p>日付関数は締め処理や有効期限判定の基盤である。<br>`SYSDATE`、`CURRENT_DATE`、`ADD_MONTHS`、`MONTHS_BETWEEN`、`LAST_DAY`、`NEXT_DAY`を正しく使うことで期間演算を安定化できる。<br>注意点は、日付と時刻の混在、タイムゾーン差、書式変換エラーである。<br>`TO_DATE`の書式不一致はORA-01861の典型原因になる。<br>試験では関数意味と戻り型が問われる。<br>実務では「何時点を基準にするか（DBサーバ時刻かセッション時刻か）」を仕様として固定することが重要で、ここが曖昧だとバッチ結果が環境ごとに変わる。</p>
 <pre><code><span class="kw"><span class="sql-kw">SELECT</span></span> <span class="obj">hire_date</span>,
        <span class="kw">ADD_MONTHS</span>(<span class="obj">hire_date</span>, <span class="obj"><span class="sql-num">3</span></span>) <span class="kw"><span class="sql-kw">AS</span></span> <span class="obj">after_3_months</span>,
        <span class="kw">LAST_DAY</span>(<span class="obj">hire_date</span>) <span class="kw"><span class="sql-kw">AS</span></span> <span class="obj">month_end</span>
@@ -121,32 +131,32 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="nesting">
-<h2>4.5 関数のネストと評価順</h2>
-<p>関数はネスト可能で、内側関数の結果を外側関数が受け取る。例えば`UPPER(TRIM(col))`は先にTRIMで整形し、その結果を大文字化する。ネストが深くなると可読性が落ち、型不整合やNULL伝播を見落としやすい。試験ではネスト順序そのものより、最終戻り値を問う設問が多い。実務では一行に詰め込まず、別名列を段階的に作るかCTEで分割すると保守しやすい。ネストは強力だが、意図を説明できる粒度で使うべきである。</p>
+<h2><span class="sql-num">4.5</span> 関数のネストと評価順</h2>
+<p>関数はネスト可能で、内側関数の結果を外側関数が受け取る。<br>例えば`<span class="sql-fn">UPPER</span>(<span class="sql-fn">TRIM</span>(col))`は先にTRIMで整形し、その結果を大文字化する。<br>ネストが深くなると可読性が落ち、型不整合やNULL伝播を見落としやすい。<br>試験ではネスト順序そのものより、最終戻り値を問う設問が多い。<br>実務では一行に詰め込まず、別名列を段階的に作るかCTEで分割すると保守しやすい。<br>ネストは強力だが、意図を説明できる粒度で使うべきである。</p>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="null-behavior">
-<h2>4.6 NULLと関数戻り値の挙動</h2>
-<p>多くの関数はNULL入力でNULLを返すが、例外的挙動を持つ関数もある。NULL混在を前提に式を設計しないと結果が想定より欠損しやすい。例えば算術式と関数を組み合わせた列でNULL補完を忘れると、業務上は値が必要な列までNULLになる。試験ではNVL系との違いを含めて問われる。実務では「NULLを保持すべきか補完すべきか」を列単位で定義し、関数利用時にその方針を守ることが品質維持の鍵になる。</p>
+<h2><span class="sql-num">4.6</span> NULLと関数戻り値の挙動</h2>
+<p>多くの関数はNULL入力でNULLを返すが、例外的挙動を持つ関数もある。<br>NULL混在を前提に式を設計しないと結果が想定より欠損しやすい。<br>例えば算術式と関数を組み合わせた列でNULL補完を忘れると、業務上は値が必要な列までNULLになる。<br>試験ではNVL系との違いを含めて問われる。<br>実務では「NULLを保持すべきか補完すべきか」を列単位で定義し、関数利用時にその方針を守ることが品質維持の鍵になる。</p>
 <pre><code><span class="kw"><span class="sql-kw">SELECT</span></span> <span class="obj">employee_id</span>,
        <span class="kw">NVL</span>(<span class="obj">commission_pct</span>, <span class="obj"><span class="sql-num">0</span></span>) <span class="kw"><span class="sql-kw">AS</span></span> <span class="obj">commission_safe</span>
 <span class="kw"><span class="sql-kw">FROM</span></span> <span class="obj">employees</span>;</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="type-conv">
-<h2>4.7 暗黙変換と明示変換の境界</h2>
-<p>暗黙変換に依存すると、NLS設定やデータ品質で結果が変わるため、試験でも実務でも危険である。`TO_CHAR`、`TO_DATE`、`TO_NUMBER`などの明示変換を使い、入力書式と変換書式を一致させることが必須だ。典型エラーはORA-01861（書式不一致）とORA-01722（無効な数値）。実務では変換前検証を入れ、異常値を除外または監視する運用が必要になる。変換は文法ではなく境界制御の設計である。</p>
-<div class="warn"><b>失敗例(ORA-01861):</b> <code><span class="sql-fn">TO_DATE</span>(<span class="sql-str">'2026/04/01'</span>,<span class="sql-str">'YYYY-MM-DD'</span>)</code> / <b>修正:</b> <code><span class="sql-fn">TO_DATE</span>(<span class="sql-str">'2026-04-01'</span>,<span class="sql-str">'YYYY-MM-DD'</span>)</code></div>
-<div class="warn"><b>失敗例(ORA-01722):</b> <code><span class="sql-fn">TO_NUMBER</span>(<span class="sql-str">'12A'</span>)</code> / <b>修正:</b> 変換前バリデーションで非数値を排除</div>
+<h2><span class="sql-num">4.7</span> 暗黙変換と明示変換の境界</h2>
+<p>暗黙変換に依存すると、NLS設定やデータ品質で結果が変わるため、試験でも実務でも危険である。<br>`TO_CHAR`、`TO_DATE`、`TO_NUMBER`などの明示変換を使い、入力書式と変換書式を一致させることが必須だ。<br>典型エラーはORA-<span class="sql-num">01861</span>（書式不一致）とORA-<span class="sql-num">01722</span>（無効な数値）。<br>実務では変換前検証を入れ、異常値を除外または監視する運用が必要になる。<br>変換は文法ではなく境界制御の設計である。</p>
+<div class="warn"><b>失敗例(ORA-<span class="sql-num">01861</span>):</b> <code><span class="sql-fn">TO_DATE</span>(<span class="sql-str">'2026/04/01'</span>,<span class="sql-str">'YYYY-MM-DD'</span>)</code> / <b>修正:</b> <code><span class="sql-fn">TO_DATE</span>(<span class="sql-str">'2026-04-01'</span>,<span class="sql-str">'YYYY-MM-DD'</span>)</code></div>
+<div class="warn"><b>失敗例(ORA-<span class="sql-num">01722</span>):</b> <code><span class="sql-fn">TO_NUMBER</span>(<span class="sql-str">'12A'</span>)</code> / <b>修正:</b> 変換前バリデーションで非数値を排除</div>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="index-impact">
-<h2>4.8 関数適用と索引利用</h2>
-<p>WHERE句の列側へ関数を適用すると、通常索引が効きにくくなりフルスキャンに寄ることがある。`UPPER(last_name) = 'KING'`は分かりやすいが、性能面では注意が必要だ。必要なら関数ベース索引や保存時正規化を検討する。試験では性能深掘りは限定的だが、実務で最も差が出る論点の一つである。関数の正しさだけでなく、アクセス経路への影響まで評価して初めて運用品質が担保される。</p>
+<h2><span class="sql-num">4.8</span> 関数適用と索引利用</h2>
+<p>WHERE句の列側へ関数を適用すると、通常索引が効きにくくなりフルスキャンに寄ることがある。<br>`<span class="sql-fn">UPPER</span>(last_name) = <span class="sql-str">'KING'</span>`は分かりやすいが、性能面では注意が必要だ。<br>必要なら関数ベース索引や保存時正規化を検討する。<br>試験では性能深掘りは限定的だが、実務で最も差が出る論点の一つである。<br>関数の正しさだけでなく、アクセス経路への影響まで評価して初めて運用品質が担保される。</p>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="catalog">
-<h2>4.9 主要関数カタログ</h2>
+<h2><span class="sql-num">4.9</span> 主要関数カタログ</h2>
 <div class="table-wrap"><table>
 <tr><th>カテゴリ</th><th>主要関数</th><th>主な用途</th><th>注意点</th></tr>
 <tr><td>文字</td><td>UPPER, LOWER, INITCAP, LENGTH, SUBSTR, INSTR, TRIM, REPLACE</td><td>表記統一、部分抽出、整形</td><td>列側適用で索引効率低下</td></tr>
@@ -157,8 +167,8 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="patterns">
-<h2>4.10 典型失敗と修正パターン</h2>
-<p>第4章で多い失敗は、関数名の誤用より「使う場所」の誤りである。表示専用の関数を抽出条件へ流用して性能劣化を起こす、暗黙変換任せで環境差異を生む、NULL補完方針を決めずに結果欠損を見逃す、という3系統が頻発する。修正方針は、表示と判定を分離し、変換を明示し、NULL方針を列単位で固定することだ。さらに運用面では、関数利用SQLに対し境界値テスト（NULL、空文字、異常書式、最大桁）を追加すると再発率を下げられる。関数は便利機能であるほど、品質ゲートを強化して扱う必要がある。</p>
+<h2><span class="sql-num">4.10</span> 典型失敗と修正パターン</h2>
+<p>第4章で多い失敗は、関数名の誤用より「使う場所」の誤りである。<br>表示専用の関数を抽出条件へ流用して性能劣化を起こす、暗黙変換任せで環境差異を生む、NULL補完方針を決めずに結果欠損を見逃す、という3系統が頻発する。<br>修正方針は、表示と判定を分離し、変換を明示し、NULL方針を列単位で固定することだ。<br>さらに運用面では、関数利用SQLに対し境界値テスト（<span class="sql-kw">NULL</span>、空文字、異常書式、最大桁）を追加すると再発率を下げられる。<br>関数は便利機能であるほど、品質ゲートを強化して扱う必要がある。</p>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 
@@ -184,7 +194,7 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 <tr><td>WHERE列側関数乱用</td><td>索引効率低下、遅延</td><td>保存時正規化/関数索引検討</td></tr>
 <tr><td>関数ネストを詰め込み</td><td>可読性低下、誤修正</td><td>段階分解して別名付与</td></tr>
 </table></div>
-<div class="note"><strong>第4章完了基準:</strong> 主要関数を型・NULL・性能の3観点で説明し、失敗例を自力で再現・修正できること。</div>
+<div class="note"><strong>第4章完了基準:</strong> 主要関数を型・<span class="sql-kw">NULL</span>・性能の3観点で説明し、失敗例を自力で再現・修正できること。</div>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 </main>

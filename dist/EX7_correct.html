@@ -63,16 +63,26 @@
     .option-review-head { flex-direction: column; align-items: flex-start; }
   }
 
-  pre .sql-kw { color: #fbbf24; font-weight: 700; }
-  pre .sql-fn { color: #60a5fa; font-weight: 600; }
+
+  /* sql-highlight-v3 */
+  /* default (light bg): warm tone */
+  .sql-kw  { color: #92400e; font-weight: 700; }
+  .sql-fn  { color: #1e40af; font-weight: 600; }
+  .sql-str { color: #065f46; }
+  .sql-num { color: #991b1b; }
+  .sql-cmt { color: #64748b; font-style: italic; }
+  /* dark bg override (pre / code) */
+  pre .sql-kw  { color: #fbbf24; }
+  pre .sql-fn  { color: #60a5fa; }
   pre .sql-str { color: #86efac; }
   pre .sql-num { color: #fca5a5; }
-  pre .sql-cmt { color: #94a3b8; font-style: italic; }
-  code .sql-kw { color: #b45309; font-weight: 700; }
-  code .sql-fn { color: #1d4ed8; font-weight: 600; }
-  code .sql-str { color: #047857; }
-  code .sql-num { color: #b91c1c; }
-  code .sql-cmt { color: #64748b; font-style: italic; }
+  pre .sql-cmt { color: #94a3b8; }
+  code .sql-kw  { color: #fbbf24; }
+  code .sql-fn  { color: #60a5fa; }
+  code .sql-str { color: #86efac; }
+  code .sql-num { color: #fca5a5; }
+  code .sql-cmt { color: #94a3b8; }
+  /* clause-order div uses its own kw/fn/desc/note classes — no override needed */
 </style>
 </head>
 <body>
@@ -93,23 +103,23 @@
     <p style="margin-top:8px;color:#334155">このページは、正答できた設問をカテゴリ別に並べ、記録された問題全文を正本として、なぜ取れたのかと維持ポイントを再確認するための定着教材です。</p>
     <div class="hero-grid">
       <div class="metric"><div class="label">レビュー種別</div><div class="value">正答</div></div>
-      <div class="metric"><div class="label">進捗率</div><div class="value">50.0%</div></div>
+      <div class="metric"><div class="label">進捗率</div><div class="value"><span class="sql-num">50.0</span>%</div></div>
       <div class="metric"><div class="label">正答数</div><div class="value">16問</div></div>
-      <div class="metric"><div class="label">カテゴリ数</div><div class="value">3</div></div>
+      <div class="metric"><div class="label">カテゴリ数</div><div class="value"><span class="sql-num">3</span></div></div>
     </div>
   </div>
 
   <div class="toc">
     <h2>カテゴリ別目次</h2>
     <div class="toc-grid">
-      <a href="#d1-1" class="low">SQL 分類の基礎 <span>11問</span></a><a href="#d1-2" class="low">主キー・外部キー・一意キーと NULL <span>4問</span></a><a href="#d1-3" class="low">DUAL と Oracle 基礎 <span>1問</span></a>
+      <a href="#d1-1" class="low">SQL 分類の基礎 <span>11問</span></a><a href="#d1-2" class="low">主キー・外部キー・一意キーと <span class="sql-kw">NULL</span> <span>4問</span></a><a href="#d1-3" class="low"><span class="sql-kw">DUAL</span> と Oracle 基礎 <span>1問</span></a>
     </div>
   </div>
 
   
             <section class="concept-section" id="d1-1">
               <h3>SQL 分類の基礎<span>11問</span></h3>
-              <p class="concept-copy">DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。各文をどこへ分類するかが基礎力になる。</p>
+              <p class="concept-copy">DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。<br>各文をどこへ分類するかが基礎力になる。</p>
               
     <div class="concept-guide" style="border-top-color:#f1c40f">
       <div class="guide-block">
@@ -133,14 +143,14 @@
       <div class="guide-grid">
         <div class="guide-block">
           <div class="guide-title">成立条件</div>
-          <ul class="guide-list"><li>主キーは NOT NULL かつ一意、外部キーは NULL を許容できる。</li><li>N:N 関係は中間表へ分解し、1:N 関係は外部キーで表す。</li><li>DDL、DML、DCL、TCL は役割ごとに分類して理解する。</li></ul>
+          <ul class="guide-list"><li>主キーは <span class="sql-kw">NOT NULL</span> かつ一意、外部キーは <span class="sql-kw">NULL</span> を許容できる。</li><li>N:N 関係は中間表へ分解し、<span class="sql-num">1</span>:N 関係は外部キーで表す。</li><li>DDL、DML、DCL、TCL は役割ごとに分類して理解する。</li></ul>
         </div>
         <div class="guide-block">
           <div class="guide-title">判定手順</div>
-          <ol class="guide-list ordered"><li>まず設問が制約・ERD・SQL 分類のどれを問うているかを判定する。</li><li>次にキーの性質や関係の多重度を日本語で言い換える。</li><li>最後に Oracle 固有の基礎知識である DUAL や SQL 分類へ当てはめる。</li></ol>
+          <ol class="guide-list ordered"><li>まず設問が制約・ERD・SQL 分類のどれを問うているかを判定する。</li><li>次にキーの性質や関係の多重度を日本語で言い換える。</li><li>最後に Oracle 固有の基礎知識である <span class="sql-kw">DUAL</span> や SQL 分類へ当てはめる。</li></ol>
         </div>
       </div>
-      <div class="guide-note">失点しやすい点: TRUNCATE や COMMIT の分類が曖昧で、設問を読む前に迷いが生じやすい。</div>
+      <div class="guide-note">失点しやすい点: <span class="sql-kw">TRUNCATE</span> や <span class="sql-kw">COMMIT</span> の分類が曖昧で、設問を読む前に迷いが生じやすい。</div>
     </div>
     
               
@@ -148,15 +158,15 @@
                   <div class="question-meta">第1回 模擬試験 / 問3 / 正答 A.B.C / 自己回答 -</div>
                   <div class="block-title">問題文</div>
                   <pre>SQL（構造化問合せ言語）について、正しい記述はどれでしょうか。（3つ選択）
-(<span class="sql-num">1</span>)		A.　データ操作言語をDMLと言います。
-(<span class="sql-num">2</span>)		B.　リレーショナル・データベース管理システムに含まれるデータを取得します。
-(<span class="sql-num">3</span>)		C.　一貫性を保証します。
-(<span class="sql-num">4</span>)		D.　オブジェクト型データベース管理システムに含まれるデータを取得します。
-(<span class="sql-num">5</span>)		E.　カプセル化を定義するために使用されます。
-(<span class="sql-num">6</span>)		F.　ポリモーフィズムを定義するために使用されます。</pre>
+(<span class="sql-num"><span class="sql-num">1</span></span>)		A.　データ操作言語をDMLと言います。
+(<span class="sql-num"><span class="sql-num">2</span></span>)		B.　リレーショナル・データベース管理システムに含まれるデータを取得します。
+(<span class="sql-num"><span class="sql-num">3</span></span>)		C.　一貫性を保証します。
+(<span class="sql-num"><span class="sql-num">4</span></span>)		D.　オブジェクト型データベース管理システムに含まれるデータを取得します。
+(<span class="sql-num"><span class="sql-num">5</span></span>)		E.　カプセル化を定義するために使用されます。
+(<span class="sql-num"><span class="sql-num">6</span></span>)		F.　ポリモーフィズムを定義するために使用されます。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
-                    <p>この設問の論点は「SQL 分類の基礎」です。問題文は「SQL（構造化問合せ言語）について、正しい記述はどれでしょうか。（3つ選択）」という条件を満たす説明または SQL を求めています。DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。各文をどこへ分類するかが基礎力になる。 この設問では正答 A「データ操作言語をDMLと言います。」 / B「リレーショナル・データベース管理システムに含まれるデータを取得します。」 / C「一貫性を保証します。」 を選べており、成立条件を正しく読めています。</p>
+                    <p>この設問の論点は「SQL 分類の基礎」です。<br>問題文は「SQL（構造化問合せ言語）について、正しい記述はどれでしょうか。<br>（3つ選択）」という条件を満たす説明または SQL を求めています。<br>DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。<br>各文をどこへ分類するかが基礎力になる。 この設問では正答 A「データ操作言語をDMLと言います。<br>」 / B「リレーショナル・データベース管理システムに含まれるデータを取得します。<br>」 / C「一貫性を保証します。<br>」 を選べており、成立条件を正しく読めています。</p>
                     <div class="block-title">得点できた理由</div>
                     <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
                     <div class="block-title">選択肢ごとの判定</div>
@@ -217,7 +227,7 @@
             </div>
                     <div class="block-title">解く順序</div>
                     <ul class="study-step-list">
-                      <li>まず設問が制約・ERD・SQL 分類のどれを問うているかを判定する。</li><li>次にキーの性質や関係の多重度を日本語で言い換える。</li><li>最後に Oracle 固有の基礎知識である DUAL や SQL 分類へ当てはめる。</li>
+                      <li>まず設問が制約・ERD・SQL 分類のどれを問うているかを判定する。</li><li>次にキーの性質や関係の多重度を日本語で言い換える。</li><li>最後に Oracle 固有の基礎知識である <span class="sql-kw">DUAL</span> や SQL 分類へ当てはめる。</li>
                     </ul>
                   </div>
                 </article>
@@ -236,7 +246,7 @@
 (<span class="sql-num">5</span>)		E.　<span class="sql-kw">SELECT</span> S_NAME スポーツ <span class="sql-kw">FROM</span> SPORTS;</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
-                    <p>この設問の論点は「SQL 分類の基礎」です。問題文は「S_NAMEの列名を日本語で表示したいとします。 どのSQL文を実行すればいいでしょうか。(2つ選択)」という条件を満たす説明または SQL を求めています。DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。各文をどこへ分類するかが基礎力になる。 この設問では正答 C「SELECT S_NAME AS スポーツ FROM SPORTS;」 / E「SELECT S_NAME スポーツ FROM SPORTS;」 を選べており、成立条件を正しく読めています。</p>
+                    <p>この設問の論点は「SQL 分類の基礎」です。<br>問題文は「S_NAMEの列名を日本語で表示したいとします。 どのSQL文を実行すればいいでしょうか。<br>(2つ選択)」という条件を満たす説明または SQL を求めています。<br>DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。<br>各文をどこへ分類するかが基礎力になる。 この設問では正答 C「<span class="sql-kw">SELECT</span> S_NAME <span class="sql-kw">AS</span> スポーツ <span class="sql-kw">FROM</span> SPORTS;」 / E「<span class="sql-kw">SELECT</span> S_NAME スポーツ <span class="sql-kw">FROM</span> SPORTS;」 を選べており、成立条件を正しく読めています。</p>
                     <div class="block-title">得点できた理由</div>
                     <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
                     <div class="block-title">選択肢ごとの判定</div>
@@ -246,7 +256,7 @@
                 <div class="option-review-key">A</div>
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
-              <div class="option-review-text">SELECT S_NAME AS &#x27;スポーツ&#x27; FROM SPORTS;</div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> S_NAME <span class="sql-kw">AS</span> &#x27;スポーツ&#x27; <span class="sql-kw">FROM</span> SPORTS;</div>
               <div class="option-review-reason">誤り。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
             </div>
             
@@ -255,7 +265,7 @@
                 <div class="option-review-key">B</div>
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
-              <div class="option-review-text">SELECT S_NAME IS &#x27;スポーツ&#x27; FROM SPORTS;</div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> S_NAME <span class="sql-kw">IS</span> &#x27;スポーツ&#x27; <span class="sql-kw">FROM</span> SPORTS;</div>
               <div class="option-review-reason">誤り。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
             </div>
             
@@ -264,7 +274,7 @@
                 <div class="option-review-key">C</div>
                 <div class="option-review-badges"><span>正答肢</span></div>
               </div>
-              <div class="option-review-text">SELECT S_NAME AS スポーツ FROM SPORTS;</div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> S_NAME <span class="sql-kw">AS</span> スポーツ <span class="sql-kw">FROM</span> SPORTS;</div>
               <div class="option-review-reason">正しい。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
             </div>
             
@@ -273,7 +283,7 @@
                 <div class="option-review-key">D</div>
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
-              <div class="option-review-text">SELECT S_NAME IS スポーツ FROM SPORTS;</div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> S_NAME <span class="sql-kw">IS</span> スポーツ <span class="sql-kw">FROM</span> SPORTS;</div>
               <div class="option-review-reason">誤り。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
             </div>
             
@@ -282,13 +292,13 @@
                 <div class="option-review-key">E</div>
                 <div class="option-review-badges"><span>正答肢</span></div>
               </div>
-              <div class="option-review-text">SELECT S_NAME スポーツ FROM SPORTS;</div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> S_NAME スポーツ <span class="sql-kw">FROM</span> SPORTS;</div>
               <div class="option-review-reason">正しい。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
             </div>
             </div>
                     <div class="block-title">解く順序</div>
                     <ul class="study-step-list">
-                      <li>まず設問が制約・ERD・SQL 分類のどれを問うているかを判定する。</li><li>次にキーの性質や関係の多重度を日本語で言い換える。</li><li>最後に Oracle 固有の基礎知識である DUAL や SQL 分類へ当てはめる。</li>
+                      <li>まず設問が制約・ERD・SQL 分類のどれを問うているかを判定する。</li><li>次にキーの性質や関係の多重度を日本語で言い換える。</li><li>最後に Oracle 固有の基礎知識である <span class="sql-kw">DUAL</span> や SQL 分類へ当てはめる。</li>
                     </ul>
                   </div>
                 </article>
@@ -306,7 +316,7 @@
 (<span class="sql-num">4</span>)		D.　<span class="sql-kw">SELECT</span> ITEM_TYPE || &#x27; &#x27; || ITEM_PRICE * <span class="sql-num">0.80</span> <span class="sql-kw">AS</span> &quot;<span class="sql-num">20</span>% OFF&quot; <span class="sql-kw">DISTINCT</span> <span class="sql-kw">FROM</span> ITEM</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
-                    <p>この設問の論点は「SQL 分類の基礎」です。問題文は「ITEM表を使用して、各ITEM_TYPEの各価格の20%OFFを表示する必要があります。 また表示からITEM_TYPEの重複行を取り除く必要があります。 上記条件に当てはまる結果を表示するSQLはどれでしょうか。」という条件を満たす説明または SQL を求めています。DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。各文をどこへ分類するかが基礎力になる。 この設問では正答 A「SELECT DISTINCT ITEM_TYPE || &#x27; &#x27; || ITEM_PRICE * 0.80 A…」 を選べており、成立条件を正しく読めています。</p>
+                    <p>この設問の論点は「SQL 分類の基礎」です。<br>問題文は「ITEM表を使用して、各ITEM_TYPEの各価格の20%OFFを表示する必要があります。 また表示からITEM_TYPEの重複行を取り除く必要があります。 上記条件に当てはまる結果を表示するSQLはどれでしょうか。<br>」という条件を満たす説明または SQL を求めています。<br>DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。<br>各文をどこへ分類するかが基礎力になる。 この設問では正答 A「<span class="sql-kw">SELECT</span> <span class="sql-kw">DISTINCT</span> ITEM_TYPE || &#x27; &#x27; || ITEM_PRICE * <span class="sql-num">0.80</span> A…」 を選べており、成立条件を正しく読めています。</p>
                     <div class="block-title">得点できた理由</div>
                     <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
                     <div class="block-title">選択肢ごとの判定</div>
@@ -316,7 +326,7 @@
                 <div class="option-review-key">A</div>
                 <div class="option-review-badges"><span>正答肢</span></div>
               </div>
-              <div class="option-review-text">SELECT DISTINCT ITEM_TYPE || &#x27; &#x27; || ITEM_PRICE * 0.80 AS &quot;20% OFF&quot; FROM ITEM</div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> <span class="sql-kw">DISTINCT</span> ITEM_TYPE || &#x27; &#x27; || ITEM_PRICE * <span class="sql-num">0.80</span> <span class="sql-kw">AS</span> &quot;<span class="sql-num">20</span>% OFF&quot; <span class="sql-kw">FROM</span> ITEM</div>
               <div class="option-review-reason">正しい。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
             </div>
             
@@ -325,7 +335,7 @@
                 <div class="option-review-key">B</div>
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
-              <div class="option-review-text">SELECT ITEM_TYPE, DISTINCT ITEM_PRICE * 0.80 AS &quot;20% OFF&quot; FROM ITEM</div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> ITEM_TYPE, <span class="sql-kw">DISTINCT</span> ITEM_PRICE * <span class="sql-num">0.80</span> <span class="sql-kw">AS</span> &quot;<span class="sql-num">20</span>% OFF&quot; <span class="sql-kw">FROM</span> ITEM</div>
               <div class="option-review-reason">誤り。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
             </div>
             
@@ -334,7 +344,7 @@
                 <div class="option-review-key">C</div>
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
-              <div class="option-review-text">SELECT DISTINCT ITEM_TYPE, DISTINCT ITEM_PRICE * 0.80 AS &quot;20% OFF&quot; FROM ITEM</div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> <span class="sql-kw">DISTINCT</span> ITEM_TYPE, <span class="sql-kw">DISTINCT</span> ITEM_PRICE * <span class="sql-num">0.80</span> <span class="sql-kw">AS</span> &quot;<span class="sql-num">20</span>% OFF&quot; <span class="sql-kw">FROM</span> ITEM</div>
               <div class="option-review-reason">誤り。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
             </div>
             
@@ -343,13 +353,13 @@
                 <div class="option-review-key">D</div>
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
-              <div class="option-review-text">SELECT ITEM_TYPE || &#x27; &#x27; || ITEM_PRICE * 0.80 AS &quot;20% OFF&quot; DISTINCT FROM ITEM</div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> ITEM_TYPE || &#x27; &#x27; || ITEM_PRICE * <span class="sql-num">0.80</span> <span class="sql-kw">AS</span> &quot;<span class="sql-num">20</span>% OFF&quot; <span class="sql-kw">DISTINCT</span> <span class="sql-kw">FROM</span> ITEM</div>
               <div class="option-review-reason">誤り。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
             </div>
             </div>
                     <div class="block-title">解く順序</div>
                     <ul class="study-step-list">
-                      <li>まず設問が制約・ERD・SQL 分類のどれを問うているかを判定する。</li><li>次にキーの性質や関係の多重度を日本語で言い換える。</li><li>最後に Oracle 固有の基礎知識である DUAL や SQL 分類へ当てはめる。</li>
+                      <li>まず設問が制約・ERD・SQL 分類のどれを問うているかを判定する。</li><li>次にキーの性質や関係の多重度を日本語で言い換える。</li><li>最後に Oracle 固有の基礎知識である <span class="sql-kw">DUAL</span> や SQL 分類へ当てはめる。</li>
                     </ul>
                   </div>
                 </article>
@@ -358,14 +368,14 @@
                   <div class="question-meta">第1回 模擬試験 / 問57 / 正答 B.D / 自己回答 -</div>
                   <div class="block-title">問題文</div>
                   <pre>外部表に関して正しい記述はどれでしょうか。（2つ選択）
-(<span class="sql-num">1</span>)		A.　索引を使用することができます。
-(<span class="sql-num">2</span>)		B.　外部表からデータベース内の表にデータをアップロードできます。
-(<span class="sql-num">3</span>)		C.　外部表で使用するORACLE_LOADERとORACLE_DATAPUMPは、全く同じ機能となります。
-(<span class="sql-num">4</span>)		D.　外部表のデータは、データベースの外部に保存されます。
-(<span class="sql-num">5</span>)		E.　外部表のメタデータは、データベースの外部に保存されます。</pre>
+(<span class="sql-num"><span class="sql-num">1</span></span>)		A.　索引を使用することができます。
+(<span class="sql-num"><span class="sql-num">2</span></span>)		B.　外部表からデータベース内の表にデータをアップロードできます。
+(<span class="sql-num"><span class="sql-num">3</span></span>)		C.　外部表で使用するORACLE_LOADERとORACLE_DATAPUMPは、全く同じ機能となります。
+(<span class="sql-num"><span class="sql-num">4</span></span>)		D.　外部表のデータは、データベースの外部に保存されます。
+(<span class="sql-num"><span class="sql-num">5</span></span>)		E.　外部表のメタデータは、データベースの外部に保存されます。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
-                    <p>この設問の論点は「SQL 分類の基礎」です。問題文は「外部表に関して正しい記述はどれでしょうか。（2つ選択）」という条件を満たす説明または SQL を求めています。DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。各文をどこへ分類するかが基礎力になる。 この設問では正答 B「外部表からデータベース内の表にデータをアップロードできます。」 / D「外部表のデータは、データベースの外部に保存されます。」 を選べており、成立条件を正しく読めています。</p>
+                    <p>この設問の論点は「SQL 分類の基礎」です。<br>問題文は「外部表に関して正しい記述はどれでしょうか。<br>（2つ選択）」という条件を満たす説明または SQL を求めています。<br>DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。<br>各文をどこへ分類するかが基礎力になる。 この設問では正答 B「外部表からデータベース内の表にデータをアップロードできます。<br>」 / D「外部表のデータは、データベースの外部に保存されます。<br>」 を選べており、成立条件を正しく読めています。</p>
                     <div class="block-title">得点できた理由</div>
                     <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
                     <div class="block-title">選択肢ごとの判定</div>
@@ -417,7 +427,7 @@
             </div>
                     <div class="block-title">解く順序</div>
                     <ul class="study-step-list">
-                      <li>まず設問が制約・ERD・SQL 分類のどれを問うているかを判定する。</li><li>次にキーの性質や関係の多重度を日本語で言い換える。</li><li>最後に Oracle 固有の基礎知識である DUAL や SQL 分類へ当てはめる。</li>
+                      <li>まず設問が制約・ERD・SQL 分類のどれを問うているかを判定する。</li><li>次にキーの性質や関係の多重度を日本語で言い換える。</li><li>最後に Oracle 固有の基礎知識である <span class="sql-kw">DUAL</span> や SQL 分類へ当てはめる。</li>
                     </ul>
                   </div>
                 </article>
@@ -438,7 +448,7 @@
 (<span class="sql-num">4</span>)		D.　<span class="sql-kw">SELECT</span> NAME <span class="sql-kw">AS</span> &quot;Name&quot;, SALARY + <span class="sql-num">10000</span> <span class="sql-kw">AS</span> &quot;New Salary&quot; <span class="sql-kw">FROM</span> EMP;</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
-                    <p>この設問の論点は「SQL 分類の基礎」です。問題文は「従業員の給与が10000円昇給させる場合のレポートを作成する必要があります。 出力では、 従業員の名前の見出しに Name、 昇給後の見出しに New Salary という列見出しが表示される必要があります。 列見出しには、各単語の最初の…」という条件を満たす説明または SQL を求めています。DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。各文をどこへ分類するかが基礎力になる。 この設問では正答 D「SELECT NAME AS &quot;Name&quot;, SALARY + 10000 AS &quot;New Salary&quot; F…」 を選べており、成立条件を正しく読めています。</p>
+                    <p>この設問の論点は「SQL 分類の基礎」です。<br>問題文は「従業員の給与が10000円昇給させる場合のレポートを作成する必要があります。 出力では、 従業員の名前の見出しに Name、 昇給後の見出しに New Salary という列見出しが表示される必要があります。 列見出しには、各単語の最初の…」という条件を満たす説明または SQL を求めています。<br>DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。<br>各文をどこへ分類するかが基礎力になる。 この設問では正答 D「<span class="sql-kw">SELECT</span> NAME <span class="sql-kw">AS</span> &quot;Name&quot;, SALARY + <span class="sql-num">10000</span> <span class="sql-kw">AS</span> &quot;New Salary&quot; F…」 を選べており、成立条件を正しく読めています。</p>
                     <div class="block-title">得点できた理由</div>
                     <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
                     <div class="block-title">選択肢ごとの判定</div>
@@ -448,7 +458,7 @@
                 <div class="option-review-key">A</div>
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
-              <div class="option-review-text">SELECT NAME AS Name, SALARY + 10000 AS New Salary FROM EMP;</div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> NAME <span class="sql-kw">AS</span> Name, SALARY + <span class="sql-num">10000</span> <span class="sql-kw">AS</span> New Salary <span class="sql-kw">FROM</span> EMP;</div>
               <div class="option-review-reason">誤り。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
             </div>
             
@@ -457,7 +467,7 @@
                 <div class="option-review-key">B</div>
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
-              <div class="option-review-text">SELECT NAME AS &quot;NAME&quot;, SALARY + 10000 &quot;New Salary&quot; FROM EMP;</div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> NAME <span class="sql-kw">AS</span> &quot;NAME&quot;, SALARY + <span class="sql-num">10000</span> &quot;New Salary&quot; <span class="sql-kw">FROM</span> EMP;</div>
               <div class="option-review-reason">誤り。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
             </div>
             
@@ -466,7 +476,7 @@
                 <div class="option-review-key">C</div>
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
-              <div class="option-review-text">SELECT NAME AS &quot;Name&quot;, SALARY + 10000 AS &quot;NEW SALARY&quot; FROM EMP;</div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> NAME <span class="sql-kw">AS</span> &quot;Name&quot;, SALARY + <span class="sql-num">10000</span> <span class="sql-kw">AS</span> &quot;NEW SALARY&quot; <span class="sql-kw">FROM</span> EMP;</div>
               <div class="option-review-reason">誤り。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
             </div>
             
@@ -475,13 +485,13 @@
                 <div class="option-review-key">D</div>
                 <div class="option-review-badges"><span>正答肢</span></div>
               </div>
-              <div class="option-review-text">SELECT NAME AS &quot;Name&quot;, SALARY + 10000 AS &quot;New Salary&quot; FROM EMP;</div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> NAME <span class="sql-kw">AS</span> &quot;Name&quot;, SALARY + <span class="sql-num">10000</span> <span class="sql-kw">AS</span> &quot;New Salary&quot; <span class="sql-kw">FROM</span> EMP;</div>
               <div class="option-review-reason">正しい。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
             </div>
             </div>
                     <div class="block-title">解く順序</div>
                     <ul class="study-step-list">
-                      <li>まず設問が制約・ERD・SQL 分類のどれを問うているかを判定する。</li><li>次にキーの性質や関係の多重度を日本語で言い換える。</li><li>最後に Oracle 固有の基礎知識である DUAL や SQL 分類へ当てはめる。</li>
+                      <li>まず設問が制約・ERD・SQL 分類のどれを問うているかを判定する。</li><li>次にキーの性質や関係の多重度を日本語で言い換える。</li><li>最後に Oracle 固有の基礎知識である <span class="sql-kw">DUAL</span> や SQL 分類へ当てはめる。</li>
                     </ul>
                   </div>
                 </article>
@@ -490,14 +500,14 @@
                   <div class="question-meta">第2回 模擬試験 / 問8 / 正答 CE / 自己回答 -</div>
                   <div class="block-title">問題文</div>
                   <pre>演算子の優先順位について正しい記載はどれでしょうか。（2つ選択）
-(<span class="sql-num">1</span>)		A.　比較演算子は、算術演算子より先に評価されます。
-(<span class="sql-num">2</span>)		B.　+演算子は、-演算子より先に評価されます。
-(<span class="sql-num">3</span>)		C.　カッコを使用して、式内の演算子の優先順位を制御できます 。
-(<span class="sql-num">4</span>)		D.　連結演算子 || は、乗算より先に評価されます。
-(<span class="sql-num">5</span>)		E.　優先順位の等しい算術演算子は、式内の左から右の順に評価されます。</pre>
+(<span class="sql-num"><span class="sql-num">1</span></span>)		A.　比較演算子は、算術演算子より先に評価されます。
+(<span class="sql-num"><span class="sql-num">2</span></span>)		B.　+演算子は、-演算子より先に評価されます。
+(<span class="sql-num"><span class="sql-num">3</span></span>)		C.　カッコを使用して、式内の演算子の優先順位を制御できます 。
+(<span class="sql-num"><span class="sql-num">4</span></span>)		D.　連結演算子 || は、乗算より先に評価されます。
+(<span class="sql-num"><span class="sql-num">5</span></span>)		E.　優先順位の等しい算術演算子は、式内の左から右の順に評価されます。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
-                    <p>この設問の論点は「SQL 分類の基礎」です。問題文は「演算子の優先順位について正しい記載はどれでしょうか。（2つ選択）」という条件を満たす説明または SQL を求めています。DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。各文をどこへ分類するかが基礎力になる。 この設問では正答 C「カッコを使用して、式内の演算子の優先順位を制御できます 。」 / E「優先順位の等しい算術演算子は、式内の左から右の順に評価されます。」 を選べており、成立条件を正しく読めています。</p>
+                    <p>この設問の論点は「SQL 分類の基礎」です。<br>問題文は「演算子の優先順位について正しい記載はどれでしょうか。<br>（2つ選択）」という条件を満たす説明または SQL を求めています。<br>DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。<br>各文をどこへ分類するかが基礎力になる。 この設問では正答 C「カッコを使用して、式内の演算子の優先順位を制御できます 。<br>」 / E「優先順位の等しい算術演算子は、式内の左から右の順に評価されます。<br>」 を選べており、成立条件を正しく読めています。</p>
                     <div class="block-title">得点できた理由</div>
                     <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
                     <div class="block-title">選択肢ごとの判定</div>
@@ -549,7 +559,7 @@
             </div>
                     <div class="block-title">解く順序</div>
                     <ul class="study-step-list">
-                      <li>まず設問が制約・ERD・SQL 分類のどれを問うているかを判定する。</li><li>次にキーの性質や関係の多重度を日本語で言い換える。</li><li>最後に Oracle 固有の基礎知識である DUAL や SQL 分類へ当てはめる。</li>
+                      <li>まず設問が制約・ERD・SQL 分類のどれを問うているかを判定する。</li><li>次にキーの性質や関係の多重度を日本語で言い換える。</li><li>最後に Oracle 固有の基礎知識である <span class="sql-kw">DUAL</span> や SQL 分類へ当てはめる。</li>
                     </ul>
                   </div>
                 </article>
@@ -558,15 +568,15 @@
                   <div class="question-meta">第2回 模擬試験 / 問26 / 正答 CF / 自己回答 -</div>
                   <div class="block-title">問題文</div>
                   <pre>Oracle結合構文・ANSI結合構文について正しい記述はどれでしょうか。（2つ選択）
-(<span class="sql-num">1</span>)		A.　Oracle結合構文は、ANSI結合構文よりもパフォーマンスが低くなります。
-(<span class="sql-num">2</span>)		B.　Oracle結合構文は、ANSI結合構文よりもパフォーマンスは優れています。
-(<span class="sql-num">3</span>)		C.　ANSI結合構文は、自然結合に対応しています
-(<span class="sql-num">4</span>)		D.　Oracle結合構文は、右外部結合のみに対応しています。
-(<span class="sql-num">5</span>)		E.　Oracle結合構文は、左外部結合のみに対応しています。
-(<span class="sql-num">6</span>)		F.　ANSI結合構文は、クロス結合に対応しています。</pre>
+(<span class="sql-num"><span class="sql-num">1</span></span>)		A.　Oracle結合構文は、ANSI結合構文よりもパフォーマンスが低くなります。
+(<span class="sql-num"><span class="sql-num">2</span></span>)		B.　Oracle結合構文は、ANSI結合構文よりもパフォーマンスは優れています。
+(<span class="sql-num"><span class="sql-num">3</span></span>)		C.　ANSI結合構文は、自然結合に対応しています
+(<span class="sql-num"><span class="sql-num">4</span></span>)		D.　Oracle結合構文は、右外部結合のみに対応しています。
+(<span class="sql-num"><span class="sql-num">5</span></span>)		E.　Oracle結合構文は、左外部結合のみに対応しています。
+(<span class="sql-num"><span class="sql-num">6</span></span>)		F.　ANSI結合構文は、クロス結合に対応しています。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
-                    <p>この設問の論点は「SQL 分類の基礎」です。問題文は「Oracle結合構文・ANSI結合構文について正しい記述はどれでしょうか。（2つ選択）」という条件を満たす説明または SQL を求めています。DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。各文をどこへ分類するかが基礎力になる。 この設問では正答 C「ANSI結合構文は、自然結合に対応しています」 / F「ANSI結合構文は、クロス結合に対応しています。」 を選べており、成立条件を正しく読めています。</p>
+                    <p>この設問の論点は「SQL 分類の基礎」です。<br>問題文は「Oracle結合構文・ANSI結合構文について正しい記述はどれでしょうか。<br>（2つ選択）」という条件を満たす説明または SQL を求めています。<br>DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。<br>各文をどこへ分類するかが基礎力になる。 この設問では正答 C「ANSI結合構文は、自然結合に対応しています」 / F「ANSI結合構文は、クロス結合に対応しています。<br>」 を選べており、成立条件を正しく読めています。</p>
                     <div class="block-title">得点できた理由</div>
                     <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
                     <div class="block-title">選択肢ごとの判定</div>
@@ -627,7 +637,7 @@
             </div>
                     <div class="block-title">解く順序</div>
                     <ul class="study-step-list">
-                      <li>まず設問が制約・ERD・SQL 分類のどれを問うているかを判定する。</li><li>次にキーの性質や関係の多重度を日本語で言い換える。</li><li>最後に Oracle 固有の基礎知識である DUAL や SQL 分類へ当てはめる。</li>
+                      <li>まず設問が制約・ERD・SQL 分類のどれを問うているかを判定する。</li><li>次にキーの性質や関係の多重度を日本語で言い換える。</li><li>最後に Oracle 固有の基礎知識である <span class="sql-kw">DUAL</span> や SQL 分類へ当てはめる。</li>
                     </ul>
                   </div>
                 </article>
@@ -643,7 +653,7 @@
 (<span class="sql-num">5</span>)		E. <span class="sql-kw">SELECT</span> emp_id, salary + bonus <span class="sql-kw">FROM</span> employees;</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
-                    <p>この設問の論点は「SQL 分類の基礎」です。問題文は「以下のうち、有効なSQLの式を含むクエリ を 3つ 選んでください。」という条件を満たす説明または SQL を求めています。DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。各文をどこへ分類するかが基礎力になる。 この設問では正答 B「SELECT emp_id, (salary * 0.15 / (4.75 + 552.25)) FROM e…」 / C「SELECT emp_id, birth_date - hire_date + 2 FROM employee…」 / E「SELECT emp_id, salary + bonus FROM employees;」 を選べており、成立条件を正しく読めています。</p>
+                    <p>この設問の論点は「SQL 分類の基礎」です。<br>問題文は「以下のうち、有効なSQLの式を含むクエリ を 3つ 選んでください。<br>」という条件を満たす説明または SQL を求めています。<br>DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。<br>各文をどこへ分類するかが基礎力になる。 この設問では正答 B「<span class="sql-kw">SELECT</span> emp_id, (salary * <span class="sql-num">0.15</span> / (<span class="sql-num">4.75</span> + <span class="sql-num">552.25</span>)) <span class="sql-kw">FROM</span> e…」 / C「<span class="sql-kw">SELECT</span> emp_id, birth_date - hire_date + <span class="sql-num">2</span> <span class="sql-kw">FROM</span> employee…」 / E「<span class="sql-kw">SELECT</span> emp_id, salary + bonus <span class="sql-kw">FROM</span> employees;」 を選べており、成立条件を正しく読めています。</p>
                     <div class="block-title">得点できた理由</div>
                     <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
                     <div class="block-title">選択肢ごとの判定</div>
@@ -653,7 +663,7 @@
                 <div class="option-review-key">A</div>
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
-              <div class="option-review-text">SELECT emp_id, salary, &#x27; Adjusted&#x27;, salary + bonus - tax FROM employees;</div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> emp_id, salary, &#x27; Adjusted&#x27;, salary + bonus - tax <span class="sql-kw">FROM</span> employees;</div>
               <div class="option-review-reason">誤り。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
             </div>
             
@@ -662,7 +672,7 @@
                 <div class="option-review-key">B</div>
                 <div class="option-review-badges"><span>正答肢</span></div>
               </div>
-              <div class="option-review-text">SELECT emp_id, (salary * 0.15 / (4.75 + 552.25)) FROM employees;</div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> emp_id, (salary * <span class="sql-num">0.15</span> / (<span class="sql-num">4.75</span> + <span class="sql-num">552.25</span>)) <span class="sql-kw">FROM</span> employees;</div>
               <div class="option-review-reason">正しい。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
             </div>
             
@@ -671,7 +681,7 @@
                 <div class="option-review-key">C</div>
                 <div class="option-review-badges"><span>正答肢</span></div>
               </div>
-              <div class="option-review-text">SELECT emp_id, birth_date - hire_date + 2 FROM employees;</div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> emp_id, birth_date - hire_date + <span class="sql-num">2</span> <span class="sql-kw">FROM</span> employees;</div>
               <div class="option-review-reason">正しい。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
             </div>
             
@@ -680,7 +690,7 @@
                 <div class="option-review-key">D</div>
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
-              <div class="option-review-text">SELECT emp_id, salary || &#x27; Adjusted&#x27;, salary + bonus - tax FROM employees;</div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> emp_id, salary || &#x27; Adjusted&#x27;, salary + bonus - tax <span class="sql-kw">FROM</span> employees;</div>
               <div class="option-review-reason">誤り。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
             </div>
             
@@ -689,13 +699,13 @@
                 <div class="option-review-key">E</div>
                 <div class="option-review-badges"><span>正答肢</span></div>
               </div>
-              <div class="option-review-text">SELECT emp_id, salary + bonus FROM employees;</div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> emp_id, salary + bonus <span class="sql-kw">FROM</span> employees;</div>
               <div class="option-review-reason">正しい。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
             </div>
             </div>
                     <div class="block-title">解く順序</div>
                     <ul class="study-step-list">
-                      <li>まず設問が制約・ERD・SQL 分類のどれを問うているかを判定する。</li><li>次にキーの性質や関係の多重度を日本語で言い換える。</li><li>最後に Oracle 固有の基礎知識である DUAL や SQL 分類へ当てはめる。</li>
+                      <li>まず設問が制約・ERD・SQL 分類のどれを問うているかを判定する。</li><li>次にキーの性質や関係の多重度を日本語で言い換える。</li><li>最後に Oracle 固有の基礎知識である <span class="sql-kw">DUAL</span> や SQL 分類へ当てはめる。</li>
                     </ul>
                   </div>
                 </article>
@@ -704,13 +714,13 @@
                   <div class="question-meta">第3回 模擬試験 / 問16 / 正答 CD / 自己回答 -</div>
                   <div class="block-title">問題文</div>
                   <pre>Oracleのパフォーマンス について正しいものを 2つ 選んでください。
-(<span class="sql-num">1</span>)		A. 結合条件に関係のない列をSELECT句に含めた場合でも、パフォーマンスに影響はない。
-(<span class="sql-num">2</span>)		B. Oracleの結合構文は、SQL:1999準拠のANSI結合構文よりもパフォーマンスが優れている。
-(<span class="sql-num">3</span>)		C. 使用する結合構文の違いは、パフォーマンスには影響しない。
-(<span class="sql-num">4</span>)		D. 結合対象の列にインデックスがあると、パフォーマンスが向上する可能性がある。</pre>
+(<span class="sql-num"><span class="sql-num">1</span></span>)		A. 結合条件に関係のない列をSELECT句に含めた場合でも、パフォーマンスに影響はない。
+(<span class="sql-num"><span class="sql-num">2</span></span>)		B. Oracleの結合構文は、SQL:1999準拠のANSI結合構文よりもパフォーマンスが優れている。
+(<span class="sql-num"><span class="sql-num">3</span></span>)		C. 使用する結合構文の違いは、パフォーマンスには影響しない。
+(<span class="sql-num"><span class="sql-num">4</span></span>)		D. 結合対象の列にインデックスがあると、パフォーマンスが向上する可能性がある。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
-                    <p>この設問の論点は「SQL 分類の基礎」です。問題文は「Oracleのパフォーマンス について正しいものを 2つ 選んでください。」という条件を満たす説明または SQL を求めています。DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。各文をどこへ分類するかが基礎力になる。 この設問では正答 C「使用する結合構文の違いは、パフォーマンスには影響しない。」 / D「結合対象の列にインデックスがあると、パフォーマンスが向上する可能性がある。」 を選べており、成立条件を正しく読めています。</p>
+                    <p>この設問の論点は「SQL 分類の基礎」です。<br>問題文は「Oracleのパフォーマンス について正しいものを 2つ 選んでください。<br>」という条件を満たす説明または SQL を求めています。<br>DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。<br>各文をどこへ分類するかが基礎力になる。 この設問では正答 C「使用する結合構文の違いは、パフォーマンスには影響しない。<br>」 / D「結合対象の列にインデックスがあると、パフォーマンスが向上する可能性がある。<br>」 を選べており、成立条件を正しく読めています。</p>
                     <div class="block-title">得点できた理由</div>
                     <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
                     <div class="block-title">選択肢ごとの判定</div>
@@ -753,7 +763,7 @@
             </div>
                     <div class="block-title">解く順序</div>
                     <ul class="study-step-list">
-                      <li>まず設問が制約・ERD・SQL 分類のどれを問うているかを判定する。</li><li>次にキーの性質や関係の多重度を日本語で言い換える。</li><li>最後に Oracle 固有の基礎知識である DUAL や SQL 分類へ当てはめる。</li>
+                      <li>まず設問が制約・ERD・SQL 分類のどれを問うているかを判定する。</li><li>次にキーの性質や関係の多重度を日本語で言い換える。</li><li>最後に Oracle 固有の基礎知識である <span class="sql-kw">DUAL</span> や SQL 分類へ当てはめる。</li>
                     </ul>
                   </div>
                 </article>
@@ -762,15 +772,15 @@
                   <div class="question-meta">第3回 模擬試験 / 問28 / 正答 ABC / 自己回答 -</div>
                   <div class="block-title">問題文</div>
                   <pre>SQLに関する正しい説明を3つ選んでください。
-(<span class="sql-num">1</span>)		A. リレーショナルデータベースに最も適している。
-(<span class="sql-num">2</span>)		B. ACID（Atomicity, Consistency, Isolation, Durability）特性を保証する。
-(<span class="sql-num">3</span>)		C. 物理ストレージから独立し、論理データ構造の操作を可能にする。
-(<span class="sql-num">4</span>)		D. オブジェクト指向データベースの両方で使用できる唯一の言語である。
-(<span class="sql-num">5</span>)		E. 関係データベースで多態性（ポリモーフィズム）を定義および実装するために使用される。
-(<span class="sql-num">6</span>)		F. 階層型データストレージを必要とする。</pre>
+(<span class="sql-num"><span class="sql-num">1</span></span>)		A. リレーショナルデータベースに最も適している。
+(<span class="sql-num"><span class="sql-num">2</span></span>)		B. ACID（Atomicity, Consistency, Isolation, Durability）特性を保証する。
+(<span class="sql-num"><span class="sql-num">3</span></span>)		C. 物理ストレージから独立し、論理データ構造の操作を可能にする。
+(<span class="sql-num"><span class="sql-num">4</span></span>)		D. オブジェクト指向データベースの両方で使用できる唯一の言語である。
+(<span class="sql-num"><span class="sql-num">5</span></span>)		E. 関係データベースで多態性（ポリモーフィズム）を定義および実装するために使用される。
+(<span class="sql-num"><span class="sql-num">6</span></span>)		F. 階層型データストレージを必要とする。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
-                    <p>この設問の論点は「SQL 分類の基礎」です。問題文は「SQLに関する正しい説明を3つ選んでください。」という条件を満たす説明または SQL を求めています。DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。各文をどこへ分類するかが基礎力になる。 この設問では正答 A「リレーショナルデータベースに最も適している。」 / B「ACID（Atomicity, Consistency, Isolation, Durability）特性を保…」 / C「物理ストレージから独立し、論理データ構造の操作を可能にする。」 を選べており、成立条件を正しく読めています。</p>
+                    <p>この設問の論点は「SQL 分類の基礎」です。<br>問題文は「SQLに関する正しい説明を3つ選んでください。<br>」という条件を満たす説明または SQL を求めています。<br>DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。<br>各文をどこへ分類するかが基礎力になる。 この設問では正答 A「リレーショナルデータベースに最も適している。<br>」 / B「ACID（Atomicity, Consistency, Isolation, Durability）特性を保…」 / C「物理ストレージから独立し、論理データ構造の操作を可能にする。<br>」 を選べており、成立条件を正しく読めています。</p>
                     <div class="block-title">得点できた理由</div>
                     <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
                     <div class="block-title">選択肢ごとの判定</div>
@@ -831,7 +841,7 @@
             </div>
                     <div class="block-title">解く順序</div>
                     <ul class="study-step-list">
-                      <li>まず設問が制約・ERD・SQL 分類のどれを問うているかを判定する。</li><li>次にキーの性質や関係の多重度を日本語で言い換える。</li><li>最後に Oracle 固有の基礎知識である DUAL や SQL 分類へ当てはめる。</li>
+                      <li>まず設問が制約・ERD・SQL 分類のどれを問うているかを判定する。</li><li>次にキーの性質や関係の多重度を日本語で言い換える。</li><li>最後に Oracle 固有の基礎知識である <span class="sql-kw">DUAL</span> や SQL 分類へ当てはめる。</li>
                     </ul>
                   </div>
                 </article>
@@ -847,7 +857,7 @@
 (<span class="sql-num">5</span>)		E. 演算子は条件よりも先に評価される。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
-                    <p>この設問の論点は「SQL 分類の基礎」です。問題文は「演算子と条件の優先順位について、正しいものを2つ選んでください。」という条件を満たす説明または SQL を求めています。DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。各文をどこへ分類するかが基礎力になる。 この設問では正答 A「NOT 演算子は、AND や OR よりも優先順位が高い。」 / C「|| 演算子は *（乗算）演算子よりも優先順位が低い。」 を選べており、成立条件を正しく読めています。</p>
+                    <p>この設問の論点は「SQL 分類の基礎」です。<br>問題文は「演算子と条件の優先順位について、正しいものを2つ選んでください。<br>」という条件を満たす説明または SQL を求めています。<br>DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。<br>各文をどこへ分類するかが基礎力になる。 この設問では正答 A「<span class="sql-kw">NOT</span> 演算子は、<span class="sql-kw">AND</span> や <span class="sql-kw">OR</span> よりも優先順位が高い。<br>」 / C「|| 演算子は *（乗算）演算子よりも優先順位が低い。<br>」 を選べており、成立条件を正しく読めています。</p>
                     <div class="block-title">得点できた理由</div>
                     <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
                     <div class="block-title">選択肢ごとの判定</div>
@@ -857,7 +867,7 @@
                 <div class="option-review-key">A</div>
                 <div class="option-review-badges"><span>正答肢</span></div>
               </div>
-              <div class="option-review-text">NOT 演算子は、AND や OR よりも優先順位が高い。</div>
+              <div class="option-review-text"><span class="sql-kw">NOT</span> 演算子は、<span class="sql-kw">AND</span> や <span class="sql-kw">OR</span> よりも優先順位が高い。</div>
               <div class="option-review-reason">正しい。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
             </div>
             
@@ -884,7 +894,7 @@
                 <div class="option-review-key">D</div>
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
-              <div class="option-review-text">AND と OR は、条件内で同じ優先順位を持つ。</div>
+              <div class="option-review-text"><span class="sql-kw">AND</span> と <span class="sql-kw">OR</span> は、条件内で同じ優先順位を持つ。</div>
               <div class="option-review-reason">誤り。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
             </div>
             
@@ -899,7 +909,7 @@
             </div>
                     <div class="block-title">解く順序</div>
                     <ul class="study-step-list">
-                      <li>まず設問が制約・ERD・SQL 分類のどれを問うているかを判定する。</li><li>次にキーの性質や関係の多重度を日本語で言い換える。</li><li>最後に Oracle 固有の基礎知識である DUAL や SQL 分類へ当てはめる。</li>
+                      <li>まず設問が制約・ERD・SQL 分類のどれを問うているかを判定する。</li><li>次にキーの性質や関係の多重度を日本語で言い換える。</li><li>最後に Oracle 固有の基礎知識である <span class="sql-kw">DUAL</span> や SQL 分類へ当てはめる。</li>
                     </ul>
                   </div>
                 </article>
@@ -907,8 +917,8 @@
             </section>
             
             <section class="concept-section" id="d1-2">
-              <h3>主キー・外部キー・一意キーと NULL<span>4問</span></h3>
-              <p class="concept-copy">主キーは NOT NULL かつ一意、外部キーは NULL 可、一意キーも NULL を許せる。キー制約ごとの NULL 許容差が基本である。</p>
+              <h3>主キー・外部キー・一意キーと <span class="sql-kw">NULL</span><span>4問</span></h3>
+              <p class="concept-copy">主キーは <span class="sql-kw">NOT NULL</span> かつ一意、外部キーは <span class="sql-kw">NULL</span> 可、一意キーも <span class="sql-kw">NULL</span> を許せる。<br>キー制約ごとの <span class="sql-kw">NULL</span> 許容差が基本である。</p>
               
     <div class="concept-guide" style="border-top-color:#f1c40f">
       <div class="guide-block">
@@ -932,11 +942,11 @@
       <div class="guide-grid">
         <div class="guide-block">
           <div class="guide-title">成立条件</div>
-          <ul class="guide-list"><li>主キーは NOT NULL かつ一意、外部キーは NULL を許容できる。</li><li>N:N 関係は中間表へ分解し、1:N 関係は外部キーで表す。</li><li>DDL、DML、DCL、TCL は役割ごとに分類して理解する。</li></ul>
+          <ul class="guide-list"><li>主キーは <span class="sql-kw">NOT NULL</span> かつ一意、外部キーは <span class="sql-kw">NULL</span> を許容できる。</li><li>N:N 関係は中間表へ分解し、<span class="sql-num">1</span>:N 関係は外部キーで表す。</li><li>DDL、DML、DCL、TCL は役割ごとに分類して理解する。</li></ul>
         </div>
         <div class="guide-block">
           <div class="guide-title">判定手順</div>
-          <ol class="guide-list ordered"><li>まず設問が制約・ERD・SQL 分類のどれを問うているかを判定する。</li><li>次にキーの性質や関係の多重度を日本語で言い換える。</li><li>最後に Oracle 固有の基礎知識である DUAL や SQL 分類へ当てはめる。</li></ol>
+          <ol class="guide-list ordered"><li>まず設問が制約・ERD・SQL 分類のどれを問うているかを判定する。</li><li>次にキーの性質や関係の多重度を日本語で言い換える。</li><li>最後に Oracle 固有の基礎知識である <span class="sql-kw">DUAL</span> や SQL 分類へ当てはめる。</li></ol>
         </div>
       </div>
       <div class="guide-note">失点しやすい点: 主キーと一意キーを同じ扱いで覚えたり、外部キーが必ず値を持つと考えやすい。</div>
@@ -947,15 +957,15 @@
                   <div class="question-meta">第1回 模擬試験 / 問1 / 正答 B.C.E / 自己回答 -</div>
                   <div class="block-title">問題文</div>
                   <pre>リレーショナル・データベースの表間の関係の定義について正しいのはどれでしょうか。（3つ選択）
-(<span class="sql-num">1</span>)		A.　主キーにはNULL値を持たせることができます。
-(<span class="sql-num">2</span>)		B.　主キーにはNULL値を持たせることができません。
-(<span class="sql-num">3</span>)		C.　外部キーにはNULL値を持たせることができます。
-(<span class="sql-num">4</span>)		D.　外部キーにはNULL値を持たせることができません。
-(<span class="sql-num">5</span>)		E.　一意キーにはNULL値を持たせることはできます。
-(<span class="sql-num">6</span>)		F.　一意キーにはNULL値を持たせることはできません。</pre>
+(<span class="sql-num"><span class="sql-num">1</span></span>)		A.　主キーにはNULL値を持たせることができます。
+(<span class="sql-num"><span class="sql-num">2</span></span>)		B.　主キーにはNULL値を持たせることができません。
+(<span class="sql-num"><span class="sql-num">3</span></span>)		C.　外部キーにはNULL値を持たせることができます。
+(<span class="sql-num"><span class="sql-num">4</span></span>)		D.　外部キーにはNULL値を持たせることができません。
+(<span class="sql-num"><span class="sql-num">5</span></span>)		E.　一意キーにはNULL値を持たせることはできます。
+(<span class="sql-num"><span class="sql-num">6</span></span>)		F.　一意キーにはNULL値を持たせることはできません。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
-                    <p>この設問の論点は「主キー・外部キー・一意キーと NULL」です。問題文は「リレーショナル・データベースの表間の関係の定義について正しいのはどれでしょうか。（3つ選択）」という条件を満たす説明または SQL を求めています。主キーは NOT NULL かつ一意、外部キーは NULL 可、一意キーも NULL を許せる。キー制約ごとの NULL 許容差が基本である。 この設問では正答 B「主キーにはNULL値を持たせることができません。」 / C「外部キーにはNULL値を持たせることができます。」 / E「一意キーにはNULL値を持たせることはできます。」 を選べており、成立条件を正しく読めています。</p>
+                    <p>この設問の論点は「主キー・外部キー・一意キーと <span class="sql-kw">NULL</span>」です。<br>問題文は「リレーショナル・データベースの表間の関係の定義について正しいのはどれでしょうか。<br>（3つ選択）」という条件を満たす説明または SQL を求めています。<br>主キーは <span class="sql-kw">NOT NULL</span> かつ一意、外部キーは <span class="sql-kw">NULL</span> 可、一意キーも <span class="sql-kw">NULL</span> を許せる。<br>キー制約ごとの <span class="sql-kw">NULL</span> 許容差が基本である。 この設問では正答 B「主キーにはNULL値を持たせることができません。<br>」 / C「外部キーにはNULL値を持たせることができます。<br>」 / E「一意キーにはNULL値を持たせることはできます。<br>」 を選べており、成立条件を正しく読めています。</p>
                     <div class="block-title">得点できた理由</div>
                     <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
                     <div class="block-title">選択肢ごとの判定</div>
@@ -1002,7 +1012,7 @@
                 <div class="option-review-badges"><span>正答肢</span></div>
               </div>
               <div class="option-review-text">一意キーにはNULL値を持たせることはできます。</div>
-              <div class="option-review-reason">正しい。 一意キーは主キーと異なり、NULL を保持できます。</div>
+              <div class="option-review-reason">正しい。 一意キーは主キーと異なり、<span class="sql-kw">NULL</span> を保持できます。</div>
             </div>
             
             <div class="option-review wrong">
@@ -1011,12 +1021,12 @@
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
               <div class="option-review-text">一意キーにはNULL値を持たせることはできません。</div>
-              <div class="option-review-reason">誤り。 一意キーは主キーと異なり、NULL を保持できます。</div>
+              <div class="option-review-reason">誤り。 一意キーは主キーと異なり、<span class="sql-kw">NULL</span> を保持できます。</div>
             </div>
             </div>
                     <div class="block-title">解く順序</div>
                     <ul class="study-step-list">
-                      <li>まず設問が制約・ERD・SQL 分類のどれを問うているかを判定する。</li><li>次にキーの性質や関係の多重度を日本語で言い換える。</li><li>最後に Oracle 固有の基礎知識である DUAL や SQL 分類へ当てはめる。</li>
+                      <li>まず設問が制約・ERD・SQL 分類のどれを問うているかを判定する。</li><li>次にキーの性質や関係の多重度を日本語で言い換える。</li><li>最後に Oracle 固有の基礎知識である <span class="sql-kw">DUAL</span> や SQL 分類へ当てはめる。</li>
                     </ul>
                   </div>
                 </article>
@@ -1034,13 +1044,13 @@ ENGINEER_ID ENGINEER_NAME TEAM_ID TEAM_NAME
 
 最適なERDを設計にする場合、正しい記述はどれでしょうか。
 
-(<span class="sql-num">1</span>)		A.　ENGINEERSエンティティとTEAMSエンティティはN:Nの関係となっており、<span class="sql-num">1</span>:Nの関係にする必要があります。
-(<span class="sql-num">2</span>)		B.　ENGINEERSエンティティとTEAMSエンティティは1:Nの関係となっています。
-(<span class="sql-num">3</span>)		C.　TEAM_NAMEは、TEAMSエンティティの主キーであり、ENGINEERSエンティティの外部キーである必要があります。
-(<span class="sql-num">4</span>)		D.　ENGINEER_NAMEは、ENGINEERSエンティティの主キーであり、TEAMSエンティティの外部キーである必要があります。</pre>
+(<span class="sql-num"><span class="sql-num">1</span></span>)		A.　ENGINEERSエンティティとTEAMSエンティティはN:Nの関係となっており、<span class="sql-num"><span class="sql-num">1</span></span>:Nの関係にする必要があります。
+(<span class="sql-num"><span class="sql-num">2</span></span>)		B.　ENGINEERSエンティティとTEAMSエンティティは1:Nの関係となっています。
+(<span class="sql-num"><span class="sql-num">3</span></span>)		C.　TEAM_NAMEは、TEAMSエンティティの主キーであり、ENGINEERSエンティティの外部キーである必要があります。
+(<span class="sql-num"><span class="sql-num">4</span></span>)		D.　ENGINEER_NAMEは、ENGINEERSエンティティの主キーであり、TEAMSエンティティの外部キーである必要があります。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
-                    <p>この設問の論点は「主キー・外部キー・一意キーと NULL」です。問題文は「以下の条件でERDを設計するとします。 ・各技術者は複数のチームに所属することができる ・各チームには複数の技術者を所属させることができる この条件において以下の表示をするとします。 ENGINEER_ID ENGINEER_NAME T…」という条件を満たす説明または SQL を求めています。主キーは NOT NULL かつ一意、外部キーは NULL 可、一意キーも NULL を許せる。キー制約ごとの NULL 許容差が基本である。 この設問では正答 A「ENGINEERSエンティティとTEAMSエンティティはN:Nの関係となっており、1:Nの関係にする必要があり…」 を選べており、成立条件を正しく読めています。</p>
+                    <p>この設問の論点は「主キー・外部キー・一意キーと <span class="sql-kw">NULL</span>」です。<br>問題文は「以下の条件でERDを設計するとします。 ・各技術者は複数のチームに所属することができる ・各チームには複数の技術者を所属させることができる この条件において以下の表示をするとします。 ENGINEER_ID ENGINEER_NAME T…」という条件を満たす説明または SQL を求めています。<br>主キーは <span class="sql-kw">NOT NULL</span> かつ一意、外部キーは <span class="sql-kw">NULL</span> 可、一意キーも <span class="sql-kw">NULL</span> を許せる。<br>キー制約ごとの <span class="sql-kw">NULL</span> 許容差が基本である。 この設問では正答 A「ENGINEERSエンティティとTEAMSエンティティはN:Nの関係となっており、<span class="sql-num">1</span>:Nの関係にする必要があり…」 を選べており、成立条件を正しく読めています。</p>
                     <div class="block-title">得点できた理由</div>
                     <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
                     <div class="block-title">選択肢ごとの判定</div>
@@ -1050,7 +1060,7 @@ ENGINEER_ID ENGINEER_NAME TEAM_ID TEAM_NAME
                 <div class="option-review-key">A</div>
                 <div class="option-review-badges"><span>正答肢</span></div>
               </div>
-              <div class="option-review-text">ENGINEERSエンティティとTEAMSエンティティはN:Nの関係となっており、1:Nの関係にする必要があります。</div>
+              <div class="option-review-text">ENGINEERSエンティティとTEAMSエンティティはN:Nの関係となっており、<span class="sql-num">1</span>:Nの関係にする必要があります。</div>
               <div class="option-review-reason">正しい。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
             </div>
             
@@ -1083,7 +1093,7 @@ ENGINEER_ID ENGINEER_NAME TEAM_ID TEAM_NAME
             </div>
                     <div class="block-title">解く順序</div>
                     <ul class="study-step-list">
-                      <li>まず設問が制約・ERD・SQL 分類のどれを問うているかを判定する。</li><li>次にキーの性質や関係の多重度を日本語で言い換える。</li><li>最後に Oracle 固有の基礎知識である DUAL や SQL 分類へ当てはめる。</li>
+                      <li>まず設問が制約・ERD・SQL 分類のどれを問うているかを判定する。</li><li>次にキーの性質や関係の多重度を日本語で言い換える。</li><li>最後に Oracle 固有の基礎知識である <span class="sql-kw">DUAL</span> や SQL 分類へ当てはめる。</li>
                     </ul>
                   </div>
                 </article>
@@ -1092,13 +1102,13 @@ ENGINEER_ID ENGINEER_NAME TEAM_ID TEAM_NAME
                   <div class="question-meta">第2回 模擬試験 / 問1 / 正答 AC / 自己回答 -</div>
                   <div class="block-title">問題文</div>
                   <pre>制約に関しての記述として以下正しいのはどれでしょうか。 (2つ選択)
-(<span class="sql-num">1</span>)		A.　外部キーにはNULL値を持たせることができます。
-(<span class="sql-num">2</span>)		B.　主キーにはNULL値を持たせることができます。
-(<span class="sql-num">3</span>)		C.　一意キーにはNULL値を持たせることができます。
-(<span class="sql-num">4</span>)		D.　制約は、UPDATE文の操作でのみ設定されます。</pre>
+(<span class="sql-num"><span class="sql-num">1</span></span>)		A.　外部キーにはNULL値を持たせることができます。
+(<span class="sql-num"><span class="sql-num">2</span></span>)		B.　主キーにはNULL値を持たせることができます。
+(<span class="sql-num"><span class="sql-num">3</span></span>)		C.　一意キーにはNULL値を持たせることができます。
+(<span class="sql-num"><span class="sql-num">4</span></span>)		D.　制約は、UPDATE文の操作でのみ設定されます。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
-                    <p>この設問の論点は「主キー・外部キー・一意キーと NULL」です。問題文は「制約に関しての記述として以下正しいのはどれでしょうか。 (2つ選択)」という条件を満たす説明または SQL を求めています。主キーは NOT NULL かつ一意、外部キーは NULL 可、一意キーも NULL を許せる。キー制約ごとの NULL 許容差が基本である。 この設問では正答 A「外部キーにはNULL値を持たせることができます。」 / C「一意キーにはNULL値を持たせることができます。」 を選べており、成立条件を正しく読めています。</p>
+                    <p>この設問の論点は「主キー・外部キー・一意キーと <span class="sql-kw">NULL</span>」です。<br>問題文は「制約に関しての記述として以下正しいのはどれでしょうか。 (2つ選択)」という条件を満たす説明または SQL を求めています。<br>主キーは <span class="sql-kw">NOT NULL</span> かつ一意、外部キーは <span class="sql-kw">NULL</span> 可、一意キーも <span class="sql-kw">NULL</span> を許せる。<br>キー制約ごとの <span class="sql-kw">NULL</span> 許容差が基本である。 この設問では正答 A「外部キーにはNULL値を持たせることができます。<br>」 / C「一意キーにはNULL値を持たせることができます。<br>」 を選べており、成立条件を正しく読めています。</p>
                     <div class="block-title">得点できた理由</div>
                     <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
                     <div class="block-title">選択肢ごとの判定</div>
@@ -1127,7 +1137,7 @@ ENGINEER_ID ENGINEER_NAME TEAM_ID TEAM_NAME
                 <div class="option-review-badges"><span>正答肢</span></div>
               </div>
               <div class="option-review-text">一意キーにはNULL値を持たせることができます。</div>
-              <div class="option-review-reason">正しい。 一意キーは主キーと異なり、NULL を保持できます。</div>
+              <div class="option-review-reason">正しい。 一意キーは主キーと異なり、<span class="sql-kw">NULL</span> を保持できます。</div>
             </div>
             
             <div class="option-review wrong">
@@ -1141,7 +1151,7 @@ ENGINEER_ID ENGINEER_NAME TEAM_ID TEAM_NAME
             </div>
                     <div class="block-title">解く順序</div>
                     <ul class="study-step-list">
-                      <li>まず設問が制約・ERD・SQL 分類のどれを問うているかを判定する。</li><li>次にキーの性質や関係の多重度を日本語で言い換える。</li><li>最後に Oracle 固有の基礎知識である DUAL や SQL 分類へ当てはめる。</li>
+                      <li>まず設問が制約・ERD・SQL 分類のどれを問うているかを判定する。</li><li>次にキーの性質や関係の多重度を日本語で言い換える。</li><li>最後に Oracle 固有の基礎知識である <span class="sql-kw">DUAL</span> や SQL 分類へ当てはめる。</li>
                     </ul>
                   </div>
                 </article>
@@ -1158,7 +1168,7 @@ ENGINEER_ID ENGINEER_NAME TEAM_ID TEAM_NAME
 (<span class="sql-num">6</span>)		F. テーブルには、<span class="sql-kw">NOT NULL</span> 制約を複数のカラムに指定できない。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
-                    <p>この設問の論点は「主キー・外部キー・一意キーと NULL」です。問題文は「Oracle データベースについて、正しいものを2つ選んでください。」という条件を満たす説明または SQL を求めています。主キーは NOT NULL かつ一意、外部キーは NULL 可、一意キーも NULL を許せる。キー制約ごとの NULL 許容差が基本である。 この設問では正答 A「DATE 型のカラムは、NULL 値を持つことができる。」 / D「テーブルに複数の外部キーを持たせることができる。」 を選べており、成立条件を正しく読めています。</p>
+                    <p>この設問の論点は「主キー・外部キー・一意キーと <span class="sql-kw">NULL</span>」です。<br>問題文は「Oracle データベースについて、正しいものを2つ選んでください。<br>」という条件を満たす説明または SQL を求めています。<br>主キーは <span class="sql-kw">NOT NULL</span> かつ一意、外部キーは <span class="sql-kw">NULL</span> 可、一意キーも <span class="sql-kw">NULL</span> を許せる。<br>キー制約ごとの <span class="sql-kw">NULL</span> 許容差が基本である。 この設問では正答 A「DATE 型のカラムは、<span class="sql-kw">NULL</span> 値を持つことができる。<br>」 / D「テーブルに複数の外部キーを持たせることができる。<br>」 を選べており、成立条件を正しく読めています。</p>
                     <div class="block-title">得点できた理由</div>
                     <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
                     <div class="block-title">選択肢ごとの判定</div>
@@ -1168,7 +1178,7 @@ ENGINEER_ID ENGINEER_NAME TEAM_ID TEAM_NAME
                 <div class="option-review-key">A</div>
                 <div class="option-review-badges"><span>正答肢</span></div>
               </div>
-              <div class="option-review-text">DATE 型のカラムは、NULL 値を持つことができる。</div>
+              <div class="option-review-text">DATE 型のカラムは、<span class="sql-kw">NULL</span> 値を持つことができる。</div>
               <div class="option-review-reason">正しい。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
             </div>
             
@@ -1213,13 +1223,13 @@ ENGINEER_ID ENGINEER_NAME TEAM_ID TEAM_NAME
                 <div class="option-review-key">F</div>
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
-              <div class="option-review-text">テーブルには、NOT NULL 制約を複数のカラムに指定できない。</div>
+              <div class="option-review-text">テーブルには、<span class="sql-kw">NOT NULL</span> 制約を複数のカラムに指定できない。</div>
               <div class="option-review-reason">誤り。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
             </div>
             </div>
                     <div class="block-title">解く順序</div>
                     <ul class="study-step-list">
-                      <li>まず設問が制約・ERD・SQL 分類のどれを問うているかを判定する。</li><li>次にキーの性質や関係の多重度を日本語で言い換える。</li><li>最後に Oracle 固有の基礎知識である DUAL や SQL 分類へ当てはめる。</li>
+                      <li>まず設問が制約・ERD・SQL 分類のどれを問うているかを判定する。</li><li>次にキーの性質や関係の多重度を日本語で言い換える。</li><li>最後に Oracle 固有の基礎知識である <span class="sql-kw">DUAL</span> や SQL 分類へ当てはめる。</li>
                     </ul>
                   </div>
                 </article>
@@ -1227,8 +1237,8 @@ ENGINEER_ID ENGINEER_NAME TEAM_ID TEAM_NAME
             </section>
             
             <section class="concept-section" id="d1-3">
-              <h3>DUAL と Oracle 基礎<span>1問</span></h3>
-              <p class="concept-copy">DUAL は 1 行 1 列の疑似表で、式や関数の確認に使う。所有者や構造を含め、Oracle 固有の基礎知識として出題される。</p>
+              <h3><span class="sql-kw">DUAL</span> と Oracle 基礎<span>1問</span></h3>
+              <p class="concept-copy"><span class="sql-kw">DUAL</span> は <span class="sql-num">1</span> 行 <span class="sql-num">1</span> 列の疑似表で、式や関数の確認に使う。<br>所有者や構造を含め、Oracle 固有の基礎知識として出題される。</p>
               
     <div class="concept-guide" style="border-top-color:#f1c40f">
       <div class="guide-block">
@@ -1252,11 +1262,11 @@ ENGINEER_ID ENGINEER_NAME TEAM_ID TEAM_NAME
       <div class="guide-grid">
         <div class="guide-block">
           <div class="guide-title">成立条件</div>
-          <ul class="guide-list"><li>主キーは NOT NULL かつ一意、外部キーは NULL を許容できる。</li><li>N:N 関係は中間表へ分解し、1:N 関係は外部キーで表す。</li><li>DDL、DML、DCL、TCL は役割ごとに分類して理解する。</li></ul>
+          <ul class="guide-list"><li>主キーは <span class="sql-kw">NOT NULL</span> かつ一意、外部キーは <span class="sql-kw">NULL</span> を許容できる。</li><li>N:N 関係は中間表へ分解し、<span class="sql-num">1</span>:N 関係は外部キーで表す。</li><li>DDL、DML、DCL、TCL は役割ごとに分類して理解する。</li></ul>
         </div>
         <div class="guide-block">
           <div class="guide-title">判定手順</div>
-          <ol class="guide-list ordered"><li>まず設問が制約・ERD・SQL 分類のどれを問うているかを判定する。</li><li>次にキーの性質や関係の多重度を日本語で言い換える。</li><li>最後に Oracle 固有の基礎知識である DUAL や SQL 分類へ当てはめる。</li></ol>
+          <ol class="guide-list ordered"><li>まず設問が制約・ERD・SQL 分類のどれを問うているかを判定する。</li><li>次にキーの性質や関係の多重度を日本語で言い換える。</li><li>最後に Oracle 固有の基礎知識である <span class="sql-kw">DUAL</span> や SQL 分類へ当てはめる。</li></ol>
         </div>
       </div>
       <div class="guide-note">失点しやすい点: 列名や所有者を誤記しやすく、通常の業務表と同じ感覚で読んでしまいやすい。</div>
@@ -1275,7 +1285,7 @@ ENGINEER_ID ENGINEER_NAME TEAM_ID TEAM_NAME
 (<span class="sql-num">6</span>)		F. <span class="sql-kw">SELECT</span> q&#x27;(I&#x27;m Student.)&#x27; <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
-                    <p>この設問の論点は「DUAL と Oracle 基礎」です。問題文は「次のうち、Oracle SQLとして正しい構文を2つ選択してください。」という条件を満たす説明または SQL を求めています。DUAL は 1 行 1 列の疑似表で、式や関数の確認に使う。所有者や構造を含め、Oracle 固有の基礎知識として出題される。 この設問では正答 D「SELECT q&#x27;[I&#x27;m Student.]&#x27; FROM DUAL;」 / F「SELECT q&#x27;(I&#x27;m Student.)&#x27; FROM DUAL;」 を選べており、成立条件を正しく読めています。</p>
+                    <p>この設問の論点は「<span class="sql-kw">DUAL</span> と Oracle 基礎」です。<br>問題文は「次のうち、Oracle SQLとして正しい構文を2つ選択してください。<br>」という条件を満たす説明または SQL を求めています。<br><span class="sql-kw">DUAL</span> は <span class="sql-num">1</span> 行 <span class="sql-num">1</span> 列の疑似表で、式や関数の確認に使う。<br>所有者や構造を含め、Oracle 固有の基礎知識として出題される。 この設問では正答 D「<span class="sql-kw">SELECT</span> q&#x27;[I&#x27;m Student.]&#x27; <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;」 / F「<span class="sql-kw">SELECT</span> q&#x27;(I&#x27;m Student.)&#x27; <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;」 を選べており、成立条件を正しく読めています。</p>
                     <div class="block-title">得点できた理由</div>
                     <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
                     <div class="block-title">選択肢ごとの判定</div>
@@ -1285,8 +1295,8 @@ ENGINEER_ID ENGINEER_NAME TEAM_ID TEAM_NAME
                 <div class="option-review-key">A</div>
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
-              <div class="option-review-text">SELECT q&#x27;(I&#x27;m Student.&#x27;) FROM DUAL;</div>
-              <div class="option-review-reason">誤り。 DUAL は Oracle 固有の 1 行 1 列の疑似表で、式や関数結果の確認に使います。</div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> q&#x27;(I&#x27;m Student.&#x27;) <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;</div>
+              <div class="option-review-reason">誤り。 <span class="sql-kw">DUAL</span> は Oracle 固有の <span class="sql-num">1</span> 行 <span class="sql-num">1</span> 列の疑似表で、式や関数結果の確認に使います。</div>
             </div>
             
             <div class="option-review wrong">
@@ -1294,8 +1304,8 @@ ENGINEER_ID ENGINEER_NAME TEAM_ID TEAM_NAME
                 <div class="option-review-key">B</div>
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
-              <div class="option-review-text">SELECT &#x27;I\&#x27;m Student.&#x27; FROM DUAL;</div>
-              <div class="option-review-reason">誤り。 DUAL は Oracle 固有の 1 行 1 列の疑似表で、式や関数結果の確認に使います。</div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> &#x27;I\&#x27;m Student.&#x27; <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;</div>
+              <div class="option-review-reason">誤り。 <span class="sql-kw">DUAL</span> は Oracle 固有の <span class="sql-num">1</span> 行 <span class="sql-num">1</span> 列の疑似表で、式や関数結果の確認に使います。</div>
             </div>
             
             <div class="option-review wrong">
@@ -1303,8 +1313,8 @@ ENGINEER_ID ENGINEER_NAME TEAM_ID TEAM_NAME
                 <div class="option-review-key">C</div>
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
-              <div class="option-review-text">SELECT &#x27;I&#x27;m Student.&#x27; FROM DUAL;</div>
-              <div class="option-review-reason">誤り。 DUAL は Oracle 固有の 1 行 1 列の疑似表で、式や関数結果の確認に使います。</div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> &#x27;I&#x27;m Student.&#x27; <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;</div>
+              <div class="option-review-reason">誤り。 <span class="sql-kw">DUAL</span> は Oracle 固有の <span class="sql-num">1</span> 行 <span class="sql-num">1</span> 列の疑似表で、式や関数結果の確認に使います。</div>
             </div>
             
             <div class="option-review correct">
@@ -1312,8 +1322,8 @@ ENGINEER_ID ENGINEER_NAME TEAM_ID TEAM_NAME
                 <div class="option-review-key">D</div>
                 <div class="option-review-badges"><span>正答肢</span></div>
               </div>
-              <div class="option-review-text">SELECT q&#x27;[I&#x27;m Student.]&#x27; FROM DUAL;</div>
-              <div class="option-review-reason">正しい。 DUAL は Oracle 固有の 1 行 1 列の疑似表で、式や関数結果の確認に使います。</div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> q&#x27;[I&#x27;m Student.]&#x27; <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;</div>
+              <div class="option-review-reason">正しい。 <span class="sql-kw">DUAL</span> は Oracle 固有の <span class="sql-num">1</span> 行 <span class="sql-num">1</span> 列の疑似表で、式や関数結果の確認に使います。</div>
             </div>
             
             <div class="option-review wrong">
@@ -1321,8 +1331,8 @@ ENGINEER_ID ENGINEER_NAME TEAM_ID TEAM_NAME
                 <div class="option-review-key">E</div>
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
-              <div class="option-review-text">SELECT q”[I&#x27;m Student.]” FROM DUAL;</div>
-              <div class="option-review-reason">誤り。 DUAL は Oracle 固有の 1 行 1 列の疑似表で、式や関数結果の確認に使います。</div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> q”[I&#x27;m Student.]” <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;</div>
+              <div class="option-review-reason">誤り。 <span class="sql-kw">DUAL</span> は Oracle 固有の <span class="sql-num">1</span> 行 <span class="sql-num">1</span> 列の疑似表で、式や関数結果の確認に使います。</div>
             </div>
             
             <div class="option-review correct">
@@ -1330,13 +1340,13 @@ ENGINEER_ID ENGINEER_NAME TEAM_ID TEAM_NAME
                 <div class="option-review-key">F</div>
                 <div class="option-review-badges"><span>正答肢</span></div>
               </div>
-              <div class="option-review-text">SELECT q&#x27;(I&#x27;m Student.)&#x27; FROM DUAL;</div>
-              <div class="option-review-reason">正しい。 DUAL は Oracle 固有の 1 行 1 列の疑似表で、式や関数結果の確認に使います。</div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> q&#x27;(I&#x27;m Student.)&#x27; <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;</div>
+              <div class="option-review-reason">正しい。 <span class="sql-kw">DUAL</span> は Oracle 固有の <span class="sql-num">1</span> 行 <span class="sql-num">1</span> 列の疑似表で、式や関数結果の確認に使います。</div>
             </div>
             </div>
                     <div class="block-title">解く順序</div>
                     <ul class="study-step-list">
-                      <li>まず設問が制約・ERD・SQL 分類のどれを問うているかを判定する。</li><li>次にキーの性質や関係の多重度を日本語で言い換える。</li><li>最後に Oracle 固有の基礎知識である DUAL や SQL 分類へ当てはめる。</li>
+                      <li>まず設問が制約・ERD・SQL 分類のどれを問うているかを判定する。</li><li>次にキーの性質や関係の多重度を日本語で言い換える。</li><li>最後に Oracle 固有の基礎知識である <span class="sql-kw">DUAL</span> や SQL 分類へ当てはめる。</li>
                     </ul>
                   </div>
                 </article>

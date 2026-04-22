@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Chapter 5 | SQL参考資料</title>
+<title>Chapter <span class="sql-num">5</span> | SQL参考資料</title>
 <style>
 :root{--bg:#f4f8fc;--card:#ffffff;--line:#d8e4f5;--pri:#1d4f91;--sec:#2f6fbe;--txt:#1f2d3d;--muted:#4c6077;--code:#f2f7fc;--kw:#1d4ed8;--obj:#0f172a;--str:#b45309}
 *{box-sizing:border-box}
@@ -36,16 +36,26 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 .top{text-align:right;margin-top:12px}
 @media(max-width:1120px){.layout{grid-template-columns:1fr}.sidebar{position:static;max-height:none}}
 
-  pre .sql-kw { color: #fbbf24; font-weight: 700; }
-  pre .sql-fn { color: #60a5fa; font-weight: 600; }
+
+  /* sql-highlight-v3 */
+  /* default (light bg): warm tone */
+  .sql-kw  { color: #92400e; font-weight: 700; }
+  .sql-fn  { color: #1e40af; font-weight: 600; }
+  .sql-str { color: #065f46; }
+  .sql-num { color: #991b1b; }
+  .sql-cmt { color: #64748b; font-style: italic; }
+  /* dark bg override (pre / code) */
+  pre .sql-kw  { color: #fbbf24; }
+  pre .sql-fn  { color: #60a5fa; }
   pre .sql-str { color: #86efac; }
   pre .sql-num { color: #fca5a5; }
-  pre .sql-cmt { color: #94a3b8; font-style: italic; }
-  code .sql-kw { color: #b45309; font-weight: 700; }
-  code .sql-fn { color: #1d4ed8; font-weight: 600; }
-  code .sql-str { color: #047857; }
-  code .sql-num { color: #b91c1c; }
-  code .sql-cmt { color: #64748b; font-style: italic; }
+  pre .sql-cmt { color: #94a3b8; }
+  code .sql-kw  { color: #fbbf24; }
+  code .sql-fn  { color: #60a5fa; }
+  code .sql-str { color: #86efac; }
+  code .sql-num { color: #fca5a5; }
+  code .sql-cmt { color: #94a3b8; }
+  /* clause-order div uses its own kw/fn/desc/note classes — no override needed */
 </style>
 </head>
 <body>
@@ -55,16 +65,16 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 <ul>
 <li><a href="#scope">スコープ宣言</a></li>
 <li><a href="#intro">第5章の学習目的</a></li>
-<li><a href="#convert">5.1 変換関数の基本</a></li>
-<li><a href="#to-char">5.2 TO_CHAR</a></li>
-<li><a href="#to-date">5.3 TO_DATE</a></li>
-<li><a href="#to-number">5.4 TO_NUMBER / CAST</a></li>
-<li><a href="#null-func">5.5 NULL処理関数（NVL系）</a></li>
-<li><a href="#case">5.6 CASE式</a></li>
-<li><a href="#implicit">5.7 暗黙変換の落とし穴</a></li>
-<li><a href="#type-consistency">5.8 戻り値型の整合</a></li>
-<li><a href="#patterns">5.9 典型失敗パターン</a></li>
-<li><a href="#catalog">5.10 関数比較表</a></li>
+<li><a href="#convert"><span class="sql-num">5.1</span> 変換関数の基本</a></li>
+<li><a href="#to-char"><span class="sql-num">5.2</span> TO_CHAR</a></li>
+<li><a href="#to-date"><span class="sql-num">5.3</span> TO_DATE</a></li>
+<li><a href="#to-number"><span class="sql-num">5.4</span> TO_NUMBER / CAST</a></li>
+<li><a href="#null-func"><span class="sql-num">5.5</span> NULL処理関数（NVL系）</a></li>
+<li><a href="#case"><span class="sql-num">5.6</span> CASE式</a></li>
+<li><a href="#implicit"><span class="sql-num">5.7</span> 暗黙変換の落とし穴</a></li>
+<li><a href="#type-consistency"><span class="sql-num">5.8</span> 戻り値型の整合</a></li>
+<li><a href="#patterns"><span class="sql-num">5.9</span> 典型失敗パターン</a></li>
+<li><a href="#catalog"><span class="sql-num">5.10</span> 関数比較表</a></li>
 <li><a href="#exam">試験ひっかけパターン集</a></li>
 <li><a href="#practice">実務アンチパターン集</a></li>
 </ul>
@@ -74,52 +84,52 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 <h1>Oracle DBA Silver SQL（第5章のみ）</h1>
 <p>本ファイルは第5章「変換関数・NULL処理・条件式」に集中し、型整合・NULL補完・分岐設計を試験と実務の両面で深掘りする。</p>
 </section>
-<div style="background:#fff3cd;border:1px solid #ffc107;border-left:5px solid #fd7e14;border-radius:8px;padding:12px 16px;margin:14px 0;font-size:0.88rem;color:#856404;"><strong>【参考資料】</strong> このファイルは Oracle Master Silver SQL (1Z0-071) の試験範囲外の内容を含みます。OracleアーキテクチャなどDBAに関する内容は実務参考としてご利用ください。試験対策には <a href="index.html" style="color:#856404;">トップページ D1〜D8</a> を使用してください。</div>
+<div style="background:#fff3cd;border:1px solid #ffc107;border-left:5px solid #fd7e14;border-radius:8px;padding:12px 16px;margin:14px 0;font-size:0.88rem;color:#856404;"><strong>【参考資料】</strong> このファイルは Oracle Master Silver SQL (1Z0-<span class="sql-num">071</span>) の試験範囲外の内容を含みます。<br>OracleアーキテクチャなどDBAに関する内容は実務参考としてご利用ください。<br>試験対策には <a href="index.html" style="color:#856404;">トップページ D1〜D8</a> を使用してください。</div>
 <section class="card" id="intro">
 <h2>第5章の学習目的</h2>
-<p>第5章は、SQLが動くことと、結果が正しいことは別問題であるという事実を学ぶ章である。暗黙変換に頼ったSQLは環境差で壊れ、NULL処理を曖昧にしたSQLは静かに誤集計を生む。さらにCASE式の戻り値型不整合は実行時エラーとなり、バッチ障害へ直結する。Oracle DBA Silver試験でも、TO_CHAR/TO_DATE/TO_NUMBER、NVL系、CASEの挙動差は高頻度で問われる。第5章の到達点は、型・NULL・条件分岐を「後付け修正」ではなく、設計段階で固定できる状態にすることである。これが以後の集約、結合、副問合せを安定させる前提になる。</p>
-<div class="gloss"><strong>重要:</strong> 変換・NULL・分岐は3点セット。どれか1つでも曖昧なら、結果の信頼性は崩れる。</div>
+<p>第5章は、SQLが動くことと、結果が正しいことは別問題であるという事実を学ぶ章である。<br>暗黙変換に頼ったSQLは環境差で壊れ、NULL処理を曖昧にしたSQLは静かに誤集計を生む。<br>さらにCASE式の戻り値型不整合は実行時エラーとなり、バッチ障害へ直結する。<br>Oracle DBA Silver試験でも、TO_CHAR/TO_DATE/TO_NUMBER、NVL系、CASEの挙動差は高頻度で問われる。<br>第5章の到達点は、型・<span class="sql-kw">NULL</span>・条件分岐を「後付け修正」ではなく、設計段階で固定できる状態にすることである。<br>これが以後の集約、結合、副問合せを安定させる前提になる。</p>
+<div class="gloss"><strong>重要:</strong> 変換・<span class="sql-kw">NULL</span>・分岐は3点セット。<br>どれか1つでも曖昧なら、結果の信頼性は崩れる。</div>
 </section>
 <section class="card" id="convert">
-<h2>5.1 変換関数の基本</h2>
-<h3>1) 定義</h3>
-<p>変換関数は、文字・数値・日付など異なるデータ型を明示的に変換して、比較・演算・表示を整合させるための関数である。代表はTO_CHAR、TO_DATE、TO_NUMBER、CASTで、いずれも入力と出力の型を設計者が制御する。暗黙変換と異なり、明示変換はSQLの意図を文として残せるため、レビューと運用に強い。定義として重要なのは、変換関数は見た目整形ではなく、評価可能な型へ変えるための前処理である点だ。型が曖昧なまま比較したSQLは、実行できても意味が保証されない。変換関数は結果の正しさを担保する基礎機能である。</p>
-<h3>2) 役割</h3>
-<p>役割は、入力のばらつきを吸収し、比較可能な共通基準へ統一することにある。例えばCSV由来の文字列日付をTO_DATEで正規化しないまま比較すると、NLS設定次第で結果が変わる。金額文字列をTO_NUMBERせず演算すれば、変換エラーや誤判定が起きる。実務では複数システム連携が前提のため、型の統一なしに安定運用はできない。試験では関数構文の暗記問題に見えるが、現場では「データ品質をSQL側でどこまで担保するか」という設計論点である。変換関数を正しく使えることは、障害予防と保守性向上に直結する。</p>
-<h3>3) 動作原理</h3>
-<p>Oracleは関数呼び出し時に入力値と指定フォーマットを照合し、変換可能なら戻り値を返し、不一致ならエラーを返す。TO_DATEでは文字列と書式モデルを照合し、TO_NUMBERでは数値表記を検証する。TO_CHARは型を文字へ変換し表示書式を適用する。CASTは汎用変換として型宣言の意図を明示できる。動作原理の核心は、変換は実行時評価であり、入力値の品質とNLS設定に依存する点である。したがって、開発環境で通るSQLでも本番値で失敗しうる。運用では境界値（空文字、異常記号、桁超過）を含む検証が必須である。</p>
-<h3>4) 制限事項とアンチパターン</h3>
-<p>アンチパターンは、暗黙変換任せ、書式モデル省略、変換失敗時処理なしの3つが典型である。暗黙変換は一見便利だが、実行環境差で動作が揺れやすい。書式を省略したTO_DATEは読み手に意図が伝わらず、後続改修で破綻しやすい。さらに、変換失敗値を想定しないと夜間バッチが途中停止する。制限として、変換は値を失う可能性があるため、丸めや切り捨てが業務上許容されるかを事前に合意する必要がある。対策は明示変換、書式固定、失敗値監視の3点を標準化することだ。変換関数を「とりあえず通す道具」にすると技術的負債が蓄積する。</p>
-<h3>5) 試験・実務の急所</h3>
-<p>試験ではTO_DATEの書式一致、TO_NUMBER失敗、TO_CHAR書式指定の意味が高頻度で問われる。実務ではこれに加えて、変換責任の所在が重要になる。入力段階で正規化するか、参照時に変換するかを決めないと、同一データでもSQLごとに結果が異なる。レビューでは「なぜここで変換するか」を説明できるかが品質指標になる。第5章で明示変換を徹底する習慣を作ると、後続章の結合条件や集約条件でも型不整合を早期に排除できる。合格目的だけでなく、運用停止リスクを下げる実践技術として定着させるべきである。</p>
+<h2><span class="sql-num">5.1</span> 変換関数の基本</h2>
+<h3><span class="sql-num">1</span>) 定義</h3>
+<p>変換関数は、文字・数値・日付など異なるデータ型を明示的に変換して、比較・演算・表示を整合させるための関数である。<br>代表はTO_CHAR、TO_DATE、TO_NUMBER、CASTで、いずれも入力と出力の型を設計者が制御する。<br>暗黙変換と異なり、明示変換はSQLの意図を文として残せるため、レビューと運用に強い。<br>定義として重要なのは、変換関数は見た目整形ではなく、評価可能な型へ変えるための前処理である点だ。<br>型が曖昧なまま比較したSQLは、実行できても意味が保証されない。<br>変換関数は結果の正しさを担保する基礎機能である。</p>
+<h3><span class="sql-num">2</span>) 役割</h3>
+<p>役割は、入力のばらつきを吸収し、比較可能な共通基準へ統一することにある。<br>例えばCSV由来の文字列日付をTO_DATEで正規化しないまま比較すると、NLS設定次第で結果が変わる。<br>金額文字列をTO_NUMBERせず演算すれば、変換エラーや誤判定が起きる。<br>実務では複数システム連携が前提のため、型の統一なしに安定運用はできない。<br>試験では関数構文の暗記問題に見えるが、現場では「データ品質をSQL側でどこまで担保するか」という設計論点である。<br>変換関数を正しく使えることは、障害予防と保守性向上に直結する。</p>
+<h3><span class="sql-num">3</span>) 動作原理</h3>
+<p>Oracleは関数呼び出し時に入力値と指定フォーマットを照合し、変換可能なら戻り値を返し、不一致ならエラーを返す。<br>TO_DATEでは文字列と書式モデルを照合し、TO_NUMBERでは数値表記を検証する。<br>TO_CHARは型を文字へ変換し表示書式を適用する。<br>CASTは汎用変換として型宣言の意図を明示できる。<br>動作原理の核心は、変換は実行時評価であり、入力値の品質とNLS設定に依存する点である。<br>したがって、開発環境で通るSQLでも本番値で失敗しうる。<br>運用では境界値（空文字、異常記号、桁超過）を含む検証が必須である。</p>
+<h3><span class="sql-num">4</span>) 制限事項とアンチパターン</h3>
+<p>アンチパターンは、暗黙変換任せ、書式モデル省略、変換失敗時処理なしの3つが典型である。<br>暗黙変換は一見便利だが、実行環境差で動作が揺れやすい。<br>書式を省略したTO_DATEは読み手に意図が伝わらず、後続改修で破綻しやすい。<br>さらに、変換失敗値を想定しないと夜間バッチが途中停止する。<br>制限として、変換は値を失う可能性があるため、丸めや切り捨てが業務上許容されるかを事前に合意する必要がある。<br>対策は明示変換、書式固定、失敗値監視の3点を標準化することだ。<br>変換関数を「とりあえず通す道具」にすると技術的負債が蓄積する。</p>
+<h3><span class="sql-num">5</span>) 試験・実務の急所</h3>
+<p>試験ではTO_DATEの書式一致、TO_NUMBER失敗、TO_CHAR書式指定の意味が高頻度で問われる。<br>実務ではこれに加えて、変換責任の所在が重要になる。<br>入力段階で正規化するか、参照時に変換するかを決めないと、同一データでもSQLごとに結果が異なる。<br>レビューでは「なぜここで変換するか」を説明できるかが品質指標になる。<br>第5章で明示変換を徹底する習慣を作ると、後続章の結合条件や集約条件でも型不整合を早期に排除できる。<br>合格目的だけでなく、運用停止リスクを下げる実践技術として定着させるべきである。</p>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="to-char">
-<h2>5.2 TO_CHAR</h2>
-<p>TO_CHARは日付や数値を文字列化し、表示形式を制御する関数である。帳票や画面出力で多用されるが、WHERE句で乱用すると比較が文字列化され意味が変わる危険がある。`TO_CHAR(hire_date,'YYYY-MM-DD')`のように書式を明示すると再現性が高い。試験では書式モデルの意味、実務では表示用途と判定用途の分離が急所となる。</p>
+<h2><span class="sql-num">5.2</span> TO_CHAR</h2>
+<p>TO_CHARは日付や数値を文字列化し、表示形式を制御する関数である。<br>帳票や画面出力で多用されるが、WHERE句で乱用すると比較が文字列化され意味が変わる危険がある。<br>`<span class="sql-fn">TO_CHAR</span>(hire_date,<span class="sql-str">'YYYY-MM-DD'</span>)`のように書式を明示すると再現性が高い。<br>試験では書式モデルの意味、実務では表示用途と判定用途の分離が急所となる。</p>
 <pre><code><span class="kw"><span class="sql-kw">SELECT</span></span> <span class="kw">TO_CHAR</span>(<span class="obj">hire_date</span>, <span class="str"><span class="sql-str">'YYYY-MM-DD'</span></span>) <span class="kw"><span class="sql-kw">AS</span></span> <span class="obj">hire_date_str</span>
 <span class="kw"><span class="sql-kw">FROM</span></span> <span class="obj">employees</span>;</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="to-date">
-<h2>5.3 TO_DATE</h2>
-<p>TO_DATEは文字列をDATE型へ変換する。最重要は入力文字列と書式モデルの一致であり、不一致時はORA-01861が発生する。日付比較を正確に行うには、文字列比較ではなくDATE比較へ統一することが必要である。実務では連携データの日付表記ゆれが多く、変換前の品質検証と異常値隔離を運用に組み込むと障害を減らせる。</p>
+<h2><span class="sql-num">5.3</span> TO_DATE</h2>
+<p>TO_DATEは文字列をDATE型へ変換する。<br>最重要は入力文字列と書式モデルの一致であり、不一致時はORA-01861が発生する。<br>日付比較を正確に行うには、文字列比較ではなくDATE比較へ統一することが必要である。<br>実務では連携データの日付表記ゆれが多く、変換前の品質検証と異常値隔離を運用に組み込むと障害を減らせる。</p>
 <pre><code><span class="kw"><span class="sql-kw">SELECT</span></span> <span class="kw">TO_DATE</span>(<span class="str"><span class="sql-str">'2026-04-01'</span></span>, <span class="str"><span class="sql-str">'YYYY-MM-DD'</span></span>) <span class="kw"><span class="sql-kw">AS</span></span> <span class="obj">dt</span>
 <span class="kw"><span class="sql-kw">FROM</span></span> <span class="obj">dual</span>;</code></pre>
 <div class="warn"><b>失敗例:</b> <code><span class="sql-fn">TO_DATE</span>(<span class="sql-str">'2026/04/01'</span>,<span class="sql-str">'YYYY-MM-DD'</span>)</code> → 書式不一致</div>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="to-number">
-<h2>5.4 TO_NUMBER / CAST</h2>
-<p>TO_NUMBERは文字列を数値へ変換し、CASTは汎用型変換を行う。非数値文字を含む入力はORA-01722を発生させるため、変換前検証が必須である。CASTは型意図を明示できるためレビュー性が高い。試験では構文理解、実務では異常入力時の扱い（除外・補正・エラー停止）の方針定義が重要になる。</p>
+<h2><span class="sql-num">5.4</span> TO_NUMBER / CAST</h2>
+<p>TO_NUMBERは文字列を数値へ変換し、CASTは汎用型変換を行う。<br>非数値文字を含む入力はORA-01722を発生させるため、変換前検証が必須である。<br>CASTは型意図を明示できるためレビュー性が高い。<br>試験では構文理解、実務では異常入力時の扱い（除外・補正・エラー停止）の方針定義が重要になる。</p>
 <pre><code><span class="kw"><span class="sql-kw">SELECT</span></span> <span class="kw">TO_NUMBER</span>(<span class="str"><span class="sql-str">'12,345'</span></span>, <span class="str"><span class="sql-str">'99,999'</span></span>) <span class="kw"><span class="sql-kw">AS</span></span> <span class="obj">num_val</span>,
        <span class="kw">CAST</span>(<span class="obj">salary</span> <span class="kw"><span class="sql-kw">AS</span></span> <span class="kw">NUMBER</span>(<span class="obj"><span class="sql-num">10</span></span>,<span class="obj"><span class="sql-num">2</span></span>)) <span class="kw"><span class="sql-kw">AS</span></span> <span class="obj">salary_cast</span>
 <span class="kw"><span class="sql-kw">FROM</span></span> <span class="obj">employees</span>;</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="null-func">
-<h2>5.5 NULL処理関数（NVL系）</h2>
-<p>NVL、NVL2、COALESCE、NULLIFはNULL状態を制御する関数群である。NVLは2択補完、NVL2はNULL有無で2分岐、COALESCEは多段補完、NULLIFは同値をNULLへ変換する。関数選択を誤ると戻り値型が想定外となり、後続計算で失敗する。実務では「未知値を補完すべきか保持すべきか」を列単位で決めることが重要で、無条件補完は監査性を下げる。</p>
+<h2><span class="sql-num">5.5</span> NULL処理関数（NVL系）</h2>
+<p>NVL、NVL2、COALESCE、NULLIFはNULL状態を制御する関数群である。<br>NVLは2択補完、NVL2はNULL有無で2分岐、COALESCEは多段補完、NULLIFは同値をNULLへ変換する。<br>関数選択を誤ると戻り値型が想定外となり、後続計算で失敗する。<br>実務では「未知値を補完すべきか保持すべきか」を列単位で決めることが重要で、無条件補完は監査性を下げる。</p>
 <pre><code><span class="kw"><span class="sql-kw">SELECT</span></span> <span class="obj">employee_id</span>,
        <span class="kw">NVL</span>(<span class="obj">commission_pct</span>, <span class="obj"><span class="sql-num">0</span></span>) <span class="kw"><span class="sql-kw">AS</span></span> <span class="obj">comm_nvl</span>,
        <span class="kw">COALESCE</span>(<span class="obj">bonus</span>, <span class="obj">allowance</span>, <span class="obj"><span class="sql-num">0</span></span>) <span class="kw"><span class="sql-kw">AS</span></span> <span class="obj">bonus_safe</span>
@@ -127,8 +137,8 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="case">
-<h2>5.6 CASE式</h2>
-<p>CASE式はSQL内で条件分岐を行い、業務分類やランク付けに利用される。重要なのはTHEN/ELSEの戻り値型を整合させることで、型不一致はORA-00932につながる。判定順序は上から評価されるため、条件の粒度を誤ると後続条件が到達不能になる。試験では構文、実務では可読性と再利用性のため分類ロジックの集約管理が急所である。</p>
+<h2><span class="sql-num">5.6</span> CASE式</h2>
+<p>CASE式はSQL内で条件分岐を行い、業務分類やランク付けに利用される。<br>重要なのはTHEN/ELSEの戻り値型を整合させることで、型不一致はORA-00932につながる。<br>判定順序は上から評価されるため、条件の粒度を誤ると後続条件が到達不能になる。<br>試験では構文、実務では可読性と再利用性のため分類ロジックの集約管理が急所である。</p>
 <pre><code><span class="kw"><span class="sql-kw">SELECT</span></span> <span class="obj">employee_id</span>,
   <span class="kw"><span class="sql-kw">CASE</span></span>
     <span class="kw"><span class="sql-kw">WHEN</span></span> <span class="obj">salary</span> &gt;= <span class="obj"><span class="sql-num">12000</span></span> <span class="kw"><span class="sql-kw">THEN</span></span> <span class="str"><span class="sql-str">'A'</span></span>
@@ -139,22 +149,22 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="implicit">
-<h2>5.7 暗黙変換の落とし穴</h2>
-<p>暗黙変換は短いSQLを書ける反面、設定依存で再現性を失いやすい。文字列数値の比較、文字列日付の比較、異なる型のCASE戻り値混在は典型事故要因である。実務での原則は「変換は明示」「書式は固定」「異常値は監視」である。暗黙変換に頼ったSQLは短命で、長期運用では必ず修正コストを生む。</p>
+<h2><span class="sql-num">5.7</span> 暗黙変換の落とし穴</h2>
+<p>暗黙変換は短いSQLを書ける反面、設定依存で再現性を失いやすい。<br>文字列数値の比較、文字列日付の比較、異なる型のCASE戻り値混在は典型事故要因である。<br>実務での原則は「変換は明示」「書式は固定」「異常値は監視」である。<br>暗黙変換に頼ったSQLは短命で、長期運用では必ず修正コストを生む。</p>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="type-consistency">
-<h2>5.8 戻り値型の整合</h2>
-<p>関数やCASEの結果は後続式で再利用されるため、戻り値型の整合を崩すと連鎖的に障害が発生する。特にCASEの各枝で型が混在すると実行時エラーとなる。試験では型推論が問われ、実務ではレビュー時に「この式の最終型は何か」を明示できるかが品質指標になる。型を固定する意識は第6章以降の集約設計にも直結する。</p>
-<div class="warn"><b>失敗例(ORA-00932):</b> CASEのTHENで数値と文字列を混在させる</div>
+<h2><span class="sql-num">5.8</span> 戻り値型の整合</h2>
+<p>関数やCASEの結果は後続式で再利用されるため、戻り値型の整合を崩すと連鎖的に障害が発生する。<br>特にCASEの各枝で型が混在すると実行時エラーとなる。<br>試験では型推論が問われ、実務ではレビュー時に「この式の最終型は何か」を明示できるかが品質指標になる。<br>型を固定する意識は第6章以降の集約設計にも直結する。</p>
+<div class="warn"><b>失敗例(ORA-<span class="sql-num">00932</span>):</b> CASEのTHENで数値と文字列を混在させる</div>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="patterns">
-<h2>5.9 典型失敗パターン</h2>
-<div class="warn"><b>失敗1 (ORA-01861):</b> 日付書式の不一致。修正は入力と書式モデルを一致させる。</div>
-<div class="warn"><b>失敗2 (ORA-01722):</b> 非数値のTO_NUMBER。修正は事前バリデーション。</div>
-<div class="warn"><b>失敗3 (ORA-00932):</b> CASE戻り値型不整合。修正は枝の型統一。</div>
-<div class="warn"><b>失敗4 (ORA-01400):</b> NOT NULL列へNULL投入。修正はNVL/COALESCE補完と入力検証。</div>
+<h2><span class="sql-num">5.9</span> 典型失敗パターン</h2>
+<div class="warn"><b>失敗1 (ORA-<span class="sql-num">01861</span>):</b> 日付書式の不一致。<br>修正は入力と書式モデルを一致させる。</div>
+<div class="warn"><b>失敗2 (ORA-<span class="sql-num">01722</span>):</b> 非数値のTO_NUMBER。<br>修正は事前バリデーション。</div>
+<div class="warn"><b>失敗3 (ORA-<span class="sql-num">00932</span>):</b> CASE戻り値型不整合。<br>修正は枝の型統一。</div>
+<div class="warn"><b>失敗4 (ORA-<span class="sql-num">01400</span>):</b> <span class="sql-kw">NOT</span> NULL列へNULL投入。<br>修正はNVL/COALESCE補完と入力検証。</div>
 <div class="figure"><strong>優先対処順:</strong><pre><code><span class="sql-num">1</span>) 型変換エラー
 <span class="sql-num">2</span>) NULL処理漏れ
 <span class="sql-num">3</span>) CASE型不一致
@@ -162,12 +172,12 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="catalog">
-<h2>5.10 関数比較表</h2>
+<h2><span class="sql-num">5.10</span> 関数比較表</h2>
 <div class="table-wrap"><table>
 <tr><th>関数</th><th>用途</th><th>戻り値</th><th>主な注意点</th></tr>
 <tr><td>TO_CHAR</td><td>日付/数値の文字列化</td><td>VARCHAR2</td><td>判定用途へ流用しない</td></tr>
-<tr><td>TO_DATE</td><td>文字列の日付化</td><td>DATE</td><td>書式不一致でORA-01861</td></tr>
-<tr><td>TO_NUMBER</td><td>文字列の数値化</td><td>NUMBER</td><td>非数値でORA-01722</td></tr>
+<tr><td>TO_DATE</td><td>文字列の日付化</td><td>DATE</td><td>書式不一致でORA-<span class="sql-num">01861</span></td></tr>
+<tr><td>TO_NUMBER</td><td>文字列の数値化</td><td>NUMBER</td><td>非数値でORA-<span class="sql-num">01722</span></td></tr>
 <tr><td>CAST</td><td>汎用型変換</td><td>指定型</td><td>変換先型の桁/精度設計</td></tr>
 <tr><td>NVL</td><td>NULLを2択補完</td><td>expr1型</td><td>戻り型の暗黙変換に注意</td></tr>
 <tr><td>COALESCE</td><td>NULL多段補完</td><td>先頭非NULL型</td><td>候補型の整合が必要</td></tr>
@@ -181,7 +191,7 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 <div class="warn"><b>ひっかけ2:</b> NVLとCOALESCEは完全同一か → 同一ではない。</div>
 <div class="warn"><b>ひっかけ3:</b> CASEの戻り値型は枝ごとに別でも良いか → 不可。</div>
 <div class="warn"><b>ひっかけ4:</b> TO_NUMBERは文字混在を自動補正するか → しない。</div>
-<div class="warn"><b>ひっかけ5:</b> NULL判定を `= NULL` で行えるか → 行えない。</div>
+<div class="warn"><b>ひっかけ5:</b> NULL判定を `= <span class="sql-kw">NULL</span>` で行えるか → 行えない。</div>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="practice">

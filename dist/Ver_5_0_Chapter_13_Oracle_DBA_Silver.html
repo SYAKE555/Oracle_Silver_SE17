@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Chapter 13 | SQL参考資料</title>
+<title>Chapter <span class="sql-num">13</span> | SQL参考資料</title>
 <style>
 :root{--bg:#f4f8fc;--card:#ffffff;--line:#d8e4f5;--pri:#1d4f91;--sec:#2f6fbe;--txt:#1f2d3d;--code:#f2f7fc}
 *{box-sizing:border-box}
@@ -26,16 +26,26 @@ code{font-family:"Consolas","Monaco",monospace;font-size:.88rem}
 .top{text-align:right;margin-top:12px}
 @media(max-width:1120px){.layout{grid-template-columns:1fr}.sidebar{position:static;max-height:none}}
 
-  pre .sql-kw { color: #fbbf24; font-weight: 700; }
-  pre .sql-fn { color: #60a5fa; font-weight: 600; }
+
+  /* sql-highlight-v3 */
+  /* default (light bg): warm tone */
+  .sql-kw  { color: #92400e; font-weight: 700; }
+  .sql-fn  { color: #1e40af; font-weight: 600; }
+  .sql-str { color: #065f46; }
+  .sql-num { color: #991b1b; }
+  .sql-cmt { color: #64748b; font-style: italic; }
+  /* dark bg override (pre / code) */
+  pre .sql-kw  { color: #fbbf24; }
+  pre .sql-fn  { color: #60a5fa; }
   pre .sql-str { color: #86efac; }
   pre .sql-num { color: #fca5a5; }
-  pre .sql-cmt { color: #94a3b8; font-style: italic; }
-  code .sql-kw { color: #b45309; font-weight: 700; }
-  code .sql-fn { color: #1d4ed8; font-weight: 600; }
-  code .sql-str { color: #047857; }
-  code .sql-num { color: #b91c1c; }
-  code .sql-cmt { color: #64748b; font-style: italic; }
+  pre .sql-cmt { color: #94a3b8; }
+  code .sql-kw  { color: #fbbf24; }
+  code .sql-fn  { color: #60a5fa; }
+  code .sql-str { color: #86efac; }
+  code .sql-num { color: #fca5a5; }
+  code .sql-cmt { color: #94a3b8; }
+  /* clause-order div uses its own kw/fn/desc/note classes — no override needed */
 </style>
 </head>
 <body>
@@ -45,15 +55,15 @@ code{font-family:"Consolas","Monaco",monospace;font-size:.88rem}
 <ul>
 <li><a href="#scope">スコープ宣言</a></li>
 <li><a href="#intro">第13章の学習目的</a></li>
-<li><a href="#index-basic">13.1 索引（INDEX）の定義</a></li>
-<li><a href="#index-create">13.2 索引作成と使われ方</a></li>
-<li><a href="#index-limit">13.3 索引の制限とアンチパターン</a></li>
-<li><a href="#synonym">13.4 シノニム（SYNONYM）</a></li>
-<li><a href="#sequence">13.5 シーケンス（SEQUENCE）</a></li>
-<li><a href="#seq-cache">13.6 シーケンスの運用注意点</a></li>
-<li><a href="#dict">13.7 辞書ビューで確認</a></li>
-<li><a href="#errors">13.8 典型エラーと修正</a></li>
-<li><a href="#patterns">13.9 実務運用パターン</a></li>
+<li><a href="#index-basic"><span class="sql-num">13.1</span> 索引（<span class="sql-kw">INDEX</span>）の定義</a></li>
+<li><a href="#index-create"><span class="sql-num">13.2</span> 索引作成と使われ方</a></li>
+<li><a href="#index-limit"><span class="sql-num">13.3</span> 索引の制限とアンチパターン</a></li>
+<li><a href="#synonym"><span class="sql-num">13.4</span> シノニム（<span class="sql-kw">SYNONYM</span>）</a></li>
+<li><a href="#sequence"><span class="sql-num">13.5</span> シーケンス（<span class="sql-kw">SEQUENCE</span>）</a></li>
+<li><a href="#seq-cache"><span class="sql-num">13.6</span> シーケンスの運用注意点</a></li>
+<li><a href="#dict"><span class="sql-num">13.7</span> 辞書ビューで確認</a></li>
+<li><a href="#errors"><span class="sql-num">13.8</span> 典型エラーと修正</a></li>
+<li><a href="#patterns"><span class="sql-num">13.9</span> 実務運用パターン</a></li>
 <li><a href="#exam">試験ひっかけパターン集</a></li>
 <li><a href="#practice">実務アンチパターン集</a></li>
 </ul>
@@ -63,40 +73,40 @@ code{font-family:"Consolas","Monaco",monospace;font-size:.88rem}
 <h1>Oracle DBA Silver SQL（第13章のみ）</h1>
 <p>本ファイルは第13章「索引・シノニム・シーケンス」に集中し、性能・可読性・採番運用の要点を高密度で解説する。</p>
 </section>
-<div style="background:#fff3cd;border:1px solid #ffc107;border-left:5px solid #fd7e14;border-radius:8px;padding:12px 16px;margin:14px 0;font-size:0.88rem;color:#856404;"><strong>【参考資料】</strong> このファイルは Oracle Master Silver SQL (1Z0-071) の試験範囲外の内容を含みます。OracleアーキテクチャなどDBAに関する内容は実務参考としてご利用ください。試験対策には <a href="index.html" style="color:#856404;">トップページ D1〜D8</a> を使用してください。</div>
+<div style="background:#fff3cd;border:1px solid #ffc107;border-left:5px solid #fd7e14;border-radius:8px;padding:12px 16px;margin:14px 0;font-size:0.88rem;color:#856404;"><strong>【参考資料】</strong> このファイルは Oracle Master Silver SQL (1Z0-<span class="sql-num">071</span>) の試験範囲外の内容を含みます。<br>OracleアーキテクチャなどDBAに関する内容は実務参考としてご利用ください。<br>試験対策には <a href="index.html" style="color:#856404;">トップページ D1〜D8</a> を使用してください。</div>
 <section class="card" id="intro">
 <h2>第13章の学習目的</h2>
-<p>第13章は、参照性能を高める索引、オブジェクト名の抽象化を行うシノニム、連番生成を担うシーケンスを扱う。いずれも構文は短いが、設計を誤ると性能劣化、命名混乱、重複キー事故へ直結する。試験では「索引が有効になりにくい条件」「PUBLIC SYNONYMの意味」「NEXTVAL/CURRVALの挙動」が狙われる。実務では、索引追加前の実行計画確認、シノニムの責務分離、シーケンスの欠番許容設計が必須である。到達点は、3要素を暗記ではなく運用上のトレードオフ込みで説明できる状態にすることである。</p>
+<p>第13章は、参照性能を高める索引、オブジェクト名の抽象化を行うシノニム、連番生成を担うシーケンスを扱う。<br>いずれも構文は短いが、設計を誤ると性能劣化、命名混乱、重複キー事故へ直結する。<br>試験では「索引が有効になりにくい条件」「<span class="sql-kw">PUBLIC</span> SYNONYMの意味」「<span class="sql-kw">NEXTVAL</span>/CURRVALの挙動」が狙われる。<br>実務では、索引追加前の実行計画確認、シノニムの責務分離、シーケンスの欠番許容設計が必須である。<br>到達点は、3要素を暗記ではなく運用上のトレードオフ込みで説明できる状態にすることである。</p>
 <div class="note"><strong>重要:</strong> 索引・シノニム・シーケンスは便利だが、乱用すると保守性と性能が同時に崩れる。</div>
 </section>
 <section class="card" id="index-basic">
-<h2>13.1 索引（INDEX）の定義</h2>
-<p>索引は特定列の検索効率を改善するための補助構造である。表全体を毎回走査する代わりに、索引経由で候補行を絞ることでI/Oを削減する。試験では「索引は検索を速くするが、DML時は更新負荷が増える」という両面理解が必須である。実務では検索頻度が高く選択性の高い列に作成し、なんでも索引化しない判断が求められる。索引は魔法ではなく、クエリ特性とデータ分布に合致したときに効果が出る道具である。</p>
+<h2><span class="sql-num">13.1</span> 索引（<span class="sql-kw">INDEX</span>）の定義</h2>
+<p>索引は特定列の検索効率を改善するための補助構造である。<br>表全体を毎回走査する代わりに、索引経由で候補行を絞ることでI/Oを削減する。<br>試験では「索引は検索を速くするが、DML時は更新負荷が増える」という両面理解が必須である。<br>実務では検索頻度が高く選択性の高い列に作成し、なんでも索引化しない判断が求められる。<br>索引は魔法ではなく、クエリ特性とデータ分布に合致したときに効果が出る道具である。</p>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="index-create">
-<h2>13.2 索引作成と使われ方</h2>
-<p>索引は`CREATE INDEX`で作成する。単一列・複合列のどちらを選ぶかは、WHERE条件や結合条件の実態に依存する。複合索引では列順序が重要で、先頭列が使われない検索では効果が落ちる。試験では構文と合わせて、LIKE先頭ワイルドカードや関数適用で索引利用が低下する点が出題される。実務では作成後に実行計画を確認し、期待通り利用されるかを検証することが必須である。</p>
+<h2><span class="sql-num">13.2</span> 索引作成と使われ方</h2>
+<p>索引は`<span class="sql-kw">CREATE INDEX</span>`で作成する。<br>単一列・複合列のどちらを選ぶかは、WHERE条件や結合条件の実態に依存する。<br>複合索引では列順序が重要で、先頭列が使われない検索では効果が落ちる。<br>試験では構文と合わせて、LIKE先頭ワイルドカードや関数適用で索引利用が低下する点が出題される。<br>実務では作成後に実行計画を確認し、期待通り利用されるかを検証することが必須である。</p>
 <pre><code><span class="sql-kw">CREATE INDEX</span> idx_emp_dept_hire
 <span class="sql-kw">ON</span> employees(department_id, hire_date);</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="index-limit">
-<h2>13.3 索引の制限とアンチパターン</h2>
-<p>索引は万能ではない。低選択性列（例: 性別フラグ）に索引を張っても効果が薄く、更新負荷だけ増えることがある。`WHERE UPPER(col)=...` のように列へ関数を直接適用すると通常索引が効きにくくなる。試験ではこの種の「索引が使われにくいSQL」を見抜く問題が出る。実務のアンチパターンは「遅いSQLが出るたび索引追加」で、索引過多によりINSERT/UPDATE/DELETEが遅くなる。索引はクエリ改善・統計情報・設計改善とセットで最適化するべきである。</p>
-<div class="warn"><b>注意:</b> 索引追加は副作用を伴う変更。読み取り性能だけで評価しない。</div>
+<h2><span class="sql-num">13.3</span> 索引の制限とアンチパターン</h2>
+<p>索引は万能ではない。<br>低選択性列（例: 性別フラグ）に索引を張っても効果が薄く、更新負荷だけ増えることがある。<br>`<span class="sql-kw">WHERE</span> <span class="sql-fn">UPPER</span>(col)=...` のように列へ関数を直接適用すると通常索引が効きにくくなる。<br>試験ではこの種の「索引が使われにくいSQL」を見抜く問題が出る。<br>実務のアンチパターンは「遅いSQLが出るたび索引追加」で、索引過多によりINSERT/<span class="sql-kw">UPDATE</span>/DELETEが遅くなる。<br>索引はクエリ改善・統計情報・設計改善とセットで最適化するべきである。</p>
+<div class="warn"><b>注意:</b> 索引追加は副作用を伴う変更。<br>読み取り性能だけで評価しない。</div>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="synonym">
-<h2>13.4 シノニム（SYNONYM）</h2>
-<p>シノニムはオブジェクトの別名を定義し、長いスキーマ修飾名を簡略化する。`PRIVATE SYNONYM`は作成者スキーマ内、`PUBLIC SYNONYM`は全体公開である。試験では公開範囲の違いと、シノニムが権限を付与する機能ではない点が重要である。実務ではシノニムを参照抽象化に使えるが、乱立すると実体追跡が困難になる。運用では命名規約と管理責任者を明確にし、参照先変更の影響を追える状態を維持することが必要である。</p>
+<h2><span class="sql-num">13.4</span> シノニム（<span class="sql-kw">SYNONYM</span>）</h2>
+<p>シノニムはオブジェクトの別名を定義し、長いスキーマ修飾名を簡略化する。<br>`PRIVATE <span class="sql-kw">SYNONYM</span>`は作成者スキーマ内、`<span class="sql-kw">PUBLIC</span> <span class="sql-kw">SYNONYM</span>`は全体公開である。<br>試験では公開範囲の違いと、シノニムが権限を付与する機能ではない点が重要である。<br>実務ではシノニムを参照抽象化に使えるが、乱立すると実体追跡が困難になる。<br>運用では命名規約と管理責任者を明確にし、参照先変更の影響を追える状態を維持することが必要である。</p>
 <pre><code><span class="sql-kw">CREATE SYNONYM</span> emp <span class="sql-kw">FOR</span> hr.employees;
 <span class="sql-kw">CREATE</span> <span class="sql-kw">PUBLIC</span> <span class="sql-kw">SYNONYM</span> dept <span class="sql-kw">FOR</span> hr.departments;</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="sequence">
-<h2>13.5 シーケンス（SEQUENCE）</h2>
-<p>シーケンスは重複しない連番を生成するオブジェクトで、主キー採番に広く使われる。`NEXTVAL`で次値取得、`CURRVAL`は同一セッションで一度NEXTVAL実行後に参照可能となる。試験ではこの順序制約が頻出である。実務ではトランザクションロールバック後も取得済み番号は戻らないため、欠番は通常仕様として扱う。連番に業務意味を持たせると欠番問題で混乱するため、識別子と業務番号を分離設計するのが安全である。</p>
+<h2><span class="sql-num">13.5</span> シーケンス（<span class="sql-kw">SEQUENCE</span>）</h2>
+<p>シーケンスは重複しない連番を生成するオブジェクトで、主キー採番に広く使われる。<br>`<span class="sql-kw">NEXTVAL</span>`で次値取得、`<span class="sql-kw">CURRVAL</span>`は同一セッションで一度NEXTVAL実行後に参照可能となる。<br>試験ではこの順序制約が頻出である。<br>実務ではトランザクションロールバック後も取得済み番号は戻らないため、欠番は通常仕様として扱う。<br>連番に業務意味を持たせると欠番問題で混乱するため、識別子と業務番号を分離設計するのが安全である。</p>
 <pre><code><span class="sql-kw">CREATE SEQUENCE</span> seq_orders
 <span class="sql-kw">START WITH</span> <span class="sql-num">1000</span>
 <span class="sql-kw">INCREMENT BY</span> <span class="sql-num">1</span>
@@ -105,39 +115,39 @@ NOCYCLE;</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="seq-cache">
-<h2>13.6 シーケンスの運用注意点</h2>
-<p>シーケンスでは`CACHE`設定により性能が向上するが、インスタンス障害時に未使用番号が飛ぶ可能性がある。`NOCACHE`は番号連続性を期待しやすいが性能面の不利が出る。試験ではCYCLE/NOCYCLE、MAXVALUE/MINVALUEなどオプション比較が問われる。実務では「採番の一意性」が目的であり「完全連番」を厳格要件にしないことが重要である。どうしても連番帳票が必要な場合は、発番専用管理と欠番取扱規程を別途整備する。</p>
+<h2><span class="sql-num">13.6</span> シーケンスの運用注意点</h2>
+<p>シーケンスでは`CACHE`設定により性能が向上するが、インスタンス障害時に未使用番号が飛ぶ可能性がある。<br>`NOCACHE`は番号連続性を期待しやすいが性能面の不利が出る。<br>試験ではCYCLE/NOCYCLE、MAXVALUE/MINVALUEなどオプション比較が問われる。<br>実務では「採番の一意性」が目的であり「完全連番」を厳格要件にしないことが重要である。<br>どうしても連番帳票が必要な場合は、発番専用管理と欠番取扱規程を別途整備する。</p>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="dict">
-<h2>13.7 辞書ビューで確認</h2>
-<p>作成後は辞書ビューで定義確認する。索引は`USER_INDEXES`と`USER_IND_COLUMNS`、シノニムは`USER_SYNONYMS`、シーケンスは`USER_SEQUENCES`で確認できる。試験ではどの辞書ビューが何を保持するかの対応が問われる。実務では作成SQLだけでなく確認SQLを変更手順に含めると、定義漏れや環境差異を早期検知できる。オブジェクト管理は「作成したつもり」ではなく「確認済み」で初めて完了である。</p>
+<h2><span class="sql-num">13.7</span> 辞書ビューで確認</h2>
+<p>作成後は辞書ビューで定義確認する。<br>索引は`USER_INDEXES`と`USER_IND_COLUMNS`、シノニムは`USER_SYNONYMS`、シーケンスは`USER_SEQUENCES`で確認できる。<br>試験ではどの辞書ビューが何を保持するかの対応が問われる。<br>実務では作成SQLだけでなく確認SQLを変更手順に含めると、定義漏れや環境差異を早期検知できる。<br>オブジェクト管理は「作成したつもり」ではなく「確認済み」で初めて完了である。</p>
 <pre><code><span class="sql-kw">SELECT</span> sequence_name, increment_by, cache_size, last_number
 <span class="sql-kw">FROM</span> user_sequences
 <span class="sql-kw">ORDER BY</span> sequence_name;</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="errors">
-<h2>13.8 典型エラーと修正</h2>
+<h2><span class="sql-num">13.8</span> 典型エラーと修正</h2>
 <div class="warn"><b>失敗1:</b> 低選択性列へ無差別索引。<b>修正:</b> 実行計画とデータ分布で判断。</div>
 <div class="warn"><b>失敗2:</b> CURRVALを初回参照。<b>修正:</b> 先に同一セッションでNEXTVAL実行。</div>
-<div class="warn"><b>失敗3:</b> PUBLIC SYNONYM乱立。<b>修正:</b> 公開対象を最小化し規約管理。</div>
+<div class="warn"><b>失敗3:</b> <span class="sql-kw">PUBLIC</span> SYNONYM乱立。<b>修正:</b> 公開対象を最小化し規約管理。</div>
 <div class="warn"><b>失敗4:</b> 連番欠番を障害扱い。<b>修正:</b> 一意性目的へ要件再定義。</div>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="patterns">
-<h2>13.9 実務運用パターン</h2>
-<p>推奨運用は、索引追加前に対象SQLと実行計画を記録し、追加後に改善効果とDML影響を比較する方式である。シノニムは参照抽象化のために限定利用し、PUBLICは最小限に抑える。シーケンスは主キー一意性確保に集中し、欠番は許容仕様として文書化する。試験対策では構文暗記に加えて、なぜその設定が必要かを説明できるようにすることで応用問題に強くなる。第13章の本質は、便利機能を安全に運用する設計判断力である。</p>
+<h2><span class="sql-num">13.9</span> 実務運用パターン</h2>
+<p>推奨運用は、索引追加前に対象SQLと実行計画を記録し、追加後に改善効果とDML影響を比較する方式である。<br>シノニムは参照抽象化のために限定利用し、PUBLICは最小限に抑える。<br>シーケンスは主キー一意性確保に集中し、欠番は許容仕様として文書化する。<br>試験対策では構文暗記に加えて、なぜその設定が必要かを説明できるようにすることで応用問題に強くなる。<br>第13章の本質は、便利機能を安全に運用する設計判断力である。</p>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 
 <section class="card" id="exam">
 <h2>第13章 試験ひっかけパターン集</h2>
-<div class="warn"><b>ひっかけ1:</b> 索引は作れば必ず速くなるか → いいえ。条件次第。</div>
-<div class="warn"><b>ひっかけ2:</b> CURRVALはいつでも参照可能か → いいえ。先にNEXTVALが必要。</div>
-<div class="warn"><b>ひっかけ3:</b> シノニム作成で権限も付与されるか → いいえ。権限は別。</div>
-<div class="warn"><b>ひっかけ4:</b> シーケンスはロールバックで番号が戻るか → いいえ。通常戻らない。</div>
-<div class="warn"><b>ひっかけ5:</b> PUBLIC SYNONYMは必ず推奨か → いいえ。管理負荷増に注意。</div>
+<div class="warn"><b>ひっかけ1:</b> 索引は作れば必ず速くなるか → いいえ。<br>条件次第。</div>
+<div class="warn"><b>ひっかけ2:</b> CURRVALはいつでも参照可能か → いいえ。<br>先にNEXTVALが必要。</div>
+<div class="warn"><b>ひっかけ3:</b> シノニム作成で権限も付与されるか → いいえ。<br>権限は別。</div>
+<div class="warn"><b>ひっかけ4:</b> シーケンスはロールバックで番号が戻るか → いいえ。<br>通常戻らない。</div>
+<div class="warn"><b>ひっかけ5:</b> <span class="sql-kw">PUBLIC</span> SYNONYMは必ず推奨か → いいえ。<br>管理負荷増に注意。</div>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="practice">
@@ -145,7 +155,7 @@ NOCYCLE;</code></pre>
 <div class="table-wrap"><table>
 <tr><th>アンチパターン</th><th>起きる障害</th><th>予防策</th></tr>
 <tr><td>遅いSQLごとに索引追加</td><td>索引過多でDML低下</td><td>計画確認と効果測定を必須化</td></tr>
-<tr><td>PUBLIC SYNONYMの乱用</td><td>実体追跡困難</td><td>公開範囲を厳格管理</td></tr>
+<tr><td><span class="sql-kw">PUBLIC</span> SYNONYMの乱用</td><td>実体追跡困難</td><td>公開範囲を厳格管理</td></tr>
 <tr><td>連番=無欠番と誤解</td><td>運用クレーム増</td><td>欠番許容を要件明文化</td></tr>
 <tr><td>辞書確認なしで本番反映</td><td>設定漏れ見逃し</td><td>USER_*ビュー確認を手順化</td></tr>
 </table></div>

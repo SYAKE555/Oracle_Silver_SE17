@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Chapter 3 | SQL参考資料</title>
+<title>Chapter <span class="sql-num">3</span> | SQL参考資料</title>
 <style>
 :root{--bg:#f4f8fc;--card:#ffffff;--line:#d8e4f5;--pri:#1d4f91;--sec:#2f6fbe;--txt:#1f2d3d;--muted:#4c6077;--code:#f2f7fc;--kw:#1d4ed8;--obj:#0f172a;--str:#b45309}
 *{box-sizing:border-box}
@@ -36,16 +36,26 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 .top{text-align:right;margin-top:12px}
 @media(max-width:1120px){.layout{grid-template-columns:1fr}.sidebar{position:static;max-height:none}}
 
-  pre .sql-kw { color: #fbbf24; font-weight: 700; }
-  pre .sql-fn { color: #60a5fa; font-weight: 600; }
+
+  /* sql-highlight-v3 */
+  /* default (light bg): warm tone */
+  .sql-kw  { color: #92400e; font-weight: 700; }
+  .sql-fn  { color: #1e40af; font-weight: 600; }
+  .sql-str { color: #065f46; }
+  .sql-num { color: #991b1b; }
+  .sql-cmt { color: #64748b; font-style: italic; }
+  /* dark bg override (pre / code) */
+  pre .sql-kw  { color: #fbbf24; }
+  pre .sql-fn  { color: #60a5fa; }
   pre .sql-str { color: #86efac; }
   pre .sql-num { color: #fca5a5; }
-  pre .sql-cmt { color: #94a3b8; font-style: italic; }
-  code .sql-kw { color: #b45309; font-weight: 700; }
-  code .sql-fn { color: #1d4ed8; font-weight: 600; }
-  code .sql-str { color: #047857; }
-  code .sql-num { color: #b91c1c; }
-  code .sql-cmt { color: #64748b; font-style: italic; }
+  pre .sql-cmt { color: #94a3b8; }
+  code .sql-kw  { color: #fbbf24; }
+  code .sql-fn  { color: #60a5fa; }
+  code .sql-str { color: #86efac; }
+  code .sql-num { color: #fca5a5; }
+  code .sql-cmt { color: #94a3b8; }
+  /* clause-order div uses its own kw/fn/desc/note classes — no override needed */
 </style>
 </head>
 <body>
@@ -55,16 +65,16 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 <ul>
 <li><a href="#scope">スコープ宣言</a></li>
 <li><a href="#intro">第3章の学習目的</a></li>
-<li><a href="#comparison">3.1 比較演算子の使い分け</a></li>
-<li><a href="#between-in-like">3.2 BETWEEN / IN / LIKE</a></li>
-<li><a href="#logical">3.3 AND / OR / NOT と優先順位</a></li>
-<li><a href="#null-conditions">3.4 NULLを含む条件設計</a></li>
-<li><a href="#orderby-basic">3.5 ORDER BYの基礎</a></li>
-<li><a href="#null-order">3.6 NULLS FIRST / LAST</a></li>
-<li><a href="#stable-sort">3.7 安定ソートと第2キー設計</a></li>
-<li><a href="#row-limiting">3.8 行制限（OFFSET / FETCH）</a></li>
-<li><a href="#substitution">3.9 置換変数（SQL*Plus系）</a></li>
-<li><a href="#flow">3.10 条件絞り込みとソートの実行順</a></li>
+<li><a href="#comparison"><span class="sql-num">3.1</span> 比較演算子の使い分け</a></li>
+<li><a href="#between-in-like"><span class="sql-num">3.2</span> <span class="sql-kw">BETWEEN</span> / <span class="sql-kw">IN</span> / <span class="sql-kw">LIKE</span></a></li>
+<li><a href="#logical"><span class="sql-num">3.3</span> <span class="sql-kw">AND</span> / <span class="sql-kw">OR</span> / <span class="sql-kw">NOT</span> と優先順位</a></li>
+<li><a href="#null-conditions"><span class="sql-num">3.4</span> NULLを含む条件設計</a></li>
+<li><a href="#orderby-basic"><span class="sql-num">3.5</span> ORDER BYの基礎</a></li>
+<li><a href="#null-order"><span class="sql-num">3.6</span> <span class="sql-kw">NULLS FIRST</span> / LAST</a></li>
+<li><a href="#stable-sort"><span class="sql-num">3.7</span> 安定ソートと第2キー設計</a></li>
+<li><a href="#row-limiting"><span class="sql-num">3.8</span> 行制限（<span class="sql-kw">OFFSET</span> / <span class="sql-kw">FETCH</span>）</a></li>
+<li><a href="#substitution"><span class="sql-num">3.9</span> 置換変数（SQL*Plus系）</a></li>
+<li><a href="#flow"><span class="sql-num">3.10</span> 条件絞り込みとソートの実行順</a></li>
 <li><a href="#exam">試験ひっかけパターン集</a></li>
 <li><a href="#practice">実務アンチパターン集</a></li>
 </ul>
@@ -74,38 +84,38 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 <h1>Oracle DBA Silver SQL（第3章のみ）</h1>
 <p>本ファイルは第3章「データ制限とソート」に全リソースを集中し、条件設計と並び順設計を実務品質で扱うための高密度解説を行う。</p>
 </section>
-<div style="background:#fff3cd;border:1px solid #ffc107;border-left:5px solid #fd7e14;border-radius:8px;padding:12px 16px;margin:14px 0;font-size:0.88rem;color:#856404;"><strong>【参考資料】</strong> このファイルは Oracle Master Silver SQL (1Z0-071) の試験範囲外の内容を含みます。OracleアーキテクチャなどDBAに関する内容は実務参考としてご利用ください。試験対策には <a href="index.html" style="color:#856404;">トップページ D1〜D8</a> を使用してください。</div>
+<div style="background:#fff3cd;border:1px solid #ffc107;border-left:5px solid #fd7e14;border-radius:8px;padding:12px 16px;margin:14px 0;font-size:0.88rem;color:#856404;"><strong>【参考資料】</strong> このファイルは Oracle Master Silver SQL (1Z0-<span class="sql-num">071</span>) の試験範囲外の内容を含みます。<br>OracleアーキテクチャなどDBAに関する内容は実務参考としてご利用ください。<br>試験対策には <a href="index.html" style="color:#856404;">トップページ D1〜D8</a> を使用してください。</div>
 <section class="card" id="intro">
 <h2>第3章の学習目的</h2>
-<p>第3章は、単に行を絞る章ではなく「誤抽出を防ぐ章」である。実務の障害は、SQL文法エラーより、条件不足や優先順位誤解による対象漏れ・対象過剰で発生することが多い。さらに、ORDER BYを曖昧にした運用は再現性を失い、監査や差分検証を困難にする。試験でも比較演算子、LIKEワイルドカード、NULL判定、ORDER BY規則、OFFSET/FETCHの挙動が頻出であり、表面的な暗記では取りこぼしが出る。第3章の到達点は、要件文を見て安全なWHERE条件と再現可能な並び順を設計し、結果件数を説明できる状態に到達することである。</p>
-<div class="gloss"><strong>重要:</strong> 第3章は「検索」ではなく「対象責任」の章。誰を抽出し、誰を除外したかを説明できることが品質基準になる。</div>
+<p>第3章は、単に行を絞る章ではなく「誤抽出を防ぐ章」である。<br>実務の障害は、SQL文法エラーより、条件不足や優先順位誤解による対象漏れ・対象過剰で発生することが多い。<br>さらに、ORDER BYを曖昧にした運用は再現性を失い、監査や差分検証を困難にする。<br>試験でも比較演算子、LIKEワイルドカード、NULL判定、ORDER BY規則、<span class="sql-kw">OFFSET</span>/FETCHの挙動が頻出であり、表面的な暗記では取りこぼしが出る。<br>第3章の到達点は、要件文を見て安全なWHERE条件と再現可能な並び順を設計し、結果件数を説明できる状態に到達することである。</p>
+<div class="gloss"><strong>重要:</strong> 第3章は「検索」ではなく「対象責任」の章。<br>誰を抽出し、誰を除外したかを説明できることが品質基準になる。</div>
 </section>
 <section class="card" id="comparison">
-<h2>3.1 比較演算子の使い分け</h2>
-<h3>1) 定義</h3>
-<p>比較演算子は、列値と条件値の関係を評価する基本要素であり、`=`、`&lt;&gt;`、`&gt;`、`&gt;=`、`&lt;`、`&lt;=`を中心に構成される。これらは真偽判定を返し、WHERE句でTRUEの行だけが採用される。定義として重要なのは、比較演算子は見た目が単純でも、型変換、NULL評価、文字列照合規則の影響を受けるため、単純な記号置換では扱えない点である。特にOracleでは暗黙型変換が起こるため、開発環境で成立した比較が本番データで失敗することがある。比較演算子は最小単位の条件部品だが、結果集合の境界を決める法的条文に近い重みを持つ。</p>
-<h3>2) 役割</h3>
-<p>比較演算子の役割は、業務ルールを機械判定可能な閾値として落とし込むことである。例えば「給与が8000以上」「期限が本日以前」「ステータスが完了以外」といった要件は、比較演算子で初めて実行可能になる。実務ではこの閾値設定の誤りが事故に直結する。`&gt;`と`&gt;=`の取り違えだけで対象件数が変わり、督促漏れや誤通知が発生しうる。試験では記号の意味確認に見えるが、現場では境界条件の責任設計であり、レビュー時には「境界を含む理由」を説明できることが求められる。曖昧な業務文言を曖昧な比較で実装しない姿勢が重要である。</p>
-<h3>3) 動作原理</h3>
-<p>Oracleは行ごとに比較式を評価し、TRUE/FALSE/UNKNOWNを算出する。TRUEのみ採用され、FALSEとUNKNOWNは除外される。数値比較は数値型として評価されるが、文字列列との比較では暗黙変換が介在し、変換不能時はエラーとなる。日付比較でも文字列リテラルを使うとNLS設定依存で解釈が変わるため、`DATE`リテラルや`TO_DATE`の明示が必要になる。動作原理の要点は、比較演算子自体は単純でも、その前段にある型確定が結果を支配することである。比較結果を信頼するには、比較対象の型とフォーマットを先に固定する必要がある。</p>
-<h3>4) 制限事項とアンチパターン</h3>
-<p>アンチパターンは、文字列型数値をそのまま大小比較すること、日付を文字列比較すること、NULL列へ通常比較を適用することの3つが代表的である。これらは一見動くが、データ増加や環境移行で破綻しやすい。例えば文字列比較では`100`より`9`が大きい扱いになるなど、業務期待と逆転する場合がある。さらに、境界値を明文化せず運用開始すると、毎月の締め処理で含む・含まない論争が再発する。対策は、型正規化、境界ルールの要件化、NULL判定の分離、テストデータに境界値を必ず含めることである。比較演算子は短いが、設計検証を省略してよい領域ではない。</p>
-<h3>5) 試験・実務の急所</h3>
-<p>試験では演算子意味、境界含有、NULL絡みの誤判定が定番である。実務ではこれに加え、比較条件の再現性が問われる。運用手順書に「どの閾値で抽出したか」が残らないSQLは、後日監査で説明不能になりやすい。レビューでは条件の妥当性だけでなく、将来の境界変更に耐える設計かを確認する必要がある。第3章で比較演算子を厳密に扱う習慣を持つと、後続章の集約条件や副問合せ条件でも境界ミスを減らせる。試験合格のためだけでなく、誤抽出による業務障害を未然に防ぐ基本技能として定着させるべき内容である。</p>
+<h2><span class="sql-num">3.1</span> 比較演算子の使い分け</h2>
+<h3><span class="sql-num">1</span>) 定義</h3>
+<p>比較演算子は、列値と条件値の関係を評価する基本要素であり、`=`、`&lt;&gt;`、`&gt;`、`&gt;=`、`&lt;`、`&lt;=`を中心に構成される。<br>これらは真偽判定を返し、WHERE句でTRUEの行だけが採用される。<br>定義として重要なのは、比較演算子は見た目が単純でも、型変換、NULL評価、文字列照合規則の影響を受けるため、単純な記号置換では扱えない点である。<br>特にOracleでは暗黙型変換が起こるため、開発環境で成立した比較が本番データで失敗することがある。<br>比較演算子は最小単位の条件部品だが、結果集合の境界を決める法的条文に近い重みを持つ。</p>
+<h3><span class="sql-num">2</span>) 役割</h3>
+<p>比較演算子の役割は、業務ルールを機械判定可能な閾値として落とし込むことである。<br>例えば「給与が8000以上」「期限が本日以前」「ステータスが完了以外」といった要件は、比較演算子で初めて実行可能になる。<br>実務ではこの閾値設定の誤りが事故に直結する。<br>`&gt;`と`&gt;=`の取り違えだけで対象件数が変わり、督促漏れや誤通知が発生しうる。<br>試験では記号の意味確認に見えるが、現場では境界条件の責任設計であり、レビュー時には「境界を含む理由」を説明できることが求められる。<br>曖昧な業務文言を曖昧な比較で実装しない姿勢が重要である。</p>
+<h3><span class="sql-num">3</span>) 動作原理</h3>
+<p>Oracleは行ごとに比較式を評価し、TRUE/FALSE/UNKNOWNを算出する。<br>TRUEのみ採用され、FALSEとUNKNOWNは除外される。<br>数値比較は数値型として評価されるが、文字列列との比較では暗黙変換が介在し、変換不能時はエラーとなる。<br>日付比較でも文字列リテラルを使うとNLS設定依存で解釈が変わるため、`DATE`リテラルや`TO_DATE`の明示が必要になる。<br>動作原理の要点は、比較演算子自体は単純でも、その前段にある型確定が結果を支配することである。<br>比較結果を信頼するには、比較対象の型とフォーマットを先に固定する必要がある。</p>
+<h3><span class="sql-num">4</span>) 制限事項とアンチパターン</h3>
+<p>アンチパターンは、文字列型数値をそのまま大小比較すること、日付を文字列比較すること、NULL列へ通常比較を適用することの3つが代表的である。<br>これらは一見動くが、データ増加や環境移行で破綻しやすい。<br>例えば文字列比較では`<span class="sql-num">100</span>`より`<span class="sql-num">9</span>`が大きい扱いになるなど、業務期待と逆転する場合がある。<br>さらに、境界値を明文化せず運用開始すると、毎月の締め処理で含む・含まない論争が再発する。<br>対策は、型正規化、境界ルールの要件化、NULL判定の分離、テストデータに境界値を必ず含めることである。<br>比較演算子は短いが、設計検証を省略してよい領域ではない。</p>
+<h3><span class="sql-num">5</span>) 試験・実務の急所</h3>
+<p>試験では演算子意味、境界含有、NULL絡みの誤判定が定番である。<br>実務ではこれに加え、比較条件の再現性が問われる。<br>運用手順書に「どの閾値で抽出したか」が残らないSQLは、後日監査で説明不能になりやすい。<br>レビューでは条件の妥当性だけでなく、将来の境界変更に耐える設計かを確認する必要がある。<br>第3章で比較演算子を厳密に扱う習慣を持つと、後続章の集約条件や副問合せ条件でも境界ミスを減らせる。<br>試験合格のためだけでなく、誤抽出による業務障害を未然に防ぐ基本技能として定着させるべき内容である。</p>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="between-in-like">
-<h2>3.2 BETWEEN / IN / LIKE</h2>
-<h3>1) 定義</h3>
-<p>`BETWEEN`は範囲条件、`IN`は候補集合条件、`LIKE`はパターン一致条件を記述する演算子である。`BETWEEN A AND B`はA以上B以下を意味し、境界値を含む。`IN`は複数値との等価比較を簡潔化する構文で、OR条件の集合表現として使える。`LIKE`は`%`（任意文字列）と`_`（任意1文字）のワイルドカードを用いる。定義上の重要点は、これらは可読性を上げる糖衣構文ではなく、条件の意味範囲を明確に固定する演算子である点である。特に`LIKE`は部分一致の広がりが大きく、要件境界を曖昧にすると過抽出の原因になりやすい。</p>
-<h3>2) 役割</h3>
-<p>これらの演算子の役割は、条件表現を簡潔化しつつ業務要件を正確に再現することである。例えば給与帯抽出はBETWEEN、部署候補抽出はIN、社員コード接頭辞抽出はLIKEが自然に対応する。実務では条件を読む人が多いため、同じ意味を長いORで書くよりINを使うほうが誤読が減る。一方で、LIKEの安易な前方ワイルドカードは件数膨張を招き、監視アラートの誤爆につながる。試験では文法選択問題として出るが、現場では「条件を誰が読んでも同じ解釈になるか」が品質基準である。適切な演算子選択は性能と保守性の両立に直結する。</p>
-<h3>3) 動作原理</h3>
-<p>BETWEENは内部的に`&gt;=`かつ`&lt;=`として評価されるため、端点を含む。INは候補集合に対する一致判定を行い、候補にNULLが含まれるとNOT IN時の挙動が複雑になる。LIKEは照合対象文字列をパターンと比較し、`%`が0文字以上、`_`が1文字を受け持つ。エスケープ指定がない場合、これらは特殊文字として扱われる。動作原理として重要なのは、式の見た目よりも論理展開後の評価を理解することである。特にBETWEENの日付条件では時刻成分を意識しないと、当日分の一部が漏れる。IN/LIKEも候補集合と照合範囲を先に明確化しないと期待外れ結果になりやすい。</p>
-<h3>4) 制限事項とアンチパターン</h3>
-<p>アンチパターンは、BETWEENで終端日23:59:59を考慮しない、IN句へ無制限に値を直書きする、LIKEで先頭`%`を常用する、NOT INへNULL混在集合を渡す、の4点が代表的である。これらは件数不一致や性能悪化を引き起こしやすい。特に期間抽出では`BETWEEN start AND end`が期待と異なり、日次帳票で漏れが発生することがある。対策は、日付は半開区間で設計する、候補値は一時表や結合で管理する、LIKEは要件に応じて前方一致を優先する、NOT IN使用時はNULL排除を明示することである。演算子の便利さに頼るほど、境界条件の検証を強化する必要がある。</p>
-<h3>5) 試験・実務の急所</h3>
-<p>試験ではBETWEENの境界含有、INとORの等価、LIKEワイルドカード意味が頻出である。実務ではこれに加えて、`NOT IN`とNULLの罠が高頻度障害ポイントになる。レビュー時には、候補集合の由来、パターン条件の対象範囲、期間端点の定義を確認するべきである。第3章でこれらを厳密に扱うと、後続のサブクエリ章でANY/ALL/EXISTSを学ぶ際も条件比較の軸がぶれない。試験対策としても、演算子単体暗記ではなく「どの業務要件にどの演算子が自然か」を判断できるようにすることが、ひっかけ選択肢の回避に有効である。</p>
+<h2><span class="sql-num">3.2</span> <span class="sql-kw">BETWEEN</span> / <span class="sql-kw">IN</span> / <span class="sql-kw">LIKE</span></h2>
+<h3><span class="sql-num">1</span>) 定義</h3>
+<p>`<span class="sql-kw">BETWEEN</span>`は範囲条件、`<span class="sql-kw">IN</span>`は候補集合条件、`<span class="sql-kw">LIKE</span>`はパターン一致条件を記述する演算子である。<br>`<span class="sql-kw">BETWEEN</span> A <span class="sql-kw">AND</span> B`はA以上B以下を意味し、境界値を含む。<br>`<span class="sql-kw">IN</span>`は複数値との等価比較を簡潔化する構文で、OR条件の集合表現として使える。<br>`<span class="sql-kw">LIKE</span>`は`%`（任意文字列）と`_`（任意1文字）のワイルドカードを用いる。<br>定義上の重要点は、これらは可読性を上げる糖衣構文ではなく、条件の意味範囲を明確に固定する演算子である点である。<br>特に`<span class="sql-kw">LIKE</span>`は部分一致の広がりが大きく、要件境界を曖昧にすると過抽出の原因になりやすい。</p>
+<h3><span class="sql-num">2</span>) 役割</h3>
+<p>これらの演算子の役割は、条件表現を簡潔化しつつ業務要件を正確に再現することである。<br>例えば給与帯抽出はBETWEEN、部署候補抽出はIN、社員コード接頭辞抽出はLIKEが自然に対応する。<br>実務では条件を読む人が多いため、同じ意味を長いORで書くよりINを使うほうが誤読が減る。<br>一方で、LIKEの安易な前方ワイルドカードは件数膨張を招き、監視アラートの誤爆につながる。<br>試験では文法選択問題として出るが、現場では「条件を誰が読んでも同じ解釈になるか」が品質基準である。<br>適切な演算子選択は性能と保守性の両立に直結する。</p>
+<h3><span class="sql-num">3</span>) 動作原理</h3>
+<p>BETWEENは内部的に`&gt;=`かつ`&lt;=`として評価されるため、端点を含む。<br>INは候補集合に対する一致判定を行い、候補にNULLが含まれるとNOT IN時の挙動が複雑になる。<br>LIKEは照合対象文字列をパターンと比較し、`%`が0文字以上、`_`が1文字を受け持つ。<br>エスケープ指定がない場合、これらは特殊文字として扱われる。<br>動作原理として重要なのは、式の見た目よりも論理展開後の評価を理解することである。<br>特にBETWEENの日付条件では時刻成分を意識しないと、当日分の一部が漏れる。<br><span class="sql-kw">IN</span>/LIKEも候補集合と照合範囲を先に明確化しないと期待外れ結果になりやすい。</p>
+<h3><span class="sql-num">4</span>) 制限事項とアンチパターン</h3>
+<p>アンチパターンは、BETWEENで終端日23:<span class="sql-num">59</span>:59を考慮しない、IN句へ無制限に値を直書きする、LIKEで先頭`%`を常用する、<span class="sql-kw">NOT</span> INへNULL混在集合を渡す、の4点が代表的である。<br>これらは件数不一致や性能悪化を引き起こしやすい。<br>特に期間抽出では`<span class="sql-kw">BETWEEN</span> start <span class="sql-kw">AND</span> end`が期待と異なり、日次帳票で漏れが発生することがある。<br>対策は、日付は半開区間で設計する、候補値は一時表や結合で管理する、LIKEは要件に応じて前方一致を優先する、<span class="sql-kw">NOT</span> IN使用時はNULL排除を明示することである。<br>演算子の便利さに頼るほど、境界条件の検証を強化する必要がある。</p>
+<h3><span class="sql-num">5</span>) 試験・実務の急所</h3>
+<p>試験ではBETWEENの境界含有、INとORの等価、LIKEワイルドカード意味が頻出である。<br>実務ではこれに加えて、`<span class="sql-kw">NOT IN</span>`とNULLの罠が高頻度障害ポイントになる。<br>レビュー時には、候補集合の由来、パターン条件の対象範囲、期間端点の定義を確認するべきである。<br>第3章でこれらを厳密に扱うと、後続のサブクエリ章でANY/<span class="sql-kw">ALL</span>/EXISTSを学ぶ際も条件比較の軸がぶれない。<br>試験対策としても、演算子単体暗記ではなく「どの業務要件にどの演算子が自然か」を判断できるようにすることが、ひっかけ選択肢の回避に有効である。</p>
 <pre><code><span class="kw"><span class="sql-kw">SELECT</span></span> <span class="obj">employee_id</span>, <span class="obj">last_name</span>, <span class="obj">salary</span>
 <span class="kw"><span class="sql-kw">FROM</span></span> <span class="obj">employees</span>
 <span class="kw"><span class="sql-kw">WHERE</span></span> <span class="obj">salary</span> <span class="kw"><span class="sql-kw">BETWEEN</span></span> <span class="obj"><span class="sql-num">7000</span></span> <span class="kw"><span class="sql-kw">AND</span></span> <span class="obj"><span class="sql-num">12000</span></span>
@@ -114,48 +124,48 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="logical">
-<h2>3.3 AND / OR / NOT と優先順位</h2>
-<h3>1) 定義</h3>
-<p>論理演算子は複数条件を結合して最終判定を決める手段であり、NOT、AND、ORの優先順位で評価される。条件式は見た目の日本語順ではなく、SQL規則順で解釈されるため、括弧の有無で意味が変わる。定義として重要なのは、優先順位は実装詳細ではなく言語仕様であり、省略した括弧を人間が好意的に補完してくれることはない点である。特にORが絡む条件は過抽出の温床で、テストデータで偶然通っても本番で拡散しやすい。論理演算子はWHERE句の接着剤ではなく、対象選定の意思決定ルールそのものとして扱う必要がある。</p>
-<h3>2) 役割</h3>
-<p>この構文の役割は、複合要件を機械的に再現可能な形へ変換することにある。実務要件は単条件では表現できない場合が多く、「A部署かつ有効ステータス、または管理者権限」のような混在条件が頻出する。ここで優先順位を誤ると、抽出件数が一桁以上変わることもある。試験では論理式の正誤判定として出題されるが、実務では通知対象、課金対象、監査対象の境界を決める責任演算である。役割を正しく理解すると、条件式を業務文章と対応付けて設計できるようになり、運用変更時の改修も安全になる。括弧は冗長記法ではなく、意図を固定する保険である。</p>
-<h3>3) 動作原理</h3>
-<p>Oracleは各行に対し論理式を評価し、最終真理値を算出する。NOTが最初に作用し、次にAND、最後にORが評価されるため、`A OR B AND C`は`A OR (B AND C)`である。NULLが含まれる場合は3値論理となり、UNKNOWNが伝播する。例えば`FALSE AND UNKNOWN`はFALSE、`TRUE OR UNKNOWN`はTRUEとなるため、単純な2値直感では誤読が起こる。動作原理として重要なのは、複合条件は必ず分解して評価順を確認すること、そしてNULL可能列が含まれる条件ではUNKNOWNが混入する前提で設計することである。これを習慣化すると、結果不一致の原因切り分けが高速になる。</p>
-<h3>4) 制限事項とアンチパターン</h3>
-<p>アンチパターンは、括弧省略で意図を暗黙化すること、否定条件を多重化して読みづらくすること、NOT INをNULL混在で使うことにある。これらはレビュー時の誤解を増やし、運用事故を招く。特に要件追加のたびにORを継ぎ足すSQLは、後から誰も全体意味を説明できなくなる。制限として、論理式は長くなるほど人間の検証精度が落ちるため、構文上正しくても品質が保証されない。対策は、条件ブロックを意味単位で分割し、括弧を必ず明示し、段階的に件数検証を行うことである。読み手が1回で意味を把握できない条件式は、実務では不良品とみなすべきである。</p>
-<h3>5) 試験・実務の急所</h3>
-<p>試験では優先順位問題が定番で、括弧有無の差を問う選択肢が頻出する。実務では、条件式に対する説明責任が問われる。障害報告で「なぜこの対象が抽出されたか」を説明できないSQLは、修正しても再発しやすい。第3章時点で条件式を真理値ベースで説明できるようになると、後続章のJOIN条件やHAVING条件でも整合的に判断できる。運用ではSQLレビューに「条件分解表」を導入すると有効であり、各条件ブロックの件数を可視化するだけで誤抽出の予兆を早期検知できる。試験でも実務でも、論理式を感覚ではなく規則で扱う姿勢が重要である。</p>
+<h2><span class="sql-num">3.3</span> <span class="sql-kw">AND</span> / <span class="sql-kw">OR</span> / <span class="sql-kw">NOT</span> と優先順位</h2>
+<h3><span class="sql-num">1</span>) 定義</h3>
+<p>論理演算子は複数条件を結合して最終判定を決める手段であり、<span class="sql-kw">NOT</span>、<span class="sql-kw">AND</span>、ORの優先順位で評価される。<br>条件式は見た目の日本語順ではなく、SQL規則順で解釈されるため、括弧の有無で意味が変わる。<br>定義として重要なのは、優先順位は実装詳細ではなく言語仕様であり、省略した括弧を人間が好意的に補完してくれることはない点である。<br>特にORが絡む条件は過抽出の温床で、テストデータで偶然通っても本番で拡散しやすい。<br>論理演算子はWHERE句の接着剤ではなく、対象選定の意思決定ルールそのものとして扱う必要がある。</p>
+<h3><span class="sql-num">2</span>) 役割</h3>
+<p>この構文の役割は、複合要件を機械的に再現可能な形へ変換することにある。<br>実務要件は単条件では表現できない場合が多く、「A部署かつ有効ステータス、または管理者権限」のような混在条件が頻出する。<br>ここで優先順位を誤ると、抽出件数が一桁以上変わることもある。<br>試験では論理式の正誤判定として出題されるが、実務では通知対象、課金対象、監査対象の境界を決める責任演算である。<br>役割を正しく理解すると、条件式を業務文章と対応付けて設計できるようになり、運用変更時の改修も安全になる。<br>括弧は冗長記法ではなく、意図を固定する保険である。</p>
+<h3><span class="sql-num">3</span>) 動作原理</h3>
+<p>Oracleは各行に対し論理式を評価し、最終真理値を算出する。<br>NOTが最初に作用し、次にAND、最後にORが評価されるため、`A <span class="sql-kw">OR</span> B <span class="sql-kw">AND</span> C`は`A <span class="sql-kw">OR</span> (B <span class="sql-kw">AND</span> C)`である。<br>NULLが含まれる場合は3値論理となり、UNKNOWNが伝播する。<br>例えば`FALSE <span class="sql-kw">AND</span> UNKNOWN`はFALSE、`TRUE <span class="sql-kw">OR</span> UNKNOWN`はTRUEとなるため、単純な2値直感では誤読が起こる。<br>動作原理として重要なのは、複合条件は必ず分解して評価順を確認すること、そしてNULL可能列が含まれる条件ではUNKNOWNが混入する前提で設計することである。<br>これを習慣化すると、結果不一致の原因切り分けが高速になる。</p>
+<h3><span class="sql-num">4</span>) 制限事項とアンチパターン</h3>
+<p>アンチパターンは、括弧省略で意図を暗黙化すること、否定条件を多重化して読みづらくすること、<span class="sql-kw">NOT</span> INをNULL混在で使うことにある。<br>これらはレビュー時の誤解を増やし、運用事故を招く。<br>特に要件追加のたびにORを継ぎ足すSQLは、後から誰も全体意味を説明できなくなる。<br>制限として、論理式は長くなるほど人間の検証精度が落ちるため、構文上正しくても品質が保証されない。<br>対策は、条件ブロックを意味単位で分割し、括弧を必ず明示し、段階的に件数検証を行うことである。<br>読み手が1回で意味を把握できない条件式は、実務では不良品とみなすべきである。</p>
+<h3><span class="sql-num">5</span>) 試験・実務の急所</h3>
+<p>試験では優先順位問題が定番で、括弧有無の差を問う選択肢が頻出する。<br>実務では、条件式に対する説明責任が問われる。<br>障害報告で「なぜこの対象が抽出されたか」を説明できないSQLは、修正しても再発しやすい。<br>第3章時点で条件式を真理値ベースで説明できるようになると、後続章のJOIN条件やHAVING条件でも整合的に判断できる。<br>運用ではSQLレビューに「条件分解表」を導入すると有効であり、各条件ブロックの件数を可視化するだけで誤抽出の予兆を早期検知できる。<br>試験でも実務でも、論理式を感覚ではなく規則で扱う姿勢が重要である。</p>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="null-conditions">
-<h2>3.4 NULLを含む条件設計</h2>
-<p>NULLが条件へ混在すると、単純比較ではUNKNOWNが発生し結果が変わる。`IS NULL`の明示、NOT IN時のNULL排除、NVLによる補完方針を先に定めることが第3章の核心である。NULLはエラー値ではなく業務状態値なので、どの列でNULLを許容し、どの列で禁止するかを要件として固定しなければならない。特に抽出対象の漏れが許されない運用では、NULL行を別系統で監視するSQLを常設し、通常抽出と分離管理することが実務上有効である。試験でもNULL混在時の結果差は頻出であり、通常比較で判定しない原則を徹底する。</p>
+<h2><span class="sql-num">3.4</span> NULLを含む条件設計</h2>
+<p>NULLが条件へ混在すると、単純比較ではUNKNOWNが発生し結果が変わる。<br>`<span class="sql-kw">IS NULL</span>`の明示、<span class="sql-kw">NOT</span> IN時のNULL排除、NVLによる補完方針を先に定めることが第3章の核心である。<br>NULLはエラー値ではなく業務状態値なので、どの列でNULLを許容し、どの列で禁止するかを要件として固定しなければならない。<br>特に抽出対象の漏れが許されない運用では、NULL行を別系統で監視するSQLを常設し、通常抽出と分離管理することが実務上有効である。<br>試験でもNULL混在時の結果差は頻出であり、通常比較で判定しない原則を徹底する。</p>
 <pre><code><span class="kw"><span class="sql-kw">SELECT</span></span> <span class="obj">employee_id</span>
 <span class="kw"><span class="sql-kw">FROM</span></span> <span class="obj">employees</span>
 <span class="kw"><span class="sql-kw">WHERE</span></span> <span class="obj">commission_pct</span> <span class="kw"><span class="sql-kw">IS NULL</span></span>;</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="orderby-basic">
-<h2>3.5 ORDER BYの基礎</h2>
-<p>ORDER BYは結果表示順を固定し、再現性を担保する句である。省略時は行順保証がなく、検証や監査で差分比較が破綻する。昇順ASC、降順DESC、複数キー指定の優先順を理解し、業務目的に合わせてキー設計する必要がある。ORDER BYは見栄え調整ではなく結果契約であり、APIやCSV出力でも同様に扱うべきである。列位置番号指定は短いが列入替に弱いため、実務では列名や別名を明示する。試験でも記述位置・昇降順・別名指定が問われるため、WHEREとの責務分離を明確に理解しておく。</p>
+<h2><span class="sql-num">3.5</span> ORDER BYの基礎</h2>
+<p>ORDER BYは結果表示順を固定し、再現性を担保する句である。<br>省略時は行順保証がなく、検証や監査で差分比較が破綻する。<br>昇順ASC、降順DESC、複数キー指定の優先順を理解し、業務目的に合わせてキー設計する必要がある。<br>ORDER BYは見栄え調整ではなく結果契約であり、APIやCSV出力でも同様に扱うべきである。<br>列位置番号指定は短いが列入替に弱いため、実務では列名や別名を明示する。<br>試験でも記述位置・昇降順・別名指定が問われるため、WHEREとの責務分離を明確に理解しておく。</p>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="null-order">
-<h2>3.6 NULLS FIRST / LAST</h2>
-<p>NULLの並び位置はデフォルト任せにせず、`NULLS FIRST`または`NULLS LAST`で明示する。ASC時は通常NULL末尾、DESC時は通常NULL先頭だが、要件が「未設定を先に確認」なのか「確定値を優先表示」なのかで最適解は変わる。運用現場では未設定行の監視が重要なため、NULLS FIRSTを使うだけでレビュー効率が上がる場面が多い。逆にこの制御を省くと、並び順変更時に監視結果が揺れ、差分確認が不安定になる。試験でもNULLソート規則は頻出のため、ASC/DESCとの組合せで説明できる状態が必要である。</p>
+<h2><span class="sql-num">3.6</span> <span class="sql-kw">NULLS FIRST</span> / LAST</h2>
+<p>NULLの並び位置はデフォルト任せにせず、`<span class="sql-kw">NULLS FIRST</span>`または`<span class="sql-kw">NULLS LAST</span>`で明示する。<br>ASC時は通常NULL末尾、DESC時は通常NULL先頭だが、要件が「未設定を先に確認」なのか「確定値を優先表示」なのかで最適解は変わる。<br>運用現場では未設定行の監視が重要なため、NULLS FIRSTを使うだけでレビュー効率が上がる場面が多い。<br>逆にこの制御を省くと、並び順変更時に監視結果が揺れ、差分確認が不安定になる。<br>試験でもNULLソート規則は頻出のため、<span class="sql-kw">ASC</span>/DESCとの組合せで説明できる状態が必要である。</p>
 <pre><code><span class="kw"><span class="sql-kw">SELECT</span></span> <span class="obj">employee_id</span>, <span class="obj">commission_pct</span>
 <span class="kw"><span class="sql-kw">FROM</span></span> <span class="obj">employees</span>
 <span class="kw"><span class="sql-kw">ORDER BY</span></span> <span class="obj">commission_pct</span> <span class="kw"><span class="sql-kw">DESC</span> NULLS LAST</span>;</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="stable-sort">
-<h2>3.7 安定ソートと第2キー設計</h2>
-<p>同値が多い列だけでソートすると、実行ごとに順序が揺れてページングや差分監査が不安定になる。これを防ぐため、主キーなど不変列を第2キーに追加し、順序を一意化する設計が必要である。例えば給与降順一覧では`salary DESC, employee_id ASC`とすることで同給者順が固定される。これは表示品質だけでなく、バッチ再実行時の対象再現性にも関わる。試験では明示的には出にくいが、実務で極めて重要なポイントであり、行制限句と組み合わせる際の前提条件になる。並び順は常に一意化できるかを確認して設計するべきである。</p>
+<h2><span class="sql-num">3.7</span> 安定ソートと第2キー設計</h2>
+<p>同値が多い列だけでソートすると、実行ごとに順序が揺れてページングや差分監査が不安定になる。<br>これを防ぐため、主キーなど不変列を第2キーに追加し、順序を一意化する設計が必要である。<br>例えば給与降順一覧では`salary <span class="sql-kw">DESC</span>, employee_id <span class="sql-kw">ASC</span>`とすることで同給者順が固定される。<br>これは表示品質だけでなく、バッチ再実行時の対象再現性にも関わる。<br>試験では明示的には出にくいが、実務で極めて重要なポイントであり、行制限句と組み合わせる際の前提条件になる。<br>並び順は常に一意化できるかを確認して設計するべきである。</p>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="row-limiting">
-<h2>3.8 行制限（OFFSET / FETCH）</h2>
-<p>行制限句は結果の一部を返す機能で、ページングや上位N件抽出に利用される。Oracleでは`OFFSET n ROWS FETCH NEXT m ROWS ONLY`を用いる。重要なのは、ORDER BYなしの行制限は再現性を持たない点である。上位N件を取得する意図なら、まず業務意味のあるソートを定義し、そのうえで行制限を適用する必要がある。OFFSETが大きい場合は性能劣化が起こるため、実務ではキーセットページング検討も必要になる。試験では構文順序と意味理解が問われるため、ORDER BYとのセット利用を原則として覚えると誤答を避けやすい。</p>
+<h2><span class="sql-num">3.8</span> 行制限（<span class="sql-kw">OFFSET</span> / <span class="sql-kw">FETCH</span>）</h2>
+<p>行制限句は結果の一部を返す機能で、ページングや上位N件抽出に利用される。<br>Oracleでは`<span class="sql-kw">OFFSET</span> n <span class="sql-kw">ROWS</span> <span class="sql-kw">FETCH</span> <span class="sql-kw">NEXT</span> m <span class="sql-kw">ROWS ONLY</span>`を用いる。<br>重要なのは、ORDER BYなしの行制限は再現性を持たない点である。<br>上位N件を取得する意図なら、まず業務意味のあるソートを定義し、そのうえで行制限を適用する必要がある。<br>OFFSETが大きい場合は性能劣化が起こるため、実務ではキーセットページング検討も必要になる。<br>試験では構文順序と意味理解が問われるため、ORDER BYとのセット利用を原則として覚えると誤答を避けやすい。</p>
 <pre><code><span class="kw"><span class="sql-kw">SELECT</span></span> <span class="obj">employee_id</span>, <span class="obj">last_name</span>, <span class="obj">salary</span>
 <span class="kw"><span class="sql-kw">FROM</span></span> <span class="obj">employees</span>
 <span class="kw"><span class="sql-kw">ORDER BY</span></span> <span class="obj">salary</span> <span class="kw"><span class="sql-kw">DESC</span></span>, <span class="obj">employee_id</span> <span class="kw"><span class="sql-kw">ASC</span></span>
@@ -163,8 +173,8 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="substitution">
-<h2>3.9 置換変数（SQL*Plus系）</h2>
-<p>置換変数は実行時に値を差し込むための仕組みで、SQL*Plusや互換ツールで利用される。`&amp;var`や`&amp;&amp;var`を使うことで、同一SQLを値だけ変えて再実行できる。実務では手動調査の効率化に有効だが、値型の明示や引用符管理を誤ると条件誤判定や実行エラーを招く。アプリケーション実装ではバインド変数を使うのが原則であり、置換変数は対話実行向け機能として位置付けるべきである。試験では基本挙動が問われるため、置換変数とバインド変数の用途差を区別して理解することが重要になる。</p>
+<h2><span class="sql-num">3.9</span> 置換変数（SQL*Plus系）</h2>
+<p>置換変数は実行時に値を差し込むための仕組みで、SQL*Plusや互換ツールで利用される。<br>`&amp;var`や`&amp;&amp;var`を使うことで、同一SQLを値だけ変えて再実行できる。<br>実務では手動調査の効率化に有効だが、値型の明示や引用符管理を誤ると条件誤判定や実行エラーを招く。<br>アプリケーション実装ではバインド変数を使うのが原則であり、置換変数は対話実行向け機能として位置付けるべきである。<br>試験では基本挙動が問われるため、置換変数とバインド変数の用途差を区別して理解することが重要になる。</p>
 <pre><code><span class="kw">DEFINE</span> <span class="obj">dept_id</span> = <span class="obj"><span class="sql-num">50</span></span>
 <span class="kw"><span class="sql-kw">SELECT</span></span> <span class="obj">employee_id</span>, <span class="obj">last_name</span>
 <span class="kw"><span class="sql-kw">FROM</span></span> <span class="obj">employees</span>
@@ -172,8 +182,8 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="flow">
-<h2>3.10 条件絞り込みとソートの実行順</h2>
-<p>第3章では、WHEREとORDER BYの責務分離が最重要である。まずWHEREで対象を絞り、その結果にORDER BYが適用される。さらに行制限がある場合、ソート後の結果から切り出される。つまり順序定義が曖昧なまま行制限すると、毎回異なる行が返る。運用での再現性を担保するには、対象条件、並び順、切り出し範囲の3点を一貫して定義し、件数検証を伴って運用する必要がある。試験でもこの順序前提で解く問題が多く、句の役割を混同すると正解率が下がる。設計時に必ず「どの段階で何が確定するか」を言語化する習慣を持つべきである。</p>
+<h2><span class="sql-num">3.10</span> 条件絞り込みとソートの実行順</h2>
+<p>第3章では、WHEREとORDER BYの責務分離が最重要である。<br>まずWHEREで対象を絞り、その結果にORDER BYが適用される。<br>さらに行制限がある場合、ソート後の結果から切り出される。<br>つまり順序定義が曖昧なまま行制限すると、毎回異なる行が返る。<br>運用での再現性を担保するには、対象条件、並び順、切り出し範囲の3点を一貫して定義し、件数検証を伴って運用する必要がある。<br>試験でもこの順序前提で解く問題が多く、句の役割を混同すると正解率が下がる。<br>設計時に必ず「どの段階で何が確定するか」を言語化する習慣を持つべきである。</p>
 <div class="figure"><strong>図解テキスト:</strong><pre><code><span class="sql-kw">FROM</span> -&gt; <span class="sql-kw">WHERE</span> -&gt; <span class="sql-kw">SELECT</span> -&gt; <span class="sql-kw">ORDER BY</span> -&gt; <span class="sql-kw">OFFSET</span>/<span class="sql-kw">FETCH</span>
 
 <span class="sql-num">1</span>) 対象集合を決める
@@ -188,14 +198,14 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 <h2>第3章 試験ひっかけパターン集</h2>
 <div class="warn"><b>ひっかけ1:</b> BETWEENは端点を含まないか → 含む。</div>
 <div class="warn"><b>ひっかけ2:</b> LIKEの`_`は任意長か → 1文字のみ。</div>
-<div class="warn"><b>ひっかけ3:</b> `A OR B AND C` は `(A OR B) AND C` と同じか → 同じではない。</div>
+<div class="warn"><b>ひっかけ3:</b> `A <span class="sql-kw">OR</span> B <span class="sql-kw">AND</span> C` は `(A <span class="sql-kw">OR</span> B) <span class="sql-kw">AND</span> C` と同じか → 同じではない。</div>
 <div class="warn"><b>ひっかけ4:</b> ORDER BYなしで上位N件は安定か → 安定しない。</div>
-<div class="warn"><b>ひっかけ5:</b> NOT INは常に安全か → 候補にNULLがあると危険。</div>
+<div class="warn"><b>ひっかけ5:</b> <span class="sql-kw">NOT</span> INは常に安全か → 候補にNULLがあると危険。</div>
 <div class="warn"><b>ひっかけ6:</b> ASC時のNULLは常に先頭か → 通常は末尾。</div>
 <div class="warn"><b>ひっかけ7:</b> 列位置ORDER BYは常に保守的か → 列追加・入替で壊れやすい。</div>
-<div class="warn"><b>ひっかけ8:</b> OFFSET/FETCHはWHEREより先に評価されるか → 後段で適用される。</div>
+<div class="warn"><b>ひっかけ8:</b> <span class="sql-kw">OFFSET</span>/FETCHはWHEREより先に評価されるか → 後段で適用される。</div>
 <div class="warn"><b>ひっかけ9:</b> 文字列日付比較は安全か → NLS依存で危険。</div>
-<div class="warn"><b>ひっかけ10:</b> `= NULL`でNULL判定できるか → できない。</div>
+<div class="warn"><b>ひっかけ10:</b> `= <span class="sql-kw">NULL</span>`でNULL判定できるか → できない。</div>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="practice">
@@ -204,7 +214,7 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 <tr><th>アンチパターン</th><th>起きる障害</th><th>予防策</th></tr>
 <tr><td>境界条件を曖昧に実装</td><td>対象漏れ・過抽出</td><td>含む/含まないを要件書へ固定</td></tr>
 <tr><td>ORDER BY省略でページング</td><td>結果が毎回変わる</td><td>一意化できる複合ソートを定義</td></tr>
-<tr><td>NOT IN + NULL混在</td><td>0件化や意図しない除外</td><td>NULL除去またはNOT EXISTSへ変更</td></tr>
+<tr><td><span class="sql-kw">NOT IN</span> + NULL混在</td><td>0件化や意図しない除外</td><td>NULL除去またはNOT EXISTSへ変更</td></tr>
 <tr><td>LIKEの前方ワイルドカード乱用</td><td>性能劣化、過抽出</td><td>要件に応じて前方一致を優先</td></tr>
 <tr><td>日付を文字列比較</td><td>環境差で誤判定</td><td>DATE型・明示変換で比較</td></tr>
 <tr><td>列位置ORDER BY依存</td><td>改修時に並び順破壊</td><td>列名/別名指定へ統一</td></tr>

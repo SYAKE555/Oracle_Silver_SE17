@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Phase 2 中位弱点の補修 - EX 強化学習</title>
+<title>Phase <span class="sql-num">2</span> 中位弱点の補修 - EX 強化学習</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'Noto Sans JP', 'Hiragino Sans', sans-serif; background: #eef2f7; color: #1f2937; line-height: 1.7; }
@@ -23,21 +23,31 @@
   .phase-title { font-size: 1rem; font-weight: 800; }
   .phase-meta { font-size: .86rem; color: #475569; margin-top: 4px; }
 
-  pre .sql-kw { color: #fbbf24; font-weight: 700; }
-  pre .sql-fn { color: #60a5fa; font-weight: 600; }
+
+  /* sql-highlight-v3 */
+  /* default (light bg): warm tone */
+  .sql-kw  { color: #92400e; font-weight: 700; }
+  .sql-fn  { color: #1e40af; font-weight: 600; }
+  .sql-str { color: #065f46; }
+  .sql-num { color: #991b1b; }
+  .sql-cmt { color: #64748b; font-style: italic; }
+  /* dark bg override (pre / code) */
+  pre .sql-kw  { color: #fbbf24; }
+  pre .sql-fn  { color: #60a5fa; }
   pre .sql-str { color: #86efac; }
   pre .sql-num { color: #fca5a5; }
-  pre .sql-cmt { color: #94a3b8; font-style: italic; }
-  code .sql-kw { color: #b45309; font-weight: 700; }
-  code .sql-fn { color: #1d4ed8; font-weight: 600; }
-  code .sql-str { color: #047857; }
-  code .sql-num { color: #b91c1c; }
-  code .sql-cmt { color: #64748b; font-style: italic; }
+  pre .sql-cmt { color: #94a3b8; }
+  code .sql-kw  { color: #fbbf24; }
+  code .sql-fn  { color: #60a5fa; }
+  code .sql-str { color: #86efac; }
+  code .sql-num { color: #fca5a5; }
+  code .sql-cmt { color: #94a3b8; }
+  /* clause-order div uses its own kw/fn/desc/note classes — no override needed */
 </style>
 </head>
 <body>
 <div class="page-header">
-  <h1>Phase 2 中位弱点の補修</h1>
+  <h1>Phase <span class="sql-num">2</span> 中位弱点の補修</h1>
   <div>このフェーズで扱う EX を先に潰し、次のフェーズへ進むための導線ページ</div>
 </div>
 <div class="container">
@@ -46,13 +56,13 @@
   <a class="nav-back" href="mock_exam_report.html">結果レポート</a>
   <a class="nav-back" href="index.html">教科書トップ</a>
   <div class="intro">
-    <div style="font-size:.95rem;color:#64748b;font-weight:700">Phase 2</div>
-    <div style="font-size:1.35rem;font-weight:900;margin-top:4px">Phase 2 中位弱点の補修</div>
-    <p style="margin-top:8px;color:#334155">このフェーズでは、進捗が特に低い領域を先に潰します。各 EX ページは、模擬試験で落とした全設問をカテゴリ別に再解説しています。</p>
+    <div style="font-size:.95rem;color:#64748b;font-weight:700">Phase <span class="sql-num">2</span></div>
+    <div style="font-size:1.35rem;font-weight:900;margin-top:4px">Phase <span class="sql-num">2</span> 中位弱点の補修</div>
+    <p style="margin-top:8px;color:#334155">このフェーズでは、進捗が特に低い領域を先に潰します。<br>各 EX ページは、模擬試験で落とした全設問をカテゴリ別に再解説しています。</p>
     <div class="stats">
-      <div class="stat"><div class="label">対象 EX 数</div><div class="value">3</div></div>
-      <div class="stat"><div class="label">合計誤答数</div><div class="value">25</div></div>
-      <div class="stat"><div class="label">平均進捗率</div><div class="value">41.2%</div></div>
+      <div class="stat"><div class="label">対象 EX 数</div><div class="value"><span class="sql-num">3</span></div></div>
+      <div class="stat"><div class="label">合計誤答数</div><div class="value"><span class="sql-num">25</span></div></div>
+      <div class="stat"><div class="label">平均進捗率</div><div class="value"><span class="sql-num">41.2</span>%</div></div>
     </div>
   </div>
   <div class="phase-grid">
@@ -61,7 +71,7 @@
       <div class="phase-tag" style="background:#e67e22">EX1</div>
       <div class="phase-body">
         <div class="phase-title">複数表の結合</div>
-        <div class="phase-meta">元ドメイン D5 / 優先度 優先 / 進捗 37.5% / 誤答 5問</div>
+        <div class="phase-meta">元ドメイン D5 / 優先度 優先 / 進捗 <span class="sql-num">37.5</span>% / 誤答 5問</div>
       </div>
     </a>
     
@@ -69,7 +79,7 @@
       <div class="phase-tag" style="background:#e67e22">EX6</div>
       <div class="phase-body">
         <div class="phase-title">グループ関数・集計</div>
-        <div class="phase-meta">元ドメイン D4 / 優先度 優先 / 進捗 40.0% / 誤答 6問</div>
+        <div class="phase-meta">元ドメイン D4 / 優先度 優先 / 進捗 <span class="sql-num">40.0</span>% / 誤答 6問</div>
       </div>
     </a>
     
@@ -77,7 +87,7 @@
       <div class="phase-tag" style="background:#f1c40f">EX4</div>
       <div class="phase-body">
         <div class="phase-title">DML・トランザクション</div>
-        <div class="phase-meta">元ドメイン D7 / 優先度 要復習 / 進捗 46.2% / 誤答 14問</div>
+        <div class="phase-meta">元ドメイン D7 / 優先度 要復習 / 進捗 <span class="sql-num">46.2</span>% / 誤答 14問</div>
       </div>
     </a>
     

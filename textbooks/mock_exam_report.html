@@ -104,16 +104,26 @@
     .trend-strip { grid-template-columns: 1fr; }
   }
 
-  pre .sql-kw { color: #fbbf24; font-weight: 700; }
-  pre .sql-fn { color: #60a5fa; font-weight: 600; }
+
+  /* sql-highlight-v3 */
+  /* default (light bg): warm tone */
+  .sql-kw  { color: #92400e; font-weight: 700; }
+  .sql-fn  { color: #1e40af; font-weight: 600; }
+  .sql-str { color: #065f46; }
+  .sql-num { color: #991b1b; }
+  .sql-cmt { color: #64748b; font-style: italic; }
+  /* dark bg override (pre / code) */
+  pre .sql-kw  { color: #fbbf24; }
+  pre .sql-fn  { color: #60a5fa; }
   pre .sql-str { color: #86efac; }
   pre .sql-num { color: #fca5a5; }
-  pre .sql-cmt { color: #94a3b8; font-style: italic; }
-  code .sql-kw { color: #b45309; font-weight: 700; }
-  code .sql-fn { color: #1d4ed8; font-weight: 600; }
-  code .sql-str { color: #047857; }
-  code .sql-num { color: #b91c1c; }
-  code .sql-cmt { color: #64748b; font-style: italic; }
+  pre .sql-cmt { color: #94a3b8; }
+  code .sql-kw  { color: #fbbf24; }
+  code .sql-fn  { color: #60a5fa; }
+  code .sql-str { color: #86efac; }
+  code .sql-num { color: #fca5a5; }
+  code .sql-cmt { color: #94a3b8; }
+  /* clause-order div uses its own kw/fn/desc/note classes — no override needed */
 </style>
 </head>
 <body>
@@ -126,7 +136,7 @@
   <a class="nav-back" href="index.html">教科書トップへ戻る</a>
 
   <div class="section-heading">総合スコア</div>
-  <p class="section-copy">得点比率は模試スコア、進捗率は設問ベースの正答率です。どちらも並べて見ることで、点数の推移と知識定着の両方を把握できます。</p>
+  <p class="section-copy">得点比率は模試スコア、進捗率は設問ベースの正答率です。<br>どちらも並べて見ることで、点数の推移と知識定着の両方を把握できます。</p>
   <div class="summary-grid">
     
     <div class="exam-card">
@@ -135,18 +145,18 @@
         <span class="score-value" style="color:#e67e22">48</span>
         <span class="score-unit">/ 100</span>
       </div>
-      <div class="score-meta">得点比率 48%</div>
+      <div class="score-meta">得点比率 <span class="sql-num">48</span>%</div>
       <div class="mini-metric">
         <span>正答率</span>
-        <b style="color:#e67e22">49%</b>
+        <b style="color:#e67e22"><span class="sql-num">49</span>%</b>
       </div>
       <div class="mini-metric">
         <span>正答数</span>
-        <b>38 / 78</b>
+        <b><span class="sql-num">38</span> / <span class="sql-num">78</span></b>
       </div>
       <div class="mini-metric">
         <span>失点数</span>
-        <b>40</b>
+        <b><span class="sql-num">40</span></b>
       </div>
     </div>
     
@@ -156,18 +166,18 @@
         <span class="score-value" style="color:#c0392b">33</span>
         <span class="score-unit">/ 100</span>
       </div>
-      <div class="score-meta">得点比率 33%</div>
+      <div class="score-meta">得点比率 <span class="sql-num">33</span>%</div>
       <div class="mini-metric">
         <span>正答率</span>
-        <b style="color:#c0392b">32%</b>
+        <b style="color:#c0392b"><span class="sql-num">32</span>%</b>
       </div>
       <div class="mini-metric">
         <span>正答数</span>
-        <b>25 / 78</b>
+        <b><span class="sql-num">25</span> / <span class="sql-num">78</span></b>
       </div>
       <div class="mini-metric">
         <span>失点数</span>
-        <b>53</b>
+        <b><span class="sql-num">53</span></b>
       </div>
     </div>
     
@@ -177,18 +187,18 @@
         <span class="score-value" style="color:#c0392b">34</span>
         <span class="score-unit">/ 100</span>
       </div>
-      <div class="score-meta">得点比率 34%</div>
+      <div class="score-meta">得点比率 <span class="sql-num">34</span>%</div>
       <div class="mini-metric">
         <span>正答率</span>
-        <b style="color:#c0392b">35%</b>
+        <b style="color:#c0392b"><span class="sql-num">35</span>%</b>
       </div>
       <div class="mini-metric">
         <span>正答数</span>
-        <b>27 / 78</b>
+        <b><span class="sql-num">27</span> / <span class="sql-num">78</span></b>
       </div>
       <div class="mini-metric">
         <span>失点数</span>
-        <b>51</b>
+        <b><span class="sql-num">51</span></b>
       </div>
     </div>
     
@@ -198,10 +208,10 @@
         <span class="score-value" style="color:#ffffff">38.3</span>
         <span class="score-unit">平均点</span>
       </div>
-      <div class="score-meta">平均得点比率 38.3% / 平均進捗率 38%</div>
+      <div class="score-meta">平均得点比率 <span class="sql-num">38.3</span>% / 平均進捗率 <span class="sql-num">38</span>%</div>
       <div class="mini-metric"><span>最高得点</span><b>第1回 模擬試験 48点</b></div>
       <div class="mini-metric"><span>直近結果</span><b>第3回 模擬試験 34点</b></div>
-      <div class="mini-metric"><span>最大失点領域</span><b>D8 36%</b></div>
+      <div class="mini-metric"><span>最大失点領域</span><b>D8 <span class="sql-num">36</span>%</b></div>
     </div>
   </div>
 
@@ -259,23 +269,23 @@
   </div>
 
   <div class="section-heading">ドメイン別進捗ボード</div>
-  <p class="section-copy">各項目ごとに、進捗率・全体失点への影響・試験ごとの変動を可視化しています。優先度の高い順に並べています。</p>
+  <p class="section-copy">各項目ごとに、進捗率・全体失点への影響・試験ごとの変動を可視化しています。<br>優先度の高い順に並べています。</p>
   <div class="progress-grid">
     
     <div class="progress-card p-high">
       <div class="progress-head">
         <div>
           <a href="D6_textbook.html" class="progress-title"><strong>D6</strong> サブクエリ・集合演算</a>
-          <div class="progress-sub">出題比率 11% / 失点比率 13%</div>
+          <div class="progress-sub">出題比率 <span class="sql-num">11</span>% / 失点比率 <span class="sql-num">13</span>%</div>
         </div>
         <div class="priority-pill">最優先</div>
       </div>
-      <div class="meter-label"><span>進捗率</span><b>24%</b></div>
+      <div class="meter-label"><span>進捗率</span><b><span class="sql-num">24</span>%</b></div>
       <div class="bar-bg"><div class="bar-fg" style="width:24.0%;background:#c0392b"></div></div>
-      <div class="meter-label"><span>全体失点への影響</span><b>13%</b></div>
+      <div class="meter-label"><span>全体失点への影響</span><b><span class="sql-num">13</span>%</b></div>
       <div class="bar-bg bar-bg-loss"><div class="bar-fg" style="width:13.2%;background:#2c3e50"></div></div>
       <div class="trend-strip">
-        <div class="trend-box "><span>第1回</span><b>43%</b></div><div class="trend-box "><span>第2回</span><b>17%</b></div><div class="trend-box "><span>第3回</span><b>17%</b></div>
+        <div class="trend-box "><span>第1回</span><b><span class="sql-num">43</span>%</b></div><div class="trend-box "><span>第2回</span><b><span class="sql-num">17</span>%</b></div><div class="trend-box "><span>第3回</span><b><span class="sql-num">17</span>%</b></div>
       </div>
       <div class="delta-chip down">-26pt 低下</div>
       <p class="progress-note">評価: 基礎理解は残っているため、典型問題の再演習で戻しやすい。</p>
@@ -286,16 +296,16 @@
       <div class="progress-head">
         <div>
           <a href="D3_textbook.html" class="progress-title"><strong>D3</strong> 単一行関数</a>
-          <div class="progress-sub">出題比率 13% / 失点比率 15%</div>
+          <div class="progress-sub">出題比率 <span class="sql-num">13</span>% / 失点比率 <span class="sql-num">15</span>%</div>
         </div>
         <div class="priority-pill">最優先</div>
       </div>
-      <div class="meter-label"><span>進捗率</span><b>30%</b></div>
+      <div class="meter-label"><span>進捗率</span><b><span class="sql-num">30</span>%</b></div>
       <div class="bar-bg"><div class="bar-fg" style="width:30.0%;background:#c0392b"></div></div>
-      <div class="meter-label"><span>全体失点への影響</span><b>15%</b></div>
+      <div class="meter-label"><span>全体失点への影響</span><b><span class="sql-num">15</span>%</b></div>
       <div class="bar-bg bar-bg-loss"><div class="bar-fg" style="width:14.6%;background:#2c3e50"></div></div>
       <div class="trend-strip">
-        <div class="trend-box "><span>第1回</span><b>62%</b></div><div class="trend-box "><span>第2回</span><b>18%</b></div><div class="trend-box "><span>第3回</span><b>18%</b></div>
+        <div class="trend-box "><span>第1回</span><b><span class="sql-num">62</span>%</b></div><div class="trend-box "><span>第2回</span><b><span class="sql-num">18</span>%</b></div><div class="trend-box "><span>第3回</span><b><span class="sql-num">18</span>%</b></div>
       </div>
       <div class="delta-chip down">-44pt 低下</div>
       <p class="progress-note">評価: 基礎理解は残っているため、典型問題の再演習で戻しやすい。</p>
@@ -306,16 +316,16 @@
       <div class="progress-head">
         <div>
           <a href="D8_textbook.html" class="progress-title"><strong>D8</strong> DDL・オブジェクト管理</a>
-          <div class="progress-sub">出題比率 33% / 失点比率 36%</div>
+          <div class="progress-sub">出題比率 <span class="sql-num">33</span>% / 失点比率 <span class="sql-num">36</span>%</div>
         </div>
         <div class="priority-pill">優先</div>
       </div>
-      <div class="meter-label"><span>進捗率</span><b>32%</b></div>
+      <div class="meter-label"><span>進捗率</span><b><span class="sql-num">32</span>%</b></div>
       <div class="bar-bg"><div class="bar-fg" style="width:32.5%;background:#c0392b"></div></div>
-      <div class="meter-label"><span>全体失点への影響</span><b>36%</b></div>
+      <div class="meter-label"><span>全体失点への影響</span><b><span class="sql-num">36</span>%</b></div>
       <div class="bar-bg bar-bg-loss"><div class="bar-fg" style="width:36.1%;background:#2c3e50"></div></div>
       <div class="trend-strip">
-        <div class="trend-box "><span>第1回</span><b>38%</b></div><div class="trend-box "><span>第2回</span><b>32%</b></div><div class="trend-box "><span>第3回</span><b>26%</b></div>
+        <div class="trend-box "><span>第1回</span><b><span class="sql-num">38</span>%</b></div><div class="trend-box "><span>第2回</span><b><span class="sql-num">32</span>%</b></div><div class="trend-box "><span>第3回</span><b><span class="sql-num">26</span>%</b></div>
       </div>
       <div class="delta-chip down">-11pt 低下</div>
       <p class="progress-note">評価: 基礎理解は残っているため、典型問題の再演習で戻しやすい。</p>
@@ -326,16 +336,16 @@
       <div class="progress-head">
         <div>
           <a href="D5_textbook.html" class="progress-title"><strong>D5</strong> 複数表の結合</a>
-          <div class="progress-sub">出題比率 3% / 失点比率 3%</div>
+          <div class="progress-sub">出題比率 <span class="sql-num">3</span>% / 失点比率 <span class="sql-num">3</span>%</div>
         </div>
         <div class="priority-pill">優先</div>
       </div>
-      <div class="meter-label"><span>進捗率</span><b>38%</b></div>
+      <div class="meter-label"><span>進捗率</span><b><span class="sql-num">38</span>%</b></div>
       <div class="bar-bg"><div class="bar-fg" style="width:37.5%;background:#c0392b"></div></div>
-      <div class="meter-label"><span>全体失点への影響</span><b>3%</b></div>
+      <div class="meter-label"><span>全体失点への影響</span><b><span class="sql-num">3</span>%</b></div>
       <div class="bar-bg bar-bg-loss"><div class="bar-fg" style="width:3.5%;background:#2c3e50"></div></div>
       <div class="trend-strip">
-        <div class="trend-box "><span>第1回</span><b>67%</b></div><div class="trend-box "><span>第2回</span><b>0%</b></div><div class="trend-box "><span>第3回</span><b>25%</b></div>
+        <div class="trend-box "><span>第1回</span><b><span class="sql-num">67</span>%</b></div><div class="trend-box "><span>第2回</span><b><span class="sql-num">0</span>%</b></div><div class="trend-box "><span>第3回</span><b><span class="sql-num">25</span>%</b></div>
       </div>
       <div class="delta-chip down">-42pt 低下</div>
       <p class="progress-note">評価: 基礎理解は残っているため、典型問題の再演習で戻しやすい。</p>
@@ -346,16 +356,16 @@
       <div class="progress-head">
         <div>
           <a href="D4_textbook.html" class="progress-title"><strong>D4</strong> グループ関数と集計</a>
-          <div class="progress-sub">出題比率 4% / 失点比率 4%</div>
+          <div class="progress-sub">出題比率 <span class="sql-num">4</span>% / 失点比率 <span class="sql-num">4</span>%</div>
         </div>
         <div class="priority-pill">優先</div>
       </div>
-      <div class="meter-label"><span>進捗率</span><b>40%</b></div>
+      <div class="meter-label"><span>進捗率</span><b><span class="sql-num">40</span>%</b></div>
       <div class="bar-bg"><div class="bar-fg" style="width:40.0%;background:#e67e22"></div></div>
-      <div class="meter-label"><span>全体失点への影響</span><b>4%</b></div>
+      <div class="meter-label"><span>全体失点への影響</span><b><span class="sql-num">4</span>%</b></div>
       <div class="bar-bg bar-bg-loss"><div class="bar-fg" style="width:4.2%;background:#2c3e50"></div></div>
       <div class="trend-strip">
-        <div class="trend-box "><span>第1回</span><b>67%</b></div><div class="trend-box "><span>第2回</span><b>50%</b></div><div class="trend-box "><span>第3回</span><b>0%</b></div>
+        <div class="trend-box "><span>第1回</span><b><span class="sql-num">67</span>%</b></div><div class="trend-box "><span>第2回</span><b><span class="sql-num">50</span>%</b></div><div class="trend-box "><span>第3回</span><b><span class="sql-num">0</span>%</b></div>
       </div>
       <div class="delta-chip down">-67pt 低下</div>
       <p class="progress-note">評価: 基礎理解は残っているため、典型問題の再演習で戻しやすい。</p>
@@ -366,16 +376,16 @@
       <div class="progress-head">
         <div>
           <a href="D7_textbook.html" class="progress-title"><strong>D7</strong> DML・トランザクション</a>
-          <div class="progress-sub">出題比率 11% / 失点比率 10%</div>
+          <div class="progress-sub">出題比率 <span class="sql-num">11</span>% / 失点比率 <span class="sql-num">10</span>%</div>
         </div>
         <div class="priority-pill">要復習</div>
       </div>
-      <div class="meter-label"><span>進捗率</span><b>46%</b></div>
+      <div class="meter-label"><span>進捗率</span><b><span class="sql-num">46</span>%</b></div>
       <div class="bar-bg"><div class="bar-fg" style="width:46.2%;background:#e67e22"></div></div>
-      <div class="meter-label"><span>全体失点への影響</span><b>10%</b></div>
+      <div class="meter-label"><span>全体失点への影響</span><b><span class="sql-num">10</span>%</b></div>
       <div class="bar-bg bar-bg-loss"><div class="bar-fg" style="width:9.7%;background:#2c3e50"></div></div>
       <div class="trend-strip">
-        <div class="trend-box "><span>第1回</span><b>50%</b></div><div class="trend-box "><span>第2回</span><b>25%</b></div><div class="trend-box "><span>第3回</span><b>60%</b></div>
+        <div class="trend-box "><span>第1回</span><b><span class="sql-num">50</span>%</b></div><div class="trend-box "><span>第2回</span><b><span class="sql-num">25</span>%</b></div><div class="trend-box "><span>第3回</span><b><span class="sql-num">60</span>%</b></div>
       </div>
       <div class="delta-chip up">+10pt 改善</div>
       <p class="progress-note">評価: 直近で持ち直しており、復習の効果が見えている。</p>
@@ -386,16 +396,16 @@
       <div class="progress-head">
         <div>
           <a href="D1_textbook.html" class="progress-title"><strong>D1</strong> SQLとRDBの基礎</a>
-          <div class="progress-sub">出題比率 14% / 失点比率 11%</div>
+          <div class="progress-sub">出題比率 <span class="sql-num">14</span>% / 失点比率 <span class="sql-num">11</span>%</div>
         </div>
         <div class="priority-pill">要復習</div>
       </div>
-      <div class="meter-label"><span>進捗率</span><b>50%</b></div>
+      <div class="meter-label"><span>進捗率</span><b><span class="sql-num">50</span>%</b></div>
       <div class="bar-bg"><div class="bar-fg" style="width:50.0%;background:#e67e22"></div></div>
-      <div class="meter-label"><span>全体失点への影響</span><b>11%</b></div>
+      <div class="meter-label"><span>全体失点への影響</span><b><span class="sql-num">11</span>%</b></div>
       <div class="bar-bg bar-bg-loss"><div class="bar-fg" style="width:11.1%;background:#2c3e50"></div></div>
       <div class="trend-strip">
-        <div class="trend-box "><span>第1回</span><b>60%</b></div><div class="trend-box "><span>第2回</span><b>40%</b></div><div class="trend-box "><span>第3回</span><b>50%</b></div>
+        <div class="trend-box "><span>第1回</span><b><span class="sql-num">60</span>%</b></div><div class="trend-box "><span>第2回</span><b><span class="sql-num">40</span>%</b></div><div class="trend-box "><span>第3回</span><b><span class="sql-num">50</span>%</b></div>
       </div>
       <div class="delta-chip down">-10pt 低下</div>
       <p class="progress-note">評価: 基礎理解は残っているため、典型問題の再演習で戻しやすい。</p>
@@ -406,16 +416,16 @@
       <div class="progress-head">
         <div>
           <a href="D2_textbook.html" class="progress-title"><strong>D2</strong> データの絞り込みとソート</a>
-          <div class="progress-sub">出題比率 11% / 失点比率 7%</div>
+          <div class="progress-sub">出題比率 <span class="sql-num">11</span>% / 失点比率 <span class="sql-num">7</span>%</div>
         </div>
         <div class="priority-pill">要復習</div>
       </div>
-      <div class="meter-label"><span>進捗率</span><b>60%</b></div>
+      <div class="meter-label"><span>進捗率</span><b><span class="sql-num">60</span>%</b></div>
       <div class="bar-bg"><div class="bar-fg" style="width:60.0%;background:#f1c40f"></div></div>
-      <div class="meter-label"><span>全体失点への影響</span><b>7%</b></div>
+      <div class="meter-label"><span>全体失点への影響</span><b><span class="sql-num">7</span>%</b></div>
       <div class="bar-bg bar-bg-loss"><div class="bar-fg" style="width:6.9%;background:#2c3e50"></div></div>
       <div class="trend-strip">
-        <div class="trend-box "><span>第1回</span><b>57%</b></div><div class="trend-box "><span>第2回</span><b>67%</b></div><div class="trend-box "><span>第3回</span><b>56%</b></div>
+        <div class="trend-box "><span>第1回</span><b><span class="sql-num">57</span>%</b></div><div class="trend-box "><span>第2回</span><b><span class="sql-num">67</span>%</b></div><div class="trend-box "><span>第3回</span><b><span class="sql-num">56</span>%</b></div>
       </div>
       <div class="delta-chip flat">-2pt 横ばい</div>
       <p class="progress-note">評価: 基礎理解は残っているため、典型問題の再演習で戻しやすい。</p>
@@ -725,7 +735,7 @@
   <div class="section-heading">学習フェーズ方針</div>
   <div class="card">
     <ul class="phase-list">
-      <li><b>Phase 1:</b> 結果レポートで D8 と D3 の失点比率を確認し、失点の大きい順に手を付ける。</li><li><b>Phase 2:</b> 強化学習ページでは D6 から D8 までを優先し、類題を繰り返す。</li><li><b>Phase 3:</b> 直近模試で正答率が50%を下回った領域は、教科書の該当章を要点ごとに再暗記してから再挑戦する。</li>
+      <li><b>Phase <span class="sql-num">1</span>:</b> 結果レポートで D8 と D3 の失点比率を確認し、失点の大きい順に手を付ける。</li><li><b>Phase <span class="sql-num">2</span>:</b> 強化学習ページでは D6 から D8 までを優先し、類題を繰り返す。</li><li><b>Phase <span class="sql-num">3</span>:</b> 直近模試で正答率が50%を下回った領域は、教科書の該当章を要点ごとに再暗記してから再挑戦する。</li>
     </ul>
   </div>
 

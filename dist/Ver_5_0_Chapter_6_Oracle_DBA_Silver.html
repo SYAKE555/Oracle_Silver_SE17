@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Chapter 6 | SQL参考資料</title>
+<title>Chapter <span class="sql-num">6</span> | SQL参考資料</title>
 <style>
 :root{--bg:#f4f8fc;--card:#ffffff;--line:#d8e4f5;--pri:#1d4f91;--sec:#2f6fbe;--txt:#1f2d3d;--muted:#4c6077;--code:#f2f7fc;--kw:#1d4ed8;--obj:#0f172a;--str:#b45309}
 *{box-sizing:border-box}
@@ -36,16 +36,26 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 .top{text-align:right;margin-top:12px}
 @media(max-width:1120px){.layout{grid-template-columns:1fr}.sidebar{position:static;max-height:none}}
 
-  pre .sql-kw { color: #fbbf24; font-weight: 700; }
-  pre .sql-fn { color: #60a5fa; font-weight: 600; }
+
+  /* sql-highlight-v3 */
+  /* default (light bg): warm tone */
+  .sql-kw  { color: #92400e; font-weight: 700; }
+  .sql-fn  { color: #1e40af; font-weight: 600; }
+  .sql-str { color: #065f46; }
+  .sql-num { color: #991b1b; }
+  .sql-cmt { color: #64748b; font-style: italic; }
+  /* dark bg override (pre / code) */
+  pre .sql-kw  { color: #fbbf24; }
+  pre .sql-fn  { color: #60a5fa; }
   pre .sql-str { color: #86efac; }
   pre .sql-num { color: #fca5a5; }
-  pre .sql-cmt { color: #94a3b8; font-style: italic; }
-  code .sql-kw { color: #b45309; font-weight: 700; }
-  code .sql-fn { color: #1d4ed8; font-weight: 600; }
-  code .sql-str { color: #047857; }
-  code .sql-num { color: #b91c1c; }
-  code .sql-cmt { color: #64748b; font-style: italic; }
+  pre .sql-cmt { color: #94a3b8; }
+  code .sql-kw  { color: #fbbf24; }
+  code .sql-fn  { color: #60a5fa; }
+  code .sql-str { color: #86efac; }
+  code .sql-num { color: #fca5a5; }
+  code .sql-cmt { color: #94a3b8; }
+  /* clause-order div uses its own kw/fn/desc/note classes — no override needed */
 </style>
 </head>
 <body>
@@ -55,16 +65,16 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 <ul>
 <li><a href="#scope">スコープ宣言</a></li>
 <li><a href="#intro">第6章の学習目的</a></li>
-<li><a href="#group-func">6.1 グループ関数の定義</a></li>
-<li><a href="#count-diff">6.2 COUNT(*) と COUNT(col)</a></li>
-<li><a href="#groupby">6.3 GROUP BY</a></li>
-<li><a href="#having">6.4 HAVING</a></li>
-<li><a href="#where-vs-having">6.5 WHEREとHAVINGの責務分離</a></li>
-<li><a href="#null-agg">6.6 集約時のNULL挙動</a></li>
-<li><a href="#pseudo">6.7 疑似列（ROWID / ROWNUM）</a></li>
-<li><a href="#errors">6.8 典型エラー（ORA-00979等）</a></li>
-<li><a href="#patterns">6.9 実務集計パターン</a></li>
-<li><a href="#catalog">6.10 関数比較表</a></li>
+<li><a href="#group-func"><span class="sql-num">6.1</span> グループ関数の定義</a></li>
+<li><a href="#count-diff"><span class="sql-num">6.2</span> <span class="sql-fn">COUNT</span>(*) と <span class="sql-fn">COUNT</span>(col)</a></li>
+<li><a href="#groupby"><span class="sql-num">6.3</span> <span class="sql-kw">GROUP BY</span></a></li>
+<li><a href="#having"><span class="sql-num">6.4</span> <span class="sql-kw">HAVING</span></a></li>
+<li><a href="#where-vs-having"><span class="sql-num">6.5</span> WHEREとHAVINGの責務分離</a></li>
+<li><a href="#null-agg"><span class="sql-num">6.6</span> 集約時のNULL挙動</a></li>
+<li><a href="#pseudo"><span class="sql-num">6.7</span> 疑似列（ROWID / ROWNUM）</a></li>
+<li><a href="#errors"><span class="sql-num">6.8</span> 典型エラー（ORA-00979等）</a></li>
+<li><a href="#patterns"><span class="sql-num">6.9</span> 実務集計パターン</a></li>
+<li><a href="#catalog"><span class="sql-num">6.10</span> 関数比較表</a></li>
 <li><a href="#exam">試験ひっかけパターン集</a></li>
 <li><a href="#practice">実務アンチパターン集</a></li>
 </ul>
@@ -72,38 +82,38 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 <main class="main">
 <section class="hero" id="scope">
 <h1>Oracle DBA Silver SQL（第6章のみ）</h1>
-<p>本ファイルは第6章「集計データのレポート（GROUP BY / HAVING / 疑似列）」に集中し、集約の正確性と再現性を高密度で解説する。</p>
+<p>本ファイルは第6章「集計データのレポート（<span class="sql-kw">GROUP BY</span> / <span class="sql-kw">HAVING</span> / 疑似列）」に集中し、集約の正確性と再現性を高密度で解説する。</p>
 </section>
-<div style="background:#fff3cd;border:1px solid #ffc107;border-left:5px solid #fd7e14;border-radius:8px;padding:12px 16px;margin:14px 0;font-size:0.88rem;color:#856404;"><strong>【参考資料】</strong> このファイルは Oracle Master Silver SQL (1Z0-071) の試験範囲外の内容を含みます。OracleアーキテクチャなどDBAに関する内容は実務参考としてご利用ください。試験対策には <a href="index.html" style="color:#856404;">トップページ D1〜D8</a> を使用してください。</div>
+<div style="background:#fff3cd;border:1px solid #ffc107;border-left:5px solid #fd7e14;border-radius:8px;padding:12px 16px;margin:14px 0;font-size:0.88rem;color:#856404;"><strong>【参考資料】</strong> このファイルは Oracle Master Silver SQL (1Z0-<span class="sql-num">071</span>) の試験範囲外の内容を含みます。<br>OracleアーキテクチャなどDBAに関する内容は実務参考としてご利用ください。<br>試験対策には <a href="index.html" style="color:#856404;">トップページ D1〜D8</a> を使用してください。</div>
 <section class="card" id="intro">
 <h2>第6章の学習目的</h2>
-<p>第6章は、明細行をそのまま読む段階から「意味のある集計値を作る」段階へ進む章である。実務では部門別平均、件数、売上集計などKPIの基礎が集約SQLで作られるため、ここで誤ると経営判断まで誤る。試験でもCOUNTの差分、GROUP BY制約、HAVINGの評価位置、NULL除外挙動が頻出で、文法暗記だけでは対応できない。第6章の目標は、どの列を集約し、どの列をグループキーにするかを論理的に説明し、SQL結果の妥当性を件数ベースで検証できる状態に到達することである。</p>
-<div class="gloss"><strong>重要:</strong> 集計SQLは「見た目の数字」ではなく「意思決定の根拠」。1行の誤りが方針を誤らせる。</div>
+<p>第6章は、明細行をそのまま読む段階から「意味のある集計値を作る」段階へ進む章である。<br>実務では部門別平均、件数、売上集計などKPIの基礎が集約SQLで作られるため、ここで誤ると経営判断まで誤る。<br>試験でもCOUNTの差分、GROUP BY制約、HAVINGの評価位置、NULL除外挙動が頻出で、文法暗記だけでは対応できない。<br>第6章の目標は、どの列を集約し、どの列をグループキーにするかを論理的に説明し、SQL結果の妥当性を件数ベースで検証できる状態に到達することである。</p>
+<div class="gloss"><strong>重要:</strong> 集計SQLは「見た目の数字」ではなく「意思決定の根拠」。<br>1行の誤りが方針を誤らせる。</div>
 </section>
 <section class="card" id="group-func">
-<h2>6.1 グループ関数の定義</h2>
-<p>グループ関数は複数行を1値へ集約する関数群で、COUNT、SUM、AVG、MAX、MINが中核である。単一行関数と異なり、入力は集合で出力は集約値となる。定義上の重要点は、どの行集合を集約対象にするかがSQL全体の意味を決める点である。WHEREで先に行を絞るか、HAVINGで集約後に絞るかで結果は変わる。実務では、集計単位を誤ると同じ指標名でも中身が異なるため、グループ関数は式より文脈で理解する必要がある。</p>
+<h2><span class="sql-num">6.1</span> グループ関数の定義</h2>
+<p>グループ関数は複数行を1値へ集約する関数群で、COUNT、SUM、AVG、MAX、MINが中核である。<br>単一行関数と異なり、入力は集合で出力は集約値となる。<br>定義上の重要点は、どの行集合を集約対象にするかがSQL全体の意味を決める点である。<br>WHEREで先に行を絞るか、HAVINGで集約後に絞るかで結果は変わる。<br>実務では、集計単位を誤ると同じ指標名でも中身が異なるため、グループ関数は式より文脈で理解する必要がある。</p>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="count-diff">
-<h2>6.2 COUNT(*) と COUNT(col)</h2>
-<p>COUNT(*)は行数を数え、COUNT(col)はNULLを除いた非NULL行数を数える。この差は試験の定番論点であり、実務でも監査件数不一致の原因になる。例えば「登録件数」をCOUNT(col)で算出すると、NULL行が除外され想定より少なく見える。要件が「全件数」か「有効値件数」かを明示し、関数選択を固定しなければならない。集計式は短いが意味差が大きいため、定義書にCOUNTの種類を明記する運用が有効である。</p>
+<h2><span class="sql-num">6.2</span> <span class="sql-fn">COUNT</span>(*) と <span class="sql-fn">COUNT</span>(col)</h2>
+<p><span class="sql-fn">COUNT</span>(*)は行数を数え、<span class="sql-fn">COUNT</span>(col)はNULLを除いた非NULL行数を数える。<br>この差は試験の定番論点であり、実務でも監査件数不一致の原因になる。<br>例えば「登録件数」をCOUNT(col)で算出すると、NULL行が除外され想定より少なく見える。<br>要件が「全件数」か「有効値件数」かを明示し、関数選択を固定しなければならない。<br>集計式は短いが意味差が大きいため、定義書にCOUNTの種類を明記する運用が有効である。</p>
 <pre><code><span class="kw"><span class="sql-kw">SELECT</span></span> <span class="kw">COUNT</span>(*) <span class="kw"><span class="sql-kw">AS</span></span> <span class="obj">all_rows</span>,
        <span class="kw">COUNT</span>(<span class="obj">commission_pct</span>) <span class="kw"><span class="sql-kw">AS</span></span> <span class="obj">non_null_comm</span>
 <span class="kw"><span class="sql-kw">FROM</span></span> <span class="obj">employees</span>;</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="groupby">
-<h2>6.3 GROUP BY</h2>
-<p>GROUP BYは集約単位を定義する句であり、同じキー値を持つ行をひとつのグループとして扱う。GROUP BYに含まれない非集約列をSELECTするとORA-00979が発生する。これは制約ではなく、集約結果の一意性を守るための仕様である。実務では、キー粒度が粗すぎると情報が潰れ、細かすぎると指標が分散するため、業務要件に合う粒度設計が必要になる。GROUP BYは文法ではなく「何を1単位として語るか」の定義である。</p>
+<h2><span class="sql-num">6.3</span> <span class="sql-kw">GROUP BY</span></h2>
+<p>GROUP BYは集約単位を定義する句であり、同じキー値を持つ行をひとつのグループとして扱う。<br>GROUP BYに含まれない非集約列をSELECTするとORA-00979が発生する。<br>これは制約ではなく、集約結果の一意性を守るための仕様である。<br>実務では、キー粒度が粗すぎると情報が潰れ、細かすぎると指標が分散するため、業務要件に合う粒度設計が必要になる。<br>GROUP BYは文法ではなく「何を1単位として語るか」の定義である。</p>
 <pre><code><span class="kw"><span class="sql-kw">SELECT</span></span> <span class="obj">department_id</span>, <span class="kw">AVG</span>(<span class="obj">salary</span>) <span class="kw"><span class="sql-kw">AS</span></span> <span class="obj">avg_sal</span>
 <span class="kw"><span class="sql-kw">FROM</span></span> <span class="obj">employees</span>
 <span class="kw"><span class="sql-kw">GROUP BY</span></span> <span class="obj">department_id</span>;</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="having">
-<h2>6.4 HAVING</h2>
-<p>HAVINGは集約後のグループに対する条件句であり、集約値を使った絞り込みに使う。WHEREは行を絞る、HAVINGはグループを絞るという役割分離が基本である。実務ではHAVINGへ行条件を入れてしまい、無駄に集約して性能を落とすケースが多い。試験ではWHEREとの違いが頻出で、評価段階を理解していないと誤答しやすい。HAVINGを使う時は「この条件は集約後でしか判定できないか」を確認するのが定石である。</p>
+<h2><span class="sql-num">6.4</span> <span class="sql-kw">HAVING</span></h2>
+<p>HAVINGは集約後のグループに対する条件句であり、集約値を使った絞り込みに使う。<br>WHEREは行を絞る、HAVINGはグループを絞るという役割分離が基本である。<br>実務ではHAVINGへ行条件を入れてしまい、無駄に集約して性能を落とすケースが多い。<br>試験ではWHEREとの違いが頻出で、評価段階を理解していないと誤答しやすい。<br>HAVINGを使う時は「この条件は集約後でしか判定できないか」を確認するのが定石である。</p>
 <pre><code><span class="kw"><span class="sql-kw">SELECT</span></span> <span class="obj">department_id</span>, <span class="kw">AVG</span>(<span class="obj">salary</span>) <span class="kw"><span class="sql-kw">AS</span></span> <span class="obj">avg_sal</span>
 <span class="kw"><span class="sql-kw">FROM</span></span> <span class="obj">employees</span>
 <span class="kw"><span class="sql-kw">GROUP BY</span></span> <span class="obj">department_id</span>
@@ -111,43 +121,43 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="where-vs-having">
-<h2>6.5 WHEREとHAVINGの責務分離</h2>
-<p>WHEREは集約前、HAVINGは集約後の条件である。これを混同すると件数と性能の両方が崩れる。例えば「退職者除外」はWHEREで行い、「平均給与9000以上」はHAVINGで行うべきである。すべてHAVINGへ寄せると、不要行まで集約してから捨てるためコストが増える。試験ではこの責務差を選択肢で問う問題が多く、実務ではクエリレビュー時の最重要チェック項目になる。条件を配置する前に「判定対象は行かグループか」を必ず言語化することが重要だ。</p>
+<h2><span class="sql-num">6.5</span> WHEREとHAVINGの責務分離</h2>
+<p>WHEREは集約前、HAVINGは集約後の条件である。<br>これを混同すると件数と性能の両方が崩れる。<br>例えば「退職者除外」はWHEREで行い、「平均給与9000以上」はHAVINGで行うべきである。<br>すべてHAVINGへ寄せると、不要行まで集約してから捨てるためコストが増える。<br>試験ではこの責務差を選択肢で問う問題が多く、実務ではクエリレビュー時の最重要チェック項目になる。<br>条件を配置する前に「判定対象は行かグループか」を必ず言語化することが重要だ。</p>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="null-agg">
-<h2>6.6 集約時のNULL挙動</h2>
-<p>SUM、AVG、COUNT(col)、MAX、MINは基本的にNULLを計算対象から除外する。COUNT(*)のみNULLを含む全行を数える。この差を理解せずに指標を作ると、欠損データが見えなくなる。実務ではNULL件数を別指標として出す運用が有効で、品質監視に直結する。試験でもNULL除外は定番で、式を見た瞬間にNULLの影響を想起できるかが得点を左右する。</p>
+<h2><span class="sql-num">6.6</span> 集約時のNULL挙動</h2>
+<p>SUM、AVG、<span class="sql-fn">COUNT</span>(col)、MAX、MINは基本的にNULLを計算対象から除外する。<br><span class="sql-fn">COUNT</span>(*)のみNULLを含む全行を数える。<br>この差を理解せずに指標を作ると、欠損データが見えなくなる。<br>実務ではNULL件数を別指標として出す運用が有効で、品質監視に直結する。<br>試験でもNULL除外は定番で、式を見た瞬間にNULLの影響を想起できるかが得点を左右する。</p>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="pseudo">
-<h2>6.7 疑似列（ROWID / ROWNUM）</h2>
-<p>ROWIDは行の物理的な位置識別子、ROWNUMは取得順に付与される疑似列である。ROWNUMはORDER BY適用前に評価される文脈があるため、上位N件抽出で誤解されやすい。実務ではROWIDを更新対象特定に使う場面があるが、永続キー代替として使うべきではない。試験では疑似列の用途差と制約が問われるため、通常列と同等に扱わないことが重要である。</p>
+<h2><span class="sql-num">6.7</span> 疑似列（ROWID / ROWNUM）</h2>
+<p>ROWIDは行の物理的な位置識別子、ROWNUMは取得順に付与される疑似列である。<br>ROWNUMはORDER BY適用前に評価される文脈があるため、上位N件抽出で誤解されやすい。<br>実務ではROWIDを更新対象特定に使う場面があるが、永続キー代替として使うべきではない。<br>試験では疑似列の用途差と制約が問われるため、通常列と同等に扱わないことが重要である。</p>
 <pre><code><span class="kw"><span class="sql-kw">SELECT</span></span> <span class="obj">rowid</span>, <span class="obj">employee_id</span>
 <span class="kw"><span class="sql-kw">FROM</span></span> <span class="obj">employees</span>
 <span class="kw"><span class="sql-kw">WHERE</span></span> <span class="obj">rownum</span> &lt;= <span class="obj"><span class="sql-num">5</span></span>;</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="errors">
-<h2>6.8 典型エラー（ORA-00979等）</h2>
-<div class="warn"><b>ORA-00979:</b> GROUP BYにない非集約列をSELECTした場合に発生。修正は集約化またはGROUP BY追加。</div>
-<div class="warn"><b>論理エラー:</b> WHEREとHAVINGの配置誤りで件数が変わる。修正は条件責務の再分離。</div>
-<div class="warn"><b>件数誤解:</b> COUNT(col)を全件数として使う。修正はCOUNT(*)との使い分け明示。</div>
+<h2><span class="sql-num">6.8</span> 典型エラー（ORA-00979等）</h2>
+<div class="warn"><b>ORA-<span class="sql-num">00979</span>:</b> GROUP BYにない非集約列をSELECTした場合に発生。<br>修正は集約化またはGROUP BY追加。</div>
+<div class="warn"><b>論理エラー:</b> WHEREとHAVINGの配置誤りで件数が変わる。<br>修正は条件責務の再分離。</div>
+<div class="warn"><b>件数誤解:</b> <span class="sql-fn">COUNT</span>(col)を全件数として使う。<br>修正はCOUNT(*)との使い分け明示。</div>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="patterns">
-<h2>6.9 実務集計パターン</h2>
-<p>実務では「前処理WHERE」「集約GROUP BY」「閾値HAVING」「出力ORDER BY」の順で組み立てると再利用しやすい。まず不要行を除外し、次に集約粒度を定義し、最後に閾値条件を掛ける。このパターンを標準化するとレビュー効率が上がる。さらに件数検証用SQLを並行作成しておくと、集計結果の妥当性確認が早い。集約SQLは単発で書くのではなく、検証手順込みでテンプレート化するべきである。</p>
+<h2><span class="sql-num">6.9</span> 実務集計パターン</h2>
+<p>実務では「前処理WHERE」「集約GROUP <span class="sql-kw">BY</span>」「閾値HAVING」「出力ORDER <span class="sql-kw">BY</span>」の順で組み立てると再利用しやすい。<br>まず不要行を除外し、次に集約粒度を定義し、最後に閾値条件を掛ける。<br>このパターンを標準化するとレビュー効率が上がる。<br>さらに件数検証用SQLを並行作成しておくと、集計結果の妥当性確認が早い。<br>集約SQLは単発で書くのではなく、検証手順込みでテンプレート化するべきである。</p>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="catalog">
-<h2>6.10 関数比較表</h2>
+<h2><span class="sql-num">6.10</span> 関数比較表</h2>
 <div class="table-wrap"><table>
 <tr><th>関数</th><th>意味</th><th>NULL扱い</th><th>代表用途</th></tr>
-<tr><td>COUNT(*)</td><td>全行数</td><td>NULL含む</td><td>母数確認</td></tr>
-<tr><td>COUNT(col)</td><td>非NULL行数</td><td>NULL除外</td><td>入力充足率</td></tr>
-<tr><td>SUM(col)</td><td>合計</td><td>NULL除外</td><td>売上・数量集計</td></tr>
-<tr><td>AVG(col)</td><td>平均</td><td>NULL除外</td><td>KPI平均値</td></tr>
+<tr><td><span class="sql-fn">COUNT</span>(*)</td><td>全行数</td><td>NULL含む</td><td>母数確認</td></tr>
+<tr><td><span class="sql-fn">COUNT</span>(col)</td><td>非NULL行数</td><td>NULL除外</td><td>入力充足率</td></tr>
+<tr><td><span class="sql-fn">SUM</span>(col)</td><td>合計</td><td>NULL除外</td><td>売上・数量集計</td></tr>
+<tr><td><span class="sql-fn">AVG</span>(col)</td><td>平均</td><td>NULL除外</td><td>KPI平均値</td></tr>
 <tr><td>MAX/MIN</td><td>最大/最小</td><td>NULL除外</td><td>レンジ確認</td></tr>
 </table></div>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
@@ -155,7 +165,7 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 
 <section class="card" id="exam">
 <h2>第6章 試験ひっかけパターン集</h2>
-<div class="warn"><b>ひっかけ1:</b> COUNT(*) と COUNT(col) は同じか → 違う。</div>
+<div class="warn"><b>ひっかけ1:</b> <span class="sql-fn">COUNT</span>(*) と <span class="sql-fn">COUNT</span>(col) は同じか → 違う。</div>
 <div class="warn"><b>ひっかけ2:</b> HAVINGは行レベル条件か → いいえ、グループ条件。</div>
 <div class="warn"><b>ひっかけ3:</b> GROUP BY外の列をSELECTできるか → できない。</div>
 <div class="warn"><b>ひっかけ4:</b> SUMはNULLを0扱いで加算するか → 除外する。</div>
@@ -168,7 +178,7 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 <tr><th>アンチパターン</th><th>起きる障害</th><th>予防策</th></tr>
 <tr><td>GROUP BY粒度の誤設定</td><td>指標が過粗/過細</td><td>業務単位を先に定義</td></tr>
 <tr><td>HAVINGへ行条件を記述</td><td>性能劣化</td><td>行条件はWHEREへ移動</td></tr>
-<tr><td>COUNT(col)を全件数扱い</td><td>件数不一致</td><td>COUNT(*)と用途分離</td></tr>
+<tr><td><span class="sql-fn">COUNT</span>(col)を全件数扱い</td><td>件数不一致</td><td><span class="sql-fn">COUNT</span>(*)と用途分離</td></tr>
 <tr><td>ORA-00979を場当たり修正</td><td>意図不明SQL化</td><td>集約ロジックを再設計</td></tr>
 </table></div>
 <div class="note"><strong>第6章完了基準:</strong> 集約粒度・条件責務・NULL挙動を説明し、集計値の妥当性を件数で検証できること。</div>

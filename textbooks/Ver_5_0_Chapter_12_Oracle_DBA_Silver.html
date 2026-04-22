@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Chapter 12 | SQL参考資料</title>
+<title>Chapter <span class="sql-num">12</span> | SQL参考資料</title>
 <style>
 :root{--bg:#f4f8fc;--card:#ffffff;--line:#d8e4f5;--pri:#1d4f91;--sec:#2f6fbe;--txt:#1f2d3d;--code:#f2f7fc}
 *{box-sizing:border-box}
@@ -26,16 +26,26 @@ code{font-family:"Consolas","Monaco",monospace;font-size:.88rem}
 .top{text-align:right;margin-top:12px}
 @media(max-width:1120px){.layout{grid-template-columns:1fr}.sidebar{position:static;max-height:none}}
 
-  pre .sql-kw { color: #fbbf24; font-weight: 700; }
-  pre .sql-fn { color: #60a5fa; font-weight: 600; }
+
+  /* sql-highlight-v3 */
+  /* default (light bg): warm tone */
+  .sql-kw  { color: #92400e; font-weight: 700; }
+  .sql-fn  { color: #1e40af; font-weight: 600; }
+  .sql-str { color: #065f46; }
+  .sql-num { color: #991b1b; }
+  .sql-cmt { color: #64748b; font-style: italic; }
+  /* dark bg override (pre / code) */
+  pre .sql-kw  { color: #fbbf24; }
+  pre .sql-fn  { color: #60a5fa; }
   pre .sql-str { color: #86efac; }
   pre .sql-num { color: #fca5a5; }
-  pre .sql-cmt { color: #94a3b8; font-style: italic; }
-  code .sql-kw { color: #b45309; font-weight: 700; }
-  code .sql-fn { color: #1d4ed8; font-weight: 600; }
-  code .sql-str { color: #047857; }
-  code .sql-num { color: #b91c1c; }
-  code .sql-cmt { color: #64748b; font-style: italic; }
+  pre .sql-cmt { color: #94a3b8; }
+  code .sql-kw  { color: #fbbf24; }
+  code .sql-fn  { color: #60a5fa; }
+  code .sql-str { color: #86efac; }
+  code .sql-num { color: #fca5a5; }
+  code .sql-cmt { color: #94a3b8; }
+  /* clause-order div uses its own kw/fn/desc/note classes — no override needed */
 </style>
 </head>
 <body>
@@ -45,16 +55,16 @@ code{font-family:"Consolas","Monaco",monospace;font-size:.88rem}
 <ul>
 <li><a href="#scope">スコープ宣言</a></li>
 <li><a href="#intro">第12章の学習目的</a></li>
-<li><a href="#view-basic">12.1 ビューの定義と役割</a></li>
-<li><a href="#create-view">12.2 CREATE VIEW</a></li>
-<li><a href="#simple-complex">12.3 単純ビューと複雑ビュー</a></li>
-<li><a href="#dml-view">12.4 ビュー経由DMLの可否</a></li>
-<li><a href="#check-option">12.5 WITH CHECK OPTION</a></li>
-<li><a href="#read-only">12.6 WITH READ ONLY</a></li>
-<li><a href="#replace-drop">12.7 OR REPLACEとDROP VIEW</a></li>
-<li><a href="#dict">12.8 辞書ビューで確認</a></li>
-<li><a href="#errors">12.9 典型エラーと修正</a></li>
-<li><a href="#patterns">12.10 実務運用パターン</a></li>
+<li><a href="#view-basic"><span class="sql-num">12.1</span> ビューの定義と役割</a></li>
+<li><a href="#create-view"><span class="sql-num">12.2</span> <span class="sql-kw">CREATE VIEW</span></a></li>
+<li><a href="#simple-complex"><span class="sql-num">12.3</span> 単純ビューと複雑ビュー</a></li>
+<li><a href="#dml-view"><span class="sql-num">12.4</span> ビュー経由DMLの可否</a></li>
+<li><a href="#check-option"><span class="sql-num">12.5</span> <span class="sql-kw">WITH CHECK OPTION</span></a></li>
+<li><a href="#read-only"><span class="sql-num">12.6</span> <span class="sql-kw">WITH READ ONLY</span></a></li>
+<li><a href="#replace-drop"><span class="sql-num">12.7</span> <span class="sql-kw">OR</span> REPLACEとDROP <span class="sql-kw">VIEW</span></a></li>
+<li><a href="#dict"><span class="sql-num">12.8</span> 辞書ビューで確認</a></li>
+<li><a href="#errors"><span class="sql-num">12.9</span> 典型エラーと修正</a></li>
+<li><a href="#patterns"><span class="sql-num">12.10</span> 実務運用パターン</a></li>
 <li><a href="#exam">試験ひっかけパターン集</a></li>
 <li><a href="#practice">実務アンチパターン集</a></li>
 </ul>
@@ -64,20 +74,20 @@ code{font-family:"Consolas","Monaco",monospace;font-size:.88rem}
 <h1>Oracle DBA Silver SQL（第12章のみ）</h1>
 <p>本ファイルは第12章「ビューの管理」に集中し、抽象化・権限制御・更新可否を実務目線で高密度に解説する。</p>
 </section>
-<div style="background:#fff3cd;border:1px solid #ffc107;border-left:5px solid #fd7e14;border-radius:8px;padding:12px 16px;margin:14px 0;font-size:0.88rem;color:#856404;"><strong>【参考資料】</strong> このファイルは Oracle Master Silver SQL (1Z0-071) の試験範囲外の内容を含みます。OracleアーキテクチャなどDBAに関する内容は実務参考としてご利用ください。試験対策には <a href="index.html" style="color:#856404;">トップページ D1〜D8</a> を使用してください。</div>
+<div style="background:#fff3cd;border:1px solid #ffc107;border-left:5px solid #fd7e14;border-radius:8px;padding:12px 16px;margin:14px 0;font-size:0.88rem;color:#856404;"><strong>【参考資料】</strong> このファイルは Oracle Master Silver SQL (1Z0-<span class="sql-num">071</span>) の試験範囲外の内容を含みます。<br>OracleアーキテクチャなどDBAに関する内容は実務参考としてご利用ください。<br>試験対策には <a href="index.html" style="color:#856404;">トップページ D1〜D8</a> を使用してください。</div>
 <section class="card" id="intro">
 <h2>第12章の学習目的</h2>
-<p>第12章では、表を直接公開せずに必要列・必要行だけを提供するビューを扱う。ビューは見た目上は表に近いが、実体データを持たない論理的オブジェクトであり、SELECT文を名前付きで再利用する仕組みである。試験では「単純ビューは更新可能になり得る」「集合関数やGROUP BYを含む複雑ビューは更新制約が強い」「WITH CHECK OPTIONとWITH READ ONLYの違い」が頻出である。実務ではセキュリティ境界、アプリ向け抽象化、SQL再利用性向上に効果が大きい。到達点は、どの場面でビューを使うべきか、どの条件で更新不可になるかを説明できることである。</p>
+<p>第12章では、表を直接公開せずに必要列・必要行だけを提供するビューを扱う。<br>ビューは見た目上は表に近いが、実体データを持たない論理的オブジェクトであり、SELECT文を名前付きで再利用する仕組みである。<br>試験では「単純ビューは更新可能になり得る」「集合関数やGROUP BYを含む複雑ビューは更新制約が強い」「<span class="sql-kw">WITH</span> <span class="sql-kw">CHECK</span> OPTIONとWITH READ ONLYの違い」が頻出である。<br>実務ではセキュリティ境界、アプリ向け抽象化、SQL再利用性向上に効果が大きい。<br>到達点は、どの場面でビューを使うべきか、どの条件で更新不可になるかを説明できることである。</p>
 <div class="note"><strong>重要:</strong> ビューは便利だが、基表変更の影響を受けるため依存管理を怠ると障害化する。</div>
 </section>
 <section class="card" id="view-basic">
-<h2>12.1 ビューの定義と役割</h2>
-<p>ビューは「SELECT文に名前を付けた仮想表」である。役割は主に3つあり、第一に複雑な結合や条件を隠蔽して利用者のSQLを簡素化すること、第二に列・行を制限して不要情報の露出を防ぐこと、第三にロジックを共通化して仕様変更時の修正箇所を減らすことである。試験では「ビューはデータを保持しない」が基本で、実務では「どの層で責務を持たせるか」が設計の急所になる。業務で使う際は、ビュー定義をAPI契約として扱い、後方互換を意識して変更することが重要である。</p>
+<h2><span class="sql-num">12.1</span> ビューの定義と役割</h2>
+<p>ビューは「SELECT文に名前を付けた仮想表」である。<br>役割は主に3つあり、第一に複雑な結合や条件を隠蔽して利用者のSQLを簡素化すること、第二に列・行を制限して不要情報の露出を防ぐこと、第三にロジックを共通化して仕様変更時の修正箇所を減らすことである。<br>試験では「ビューはデータを保持しない」が基本で、実務では「どの層で責務を持たせるか」が設計の急所になる。<br>業務で使う際は、ビュー定義をAPI契約として扱い、後方互換を意識して変更することが重要である。</p>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="create-view">
-<h2>12.2 CREATE VIEW</h2>
-<p>CREATE VIEWはビュー定義を作成する命令である。列エイリアスを明示すると、利用側の可読性が上がり、後続の帳票・BI利用が安定する。試験では構文順序、列名指定、`OR REPLACE`の挙動が問われやすい。実務では基表の列名をそのまま出さず、ドメイン語彙へ置き換えることで仕様理解が進む。一方、SELECT * を使うと基表列追加時に意図しない露出が起きるため、列は明示が原則である。</p>
+<h2><span class="sql-num">12.2</span> <span class="sql-kw">CREATE VIEW</span></h2>
+<p><span class="sql-kw">CREATE</span> VIEWはビュー定義を作成する命令である。<br>列エイリアスを明示すると、利用側の可読性が上がり、後続の帳票・BI利用が安定する。<br>試験では構文順序、列名指定、`<span class="sql-kw">OR</span> REPLACE`の挙動が問われやすい。<br>実務では基表の列名をそのまま出さず、ドメイン語彙へ置き換えることで仕様理解が進む。<br>一方、<span class="sql-kw">SELECT</span> * を使うと基表列追加時に意図しない露出が起きるため、列は明示が原則である。</p>
 <pre><code><span class="sql-kw">CREATE VIEW</span> v_active_employees <span class="sql-kw">AS</span>
 <span class="sql-kw">SELECT</span> employee_id, last_name, department_id, salary
 <span class="sql-kw">FROM</span> employees
@@ -85,19 +95,19 @@ code{font-family:"Consolas","Monaco",monospace;font-size:.88rem}
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="simple-complex">
-<h2>12.3 単純ビューと複雑ビュー</h2>
-<p>単純ビューは原則として1表ベースで、集合関数・GROUP BY・DISTINCTなどを含まない。条件次第でDML可能になる。一方、複雑ビューは複数表結合、集計、集合演算を含み、更新制約が強くなる。試験では「どの定義なら更新可能か」を判定させる問題が多い。実務では読み取り専用の分析ビューと、更新を許可する業務入力ビューを分離するのが安全である。用途を混在させると、運用時に権限設計が破綻しやすい。</p>
+<h2><span class="sql-num">12.3</span> 単純ビューと複雑ビュー</h2>
+<p>単純ビューは原則として1表ベースで、集合関数・<span class="sql-kw">GROUP BY</span>・DISTINCTなどを含まない。<br>条件次第でDML可能になる。<br>一方、複雑ビューは複数表結合、集計、集合演算を含み、更新制約が強くなる。<br>試験では「どの定義なら更新可能か」を判定させる問題が多い。<br>実務では読み取り専用の分析ビューと、更新を許可する業務入力ビューを分離するのが安全である。<br>用途を混在させると、運用時に権限設計が破綻しやすい。</p>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="dml-view">
-<h2>12.4 ビュー経由DMLの可否</h2>
-<p>ビュー経由のINSERT/UPDATE/DELETEは、定義内容に依存して可能または不可となる。単純ビューでも、必須列が露出していない、計算列を含む、キー保全性が崩れる場合は失敗する。試験では「更新不可要因の識別」が得点ポイントである。実務では更新用途ビューを設計する場合、必須列露出・制約整合・業務制約を先に確認する。エラー発生後に調整するのではなく、ビュー定義時に更新シナリオを検証しておくことが重要である。</p>
-<div class="warn"><b>注意:</b> 「ビュー=常に更新不可」でも「単純ビュー=常に更新可」でもない。条件判定が必要。</div>
+<h2><span class="sql-num">12.4</span> ビュー経由DMLの可否</h2>
+<p>ビュー経由のINSERT/<span class="sql-kw">UPDATE</span>/DELETEは、定義内容に依存して可能または不可となる。<br>単純ビューでも、必須列が露出していない、計算列を含む、キー保全性が崩れる場合は失敗する。<br>試験では「更新不可要因の識別」が得点ポイントである。<br>実務では更新用途ビューを設計する場合、必須列露出・制約整合・業務制約を先に確認する。<br>エラー発生後に調整するのではなく、ビュー定義時に更新シナリオを検証しておくことが重要である。</p>
+<div class="warn"><b>注意:</b> 「ビュー=常に更新不可」でも「単純ビュー=常に更新可」でもない。<br>条件判定が必要。</div>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="check-option">
-<h2>12.5 WITH CHECK OPTION</h2>
-<p>`WITH CHECK OPTION`は、ビュー定義の条件を満たす行だけ更新/挿入を許可する。例えば「部署50のみを表示するビュー」で部署60へ変更しようとすると拒否される。試験では「更新後もビュー条件を満たす必要がある」という意味理解が重要である。実務では業務境界の逸脱防止に有効で、担当部門以外のデータ改変を防げる。アプリ側バリデーションだけに依存せず、DB層で強制することで監査適合性も高まる。</p>
+<h2><span class="sql-num">12.5</span> <span class="sql-kw">WITH CHECK OPTION</span></h2>
+<p>`<span class="sql-kw">WITH CHECK OPTION</span>`は、ビュー定義の条件を満たす行だけ更新/挿入を許可する。<br>例えば「部署50のみを表示するビュー」で部署60へ変更しようとすると拒否される。<br>試験では「更新後もビュー条件を満たす必要がある」という意味理解が重要である。<br>実務では業務境界の逸脱防止に有効で、担当部門以外のデータ改変を防げる。<br>アプリ側バリデーションだけに依存せず、DB層で強制することで監査適合性も高まる。</p>
 <pre><code><span class="sql-kw">CREATE OR REPLACE</span> <span class="sql-kw">VIEW</span> v_dept50 <span class="sql-kw">AS</span>
 <span class="sql-kw">SELECT</span> employee_id, last_name, department_id, salary
 <span class="sql-kw">FROM</span> employees
@@ -106,18 +116,18 @@ code{font-family:"Consolas","Monaco",monospace;font-size:.88rem}
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="read-only">
-<h2>12.6 WITH READ ONLY</h2>
-<p>`WITH READ ONLY`はビュー経由DMLを全面禁止し、参照専用窓口として固定する。分析・配布用途では更新意図がないため、誤更新防止に有効である。試験ではCHECK OPTIONとの違いを問う比較問題が多い。CHECK OPTIONは条件内更新を許すが、READ ONLYは一切許さない。実務では権限管理と組み合わせて「参照は許可、更新は基表の管理者のみ」という分離を実現できる。運用事故の多くは「更新できる必要がない場所で更新できる」ことから起きるため、READ ONLYは安価で強い対策である。</p>
+<h2><span class="sql-num">12.6</span> <span class="sql-kw">WITH READ ONLY</span></h2>
+<p>`<span class="sql-kw">WITH READ ONLY</span>`はビュー経由DMLを全面禁止し、参照専用窓口として固定する。<br>分析・配布用途では更新意図がないため、誤更新防止に有効である。<br>試験ではCHECK OPTIONとの違いを問う比較問題が多い。<br><span class="sql-kw">CHECK</span> OPTIONは条件内更新を許すが、READ ONLYは一切許さない。<br>実務では権限管理と組み合わせて「参照は許可、更新は基表の管理者のみ」という分離を実現できる。<br>運用事故の多くは「更新できる必要がない場所で更新できる」ことから起きるため、READ ONLYは安価で強い対策である。</p>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="replace-drop">
-<h2>12.7 OR REPLACEとDROP VIEW</h2>
-<p>`CREATE OR REPLACE VIEW`は既存ビュー定義を置換する。再作成に比べて権限再付与漏れを抑えやすいが、列仕様変更は依存オブジェクトへ影響するため注意が必要である。`DROP VIEW`は定義削除であり、利用中SQLやアプリが即時失敗しうる。試験ではOR REPLACEの意味、DROPの影響範囲が狙われる。実務では依存調査（パッケージ、レポート、ETL）を先に実施し、段階リリースで置換するのが安全である。</p>
+<h2><span class="sql-num">12.7</span> <span class="sql-kw">OR</span> REPLACEとDROP <span class="sql-kw">VIEW</span></h2>
+<p>`<span class="sql-kw">CREATE OR REPLACE</span> <span class="sql-kw">VIEW</span>`は既存ビュー定義を置換する。<br>再作成に比べて権限再付与漏れを抑えやすいが、列仕様変更は依存オブジェクトへ影響するため注意が必要である。<br>`<span class="sql-kw">DROP VIEW</span>`は定義削除であり、利用中SQLやアプリが即時失敗しうる。<br>試験ではOR REPLACEの意味、DROPの影響範囲が狙われる。<br>実務では依存調査（パッケージ、レポート、ETL）を先に実施し、段階リリースで置換するのが安全である。</p>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="dict">
-<h2>12.8 辞書ビューで確認</h2>
-<p>ビュー管理では辞書ビュー確認が必須である。`USER_VIEWS`で定義SQL、`USER_TAB_COLUMNS`で公開列、`USER_UPDATABLE_COLUMNS`で更新可能列を確認できる。試験ではどの辞書ビューを使うかを問う問題があるため、目的別に覚える。実務では定義変更後に「想定列が公開されているか」「更新可否が意図通りか」を検証し、手順書へ記録する。ビューは論理層である分、見た目だけで正否判断しにくいので、辞書で客観確認する習慣が品質を支える。</p>
+<h2><span class="sql-num">12.8</span> 辞書ビューで確認</h2>
+<p>ビュー管理では辞書ビュー確認が必須である。<br>`USER_VIEWS`で定義SQL、`USER_TAB_COLUMNS`で公開列、`USER_UPDATABLE_COLUMNS`で更新可能列を確認できる。<br>試験ではどの辞書ビューを使うかを問う問題があるため、目的別に覚える。<br>実務では定義変更後に「想定列が公開されているか」「更新可否が意図通りか」を検証し、手順書へ記録する。<br>ビューは論理層である分、見た目だけで正否判断しにくいので、辞書で客観確認する習慣が品質を支える。</p>
 <pre><code><span class="sql-kw">SELECT</span> column_name, updatable
 <span class="sql-kw">FROM</span> user_updatable_columns
 <span class="sql-kw">WHERE</span> table_name = <span class="sql-str">'V_ACTIVE_EMPLOYEES'</span>
@@ -125,26 +135,26 @@ code{font-family:"Consolas","Monaco",monospace;font-size:.88rem}
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="errors">
-<h2>12.9 典型エラーと修正</h2>
-<div class="warn"><b>失敗1:</b> SELECT * でビュー作成し列増加で情報露出。<b>修正:</b> 公開列を明示する。</div>
+<h2><span class="sql-num">12.9</span> 典型エラーと修正</h2>
+<div class="warn"><b>失敗1:</b> <span class="sql-kw">SELECT</span> * でビュー作成し列増加で情報露出。<b>修正:</b> 公開列を明示する。</div>
 <div class="warn"><b>失敗2:</b> 更新不可ビューでDML実行。<b>修正:</b> 定義要因を確認し用途別に分離。</div>
-<div class="warn"><b>失敗3:</b> OR REPLACE時に依存影響未調査。<b>修正:</b> 依存オブジェクト一覧を事前確認。</div>
+<div class="warn"><b>失敗3:</b> <span class="sql-kw">OR</span> REPLACE時に依存影響未調査。<b>修正:</b> 依存オブジェクト一覧を事前確認。</div>
 <div class="warn"><b>失敗4:</b> READ ONLYを付けず誤更新。<b>修正:</b> 参照専用ビューは明示的に固定。</div>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="patterns">
-<h2>12.10 実務運用パターン</h2>
-<p>実務で推奨されるのは、用途別にビュー層を分割する方式である。外部公開・帳票向けはREAD ONLY、業務更新向けは単純ビュー＋CHECK OPTION、内部分析向けは複雑ビューとし、責務を混ぜない。これにより権限設計が単純化し、事故時切り分けも容易になる。試験対策としては、更新可能性の判定軸を言語化して覚えると応用問題にも対応できる。ビューは単なる省略記法ではなく、データ提供契約を設計する手段として扱うべきである。</p>
+<h2><span class="sql-num">12.10</span> 実務運用パターン</h2>
+<p>実務で推奨されるのは、用途別にビュー層を分割する方式である。<br>外部公開・帳票向けはREAD <span class="sql-kw">ONLY</span>、業務更新向けは単純ビュー＋<span class="sql-kw">CHECK</span> OPTION、内部分析向けは複雑ビューとし、責務を混ぜない。<br>これにより権限設計が単純化し、事故時切り分けも容易になる。<br>試験対策としては、更新可能性の判定軸を言語化して覚えると応用問題にも対応できる。<br>ビューは単なる省略記法ではなく、データ提供契約を設計する手段として扱うべきである。</p>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 
 <section class="card" id="exam">
 <h2>第12章 試験ひっかけパターン集</h2>
-<div class="warn"><b>ひっかけ1:</b> ビューは必ず更新不可か → いいえ。定義次第で可能。</div>
-<div class="warn"><b>ひっかけ2:</b> CHECK OPTIONはDML全面禁止か → いいえ。条件内は許可される。</div>
-<div class="warn"><b>ひっかけ3:</b> READ ONLYとCHECK OPTIONは同じか → いいえ。目的が異なる。</div>
-<div class="warn"><b>ひっかけ4:</b> OR REPLACEは依存影響ゼロか → いいえ。列変更で影響あり。</div>
-<div class="warn"><b>ひっかけ5:</b> ビュー定義確認はUSER_TABLESでよいか → いいえ。USER_VIEWS等を使う。</div>
+<div class="warn"><b>ひっかけ1:</b> ビューは必ず更新不可か → いいえ。<br>定義次第で可能。</div>
+<div class="warn"><b>ひっかけ2:</b> <span class="sql-kw">CHECK</span> OPTIONはDML全面禁止か → いいえ。<br>条件内は許可される。</div>
+<div class="warn"><b>ひっかけ3:</b> READ ONLYとCHECK OPTIONは同じか → いいえ。<br>目的が異なる。</div>
+<div class="warn"><b>ひっかけ4:</b> <span class="sql-kw">OR</span> REPLACEは依存影響ゼロか → いいえ。<br>列変更で影響あり。</div>
+<div class="warn"><b>ひっかけ5:</b> ビュー定義確認はUSER_TABLESでよいか → いいえ。<br>USER_VIEWS等を使う。</div>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="practice">

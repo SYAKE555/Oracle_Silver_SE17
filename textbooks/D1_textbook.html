@@ -69,16 +69,26 @@
         .breadcrumb a { color: #c0392b; text-decoration: none; }
         .intro-box { background: #fff8f8; border: 1px solid #f0a0a0; border-radius: 8px; padding: 16px; margin-bottom: 24px; }
         
-  pre .sql-kw { color: #fbbf24; font-weight: 700; }
-  pre .sql-fn { color: #60a5fa; font-weight: 600; }
+
+  /* sql-highlight-v3 */
+  /* default (light bg): warm tone */
+  .sql-kw  { color: #92400e; font-weight: 700; }
+  .sql-fn  { color: #1e40af; font-weight: 600; }
+  .sql-str { color: #065f46; }
+  .sql-num { color: #991b1b; }
+  .sql-cmt { color: #64748b; font-style: italic; }
+  /* dark bg override (pre / code) */
+  pre .sql-kw  { color: #fbbf24; }
+  pre .sql-fn  { color: #60a5fa; }
   pre .sql-str { color: #86efac; }
   pre .sql-num { color: #fca5a5; }
-  pre .sql-cmt { color: #94a3b8; font-style: italic; }
-  code .sql-kw { color: #b45309; font-weight: 700; }
-  code .sql-fn { color: #1d4ed8; font-weight: 600; }
-  code .sql-str { color: #047857; }
-  code .sql-num { color: #b91c1c; }
-  code .sql-cmt { color: #64748b; font-style: italic; }
+  pre .sql-cmt { color: #94a3b8; }
+  code .sql-kw  { color: #fbbf24; }
+  code .sql-fn  { color: #60a5fa; }
+  code .sql-str { color: #86efac; }
+  code .sql-num { color: #fca5a5; }
+  code .sql-cmt { color: #94a3b8; }
+  /* clause-order div uses its own kw/fn/desc/note classes — no override needed */
 </style>
 </head>
 <body>
@@ -87,10 +97,10 @@
 </div>
 <div class="page-header">
   <h1>D1: SQLとリレーショナルデータベースの基礎</h1>
-  <div class="subtitle">Oracle Database SQL (1Z0-071) 対策</div>
+  <div class="subtitle">Oracle Database SQL (1Z0-<span class="sql-num">071</span>) 対策</div>
 </div>
 <div class="container">
-  <div class="intro-box">リレーショナルデータベースの基本概念とSQLの基本構文を学びます。データベースがどのように機能するか、SELECT文でどのようにデータを取得するかを理解しましょう。</div>
+  <div class="intro-box">リレーショナルデータベースの基本概念とSQLの基本構文を学びます。<br>データベースがどのように機能するか、SELECT文でどのようにデータを取得するかを理解しましょう。</div>
 
   <!-- コマンド覚え方リファレンス -->
   <div class="section-card">
@@ -105,7 +115,7 @@
         <th>試験での出方（頻出パターン）</th>
       </tr>
       <tr>
-        <td>SELECT</td>
+        <td><span class="sql-kw">SELECT</span></td>
         <td>列を選択する</td>
         <td>「セレクト＝選ぶ」→取得したい列を選ぶ命令</td>
         <td>データの取得・表示</td>
@@ -113,15 +123,15 @@
         <td>SELECT文の基本構造・実行結果の確認</td>
       </tr>
       <tr>
-        <td>FROM</td>
+        <td><span class="sql-kw">FROM</span></td>
         <td>どのテーブルから</td>
         <td>「フロム＝〜から」→データの出どころを指定</td>
         <td>テーブル指定</td>
         <td>使う（必須）</td>
-        <td>DUAL テーブルとの組み合わせ</td>
+        <td><span class="sql-kw">DUAL</span> テーブルとの組み合わせ</td>
       </tr>
       <tr>
-        <td>WHERE</td>
+        <td><span class="sql-kw">WHERE</span></td>
         <td>条件を指定する</td>
         <td>「ウェア＝どこ・何」→「どの条件の行か」を絞る</td>
         <td>行の絞り込み</td>
@@ -133,21 +143,21 @@
         <td>全列を選択</td>
         <td>「星＝全部」→星が輝くように全列を一括取得</td>
         <td>全列取得・確認用</td>
-        <td>条件付き（開発・確認時のみ。本番は列指定推奨）</td>
-        <td>SELECT * の動作確認問題</td>
+        <td>条件付き（開発・確認時のみ。<br>本番は列指定推奨）</td>
+        <td><span class="sql-kw">SELECT</span> * の動作確認問題</td>
       </tr>
       <tr>
-        <td>DISTINCT</td>
+        <td><span class="sql-kw">DISTINCT</span></td>
         <td>重複を排除する</td>
         <td>「ディスティンクト＝区別する」→同じ値をまとめる</td>
         <td>一意な値の取得</td>
         <td>条件付き（重複排除が必要な場合）</td>
-        <td>DISTINCT と NULL の扱い、COUNT(DISTINCT) との組み合わせ</td>
+        <td><span class="sql-kw">DISTINCT</span> と <span class="sql-kw">NULL</span> の扱い、<span class="sql-fn">COUNT</span>(<span class="sql-kw">DISTINCT</span>) との組み合わせ</td>
       </tr>
       <tr>
-        <td>AS（列別名）</td>
+        <td><span class="sql-kw">AS</span>（列別名）</td>
         <td>列に別名をつける</td>
-        <td>「As = として・として呼ぶ」→SALARY AS 給与</td>
+        <td>「As = として・として呼ぶ」→SALARY <span class="sql-kw">AS</span> 給与</td>
         <td>出力列名のカスタマイズ</td>
         <td>使う（レポート・結合時に頻用）</td>
         <td>ダブルクォートの有無・AS省略の可否</td>
@@ -158,23 +168,23 @@
         <td>「パイプ2本＝つなぐ」→文字列をひとつに結合</td>
         <td>文字列の結合・フォーマット</td>
         <td>使う（氏名結合など）</td>
-        <td>連結結果・NULL を含む場合の挙動</td>
+        <td>連結結果・<span class="sql-kw">NULL</span> を含む場合の挙動</td>
       </tr>
       <tr>
-        <td>IS NULL</td>
-        <td>値が NULL である</td>
+        <td><span class="sql-kw">IS NULL</span></td>
+        <td>値が <span class="sql-kw">NULL</span> である</td>
         <td>「イズ ヌル＝ゼロじゃなく『ない』」→空欄チェック</td>
         <td>NULL値の行を抽出</td>
         <td>使う（NULL判定は必須知識）</td>
-        <td>= NULL との比較・IS NULL の正しい使い方</td>
+        <td>= <span class="sql-kw">NULL</span> との比較・<span class="sql-kw">IS NULL</span> の正しい使い方</td>
       </tr>
       <tr>
-        <td>IS NOT NULL</td>
-        <td>値が NULL でない</td>
+        <td><span class="sql-kw">IS NOT NULL</span></td>
+        <td>値が <span class="sql-kw">NULL</span> でない</td>
         <td>「イズ ノット ヌル＝値がある行」→入力済み確認</td>
         <td>非NULL行の抽出</td>
         <td>使う（データ完全性チェック）</td>
-        <td>IS NULL との組み合わせ問題</td>
+        <td><span class="sql-kw">IS NULL</span> との組み合わせ問題</td>
       </tr>
     </table>
   </div>
@@ -201,42 +211,42 @@
       <tr>
         <td>DQL</td>
         <td>Data Query Language</td>
-        <td>データ照会言語。SELECT が該当する（DML に含める場合もある）</td>
+        <td>データ照会言語。<br><span class="sql-kw">SELECT</span> が該当する（DML に含める場合もある）</td>
       </tr>
       <tr>
         <td>DML</td>
         <td>Data Manipulation Language</td>
-        <td>データ操作言語。INSERT / UPDATE / DELETE（試験では SELECT を除く場合が多い）</td>
+        <td>データ操作言語。<br><span class="sql-kw">INSERT</span> / <span class="sql-kw">UPDATE</span> / <span class="sql-kw">DELETE</span>（試験では <span class="sql-kw">SELECT</span> を除く場合が多い）</td>
       </tr>
       <tr>
         <td>DDL</td>
         <td>Data Definition Language</td>
-        <td>データ定義言語。CREATE / ALTER / DROP でテーブルなどの構造を定義</td>
+        <td>データ定義言語。<br><span class="sql-kw">CREATE</span> / <span class="sql-kw">ALTER</span> / <span class="sql-kw">DROP</span> でテーブルなどの構造を定義</td>
       </tr>
       <tr>
         <td>TCL</td>
         <td>Transaction Control Language</td>
-        <td>トランザクション制御言語。COMMIT / ROLLBACK / SAVEPOINT</td>
+        <td>トランザクション制御言語。<br><span class="sql-kw">COMMIT</span> / <span class="sql-kw">ROLLBACK</span> / <span class="sql-kw">SAVEPOINT</span></td>
       </tr>
       <tr>
         <td>PK</td>
         <td>Primary Key</td>
-        <td>主キー。テーブルの行を一意に識別する列。NULL 不可・重複不可</td>
+        <td>主キー。<br>テーブルの行を一意に識別する列。<br><span class="sql-kw">NULL</span> 不可・重複不可</td>
       </tr>
       <tr>
         <td>FK</td>
         <td>Foreign Key</td>
-        <td>外部キー。他テーブルの主キーを参照する列。参照整合性を保つ</td>
+        <td>外部キー。<br>他テーブルの主キーを参照する列。<br>参照整合性を保つ</td>
       </tr>
       <tr>
-        <td>NULL</td>
+        <td><span class="sql-kw">NULL</span></td>
         <td>（略称ではなく特殊値）</td>
-        <td>「値が存在しない／不明」を表す特殊な値。0や空文字とは異なる</td>
+        <td>「値が存在しない／不明」を表す特殊な値。<br>0や空文字とは異なる</td>
       </tr>
     </table>
   </div>
 
-  <div class="section-card"><div class="section-title">リレーショナルデータベースとSQL概要</div><div class="topic-chips"><span class="chip">リレーショナルデータベース</span><span class="chip">テーブル</span><span class="chip">行</span><span class="chip">列</span><span class="chip">主キー</span></div><div class="section-content"><h3>リレーショナルデータベースとは</h3><p>リレーショナルデータベース（RDB）は、データを<strong>テーブル（表）</strong>の形式で管理するデータベースです。テーブルは行（レコード）と列（カラム）で構成されます。</p><table class='summary-table'><tr><th>用語</th><th>説明</th><th>例</th></tr><tr><td>テーブル（表）</td><td>データを格納する2次元の表</td><td>EMPLOYEES テーブル</td></tr><tr><td>行（レコード）</td><td>テーブルの1件分のデータ</td><td>従業員1人分の情報</td></tr><tr><td>列（カラム）</td><td>データの属性（項目）</td><td>EMPLOYEE_ID, LAST_NAME 等</td></tr><tr><td>主キー（PK）</td><td>行を一意に識別する列</td><td>EMPLOYEE_ID</td></tr><tr><td>外部キー（FK）</td><td>他テーブルの主キーを参照する列</td><td>DEPARTMENT_ID</td></tr></table><h3>SQL とは</h3><p>SQL（Structured Query Language）はリレーショナルデータベースを操作するための標準言語です。以下の4種類の操作があります。</p><table class='summary-table'><tr><th>分類</th><th>コマンド</th><th>説明</th></tr><tr><td>DQL（データ照会）</td><td>SELECT</td><td>データの検索・取得</td></tr><tr><td>DML（データ操作）</td><td>INSERT, UPDATE, DELETE</td><td>データの追加・変更・削除</td></tr><tr><td>DDL（データ定義）</td><td>CREATE, ALTER, DROP</td><td>テーブル等の構造定義</td></tr><tr><td>TCL（トランザクション制御）</td><td>COMMIT, ROLLBACK, SAVEPOINT</td><td>トランザクション管理</td></tr></table><div class='tip-box'><strong>試験のポイント：</strong> Oracle では SELECT も DML に含める場合がありますが、試験では DML = INSERT/UPDATE/DELETE として扱うことが多いです。</div></div><div class="problem-section-title">練習問題</div><div class="problem-card" id="prob-OSLV-D1-001"><div class="problem-header">問題 1 <span class="qid">#OSLV-D1-001</span></div><p class="problem-text">以下のSELECT文の出力として正しいものはどれか。<br>```sql<br>SELECT last_name || ', ' || first_name AS full_name<br>FROM employees<br>WHERE employee_id = 100;<br>```<br>last_name='King', first_name='Steven' のとき。</p><ul class="choices"><li>A. King Steven</li><li>B. King, Steven</li><li>C. 'King', 'Steven'</li><li>D. KingSteven</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> B. King, Steven</p><p>正解は「King, Steven」である。Oracle SQLの連結演算子||は文字列を結合する。'King' || ', ' || 'Steven' の結果は 'King, Steven' となる。AS full_name は列の別名を定義するが出力値には影響しない。選択肢Aはカンマとスペースがない。選択肢Cはシングルクォートが余分に含まれている。選択肢Dは区切りなしの結合となっている。Oracle SQL Reference §連結演算子参照。</p></div></details></div><div class="problem-card" id="prob-OSLV-D1-002"><div class="problem-header">問題 2 <span class="qid">#OSLV-D1-002</span></div><p class="problem-text">以下のSQL文の実行結果として正しいものはどれか。<br>```sql<br>SELECT DISTINCT department_id<br>FROM employees;<br>```<br>employeesテーブルに department_id が 10,10,20,20,30,NULL,NULL の7行が存在する場合。</p><ul class="choices"><li>A. 10, 20, 30 の3行（NULLは除外）</li><li>B. 10, 10, 20, 20, 30 の5行</li><li>C. 10, 20, 30, NULL の4行</li><li>D. エラーになる</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> C. 10, 20, 30, NULL の4行</p><p>正解は「10, 20, 30, NULL の4行」である。DISTINCTは重複行を除去するが、NULLも1つの値として扱われるため、NULLが複数あっても1行のNULLとして返される。したがって結果は 10, 20, 30, NULL の4行となる。選択肢AはNULLを除外しているため誤り。Oracle SQL Reference §SELECT文のDISTINCT句参照。</p></div></details></div></div><div class="section-card"><div class="section-title">SELECT文の基本構文</div><div class="topic-chips"><span class="chip">SELECT</span><span class="chip">FROM</span><span class="chip">列別名</span><span class="chip">AS</span><span class="chip">DISTINCT</span><span class="chip">DUAL</span></div><div class="section-content"><h3>SELECT 文の基本</h3><p>SELECT 文はデータベースからデータを取得する最も基本的な命令です。</p><pre><code><span class="sql-cmt">-- 基本構文</span>
+  <div class="section-card"><div class="section-title">リレーショナルデータベースとSQL概要</div><div class="topic-chips"><span class="chip">リレーショナルデータベース</span><span class="chip">テーブル</span><span class="chip">行</span><span class="chip">列</span><span class="chip">主キー</span></div><div class="section-content"><h3>リレーショナルデータベースとは</h3><p>リレーショナルデータベース（RDB）は、データを<strong>テーブル（表）</strong>の形式で管理するデータベースです。<br>テーブルは行（レコード）と列（カラム）で構成されます。</p><table class='summary-table'><tr><th>用語</th><th>説明</th><th>例</th></tr><tr><td>テーブル（表）</td><td>データを格納する2次元の表</td><td>EMPLOYEES テーブル</td></tr><tr><td>行（レコード）</td><td>テーブルの1件分のデータ</td><td>従業員1人分の情報</td></tr><tr><td>列（カラム）</td><td>データの属性（項目）</td><td>EMPLOYEE_ID, LAST_NAME 等</td></tr><tr><td>主キー（PK）</td><td>行を一意に識別する列</td><td>EMPLOYEE_ID</td></tr><tr><td>外部キー（FK）</td><td>他テーブルの主キーを参照する列</td><td>DEPARTMENT_ID</td></tr></table><h3>SQL とは</h3><p>SQL（Structured Query Language）はリレーショナルデータベースを操作するための標準言語です。<br>以下の4種類の操作があります。</p><table class='summary-table'><tr><th>分類</th><th>コマンド</th><th>説明</th></tr><tr><td>DQL（データ照会）</td><td><span class="sql-kw">SELECT</span></td><td>データの検索・取得</td></tr><tr><td>DML（データ操作）</td><td><span class="sql-kw">INSERT</span>, <span class="sql-kw">UPDATE</span>, <span class="sql-kw">DELETE</span></td><td>データの追加・変更・削除</td></tr><tr><td>DDL（データ定義）</td><td><span class="sql-kw">CREATE</span>, <span class="sql-kw">ALTER</span>, <span class="sql-kw">DROP</span></td><td>テーブル等の構造定義</td></tr><tr><td>TCL（トランザクション制御）</td><td><span class="sql-kw">COMMIT</span>, <span class="sql-kw">ROLLBACK</span>, <span class="sql-kw">SAVEPOINT</span></td><td>トランザクション管理</td></tr></table><div class='tip-box'><strong>試験のポイント：</strong> Oracle では <span class="sql-kw">SELECT</span> も DML に含める場合がありますが、試験では DML = <span class="sql-kw">INSERT</span>/<span class="sql-kw">UPDATE</span>/<span class="sql-kw">DELETE</span> として扱うことが多いです。</div></div><div class="problem-section-title">練習問題</div><div class="problem-card" id="prob-OSLV-D1-001"><div class="problem-header">問題 <span class="sql-num">1</span> <span class="qid">#OSLV-D1-001</span></div><p class="problem-text">以下のSELECT文の出力として正しいものはどれか。<br>```sql<br><span class="sql-kw">SELECT</span> last_name || <span class="sql-str">', '</span> || first_name <span class="sql-kw">AS</span> full_name<br><span class="sql-kw">FROM</span> employees<br><span class="sql-kw">WHERE</span> employee_id = <span class="sql-num">100</span>;<br>```<br>last_name=<span class="sql-str">'King'</span>, first_name=<span class="sql-str">'Steven'</span> のとき。</p><ul class="choices"><li>A. King Steven</li><li>B. King, Steven</li><li>C. <span class="sql-str">'King'</span>, <span class="sql-str">'Steven'</span></li><li>D. KingSteven</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> B. King, Steven</p><p>正解は「King, Steven」である。<br>Oracle SQLの連結演算子||は文字列を結合する。<br><span class="sql-str">'King'</span> || <span class="sql-str">', '</span> || <span class="sql-str">'Steven'</span> の結果は <span class="sql-str">'King, Steven'</span> となる。<br><span class="sql-kw">AS</span> full_name は列の別名を定義するが出力値には影響しない。<br>選択肢Aはカンマとスペースがない。<br>選択肢Cはシングルクォートが余分に含まれている。<br>選択肢Dは区切りなしの結合となっている。<br>Oracle SQL Reference §連結演算子参照。</p></div></details></div><div class="problem-card" id="prob-OSLV-D1-002"><div class="problem-header">問題 <span class="sql-num">2</span> <span class="qid">#OSLV-D1-002</span></div><p class="problem-text">以下のSQL文の実行結果として正しいものはどれか。<br>```sql<br><span class="sql-kw">SELECT</span> <span class="sql-kw">DISTINCT</span> department_id<br><span class="sql-kw">FROM</span> employees;<br>```<br>employeesテーブルに department_id が <span class="sql-num">10</span>,<span class="sql-num">10</span>,<span class="sql-num">20</span>,<span class="sql-num">20</span>,<span class="sql-num">30</span>,<span class="sql-kw">NULL</span>,<span class="sql-kw">NULL</span> の7行が存在する場合。</p><ul class="choices"><li>A. <span class="sql-num">10</span>, <span class="sql-num">20</span>, <span class="sql-num">30</span> の3行（NULLは除外）</li><li>B. <span class="sql-num">10</span>, <span class="sql-num">10</span>, <span class="sql-num">20</span>, <span class="sql-num">20</span>, <span class="sql-num">30</span> の5行</li><li>C. <span class="sql-num">10</span>, <span class="sql-num">20</span>, <span class="sql-num">30</span>, <span class="sql-kw">NULL</span> の4行</li><li>D. エラーになる</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> C. <span class="sql-num">10</span>, <span class="sql-num">20</span>, <span class="sql-num">30</span>, <span class="sql-kw">NULL</span> の4行</p><p>正解は「<span class="sql-num">10</span>, <span class="sql-num">20</span>, <span class="sql-num">30</span>, <span class="sql-kw">NULL</span> の4行」である。<br>DISTINCTは重複行を除去するが、NULLも1つの値として扱われるため、NULLが複数あっても1行のNULLとして返される。<br>したがって結果は <span class="sql-num">10</span>, <span class="sql-num">20</span>, <span class="sql-num">30</span>, <span class="sql-kw">NULL</span> の4行となる。<br>選択肢AはNULLを除外しているため誤り。<br>Oracle SQL Reference §SELECT文のDISTINCT句参照。</p></div></details></div></div><div class="section-card"><div class="section-title">SELECT文の基本構文</div><div class="topic-chips"><span class="chip">SELECT</span><span class="chip">FROM</span><span class="chip">列別名</span><span class="chip">AS</span><span class="chip">DISTINCT</span><span class="chip">DUAL</span></div><div class="section-content"><h3><span class="sql-kw">SELECT</span> 文の基本</h3><p><span class="sql-kw">SELECT</span> 文はデータベースからデータを取得する最も基本的な命令です。</p><pre><code><span class="sql-cmt">-- 基本構文</span>
 <span class="sql-kw">SELECT</span> 列名1, 列名2, ...
 <span class="sql-kw">FROM</span>   テーブル名;
 
@@ -259,7 +269,7 @@
 <span class="sql-cmt">-- -----------  ----------  ------</span>
 <span class="sql-cmt">--         100  King         24000</span>
 <span class="sql-cmt">--         101  Kochhar      17000</span>
-<span class="sql-cmt">--         102  De Haan      17000</span></code></pre><h3>列別名（AS）</h3><p>列に別名（エイリアス）を付けることができます。スペースや特殊文字を含む場合はダブルクォートで囲みます。</p><pre><code><span class="sql-kw">SELECT</span> LAST_NAME <span class="sql-kw">AS</span> 名前,
+<span class="sql-cmt">--         102  De Haan      17000</span></code></pre><h3>列別名（<span class="sql-kw">AS</span>）</h3><p>列に別名（エイリアス）を付けることができます。<br>スペースや特殊文字を含む場合はダブルクォートで囲みます。</p><pre><code><span class="sql-kw">SELECT</span> LAST_NAME <span class="sql-kw">AS</span> 名前,
        SALARY <span class="sql-kw">AS</span> 給与,
        SALARY * <span class="sql-num">12</span> <span class="sql-kw">AS</span> "年間給与"
 <span class="sql-kw">FROM</span>   EMPLOYEES;
@@ -268,7 +278,7 @@
 <span class="sql-cmt">-- ----------  ------  --------</span>
 <span class="sql-cmt">-- King         24000    288000</span>
 <span class="sql-cmt">-- Kochhar      17000    204000</span>
-<span class="sql-cmt">-- De Haan      17000    204000</span></code></pre><h3>DISTINCT で重複排除</h3><pre><code><span class="sql-cmt">-- 重複を排除して部署IDを取得</span>
+<span class="sql-cmt">-- De Haan      17000    204000</span></code></pre><h3><span class="sql-kw">DISTINCT</span> で重複排除</h3><pre><code><span class="sql-cmt">-- 重複を排除して部署IDを取得</span>
 <span class="sql-kw">SELECT</span> <span class="sql-kw">DISTINCT</span> DEPARTMENT_ID
 <span class="sql-kw">FROM</span>   EMPLOYEES;
 <span class="sql-cmt">-- 実行結果例：</span>
@@ -279,7 +289,7 @@
 <span class="sql-cmt">--            30</span>
 <span class="sql-cmt">--            40</span>
 <span class="sql-cmt">--            50</span>
-<span class="sql-cmt">-- （重複なし、NULL があれば1行として表示）</span></code></pre><h3>DUAL テーブル</h3><p>DUAL は Oracle が提供する特殊な1行1列のダミーテーブルです。関数の確認や計算式のテストに使います。</p><pre><code><span class="sql-cmt">-- 現在日時の確認</span>
+<span class="sql-cmt">-- （重複なし、NULL があれば1行として表示）</span></code></pre><h3><span class="sql-kw">DUAL</span> テーブル</h3><p><span class="sql-kw">DUAL</span> は Oracle が提供する特殊な1行1列のダミーテーブルです。<br>関数の確認や計算式のテストに使います。</p><pre><code><span class="sql-cmt">-- 現在日時の確認</span>
 <span class="sql-kw">SELECT</span> SYSDATE <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;
 <span class="sql-cmt">-- 実行結果例：</span>
 <span class="sql-cmt">-- SYSDATE</span>
@@ -291,7 +301,7 @@
 <span class="sql-cmt">-- 実行結果例：</span>
 <span class="sql-cmt">-- 2+3</span>
 <span class="sql-cmt">-- ---</span>
-<span class="sql-cmt">--   5</span></code></pre><div class='tip-box'><strong>試験のポイント：</strong> 列別名にダブルクォートを使うと大文字小文字が区別されます。AS は省略可能ですが、試験では AS を明示するパターンが多く出題されます。DISTINCT は SELECT の直後に1つだけ記述可能です。</div></div><div class="problem-section-title">練習問題</div><div class="problem-card" id="prob-OSLV-D1-001"><div class="problem-header">問題 1 <span class="qid">#OSLV-D1-001</span></div><p class="problem-text">以下のSELECT文の出力として正しいものはどれか。<br>```sql<br>SELECT last_name || ', ' || first_name AS full_name<br>FROM employees<br>WHERE employee_id = 100;<br>```<br>last_name='King', first_name='Steven' のとき。</p><ul class="choices"><li>A. King Steven</li><li>B. King, Steven</li><li>C. 'King', 'Steven'</li><li>D. KingSteven</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> B. King, Steven</p><p>正解は「King, Steven」である。Oracle SQLの連結演算子||は文字列を結合する。'King' || ', ' || 'Steven' の結果は 'King, Steven' となる。AS full_name は列の別名を定義するが出力値には影響しない。選択肢Aはカンマとスペースがない。選択肢Cはシングルクォートが余分に含まれている。選択肢Dは区切りなしの結合となっている。Oracle SQL Reference §連結演算子参照。</p></div></details></div><div class="problem-card" id="prob-OSLV-D1-002"><div class="problem-header">問題 2 <span class="qid">#OSLV-D1-002</span></div><p class="problem-text">以下のSQL文の実行結果として正しいものはどれか。<br>```sql<br>SELECT DISTINCT department_id<br>FROM employees;<br>```<br>employeesテーブルに department_id が 10,10,20,20,30,NULL,NULL の7行が存在する場合。</p><ul class="choices"><li>A. 10, 20, 30 の3行（NULLは除外）</li><li>B. 10, 10, 20, 20, 30 の5行</li><li>C. 10, 20, 30, NULL の4行</li><li>D. エラーになる</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> C. 10, 20, 30, NULL の4行</p><p>正解は「10, 20, 30, NULL の4行」である。DISTINCTは重複行を除去するが、NULLも1つの値として扱われるため、NULLが複数あっても1行のNULLとして返される。したがって結果は 10, 20, 30, NULL の4行となる。選択肢AはNULLを除外しているため誤り。Oracle SQL Reference §SELECT文のDISTINCT句参照。</p></div></details></div><div class="problem-card" id="prob-OSLV-D1-003"><div class="problem-header">問題 3 <span class="qid">#OSLV-D1-003</span></div><p class="problem-text">NULLに関する説明として正しいものはどれか。</p><ul class="choices"><li>A. NULL + 100 の結果はNULLになる</li><li>B. NULL = NULL はTRUEになる</li><li>C. NULL は 0 と等しい</li><li>D. NULLの列をORDER BYでソートすると常に先頭になる</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> A. NULL + 100 の結果はNULLになる</p><p>正解は「NULL + 100 の結果はNULLになる」である。NULLは「不明な値」であり、NULLを含む算術演算の結果は常にNULLになる。NULL = NULLはTRUEではなくUNKNOWNになるため、NULLの比較にはIS NULLまたはIS NOT NULLを使う必要がある。NULLは0でも空文字でもない。ORDER BYでのNULLの順序はデフォルトでは昇順（ASC）のとき最後、降順（DESC）のとき最初になる（NULLS FIRST/NULLS LASTで制御可能）。</p></div></details></div></div><div class="section-card"><div class="section-title">NULL の基礎</div><div class="topic-chips"><span class="chip">NULL</span><span class="chip">IS NULL</span><span class="chip">IS NOT NULL</span><span class="chip">算術演算</span><span class="chip">連結演算子</span></div><div class="section-content"><h3>NULL とは</h3><p>NULL は「値が存在しない」「不明」を表す特殊な値です。0（ゼロ）や空文字とは異なります。</p><h3>NULL を含む算術演算</h3><p>NULL を含む算術演算の結果は必ず NULL になります。</p><pre><code><span class="sql-cmt">-- COMMISSION_PCT が NULL の場合、結果も NULL</span>
+<span class="sql-cmt">--   5</span></code></pre><div class='tip-box'><strong>試験のポイント：</strong> 列別名にダブルクォートを使うと大文字小文字が区別されます。<br><span class="sql-kw">AS</span> は省略可能ですが、試験では <span class="sql-kw">AS</span> を明示するパターンが多く出題されます。<br><span class="sql-kw">DISTINCT</span> は <span class="sql-kw">SELECT</span> の直後に1つだけ記述可能です。</div></div><div class="problem-section-title">練習問題</div><div class="problem-card" id="prob-OSLV-D1-001"><div class="problem-header">問題 <span class="sql-num">1</span> <span class="qid">#OSLV-D1-001</span></div><p class="problem-text">以下のSELECT文の出力として正しいものはどれか。<br>```sql<br><span class="sql-kw">SELECT</span> last_name || <span class="sql-str">', '</span> || first_name <span class="sql-kw">AS</span> full_name<br><span class="sql-kw">FROM</span> employees<br><span class="sql-kw">WHERE</span> employee_id = <span class="sql-num">100</span>;<br>```<br>last_name=<span class="sql-str">'King'</span>, first_name=<span class="sql-str">'Steven'</span> のとき。</p><ul class="choices"><li>A. King Steven</li><li>B. King, Steven</li><li>C. <span class="sql-str">'King'</span>, <span class="sql-str">'Steven'</span></li><li>D. KingSteven</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> B. King, Steven</p><p>正解は「King, Steven」である。<br>Oracle SQLの連結演算子||は文字列を結合する。<br><span class="sql-str">'King'</span> || <span class="sql-str">', '</span> || <span class="sql-str">'Steven'</span> の結果は <span class="sql-str">'King, Steven'</span> となる。<br><span class="sql-kw">AS</span> full_name は列の別名を定義するが出力値には影響しない。<br>選択肢Aはカンマとスペースがない。<br>選択肢Cはシングルクォートが余分に含まれている。<br>選択肢Dは区切りなしの結合となっている。<br>Oracle SQL Reference §連結演算子参照。</p></div></details></div><div class="problem-card" id="prob-OSLV-D1-002"><div class="problem-header">問題 <span class="sql-num">2</span> <span class="qid">#OSLV-D1-002</span></div><p class="problem-text">以下のSQL文の実行結果として正しいものはどれか。<br>```sql<br><span class="sql-kw">SELECT</span> <span class="sql-kw">DISTINCT</span> department_id<br><span class="sql-kw">FROM</span> employees;<br>```<br>employeesテーブルに department_id が <span class="sql-num">10</span>,<span class="sql-num">10</span>,<span class="sql-num">20</span>,<span class="sql-num">20</span>,<span class="sql-num">30</span>,<span class="sql-kw">NULL</span>,<span class="sql-kw">NULL</span> の7行が存在する場合。</p><ul class="choices"><li>A. <span class="sql-num">10</span>, <span class="sql-num">20</span>, <span class="sql-num">30</span> の3行（NULLは除外）</li><li>B. <span class="sql-num">10</span>, <span class="sql-num">10</span>, <span class="sql-num">20</span>, <span class="sql-num">20</span>, <span class="sql-num">30</span> の5行</li><li>C. <span class="sql-num">10</span>, <span class="sql-num">20</span>, <span class="sql-num">30</span>, <span class="sql-kw">NULL</span> の4行</li><li>D. エラーになる</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> C. <span class="sql-num">10</span>, <span class="sql-num">20</span>, <span class="sql-num">30</span>, <span class="sql-kw">NULL</span> の4行</p><p>正解は「<span class="sql-num">10</span>, <span class="sql-num">20</span>, <span class="sql-num">30</span>, <span class="sql-kw">NULL</span> の4行」である。<br>DISTINCTは重複行を除去するが、NULLも1つの値として扱われるため、NULLが複数あっても1行のNULLとして返される。<br>したがって結果は <span class="sql-num">10</span>, <span class="sql-num">20</span>, <span class="sql-num">30</span>, <span class="sql-kw">NULL</span> の4行となる。<br>選択肢AはNULLを除外しているため誤り。<br>Oracle SQL Reference §SELECT文のDISTINCT句参照。</p></div></details></div><div class="problem-card" id="prob-OSLV-D1-003"><div class="problem-header">問題 <span class="sql-num">3</span> <span class="qid">#OSLV-D1-003</span></div><p class="problem-text">NULLに関する説明として正しいものはどれか。</p><ul class="choices"><li>A. <span class="sql-kw">NULL</span> + <span class="sql-num">100</span> の結果はNULLになる</li><li>B. <span class="sql-kw">NULL</span> = <span class="sql-kw">NULL</span> はTRUEになる</li><li>C. <span class="sql-kw">NULL</span> は <span class="sql-num">0</span> と等しい</li><li>D. NULLの列をORDER BYでソートすると常に先頭になる</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> A. <span class="sql-kw">NULL</span> + <span class="sql-num">100</span> の結果はNULLになる</p><p>正解は「<span class="sql-kw">NULL</span> + <span class="sql-num">100</span> の結果はNULLになる」である。<br>NULLは「不明な値」であり、NULLを含む算術演算の結果は常にNULLになる。<br><span class="sql-kw">NULL</span> = NULLはTRUEではなくUNKNOWNになるため、NULLの比較にはIS NULLまたはIS <span class="sql-kw">NOT</span> NULLを使う必要がある。<br>NULLは0でも空文字でもない。<br>ORDER BYでのNULLの順序はデフォルトでは昇順（<span class="sql-kw">ASC</span>）のとき最後、降順（<span class="sql-kw">DESC</span>）のとき最初になる（<span class="sql-kw">NULLS FIRST</span>/NULLS LASTで制御可能）。</p></div></details></div></div><div class="section-card"><div class="section-title"><span class="sql-kw">NULL</span> の基礎</div><div class="topic-chips"><span class="chip">NULL</span><span class="chip">IS NULL</span><span class="chip">IS NOT NULL</span><span class="chip">算術演算</span><span class="chip">連結演算子</span></div><div class="section-content"><h3><span class="sql-kw">NULL</span> とは</h3><p><span class="sql-kw">NULL</span> は「値が存在しない」「不明」を表す特殊な値です。<br><span class="sql-num">0</span>（ゼロ）や空文字とは異なります。</p><h3><span class="sql-kw">NULL</span> を含む算術演算</h3><p><span class="sql-kw">NULL</span> を含む算術演算の結果は必ず <span class="sql-kw">NULL</span> になります。</p><pre><code><span class="sql-cmt">-- COMMISSION_PCT が NULL の場合、結果も NULL</span>
 <span class="sql-kw">SELECT</span> LAST_NAME,
        SALARY * COMMISSION_PCT <span class="sql-kw">AS</span> コミッション
 <span class="sql-kw">FROM</span>   EMPLOYEES;
@@ -301,7 +311,7 @@
 <span class="sql-cmt">-- King                （NULL）</span>
 <span class="sql-cmt">-- Abel                2100</span>
 <span class="sql-cmt">-- Taylor              1540</span>
-<span class="sql-cmt">-- （COMMISSION_PCT が NULL の行はコミッションも NULL になる）</span></code></pre><h3>IS NULL / IS NOT NULL</h3><p>NULL の比較には = や != は使えません。IS NULL / IS NOT NULL を使います。</p><pre><code><span class="sql-cmt">-- コミッションがない（NULL）従業員</span>
+<span class="sql-cmt">-- （COMMISSION_PCT が NULL の行はコミッションも NULL になる）</span></code></pre><h3><span class="sql-kw">IS NULL</span> / <span class="sql-kw">IS NOT NULL</span></h3><p><span class="sql-kw">NULL</span> の比較には = や != は使えません。<br><span class="sql-kw">IS NULL</span> / <span class="sql-kw">IS NOT NULL</span> を使います。</p><pre><code><span class="sql-cmt">-- コミッションがない（NULL）従業員</span>
 <span class="sql-kw">SELECT</span> LAST_NAME
 <span class="sql-kw">FROM</span>   EMPLOYEES
 <span class="sql-kw">WHERE</span>  COMMISSION_PCT <span class="sql-kw">IS NULL</span>;
@@ -331,7 +341,7 @@
 <span class="sql-cmt">-- ---------------</span>
 <span class="sql-cmt">-- Steven King</span>
 <span class="sql-cmt">-- Neena Kochhar</span>
-<span class="sql-cmt">-- Lex De Haan</span></code></pre><div class='tip-box'><strong>試験のポイント：</strong> NULL = NULL は FALSE（NULL を比較演算子で比較できない）。NULL を含む列の ORDER BY は、デフォルトで昇順の場合 NULLS LAST、降順の場合 NULLS FIRST の動作となります。</div></div><div class="problem-section-title">練習問題</div><div class="problem-card" id="prob-OSLV-D1-001"><div class="problem-header">問題 1 <span class="qid">#OSLV-D1-001</span></div><p class="problem-text">以下のSELECT文の出力として正しいものはどれか。<br>```sql<br>SELECT last_name || ', ' || first_name AS full_name<br>FROM employees<br>WHERE employee_id = 100;<br>```<br>last_name='King', first_name='Steven' のとき。</p><ul class="choices"><li>A. King Steven</li><li>B. King, Steven</li><li>C. 'King', 'Steven'</li><li>D. KingSteven</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> B. King, Steven</p><p>正解は「King, Steven」である。Oracle SQLの連結演算子||は文字列を結合する。'King' || ', ' || 'Steven' の結果は 'King, Steven' となる。AS full_name は列の別名を定義するが出力値には影響しない。選択肢Aはカンマとスペースがない。選択肢Cはシングルクォートが余分に含まれている。選択肢Dは区切りなしの結合となっている。Oracle SQL Reference §連結演算子参照。</p></div></details></div><div class="problem-card" id="prob-OSLV-D1-002"><div class="problem-header">問題 2 <span class="qid">#OSLV-D1-002</span></div><p class="problem-text">以下のSQL文の実行結果として正しいものはどれか。<br>```sql<br>SELECT DISTINCT department_id<br>FROM employees;<br>```<br>employeesテーブルに department_id が 10,10,20,20,30,NULL,NULL の7行が存在する場合。</p><ul class="choices"><li>A. 10, 20, 30 の3行（NULLは除外）</li><li>B. 10, 10, 20, 20, 30 の5行</li><li>C. 10, 20, 30, NULL の4行</li><li>D. エラーになる</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> C. 10, 20, 30, NULL の4行</p><p>正解は「10, 20, 30, NULL の4行」である。DISTINCTは重複行を除去するが、NULLも1つの値として扱われるため、NULLが複数あっても1行のNULLとして返される。したがって結果は 10, 20, 30, NULL の4行となる。選択肢AはNULLを除外しているため誤り。Oracle SQL Reference §SELECT文のDISTINCT句参照。</p></div></details></div><div class="problem-card" id="prob-OSLV-D1-003"><div class="problem-header">問題 3 <span class="qid">#OSLV-D1-003</span></div><p class="problem-text">NULLに関する説明として正しいものはどれか。</p><ul class="choices"><li>A. NULL + 100 の結果はNULLになる</li><li>B. NULL = NULL はTRUEになる</li><li>C. NULL は 0 と等しい</li><li>D. NULLの列をORDER BYでソートすると常に先頭になる</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> A. NULL + 100 の結果はNULLになる</p><p>正解は「NULL + 100 の結果はNULLになる」である。NULLは「不明な値」であり、NULLを含む算術演算の結果は常にNULLになる。NULL = NULLはTRUEではなくUNKNOWNになるため、NULLの比較にはIS NULLまたはIS NOT NULLを使う必要がある。NULLは0でも空文字でもない。ORDER BYでのNULLの順序はデフォルトでは昇順（ASC）のとき最後、降順（DESC）のとき最初になる（NULLS FIRST/NULLS LASTで制御可能）。</p></div></details></div></div>
+<span class="sql-cmt">-- Lex De Haan</span></code></pre><div class='tip-box'><strong>試験のポイント：</strong> <span class="sql-kw">NULL</span> = <span class="sql-kw">NULL</span> は FALSE（<span class="sql-kw">NULL</span> を比較演算子で比較できない）。<br><span class="sql-kw">NULL</span> を含む列の <span class="sql-kw">ORDER BY</span> は、デフォルトで昇順の場合 <span class="sql-kw">NULLS LAST</span>、降順の場合 <span class="sql-kw">NULLS FIRST</span> の動作となります。</div></div><div class="problem-section-title">練習問題</div><div class="problem-card" id="prob-OSLV-D1-001"><div class="problem-header">問題 <span class="sql-num">1</span> <span class="qid">#OSLV-D1-001</span></div><p class="problem-text">以下のSELECT文の出力として正しいものはどれか。<br>```sql<br><span class="sql-kw">SELECT</span> last_name || <span class="sql-str">', '</span> || first_name <span class="sql-kw">AS</span> full_name<br><span class="sql-kw">FROM</span> employees<br><span class="sql-kw">WHERE</span> employee_id = <span class="sql-num">100</span>;<br>```<br>last_name=<span class="sql-str">'King'</span>, first_name=<span class="sql-str">'Steven'</span> のとき。</p><ul class="choices"><li>A. King Steven</li><li>B. King, Steven</li><li>C. <span class="sql-str">'King'</span>, <span class="sql-str">'Steven'</span></li><li>D. KingSteven</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> B. King, Steven</p><p>正解は「King, Steven」である。<br>Oracle SQLの連結演算子||は文字列を結合する。<br><span class="sql-str">'King'</span> || <span class="sql-str">', '</span> || <span class="sql-str">'Steven'</span> の結果は <span class="sql-str">'King, Steven'</span> となる。<br><span class="sql-kw">AS</span> full_name は列の別名を定義するが出力値には影響しない。<br>選択肢Aはカンマとスペースがない。<br>選択肢Cはシングルクォートが余分に含まれている。<br>選択肢Dは区切りなしの結合となっている。<br>Oracle SQL Reference §連結演算子参照。</p></div></details></div><div class="problem-card" id="prob-OSLV-D1-002"><div class="problem-header">問題 <span class="sql-num">2</span> <span class="qid">#OSLV-D1-002</span></div><p class="problem-text">以下のSQL文の実行結果として正しいものはどれか。<br>```sql<br><span class="sql-kw">SELECT</span> <span class="sql-kw">DISTINCT</span> department_id<br><span class="sql-kw">FROM</span> employees;<br>```<br>employeesテーブルに department_id が <span class="sql-num">10</span>,<span class="sql-num">10</span>,<span class="sql-num">20</span>,<span class="sql-num">20</span>,<span class="sql-num">30</span>,<span class="sql-kw">NULL</span>,<span class="sql-kw">NULL</span> の7行が存在する場合。</p><ul class="choices"><li>A. <span class="sql-num">10</span>, <span class="sql-num">20</span>, <span class="sql-num">30</span> の3行（NULLは除外）</li><li>B. <span class="sql-num">10</span>, <span class="sql-num">10</span>, <span class="sql-num">20</span>, <span class="sql-num">20</span>, <span class="sql-num">30</span> の5行</li><li>C. <span class="sql-num">10</span>, <span class="sql-num">20</span>, <span class="sql-num">30</span>, <span class="sql-kw">NULL</span> の4行</li><li>D. エラーになる</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> C. <span class="sql-num">10</span>, <span class="sql-num">20</span>, <span class="sql-num">30</span>, <span class="sql-kw">NULL</span> の4行</p><p>正解は「<span class="sql-num">10</span>, <span class="sql-num">20</span>, <span class="sql-num">30</span>, <span class="sql-kw">NULL</span> の4行」である。<br>DISTINCTは重複行を除去するが、NULLも1つの値として扱われるため、NULLが複数あっても1行のNULLとして返される。<br>したがって結果は <span class="sql-num">10</span>, <span class="sql-num">20</span>, <span class="sql-num">30</span>, <span class="sql-kw">NULL</span> の4行となる。<br>選択肢AはNULLを除外しているため誤り。<br>Oracle SQL Reference §SELECT文のDISTINCT句参照。</p></div></details></div><div class="problem-card" id="prob-OSLV-D1-003"><div class="problem-header">問題 <span class="sql-num">3</span> <span class="qid">#OSLV-D1-003</span></div><p class="problem-text">NULLに関する説明として正しいものはどれか。</p><ul class="choices"><li>A. <span class="sql-kw">NULL</span> + <span class="sql-num">100</span> の結果はNULLになる</li><li>B. <span class="sql-kw">NULL</span> = <span class="sql-kw">NULL</span> はTRUEになる</li><li>C. <span class="sql-kw">NULL</span> は <span class="sql-num">0</span> と等しい</li><li>D. NULLの列をORDER BYでソートすると常に先頭になる</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> A. <span class="sql-kw">NULL</span> + <span class="sql-num">100</span> の結果はNULLになる</p><p>正解は「<span class="sql-kw">NULL</span> + <span class="sql-num">100</span> の結果はNULLになる」である。<br>NULLは「不明な値」であり、NULLを含む算術演算の結果は常にNULLになる。<br><span class="sql-kw">NULL</span> = NULLはTRUEではなくUNKNOWNになるため、NULLの比較にはIS NULLまたはIS <span class="sql-kw">NOT</span> NULLを使う必要がある。<br>NULLは0でも空文字でもない。<br>ORDER BYでのNULLの順序はデフォルトでは昇順（<span class="sql-kw">ASC</span>）のとき最後、降順（<span class="sql-kw">DESC</span>）のとき最初になる（<span class="sql-kw">NULLS FIRST</span>/NULLS LASTで制御可能）。</p></div></details></div></div>
 </div>
 </body>
 </html>

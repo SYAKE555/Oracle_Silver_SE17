@@ -19,16 +19,26 @@
   .phase-title { font-size: 1rem; font-weight: 800; }
   .phase-meta { font-size: .86rem; color: #475569; margin-top: 4px; }
 
-  pre .sql-kw { color: #fbbf24; font-weight: 700; }
-  pre .sql-fn { color: #60a5fa; font-weight: 600; }
+
+  /* sql-highlight-v3 */
+  /* default (light bg): warm tone */
+  .sql-kw  { color: #92400e; font-weight: 700; }
+  .sql-fn  { color: #1e40af; font-weight: 600; }
+  .sql-str { color: #065f46; }
+  .sql-num { color: #991b1b; }
+  .sql-cmt { color: #64748b; font-style: italic; }
+  /* dark bg override (pre / code) */
+  pre .sql-kw  { color: #fbbf24; }
+  pre .sql-fn  { color: #60a5fa; }
   pre .sql-str { color: #86efac; }
   pre .sql-num { color: #fca5a5; }
-  pre .sql-cmt { color: #94a3b8; font-style: italic; }
-  code .sql-kw { color: #b45309; font-weight: 700; }
-  code .sql-fn { color: #1d4ed8; font-weight: 600; }
-  code .sql-str { color: #047857; }
-  code .sql-num { color: #b91c1c; }
-  code .sql-cmt { color: #64748b; font-style: italic; }
+  pre .sql-cmt { color: #94a3b8; }
+  code .sql-kw  { color: #fbbf24; }
+  code .sql-fn  { color: #60a5fa; }
+  code .sql-str { color: #86efac; }
+  code .sql-num { color: #fca5a5; }
+  code .sql-cmt { color: #94a3b8; }
+  /* clause-order div uses its own kw/fn/desc/note classes — no override needed */
 </style>
 </head>
 <body>
@@ -43,7 +53,7 @@
   <div class="intro">
     <div style="font-size:.95rem;color:#64748b;font-weight:700">方針</div>
     <div style="font-size:1.35rem;font-weight:900;margin-top:4px">正答した論点も、落とさない形で再固定する</div>
-    <p style="margin-top:8px;color:#334155">弱点補強だけだと、たまたま取れた領域が次回で崩れます。ここでは正答済みの設問をカテゴリ別に並べ、なぜ取れたのかと維持ポイントを確認します。</p>
+    <p style="margin-top:8px;color:#334155">弱点補強だけだと、たまたま取れた領域が次回で崩れます。<br>ここでは正答済みの設問をカテゴリ別に並べ、なぜ取れたのかと維持ポイントを確認します。</p>
   </div>
   <div class="phase-grid">
     
@@ -51,7 +61,7 @@
               <div class="phase-tag" style="background:#f1c40f">EX8</div>
               <div class="phase-body">
                 <div class="phase-title">データの絞り込みとソート</div>
-                <div class="phase-meta">元ドメイン D2 / 進捗 60.0% / 正答 15問 / 取れている論点の維持確認</div>
+                <div class="phase-meta">元ドメイン D2 / 進捗 <span class="sql-num">60.0</span>% / 正答 15問 / 取れている論点の維持確認</div>
               </div>
             </a>
             
@@ -59,7 +69,7 @@
               <div class="phase-tag" style="background:#f1c40f">EX7</div>
               <div class="phase-body">
                 <div class="phase-title">SQLとRDBの基礎</div>
-                <div class="phase-meta">元ドメイン D1 / 進捗 50.0% / 正答 16問 / 取れている論点の維持確認</div>
+                <div class="phase-meta">元ドメイン D1 / 進捗 <span class="sql-num">50.0</span>% / 正答 16問 / 取れている論点の維持確認</div>
               </div>
             </a>
             
@@ -67,7 +77,7 @@
               <div class="phase-tag" style="background:#e67e22">EX4</div>
               <div class="phase-body">
                 <div class="phase-title">DML・トランザクション</div>
-                <div class="phase-meta">元ドメイン D7 / 進捗 46.2% / 正答 12問 / 取れている論点の維持確認</div>
+                <div class="phase-meta">元ドメイン D7 / 進捗 <span class="sql-num">46.2</span>% / 正答 12問 / 取れている論点の維持確認</div>
               </div>
             </a>
             
@@ -75,7 +85,7 @@
               <div class="phase-tag" style="background:#e67e22">EX6</div>
               <div class="phase-body">
                 <div class="phase-title">グループ関数・集計</div>
-                <div class="phase-meta">元ドメイン D4 / 進捗 40.0% / 正答 4問 / 取れている論点の維持確認</div>
+                <div class="phase-meta">元ドメイン D4 / 進捗 <span class="sql-num">40.0</span>% / 正答 4問 / 取れている論点の維持確認</div>
               </div>
             </a>
             
@@ -83,7 +93,7 @@
               <div class="phase-tag" style="background:#e67e22">EX1</div>
               <div class="phase-body">
                 <div class="phase-title">複数表の結合</div>
-                <div class="phase-meta">元ドメイン D5 / 進捗 37.5% / 正答 3問 / 取れている論点の維持確認</div>
+                <div class="phase-meta">元ドメイン D5 / 進捗 <span class="sql-num">37.5</span>% / 正答 3問 / 取れている論点の維持確認</div>
               </div>
             </a>
             
@@ -91,7 +101,7 @@
               <div class="phase-tag" style="background:#e67e22">EX5</div>
               <div class="phase-body">
                 <div class="phase-title">DDL・オブジェクト管理</div>
-                <div class="phase-meta">元ドメイン D8 / 進捗 32.5% / 正答 25問 / 取れている論点の維持確認</div>
+                <div class="phase-meta">元ドメイン D8 / 進捗 <span class="sql-num">32.5</span>% / 正答 25問 / 取れている論点の維持確認</div>
               </div>
             </a>
             
@@ -99,7 +109,7 @@
               <div class="phase-tag" style="background:#e67e22">EX3</div>
               <div class="phase-body">
                 <div class="phase-title">単一行関数</div>
-                <div class="phase-meta">元ドメイン D3 / 進捗 30.0% / 正答 9問 / 取れている論点の維持確認</div>
+                <div class="phase-meta">元ドメイン D3 / 進捗 <span class="sql-num">30.0</span>% / 正答 9問 / 取れている論点の維持確認</div>
               </div>
             </a>
             
@@ -107,7 +117,7 @@
               <div class="phase-tag" style="background:#e67e22">EX2</div>
               <div class="phase-body">
                 <div class="phase-title">サブクエリ・集合演算</div>
-                <div class="phase-meta">元ドメイン D6 / 進捗 24.0% / 正答 6問 / 取れている論点の維持確認</div>
+                <div class="phase-meta">元ドメイン D6 / 進捗 <span class="sql-num">24.0</span>% / 正答 6問 / 取れている論点の維持確認</div>
               </div>
             </a>
             

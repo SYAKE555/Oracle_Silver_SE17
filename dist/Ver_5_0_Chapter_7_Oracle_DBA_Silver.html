@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Chapter 7 | SQL参考資料</title>
+<title>Chapter <span class="sql-num">7</span> | SQL参考資料</title>
 <style>
 :root{--bg:#f4f8fc;--card:#ffffff;--line:#d8e4f5;--pri:#1d4f91;--sec:#2f6fbe;--txt:#1f2d3d;--muted:#4c6077;--code:#f2f7fc;--kw:#1d4ed8;--obj:#0f172a;--str:#b45309}
 *{box-sizing:border-box}
@@ -36,16 +36,26 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 .top{text-align:right;margin-top:12px}
 @media(max-width:1120px){.layout{grid-template-columns:1fr}.sidebar{position:static;max-height:none}}
 
-  pre .sql-kw { color: #fbbf24; font-weight: 700; }
-  pre .sql-fn { color: #60a5fa; font-weight: 600; }
+
+  /* sql-highlight-v3 */
+  /* default (light bg): warm tone */
+  .sql-kw  { color: #92400e; font-weight: 700; }
+  .sql-fn  { color: #1e40af; font-weight: 600; }
+  .sql-str { color: #065f46; }
+  .sql-num { color: #991b1b; }
+  .sql-cmt { color: #64748b; font-style: italic; }
+  /* dark bg override (pre / code) */
+  pre .sql-kw  { color: #fbbf24; }
+  pre .sql-fn  { color: #60a5fa; }
   pre .sql-str { color: #86efac; }
   pre .sql-num { color: #fca5a5; }
-  pre .sql-cmt { color: #94a3b8; font-style: italic; }
-  code .sql-kw { color: #b45309; font-weight: 700; }
-  code .sql-fn { color: #1d4ed8; font-weight: 600; }
-  code .sql-str { color: #047857; }
-  code .sql-num { color: #b91c1c; }
-  code .sql-cmt { color: #64748b; font-style: italic; }
+  pre .sql-cmt { color: #94a3b8; }
+  code .sql-kw  { color: #fbbf24; }
+  code .sql-fn  { color: #60a5fa; }
+  code .sql-str { color: #86efac; }
+  code .sql-num { color: #fca5a5; }
+  code .sql-cmt { color: #94a3b8; }
+  /* clause-order div uses its own kw/fn/desc/note classes — no override needed */
 </style>
 </head>
 <body>
@@ -55,16 +65,16 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 <ul>
 <li><a href="#scope">スコープ宣言</a></li>
 <li><a href="#intro">第7章の学習目的</a></li>
-<li><a href="#join-basic">7.1 JOINの定義と役割</a></li>
-<li><a href="#inner">7.2 INNER JOIN</a></li>
-<li><a href="#outer">7.3 OUTER JOIN（LEFT/RIGHT）</a></li>
-<li><a href="#cross">7.4 CROSS JOIN</a></li>
-<li><a href="#natural">7.5 NATURAL JOIN / USING / ON</a></li>
-<li><a href="#self-join">7.6 自己結合</a></li>
-<li><a href="#join-order">7.7 結合順序と行数膨張</a></li>
-<li><a href="#null-in-join">7.8 JOIN時のNULL挙動</a></li>
-<li><a href="#errors">7.9 典型エラーと修正</a></li>
-<li><a href="#patterns">7.10 実務JOIN設計パターン</a></li>
+<li><a href="#join-basic"><span class="sql-num">7.1</span> JOINの定義と役割</a></li>
+<li><a href="#inner"><span class="sql-num">7.2</span> <span class="sql-kw">INNER JOIN</span></a></li>
+<li><a href="#outer"><span class="sql-num">7.3</span> <span class="sql-kw">OUTER JOIN</span>（<span class="sql-kw">LEFT</span>/<span class="sql-kw">RIGHT</span>）</a></li>
+<li><a href="#cross"><span class="sql-num">7.4</span> <span class="sql-kw">CROSS JOIN</span></a></li>
+<li><a href="#natural"><span class="sql-num">7.5</span> <span class="sql-kw">NATURAL JOIN</span> / <span class="sql-kw">USING</span> / <span class="sql-kw">ON</span></a></li>
+<li><a href="#self-join"><span class="sql-num">7.6</span> 自己結合</a></li>
+<li><a href="#join-order"><span class="sql-num">7.7</span> 結合順序と行数膨張</a></li>
+<li><a href="#null-in-join"><span class="sql-num">7.8</span> JOIN時のNULL挙動</a></li>
+<li><a href="#errors"><span class="sql-num">7.9</span> 典型エラーと修正</a></li>
+<li><a href="#patterns"><span class="sql-num">7.10</span> 実務JOIN設計パターン</a></li>
 <li><a href="#exam">試験ひっかけパターン集</a></li>
 <li><a href="#practice">実務アンチパターン集</a></li>
 </ul>
@@ -72,22 +82,22 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 <main class="main">
 <section class="hero" id="scope">
 <h1>Oracle DBA Silver SQL（第7章のみ）</h1>
-<p>本ファイルは第7章「複数表結合（INNER / OUTER / CROSS / NATURAL）」に集中し、結合の意味・件数制御・誤結合防止を高密度で整理する。</p>
+<p>本ファイルは第7章「複数表結合（<span class="sql-kw">INNER</span> / <span class="sql-kw">OUTER</span> / <span class="sql-kw">CROSS</span> / <span class="sql-kw">NATURAL</span>）」に集中し、結合の意味・件数制御・誤結合防止を高密度で整理する。</p>
 </section>
-<div style="background:#fff3cd;border:1px solid #ffc107;border-left:5px solid #fd7e14;border-radius:8px;padding:12px 16px;margin:14px 0;font-size:0.88rem;color:#856404;"><strong>【参考資料】</strong> このファイルは Oracle Master Silver SQL (1Z0-071) の試験範囲外の内容を含みます。OracleアーキテクチャなどDBAに関する内容は実務参考としてご利用ください。試験対策には <a href="index.html" style="color:#856404;">トップページ D1〜D8</a> を使用してください。</div>
+<div style="background:#fff3cd;border:1px solid #ffc107;border-left:5px solid #fd7e14;border-radius:8px;padding:12px 16px;margin:14px 0;font-size:0.88rem;color:#856404;"><strong>【参考資料】</strong> このファイルは Oracle Master Silver SQL (1Z0-<span class="sql-num">071</span>) の試験範囲外の内容を含みます。<br>OracleアーキテクチャなどDBAに関する内容は実務参考としてご利用ください。<br>試験対策には <a href="index.html" style="color:#856404;">トップページ D1〜D8</a> を使用してください。</div>
 <section class="card" id="intro">
 <h2>第7章の学習目的</h2>
-<p>第7章は、正規化で分割された表を業務表示へ再構成するための核心章である。JOINが書けなければ、顧客情報と注文情報、社員情報と部署情報など実務で必要な参照が成立しない。試験ではINNER/OUTER差、ON/USING、NATURAL JOIN、結合条件漏れ時の挙動が高頻度で問われる。実務ではさらに、結合条件の誤りによる件数爆発や欠損が重大障害に直結する。第7章の到達点は、どの結合種別を選ぶべきか、結果件数がなぜそうなるかを説明できる状態へ到達することである。</p>
-<div class="gloss"><strong>重要:</strong> JOINは「つなぐ技術」ではなく「正しくつなぐ責任」。条件1行の誤りで結果は壊れる。</div>
+<p>第7章は、正規化で分割された表を業務表示へ再構成するための核心章である。<br>JOINが書けなければ、顧客情報と注文情報、社員情報と部署情報など実務で必要な参照が成立しない。<br>試験ではINNER/OUTER差、<span class="sql-kw">ON</span>/<span class="sql-kw">USING</span>、<span class="sql-kw">NATURAL JOIN</span>、結合条件漏れ時の挙動が高頻度で問われる。<br>実務ではさらに、結合条件の誤りによる件数爆発や欠損が重大障害に直結する。<br>第7章の到達点は、どの結合種別を選ぶべきか、結果件数がなぜそうなるかを説明できる状態へ到達することである。</p>
+<div class="gloss"><strong>重要:</strong> JOINは「つなぐ技術」ではなく「正しくつなぐ責任」。<br>条件1行の誤りで結果は壊れる。</div>
 </section>
 <section class="card" id="join-basic">
-<h2>7.1 JOINの定義と役割</h2>
-<p>JOINは複数表の関連行を結び、1つの結果集合を作る操作である。定義として重要なのは、JOINは単純な横連結ではなく、結合条件に基づく行の対応付けである点だ。役割は、分割保存された事実を業務文脈へ復元することにある。正規化されたDBではJOINが前提操作であり、JOIN品質がレポート品質を決める。動作原理として、ON/USING条件で一致行を作り、種別（INNER/OUTER）に応じて不一致行の扱いが変わる。アンチパターンは条件漏れによるデカルト積と、曖昧列名による誤対応である。試験・実務とも「なぜこの結合種別か」を説明できることが急所となる。</p>
+<h2><span class="sql-num">7.1</span> JOINの定義と役割</h2>
+<p>JOINは複数表の関連行を結び、1つの結果集合を作る操作である。<br>定義として重要なのは、JOINは単純な横連結ではなく、結合条件に基づく行の対応付けである点だ。<br>役割は、分割保存された事実を業務文脈へ復元することにある。<br>正規化されたDBではJOINが前提操作であり、JOIN品質がレポート品質を決める。<br>動作原理として、<span class="sql-kw">ON</span>/USING条件で一致行を作り、種別（<span class="sql-kw">INNER</span>/<span class="sql-kw">OUTER</span>）に応じて不一致行の扱いが変わる。<br>アンチパターンは条件漏れによるデカルト積と、曖昧列名による誤対応である。<br>試験・実務とも「なぜこの結合種別か」を説明できることが急所となる。</p>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="inner">
-<h2>7.2 INNER JOIN</h2>
-<p>INNER JOINは結合条件に一致した行のみ返す。最も基本的な結合で、マスタ整合が担保されたデータ参照に向く。試験ではJOIN条件列の選択や別名の使い方が問われる。実務では一致しない行が消えるため、欠損原因の切り分けで「条件不一致による脱落」を最初に疑う必要がある。INNER JOINを使う時は、欠損行を意図的に除外してよいかを事前合意するべきである。</p>
+<h2><span class="sql-num">7.2</span> <span class="sql-kw">INNER JOIN</span></h2>
+<p><span class="sql-kw">INNER</span> JOINは結合条件に一致した行のみ返す。<br>最も基本的な結合で、マスタ整合が担保されたデータ参照に向く。<br>試験ではJOIN条件列の選択や別名の使い方が問われる。<br>実務では一致しない行が消えるため、欠損原因の切り分けで「条件不一致による脱落」を最初に疑う必要がある。<br><span class="sql-kw">INNER</span> JOINを使う時は、欠損行を意図的に除外してよいかを事前合意するべきである。</p>
 <pre><code><span class="kw"><span class="sql-kw">SELECT</span></span> <span class="obj">e.employee_id</span>, <span class="obj">d.department_name</span>
 <span class="kw"><span class="sql-kw">FROM</span></span> <span class="obj">employees</span> <span class="obj">e</span>
 <span class="kw"><span class="sql-kw">INNER JOIN</span></span> <span class="obj">departments</span> <span class="obj">d</span>
@@ -95,57 +105,57 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="outer">
-<h2>7.3 OUTER JOIN（LEFT/RIGHT）</h2>
-<p>OUTER JOINは不一致行を保持するための結合で、LEFTは左表全行、RIGHTは右表全行を残す。一致しない側はNULLで埋まる。実務では「未割当社員」「注文明細なし顧客」など欠損の可視化に有効である。試験ではLEFT/RIGHTの向きと結果件数差が典型論点になる。アンチパターンはLEFT JOIN後にWHEREで右表列を絞って内結合化してしまうこと。欠損を残したいなら条件配置をON句へ寄せる必要がある。</p>
+<h2><span class="sql-num">7.3</span> <span class="sql-kw">OUTER JOIN</span>（<span class="sql-kw">LEFT</span>/<span class="sql-kw">RIGHT</span>）</h2>
+<p><span class="sql-kw">OUTER</span> JOINは不一致行を保持するための結合で、LEFTは左表全行、RIGHTは右表全行を残す。<br>一致しない側はNULLで埋まる。<br>実務では「未割当社員」「注文明細なし顧客」など欠損の可視化に有効である。<br>試験ではLEFT/RIGHTの向きと結果件数差が典型論点になる。<br>アンチパターンはLEFT JOIN後にWHEREで右表列を絞って内結合化してしまうこと。<br>欠損を残したいなら条件配置をON句へ寄せる必要がある。</p>
 <div class="figure"><pre><code><span class="sql-kw">INNER JOIN</span>: 一致行のみ
 <span class="sql-kw">LEFT JOIN</span> : 左表全行 + 右不一致はNULL
 <span class="sql-kw">RIGHT JOIN</span>: 右表全行 + 左不一致はNULL</code></pre></div>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="cross">
-<h2>7.4 CROSS JOIN</h2>
-<p>CROSS JOINは全組合せ（直積）を返す。件数は左件数×右件数となるため、意図しない使用は件数爆発を招く。試験では定義確認として出るが、実務では組合せ表生成など限定用途でのみ使うべきである。ON句漏れで意図せずCROSS JOIN相当になる事故が多いため、JOIN後の想定件数チェックを必須化することが有効である。</p>
+<h2><span class="sql-num">7.4</span> <span class="sql-kw">CROSS JOIN</span></h2>
+<p><span class="sql-kw">CROSS</span> JOINは全組合せ（直積）を返す。<br>件数は左件数×右件数となるため、意図しない使用は件数爆発を招く。<br>試験では定義確認として出るが、実務では組合せ表生成など限定用途でのみ使うべきである。<br>ON句漏れで意図せずCROSS JOIN相当になる事故が多いため、JOIN後の想定件数チェックを必須化することが有効である。</p>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="natural">
-<h2>7.5 NATURAL JOIN / USING / ON</h2>
-<p>NATURAL JOINは同名列を暗黙的に結合条件へ使うため、列追加で意味が変わるリスクが高い。USINGは共通列名を明示し簡潔に書けるが、複雑条件にはONが適する。実務での推奨はON句による明示結合である。試験ではNATURAL JOINの仕様を問われるが、実務では保守性観点から避ける判断が重要になる。結合条件は短く書くより、将来変更で壊れないことを優先する。</p>
+<h2><span class="sql-num">7.5</span> <span class="sql-kw">NATURAL JOIN</span> / <span class="sql-kw">USING</span> / <span class="sql-kw">ON</span></h2>
+<p><span class="sql-kw">NATURAL</span> JOINは同名列を暗黙的に結合条件へ使うため、列追加で意味が変わるリスクが高い。<br>USINGは共通列名を明示し簡潔に書けるが、複雑条件にはONが適する。<br>実務での推奨はON句による明示結合である。<br>試験ではNATURAL JOINの仕様を問われるが、実務では保守性観点から避ける判断が重要になる。<br>結合条件は短く書くより、将来変更で壊れないことを優先する。</p>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="self-join">
-<h2>7.6 自己結合</h2>
-<p>自己結合は同一表を別名で2回参照し、上司-部下のような階層関係を表現する。正しい別名運用と結合条件が必須で、曖昧列参照は即時エラーや誤結果の原因になる。試験では自己結合の構文理解、実務では階層整合性確認に使う。再帰構造を単純自己結合だけで無理に辿ると可読性が落ちるため、要件に応じて再帰WITH等の採用も検討するべきである。</p>
+<h2><span class="sql-num">7.6</span> 自己結合</h2>
+<p>自己結合は同一表を別名で2回参照し、上司-部下のような階層関係を表現する。<br>正しい別名運用と結合条件が必須で、曖昧列参照は即時エラーや誤結果の原因になる。<br>試験では自己結合の構文理解、実務では階層整合性確認に使う。<br>再帰構造を単純自己結合だけで無理に辿ると可読性が落ちるため、要件に応じて再帰WITH等の採用も検討するべきである。</p>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="join-order">
-<h2>7.7 結合順序と行数膨張</h2>
-<p>JOIN結果件数は結合順序と条件粒度に強く依存する。1対多の多側を重ねると件数が増幅し、集計誤差を生みやすい。実務ではJOIN前後で件数を測り、どの段階で増えたかを可視化することが有効だ。試験では件数直感を問う問題があり、表関係（1:1/1:N/N:M）を図で捉えると誤答を減らせる。JOINは文法より行集合変換として理解することが重要である。</p>
+<h2><span class="sql-num">7.7</span> 結合順序と行数膨張</h2>
+<p>JOIN結果件数は結合順序と条件粒度に強く依存する。<br>1対多の多側を重ねると件数が増幅し、集計誤差を生みやすい。<br>実務ではJOIN前後で件数を測り、どの段階で増えたかを可視化することが有効だ。<br>試験では件数直感を問う問題があり、表関係（<span class="sql-num">1</span>:<span class="sql-num">1</span>/<span class="sql-num">1</span>:N/N:M）を図で捉えると誤答を減らせる。<br>JOINは文法より行集合変換として理解することが重要である。</p>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="null-in-join">
-<h2>7.8 JOIN時のNULL挙動</h2>
-<p>結合キーがNULLの行は通常の等価結合で一致しない。OUTER JOINで残す場合のみ結果へ現れる。NULLキーを業務上どう扱うか（未割当か異常データか）を決めないと、欠損と異常の区別がつかない。試験ではNULLキー行の有無を問う設問が出る。実務ではNULLキー件数を別監視し、整合性改善につなげるのが有効である。</p>
+<h2><span class="sql-num">7.8</span> JOIN時のNULL挙動</h2>
+<p>結合キーがNULLの行は通常の等価結合で一致しない。<br><span class="sql-kw">OUTER</span> JOINで残す場合のみ結果へ現れる。<br>NULLキーを業務上どう扱うか（未割当か異常データか）を決めないと、欠損と異常の区別がつかない。<br>試験ではNULLキー行の有無を問う設問が出る。<br>実務ではNULLキー件数を別監視し、整合性改善につなげるのが有効である。</p>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="errors">
-<h2>7.9 典型エラーと修正</h2>
+<h2><span class="sql-num">7.9</span> 典型エラーと修正</h2>
 <div class="warn"><b>失敗1:</b> ON句欠落で件数爆発。<b>修正:</b> 参照キー同士の条件を明示。</div>
-<div class="warn"><b>失敗2:</b> LEFT JOIN後のWHERE条件で内結合化。<b>修正:</b> 必要条件をON句へ移動。</div>
-<div class="warn"><b>失敗3:</b> NATURAL JOINで列追加後に結果変化。<b>修正:</b> ON句明示へ変更。</div>
+<div class="warn"><b>失敗2:</b> <span class="sql-kw">LEFT</span> JOIN後のWHERE条件で内結合化。<b>修正:</b> 必要条件をON句へ移動。</div>
+<div class="warn"><b>失敗3:</b> <span class="sql-kw">NATURAL</span> JOINで列追加後に結果変化。<b>修正:</b> ON句明示へ変更。</div>
 <div class="warn"><b>失敗4:</b> 同名列の曖昧参照。<b>修正:</b> 表別名を全列へ付与。</div>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="patterns">
-<h2>7.10 実務JOIN設計パターン</h2>
-<p>実務では「主表を先に決める」「結合条件はキー同士で明示」「JOINごとに件数確認」「最終投影列を最小化」の順で設計すると安定する。主表が曖昧だとLEFT/RIGHTの選択がぶれ、欠損解釈が混乱する。さらに集約とJOINを同時に増やすと不具合原因が見えにくいため、段階的に組み立てるべきである。JOINは書けることより、壊れないことが価値である。</p>
+<h2><span class="sql-num">7.10</span> 実務JOIN設計パターン</h2>
+<p>実務では「主表を先に決める」「結合条件はキー同士で明示」「JOINごとに件数確認」「最終投影列を最小化」の順で設計すると安定する。<br>主表が曖昧だとLEFT/RIGHTの選択がぶれ、欠損解釈が混乱する。<br>さらに集約とJOINを同時に増やすと不具合原因が見えにくいため、段階的に組み立てるべきである。<br>JOINは書けることより、壊れないことが価値である。</p>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 
 <section class="card" id="exam">
 <h2>第7章 試験ひっかけパターン集</h2>
-<div class="warn"><b>ひっかけ1:</b> LEFT JOINは右表全行を残すか → 残すのは左表全行。</div>
+<div class="warn"><b>ひっかけ1:</b> <span class="sql-kw">LEFT</span> JOINは右表全行を残すか → 残すのは左表全行。</div>
 <div class="warn"><b>ひっかけ2:</b> ON句なしJOINは安全か → 危険（直積化）。</div>
-<div class="warn"><b>ひっかけ3:</b> NATURAL JOINは常に保守的か → 列追加で壊れやすい。</div>
+<div class="warn"><b>ひっかけ3:</b> <span class="sql-kw">NATURAL</span> JOINは常に保守的か → 列追加で壊れやすい。</div>
 <div class="warn"><b>ひっかけ4:</b> NULL結合キーは等価結合で一致するか → 一致しない。</div>
 <div class="warn"><b>ひっかけ5:</b> INNERとOUTERの差は表示列だけか → いいえ、行集合が変わる。</div>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
@@ -156,7 +166,7 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 <tr><th>アンチパターン</th><th>起きる障害</th><th>予防策</th></tr>
 <tr><td>ON句漏れ</td><td>件数爆発、誤集計</td><td>結合直後に件数検証</td></tr>
 <tr><td>暗黙結合/NATURAL依存</td><td>改修で結果変化</td><td>ON句で条件を明示</td></tr>
-<tr><td>LEFT JOIN後WHERE誤配置</td><td>欠損行消失</td><td>条件責務をON/WHEREで分離</td></tr>
+<tr><td><span class="sql-kw">LEFT</span> JOIN後WHERE誤配置</td><td>欠損行消失</td><td>条件責務をON/WHEREで分離</td></tr>
 <tr><td>別名なし列参照</td><td>曖昧参照エラー/誤読</td><td>全列に表別名を付与</td></tr>
 </table></div>
 <div class="note"><strong>第7章完了基準:</strong> JOIN種別選択理由と結果件数を説明し、誤結合を件数検証で即時検出できること。</div>

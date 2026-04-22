@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Chapter 15 | SQL参考資料</title>
+<title>Chapter <span class="sql-num">15</span> | SQL参考資料</title>
 <style>
 :root{--bg:#f4f8fc;--card:#ffffff;--line:#d8e4f5;--pri:#1d4f91;--sec:#2f6fbe;--txt:#1f2d3d;--code:#f2f7fc}
 *{box-sizing:border-box}
@@ -26,16 +26,26 @@ code{font-family:"Consolas","Monaco",monospace;font-size:.88rem}
 .top{text-align:right;margin-top:12px}
 @media(max-width:1120px){.layout{grid-template-columns:1fr}.sidebar{position:static;max-height:none}}
 
-  pre .sql-kw { color: #fbbf24; font-weight: 700; }
-  pre .sql-fn { color: #60a5fa; font-weight: 600; }
+
+  /* sql-highlight-v3 */
+  /* default (light bg): warm tone */
+  .sql-kw  { color: #92400e; font-weight: 700; }
+  .sql-fn  { color: #1e40af; font-weight: 600; }
+  .sql-str { color: #065f46; }
+  .sql-num { color: #991b1b; }
+  .sql-cmt { color: #64748b; font-style: italic; }
+  /* dark bg override (pre / code) */
+  pre .sql-kw  { color: #fbbf24; }
+  pre .sql-fn  { color: #60a5fa; }
   pre .sql-str { color: #86efac; }
   pre .sql-num { color: #fca5a5; }
-  pre .sql-cmt { color: #94a3b8; font-style: italic; }
-  code .sql-kw { color: #b45309; font-weight: 700; }
-  code .sql-fn { color: #1d4ed8; font-weight: 600; }
-  code .sql-str { color: #047857; }
-  code .sql-num { color: #b91c1c; }
-  code .sql-cmt { color: #64748b; font-style: italic; }
+  pre .sql-cmt { color: #94a3b8; }
+  code .sql-kw  { color: #fbbf24; }
+  code .sql-fn  { color: #60a5fa; }
+  code .sql-str { color: #86efac; }
+  code .sql-num { color: #fca5a5; }
+  code .sql-cmt { color: #94a3b8; }
+  /* clause-order div uses its own kw/fn/desc/note classes — no override needed */
 </style>
 </head>
 <body>
@@ -45,14 +55,14 @@ code{font-family:"Consolas","Monaco",monospace;font-size:.88rem}
 <ul>
 <li><a href="#scope">スコープ宣言</a></li>
 <li><a href="#intro">第15章の学習目的</a></li>
-<li><a href="#dict-basic">15.1 データ・ディクショナリの定義</a></li>
-<li><a href="#prefix">15.2 USER_/ALL_/DBA_ の違い</a></li>
-<li><a href="#objects">15.3 オブジェクト確認ビュー</a></li>
-<li><a href="#columns">15.4 列定義と制約確認ビュー</a></li>
-<li><a href="#privs">15.5 権限確認ビュー</a></li>
-<li><a href="#monitor">15.6 運用監視での活用</a></li>
-<li><a href="#errors">15.7 典型エラーと修正</a></li>
-<li><a href="#patterns">15.8 実務運用パターン</a></li>
+<li><a href="#dict-basic"><span class="sql-num">15.1</span> データ・ディクショナリの定義</a></li>
+<li><a href="#prefix"><span class="sql-num">15.2</span> USER_/ALL_/DBA_ の違い</a></li>
+<li><a href="#objects"><span class="sql-num">15.3</span> オブジェクト確認ビュー</a></li>
+<li><a href="#columns"><span class="sql-num">15.4</span> 列定義と制約確認ビュー</a></li>
+<li><a href="#privs"><span class="sql-num">15.5</span> 権限確認ビュー</a></li>
+<li><a href="#monitor"><span class="sql-num">15.6</span> 運用監視での活用</a></li>
+<li><a href="#errors"><span class="sql-num">15.7</span> 典型エラーと修正</a></li>
+<li><a href="#patterns"><span class="sql-num">15.8</span> 実務運用パターン</a></li>
 <li><a href="#exam">試験ひっかけパターン集</a></li>
 <li><a href="#practice">実務アンチパターン集</a></li>
 </ul>
@@ -62,20 +72,20 @@ code{font-family:"Consolas","Monaco",monospace;font-size:.88rem}
 <h1>Oracle DBA Silver SQL（第15章のみ）</h1>
 <p>本ファイルは第15章「データ・ディクショナリ・ビュー」に集中し、確認SQLの設計と運用監査の実務知識を高密度で解説する。</p>
 </section>
-<div style="background:#fff3cd;border:1px solid #ffc107;border-left:5px solid #fd7e14;border-radius:8px;padding:12px 16px;margin:14px 0;font-size:0.88rem;color:#856404;"><strong>【参考資料】</strong> このファイルは Oracle Master Silver SQL (1Z0-071) の試験範囲外の内容を含みます。OracleアーキテクチャなどDBAに関する内容は実務参考としてご利用ください。試験対策には <a href="index.html" style="color:#856404;">トップページ D1〜D8</a> を使用してください。</div>
+<div style="background:#fff3cd;border:1px solid #ffc107;border-left:5px solid #fd7e14;border-radius:8px;padding:12px 16px;margin:14px 0;font-size:0.88rem;color:#856404;"><strong>【参考資料】</strong> このファイルは Oracle Master Silver SQL (1Z0-<span class="sql-num">071</span>) の試験範囲外の内容を含みます。<br>OracleアーキテクチャなどDBAに関する内容は実務参考としてご利用ください。<br>試験対策には <a href="index.html" style="color:#856404;">トップページ D1〜D8</a> を使用してください。</div>
 <section class="card" id="intro">
 <h2>第15章の学習目的</h2>
-<p>第15章では、Oracle内部メタデータを参照するデータ・ディクショナリ・ビューを学ぶ。表や制約、権限、索引、シーケンスの状態を正確に把握するために必須であり、試験でも頻出分野である。実務では「設定したつもり」を排除し、辞書ビューで実体確認することが変更品質を支える。特に障害調査や監査対応では、辞書ビューから客観証拠を取得できるかが重要である。到達点は、目的別に適切な辞書ビューを選び、確認SQLを自力で組み立てられる状態にすることである。</p>
+<p>第15章では、Oracle内部メタデータを参照するデータ・ディクショナリ・ビューを学ぶ。<br>表や制約、権限、索引、シーケンスの状態を正確に把握するために必須であり、試験でも頻出分野である。<br>実務では「設定したつもり」を排除し、辞書ビューで実体確認することが変更品質を支える。<br>特に障害調査や監査対応では、辞書ビューから客観証拠を取得できるかが重要である。<br>到達点は、目的別に適切な辞書ビューを選び、確認SQLを自力で組み立てられる状態にすることである。</p>
 <div class="note"><strong>重要:</strong> DDL/DCL後の確認を省くと、設計書と本番実体の差異を長期間見逃す。</div>
 </section>
 <section class="card" id="dict-basic">
-<h2>15.1 データ・ディクショナリの定義</h2>
-<p>データ・ディクショナリは、Oracleが保持するオブジェクト定義・権限・統計などのメタ情報集合である。利用者は主にビュー経由で参照する。試験では「辞書ビューはDB管理情報を提供する」という基本理解が問われる。実務では、障害時の切り分けで「表は存在するか」「制約状態はどうか」「権限不足か」を即時確認するため、辞書参照能力が作業時間を大きく左右する。アプリデータを見るSQLと、DB状態を見るSQLを分けて考えることが重要である。</p>
+<h2><span class="sql-num">15.1</span> データ・ディクショナリの定義</h2>
+<p>データ・ディクショナリは、Oracleが保持するオブジェクト定義・権限・統計などのメタ情報集合である。<br>利用者は主にビュー経由で参照する。<br>試験では「辞書ビューはDB管理情報を提供する」という基本理解が問われる。<br>実務では、障害時の切り分けで「表は存在するか」「制約状態はどうか」「権限不足か」を即時確認するため、辞書参照能力が作業時間を大きく左右する。<br>アプリデータを見るSQLと、DB状態を見るSQLを分けて考えることが重要である。</p>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="prefix">
-<h2>15.2 USER_/ALL_/DBA_ の違い</h2>
-<p>`USER_`は自スキーマ対象、`ALL_`はアクセス可能対象、`DBA_`はDB全体対象を示す。試験ではこの接頭辞の意味差が最重要ポイントである。実務では、権限不足で`DBA_`が見えない場面も多いため、まず`USER_`/`ALL_`で確認し、必要時に管理者へ依頼する運用が現実的である。接頭辞の意味を誤解すると、存在しないと誤判定したり、監査範囲を取り違えたりする。ビュー名暗記だけでなく「どの視点の情報か」を常に意識することが重要である。</p>
+<h2><span class="sql-num">15.2</span> USER_/ALL_/DBA_ の違い</h2>
+<p>`USER_`は自スキーマ対象、`ALL_`はアクセス可能対象、`DBA_`はDB全体対象を示す。<br>試験ではこの接頭辞の意味差が最重要ポイントである。<br>実務では、権限不足で`DBA_`が見えない場面も多いため、まず`USER_`/`ALL_`で確認し、必要時に管理者へ依頼する運用が現実的である。<br>接頭辞の意味を誤解すると、存在しないと誤判定したり、監査範囲を取り違えたりする。<br>ビュー名暗記だけでなく「どの視点の情報か」を常に意識することが重要である。</p>
 <pre><code><span class="sql-kw">SELECT</span> table_name <span class="sql-kw">FROM</span> user_tables;
 <span class="sql-kw">SELECT</span> owner, table_name <span class="sql-kw">FROM</span> all_tables <span class="sql-kw">WHERE</span> table_name = <span class="sql-str">'EMPLOYEES'</span>;
 <span class="sql-cmt">-- DBA権限がある場合</span>
@@ -83,13 +93,13 @@ code{font-family:"Consolas","Monaco",monospace;font-size:.88rem}
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="objects">
-<h2>15.3 オブジェクト確認ビュー</h2>
-<p>代表的な確認対象は表・ビュー・索引・シノニム・シーケンスである。`USER_TABLES`、`USER_VIEWS`、`USER_INDEXES`、`USER_SYNONYMS`、`USER_SEQUENCES`を使い分ける。試験では「どのビューで何が分かるか」を問う選択問題が多い。実務では変更作業後に対象オブジェクトの存在・状態・属性を1セットで確認し、証跡化する。1つのビューだけ見て完了扱いにすると、関連定義の漏れを見逃す可能性が高い。複数ビューを組み合わせて確認する癖が品質を上げる。</p>
+<h2><span class="sql-num">15.3</span> オブジェクト確認ビュー</h2>
+<p>代表的な確認対象は表・ビュー・索引・シノニム・シーケンスである。<br>`USER_TABLES`、`USER_VIEWS`、`USER_INDEXES`、`USER_SYNONYMS`、`USER_SEQUENCES`を使い分ける。<br>試験では「どのビューで何が分かるか」を問う選択問題が多い。<br>実務では変更作業後に対象オブジェクトの存在・状態・属性を1セットで確認し、証跡化する。<br>1つのビューだけ見て完了扱いにすると、関連定義の漏れを見逃す可能性が高い。<br>複数ビューを組み合わせて確認する癖が品質を上げる。</p>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="columns">
-<h2>15.4 列定義と制約確認ビュー</h2>
-<p>列定義確認は`USER_TAB_COLUMNS`、制約確認は`USER_CONSTRAINTS`と`USER_CONS_COLUMNS`が基本である。試験では制約種別コード（`P`主キー、`R`外部キー等）の意味が問われる場合がある。実務では「列は追加されたがNOT NULLが有効か」「FKは期待通り有効か」を検証するため、制約状態（ENABLED/DISABLED）まで確認する。DDL実行だけで満足すると、無効制約のまま本番運用に入り品質事故につながる。定義と状態を両方確認するのが実務の基本である。</p>
+<h2><span class="sql-num">15.4</span> 列定義と制約確認ビュー</h2>
+<p>列定義確認は`USER_TAB_COLUMNS`、制約確認は`USER_CONSTRAINTS`と`USER_CONS_COLUMNS`が基本である。<br>試験では制約種別コード（`P`主キー、`R`外部キー等）の意味が問われる場合がある。<br>実務では「列は追加されたがNOT NULLが有効か」「FKは期待通り有効か」を検証するため、制約状態（ENABLED/DISABLED）まで確認する。<br>DDL実行だけで満足すると、無効制約のまま本番運用に入り品質事故につながる。<br>定義と状態を両方確認するのが実務の基本である。</p>
 <pre><code><span class="sql-kw">SELECT</span> constraint_name, constraint_type, status
 <span class="sql-kw">FROM</span> user_constraints
 <span class="sql-kw">WHERE</span> table_name = <span class="sql-str">'PROJECT_TASKS'</span>
@@ -97,19 +107,19 @@ code{font-family:"Consolas","Monaco",monospace;font-size:.88rem}
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="privs">
-<h2>15.5 権限確認ビュー</h2>
-<p>権限周りは`USER_SYS_PRIVS`、`USER_TAB_PRIVS`、`USER_ROLE_PRIVS`が中心である。試験では「どのビューでシステム権限を見るか」など対応関係の知識が問われる。実務では権限申請対応後に、対象ユーザーへ必要権限が付与済みか、不要権限が残っていないかを確認する。権限エラー対応で手作業推測を続けると復旧が遅れるため、辞書ビューで事実確認する手順を固定化することが有効である。監査対応でもこの出力がそのまま証拠になる。</p>
+<h2><span class="sql-num">15.5</span> 権限確認ビュー</h2>
+<p>権限周りは`USER_SYS_PRIVS`、`USER_TAB_PRIVS`、`USER_ROLE_PRIVS`が中心である。<br>試験では「どのビューでシステム権限を見るか」など対応関係の知識が問われる。<br>実務では権限申請対応後に、対象ユーザーへ必要権限が付与済みか、不要権限が残っていないかを確認する。<br>権限エラー対応で手作業推測を続けると復旧が遅れるため、辞書ビューで事実確認する手順を固定化することが有効である。<br>監査対応でもこの出力がそのまま証拠になる。</p>
 <pre><code><span class="sql-kw">SELECT</span> privilege <span class="sql-kw">FROM</span> user_sys_privs <span class="sql-kw">ORDER BY</span> privilege;
 <span class="sql-kw">SELECT</span> table_name, privilege <span class="sql-kw">FROM</span> user_tab_privs <span class="sql-kw">ORDER BY</span> table_name, privilege;</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="monitor">
-<h2>15.6 運用監視での活用</h2>
-<p>辞書ビューは試験対策だけでなく運用監視の中核でもある。例として「無効オブジェクト検知」「期限切れアカウント確認」「不要権限棚卸し」などを定期化できる。実務では日次/週次レポートに辞書SQLを組み込み、差分監視で異常を早期検知する。障害時はまず辞書で状態把握し、次にデータ層へ進む順序が効率的である。辞書ビューを知らないと、問題切り分けが経験依存になり再現性が落ちる。標準SQL化してチームで共有することが重要である。</p>
+<h2><span class="sql-num">15.6</span> 運用監視での活用</h2>
+<p>辞書ビューは試験対策だけでなく運用監視の中核でもある。<br>例として「無効オブジェクト検知」「期限切れアカウント確認」「不要権限棚卸し」などを定期化できる。<br>実務では日次/週次レポートに辞書SQLを組み込み、差分監視で異常を早期検知する。<br>障害時はまず辞書で状態把握し、次にデータ層へ進む順序が効率的である。<br>辞書ビューを知らないと、問題切り分けが経験依存になり再現性が落ちる。<br>標準SQL化してチームで共有することが重要である。</p>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="errors">
-<h2>15.7 典型エラーと修正</h2>
+<h2><span class="sql-num">15.7</span> 典型エラーと修正</h2>
 <div class="warn"><b>失敗1:</b> USER_とALL_の違いを誤解。<b>修正:</b> 参照視点を明確化して使い分け。</div>
 <div class="warn"><b>失敗2:</b> DDL後に辞書確認なし。<b>修正:</b> 確認SQLを変更手順へ固定。</div>
 <div class="warn"><b>失敗3:</b> 権限エラーを推測で対応。<b>修正:</b> USER_TAB_PRIVS等で事実確認。</div>
@@ -117,18 +127,18 @@ code{font-family:"Consolas","Monaco",monospace;font-size:.88rem}
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="patterns">
-<h2>15.8 実務運用パターン</h2>
-<p>推奨運用は「変更SQL」と「確認SQL」を常にペア管理し、適用後に辞書ビューで必ず検証する方式である。監査観点では、権限・制約・オブジェクトの定期棚卸しを自動化すると品質が安定する。試験対策としては代表ビュー名を丸暗記するだけでなく、どの業務場面で使うかを紐付けて覚えると定着しやすい。第15章の価値は、DB状態を客観データで説明できるようになる点にある。これは運用現場で最も評価される基礎能力である。</p>
+<h2><span class="sql-num">15.8</span> 実務運用パターン</h2>
+<p>推奨運用は「変更SQL」と「確認SQL」を常にペア管理し、適用後に辞書ビューで必ず検証する方式である。<br>監査観点では、権限・制約・オブジェクトの定期棚卸しを自動化すると品質が安定する。<br>試験対策としては代表ビュー名を丸暗記するだけでなく、どの業務場面で使うかを紐付けて覚えると定着しやすい。<br>第15章の価値は、DB状態を客観データで説明できるようになる点にある。<br>これは運用現場で最も評価される基礎能力である。</p>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 
 <section class="card" id="exam">
 <h2>第15章 試験ひっかけパターン集</h2>
 <div class="warn"><b>ひっかけ1:</b> `USER_TABLES`で他スキーマ表を確認できるか → 通常できない。</div>
-<div class="warn"><b>ひっかけ2:</b> `DBA_`ビューは誰でも参照可能か → いいえ。権限が必要。</div>
-<div class="warn"><b>ひっかけ3:</b> 制約確認は`USER_TAB_COLUMNS`だけで十分か → 不十分。`USER_CONSTRAINTS`も必要。</div>
-<div class="warn"><b>ひっかけ4:</b> 辞書ビューは試験専用知識か → いいえ。運用実務で必須。</div>
-<div class="warn"><b>ひっかけ5:</b> 変更後確認は任意か → 不適切。品質保証の必須手順。</div>
+<div class="warn"><b>ひっかけ2:</b> `DBA_`ビューは誰でも参照可能か → いいえ。<br>権限が必要。</div>
+<div class="warn"><b>ひっかけ3:</b> 制約確認は`USER_TAB_COLUMNS`だけで十分か → 不十分。<br>`USER_CONSTRAINTS`も必要。</div>
+<div class="warn"><b>ひっかけ4:</b> 辞書ビューは試験専用知識か → いいえ。<br>運用実務で必須。</div>
+<div class="warn"><b>ひっかけ5:</b> 変更後確認は任意か → 不適切。<br>品質保証の必須手順。</div>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="practice">

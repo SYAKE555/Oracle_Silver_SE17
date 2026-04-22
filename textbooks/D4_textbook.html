@@ -69,16 +69,26 @@
         .breadcrumb a { color: #c0392b; text-decoration: none; }
         .intro-box { background: #fff8f8; border: 1px solid #f0a0a0; border-radius: 8px; padding: 16px; margin-bottom: 24px; }
         
-  pre .sql-kw { color: #fbbf24; font-weight: 700; }
-  pre .sql-fn { color: #60a5fa; font-weight: 600; }
+
+  /* sql-highlight-v3 */
+  /* default (light bg): warm tone */
+  .sql-kw  { color: #92400e; font-weight: 700; }
+  .sql-fn  { color: #1e40af; font-weight: 600; }
+  .sql-str { color: #065f46; }
+  .sql-num { color: #991b1b; }
+  .sql-cmt { color: #64748b; font-style: italic; }
+  /* dark bg override (pre / code) */
+  pre .sql-kw  { color: #fbbf24; }
+  pre .sql-fn  { color: #60a5fa; }
   pre .sql-str { color: #86efac; }
   pre .sql-num { color: #fca5a5; }
-  pre .sql-cmt { color: #94a3b8; font-style: italic; }
-  code .sql-kw { color: #b45309; font-weight: 700; }
-  code .sql-fn { color: #1d4ed8; font-weight: 600; }
-  code .sql-str { color: #047857; }
-  code .sql-num { color: #b91c1c; }
-  code .sql-cmt { color: #64748b; font-style: italic; }
+  pre .sql-cmt { color: #94a3b8; }
+  code .sql-kw  { color: #fbbf24; }
+  code .sql-fn  { color: #60a5fa; }
+  code .sql-str { color: #86efac; }
+  code .sql-num { color: #fca5a5; }
+  code .sql-cmt { color: #94a3b8; }
+  /* clause-order div uses its own kw/fn/desc/note classes — no override needed */
 </style>
 </head>
 <body>
@@ -87,10 +97,10 @@
 </div>
 <div class="page-header">
   <h1>D4: グループ関数と集計</h1>
-  <div class="subtitle">Oracle Database SQL (1Z0-071) 対策</div>
+  <div class="subtitle">Oracle Database SQL (1Z0-<span class="sql-num">071</span>) 対策</div>
 </div>
 <div class="container">
-  <div class="intro-box">複数行をまとめて集計するグループ関数と、GROUP BY / HAVING を使ったグループ集計を学びます。</div>
+  <div class="intro-box">複数行をまとめて集計するグループ関数と、<span class="sql-kw">GROUP BY</span> / <span class="sql-kw">HAVING</span> を使ったグループ集計を学びます。</div>
 
   <!-- コマンド覚え方リファレンス -->
   <div class="section-card">
@@ -107,10 +117,10 @@
       <tr>
         <td>COUNT</td>
         <td>行数を数える</td>
-        <td>「カウント＝数える」→COUNT(*) は全行、COUNT(列) はNULL除く</td>
+        <td>「カウント＝数える」→<span class="sql-fn">COUNT</span>(*) は全行、<span class="sql-fn">COUNT</span>(列) はNULL除く</td>
         <td>件数集計・存在確認</td>
         <td>使う（最頻出）</td>
-        <td>COUNT(*) vs COUNT(列) の NULL 扱いの違い</td>
+        <td><span class="sql-fn">COUNT</span>(*) vs <span class="sql-fn">COUNT</span>(列) の <span class="sql-kw">NULL</span> 扱いの違い</td>
       </tr>
       <tr>
         <td>SUM</td>
@@ -118,7 +128,7 @@
         <td>「サム＝合計」→数値列のNULLを無視して合計</td>
         <td>売上合計・給与総額の集計</td>
         <td>使う</td>
-        <td>NULL を含む列の SUM の動作</td>
+        <td><span class="sql-kw">NULL</span> を含む列の SUM の動作</td>
       </tr>
       <tr>
         <td>AVG</td>
@@ -126,7 +136,7 @@
         <td>「アベレージ＝平均」→NULLを除いた行で割る（分母も減る）</td>
         <td>平均給与・平均点数の計算</td>
         <td>使う</td>
-        <td>NULL を含む AVG と NVL を使った全員平均の違い</td>
+        <td><span class="sql-kw">NULL</span> を含む AVG と NVL を使った全員平均の違い</td>
       </tr>
       <tr>
         <td>MAX</td>
@@ -142,31 +152,31 @@
         <td>「ミニマム＝最小」→数値・文字・日付すべてに使える</td>
         <td>最低給与・最古日付の取得</td>
         <td>使う</td>
-        <td>MAX との組み合わせ・NULL を無視する点</td>
+        <td>MAX との組み合わせ・<span class="sql-kw">NULL</span> を無視する点</td>
       </tr>
       <tr>
-        <td>GROUP BY</td>
+        <td><span class="sql-kw">GROUP BY</span></td>
         <td>グループに分けて集計</td>
         <td>「グループ バイ＝〜でグループ分け」→指定列の値が同じ行をまとめる</td>
         <td>部署別・月別などの集計</td>
         <td>使う（集計クエリの基本）</td>
-        <td>SELECT 列は GROUP BY か集計関数のみ可（ORA-00979）</td>
+        <td><span class="sql-kw">SELECT</span> 列は <span class="sql-kw">GROUP BY</span> か集計関数のみ可（ORA-<span class="sql-num">00979</span>）</td>
       </tr>
       <tr>
-        <td>HAVING</td>
+        <td><span class="sql-kw">HAVING</span></td>
         <td>グループへの条件指定</td>
         <td>「ハビング＝持っている条件」→グループ化後の結果を絞り込む</td>
         <td>平均以上の部署を抽出など</td>
         <td>使う</td>
-        <td>WHERE との違い（行 vs グループ）・集計関数を条件に使える</td>
+        <td><span class="sql-kw">WHERE</span> との違い（行 vs グループ）・集計関数を条件に使える</td>
       </tr>
       <tr>
-        <td>DISTINCT（集計内）</td>
+        <td><span class="sql-kw">DISTINCT</span>（集計内）</td>
         <td>重複を除いて集計</td>
-        <td>「ディスティンクト＝重複なし」→COUNT(DISTINCT 列) で種類数を数える</td>
+        <td>「ディスティンクト＝重複なし」→<span class="sql-fn">COUNT</span>(<span class="sql-kw">DISTINCT</span> 列) で種類数を数える</td>
         <td>ユニークな値の件数取得</td>
         <td>条件付き（種類数が必要な場合）</td>
-        <td>COUNT(*) / COUNT(列) / COUNT(DISTINCT 列) の違い</td>
+        <td><span class="sql-fn">COUNT</span>(*) / <span class="sql-fn">COUNT</span>(列) / <span class="sql-fn">COUNT</span>(<span class="sql-kw">DISTINCT</span> 列) の違い</td>
       </tr>
     </table>
   </div>
@@ -181,29 +191,29 @@
         <th>意味</th>
       </tr>
       <tr>
-        <td>GROUP BY</td>
+        <td><span class="sql-kw">GROUP BY</span></td>
         <td>Group By Clause（グループ化句）</td>
-        <td>指定した列の値が同じ行をグループとしてまとめ、各グループに対して集計を行う句。SELECT 句に書ける非集計列は GROUP BY に含める必要がある</td>
+        <td>指定した列の値が同じ行をグループとしてまとめ、各グループに対して集計を行う句。<br><span class="sql-kw">SELECT</span> 句に書ける非集計列は <span class="sql-kw">GROUP BY</span> に含める必要がある</td>
       </tr>
       <tr>
-        <td>HAVING</td>
+        <td><span class="sql-kw">HAVING</span></td>
         <td>Having Clause（グループ条件句）</td>
-        <td>GROUP BY でグループ化した後の結果に対して条件を適用する句。WHERE は行レベルの絞り込み、HAVING はグループレベルの絞り込みに使う</td>
+        <td><span class="sql-kw">GROUP BY</span> でグループ化した後の結果に対して条件を適用する句。<br><span class="sql-kw">WHERE</span> は行レベルの絞り込み、<span class="sql-kw">HAVING</span> はグループレベルの絞り込みに使う</td>
       </tr>
       <tr>
-        <td>ORA-00979</td>
-        <td>Oracle Error 00979</td>
-        <td>「GROUP BY の式ではありません」というエラー。SELECT 句に書いた列が GROUP BY にも集計関数にも含まれていない場合に発生する</td>
+        <td>ORA-<span class="sql-num">00979</span></td>
+        <td>Oracle Error <span class="sql-num">00979</span></td>
+        <td>「<span class="sql-kw">GROUP BY</span> の式ではありません」というエラー。<br><span class="sql-kw">SELECT</span> 句に書いた列が <span class="sql-kw">GROUP BY</span> にも集計関数にも含まれていない場合に発生する</td>
       </tr>
       <tr>
         <td>集計関数</td>
         <td>Aggregate Function / Group Function</td>
-        <td>複数行をまとめて1つの値を返す関数の総称。COUNT / SUM / AVG / MAX / MIN などが該当する</td>
+        <td>複数行をまとめて1つの値を返す関数の総称。<br>COUNT / SUM / AVG / MAX / MIN などが該当する</td>
       </tr>
     </table>
   </div>
 
-  <div class="section-card"><div class="section-title">グループ関数</div><div class="topic-chips"><span class="chip">COUNT</span><span class="chip">SUM</span><span class="chip">AVG</span><span class="chip">MAX</span><span class="chip">MIN</span><span class="chip">グループ関数</span><span class="chip">NULL</span></div><div class="section-content"><h3>グループ関数とは</h3><p>グループ関数（集計関数）は複数の行をまとめて1つの結果を返す関数です。</p><table class='summary-table'><tr><th>関数</th><th>説明</th><th>NULL の扱い</th></tr><tr><td>COUNT(*)</td><td>行数を返す</td><td>NULL 行も含めてカウント</td></tr><tr><td>COUNT(列)</td><td>指定列の非 NULL 件数</td><td>NULL を無視</td></tr><tr><td>SUM(列)</td><td>合計値</td><td>NULL を無視</td></tr><tr><td>AVG(列)</td><td>平均値</td><td>NULL を無視（分母も減る）</td></tr><tr><td>MAX(列)</td><td>最大値</td><td>NULL を無視</td></tr><tr><td>MIN(列)</td><td>最小値</td><td>NULL を無視</td></tr></table><pre><code><span class="sql-kw">SELECT</span> <span class="sql-fn">COUNT</span>(*) <span class="sql-kw">AS</span> 総件数,
+  <div class="section-card"><div class="section-title">グループ関数</div><div class="topic-chips"><span class="chip">COUNT</span><span class="chip">SUM</span><span class="chip">AVG</span><span class="chip">MAX</span><span class="chip">MIN</span><span class="chip">グループ関数</span><span class="chip">NULL</span></div><div class="section-content"><h3>グループ関数とは</h3><p>グループ関数（集計関数）は複数の行をまとめて1つの結果を返す関数です。</p><table class='summary-table'><tr><th>関数</th><th>説明</th><th><span class="sql-kw">NULL</span> の扱い</th></tr><tr><td><span class="sql-fn">COUNT</span>(*)</td><td>行数を返す</td><td><span class="sql-kw">NULL</span> 行も含めてカウント</td></tr><tr><td><span class="sql-fn">COUNT</span>(列)</td><td>指定列の非 <span class="sql-kw">NULL</span> 件数</td><td><span class="sql-kw">NULL</span> を無視</td></tr><tr><td><span class="sql-fn">SUM</span>(列)</td><td>合計値</td><td><span class="sql-kw">NULL</span> を無視</td></tr><tr><td><span class="sql-fn">AVG</span>(列)</td><td>平均値</td><td><span class="sql-kw">NULL</span> を無視（分母も減る）</td></tr><tr><td><span class="sql-fn">MAX</span>(列)</td><td>最大値</td><td><span class="sql-kw">NULL</span> を無視</td></tr><tr><td><span class="sql-fn">MIN</span>(列)</td><td>最小値</td><td><span class="sql-kw">NULL</span> を無視</td></tr></table><pre><code><span class="sql-kw">SELECT</span> <span class="sql-fn">COUNT</span>(*) <span class="sql-kw">AS</span> 総件数,
        <span class="sql-fn">COUNT</span>(COMMISSION_PCT) <span class="sql-kw">AS</span> コミッションあり件数,
        <span class="sql-fn">SUM</span>(SALARY) <span class="sql-kw">AS</span> 給与合計,
        <span class="sql-fn">AVG</span>(SALARY) <span class="sql-kw">AS</span> 給与平均,
@@ -213,14 +223,14 @@
 <span class="sql-cmt">-- 実行結果例：</span>
 <span class="sql-cmt">-- 総件数  コミッションあり件数  給与合計   給与平均              最高給与  最低給与</span>
 <span class="sql-cmt">-- ------  --------------------  ---------  --------------------  --------  --------</span>
-<span class="sql-cmt">--    107                    35     691400   6461.68224299...        24000      2100</span></code></pre><h3>DISTINCT との組み合わせ</h3><pre><code><span class="sql-cmt">-- 重複を除いた件数</span>
+<span class="sql-cmt">--    107                    35     691400   6461.68224299...        24000      2100</span></code></pre><h3><span class="sql-kw">DISTINCT</span> との組み合わせ</h3><pre><code><span class="sql-cmt">-- 重複を除いた件数</span>
 <span class="sql-kw">SELECT</span> <span class="sql-fn">COUNT</span>(<span class="sql-kw">DISTINCT</span> DEPARTMENT_ID) <span class="sql-kw">AS</span> 部署数
 <span class="sql-kw">FROM</span>   EMPLOYEES;
 <span class="sql-cmt">-- 実行結果例：</span>
 <span class="sql-cmt">-- 部署数</span>
 <span class="sql-cmt">-- ------</span>
 <span class="sql-cmt">--     11</span>
-<span class="sql-cmt">-- （EMPLOYEES テーブルに存在する部署の種類数。NULL は除かれる）</span></code></pre><div class='tip-box'><strong>試験のポイント：</strong> AVG(COMMISSION_PCT) は NULL を除いた平均です。全員での平均を求めるなら AVG(NVL(COMMISSION_PCT, 0)) を使います。COUNT(*) と COUNT(列) の違いは頻出です。</div></div><div class="problem-section-title">練習問題</div><div class="problem-card" id="prob-OSLV-D4-001"><div class="problem-header">問題 1 <span class="qid">#OSLV-D4-001</span></div><p class="problem-text">以下のSQL文の実行結果として正しいものはどれか。<br>```sql<br>SELECT COUNT(*), COUNT(commission_pct), AVG(commission_pct)<br>FROM employees;<br>```<br>全107行のうち commission_pct が NULL でない行が35行、NULLの行が72行あるとする。</p><ul class="choices"><li>A. 107, 107, 全107行の平均値</li><li>B. 107, 35, NULL以外の35行の平均値</li><li>C. 35, 35, NULL以外の35行の平均値</li><li>D. 107, 35, 0</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> B. 107, 35, NULL以外の35行の平均値</p><p>正解は「107, 35, NULL以外の35行の平均値」である。COUNT(*)はNULLを含む全行数を数えるので107。COUNT(列名)はNULL以外の行数を数えるので35。AVG(列名)もNULLを無視して計算するため、NULL以外の35行の合計÷35となる。グループ関数（COUNT, SUM, AVG, MAX, MIN）はCOUNT(*)以外すべてNULLを無視する。ただしCOUNT(*)のみNULLを含む全行を数える特別な動作をする。Oracle SQL Reference §グループ関数参照。</p></div></details></div><div class="problem-card" id="prob-OSLV-D4-002"><div class="problem-header">問題 2 <span class="qid">#OSLV-D4-002</span></div><p class="problem-text">以下のSQL文はエラーになる。その理由として正しいものはどれか。<br>```sql<br>SELECT department_id, last_name, AVG(salary)<br>FROM employees<br>GROUP BY department_id;<br>```</p><ul class="choices"><li>A. AVG関数はGROUP BYと一緒に使えないため</li><li>B. last_nameがGROUP BY句にもグループ関数にも含まれていないため</li><li>C. department_idとlast_nameを同時にSELECTできないため</li><li>D. エラーにはならない</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> B. last_nameがGROUP BY句にもグループ関数にも含まれていないため</p><p>正解は「last_nameがGROUP BY句にもグループ関数にも含まれていないため」である。GROUP BYを使う場合、SELECT句に書ける列は（1）GROUP BY句に含まれている列、または（2）グループ関数（AVG, COUNT等）で集計した列のみである。last_nameはGROUP BY department_idに含まれておらず、グループ関数でも囲まれていないため、ORA-00979エラーが発生する。department_idとAVG(salary)はルールを満たしているので問題ない。</p></div></details></div><div class="problem-card" id="prob-OSLV-D4-003"><div class="problem-header">問題 3 <span class="qid">#OSLV-D4-003</span></div><p class="problem-text">以下のSQL文の実行結果として正しいものはどれか。<br>```sql<br>SELECT department_id, AVG(salary)<br>FROM employees<br>GROUP BY department_id<br>HAVING AVG(salary) > 8000<br>ORDER BY AVG(salary) DESC;<br>```</p><ul class="choices"><li>A. 全社員の中から給与が8000超の社員を部署ごとに集計して降順表示</li><li>B. HAVING句はWHERE句の代わりなのでWHERE AVG(salary) > 8000 と同じ</li><li>C. 部署ごとの平均給与を計算し、平均が8000超の部署のみを降順で表示する</li><li>D. エラーになる（HAVING句にはグループ関数を使えない）</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> C. 部署ごとの平均給与を計算し、平均が8000超の部署のみを降順で表示する</p><p>正解は「部署ごとの平均給与を計算し、平均が8000超の部署のみを降順で表示する」である。SQL実行順序はFROM→WHERE→GROUP BY→HAVING→SELECT→ORDER BY。HAVING句はGROUP BYでグループ化された後の結果を絞り込む。選択肢AはHAVINGではなくWHEREを使った場合の説明で、個々の行を絞り込むもの。選択肢BはWHERE句にはグループ関数は書けないので誤り。HAVINGにはグループ関数の条件を書くことができる。</p></div></details></div></div><div class="section-card"><div class="section-title">GROUP BY と HAVING</div><div class="topic-chips"><span class="chip">GROUP BY</span><span class="chip">HAVING</span><span class="chip">SQL実行順序</span><span class="chip">ORA-00979</span></div><div class="section-content"><h3>GROUP BY の基本</h3><p>GROUP BY でグループに分けてから集計します。</p><pre><code><span class="sql-cmt">-- 部署ごとの給与合計</span>
+<span class="sql-cmt">-- （EMPLOYEES テーブルに存在する部署の種類数。NULL は除かれる）</span></code></pre><div class='tip-box'><strong>試験のポイント：</strong> <span class="sql-fn">AVG</span>(COMMISSION_PCT) は <span class="sql-kw">NULL</span> を除いた平均です。<br>全員での平均を求めるなら <span class="sql-fn">AVG</span>(<span class="sql-fn">NVL</span>(COMMISSION_PCT, <span class="sql-num">0</span>)) を使います。<br><span class="sql-fn">COUNT</span>(*) と <span class="sql-fn">COUNT</span>(列) の違いは頻出です。</div></div><div class="problem-section-title">練習問題</div><div class="problem-card" id="prob-OSLV-D4-001"><div class="problem-header">問題 <span class="sql-num">1</span> <span class="qid">#OSLV-D4-001</span></div><p class="problem-text">以下のSQL文の実行結果として正しいものはどれか。<br>```sql<br><span class="sql-kw">SELECT</span> <span class="sql-fn">COUNT</span>(*), <span class="sql-fn">COUNT</span>(commission_pct), <span class="sql-fn">AVG</span>(commission_pct)<br><span class="sql-kw">FROM</span> employees;<br>```<br>全107行のうち commission_pct が <span class="sql-kw">NULL</span> でない行が35行、NULLの行が72行あるとする。</p><ul class="choices"><li>A. <span class="sql-num">107</span>, <span class="sql-num">107</span>, 全107行の平均値</li><li>B. <span class="sql-num">107</span>, <span class="sql-num">35</span>, NULL以外の35行の平均値</li><li>C. <span class="sql-num">35</span>, <span class="sql-num">35</span>, NULL以外の35行の平均値</li><li>D. <span class="sql-num">107</span>, <span class="sql-num">35</span>, <span class="sql-num">0</span></li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> B. <span class="sql-num">107</span>, <span class="sql-num">35</span>, NULL以外の35行の平均値</p><p>正解は「<span class="sql-num">107</span>, <span class="sql-num">35</span>, NULL以外の35行の平均値」である。<br><span class="sql-fn">COUNT</span>(*)はNULLを含む全行数を数えるので107。<br><span class="sql-fn">COUNT</span>(列名)はNULL以外の行数を数えるので35。<br><span class="sql-fn">AVG</span>(列名)もNULLを無視して計算するため、NULL以外の35行の合計÷35となる。<br>グループ関数（COUNT, SUM, AVG, MAX, MIN）はCOUNT(*)以外すべてNULLを無視する。<br>ただしCOUNT(*)のみNULLを含む全行を数える特別な動作をする。<br>Oracle SQL Reference §グループ関数参照。</p></div></details></div><div class="problem-card" id="prob-OSLV-D4-002"><div class="problem-header">問題 <span class="sql-num">2</span> <span class="qid">#OSLV-D4-002</span></div><p class="problem-text">以下のSQL文はエラーになる。<br>その理由として正しいものはどれか。<br>```sql<br><span class="sql-kw">SELECT</span> department_id, last_name, <span class="sql-fn">AVG</span>(salary)<br><span class="sql-kw">FROM</span> employees<br><span class="sql-kw">GROUP BY</span> department_id;<br>```</p><ul class="choices"><li>A. AVG関数はGROUP BYと一緒に使えないため</li><li>B. last_nameがGROUP BY句にもグループ関数にも含まれていないため</li><li>C. department_idとlast_nameを同時にSELECTできないため</li><li>D. エラーにはならない</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> B. last_nameがGROUP BY句にもグループ関数にも含まれていないため</p><p>正解は「last_nameがGROUP BY句にもグループ関数にも含まれていないため」である。<br>GROUP BYを使う場合、SELECT句に書ける列は（<span class="sql-num">1</span>）GROUP BY句に含まれている列、または（<span class="sql-num">2</span>）グループ関数（AVG, COUNT等）で集計した列のみである。<br>last_nameはGROUP <span class="sql-kw">BY</span> department_idに含まれておらず、グループ関数でも囲まれていないため、ORA-00979エラーが発生する。<br>department_idとAVG(salary)はルールを満たしているので問題ない。</p></div></details></div><div class="problem-card" id="prob-OSLV-D4-003"><div class="problem-header">問題 <span class="sql-num">3</span> <span class="qid">#OSLV-D4-003</span></div><p class="problem-text">以下のSQL文の実行結果として正しいものはどれか。<br>```sql<br><span class="sql-kw">SELECT</span> department_id, <span class="sql-fn">AVG</span>(salary)<br><span class="sql-kw">FROM</span> employees<br><span class="sql-kw">GROUP BY</span> department_id<br><span class="sql-kw">HAVING</span> <span class="sql-fn">AVG</span>(salary) > <span class="sql-num">8000</span><br><span class="sql-kw">ORDER BY</span> <span class="sql-fn">AVG</span>(salary) <span class="sql-kw">DESC</span>;<br>```</p><ul class="choices"><li>A. 全社員の中から給与が8000超の社員を部署ごとに集計して降順表示</li><li>B. HAVING句はWHERE句の代わりなのでWHERE <span class="sql-fn">AVG</span>(salary) > <span class="sql-num">8000</span> と同じ</li><li>C. 部署ごとの平均給与を計算し、平均が8000超の部署のみを降順で表示する</li><li>D. エラーになる（HAVING句にはグループ関数を使えない）</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> C. 部署ごとの平均給与を計算し、平均が8000超の部署のみを降順で表示する</p><p>正解は「部署ごとの平均給与を計算し、平均が8000超の部署のみを降順で表示する」である。<br>SQL実行順序はFROM→<span class="sql-kw">WHERE</span>→<span class="sql-kw">GROUP BY</span>→<span class="sql-kw">HAVING</span>→<span class="sql-kw">SELECT</span>→<span class="sql-kw">ORDER BY</span>。<br>HAVING句はGROUP BYでグループ化された後の結果を絞り込む。<br>選択肢AはHAVINGではなくWHEREを使った場合の説明で、個々の行を絞り込むもの。<br>選択肢BはWHERE句にはグループ関数は書けないので誤り。<br>HAVINGにはグループ関数の条件を書くことができる。</p></div></details></div></div><div class="section-card"><div class="section-title"><span class="sql-kw">GROUP BY</span> と <span class="sql-kw">HAVING</span></div><div class="topic-chips"><span class="chip">GROUP BY</span><span class="chip">HAVING</span><span class="chip">SQL実行順序</span><span class="chip">ORA-00979</span></div><div class="section-content"><h3><span class="sql-kw">GROUP BY</span> の基本</h3><p><span class="sql-kw">GROUP BY</span> でグループに分けてから集計します。</p><pre><code><span class="sql-cmt">-- 部署ごとの給与合計</span>
 <span class="sql-kw">SELECT</span> DEPARTMENT_ID,
        <span class="sql-fn">SUM</span>(SALARY) <span class="sql-kw">AS</span> 給与合計,
        <span class="sql-fn">COUNT</span>(*) <span class="sql-kw">AS</span> 人数
@@ -235,7 +245,7 @@
 <span class="sql-cmt">--            40      6500     1</span>
 <span class="sql-cmt">--            50    156400    45</span>
 <span class="sql-cmt">--           （NULL）  7000     1</span>
-<span class="sql-cmt">-- （部署ごとに給与合計と人数が集計される。NULL の部署も1グループとして扱われる）</span></code></pre><h3>HAVING 句</h3><p>HAVING はグループに対する条件を指定します（WHERE はグループ前の行への条件）。</p><pre><code><span class="sql-cmt">-- 平均給与が 8000 以上の部署</span>
+<span class="sql-cmt">-- （部署ごとに給与合計と人数が集計される。NULL の部署も1グループとして扱われる）</span></code></pre><h3><span class="sql-kw">HAVING</span> 句</h3><p><span class="sql-kw">HAVING</span> はグループに対する条件を指定します（<span class="sql-kw">WHERE</span> はグループ前の行への条件）。</p><pre><code><span class="sql-cmt">-- 平均給与が 8000 以上の部署</span>
 <span class="sql-kw">SELECT</span> DEPARTMENT_ID,
        <span class="sql-fn">AVG</span>(SALARY) <span class="sql-kw">AS</span> 平均給与
 <span class="sql-kw">FROM</span>   EMPLOYEES
@@ -248,7 +258,7 @@
 <span class="sql-cmt">--            90  19333.33</span>
 <span class="sql-cmt">--           100   8601.33</span>
 <span class="sql-cmt">--           110   10154.00</span>
-<span class="sql-cmt">-- （全部署の中から平均給与が 8000 以上の部署のみ返される）</span></code></pre><h3>SQL の実行順序</h3><table class='summary-table'><tr><th>順序</th><th>句</th><th>説明</th></tr><tr><td>1</td><td>FROM</td><td>テーブルの取得</td></tr><tr><td>2</td><td>WHERE</td><td>行の絞り込み</td></tr><tr><td>3</td><td>GROUP BY</td><td>グループ化</td></tr><tr><td>4</td><td>HAVING</td><td>グループの絞り込み</td></tr><tr><td>5</td><td>SELECT</td><td>列の選択</td></tr><tr><td>6</td><td>ORDER BY</td><td>ソート</td></tr></table><div class='tip-box'><strong>試験のポイント（ORA-00979）：</strong> SELECT に記述した列は GROUP BY にも含める必要があります。グループ関数以外の列が SELECT にあり、GROUP BY に含まれていない場合は ORA-00979 エラーになります。WHERE にはグループ関数を使えません（HAVING を使う）。</div></div><div class="problem-section-title">練習問題</div><div class="problem-card" id="prob-OSLV-D4-002"><div class="problem-header">問題 1 <span class="qid">#OSLV-D4-002</span></div><p class="problem-text">以下のSQL文はエラーになる。その理由として正しいものはどれか。<br>```sql<br>SELECT department_id, last_name, AVG(salary)<br>FROM employees<br>GROUP BY department_id;<br>```</p><ul class="choices"><li>A. AVG関数はGROUP BYと一緒に使えないため</li><li>B. last_nameがGROUP BY句にもグループ関数にも含まれていないため</li><li>C. department_idとlast_nameを同時にSELECTできないため</li><li>D. エラーにはならない</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> B. last_nameがGROUP BY句にもグループ関数にも含まれていないため</p><p>正解は「last_nameがGROUP BY句にもグループ関数にも含まれていないため」である。GROUP BYを使う場合、SELECT句に書ける列は（1）GROUP BY句に含まれている列、または（2）グループ関数（AVG, COUNT等）で集計した列のみである。last_nameはGROUP BY department_idに含まれておらず、グループ関数でも囲まれていないため、ORA-00979エラーが発生する。department_idとAVG(salary)はルールを満たしているので問題ない。</p></div></details></div><div class="problem-card" id="prob-OSLV-D4-003"><div class="problem-header">問題 2 <span class="qid">#OSLV-D4-003</span></div><p class="problem-text">以下のSQL文の実行結果として正しいものはどれか。<br>```sql<br>SELECT department_id, AVG(salary)<br>FROM employees<br>GROUP BY department_id<br>HAVING AVG(salary) > 8000<br>ORDER BY AVG(salary) DESC;<br>```</p><ul class="choices"><li>A. 全社員の中から給与が8000超の社員を部署ごとに集計して降順表示</li><li>B. HAVING句はWHERE句の代わりなのでWHERE AVG(salary) > 8000 と同じ</li><li>C. 部署ごとの平均給与を計算し、平均が8000超の部署のみを降順で表示する</li><li>D. エラーになる（HAVING句にはグループ関数を使えない）</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> C. 部署ごとの平均給与を計算し、平均が8000超の部署のみを降順で表示する</p><p>正解は「部署ごとの平均給与を計算し、平均が8000超の部署のみを降順で表示する」である。SQL実行順序はFROM→WHERE→GROUP BY→HAVING→SELECT→ORDER BY。HAVING句はGROUP BYでグループ化された後の結果を絞り込む。選択肢AはHAVINGではなくWHEREを使った場合の説明で、個々の行を絞り込むもの。選択肢BはWHERE句にはグループ関数は書けないので誤り。HAVINGにはグループ関数の条件を書くことができる。</p></div></details></div></div>
+<span class="sql-cmt">-- （全部署の中から平均給与が 8000 以上の部署のみ返される）</span></code></pre><h3>SQL の実行順序</h3><table class='summary-table'><tr><th>順序</th><th>句</th><th>説明</th></tr><tr><td><span class="sql-num">1</span></td><td><span class="sql-kw">FROM</span></td><td>テーブルの取得</td></tr><tr><td><span class="sql-num">2</span></td><td><span class="sql-kw">WHERE</span></td><td>行の絞り込み</td></tr><tr><td><span class="sql-num">3</span></td><td><span class="sql-kw">GROUP BY</span></td><td>グループ化</td></tr><tr><td><span class="sql-num">4</span></td><td><span class="sql-kw">HAVING</span></td><td>グループの絞り込み</td></tr><tr><td><span class="sql-num">5</span></td><td><span class="sql-kw">SELECT</span></td><td>列の選択</td></tr><tr><td><span class="sql-num">6</span></td><td><span class="sql-kw">ORDER BY</span></td><td>ソート</td></tr></table><div class='tip-box'><strong>試験のポイント（ORA-<span class="sql-num">00979</span>）：</strong> <span class="sql-kw">SELECT</span> に記述した列は <span class="sql-kw">GROUP BY</span> にも含める必要があります。<br>グループ関数以外の列が <span class="sql-kw">SELECT</span> にあり、<span class="sql-kw">GROUP BY</span> に含まれていない場合は ORA-<span class="sql-num">00979</span> エラーになります。<br><span class="sql-kw">WHERE</span> にはグループ関数を使えません（<span class="sql-kw">HAVING</span> を使う）。</div></div><div class="problem-section-title">練習問題</div><div class="problem-card" id="prob-OSLV-D4-002"><div class="problem-header">問題 <span class="sql-num">1</span> <span class="qid">#OSLV-D4-002</span></div><p class="problem-text">以下のSQL文はエラーになる。<br>その理由として正しいものはどれか。<br>```sql<br><span class="sql-kw">SELECT</span> department_id, last_name, <span class="sql-fn">AVG</span>(salary)<br><span class="sql-kw">FROM</span> employees<br><span class="sql-kw">GROUP BY</span> department_id;<br>```</p><ul class="choices"><li>A. AVG関数はGROUP BYと一緒に使えないため</li><li>B. last_nameがGROUP BY句にもグループ関数にも含まれていないため</li><li>C. department_idとlast_nameを同時にSELECTできないため</li><li>D. エラーにはならない</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> B. last_nameがGROUP BY句にもグループ関数にも含まれていないため</p><p>正解は「last_nameがGROUP BY句にもグループ関数にも含まれていないため」である。<br>GROUP BYを使う場合、SELECT句に書ける列は（<span class="sql-num">1</span>）GROUP BY句に含まれている列、または（<span class="sql-num">2</span>）グループ関数（AVG, COUNT等）で集計した列のみである。<br>last_nameはGROUP <span class="sql-kw">BY</span> department_idに含まれておらず、グループ関数でも囲まれていないため、ORA-00979エラーが発生する。<br>department_idとAVG(salary)はルールを満たしているので問題ない。</p></div></details></div><div class="problem-card" id="prob-OSLV-D4-003"><div class="problem-header">問題 <span class="sql-num">2</span> <span class="qid">#OSLV-D4-003</span></div><p class="problem-text">以下のSQL文の実行結果として正しいものはどれか。<br>```sql<br><span class="sql-kw">SELECT</span> department_id, <span class="sql-fn">AVG</span>(salary)<br><span class="sql-kw">FROM</span> employees<br><span class="sql-kw">GROUP BY</span> department_id<br><span class="sql-kw">HAVING</span> <span class="sql-fn">AVG</span>(salary) > <span class="sql-num">8000</span><br><span class="sql-kw">ORDER BY</span> <span class="sql-fn">AVG</span>(salary) <span class="sql-kw">DESC</span>;<br>```</p><ul class="choices"><li>A. 全社員の中から給与が8000超の社員を部署ごとに集計して降順表示</li><li>B. HAVING句はWHERE句の代わりなのでWHERE <span class="sql-fn">AVG</span>(salary) > <span class="sql-num">8000</span> と同じ</li><li>C. 部署ごとの平均給与を計算し、平均が8000超の部署のみを降順で表示する</li><li>D. エラーになる（HAVING句にはグループ関数を使えない）</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> C. 部署ごとの平均給与を計算し、平均が8000超の部署のみを降順で表示する</p><p>正解は「部署ごとの平均給与を計算し、平均が8000超の部署のみを降順で表示する」である。<br>SQL実行順序はFROM→<span class="sql-kw">WHERE</span>→<span class="sql-kw">GROUP BY</span>→<span class="sql-kw">HAVING</span>→<span class="sql-kw">SELECT</span>→<span class="sql-kw">ORDER BY</span>。<br>HAVING句はGROUP BYでグループ化された後の結果を絞り込む。<br>選択肢AはHAVINGではなくWHEREを使った場合の説明で、個々の行を絞り込むもの。<br>選択肢BはWHERE句にはグループ関数は書けないので誤り。<br>HAVINGにはグループ関数の条件を書くことができる。</p></div></details></div></div>
 </div>
 </body>
 </html>

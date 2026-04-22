@@ -63,16 +63,26 @@
     .option-review-head { flex-direction: column; align-items: flex-start; }
   }
 
-  pre .sql-kw { color: #fbbf24; font-weight: 700; }
-  pre .sql-fn { color: #60a5fa; font-weight: 600; }
+
+  /* sql-highlight-v3 */
+  /* default (light bg): warm tone */
+  .sql-kw  { color: #92400e; font-weight: 700; }
+  .sql-fn  { color: #1e40af; font-weight: 600; }
+  .sql-str { color: #065f46; }
+  .sql-num { color: #991b1b; }
+  .sql-cmt { color: #64748b; font-style: italic; }
+  /* dark bg override (pre / code) */
+  pre .sql-kw  { color: #fbbf24; }
+  pre .sql-fn  { color: #60a5fa; }
   pre .sql-str { color: #86efac; }
   pre .sql-num { color: #fca5a5; }
-  pre .sql-cmt { color: #94a3b8; font-style: italic; }
-  code .sql-kw { color: #b45309; font-weight: 700; }
-  code .sql-fn { color: #1d4ed8; font-weight: 600; }
-  code .sql-str { color: #047857; }
-  code .sql-num { color: #b91c1c; }
-  code .sql-cmt { color: #64748b; font-style: italic; }
+  pre .sql-cmt { color: #94a3b8; }
+  code .sql-kw  { color: #fbbf24; }
+  code .sql-fn  { color: #60a5fa; }
+  code .sql-str { color: #86efac; }
+  code .sql-num { color: #fca5a5; }
+  code .sql-cmt { color: #94a3b8; }
+  /* clause-order div uses its own kw/fn/desc/note classes — no override needed */
 </style>
 </head>
 <body>
@@ -93,23 +103,23 @@
     <p style="margin-top:8px;color:#334155">このページは、正答できた設問をカテゴリ別に並べ、記録された問題全文を正本として、なぜ取れたのかと維持ポイントを再確認するための定着教材です。</p>
     <div class="hero-grid">
       <div class="metric"><div class="label">レビュー種別</div><div class="value">正答</div></div>
-      <div class="metric"><div class="label">進捗率</div><div class="value">32.5%</div></div>
+      <div class="metric"><div class="label">進捗率</div><div class="value"><span class="sql-num">32.5</span>%</div></div>
       <div class="metric"><div class="label">正答数</div><div class="value">25問</div></div>
-      <div class="metric"><div class="label">カテゴリ数</div><div class="value">7</div></div>
+      <div class="metric"><div class="label">カテゴリ数</div><div class="value"><span class="sql-num">7</span></div></div>
     </div>
   </div>
 
   <div class="toc">
     <h2>カテゴリ別目次</h2>
     <div class="toc-grid">
-      <a href="#d8-1" class="mid">ビューの性質と更新可否 <span>8問</span></a><a href="#d8-2" class="mid">権限付与とロール <span>7問</span></a><a href="#d8-3" class="mid">シーケンス・シノニム・索引 <span>4問</span></a><a href="#d8-4" class="mid">DATE・TIMESTAMP・TIME ZONE <span>3問</span></a><a href="#d8-5" class="mid">DEFAULT と列追加・挿入 <span>1問</span></a><a href="#d8-6" class="mid">MERGE の文法と使える対象 <span>1問</span></a><a href="#d8-7" class="mid">制約定義と有効化・無効化 <span>1問</span></a>
+      <a href="#d8-1" class="mid">ビューの性質と更新可否 <span>8問</span></a><a href="#d8-2" class="mid">権限付与とロール <span>7問</span></a><a href="#d8-3" class="mid">シーケンス・シノニム・索引 <span>4問</span></a><a href="#d8-4" class="mid">DATE・TIMESTAMP・TIME ZONE <span>3問</span></a><a href="#d8-5" class="mid"><span class="sql-kw">DEFAULT</span> と列追加・挿入 <span>1問</span></a><a href="#d8-6" class="mid"><span class="sql-kw">MERGE</span> の文法と使える対象 <span>1問</span></a><a href="#d8-7" class="mid">制約定義と有効化・無効化 <span>1問</span></a>
     </div>
   </div>
 
   
             <section class="concept-section" id="d8-1">
               <h3>ビューの性質と更新可否<span>8問</span></h3>
-              <p class="concept-copy">ビューはスキーマオブジェクトであり、基表に依存している。更新可否や WITH CHECK OPTION、READ ONLY、別スキーマ参照可否などが典型論点になる。</p>
+              <p class="concept-copy">ビューはスキーマオブジェクトであり、基表に依存している。<br>更新可否や <span class="sql-kw">WITH CHECK OPTION</span>、READ <span class="sql-kw">ONLY</span>、別スキーマ参照可否などが典型論点になる。</p>
               
     <div class="concept-guide" style="border-top-color:#e67e22">
       <div class="guide-block">
@@ -138,14 +148,14 @@
       <div class="guide-grid">
         <div class="guide-block">
           <div class="guide-title">成立条件</div>
-          <ul class="guide-list"><li>ビューは定義を保持するオブジェクトであり、基表そのものを複製するわけではない。</li><li>シーケンスの CURRVAL は同一セッションで NEXTVAL 実行後にのみ参照できる。</li><li>オブジェクト権限とシステム権限では付与オプションが異なる。</li></ul>
+          <ul class="guide-list"><li>ビューは定義を保持するオブジェクトであり、基表そのものを複製するわけではない。</li><li>シーケンスの <span class="sql-kw">CURRVAL</span> は同一セッションで <span class="sql-kw">NEXTVAL</span> 実行後にのみ参照できる。</li><li>オブジェクト権限とシステム権限では付与オプションが異なる。</li></ul>
         </div>
         <div class="guide-block">
           <div class="guide-title">判定手順</div>
           <ol class="guide-list ordered"><li>何のオブジェクトを操作している文かを最初に確定する。</li><li>そのオブジェクト固有の使用条件や制約を確認する。</li><li>権限・時刻・索引のような副作用の有無を最後に判定する。</li></ol>
         </div>
       </div>
-      <div class="guide-note">失点しやすい点: ビュー作成時に索引も複製される、基表が消えても常に有効、CHECK OPTION が常時必須、といった誤解が起きやすい。</div>
+      <div class="guide-note">失点しやすい点: ビュー作成時に索引も複製される、基表が消えても常に有効、<span class="sql-kw">CHECK</span> OPTION が常時必須、といった誤解が起きやすい。</div>
     </div>
     
               
@@ -153,14 +163,14 @@
                   <div class="question-meta">第1回 模擬試験 / 問43 / 正答 A / 自己回答 -</div>
                   <div class="block-title">問題文</div>
                   <pre>マルチテーブル・インサートについて正しい記述はどれでしょうか。
-(<span class="sql-num">1</span>)		A.　副問合せを使用することができます。
-(<span class="sql-num">2</span>)		B.　リモート表で実行できます。
-(<span class="sql-num">3</span>)		C.　表のコレクションを指定することができます。
-(<span class="sql-num">4</span>)		D.　順序を指定することができます。
-(<span class="sql-num">5</span>)		E.　ビューを使用することができます。</pre>
+(<span class="sql-num"><span class="sql-num">1</span></span>)		A.　副問合せを使用することができます。
+(<span class="sql-num"><span class="sql-num">2</span></span>)		B.　リモート表で実行できます。
+(<span class="sql-num"><span class="sql-num">3</span></span>)		C.　表のコレクションを指定することができます。
+(<span class="sql-num"><span class="sql-num">4</span></span>)		D.　順序を指定することができます。
+(<span class="sql-num"><span class="sql-num">5</span></span>)		E.　ビューを使用することができます。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
-                    <p>この設問の論点は「ビューの性質と更新可否」です。問題文は「マルチテーブル・インサートについて正しい記述はどれでしょうか。」という条件を満たす説明または SQL を求めています。ビューはスキーマオブジェクトであり、基表に依存している。更新可否や WITH CHECK OPTION、READ ONLY、別スキーマ参照可否などが典型論点になる。 この設問では正答 A「副問合せを使用することができます。」 を選べており、成立条件を正しく読めています。</p>
+                    <p>この設問の論点は「ビューの性質と更新可否」です。<br>問題文は「マルチテーブル・インサートについて正しい記述はどれでしょうか。<br>」という条件を満たす説明または SQL を求めています。<br>ビューはスキーマオブジェクトであり、基表に依存している。<br>更新可否や <span class="sql-kw">WITH CHECK OPTION</span>、READ <span class="sql-kw">ONLY</span>、別スキーマ参照可否などが典型論点になる。 この設問では正答 A「副問合せを使用することができます。<br>」 を選べており、成立条件を正しく読めています。</p>
                     <div class="block-title">得点できた理由</div>
                     <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
                     <div class="block-title">選択肢ごとの判定</div>
@@ -228,7 +238,7 @@
 (<span class="sql-num">5</span>)		E.　ビューを使用した参照はできません。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
-                    <p>この設問の論点は「ビューの性質と更新可否」です。問題文は「GLOBAL TEMPORARY TABLESについて正しい記述はどれでしょうか。（3つ選択）」という条件を満たす説明または SQL を求めています。ビューはスキーマオブジェクトであり、基表に依存している。更新可否や WITH CHECK OPTION、READ ONLY、別スキーマ参照可否などが典型論点になる。 この設問では正答 A「複数の索引を作成することができます。」 / C「SYNONYMを作成することができます。」 / D「トリガーを作成することができます。」 を選べており、成立条件を正しく読めています。</p>
+                    <p>この設問の論点は「ビューの性質と更新可否」です。<br>問題文は「GLOBAL TEMPORARY TABLESについて正しい記述はどれでしょうか。<br>（3つ選択）」という条件を満たす説明または SQL を求めています。<br>ビューはスキーマオブジェクトであり、基表に依存している。<br>更新可否や <span class="sql-kw">WITH CHECK OPTION</span>、READ <span class="sql-kw">ONLY</span>、別スキーマ参照可否などが典型論点になる。 この設問では正答 A「複数の索引を作成することができます。<br>」 / C「SYNONYMを作成することができます。<br>」 / D「トリガーを作成することができます。<br>」 を選べており、成立条件を正しく読めています。</p>
                     <div class="block-title">得点できた理由</div>
                     <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
                     <div class="block-title">選択肢ごとの判定</div>
@@ -247,7 +257,7 @@
                 <div class="option-review-key">B</div>
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
-              <div class="option-review-text">PUBLIC SYNONYMを作成することはできません。</div>
+              <div class="option-review-text"><span class="sql-kw">PUBLIC</span> SYNONYMを作成することはできません。</div>
               <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
             </div>
             
@@ -296,7 +306,7 @@
 (<span class="sql-num">5</span>)		E.　ビュー経由で追加した行は、ビューが削除されると表から自動的に削除されます。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
-                    <p>この設問の論点は「ビューの性質と更新可否」です。問題文は「ビューの削除について正しい記述はどれでしょうか。（2つ選択）」という条件を満たす説明または SQL を求めています。ビューはスキーマオブジェクトであり、基表に依存している。更新可否や WITH CHECK OPTION、READ ONLY、別スキーマ参照可否などが典型論点になる。 この設問では正答 A「CASCADE CONSTRAINTSを指定すると、削除するビュー内の主キーおよび一意キーを参照するすべての参…」 / D「ビューを削除すると、ロールおよびユーザーに付与された対応するオブジェクト権限はすべて取り消されます。」 を選べており、成立条件を正しく読めています。</p>
+                    <p>この設問の論点は「ビューの性質と更新可否」です。<br>問題文は「ビューの削除について正しい記述はどれでしょうか。<br>（2つ選択）」という条件を満たす説明または SQL を求めています。<br>ビューはスキーマオブジェクトであり、基表に依存している。<br>更新可否や <span class="sql-kw">WITH CHECK OPTION</span>、READ <span class="sql-kw">ONLY</span>、別スキーマ参照可否などが典型論点になる。 この設問では正答 A「<span class="sql-kw">CASCADE</span> CONSTRAINTSを指定すると、削除するビュー内の主キーおよび一意キーを参照するすべての参…」 / D「ビューを削除すると、ロールおよびユーザーに付与された対応するオブジェクト権限はすべて取り消されます。<br>」 を選べており、成立条件を正しく読めています。</p>
                     <div class="block-title">得点できた理由</div>
                     <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
                     <div class="block-title">選択肢ごとの判定</div>
@@ -306,7 +316,7 @@
                 <div class="option-review-key">A</div>
                 <div class="option-review-badges"><span>正答肢</span></div>
               </div>
-              <div class="option-review-text">CASCADE CONSTRAINTSを指定すると、削除するビュー内の主キーおよび一意キーを参照するすべての参照整合性制約を削除します。</div>
+              <div class="option-review-text"><span class="sql-kw">CASCADE</span> CONSTRAINTSを指定すると、削除するビュー内の主キーおよび一意キーを参照するすべての参照整合性制約を削除します。</div>
               <div class="option-review-reason">正しい。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
             </div>
             
@@ -324,8 +334,8 @@
                 <div class="option-review-key">C</div>
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
-              <div class="option-review-text">自スキーマにあるビューを削除するためには、DROP ANY VIEW 権限が付与されている必要があります。</div>
-              <div class="option-review-reason">誤り。 DDL は定義変更であり、Oracle では暗黙 COMMIT を伴います。</div>
+              <div class="option-review-text">自スキーマにあるビューを削除するためには、<span class="sql-kw">DROP</span> <span class="sql-kw">ANY</span> <span class="sql-kw">VIEW</span> 権限が付与されている必要があります。</div>
+              <div class="option-review-reason">誤り。 DDL は定義変更であり、Oracle では暗黙 <span class="sql-kw">COMMIT</span> を伴います。</div>
             </div>
             
             <div class="option-review correct">
@@ -363,7 +373,7 @@
 (<span class="sql-num">4</span>)		D.　<span class="sql-kw">GRANT</span> <span class="sql-kw">CREATE TABLE</span> <span class="sql-kw">TO</span> USR01, USR02;</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
-                    <p>この設問の論点は「ビューの性質と更新可否」です。問題文は「システム権限を付与する文はどれでしょうか。」という条件を満たす説明または SQL を求めています。ビューはスキーマオブジェクトであり、基表に依存している。更新可否や WITH CHECK OPTION、READ ONLY、別スキーマ参照可否などが典型論点になる。 この設問では正答 D「GRANT CREATE TABLE TO USR01, USR02;」 を選べており、成立条件を正しく読めています。</p>
+                    <p>この設問の論点は「ビューの性質と更新可否」です。<br>問題文は「システム権限を付与する文はどれでしょうか。<br>」という条件を満たす説明または SQL を求めています。<br>ビューはスキーマオブジェクトであり、基表に依存している。<br>更新可否や <span class="sql-kw">WITH CHECK OPTION</span>、READ <span class="sql-kw">ONLY</span>、別スキーマ参照可否などが典型論点になる。 この設問では正答 D「<span class="sql-kw">GRANT</span> <span class="sql-kw">CREATE TABLE</span> <span class="sql-kw">TO</span> USR01, USR02;」 を選べており、成立条件を正しく読めています。</p>
                     <div class="block-title">得点できた理由</div>
                     <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
                     <div class="block-title">選択肢ごとの判定</div>
@@ -373,7 +383,7 @@
                 <div class="option-review-key">A</div>
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
-              <div class="option-review-text">GRANT DELETE</div>
+              <div class="option-review-text"><span class="sql-kw">GRANT</span> <span class="sql-kw">DELETE</span></div>
               <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
             </div>
             
@@ -382,8 +392,8 @@
                 <div class="option-review-key">B</div>
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
-              <div class="option-review-text">GRANT ALTER TABLE TO PUBLIC;</div>
-              <div class="option-review-reason">誤り。 DDL は定義変更であり、Oracle では暗黙 COMMIT を伴います。</div>
+              <div class="option-review-text"><span class="sql-kw">GRANT</span> <span class="sql-kw">ALTER TABLE</span> <span class="sql-kw">TO</span> <span class="sql-kw">PUBLIC</span>;</div>
+              <div class="option-review-reason">誤り。 DDL は定義変更であり、Oracle では暗黙 <span class="sql-kw">COMMIT</span> を伴います。</div>
             </div>
             
             <div class="option-review wrong">
@@ -391,8 +401,8 @@
                 <div class="option-review-key">C</div>
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
-              <div class="option-review-text">GRANT CREATE MATERIALIZE VIEW TO USR01;</div>
-              <div class="option-review-reason">誤り。 DDL は定義変更であり、Oracle では暗黙 COMMIT を伴います。</div>
+              <div class="option-review-text"><span class="sql-kw">GRANT</span> <span class="sql-kw">CREATE</span> MATERIALIZE <span class="sql-kw">VIEW</span> <span class="sql-kw">TO</span> USR01;</div>
+              <div class="option-review-reason">誤り。 DDL は定義変更であり、Oracle では暗黙 <span class="sql-kw">COMMIT</span> を伴います。</div>
             </div>
             
             <div class="option-review correct">
@@ -400,8 +410,8 @@
                 <div class="option-review-key">D</div>
                 <div class="option-review-badges"><span>正答肢</span></div>
               </div>
-              <div class="option-review-text">GRANT CREATE TABLE TO USR01, USR02;</div>
-              <div class="option-review-reason">正しい。 DDL は定義変更であり、Oracle では暗黙 COMMIT を伴います。</div>
+              <div class="option-review-text"><span class="sql-kw">GRANT</span> <span class="sql-kw">CREATE TABLE</span> <span class="sql-kw">TO</span> USR01, USR02;</div>
+              <div class="option-review-reason">正しい。 DDL は定義変更であり、Oracle では暗黙 <span class="sql-kw">COMMIT</span> を伴います。</div>
             </div>
             </div>
                     <div class="block-title">解く順序</div>
@@ -415,14 +425,14 @@
                   <div class="question-meta">第1回 模擬試験 / 問76 / 正答 A.B / 自己回答 -</div>
                   <div class="block-title">問題文</div>
                   <pre>データ・ディクショナリについて正しい記述はどれでしょうか。（2つ選択）
-(<span class="sql-num">1</span>)		A.　データ・ディクショナリは、DDLが発行されるたびに常に更新されます。
-(<span class="sql-num">2</span>)		B.　SYSユーザーは、データ・ディクショナリ内のすべてのベース表とユーザーがアクセスできるビューを所有します。
-(<span class="sql-num">3</span>)		C.　すべてのユーザーは、データ・ディクショナリ内の全情報にアクセスすることができます。
-(<span class="sql-num">4</span>)		D.　データ・ディクショナリの表には接頭辞ALL_が付きます。
-(<span class="sql-num">5</span>)		E.　すべてのユーザー操作がデータ・ディクショナリに記録されます。</pre>
+(<span class="sql-num"><span class="sql-num">1</span></span>)		A.　データ・ディクショナリは、DDLが発行されるたびに常に更新されます。
+(<span class="sql-num"><span class="sql-num">2</span></span>)		B.　SYSユーザーは、データ・ディクショナリ内のすべてのベース表とユーザーがアクセスできるビューを所有します。
+(<span class="sql-num"><span class="sql-num">3</span></span>)		C.　すべてのユーザーは、データ・ディクショナリ内の全情報にアクセスすることができます。
+(<span class="sql-num"><span class="sql-num">4</span></span>)		D.　データ・ディクショナリの表には接頭辞ALL_が付きます。
+(<span class="sql-num"><span class="sql-num">5</span></span>)		E.　すべてのユーザー操作がデータ・ディクショナリに記録されます。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
-                    <p>この設問の論点は「ビューの性質と更新可否」です。問題文は「データ・ディクショナリについて正しい記述はどれでしょうか。（2つ選択）」という条件を満たす説明または SQL を求めています。ビューはスキーマオブジェクトであり、基表に依存している。更新可否や WITH CHECK OPTION、READ ONLY、別スキーマ参照可否などが典型論点になる。 この設問では正答 A「データ・ディクショナリは、DDLが発行されるたびに常に更新されます。」 / B「SYSユーザーは、データ・ディクショナリ内のすべてのベース表とユーザーがアクセスできるビューを所有します。」 を選べており、成立条件を正しく読めています。</p>
+                    <p>この設問の論点は「ビューの性質と更新可否」です。<br>問題文は「データ・ディクショナリについて正しい記述はどれでしょうか。<br>（2つ選択）」という条件を満たす説明または SQL を求めています。<br>ビューはスキーマオブジェクトであり、基表に依存している。<br>更新可否や <span class="sql-kw">WITH CHECK OPTION</span>、READ <span class="sql-kw">ONLY</span>、別スキーマ参照可否などが典型論点になる。 この設問では正答 A「データ・ディクショナリは、DDLが発行されるたびに常に更新されます。<br>」 / B「SYSユーザーは、データ・ディクショナリ内のすべてのベース表とユーザーがアクセスできるビューを所有します。<br>」 を選べており、成立条件を正しく読めています。</p>
                     <div class="block-title">得点できた理由</div>
                     <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
                     <div class="block-title">選択肢ごとの判定</div>
@@ -433,7 +443,7 @@
                 <div class="option-review-badges"><span>正答肢</span></div>
               </div>
               <div class="option-review-text">データ・ディクショナリは、DDLが発行されるたびに常に更新されます。</div>
-              <div class="option-review-reason">正しい。 DDL は定義変更であり、Oracle では暗黙 COMMIT を伴います。</div>
+              <div class="option-review-reason">正しい。 DDL は定義変更であり、Oracle では暗黙 <span class="sql-kw">COMMIT</span> を伴います。</div>
             </div>
             
             <div class="option-review correct">
@@ -483,14 +493,14 @@
                   <div class="question-meta">第2回 模擬試験 / 問28 / 正答 AC / 自己回答 -</div>
                   <div class="block-title">問題文</div>
                   <pre>副問合せに関して正しいのはどれでしょうか。（2つ選択）
-(<span class="sql-num">1</span>)		A.　副問合せを使用して、1つ以上の表からデータにアクセスできます。
-(<span class="sql-num">2</span>)		B.　副問合せを使用して、ビューからデータにアクセスすることはできません。
-(<span class="sql-num">3</span>)		C.　副問合せが0行を返す場合、サブクエリ式によって返される値はNULLです。
-(<span class="sql-num">4</span>)		D.　1つのSQL文で記載できる副問合せは2つだけです。
-(<span class="sql-num">5</span>)		E.　SELECTのWHERE句の副問合せは、最大4レベルまでネストできます。</pre>
+(<span class="sql-num"><span class="sql-num">1</span></span>)		A.　副問合せを使用して、1つ以上の表からデータにアクセスできます。
+(<span class="sql-num"><span class="sql-num">2</span></span>)		B.　副問合せを使用して、ビューからデータにアクセスすることはできません。
+(<span class="sql-num"><span class="sql-num">3</span></span>)		C.　副問合せが0行を返す場合、サブクエリ式によって返される値はNULLです。
+(<span class="sql-num"><span class="sql-num">4</span></span>)		D.　1つのSQL文で記載できる副問合せは2つだけです。
+(<span class="sql-num"><span class="sql-num">5</span></span>)		E.　SELECTのWHERE句の副問合せは、最大4レベルまでネストできます。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
-                    <p>この設問の論点は「ビューの性質と更新可否」です。問題文は「副問合せに関して正しいのはどれでしょうか。（2つ選択）」という条件を満たす説明または SQL を求めています。ビューはスキーマオブジェクトであり、基表に依存している。更新可否や WITH CHECK OPTION、READ ONLY、別スキーマ参照可否などが典型論点になる。 この設問では正答 A「副問合せを使用して、1つ以上の表からデータにアクセスできます。」 / C「副問合せが0行を返す場合、サブクエリ式によって返される値はNULLです。」 を選べており、成立条件を正しく読めています。</p>
+                    <p>この設問の論点は「ビューの性質と更新可否」です。<br>問題文は「副問合せに関して正しいのはどれでしょうか。<br>（2つ選択）」という条件を満たす説明または SQL を求めています。<br>ビューはスキーマオブジェクトであり、基表に依存している。<br>更新可否や <span class="sql-kw">WITH CHECK OPTION</span>、READ <span class="sql-kw">ONLY</span>、別スキーマ参照可否などが典型論点になる。 この設問では正答 A「副問合せを使用して、1つ以上の表からデータにアクセスできます。<br>」 / C「副問合せが0行を返す場合、サブクエリ式によって返される値はNULLです。<br>」 を選べており、成立条件を正しく読めています。</p>
                     <div class="block-title">得点できた理由</div>
                     <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
                     <div class="block-title">選択肢ごとの判定</div>
@@ -557,7 +567,7 @@
 (<span class="sql-num">4</span>)		D. ビューを作成する際に、別スキーマの表を参照することができる。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
-                    <p>この設問の論点は「ビューの性質と更新可否」です。問題文は「ビューの記載について正しいものを1つ選択してください。」という条件を満たす説明または SQL を求めています。ビューはスキーマオブジェクトであり、基表に依存している。更新可否や WITH CHECK OPTION、READ ONLY、別スキーマ参照可否などが典型論点になる。 この設問では正答 D「ビューを作成する際に、別スキーマの表を参照することができる。」 を選べており、成立条件を正しく読めています。</p>
+                    <p>この設問の論点は「ビューの性質と更新可否」です。<br>問題文は「ビューの記載について正しいものを1つ選択してください。<br>」という条件を満たす説明または SQL を求めています。<br>ビューはスキーマオブジェクトであり、基表に依存している。<br>更新可否や <span class="sql-kw">WITH CHECK OPTION</span>、READ <span class="sql-kw">ONLY</span>、別スキーマ参照可否などが典型論点になる。 この設問では正答 D「ビューを作成する際に、別スキーマの表を参照することができる。<br>」 を選べており、成立条件を正しく読めています。</p>
                     <div class="block-title">得点できた理由</div>
                     <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
                     <div class="block-title">選択肢ごとの判定</div>
@@ -576,7 +586,7 @@
                 <div class="option-review-key">B</div>
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
-              <div class="option-review-text">ビューに対する更新処理を行う場合は、WITH CHECK OPTIONが必要である。</div>
+              <div class="option-review-text">ビューに対する更新処理を行う場合は、<span class="sql-kw">WITH</span> <span class="sql-kw">CHECK</span> OPTIONが必要である。</div>
               <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
             </div>
             
@@ -622,7 +632,7 @@
 (<span class="sql-num">6</span>)		F. EMPLOYEES テーブルを基にしたすべてのビューが無効化される。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
-                    <p>この設問の論点は「ビューの性質と更新可否」です。問題文は「EMPLOYEES表は、シノニム、インデックス、ビューにより参照されています。 次の DROP TABLE コマンドを実行した場合、どのような影響があるでしょうか。 DROP TABLE employees PURGE; 正しい説明を3つ…」という条件を満たす説明または SQL を求めています。ビューはスキーマオブジェクトであり、基表に依存している。更新可否や WITH CHECK OPTION、READ ONLY、別スキーマ参照可否などが典型論点になる。 この設問では正答 D「EMPLOYEES テーブルはデータベースから完全に削除される。」 / E「EMPLOYEES テーブル上のすべてのインデックスが削除される。」 / F「EMPLOYEES テーブルを基にしたすべてのビューが無効化される。」 を選べており、成立条件を正しく読めています。</p>
+                    <p>この設問の論点は「ビューの性質と更新可否」です。<br>問題文は「EMPLOYEES表は、シノニム、インデックス、ビューにより参照されています。 次の <span class="sql-kw">DROP TABLE</span> コマンドを実行した場合、どのような影響があるでしょうか。 <span class="sql-kw">DROP TABLE</span> employees PURGE; 正しい説明を3つ…」という条件を満たす説明または SQL を求めています。<br>ビューはスキーマオブジェクトであり、基表に依存している。<br>更新可否や <span class="sql-kw">WITH CHECK OPTION</span>、READ <span class="sql-kw">ONLY</span>、別スキーマ参照可否などが典型論点になる。 この設問では正答 D「EMPLOYEES テーブルはデータベースから完全に削除される。<br>」 / E「EMPLOYEES テーブル上のすべてのインデックスが削除される。<br>」 / F「EMPLOYEES テーブルを基にしたすべてのビューが無効化される。<br>」 を選べており、成立条件を正しく読めています。</p>
                     <div class="block-title">得点できた理由</div>
                     <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
                     <div class="block-title">選択肢ごとの判定</div>
@@ -650,8 +660,8 @@
                 <div class="option-review-key">C</div>
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
-              <div class="option-review-text">DROP TABLE で削除したテーブルは ROLLBACK によって元に戻せる。</div>
-              <div class="option-review-reason">誤り。 ROLLBACK は未確定変更を取り消します。SAVEPOINT 指定ならその地点以降だけを戻します。 DDL は定義変更であり、Oracle では暗黙 COMMIT を伴います。</div>
+              <div class="option-review-text"><span class="sql-kw">DROP TABLE</span> で削除したテーブルは <span class="sql-kw">ROLLBACK</span> によって元に戻せる。</div>
+              <div class="option-review-reason">誤り。 <span class="sql-kw">ROLLBACK</span> は未確定変更を取り消します。<br><span class="sql-kw">SAVEPOINT</span> 指定ならその地点以降だけを戻します。 DDL は定義変更であり、Oracle では暗黙 <span class="sql-kw">COMMIT</span> を伴います。</div>
             </div>
             
             <div class="option-review correct">
@@ -692,7 +702,7 @@
             
             <section class="concept-section" id="d8-2">
               <h3>権限付与とロール<span>7問</span></h3>
-              <p class="concept-copy">オブジェクト権限は WITH GRANT OPTION、システム権限は WITH ADMIN OPTION と付与方法が異なる。列単位 UPDATE やロールの扱いも頻出である。</p>
+              <p class="concept-copy">オブジェクト権限は <span class="sql-kw">WITH GRANT OPTION</span>、システム権限は <span class="sql-kw">WITH</span> ADMIN OPTION と付与方法が異なる。<br>列単位 <span class="sql-kw">UPDATE</span> やロールの扱いも頻出である。</p>
               
     <div class="concept-guide" style="border-top-color:#e67e22">
       <div class="guide-block">
@@ -721,14 +731,14 @@
       <div class="guide-grid">
         <div class="guide-block">
           <div class="guide-title">成立条件</div>
-          <ul class="guide-list"><li>ビューは定義を保持するオブジェクトであり、基表そのものを複製するわけではない。</li><li>シーケンスの CURRVAL は同一セッションで NEXTVAL 実行後にのみ参照できる。</li><li>オブジェクト権限とシステム権限では付与オプションが異なる。</li></ul>
+          <ul class="guide-list"><li>ビューは定義を保持するオブジェクトであり、基表そのものを複製するわけではない。</li><li>シーケンスの <span class="sql-kw">CURRVAL</span> は同一セッションで <span class="sql-kw">NEXTVAL</span> 実行後にのみ参照できる。</li><li>オブジェクト権限とシステム権限では付与オプションが異なる。</li></ul>
         </div>
         <div class="guide-block">
           <div class="guide-title">判定手順</div>
           <ol class="guide-list ordered"><li>何のオブジェクトを操作している文かを最初に確定する。</li><li>そのオブジェクト固有の使用条件や制約を確認する。</li><li>権限・時刻・索引のような副作用の有無を最後に判定する。</li></ol>
         </div>
       </div>
-      <div class="guide-note">失点しやすい点: GRANT OPTION と ADMIN OPTION を混同し、列単位権限の構文を取り違えやすい。</div>
+      <div class="guide-note">失点しやすい点: <span class="sql-kw">GRANT</span> OPTION と ADMIN OPTION を混同し、列単位権限の構文を取り違えやすい。</div>
     </div>
     
               
@@ -736,14 +746,14 @@
                   <div class="question-meta">第1回 模擬試験 / 問73 / 正答 A.C / 自己回答 -</div>
                   <div class="block-title">問題文</div>
                   <pre>ロールについて正しい記載はどれでしょうか。（2つ選択）
-(<span class="sql-num">1</span>)		A.　ロールは、ユーザーまたは他のロールに付与できる権限の集合です。
-(<span class="sql-num">2</span>)		B.　ロールは自分自身のロールに付与できます。
-(<span class="sql-num">3</span>)		C.　ロールはPUBLICに付与できます。
-(<span class="sql-num">4</span>)		D.　ユーザーは、1つのロールのみを付与できます。
-(<span class="sql-num">5</span>)		E.　ロールは循環的に付与できます。</pre>
+(<span class="sql-num"><span class="sql-num">1</span></span>)		A.　ロールは、ユーザーまたは他のロールに付与できる権限の集合です。
+(<span class="sql-num"><span class="sql-num">2</span></span>)		B.　ロールは自分自身のロールに付与できます。
+(<span class="sql-num"><span class="sql-num">3</span></span>)		C.　ロールはPUBLICに付与できます。
+(<span class="sql-num"><span class="sql-num">4</span></span>)		D.　ユーザーは、1つのロールのみを付与できます。
+(<span class="sql-num"><span class="sql-num">5</span></span>)		E.　ロールは循環的に付与できます。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
-                    <p>この設問の論点は「権限付与とロール」です。問題文は「ロールについて正しい記載はどれでしょうか。（2つ選択）」という条件を満たす説明または SQL を求めています。オブジェクト権限は WITH GRANT OPTION、システム権限は WITH ADMIN OPTION と付与方法が異なる。列単位 UPDATE やロールの扱いも頻出である。 この設問では正答 A「ロールは、ユーザーまたは他のロールに付与できる権限の集合です。」 / C「ロールはPUBLICに付与できます。」 を選べており、成立条件を正しく読めています。</p>
+                    <p>この設問の論点は「権限付与とロール」です。<br>問題文は「ロールについて正しい記載はどれでしょうか。<br>（2つ選択）」という条件を満たす説明または SQL を求めています。<br>オブジェクト権限は <span class="sql-kw">WITH GRANT OPTION</span>、システム権限は <span class="sql-kw">WITH</span> ADMIN OPTION と付与方法が異なる。<br>列単位 <span class="sql-kw">UPDATE</span> やロールの扱いも頻出である。 この設問では正答 A「ロールは、ユーザーまたは他のロールに付与できる権限の集合です。<br>」 / C「ロールはPUBLICに付与できます。<br>」 を選べており、成立条件を正しく読めています。</p>
                     <div class="block-title">得点できた理由</div>
                     <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
                     <div class="block-title">選択肢ごとの判定</div>
@@ -820,7 +830,7 @@
 (<span class="sql-num">4</span>)		D.　<span class="sql-kw">ROLLBACK TO</span> SAVEPOINTはエラーとなります。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
-                    <p>この設問の論点は「権限付与とロール」です。問題文は「以下の文を実行します。 INSERT INTO ITEM VALUES ('1','CURRY','FOOD',1000); SAVEPOINT SP1; UPDATE ITEM SET ITEM_NAME = 'SUSHI' WHERE…」という条件を満たす説明または SQL を求めています。オブジェクト権限は WITH GRANT OPTION、システム権限は WITH ADMIN OPTION と付与方法が異なる。列単位 UPDATE やロールの扱いも頻出である。 この設問では正答 A「トランザクションはロールバックされません。」 / D「ROLLBACK TO SAVEPOINTはエラーとなります。」 を選べており、成立条件を正しく読めています。</p>
+                    <p>この設問の論点は「権限付与とロール」です。<br>問題文は「以下の文を実行します。 <span class="sql-kw">INSERT INTO</span> ITEM <span class="sql-kw">VALUES</span> (<span class="sql-str">'1'</span>,<span class="sql-str">'CURRY'</span>,<span class="sql-str">'FOOD'</span>,<span class="sql-num">1000</span>); <span class="sql-kw">SAVEPOINT</span> SP1; <span class="sql-kw">UPDATE</span> ITEM <span class="sql-kw">SET</span> ITEM_NAME = <span class="sql-str">'SUSHI'</span> <span class="sql-kw">WHERE</span>…」という条件を満たす説明または SQL を求めています。<br>オブジェクト権限は <span class="sql-kw">WITH GRANT OPTION</span>、システム権限は <span class="sql-kw">WITH</span> ADMIN OPTION と付与方法が異なる。<br>列単位 <span class="sql-kw">UPDATE</span> やロールの扱いも頻出である。 この設問では正答 A「トランザクションはロールバックされません。<br>」 / D「<span class="sql-kw">ROLLBACK TO</span> SAVEPOINTはエラーとなります。<br>」 を選べており、成立条件を正しく読めています。</p>
                     <div class="block-title">得点できた理由</div>
                     <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
                     <div class="block-title">選択肢ごとの判定</div>
@@ -857,8 +867,8 @@
                 <div class="option-review-key">D</div>
                 <div class="option-review-badges"><span>正答肢</span></div>
               </div>
-              <div class="option-review-text">ROLLBACK TO SAVEPOINTはエラーとなります。</div>
-              <div class="option-review-reason">正しい。 SAVEPOINT はロールバック復帰点であり、COMMIT すると消去されます。 ROLLBACK は未確定変更を取り消します。SAVEPOINT 指定ならその地点以降だけを戻します。</div>
+              <div class="option-review-text"><span class="sql-kw">ROLLBACK TO</span> SAVEPOINTはエラーとなります。</div>
+              <div class="option-review-reason">正しい。 <span class="sql-kw">SAVEPOINT</span> はロールバック復帰点であり、<span class="sql-kw">COMMIT</span> すると消去されます。 <span class="sql-kw">ROLLBACK</span> は未確定変更を取り消します。<br><span class="sql-kw">SAVEPOINT</span> 指定ならその地点以降だけを戻します。</div>
             </div>
             </div>
                     <div class="block-title">解く順序</div>
@@ -886,7 +896,7 @@
 (<span class="sql-num">5</span>)		E. REVOKEがエラーとなる</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
-                    <p>この設問の論点は「権限付与とロール」です。問題文は「次の順序でSQL文を実行した時の説明として、正しいものを2つ選択してください。 ・USER1ユーザーで以下を実行 GRANT SELECT ON Employees TO USER2 WITH GRANT OPTION; ・USER2ユー…」という条件を満たす説明または SQL を求めています。オブジェクト権限は WITH GRANT OPTION、システム権限は WITH ADMIN OPTION と付与方法が異なる。列単位 UPDATE やロールの扱いも頻出である。 この設問では正答 B「USER2のSELECT権限が取り消される」 / C「USER3のSELECT権限が取り消される」 を選べており、成立条件を正しく読めています。</p>
+                    <p>この設問の論点は「権限付与とロール」です。<br>問題文は「次の順序でSQL文を実行した時の説明として、正しいものを2つ選択してください。 ・USER1ユーザーで以下を実行 <span class="sql-kw">GRANT</span> <span class="sql-kw">SELECT</span> <span class="sql-kw">ON</span> Employees <span class="sql-kw">TO</span> USER2 <span class="sql-kw">WITH GRANT OPTION</span>; ・USER2ユー…」という条件を満たす説明または SQL を求めています。<br>オブジェクト権限は <span class="sql-kw">WITH GRANT OPTION</span>、システム権限は <span class="sql-kw">WITH</span> ADMIN OPTION と付与方法が異なる。<br>列単位 <span class="sql-kw">UPDATE</span> やロールの扱いも頻出である。 この設問では正答 B「USER2のSELECT権限が取り消される」 / C「USER3のSELECT権限が取り消される」 を選べており、成立条件を正しく読めています。</p>
                     <div class="block-title">得点できた理由</div>
                     <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
                     <div class="block-title">選択肢ごとの判定</div>
@@ -923,7 +933,7 @@
                 <div class="option-review-key">D</div>
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
-              <div class="option-review-text">2つ目のWITH GRANT OPTIONは指定できないためエラーとなる</div>
+              <div class="option-review-text">2つ目のWITH <span class="sql-kw">GRANT</span> OPTIONは指定できないためエラーとなる</div>
               <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
             </div>
             
@@ -955,7 +965,7 @@
 (<span class="sql-num">6</span>)		F. ロールを循環的に使用することができる</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
-                    <p>この設問の論点は「権限付与とロール」です。問題文は「次のうち、ロールに関して正しい記載を2つ選択してください。」という条件を満たす説明または SQL を求めています。オブジェクト権限は WITH GRANT OPTION、システム権限は WITH ADMIN OPTION と付与方法が異なる。列単位 UPDATE やロールの扱いも頻出である。 この設問では正答 A「ロールはPUBLICに付与できる」 / C「ロール付与でWITH ADMIN OPTIONを指定できる」 を選べており、成立条件を正しく読めています。</p>
+                    <p>この設問の論点は「権限付与とロール」です。<br>問題文は「次のうち、ロールに関して正しい記載を2つ選択してください。<br>」という条件を満たす説明または SQL を求めています。<br>オブジェクト権限は <span class="sql-kw">WITH GRANT OPTION</span>、システム権限は <span class="sql-kw">WITH</span> ADMIN OPTION と付与方法が異なる。<br>列単位 <span class="sql-kw">UPDATE</span> やロールの扱いも頻出である。 この設問では正答 A「ロールはPUBLICに付与できる」 / C「ロール付与でWITH ADMIN OPTIONを指定できる」 を選べており、成立条件を正しく読めています。</p>
                     <div class="block-title">得点できた理由</div>
                     <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
                     <div class="block-title">選択肢ごとの判定</div>
@@ -974,7 +984,7 @@
                 <div class="option-review-key">B</div>
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
-              <div class="option-review-text">ロール付与でWITH GRANT OPTIONを指定できる</div>
+              <div class="option-review-text">ロール付与でWITH <span class="sql-kw">GRANT</span> OPTIONを指定できる</div>
               <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
             </div>
             
@@ -1025,14 +1035,14 @@
                   <div class="question-meta">第2回 模擬試験 / 問74 / 正答 CE / 自己回答 -</div>
                   <div class="block-title">問題文</div>
                   <pre>ロールバックが実行されるケースは以下のうちどれでしょうか。2つ選択してください。
-(<span class="sql-num">1</span>)		A.　DDLが実行されたとき
-(<span class="sql-num">2</span>)		B.　SAVEPOINTが実行されたとき
-(<span class="sql-num">3</span>)		C.　システム障害が発生したとき
-(<span class="sql-num">4</span>)		D.　DMLが実行されたとき
-(<span class="sql-num">5</span>)		E.　shutdown immediateが実行されたとき</pre>
+(<span class="sql-num"><span class="sql-num">1</span></span>)		A.　DDLが実行されたとき
+(<span class="sql-num"><span class="sql-num">2</span></span>)		B.　SAVEPOINTが実行されたとき
+(<span class="sql-num"><span class="sql-num">3</span></span>)		C.　システム障害が発生したとき
+(<span class="sql-num"><span class="sql-num">4</span></span>)		D.　DMLが実行されたとき
+(<span class="sql-num"><span class="sql-num">5</span></span>)		E.　shutdown immediateが実行されたとき</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
-                    <p>この設問の論点は「権限付与とロール」です。問題文は「ロールバックが実行されるケースは以下のうちどれでしょうか。2つ選択してください。」という条件を満たす説明または SQL を求めています。オブジェクト権限は WITH GRANT OPTION、システム権限は WITH ADMIN OPTION と付与方法が異なる。列単位 UPDATE やロールの扱いも頻出である。 この設問では正答 C「システム障害が発生したとき」 / E「shutdown immediateが実行されたとき」 を選べており、成立条件を正しく読めています。</p>
+                    <p>この設問の論点は「権限付与とロール」です。<br>問題文は「ロールバックが実行されるケースは以下のうちどれでしょうか。<br>2つ選択してください。<br>」という条件を満たす説明または SQL を求めています。<br>オブジェクト権限は <span class="sql-kw">WITH GRANT OPTION</span>、システム権限は <span class="sql-kw">WITH</span> ADMIN OPTION と付与方法が異なる。<br>列単位 <span class="sql-kw">UPDATE</span> やロールの扱いも頻出である。 この設問では正答 C「システム障害が発生したとき」 / E「shutdown immediateが実行されたとき」 を選べており、成立条件を正しく読めています。</p>
                     <div class="block-title">得点できた理由</div>
                     <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
                     <div class="block-title">選択肢ごとの判定</div>
@@ -1043,7 +1053,7 @@
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
               <div class="option-review-text">DDLが実行されたとき</div>
-              <div class="option-review-reason">誤り。 DDL は定義変更であり、Oracle では暗黙 COMMIT を伴います。</div>
+              <div class="option-review-reason">誤り。 DDL は定義変更であり、Oracle では暗黙 <span class="sql-kw">COMMIT</span> を伴います。</div>
             </div>
             
             <div class="option-review wrong">
@@ -1052,7 +1062,7 @@
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
               <div class="option-review-text">SAVEPOINTが実行されたとき</div>
-              <div class="option-review-reason">誤り。 SAVEPOINT はロールバック復帰点であり、COMMIT すると消去されます。</div>
+              <div class="option-review-reason">誤り。 <span class="sql-kw">SAVEPOINT</span> はロールバック復帰点であり、<span class="sql-kw">COMMIT</span> すると消去されます。</div>
             </div>
             
             <div class="option-review correct">
@@ -1100,7 +1110,7 @@
 (<span class="sql-num">5</span>)		E. テーブルを更新すると、すべてのインデックスに更新が反映される場合がある。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
-                    <p>この設問の論点は「権限付与とロール」です。問題文は「インデックスについて、正しいものを1つ選んでください。」という条件を満たす説明または SQL を求めています。オブジェクト権限は WITH GRANT OPTION、システム権限は WITH ADMIN OPTION と付与方法が異なる。列単位 UPDATE やロールの扱いも頻出である。 この設問では正答 E「テーブルを更新すると、すべてのインデックスに更新が反映される場合がある。」 を選べており、成立条件を正しく読めています。</p>
+                    <p>この設問の論点は「権限付与とロール」です。<br>問題文は「インデックスについて、正しいものを1つ選んでください。<br>」という条件を満たす説明または SQL を求めています。<br>オブジェクト権限は <span class="sql-kw">WITH GRANT OPTION</span>、システム権限は <span class="sql-kw">WITH</span> ADMIN OPTION と付与方法が異なる。<br>列単位 <span class="sql-kw">UPDATE</span> やロールの扱いも頻出である。 この設問では正答 E「テーブルを更新すると、すべてのインデックスに更新が反映される場合がある。<br>」 を選べており、成立条件を正しく読めています。</p>
                     <div class="block-title">得点できた理由</div>
                     <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
                     <div class="block-title">選択肢ごとの判定</div>
@@ -1119,7 +1129,7 @@
                 <div class="option-review-key">B</div>
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
-              <div class="option-review-text">UNIQUE インデックスは、非一意インデックスに変更できる。</div>
+              <div class="option-review-text"><span class="sql-kw">UNIQUE</span> インデックスは、非一意インデックスに変更できる。</div>
               <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
             </div>
             
@@ -1168,7 +1178,7 @@
 (<span class="sql-num">5</span>)		E. <span class="sql-kw">GRANT</span> 文を使用してロールに権限を割り当てる。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
-                    <p>この設問の論点は「権限付与とロール」です。問題文は「ロール について、正しい記載を3つ選んでください。」という条件を満たす説明または SQL を求めています。オブジェクト権限は WITH GRANT OPTION、システム権限は WITH ADMIN OPTION と付与方法が異なる。列単位 UPDATE やロールの扱いも頻出である。 この設問では正答 B「1つのロールを複数のユーザーに割り当てることができる。」 / D「1つのユーザーに複数のロールを割り当てることができる。」 / E「GRANT 文を使用してロールに権限を割り当てる。」 を選べており、成立条件を正しく読めています。</p>
+                    <p>この設問の論点は「権限付与とロール」です。<br>問題文は「ロール について、正しい記載を3つ選んでください。<br>」という条件を満たす説明または SQL を求めています。<br>オブジェクト権限は <span class="sql-kw">WITH GRANT OPTION</span>、システム権限は <span class="sql-kw">WITH</span> ADMIN OPTION と付与方法が異なる。<br>列単位 <span class="sql-kw">UPDATE</span> やロールの扱いも頻出である。 この設問では正答 B「1つのロールを複数のユーザーに割り当てることができる。<br>」 / D「1つのユーザーに複数のロールを割り当てることができる。<br>」 / E「<span class="sql-kw">GRANT</span> 文を使用してロールに権限を割り当てる。<br>」 を選べており、成立条件を正しく読めています。</p>
                     <div class="block-title">得点できた理由</div>
                     <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
                     <div class="block-title">選択肢ごとの判定</div>
@@ -1196,8 +1206,8 @@
                 <div class="option-review-key">C</div>
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
-              <div class="option-review-text">ALTER USER 文を使用してユーザーにロールを割り当てる。</div>
-              <div class="option-review-reason">誤り。 DDL は定義変更であり、Oracle では暗黙 COMMIT を伴います。</div>
+              <div class="option-review-text"><span class="sql-kw">ALTER</span> USER 文を使用してユーザーにロールを割り当てる。</div>
+              <div class="option-review-reason">誤り。 DDL は定義変更であり、Oracle では暗黙 <span class="sql-kw">COMMIT</span> を伴います。</div>
             </div>
             
             <div class="option-review correct">
@@ -1214,7 +1224,7 @@
                 <div class="option-review-key">E</div>
                 <div class="option-review-badges"><span>正答肢</span></div>
               </div>
-              <div class="option-review-text">GRANT 文を使用してロールに権限を割り当てる。</div>
+              <div class="option-review-text"><span class="sql-kw">GRANT</span> 文を使用してロールに権限を割り当てる。</div>
               <div class="option-review-reason">正しい。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
             </div>
             </div>
@@ -1229,7 +1239,7 @@
             
             <section class="concept-section" id="d8-3">
               <h3>シーケンス・シノニム・索引<span>4問</span></h3>
-              <p class="concept-copy">シーケンスは連番供給、シノニムは別名、索引は検索高速化のためのオブジェクトである。INVISIBLE INDEX、NEXTVAL/CURRVAL、PUBLIC SYNONYM など固有ルールが問われる。</p>
+              <p class="concept-copy">シーケンスは連番供給、シノニムは別名、索引は検索高速化のためのオブジェクトである。<br>INVISIBLE <span class="sql-kw">INDEX</span>、<span class="sql-kw">NEXTVAL</span>/<span class="sql-kw">CURRVAL</span>、<span class="sql-kw">PUBLIC</span> <span class="sql-kw">SYNONYM</span> など固有ルールが問われる。</p>
               
     <div class="concept-guide" style="border-top-color:#e67e22">
       <div class="guide-block">
@@ -1258,14 +1268,14 @@
       <div class="guide-grid">
         <div class="guide-block">
           <div class="guide-title">成立条件</div>
-          <ul class="guide-list"><li>ビューは定義を保持するオブジェクトであり、基表そのものを複製するわけではない。</li><li>シーケンスの CURRVAL は同一セッションで NEXTVAL 実行後にのみ参照できる。</li><li>オブジェクト権限とシステム権限では付与オプションが異なる。</li></ul>
+          <ul class="guide-list"><li>ビューは定義を保持するオブジェクトであり、基表そのものを複製するわけではない。</li><li>シーケンスの <span class="sql-kw">CURRVAL</span> は同一セッションで <span class="sql-kw">NEXTVAL</span> 実行後にのみ参照できる。</li><li>オブジェクト権限とシステム権限では付与オプションが異なる。</li></ul>
         </div>
         <div class="guide-block">
           <div class="guide-title">判定手順</div>
           <ol class="guide-list ordered"><li>何のオブジェクトを操作している文かを最初に確定する。</li><li>そのオブジェクト固有の使用条件や制約を確認する。</li><li>権限・時刻・索引のような副作用の有無を最後に判定する。</li></ol>
         </div>
       </div>
-      <div class="guide-note">失点しやすい点: CURRVAL の利用条件、INVISIBLE INDEX の更新有無、シノニムの対象範囲を曖昧にしやすい。</div>
+      <div class="guide-note">失点しやすい点: <span class="sql-kw">CURRVAL</span> の利用条件、INVISIBLE <span class="sql-kw">INDEX</span> の更新有無、シノニムの対象範囲を曖昧にしやすい。</div>
     </div>
     
               
@@ -1273,13 +1283,13 @@
                   <div class="question-meta">第1回 模擬試験 / 問54 / 正答 D / 自己回答 -</div>
                   <div class="block-title">問題文</div>
                   <pre>TRUNCATEとDELETEについて正しい記述はどれでしょうか。
-(<span class="sql-num">1</span>)		A.　外部キー制約に違反する場合、表をTRUNCATEすることはできません。
-(<span class="sql-num">2</span>)		B.　TRUNCATEを実行すると、索引や制約などの依存オブジェクトも削除されます。
-(<span class="sql-num">3</span>)		C.　TRUNCATEはDELETEと同じくロールバックが可能です。
-(<span class="sql-num">4</span>)		D.　データ量が大きな表のデータ削除を行う場合、TRUNCATEはDELETEよりも高速です。</pre>
+(<span class="sql-num"><span class="sql-num">1</span></span>)		A.　外部キー制約に違反する場合、表をTRUNCATEすることはできません。
+(<span class="sql-num"><span class="sql-num">2</span></span>)		B.　TRUNCATEを実行すると、索引や制約などの依存オブジェクトも削除されます。
+(<span class="sql-num"><span class="sql-num">3</span></span>)		C.　TRUNCATEはDELETEと同じくロールバックが可能です。
+(<span class="sql-num"><span class="sql-num">4</span></span>)		D.　データ量が大きな表のデータ削除を行う場合、TRUNCATEはDELETEよりも高速です。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
-                    <p>この設問の論点は「シーケンス・シノニム・索引」です。問題文は「TRUNCATEとDELETEについて正しい記述はどれでしょうか。」という条件を満たす説明または SQL を求めています。シーケンスは連番供給、シノニムは別名、索引は検索高速化のためのオブジェクトである。INVISIBLE INDEX、NEXTVAL/CURRVAL、PUBLIC SYNONYM など固有ルールが問われる。 この設問では正答 D「データ量が大きな表のデータ削除を行う場合、TRUNCATEはDELETEよりも高速です。」 を選べており、成立条件を正しく読めています。</p>
+                    <p>この設問の論点は「シーケンス・シノニム・索引」です。<br>問題文は「TRUNCATEとDELETEについて正しい記述はどれでしょうか。<br>」という条件を満たす説明または SQL を求めています。<br>シーケンスは連番供給、シノニムは別名、索引は検索高速化のためのオブジェクトである。<br>INVISIBLE <span class="sql-kw">INDEX</span>、<span class="sql-kw">NEXTVAL</span>/<span class="sql-kw">CURRVAL</span>、<span class="sql-kw">PUBLIC</span> <span class="sql-kw">SYNONYM</span> など固有ルールが問われる。 この設問では正答 D「データ量が大きな表のデータ削除を行う場合、TRUNCATEはDELETEよりも高速です。<br>」 を選べており、成立条件を正しく読めています。</p>
                     <div class="block-title">得点できた理由</div>
                     <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
                     <div class="block-title">選択肢ごとの判定</div>
@@ -1345,7 +1355,7 @@ FLASHBACK <span class="sql-kw">TABLE</span> ITEM <span class="sql-kw">TO</span> 
 (<span class="sql-num">5</span>)		E.　索引のみを回復します。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
-                    <p>この設問の論点は「シーケンス・シノニム・索引」です。問題文は「ITEM表に索引が作成された状態で、 DROP TABLE ITEM; を実行して、表と索引がRECYCLEBINに存在するとします。 次に以下の文を実行します。 FLASHBACK TABLE ITEM TO BEFORE DROP; …」という条件を満たす説明または SQL を求めています。シーケンスは連番供給、シノニムは別名、索引は検索高速化のためのオブジェクトである。INVISIBLE INDEX、NEXTVAL/CURRVAL、PUBLIC SYNONYM など固有ルールが問われる。 この設問では正答 D「表構造、データ、索引を回復します。」 を選べており、成立条件を正しく読めています。</p>
+                    <p>この設問の論点は「シーケンス・シノニム・索引」です。<br>問題文は「ITEM表に索引が作成された状態で、 <span class="sql-kw">DROP TABLE</span> ITEM; を実行して、表と索引がRECYCLEBINに存在するとします。 次に以下の文を実行します。 FLASHBACK <span class="sql-kw">TABLE</span> ITEM <span class="sql-kw">TO</span> BEFORE <span class="sql-kw">DROP</span>; …」という条件を満たす説明または SQL を求めています。<br>シーケンスは連番供給、シノニムは別名、索引は検索高速化のためのオブジェクトである。<br>INVISIBLE <span class="sql-kw">INDEX</span>、<span class="sql-kw">NEXTVAL</span>/<span class="sql-kw">CURRVAL</span>、<span class="sql-kw">PUBLIC</span> <span class="sql-kw">SYNONYM</span> など固有ルールが問われる。 この設問では正答 D「表構造、データ、索引を回復します。<br>」 を選べており、成立条件を正しく読めています。</p>
                     <div class="block-title">得点できた理由</div>
                     <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
                     <div class="block-title">選択肢ごとの判定</div>
@@ -1414,7 +1424,7 @@ USER1ユーザーのITEM表に、すべてのユーザーがアクセスでき�
 (<span class="sql-num">5</span>)		E.　<span class="sql-kw">CREATE OR REPLACE</span> <span class="sql-kw">PUBLIC</span> <span class="sql-kw">SYNONYM</span> ITEM_SYN <span class="sql-kw">FOR</span> USER1.ITEM;</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
-                    <p>この設問の論点は「シーケンス・シノニム・索引」です。問題文は「実行ユーザーにはシノニムを作成する権限があります。 USER1ユーザーのITEM表に、すべてのユーザーがアクセスできるITEM_SYNというシノニムを作成する文はどれでしょうか。」という条件を満たす説明または SQL を求めています。シーケンスは連番供給、シノニムは別名、索引は検索高速化のためのオブジェクトである。INVISIBLE INDEX、NEXTVAL/CURRVAL、PUBLIC SYNONYM など固有ルールが問われる。 この設問では正答 E「CREATE OR REPLACE PUBLIC SYNONYM ITEM_SYN FOR USER1.ITE…」 を選べており、成立条件を正しく読めています。</p>
+                    <p>この設問の論点は「シーケンス・シノニム・索引」です。<br>問題文は「実行ユーザーにはシノニムを作成する権限があります。 USER1ユーザーのITEM表に、すべてのユーザーがアクセスできるITEM_SYNというシノニムを作成する文はどれでしょうか。<br>」という条件を満たす説明または SQL を求めています。<br>シーケンスは連番供給、シノニムは別名、索引は検索高速化のためのオブジェクトである。<br>INVISIBLE <span class="sql-kw">INDEX</span>、<span class="sql-kw">NEXTVAL</span>/<span class="sql-kw">CURRVAL</span>、<span class="sql-kw">PUBLIC</span> <span class="sql-kw">SYNONYM</span> など固有ルールが問われる。 この設問では正答 E「<span class="sql-kw">CREATE OR REPLACE</span> <span class="sql-kw">PUBLIC</span> <span class="sql-kw">SYNONYM</span> ITEM_SYN FOR USER1.ITE…」 を選べており、成立条件を正しく読めています。</p>
                     <div class="block-title">得点できた理由</div>
                     <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
                     <div class="block-title">選択肢ごとの判定</div>
@@ -1424,8 +1434,8 @@ USER1ユーザーのITEM表に、すべてのユーザーがアクセスでき�
                 <div class="option-review-key">A</div>
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
-              <div class="option-review-text">CREATE OR REPLACE SYNONYM ITEM_SYN FOR USER1.ITEM;</div>
-              <div class="option-review-reason">誤り。 DDL は定義変更であり、Oracle では暗黙 COMMIT を伴います。</div>
+              <div class="option-review-text"><span class="sql-kw">CREATE OR REPLACE</span> <span class="sql-kw">SYNONYM</span> ITEM_SYN FOR USER1.ITEM;</div>
+              <div class="option-review-reason">誤り。 DDL は定義変更であり、Oracle では暗黙 <span class="sql-kw">COMMIT</span> を伴います。</div>
             </div>
             
             <div class="option-review wrong">
@@ -1433,8 +1443,8 @@ USER1ユーザーのITEM表に、すべてのユーザーがアクセスでき�
                 <div class="option-review-key">B</div>
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
-              <div class="option-review-text">CREATE OR REPLACE SYNONYM PUBLIC ITEM_SYN FOR USER1.ITEM;</div>
-              <div class="option-review-reason">誤り。 DDL は定義変更であり、Oracle では暗黙 COMMIT を伴います。</div>
+              <div class="option-review-text"><span class="sql-kw">CREATE OR REPLACE</span> <span class="sql-kw">SYNONYM</span> <span class="sql-kw">PUBLIC</span> ITEM_SYN FOR USER1.ITEM;</div>
+              <div class="option-review-reason">誤り。 DDL は定義変更であり、Oracle では暗黙 <span class="sql-kw">COMMIT</span> を伴います。</div>
             </div>
             
             <div class="option-review wrong">
@@ -1442,8 +1452,8 @@ USER1ユーザーのITEM表に、すべてのユーザーがアクセスでき�
                 <div class="option-review-key">C</div>
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
-              <div class="option-review-text">CREATE OR REPLACE SYNONYM (PUBLIC ITEM_SYN) FOR USER1.ITEM;</div>
-              <div class="option-review-reason">誤り。 DDL は定義変更であり、Oracle では暗黙 COMMIT を伴います。</div>
+              <div class="option-review-text"><span class="sql-kw">CREATE OR REPLACE</span> <span class="sql-kw">SYNONYM</span> (<span class="sql-kw">PUBLIC</span> ITEM_SYN) FOR USER1.ITEM;</div>
+              <div class="option-review-reason">誤り。 DDL は定義変更であり、Oracle では暗黙 <span class="sql-kw">COMMIT</span> を伴います。</div>
             </div>
             
             <div class="option-review wrong">
@@ -1451,8 +1461,8 @@ USER1ユーザーのITEM表に、すべてのユーザーがアクセスでき�
                 <div class="option-review-key">D</div>
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
-              <div class="option-review-text">CREATE OR REPLACE SYNONYM ITEM_SYN FOR USER1.ITEM PUBLIC;</div>
-              <div class="option-review-reason">誤り。 DDL は定義変更であり、Oracle では暗黙 COMMIT を伴います。</div>
+              <div class="option-review-text"><span class="sql-kw">CREATE OR REPLACE</span> <span class="sql-kw">SYNONYM</span> ITEM_SYN FOR USER1.ITEM <span class="sql-kw">PUBLIC</span>;</div>
+              <div class="option-review-reason">誤り。 DDL は定義変更であり、Oracle では暗黙 <span class="sql-kw">COMMIT</span> を伴います。</div>
             </div>
             
             <div class="option-review correct">
@@ -1460,8 +1470,8 @@ USER1ユーザーのITEM表に、すべてのユーザーがアクセスでき�
                 <div class="option-review-key">E</div>
                 <div class="option-review-badges"><span>正答肢</span></div>
               </div>
-              <div class="option-review-text">CREATE OR REPLACE PUBLIC SYNONYM ITEM_SYN FOR USER1.ITEM;</div>
-              <div class="option-review-reason">正しい。 DDL は定義変更であり、Oracle では暗黙 COMMIT を伴います。</div>
+              <div class="option-review-text"><span class="sql-kw">CREATE OR REPLACE</span> <span class="sql-kw">PUBLIC</span> <span class="sql-kw">SYNONYM</span> ITEM_SYN FOR USER1.ITEM;</div>
+              <div class="option-review-reason">正しい。 DDL は定義変更であり、Oracle では暗黙 <span class="sql-kw">COMMIT</span> を伴います。</div>
             </div>
             </div>
                     <div class="block-title">解く順序</div>
@@ -1481,7 +1491,7 @@ USER1ユーザーのITEM表に、すべてのユーザーがアクセスでき�
 (<span class="sql-num">4</span>)		D.　パブリック・シノニムを削除するには、<span class="sql-kw">DROP</span> <span class="sql-kw">PUBLIC</span> SYNONYMシステム権限が必要です。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
-                    <p>この設問の論点は「シーケンス・シノニム・索引」です。問題文は「シノニムについて正しい記述はどれでしょうか。」という条件を満たす説明または SQL を求めています。シーケンスは連番供給、シノニムは別名、索引は検索高速化のためのオブジェクトである。INVISIBLE INDEX、NEXTVAL/CURRVAL、PUBLIC SYNONYM など固有ルールが問われる。 この設問では正答 D「パブリック・シノニムを削除するには、DROP PUBLIC SYNONYMシステム権限が必要です。」 を選べており、成立条件を正しく読めています。</p>
+                    <p>この設問の論点は「シーケンス・シノニム・索引」です。<br>問題文は「シノニムについて正しい記述はどれでしょうか。<br>」という条件を満たす説明または SQL を求めています。<br>シーケンスは連番供給、シノニムは別名、索引は検索高速化のためのオブジェクトである。<br>INVISIBLE <span class="sql-kw">INDEX</span>、<span class="sql-kw">NEXTVAL</span>/<span class="sql-kw">CURRVAL</span>、<span class="sql-kw">PUBLIC</span> <span class="sql-kw">SYNONYM</span> など固有ルールが問われる。 この設問では正答 D「パブリック・シノニムを削除するには、<span class="sql-kw">DROP</span> <span class="sql-kw">PUBLIC</span> SYNONYMシステム権限が必要です。<br>」 を選べており、成立条件を正しく読めています。</p>
                     <div class="block-title">得点できた理由</div>
                     <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
                     <div class="block-title">選択肢ごとの判定</div>
@@ -1518,8 +1528,8 @@ USER1ユーザーのITEM表に、すべてのユーザーがアクセスでき�
                 <div class="option-review-key">D</div>
                 <div class="option-review-badges"><span>正答肢</span></div>
               </div>
-              <div class="option-review-text">パブリック・シノニムを削除するには、DROP PUBLIC SYNONYMシステム権限が必要です。</div>
-              <div class="option-review-reason">正しい。 DDL は定義変更であり、Oracle では暗黙 COMMIT を伴います。</div>
+              <div class="option-review-text">パブリック・シノニムを削除するには、<span class="sql-kw">DROP</span> <span class="sql-kw">PUBLIC</span> SYNONYMシステム権限が必要です。</div>
+              <div class="option-review-reason">正しい。 DDL は定義変更であり、Oracle では暗黙 <span class="sql-kw">COMMIT</span> を伴います。</div>
             </div>
             </div>
                     <div class="block-title">解く順序</div>
@@ -1533,7 +1543,7 @@ USER1ユーザーのITEM表に、すべてのユーザーがアクセスでき�
             
             <section class="concept-section" id="d8-4">
               <h3>DATE・TIMESTAMP・TIME ZONE<span>3問</span></h3>
-              <p class="concept-copy">DATE は秒まで、TIMESTAMP は小数秒まで、TIMESTAMP WITH TIME ZONE はタイムゾーン情報付き、LOCAL TIME ZONE は DB タイムゾーンで正規化される。CURRENT_TIMESTAMP と SYSTIMESTAMP も基準が異なる。</p>
+              <p class="concept-copy">DATE は秒まで、TIMESTAMP は小数秒まで、TIMESTAMP <span class="sql-kw">WITH</span> TIME ZONE はタイムゾーン情報付き、LOCAL TIME ZONE は DB タイムゾーンで正規化される。<br>CURRENT_TIMESTAMP と SYSTIMESTAMP も基準が異なる。</p>
               
     <div class="concept-guide" style="border-top-color:#e67e22">
       <div class="guide-block">
@@ -1562,7 +1572,7 @@ USER1ユーザーのITEM表に、すべてのユーザーがアクセスでき�
       <div class="guide-grid">
         <div class="guide-block">
           <div class="guide-title">成立条件</div>
-          <ul class="guide-list"><li>ビューは定義を保持するオブジェクトであり、基表そのものを複製するわけではない。</li><li>シーケンスの CURRVAL は同一セッションで NEXTVAL 実行後にのみ参照できる。</li><li>オブジェクト権限とシステム権限では付与オプションが異なる。</li></ul>
+          <ul class="guide-list"><li>ビューは定義を保持するオブジェクトであり、基表そのものを複製するわけではない。</li><li>シーケンスの <span class="sql-kw">CURRVAL</span> は同一セッションで <span class="sql-kw">NEXTVAL</span> 実行後にのみ参照できる。</li><li>オブジェクト権限とシステム権限では付与オプションが異なる。</li></ul>
         </div>
         <div class="guide-block">
           <div class="guide-title">判定手順</div>
@@ -1583,7 +1593,7 @@ USER1ユーザーのITEM表に、すべてのユーザーがアクセスでき�
 (<span class="sql-num">4</span>)		D.　INTERVAL DAY <span class="sql-kw">TO</span> SECONDは、年ごとの間隔をサポートします。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
-                    <p>この設問の論点は「DATE・TIMESTAMP・TIME ZONE」です。問題文は「INTERVALデータ型について正しい記述はどれでしょうか。」という条件を満たす説明または SQL を求めています。DATE は秒まで、TIMESTAMP は小数秒まで、TIMESTAMP WITH TIME ZONE はタイムゾーン情報付き、LOCAL TIME ZONE は DB タイムゾーンで正規化される。CURRENT_TIMESTAMP と SYSTIMESTAMP も基準が異なる。 この設問では正答 B「INTERVAL YEAR TO MONTHは、年ごとの間隔をサポートします。」 を選べており、成立条件を正しく読めています。</p>
+                    <p>この設問の論点は「DATE・TIMESTAMP・TIME ZONE」です。<br>問題文は「INTERVALデータ型について正しい記述はどれでしょうか。<br>」という条件を満たす説明または SQL を求めています。<br>DATE は秒まで、TIMESTAMP は小数秒まで、TIMESTAMP <span class="sql-kw">WITH</span> TIME ZONE はタイムゾーン情報付き、LOCAL TIME ZONE は DB タイムゾーンで正規化される。<br>CURRENT_TIMESTAMP と SYSTIMESTAMP も基準が異なる。 この設問では正答 B「INTERVAL YEAR <span class="sql-kw">TO</span> MONTHは、年ごとの間隔をサポートします。<br>」 を選べており、成立条件を正しく読めています。</p>
                     <div class="block-title">得点できた理由</div>
                     <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
                     <div class="block-title">選択肢ごとの判定</div>
@@ -1593,7 +1603,7 @@ USER1ユーザーのITEM表に、すべてのユーザーがアクセスでき�
                 <div class="option-review-key">A</div>
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
-              <div class="option-review-text">INTERVAL YEAR TO MONTHは、負の値は使用できません。</div>
+              <div class="option-review-text">INTERVAL YEAR <span class="sql-kw">TO</span> MONTHは、負の値は使用できません。</div>
               <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
             </div>
             
@@ -1602,7 +1612,7 @@ USER1ユーザーのITEM表に、すべてのユーザーがアクセスでき�
                 <div class="option-review-key">B</div>
                 <div class="option-review-badges"><span>正答肢</span></div>
               </div>
-              <div class="option-review-text">INTERVAL YEAR TO MONTHは、年ごとの間隔をサポートします。</div>
+              <div class="option-review-text">INTERVAL YEAR <span class="sql-kw">TO</span> MONTHは、年ごとの間隔をサポートします。</div>
               <div class="option-review-reason">正しい。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
             </div>
             
@@ -1611,7 +1621,7 @@ USER1ユーザーのITEM表に、すべてのユーザーがアクセスでき�
                 <div class="option-review-key">C</div>
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
-              <div class="option-review-text">INTERVAL DAY TO SECONDは、小数秒は使用できません。</div>
+              <div class="option-review-text">INTERVAL DAY <span class="sql-kw">TO</span> SECONDは、小数秒は使用できません。</div>
               <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
             </div>
             
@@ -1620,7 +1630,7 @@ USER1ユーザーのITEM表に、すべてのユーザーがアクセスでき�
                 <div class="option-review-key">D</div>
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
-              <div class="option-review-text">INTERVAL DAY TO SECONDは、年ごとの間隔をサポートします。</div>
+              <div class="option-review-text">INTERVAL DAY <span class="sql-kw">TO</span> SECONDは、年ごとの間隔をサポートします。</div>
               <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
             </div>
             </div>
@@ -1647,7 +1657,7 @@ USER1ユーザーのITEM表に、すべてのユーザーがアクセスでき�
 (<span class="sql-num">4</span>)		D.　TIMESTAMP</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
-                    <p>この設問の論点は「DATE・TIMESTAMP・TIME ZONE」です。問題文は「図書館アプリケーションを設計するとします。 表に以下の要件の列を作成する必要があります。 1.貸出期間を格納する 2.貸出期間の上限は14日 どのデータ型を使用すればいいでしょうか。」という条件を満たす説明または SQL を求めています。DATE は秒まで、TIMESTAMP は小数秒まで、TIMESTAMP WITH TIME ZONE はタイムゾーン情報付き、LOCAL TIME ZONE は DB タイムゾーンで正規化される。CURRENT_TIMESTAMP と SYSTIMESTAMP も基準が異なる。 この設問では正答 A「INTERVAL DAY TO SECOND」 を選べており、成立条件を正しく読めています。</p>
+                    <p>この設問の論点は「DATE・TIMESTAMP・TIME ZONE」です。<br>問題文は「図書館アプリケーションを設計するとします。 表に以下の要件の列を作成する必要があります。 <span class="sql-num">1</span>.貸出期間を格納する <span class="sql-num">2</span>.貸出期間の上限は14日 どのデータ型を使用すればいいでしょうか。<br>」という条件を満たす説明または SQL を求めています。<br>DATE は秒まで、TIMESTAMP は小数秒まで、TIMESTAMP <span class="sql-kw">WITH</span> TIME ZONE はタイムゾーン情報付き、LOCAL TIME ZONE は DB タイムゾーンで正規化される。<br>CURRENT_TIMESTAMP と SYSTIMESTAMP も基準が異なる。 この設問では正答 A「INTERVAL DAY <span class="sql-kw">TO</span> SECOND」 を選べており、成立条件を正しく読めています。</p>
                     <div class="block-title">得点できた理由</div>
                     <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
                     <div class="block-title">選択肢ごとの判定</div>
@@ -1657,7 +1667,7 @@ USER1ユーザーのITEM表に、すべてのユーザーがアクセスでき�
                 <div class="option-review-key">A</div>
                 <div class="option-review-badges"><span>正答肢</span></div>
               </div>
-              <div class="option-review-text">INTERVAL DAY TO SECOND</div>
+              <div class="option-review-text">INTERVAL DAY <span class="sql-kw">TO</span> SECOND</div>
               <div class="option-review-reason">正しい。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
             </div>
             
@@ -1666,7 +1676,7 @@ USER1ユーザーのITEM表に、すべてのユーザーがアクセスでき�
                 <div class="option-review-key">B</div>
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
-              <div class="option-review-text">INTERVAL YEAR TO MONTH</div>
+              <div class="option-review-text">INTERVAL YEAR <span class="sql-kw">TO</span> MONTH</div>
               <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
             </div>
             
@@ -1705,7 +1715,7 @@ USER1ユーザーのITEM表に、すべてのユーザーがアクセスでき�
 (<span class="sql-num">4</span>)		D. TIMESTAMP型保持情報＋固定のタイムゾーンリージョン</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
-                    <p>この設問の論点は「DATE・TIMESTAMP・TIME ZONE」です。問題文は「TIMESTAMP WITH LOCAL TIME ZONE型が保持する情報として正しいものを1つ選択してください。」という条件を満たす説明または SQL を求めています。DATE は秒まで、TIMESTAMP は小数秒まで、TIMESTAMP WITH TIME ZONE はタイムゾーン情報付き、LOCAL TIME ZONE は DB タイムゾーンで正規化される。CURRENT_TIMESTAMP と SYSTIMESTAMP も基準が異なる。 この設問では正答 C「TIMESTAMP型保持情報＋ローカルタイムゾーンで入力された日時をデータベースのタイムゾーンに変換した値」 を選べており、成立条件を正しく読めています。</p>
+                    <p>この設問の論点は「DATE・TIMESTAMP・TIME ZONE」です。<br>問題文は「TIMESTAMP <span class="sql-kw">WITH</span> LOCAL TIME ZONE型が保持する情報として正しいものを1つ選択してください。<br>」という条件を満たす説明または SQL を求めています。<br>DATE は秒まで、TIMESTAMP は小数秒まで、TIMESTAMP <span class="sql-kw">WITH</span> TIME ZONE はタイムゾーン情報付き、LOCAL TIME ZONE は DB タイムゾーンで正規化される。<br>CURRENT_TIMESTAMP と SYSTIMESTAMP も基準が異なる。 この設問では正答 C「TIMESTAMP型保持情報＋ローカルタイムゾーンで入力された日時をデータベースのタイムゾーンに変換した値」 を選べており、成立条件を正しく読めています。</p>
                     <div class="block-title">得点できた理由</div>
                     <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
                     <div class="block-title">選択肢ごとの判定</div>
@@ -1756,13 +1766,13 @@ USER1ユーザーのITEM表に、すべてのユーザーがアクセスでき�
             </section>
             
             <section class="concept-section" id="d8-5">
-              <h3>DEFAULT と列追加・挿入<span>1問</span></h3>
-              <p class="concept-copy">DEFAULT は値を省略したときに補われる。既存行がある表へ NOT NULL 列を追加するなら、DEFAULT と NOT NULL をセットで与えないと既存行を満たせない。</p>
+              <h3><span class="sql-kw">DEFAULT</span> と列追加・挿入<span>1問</span></h3>
+              <p class="concept-copy"><span class="sql-kw">DEFAULT</span> は値を省略したときに補われる。<br>既存行がある表へ <span class="sql-kw">NOT NULL</span> 列を追加するなら、<span class="sql-kw">DEFAULT</span> と <span class="sql-kw">NOT NULL</span> をセットで与えないと既存行を満たせない。</p>
               
     <div class="concept-guide" style="border-top-color:#e67e22">
       <div class="guide-block">
         <div class="guide-title">論点の定義</div>
-        <p>DDL は表定義や制約を変更する文であり、列定義・制約定義・既存データへの影響を同時に読む必要がある。DEFAULT は値省略時に補完されるが、列指定や VALUES 個数との対応は別に守られる。</p>
+        <p>DDL は表定義や制約を変更する文であり、列定義・制約定義・既存データへの影響を同時に読む必要がある。<br><span class="sql-kw">DEFAULT</span> は値省略時に補完されるが、列指定や <span class="sql-kw">VALUES</span> 個数との対応は別に守られる。</p>
       </div>
       <div class="guide-block"><div class="guide-title">句の並び順（Oracle 正式構文）</div><div class="clause-order"><span class="kw">CREATE TABLE</span> 表 (
   列 型 [<span class="kw">DEFAULT</span> 値] [<span class="kw">NOT NULL</span>] [<span class="kw">CONSTRAINT</span> 名 <span class="kw">PRIMARY KEY</span> | …]
@@ -1786,14 +1796,14 @@ USER1ユーザーのITEM表に、すべてのユーザーがアクセスでき�
       <div class="guide-grid">
         <div class="guide-block">
           <div class="guide-title">成立条件</div>
-          <ul class="guide-list"><li>既存行がある表へ NOT NULL 列を追加する場合、DEFAULT を伴わないと成立しない。</li><li>INSERT 文で DEFAULT を使うなら、列リストと VALUES の対応を厳密に守る。</li><li>DDL は暗黙 COMMIT を伴うため、DML や TCL と切り分けて理解する。</li></ul>
+          <ul class="guide-list"><li>既存行がある表へ <span class="sql-kw">NOT NULL</span> 列を追加する場合、<span class="sql-kw">DEFAULT</span> を伴わないと成立しない。</li><li><span class="sql-kw">INSERT</span> 文で <span class="sql-kw">DEFAULT</span> を使うなら、列リストと <span class="sql-kw">VALUES</span> の対応を厳密に守る。</li><li>DDL は暗黙 <span class="sql-kw">COMMIT</span> を伴うため、DML や TCL と切り分けて理解する。</li></ul>
         </div>
         <div class="guide-block">
           <div class="guide-title">判定手順</div>
-          <ol class="guide-list ordered"><li>対象が表定義変更かデータ操作かを最初に分類する。</li><li>次に既存行の有無、NULL 許容、DEFAULT 補完の関係を確認する。</li><li>最後に列数・列順・制約条件が SQL 文法どおりかを確認する。</li></ol>
+          <ol class="guide-list ordered"><li>対象が表定義変更かデータ操作かを最初に分類する。</li><li>次に既存行の有無、<span class="sql-kw">NULL</span> 許容、<span class="sql-kw">DEFAULT</span> 補完の関係を確認する。</li><li>最後に列数・列順・制約条件が SQL 文法どおりかを確認する。</li></ol>
         </div>
       </div>
-      <div class="guide-note">失点しやすい点: DEFAULT 句だけで NOT NULL まで満たせると考えたり、列指定と VALUES 個数の対応を外しやすい。</div>
+      <div class="guide-note">失点しやすい点: <span class="sql-kw">DEFAULT</span> 句だけで <span class="sql-kw">NOT NULL</span> まで満たせると考えたり、列指定と <span class="sql-kw">VALUES</span> 個数の対応を外しやすい。</div>
     </div>
     
               
@@ -1808,7 +1818,7 @@ USER1ユーザーのITEM表に、すべてのユーザーがアクセスでき�
 (<span class="sql-num">4</span>)		D.　<span class="sql-kw">CREATE TABLE</span> SHOHIN( SHOHIN_ID NUMBER(<span class="sql-num">3</span>), SHOHIN_NAME VARCHAR2(<span class="sql-num">20</span>), SHOHIN_KAKAKU NUMBER(<span class="sql-num">10</span>), STOCK NUMBER <span class="sql-kw">DEFAULT</span> = <span class="sql-num">1</span>, INPUT_DATE DATE <span class="sql-kw">DEFAULT</span> SYSDATE, REMARK VARCHAR2(<span class="sql-num">50</span>) <span class="sql-kw">DEFAULT</span> = &#x27;　&#x27;);</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
-                    <p>この設問の論点は「DEFAULT と列追加・挿入」です。問題文は「表を作成する最適な文はどれでしょうか。」という条件を満たす説明または SQL を求めています。DEFAULT は値を省略したときに補われる。既存行がある表へ NOT NULL 列を追加するなら、DEFAULT と NOT NULL をセットで与えないと既存行を満たせない。 この設問では正答 A「CREATE TABLE SHOHIN( SHOHIN_ID NUMBER(3), SHOHIN_NAME V…」 を選べており、成立条件を正しく読めています。</p>
+                    <p>この設問の論点は「<span class="sql-kw">DEFAULT</span> と列追加・挿入」です。<br>問題文は「表を作成する最適な文はどれでしょうか。<br>」という条件を満たす説明または SQL を求めています。<br><span class="sql-kw">DEFAULT</span> は値を省略したときに補われる。<br>既存行がある表へ <span class="sql-kw">NOT NULL</span> 列を追加するなら、<span class="sql-kw">DEFAULT</span> と <span class="sql-kw">NOT NULL</span> をセットで与えないと既存行を満たせない。 この設問では正答 A「<span class="sql-kw">CREATE TABLE</span> SHOHIN( SHOHIN_ID NUMBER(<span class="sql-num">3</span>), SHOHIN_NAME V…」 を選べており、成立条件を正しく読めています。</p>
                     <div class="block-title">得点できた理由</div>
                     <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
                     <div class="block-title">選択肢ごとの判定</div>
@@ -1818,8 +1828,8 @@ USER1ユーザーのITEM表に、すべてのユーザーがアクセスでき�
                 <div class="option-review-key">A</div>
                 <div class="option-review-badges"><span>正答肢</span></div>
               </div>
-              <div class="option-review-text">CREATE TABLE SHOHIN( SHOHIN_ID NUMBER(3), SHOHIN_NAME VARCHAR2(20), SHOHIN_KAKAKU NUMBER(10), STOCK NUMBER DEFAULT 1, INPUT_DATE DATE DEFAULT SYSDATE, REMARK VARCHAR2(50) DEFAULT &#x27; &#x27;);</div>
-              <div class="option-review-reason">正しい。 DEFAULT は列値を省略したとき、または VALUES 句で DEFAULT を明示したときに補完されます。 DDL は定義変更であり、Oracle では暗黙 COMMIT を伴います。</div>
+              <div class="option-review-text"><span class="sql-kw">CREATE TABLE</span> SHOHIN( SHOHIN_ID NUMBER(<span class="sql-num">3</span>), SHOHIN_NAME VARCHAR2(<span class="sql-num">20</span>), SHOHIN_KAKAKU NUMBER(<span class="sql-num">10</span>), STOCK NUMBER <span class="sql-kw">DEFAULT</span> <span class="sql-num">1</span>, INPUT_DATE DATE <span class="sql-kw">DEFAULT</span> SYSDATE, REMARK VARCHAR2(<span class="sql-num">50</span>) <span class="sql-kw">DEFAULT</span> &#x27; &#x27;);</div>
+              <div class="option-review-reason">正しい。 <span class="sql-kw">DEFAULT</span> は列値を省略したとき、または <span class="sql-kw">VALUES</span> 句で <span class="sql-kw">DEFAULT</span> を明示したときに補完されます。 DDL は定義変更であり、Oracle では暗黙 <span class="sql-kw">COMMIT</span> を伴います。</div>
             </div>
             
             <div class="option-review wrong">
@@ -1827,8 +1837,8 @@ USER1ユーザーのITEM表に、すべてのユーザーがアクセスでき�
                 <div class="option-review-key">B</div>
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
-              <div class="option-review-text">CREATE TABLE SHOHIN( SHOHIN_ID NUMBER(3), SHOHIN_NAME VARCHAR2(20), SHOHIN_KAKAKU NUMBER(10), STOCK NUMBER DEFAULT 1, INPUT_DATE DATE DEFAULT SYSDATE, REMARK VARCHAR2(50) DEFAULT &quot; &quot;);</div>
-              <div class="option-review-reason">誤り。 DEFAULT は列値を省略したとき、または VALUES 句で DEFAULT を明示したときに補完されます。 DDL は定義変更であり、Oracle では暗黙 COMMIT を伴います。</div>
+              <div class="option-review-text"><span class="sql-kw">CREATE TABLE</span> SHOHIN( SHOHIN_ID NUMBER(<span class="sql-num">3</span>), SHOHIN_NAME VARCHAR2(<span class="sql-num">20</span>), SHOHIN_KAKAKU NUMBER(<span class="sql-num">10</span>), STOCK NUMBER <span class="sql-kw">DEFAULT</span> <span class="sql-num">1</span>, INPUT_DATE DATE <span class="sql-kw">DEFAULT</span> SYSDATE, REMARK VARCHAR2(<span class="sql-num">50</span>) <span class="sql-kw">DEFAULT</span> &quot; &quot;);</div>
+              <div class="option-review-reason">誤り。 <span class="sql-kw">DEFAULT</span> は列値を省略したとき、または <span class="sql-kw">VALUES</span> 句で <span class="sql-kw">DEFAULT</span> を明示したときに補完されます。 DDL は定義変更であり、Oracle では暗黙 <span class="sql-kw">COMMIT</span> を伴います。</div>
             </div>
             
             <div class="option-review wrong">
@@ -1836,8 +1846,8 @@ USER1ユーザーのITEM表に、すべてのユーザーがアクセスでき�
                 <div class="option-review-key">C</div>
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
-              <div class="option-review-text">CREATE TABLE SHOHIN( SHOHIN_ID NUMBER(3), SHOHIN_NAME VARCHAR2(20), SHOHIN_KAKAKU NUMBER(10), STOCK NUMBER DEFAULT 1, INPUT_DATE DATE DEFAULT &#x27;SYSDATE&#x27;, REMARK VARCHAR2(50) DEFAULT &#x27; &#x27;);</div>
-              <div class="option-review-reason">誤り。 DEFAULT は列値を省略したとき、または VALUES 句で DEFAULT を明示したときに補完されます。 DDL は定義変更であり、Oracle では暗黙 COMMIT を伴います。</div>
+              <div class="option-review-text"><span class="sql-kw">CREATE TABLE</span> SHOHIN( SHOHIN_ID NUMBER(<span class="sql-num">3</span>), SHOHIN_NAME VARCHAR2(<span class="sql-num">20</span>), SHOHIN_KAKAKU NUMBER(<span class="sql-num">10</span>), STOCK NUMBER <span class="sql-kw">DEFAULT</span> <span class="sql-num">1</span>, INPUT_DATE DATE <span class="sql-kw">DEFAULT</span> &#x27;SYSDATE&#x27;, REMARK VARCHAR2(<span class="sql-num">50</span>) <span class="sql-kw">DEFAULT</span> &#x27; &#x27;);</div>
+              <div class="option-review-reason">誤り。 <span class="sql-kw">DEFAULT</span> は列値を省略したとき、または <span class="sql-kw">VALUES</span> 句で <span class="sql-kw">DEFAULT</span> を明示したときに補完されます。 DDL は定義変更であり、Oracle では暗黙 <span class="sql-kw">COMMIT</span> を伴います。</div>
             </div>
             
             <div class="option-review wrong">
@@ -1845,13 +1855,13 @@ USER1ユーザーのITEM表に、すべてのユーザーがアクセスでき�
                 <div class="option-review-key">D</div>
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
-              <div class="option-review-text">CREATE TABLE SHOHIN( SHOHIN_ID NUMBER(3), SHOHIN_NAME VARCHAR2(20), SHOHIN_KAKAKU NUMBER(10), STOCK NUMBER DEFAULT = 1, INPUT_DATE DATE DEFAULT SYSDATE, REMARK VARCHAR2(50) DEFAULT = &#x27; &#x27;);</div>
-              <div class="option-review-reason">誤り。 DEFAULT は列値を省略したとき、または VALUES 句で DEFAULT を明示したときに補完されます。 DDL は定義変更であり、Oracle では暗黙 COMMIT を伴います。</div>
+              <div class="option-review-text"><span class="sql-kw">CREATE TABLE</span> SHOHIN( SHOHIN_ID NUMBER(<span class="sql-num">3</span>), SHOHIN_NAME VARCHAR2(<span class="sql-num">20</span>), SHOHIN_KAKAKU NUMBER(<span class="sql-num">10</span>), STOCK NUMBER <span class="sql-kw">DEFAULT</span> = <span class="sql-num">1</span>, INPUT_DATE DATE <span class="sql-kw">DEFAULT</span> SYSDATE, REMARK VARCHAR2(<span class="sql-num">50</span>) <span class="sql-kw">DEFAULT</span> = &#x27; &#x27;);</div>
+              <div class="option-review-reason">誤り。 <span class="sql-kw">DEFAULT</span> は列値を省略したとき、または <span class="sql-kw">VALUES</span> 句で <span class="sql-kw">DEFAULT</span> を明示したときに補完されます。 DDL は定義変更であり、Oracle では暗黙 <span class="sql-kw">COMMIT</span> を伴います。</div>
             </div>
             </div>
                     <div class="block-title">解く順序</div>
                     <ul class="study-step-list">
-                      <li>対象が表定義変更かデータ操作かを最初に分類する。</li><li>次に既存行の有無、NULL 許容、DEFAULT 補完の関係を確認する。</li><li>最後に列数・列順・制約条件が SQL 文法どおりかを確認する。</li>
+                      <li>対象が表定義変更かデータ操作かを最初に分類する。</li><li>次に既存行の有無、<span class="sql-kw">NULL</span> 許容、<span class="sql-kw">DEFAULT</span> 補完の関係を確認する。</li><li>最後に列数・列順・制約条件が SQL 文法どおりかを確認する。</li>
                     </ul>
                   </div>
                 </article>
@@ -1859,13 +1869,13 @@ USER1ユーザーのITEM表に、すべてのユーザーがアクセスでき�
             </section>
             
             <section class="concept-section" id="d8-6">
-              <h3>MERGE の文法と使える対象<span>1問</span></h3>
-              <p class="concept-copy">MERGE は 1 つの対象表に対し、ON 条件で一致時は UPDATE、非一致時は INSERT を行う。USING には表、ビュー、サブクエリを使える。</p>
+              <h3><span class="sql-kw">MERGE</span> の文法と使える対象<span>1問</span></h3>
+              <p class="concept-copy"><span class="sql-kw">MERGE</span> は <span class="sql-num">1</span> つの対象表に対し、<span class="sql-kw">ON</span> 条件で一致時は <span class="sql-kw">UPDATE</span>、非一致時は <span class="sql-kw">INSERT</span> を行う。<br><span class="sql-kw">USING</span> には表、ビュー、サブクエリを使える。</p>
               
     <div class="concept-guide" style="border-top-color:#e67e22">
       <div class="guide-block">
         <div class="guide-title">論点の定義</div>
-        <p>MERGE は一致時 UPDATE、非一致時 INSERT を 1 文で行う DML である。更新対象は 1 表だけで、USING には比較元の表や副問合せを置く。</p>
+        <p><span class="sql-kw">MERGE</span> は一致時 <span class="sql-kw">UPDATE</span>、非一致時 <span class="sql-kw">INSERT</span> を <span class="sql-num">1</span> 文で行う DML である。<br>更新対象は <span class="sql-num">1</span> 表だけで、<span class="sql-kw">USING</span> には比較元の表や副問合せを置く。</p>
       </div>
       <div class="guide-block"><div class="guide-title">句の並び順（Oracle 正式構文）</div><div class="clause-order"><span class="kw">CREATE TABLE</span> 表 (
   列 型 [<span class="kw">DEFAULT</span> 値] [<span class="kw">NOT NULL</span>] [<span class="kw">CONSTRAINT</span> 名 <span class="kw">PRIMARY KEY</span> | …]
@@ -1891,14 +1901,14 @@ USER1ユーザーのITEM表に、すべてのユーザーがアクセスでき�
       <div class="guide-grid">
         <div class="guide-block">
           <div class="guide-title">成立条件</div>
-          <ul class="guide-list"><li>MATCHED 側は UPDATE、NOT MATCHED 側は INSERT が基本形である。</li><li>比較条件は ON 句で指定し、更新対象表は MERGE INTO 側に 1 つだけ書く。</li><li>USING には表、ビュー、副問合せを置ける。</li></ul>
+          <ul class="guide-list"><li><span class="sql-kw">MATCHED</span> 側は <span class="sql-kw">UPDATE</span>、<span class="sql-kw">NOT</span> <span class="sql-kw">MATCHED</span> 側は <span class="sql-kw">INSERT</span> が基本形である。</li><li>比較条件は <span class="sql-kw">ON</span> 句で指定し、更新対象表は <span class="sql-kw">MERGE INTO</span> 側に <span class="sql-num">1</span> つだけ書く。</li><li><span class="sql-kw">USING</span> には表、ビュー、副問合せを置ける。</li></ul>
         </div>
         <div class="guide-block">
           <div class="guide-title">判定手順</div>
-          <ol class="guide-list ordered"><li>対象表と比較元の役割を切り分ける。</li><li>ON 句で一致条件を読んだ後、MATCHED/NOT MATCHED の処理内容を確認する。</li><li>複数表更新のように見える選択肢は MERGE の文法外として除外する。</li></ol>
+          <ol class="guide-list ordered"><li>対象表と比較元の役割を切り分ける。</li><li><span class="sql-kw">ON</span> 句で一致条件を読んだ後、<span class="sql-kw">MATCHED</span>/<span class="sql-kw">NOT</span> <span class="sql-kw">MATCHED</span> の処理内容を確認する。</li><li>複数表更新のように見える選択肢は <span class="sql-kw">MERGE</span> の文法外として除外する。</li></ol>
         </div>
       </div>
-      <div class="guide-note">失点しやすい点: WHEN MATCHED で INSERT、WHEN NOT MATCHED で UPDATE のように逆向きに書いてしまいがちで、複数表更新もできると誤認しやすい。</div>
+      <div class="guide-note">失点しやすい点: <span class="sql-kw">WHEN MATCHED</span> で <span class="sql-kw">INSERT</span>、<span class="sql-kw">WHEN NOT MATCHED</span> で <span class="sql-kw">UPDATE</span> のように逆向きに書いてしまいがちで、複数表更新もできると誤認しやすい。</div>
     </div>
     
               
@@ -1906,13 +1916,13 @@ USER1ユーザーのITEM表に、すべてのユーザーがアクセスでき�
                   <div class="question-meta">第3回 模擬試験 / 問5 / 正答 D / 自己回答 -</div>
                   <div class="block-title">問題文</div>
                   <pre>ビューの記載について正しいものを1つ選択してください。
-(<span class="sql-num">1</span>)		A. MERGE文でビューを使用することはできない。
-(<span class="sql-num">2</span>)		B. ビューは非スキーマオブジェクトである。
-(<span class="sql-num">3</span>)		C. ビューが参照している表をDROP TABLE文を実行してもビューは有効状態で残る。
-(<span class="sql-num">4</span>)		D. グローバル一時表ではビューが使用できる。</pre>
+(<span class="sql-num"><span class="sql-num">1</span></span>)		A. MERGE文でビューを使用することはできない。
+(<span class="sql-num"><span class="sql-num">2</span></span>)		B. ビューは非スキーマオブジェクトである。
+(<span class="sql-num"><span class="sql-num">3</span></span>)		C. ビューが参照している表をDROP TABLE文を実行してもビューは有効状態で残る。
+(<span class="sql-num"><span class="sql-num">4</span></span>)		D. グローバル一時表ではビューが使用できる。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
-                    <p>この設問の論点は「MERGE の文法と使える対象」です。問題文は「ビューの記載について正しいものを1つ選択してください。」という条件を満たす説明または SQL を求めています。MERGE は 1 つの対象表に対し、ON 条件で一致時は UPDATE、非一致時は INSERT を行う。USING には表、ビュー、サブクエリを使える。 この設問では正答 D「グローバル一時表ではビューが使用できる。」 を選べており、成立条件を正しく読めています。</p>
+                    <p>この設問の論点は「<span class="sql-kw">MERGE</span> の文法と使える対象」です。<br>問題文は「ビューの記載について正しいものを1つ選択してください。<br>」という条件を満たす説明または SQL を求めています。<br><span class="sql-kw">MERGE</span> は <span class="sql-num">1</span> つの対象表に対し、<span class="sql-kw">ON</span> 条件で一致時は <span class="sql-kw">UPDATE</span>、非一致時は <span class="sql-kw">INSERT</span> を行う。<br><span class="sql-kw">USING</span> には表、ビュー、サブクエリを使える。 この設問では正答 D「グローバル一時表ではビューが使用できる。<br>」 を選べており、成立条件を正しく読めています。</p>
                     <div class="block-title">得点できた理由</div>
                     <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
                     <div class="block-title">選択肢ごとの判定</div>
@@ -1941,7 +1951,7 @@ USER1ユーザーのITEM表に、すべてのユーザーがアクセスでき�
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
               <div class="option-review-text">ビューが参照している表をDROP TABLE文を実行してもビューは有効状態で残る。</div>
-              <div class="option-review-reason">誤り。 DDL は定義変更であり、Oracle では暗黙 COMMIT を伴います。</div>
+              <div class="option-review-reason">誤り。 DDL は定義変更であり、Oracle では暗黙 <span class="sql-kw">COMMIT</span> を伴います。</div>
             </div>
             
             <div class="option-review correct">
@@ -1955,7 +1965,7 @@ USER1ユーザーのITEM表に、すべてのユーザーがアクセスでき�
             </div>
                     <div class="block-title">解く順序</div>
                     <ul class="study-step-list">
-                      <li>対象表と比較元の役割を切り分ける。</li><li>ON 句で一致条件を読んだ後、MATCHED/NOT MATCHED の処理内容を確認する。</li><li>複数表更新のように見える選択肢は MERGE の文法外として除外する。</li>
+                      <li>対象表と比較元の役割を切り分ける。</li><li><span class="sql-kw">ON</span> 句で一致条件を読んだ後、<span class="sql-kw">MATCHED</span>/<span class="sql-kw">NOT</span> <span class="sql-kw">MATCHED</span> の処理内容を確認する。</li><li>複数表更新のように見える選択肢は <span class="sql-kw">MERGE</span> の文法外として除外する。</li>
                     </ul>
                   </div>
                 </article>
@@ -1964,12 +1974,12 @@ USER1ユーザーのITEM表に、すべてのユーザーがアクセスでき�
             
             <section class="concept-section" id="d8-7">
               <h3>制約定義と有効化・無効化<span>1問</span></h3>
-              <p class="concept-copy">主キー、外部キー、CHECK、NOT NULL などの制約は、型や参照整合性を守るための定義である。ENABLE/DISABLE、CASCADE、SYSDATE 使用可否など細部の制約規則が問われる。</p>
+              <p class="concept-copy">主キー、外部キー、<span class="sql-kw">CHECK</span>、<span class="sql-kw">NOT NULL</span> などの制約は、型や参照整合性を守るための定義である。<br>ENABLE/DISABLE、<span class="sql-kw">CASCADE</span>、SYSDATE 使用可否など細部の制約規則が問われる。</p>
               
     <div class="concept-guide" style="border-top-color:#e67e22">
       <div class="guide-block">
         <div class="guide-title">論点の定義</div>
-        <p>DDL は表定義や制約を変更する文であり、列定義・制約定義・既存データへの影響を同時に読む必要がある。DEFAULT は値省略時に補完されるが、列指定や VALUES 個数との対応は別に守られる。</p>
+        <p>DDL は表定義や制約を変更する文であり、列定義・制約定義・既存データへの影響を同時に読む必要がある。<br><span class="sql-kw">DEFAULT</span> は値省略時に補完されるが、列指定や <span class="sql-kw">VALUES</span> 個数との対応は別に守られる。</p>
       </div>
       <div class="guide-block"><div class="guide-title">句の並び順（Oracle 正式構文）</div><div class="clause-order"><span class="kw">CREATE TABLE</span> 表 (
   列 型 [<span class="kw">DEFAULT</span> 値] [<span class="kw">NOT NULL</span>] [<span class="kw">CONSTRAINT</span> 名 <span class="kw">PRIMARY KEY</span> | …]
@@ -1993,14 +2003,14 @@ USER1ユーザーのITEM表に、すべてのユーザーがアクセスでき�
       <div class="guide-grid">
         <div class="guide-block">
           <div class="guide-title">成立条件</div>
-          <ul class="guide-list"><li>既存行がある表へ NOT NULL 列を追加する場合、DEFAULT を伴わないと成立しない。</li><li>INSERT 文で DEFAULT を使うなら、列リストと VALUES の対応を厳密に守る。</li><li>DDL は暗黙 COMMIT を伴うため、DML や TCL と切り分けて理解する。</li></ul>
+          <ul class="guide-list"><li>既存行がある表へ <span class="sql-kw">NOT NULL</span> 列を追加する場合、<span class="sql-kw">DEFAULT</span> を伴わないと成立しない。</li><li><span class="sql-kw">INSERT</span> 文で <span class="sql-kw">DEFAULT</span> を使うなら、列リストと <span class="sql-kw">VALUES</span> の対応を厳密に守る。</li><li>DDL は暗黙 <span class="sql-kw">COMMIT</span> を伴うため、DML や TCL と切り分けて理解する。</li></ul>
         </div>
         <div class="guide-block">
           <div class="guide-title">判定手順</div>
-          <ol class="guide-list ordered"><li>対象が表定義変更かデータ操作かを最初に分類する。</li><li>次に既存行の有無、NULL 許容、DEFAULT 補完の関係を確認する。</li><li>最後に列数・列順・制約条件が SQL 文法どおりかを確認する。</li></ol>
+          <ol class="guide-list ordered"><li>対象が表定義変更かデータ操作かを最初に分類する。</li><li>次に既存行の有無、<span class="sql-kw">NULL</span> 許容、<span class="sql-kw">DEFAULT</span> 補完の関係を確認する。</li><li>最後に列数・列順・制約条件が SQL 文法どおりかを確認する。</li></ol>
         </div>
       </div>
-      <div class="guide-note">失点しやすい点: CHECK 制約で使える式、主キー無効化時の外部キーへの影響、NULL 許容の違いを曖昧にしやすい。</div>
+      <div class="guide-note">失点しやすい点: <span class="sql-kw">CHECK</span> 制約で使える式、主キー無効化時の外部キーへの影響、<span class="sql-kw">NULL</span> 許容の違いを曖昧にしやすい。</div>
     </div>
     
               
@@ -2030,7 +2040,7 @@ USER1ユーザーのITEM表に、すべてのユーザーがアクセスでき�
 (<span class="sql-num">5</span>)		E.　<span class="sql-kw">SELECT</span> M.MAKER_ID, C.CAR_ID <span class="sql-kw">FROM</span> CARS C <span class="sql-kw">LEFT OUTER JOIN</span> MAKERS M <span class="sql-kw">ON</span> (C.MAKER_ID=M.MAKER_ID);</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
-                    <p>この設問の論点は「制約定義と有効化・無効化」です。問題文は「以下の文を実行して表を作成します。 CREATE TABLE CARS ( CAR_ID NUMBER PRIMARY KEY, CAR_NAME VARCHAR2(50), MAKER_ID NUMBER ); CREATE TABLE…」という条件を満たす説明または SQL を求めています。主キー、外部キー、CHECK、NOT NULL などの制約は、型や参照整合性を守るための定義である。ENABLE/DISABLE、CASCADE、SYSDATE 使用可否など細部の制約規則が問われる。 この設問では正答 C「SELECT M.MAKER_ID, C.CAR_ID FROM MAKERS M LEFT OUTER JO…」 / D「SELECT M.MAKER_ID, C.CAR_ID FROM CARS C RIGHT OUTER JOI…」 を選べており、成立条件を正しく読めています。</p>
+                    <p>この設問の論点は「制約定義と有効化・無効化」です。<br>問題文は「以下の文を実行して表を作成します。 <span class="sql-kw">CREATE TABLE</span> CARS ( CAR_ID NUMBER <span class="sql-kw">PRIMARY KEY</span>, CAR_NAME VARCHAR2(<span class="sql-num">50</span>), MAKER_ID NUMBER ); <span class="sql-kw">CREATE TABLE</span>…」という条件を満たす説明または SQL を求めています。<br>主キー、外部キー、<span class="sql-kw">CHECK</span>、<span class="sql-kw">NOT NULL</span> などの制約は、型や参照整合性を守るための定義である。<br>ENABLE/DISABLE、<span class="sql-kw">CASCADE</span>、SYSDATE 使用可否など細部の制約規則が問われる。 この設問では正答 C「<span class="sql-kw">SELECT</span> M.MAKER_ID, C.CAR_ID <span class="sql-kw">FROM</span> MAKERS M <span class="sql-kw">LEFT</span> <span class="sql-kw">OUTER</span> JO…」 / D「<span class="sql-kw">SELECT</span> M.MAKER_ID, C.CAR_ID <span class="sql-kw">FROM</span> CARS C <span class="sql-kw">RIGHT</span> <span class="sql-kw">OUTER</span> JOI…」 を選べており、成立条件を正しく読めています。</p>
                     <div class="block-title">得点できた理由</div>
                     <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
                     <div class="block-title">選択肢ごとの判定</div>
@@ -2040,8 +2050,8 @@ USER1ユーザーのITEM表に、すべてのユーザーがアクセスでき�
                 <div class="option-review-key">A</div>
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
-              <div class="option-review-text">SELECT M.MAKER_ID, C.CAR_ID FROM MAKERS M RIGHT OUTER JOIN CARS C ON (M.MAKER_ID=C.MAKER_ID);</div>
-              <div class="option-review-reason">誤り。 RIGHT OUTER JOIN は右側表の全行を保持します。表の並びと保持側を取り違えると要件から外れます。</div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> M.MAKER_ID, C.CAR_ID <span class="sql-kw">FROM</span> MAKERS M <span class="sql-kw">RIGHT OUTER JOIN</span> CARS C <span class="sql-kw">ON</span> (M.MAKER_ID=C.MAKER_ID);</div>
+              <div class="option-review-reason">誤り。 <span class="sql-kw">RIGHT OUTER JOIN</span> は右側表の全行を保持します。<br>表の並びと保持側を取り違えると要件から外れます。</div>
             </div>
             
             <div class="option-review wrong">
@@ -2049,8 +2059,8 @@ USER1ユーザーのITEM表に、すべてのユーザーがアクセスでき�
                 <div class="option-review-key">B</div>
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
-              <div class="option-review-text">SELECT M.MAKER_ID, C.CAR_ID FROM MAKERS M RIGHT OUTER JOIN CARS C ON</div>
-              <div class="option-review-reason">誤り。 RIGHT OUTER JOIN は右側表の全行を保持します。表の並びと保持側を取り違えると要件から外れます。</div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> M.MAKER_ID, C.CAR_ID <span class="sql-kw">FROM</span> MAKERS M <span class="sql-kw">RIGHT OUTER JOIN</span> CARS C <span class="sql-kw">ON</span></div>
+              <div class="option-review-reason">誤り。 <span class="sql-kw">RIGHT OUTER JOIN</span> は右側表の全行を保持します。<br>表の並びと保持側を取り違えると要件から外れます。</div>
             </div>
             
             <div class="option-review correct">
@@ -2058,8 +2068,8 @@ USER1ユーザーのITEM表に、すべてのユーザーがアクセスでき�
                 <div class="option-review-key">C</div>
                 <div class="option-review-badges"><span>正答肢</span></div>
               </div>
-              <div class="option-review-text">SELECT M.MAKER_ID, C.CAR_ID FROM MAKERS M LEFT OUTER JOIN CARS C ON (M.MAKER_ID=C.MAKER_ID);</div>
-              <div class="option-review-reason">正しい。 LEFT OUTER JOIN は左側表の全行を保持し、右側に一致しない行は NULL で埋めます。</div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> M.MAKER_ID, C.CAR_ID <span class="sql-kw">FROM</span> MAKERS M <span class="sql-kw">LEFT OUTER JOIN</span> CARS C <span class="sql-kw">ON</span> (M.MAKER_ID=C.MAKER_ID);</div>
+              <div class="option-review-reason">正しい。 <span class="sql-kw">LEFT OUTER JOIN</span> は左側表の全行を保持し、右側に一致しない行は <span class="sql-kw">NULL</span> で埋めます。</div>
             </div>
             
             <div class="option-review correct">
@@ -2067,8 +2077,8 @@ USER1ユーザーのITEM表に、すべてのユーザーがアクセスでき�
                 <div class="option-review-key">D</div>
                 <div class="option-review-badges"><span>正答肢</span></div>
               </div>
-              <div class="option-review-text">SELECT M.MAKER_ID, C.CAR_ID FROM CARS C RIGHT OUTER JOIN MAKERS M ON (M.MAKER_ID=C.MAKER_ID);</div>
-              <div class="option-review-reason">正しい。 RIGHT OUTER JOIN は右側表の全行を保持します。表の並びと保持側を取り違えると要件から外れます。</div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> M.MAKER_ID, C.CAR_ID <span class="sql-kw">FROM</span> CARS C <span class="sql-kw">RIGHT OUTER JOIN</span> MAKERS M <span class="sql-kw">ON</span> (M.MAKER_ID=C.MAKER_ID);</div>
+              <div class="option-review-reason">正しい。 <span class="sql-kw">RIGHT OUTER JOIN</span> は右側表の全行を保持します。<br>表の並びと保持側を取り違えると要件から外れます。</div>
             </div>
             
             <div class="option-review wrong">
@@ -2076,13 +2086,13 @@ USER1ユーザーのITEM表に、すべてのユーザーがアクセスでき�
                 <div class="option-review-key">E</div>
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
-              <div class="option-review-text">SELECT M.MAKER_ID, C.CAR_ID FROM CARS C LEFT OUTER JOIN MAKERS M ON (C.MAKER_ID=M.MAKER_ID);</div>
-              <div class="option-review-reason">誤り。 LEFT OUTER JOIN は左側表の全行を保持し、右側に一致しない行は NULL で埋めます。</div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> M.MAKER_ID, C.CAR_ID <span class="sql-kw">FROM</span> CARS C <span class="sql-kw">LEFT OUTER JOIN</span> MAKERS M <span class="sql-kw">ON</span> (C.MAKER_ID=M.MAKER_ID);</div>
+              <div class="option-review-reason">誤り。 <span class="sql-kw">LEFT OUTER JOIN</span> は左側表の全行を保持し、右側に一致しない行は <span class="sql-kw">NULL</span> で埋めます。</div>
             </div>
             </div>
                     <div class="block-title">解く順序</div>
                     <ul class="study-step-list">
-                      <li>対象が表定義変更かデータ操作かを最初に分類する。</li><li>次に既存行の有無、NULL 許容、DEFAULT 補完の関係を確認する。</li><li>最後に列数・列順・制約条件が SQL 文法どおりかを確認する。</li>
+                      <li>対象が表定義変更かデータ操作かを最初に分類する。</li><li>次に既存行の有無、<span class="sql-kw">NULL</span> 許容、<span class="sql-kw">DEFAULT</span> 補完の関係を確認する。</li><li>最後に列数・列順・制約条件が SQL 文法どおりかを確認する。</li>
                     </ul>
                   </div>
                 </article>

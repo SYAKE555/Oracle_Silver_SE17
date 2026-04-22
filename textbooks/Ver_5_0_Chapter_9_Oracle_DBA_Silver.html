@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Chapter 9 | SQL参考資料</title>
+<title>Chapter <span class="sql-num">9</span> | SQL参考資料</title>
 <style>
 :root{--bg:#f4f8fc;--card:#ffffff;--line:#d8e4f5;--pri:#1d4f91;--sec:#2f6fbe;--txt:#1f2d3d;--muted:#4c6077;--code:#f2f7fc;--kw:#1d4ed8;--obj:#0f172a;--str:#b45309}
 *{box-sizing:border-box}
@@ -36,16 +36,26 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 .top{text-align:right;margin-top:12px}
 @media(max-width:1120px){.layout{grid-template-columns:1fr}.sidebar{position:static;max-height:none}}
 
-  pre .sql-kw { color: #fbbf24; font-weight: 700; }
-  pre .sql-fn { color: #60a5fa; font-weight: 600; }
+
+  /* sql-highlight-v3 */
+  /* default (light bg): warm tone */
+  .sql-kw  { color: #92400e; font-weight: 700; }
+  .sql-fn  { color: #1e40af; font-weight: 600; }
+  .sql-str { color: #065f46; }
+  .sql-num { color: #991b1b; }
+  .sql-cmt { color: #64748b; font-style: italic; }
+  /* dark bg override (pre / code) */
+  pre .sql-kw  { color: #fbbf24; }
+  pre .sql-fn  { color: #60a5fa; }
   pre .sql-str { color: #86efac; }
   pre .sql-num { color: #fca5a5; }
-  pre .sql-cmt { color: #94a3b8; font-style: italic; }
-  code .sql-kw { color: #b45309; font-weight: 700; }
-  code .sql-fn { color: #1d4ed8; font-weight: 600; }
-  code .sql-str { color: #047857; }
-  code .sql-num { color: #b91c1c; }
-  code .sql-cmt { color: #64748b; font-style: italic; }
+  pre .sql-cmt { color: #94a3b8; }
+  code .sql-kw  { color: #fbbf24; }
+  code .sql-fn  { color: #60a5fa; }
+  code .sql-str { color: #86efac; }
+  code .sql-num { color: #fca5a5; }
+  code .sql-cmt { color: #94a3b8; }
+  /* clause-order div uses its own kw/fn/desc/note classes — no override needed */
 </style>
 </head>
 <body>
@@ -55,16 +65,16 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 <ul>
 <li><a href="#scope">スコープ宣言</a></li>
 <li><a href="#intro">第9章の学習目的</a></li>
-<li><a href="#set-basic">9.1 集合演算子の定義</a></li>
-<li><a href="#union">9.2 UNION</a></li>
-<li><a href="#union-all">9.3 UNION ALL</a></li>
-<li><a href="#intersect">9.4 INTERSECT</a></li>
-<li><a href="#minus">9.5 MINUS</a></li>
-<li><a href="#type-rules">9.6 列数・型グループ整合</a></li>
-<li><a href="#order-by">9.7 ORDER BYの位置と制約</a></li>
-<li><a href="#performance">9.8 性能観点（重複除去コスト）</a></li>
-<li><a href="#errors">9.9 典型エラーと修正</a></li>
-<li><a href="#patterns">9.10 実務運用パターン</a></li>
+<li><a href="#set-basic"><span class="sql-num">9.1</span> 集合演算子の定義</a></li>
+<li><a href="#union"><span class="sql-num">9.2</span> <span class="sql-kw">UNION</span></a></li>
+<li><a href="#union-all"><span class="sql-num">9.3</span> <span class="sql-kw">UNION ALL</span></a></li>
+<li><a href="#intersect"><span class="sql-num">9.4</span> <span class="sql-kw">INTERSECT</span></a></li>
+<li><a href="#minus"><span class="sql-num">9.5</span> <span class="sql-kw">MINUS</span></a></li>
+<li><a href="#type-rules"><span class="sql-num">9.6</span> 列数・型グループ整合</a></li>
+<li><a href="#order-by"><span class="sql-num">9.7</span> ORDER BYの位置と制約</a></li>
+<li><a href="#performance"><span class="sql-num">9.8</span> 性能観点（重複除去コスト）</a></li>
+<li><a href="#errors"><span class="sql-num">9.9</span> 典型エラーと修正</a></li>
+<li><a href="#patterns"><span class="sql-num">9.10</span> 実務運用パターン</a></li>
 <li><a href="#exam">試験ひっかけパターン集</a></li>
 <li><a href="#practice">実務アンチパターン集</a></li>
 </ul>
@@ -72,60 +82,60 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 <main class="main">
 <section class="hero" id="scope">
 <h1>Oracle DBA Silver SQL（第9章のみ）</h1>
-<p>本ファイルは第9章「集合演算子（UNION / UNION ALL / INTERSECT / MINUS）」に集中し、集合論理と型整合を高密度で整理する。</p>
+<p>本ファイルは第9章「集合演算子（<span class="sql-kw">UNION</span> / <span class="sql-kw">UNION ALL</span> / <span class="sql-kw">INTERSECT</span> / <span class="sql-kw">MINUS</span>）」に集中し、集合論理と型整合を高密度で整理する。</p>
 </section>
-<div style="background:#fff3cd;border:1px solid #ffc107;border-left:5px solid #fd7e14;border-radius:8px;padding:12px 16px;margin:14px 0;font-size:0.88rem;color:#856404;"><strong>【参考資料】</strong> このファイルは Oracle Master Silver SQL (1Z0-071) の試験範囲外の内容を含みます。OracleアーキテクチャなどDBAに関する内容は実務参考としてご利用ください。試験対策には <a href="index.html" style="color:#856404;">トップページ D1〜D8</a> を使用してください。</div>
+<div style="background:#fff3cd;border:1px solid #ffc107;border-left:5px solid #fd7e14;border-radius:8px;padding:12px 16px;margin:14px 0;font-size:0.88rem;color:#856404;"><strong>【参考資料】</strong> このファイルは Oracle Master Silver SQL (1Z0-<span class="sql-num">071</span>) の試験範囲外の内容を含みます。<br>OracleアーキテクチャなどDBAに関する内容は実務参考としてご利用ください。<br>試験対策には <a href="index.html" style="color:#856404;">トップページ D1〜D8</a> を使用してください。</div>
 <section class="card" id="intro">
 <h2>第9章の学習目的</h2>
-<p>第9章は、複数SELECT結果を集合として統合・比較する章である。JOINが列結合を担うのに対し、集合演算子は行集合同士を合成する。試験ではUNIONとUNION ALLの違い、INTERSECT/MINUSの意味、列数と型整合、ORDER BYの配置が高頻度で問われる。実務では差分抽出、重複排除付き統合、監査比較で多用されるが、型整合ミスや重複除去コスト見落としで障害になりやすい。第9章の到達点は、要件に応じて適切な演算子を選び、結果件数と性能影響を説明できる状態にすることである。</p>
-<div class="gloss"><strong>重要:</strong> 集合演算子は「似たSELECTをつなぐ」機能ではない。結果集合の意味を変える演算そのもの。</div>
+<p>第9章は、複数SELECT結果を集合として統合・比較する章である。<br>JOINが列結合を担うのに対し、集合演算子は行集合同士を合成する。<br>試験ではUNIONとUNION ALLの違い、<span class="sql-kw">INTERSECT</span>/MINUSの意味、列数と型整合、ORDER BYの配置が高頻度で問われる。<br>実務では差分抽出、重複排除付き統合、監査比較で多用されるが、型整合ミスや重複除去コスト見落としで障害になりやすい。<br>第9章の到達点は、要件に応じて適切な演算子を選び、結果件数と性能影響を説明できる状態にすることである。</p>
+<div class="gloss"><strong>重要:</strong> 集合演算子は「似たSELECTをつなぐ」機能ではない。<br>結果集合の意味を変える演算そのもの。</div>
 </section>
 <section class="card" id="set-basic">
-<h2>9.1 集合演算子の定義</h2>
-<p>集合演算子は複数のSELECT結果を集合として結合・比較する機能で、UNION、UNION ALL、INTERSECT、MINUSが代表である。定義上の要点は、各SELECTの列数と型グループが整合していることが前提である点だ。列名は先頭SELECTに従う。JOINとの違いは、JOINが横方向（列追加）であるのに対し、集合演算子は縦方向（行集合統合）である。実務では同種データの統合や差分確認に有効であり、誤用すると重複処理や件数解釈を誤る。</p>
+<h2><span class="sql-num">9.1</span> 集合演算子の定義</h2>
+<p>集合演算子は複数のSELECT結果を集合として結合・比較する機能で、<span class="sql-kw">UNION</span>、<span class="sql-kw">UNION ALL</span>、<span class="sql-kw">INTERSECT</span>、MINUSが代表である。<br>定義上の要点は、各SELECTの列数と型グループが整合していることが前提である点だ。<br>列名は先頭SELECTに従う。<br>JOINとの違いは、JOINが横方向（列追加）であるのに対し、集合演算子は縦方向（行集合統合）である。<br>実務では同種データの統合や差分確認に有効であり、誤用すると重複処理や件数解釈を誤る。</p>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="union">
-<h2>9.2 UNION</h2>
-<p>UNIONは複数結果を統合し、重複行を除去して返す。重複除去処理が入るため、件数は単純加算にならない。試験ではUNION ALLとの差分が頻出。実務では「重複排除が要件か」を明確にしないと、必要行が消えたように見える誤認が起きる。重複排除が不要ならUNIONを使う理由は薄く、性能面でも不利になりやすい。</p>
+<h2><span class="sql-num">9.2</span> <span class="sql-kw">UNION</span></h2>
+<p>UNIONは複数結果を統合し、重複行を除去して返す。<br>重複除去処理が入るため、件数は単純加算にならない。<br>試験ではUNION ALLとの差分が頻出。<br>実務では「重複排除が要件か」を明確にしないと、必要行が消えたように見える誤認が起きる。<br>重複排除が不要ならUNIONを使う理由は薄く、性能面でも不利になりやすい。</p>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="union-all">
-<h2>9.3 UNION ALL</h2>
-<p>UNION ALLは重複を除去せず結果を連結する。件数は通常、各SELECTの合計に近くなる。重複が業務上意味を持つログ系や監査系ではUNION ALLが自然である。試験では「性能重視はUNION ALL」が定番。実務でも重複排除が不要な場面ではまずUNION ALLを選び、必要時のみ別途重複処理を設計する方が明確である。</p>
+<h2><span class="sql-num">9.3</span> <span class="sql-kw">UNION ALL</span></h2>
+<p><span class="sql-kw">UNION</span> ALLは重複を除去せず結果を連結する。<br>件数は通常、各SELECTの合計に近くなる。<br>重複が業務上意味を持つログ系や監査系ではUNION ALLが自然である。<br>試験では「性能重視はUNION <span class="sql-kw">ALL</span>」が定番。<br>実務でも重複排除が不要な場面ではまずUNION ALLを選び、必要時のみ別途重複処理を設計する方が明確である。</p>
 <pre><code><span class="kw"><span class="sql-kw">SELECT</span></span> <span class="obj">employee_id</span> <span class="kw"><span class="sql-kw">FROM</span></span> <span class="obj">employees</span> <span class="kw"><span class="sql-kw">WHERE</span></span> <span class="obj">department_id</span> = <span class="obj"><span class="sql-num">10</span></span>
 <span class="kw"><span class="sql-kw">UNION ALL</span></span>
 <span class="kw"><span class="sql-kw">SELECT</span></span> <span class="obj">employee_id</span> <span class="kw"><span class="sql-kw">FROM</span></span> <span class="obj">employees</span> <span class="kw"><span class="sql-kw">WHERE</span></span> <span class="obj">department_id</span> = <span class="obj"><span class="sql-num">20</span></span>;</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="intersect">
-<h2>9.4 INTERSECT</h2>
-<p>INTERSECTは双方のSELECTに共通して存在する行のみ返す。共通集合抽出に使え、監査突合や一致確認に有効である。重複は集合として扱われるため結果で整理される。試験では演算意味の理解が中心。実務では比較基準列をどこまで含めるかで一致判定が変わるため、列選定を明確にする必要がある。</p>
+<h2><span class="sql-num">9.4</span> <span class="sql-kw">INTERSECT</span></h2>
+<p>INTERSECTは双方のSELECTに共通して存在する行のみ返す。<br>共通集合抽出に使え、監査突合や一致確認に有効である。<br>重複は集合として扱われるため結果で整理される。<br>試験では演算意味の理解が中心。<br>実務では比較基準列をどこまで含めるかで一致判定が変わるため、列選定を明確にする必要がある。</p>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="minus">
-<h2>9.5 MINUS</h2>
-<p>MINUSは1本目に存在し2本目に存在しない行を返す差分演算である。欠損抽出や未反映レコード確認に有効。順序が逆になると意味が反転するため、実務では「何から何を引くか」を明示する必要がある。試験では演算方向の取り違えがひっかけになる。差分抽出では列の正規化（前後空白・大文字小文字差）も合わせて検討するべきである。</p>
+<h2><span class="sql-num">9.5</span> <span class="sql-kw">MINUS</span></h2>
+<p>MINUSは1本目に存在し2本目に存在しない行を返す差分演算である。<br>欠損抽出や未反映レコード確認に有効。<br>順序が逆になると意味が反転するため、実務では「何から何を引くか」を明示する必要がある。<br>試験では演算方向の取り違えがひっかけになる。<br>差分抽出では列の正規化（前後空白・大文字小文字差）も合わせて検討するべきである。</p>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="type-rules">
-<h2>9.6 列数・型グループ整合</h2>
-<p>集合演算子の前提は列数一致と型グループ整合である。1本目NUMBER、2本目VARCHAR2などの不整合はエラー要因になる。実務ではCASTで型を揃えるのが定石で、書式付き文字列化は最終段で行うべきである。列順も一致させなければ意味が変わる。試験ではこの基本仕様が頻出のため、まず「列数」「型」「順序」を機械的に確認する癖をつけることが重要である。</p>
+<h2><span class="sql-num">9.6</span> 列数・型グループ整合</h2>
+<p>集合演算子の前提は列数一致と型グループ整合である。<br>1本目NUMBER、2本目VARCHAR2などの不整合はエラー要因になる。<br>実務ではCASTで型を揃えるのが定石で、書式付き文字列化は最終段で行うべきである。<br>列順も一致させなければ意味が変わる。<br>試験ではこの基本仕様が頻出のため、まず「列数」「型」「順序」を機械的に確認する癖をつけることが重要である。</p>
 <div class="warn"><b>失敗例:</b> 1本目NUMBER、2本目VARCHAR2混在。<b>修正:</b> CASTで型統一。</div>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="order-by">
-<h2>9.7 ORDER BYの位置と制約</h2>
-<p>集合演算子を使うSQLでは、ORDER BYは原則として最後に1回だけ適用する。途中SELECTに個別ORDER BYを置く設計は文法上・意味上の混乱を招きやすい。試験でもORDER BY位置は定番。実務では最終結果の並び順だけを定義し、途中並び順への依存を作らない方が保守しやすい。必要なら各SELECTをサブクエリ化して段階明示する。</p>
+<h2><span class="sql-num">9.7</span> ORDER BYの位置と制約</h2>
+<p>集合演算子を使うSQLでは、ORDER BYは原則として最後に1回だけ適用する。<br>途中SELECTに個別ORDER BYを置く設計は文法上・意味上の混乱を招きやすい。<br>試験でもORDER BY位置は定番。<br>実務では最終結果の並び順だけを定義し、途中並び順への依存を作らない方が保守しやすい。<br>必要なら各SELECTをサブクエリ化して段階明示する。</p>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="performance">
-<h2>9.8 性能観点（重複除去コスト）</h2>
-<p>UNION、INTERSECT、MINUSは重複整理や比較のために追加処理が入り、データ量が多いとコストが増える。UNION ALLは比較的軽く、性能優先時に有利である。実務ではまずUNION ALLで必要件数を確認し、真に重複排除が必要な場面だけUNIONへ切替える方が合理的である。集合演算子の選択は意味だけでなくコストを含む設計判断である。</p>
+<h2><span class="sql-num">9.8</span> 性能観点（重複除去コスト）</h2>
+<p><span class="sql-kw">UNION</span>、<span class="sql-kw">INTERSECT</span>、MINUSは重複整理や比較のために追加処理が入り、データ量が多いとコストが増える。<br><span class="sql-kw">UNION</span> ALLは比較的軽く、性能優先時に有利である。<br>実務ではまずUNION ALLで必要件数を確認し、真に重複排除が必要な場面だけUNIONへ切替える方が合理的である。<br>集合演算子の選択は意味だけでなくコストを含む設計判断である。</p>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="errors">
-<h2>9.9 典型エラーと修正</h2>
+<h2><span class="sql-num">9.9</span> 典型エラーと修正</h2>
 <div class="warn"><b>失敗1:</b> 列数不一致。<b>修正:</b> SELECT列数を合わせる。</div>
 <div class="warn"><b>失敗2:</b> 型グループ不整合。<b>修正:</b> CASTで統一。</div>
 <div class="warn"><b>失敗3:</b> UNIONで件数が減る理由を説明できない。<b>修正:</b> 重複排除要否を要件化。</div>
@@ -133,14 +143,14 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="patterns">
-<h2>9.10 実務運用パターン</h2>
-<p>実務では「まずUNION ALLで生データ確認」「次に必要なら重複除去」「最後にORDER BY」で段階的に組むと検証しやすい。差分抽出ではMINUS前に正規化（TRIM/UPPER等）を行い、見た目差異での誤差分を避ける。監査用途では演算前後件数を記録し、結果再現性を担保する運用が有効である。集合演算子は短く書けるが、検証手順込みで設計することが重要である。</p>
+<h2><span class="sql-num">9.10</span> 実務運用パターン</h2>
+<p>実務では「まずUNION ALLで生データ確認」「次に必要なら重複除去」「最後にORDER <span class="sql-kw">BY</span>」で段階的に組むと検証しやすい。<br>差分抽出ではMINUS前に正規化（TRIM/UPPER等）を行い、見た目差異での誤差分を避ける。<br>監査用途では演算前後件数を記録し、結果再現性を担保する運用が有効である。<br>集合演算子は短く書けるが、検証手順込みで設計することが重要である。</p>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 
 <section class="card" id="exam">
 <h2>第9章 試験ひっかけパターン集</h2>
-<div class="warn"><b>ひっかけ1:</b> UNION ALLは重複除去するか → しない。</div>
+<div class="warn"><b>ひっかけ1:</b> <span class="sql-kw">UNION</span> ALLは重複除去するか → しない。</div>
 <div class="warn"><b>ひっかけ2:</b> MINUSは左右どちらでも同じか → 同じではない。</div>
 <div class="warn"><b>ひっかけ3:</b> 集合演算子で列名は各SELECTで独立か → 先頭SELECTに従う。</div>
 <div class="warn"><b>ひっかけ4:</b> ORDER BYは各SELECTに書くか → 最後に1回が基本。</div>
@@ -151,7 +161,7 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 <h2>第9章 実務アンチパターン集</h2>
 <div class="table-wrap"><table>
 <tr><th>アンチパターン</th><th>起きる障害</th><th>予防策</th></tr>
-<tr><td>不要なUNION</td><td>性能劣化</td><td>要件がなければUNION ALL</td></tr>
+<tr><td>不要なUNION</td><td>性能劣化</td><td>要件がなければUNION <span class="sql-kw">ALL</span></td></tr>
 <tr><td>列順不一致で合成</td><td>意味の異なる列混在</td><td>列順・型を明示統一</td></tr>
 <tr><td>MINUS方向ミス</td><td>逆差分の出力</td><td>差分元/差分先を固定命名</td></tr>
 <tr><td>件数検証なし本番投入</td><td>誤集計・監査不一致</td><td>演算前後件数を必ず記録</td></tr>

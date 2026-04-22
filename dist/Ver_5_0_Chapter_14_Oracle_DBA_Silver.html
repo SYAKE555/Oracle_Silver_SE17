@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Chapter 14 | SQL参考資料</title>
+<title>Chapter <span class="sql-num">14</span> | SQL参考資料</title>
 <style>
 :root{--bg:#f4f8fc;--card:#ffffff;--line:#d8e4f5;--pri:#1d4f91;--sec:#2f6fbe;--txt:#1f2d3d;--code:#f2f7fc}
 *{box-sizing:border-box}
@@ -26,16 +26,26 @@ code{font-family:"Consolas","Monaco",monospace;font-size:.88rem}
 .top{text-align:right;margin-top:12px}
 @media(max-width:1120px){.layout{grid-template-columns:1fr}.sidebar{position:static;max-height:none}}
 
-  pre .sql-kw { color: #fbbf24; font-weight: 700; }
-  pre .sql-fn { color: #60a5fa; font-weight: 600; }
+
+  /* sql-highlight-v3 */
+  /* default (light bg): warm tone */
+  .sql-kw  { color: #92400e; font-weight: 700; }
+  .sql-fn  { color: #1e40af; font-weight: 600; }
+  .sql-str { color: #065f46; }
+  .sql-num { color: #991b1b; }
+  .sql-cmt { color: #64748b; font-style: italic; }
+  /* dark bg override (pre / code) */
+  pre .sql-kw  { color: #fbbf24; }
+  pre .sql-fn  { color: #60a5fa; }
   pre .sql-str { color: #86efac; }
   pre .sql-num { color: #fca5a5; }
-  pre .sql-cmt { color: #94a3b8; font-style: italic; }
-  code .sql-kw { color: #b45309; font-weight: 700; }
-  code .sql-fn { color: #1d4ed8; font-weight: 600; }
-  code .sql-str { color: #047857; }
-  code .sql-num { color: #b91c1c; }
-  code .sql-cmt { color: #64748b; font-style: italic; }
+  pre .sql-cmt { color: #94a3b8; }
+  code .sql-kw  { color: #fbbf24; }
+  code .sql-fn  { color: #60a5fa; }
+  code .sql-str { color: #86efac; }
+  code .sql-num { color: #fca5a5; }
+  code .sql-cmt { color: #94a3b8; }
+  /* clause-order div uses its own kw/fn/desc/note classes — no override needed */
 </style>
 </head>
 <body>
@@ -45,15 +55,15 @@ code{font-family:"Consolas","Monaco",monospace;font-size:.88rem}
 <ul>
 <li><a href="#scope">スコープ宣言</a></li>
 <li><a href="#intro">第14章の学習目的</a></li>
-<li><a href="#auth-basic">14.1 認可の基本概念</a></li>
-<li><a href="#sys-obj">14.2 システム権限とオブジェクト権限</a></li>
-<li><a href="#grant">14.3 GRANT</a></li>
-<li><a href="#revoke">14.4 REVOKE</a></li>
-<li><a href="#role-basic">14.5 ロールの定義</a></li>
-<li><a href="#role-design">14.6 ロール設計と最小権限</a></li>
-<li><a href="#dict">14.7 辞書ビューで確認</a></li>
-<li><a href="#errors">14.8 典型エラーと修正</a></li>
-<li><a href="#patterns">14.9 実務運用パターン</a></li>
+<li><a href="#auth-basic"><span class="sql-num">14.1</span> 認可の基本概念</a></li>
+<li><a href="#sys-obj"><span class="sql-num">14.2</span> システム権限とオブジェクト権限</a></li>
+<li><a href="#grant"><span class="sql-num">14.3</span> <span class="sql-kw">GRANT</span></a></li>
+<li><a href="#revoke"><span class="sql-num">14.4</span> <span class="sql-kw">REVOKE</span></a></li>
+<li><a href="#role-basic"><span class="sql-num">14.5</span> ロールの定義</a></li>
+<li><a href="#role-design"><span class="sql-num">14.6</span> ロール設計と最小権限</a></li>
+<li><a href="#dict"><span class="sql-num">14.7</span> 辞書ビューで確認</a></li>
+<li><a href="#errors"><span class="sql-num">14.8</span> 典型エラーと修正</a></li>
+<li><a href="#patterns"><span class="sql-num">14.9</span> 実務運用パターン</a></li>
 <li><a href="#exam">試験ひっかけパターン集</a></li>
 <li><a href="#practice">実務アンチパターン集</a></li>
 </ul>
@@ -63,79 +73,79 @@ code{font-family:"Consolas","Monaco",monospace;font-size:.88rem}
 <h1>Oracle DBA Silver SQL（第14章のみ）</h1>
 <p>本ファイルは第14章「ユーザーアクセス制御（権限・ロール）」に集中し、安全な権限設計と運用統制を高密度で解説する。</p>
 </section>
-<div style="background:#fff3cd;border:1px solid #ffc107;border-left:5px solid #fd7e14;border-radius:8px;padding:12px 16px;margin:14px 0;font-size:0.88rem;color:#856404;"><strong>【参考資料】</strong> このファイルは Oracle Master Silver SQL (1Z0-071) の試験範囲外の内容を含みます。OracleアーキテクチャなどDBAに関する内容は実務参考としてご利用ください。試験対策には <a href="index.html" style="color:#856404;">トップページ D1〜D8</a> を使用してください。</div>
+<div style="background:#fff3cd;border:1px solid #ffc107;border-left:5px solid #fd7e14;border-radius:8px;padding:12px 16px;margin:14px 0;font-size:0.88rem;color:#856404;"><strong>【参考資料】</strong> このファイルは Oracle Master Silver SQL (1Z0-<span class="sql-num">071</span>) の試験範囲外の内容を含みます。<br>OracleアーキテクチャなどDBAに関する内容は実務参考としてご利用ください。<br>試験対策には <a href="index.html" style="color:#856404;">トップページ D1〜D8</a> を使用してください。</div>
 <section class="card" id="intro">
 <h2>第14章の学習目的</h2>
-<p>第14章は、誰に何を許可するかを制御する認可設計を扱う。SQLが正しくても権限設計が甘いと、情報漏えい、誤更新、監査指摘につながる。試験ではシステム権限とオブジェクト権限の違い、GRANT/REVOKE構文、ロールの役割が頻出である。実務では「最小権限」「職務分離」「権限棚卸し」が柱になり、開発都合で広い権限を配ると後で回収不能になる。到達点は、利用者ごとに必要最小限の権限を設計し、運用手順として継続的に維持できる状態にすることである。</p>
-<div class="note"><strong>重要:</strong> 権限管理は一度付与して終わりではない。付与・見直し・剥奪まで含めて設計する。</div>
+<p>第14章は、誰に何を許可するかを制御する認可設計を扱う。<br>SQLが正しくても権限設計が甘いと、情報漏えい、誤更新、監査指摘につながる。<br>試験ではシステム権限とオブジェクト権限の違い、<span class="sql-kw">GRANT</span>/REVOKE構文、ロールの役割が頻出である。<br>実務では「最小権限」「職務分離」「権限棚卸し」が柱になり、開発都合で広い権限を配ると後で回収不能になる。<br>到達点は、利用者ごとに必要最小限の権限を設計し、運用手順として継続的に維持できる状態にすることである。</p>
+<div class="note"><strong>重要:</strong> 権限管理は一度付与して終わりではない。<br>付与・見直し・剥奪まで含めて設計する。</div>
 </section>
 <section class="card" id="auth-basic">
-<h2>14.1 認可の基本概念</h2>
-<p>認可は「認証済みユーザーにどの操作を許可するか」を決める仕組みである。Oracleではユーザー、権限、ロールの3層で管理する。権限は直接付与も可能だが、実務ではロール経由で束ねることで運用負荷を下げる。試験では認証と認可の違いを混同させる問題が出るため、概念分離が必須である。アクセス制御の目的は単なる制限ではなく、業務継続と監査適合の両立である。必要以上に厳しくして業務停止させるのも、広く許可して事故を起こすのもどちらも失敗である。</p>
+<h2><span class="sql-num">14.1</span> 認可の基本概念</h2>
+<p>認可は「認証済みユーザーにどの操作を許可するか」を決める仕組みである。<br>Oracleではユーザー、権限、ロールの3層で管理する。<br>権限は直接付与も可能だが、実務ではロール経由で束ねることで運用負荷を下げる。<br>試験では認証と認可の違いを混同させる問題が出るため、概念分離が必須である。<br>アクセス制御の目的は単なる制限ではなく、業務継続と監査適合の両立である。<br>必要以上に厳しくして業務停止させるのも、広く許可して事故を起こすのもどちらも失敗である。</p>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="sys-obj">
-<h2>14.2 システム権限とオブジェクト権限</h2>
-<p>システム権限はDB全体操作に関わる権限（例: `CREATE SESSION`, `CREATE TABLE`）で、オブジェクト権限は特定表やビューに対する操作権限（例: `SELECT`, `INSERT`）である。試験ではこの分類を問う問題が定番である。実務では、開発者には必要最小限のシステム権限のみ、業務ユーザーには対象表限定のオブジェクト権限を与えるのが基本である。分類を誤ると、個別データ参照だけで済むユーザーに広範囲の作成権限を与えてしまい、統制不備を招く。</p>
+<h2><span class="sql-num">14.2</span> システム権限とオブジェクト権限</h2>
+<p>システム権限はDB全体操作に関わる権限（例: `<span class="sql-kw">CREATE</span> SESSION`, `<span class="sql-kw">CREATE TABLE</span>`）で、オブジェクト権限は特定表やビューに対する操作権限（例: `<span class="sql-kw">SELECT</span>`, `<span class="sql-kw">INSERT</span>`）である。<br>試験ではこの分類を問う問題が定番である。<br>実務では、開発者には必要最小限のシステム権限のみ、業務ユーザーには対象表限定のオブジェクト権限を与えるのが基本である。<br>分類を誤ると、個別データ参照だけで済むユーザーに広範囲の作成権限を与えてしまい、統制不備を招く。</p>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="grant">
-<h2>14.3 GRANT</h2>
-<p>GRANTは権限を付与する命令である。`GRANT SELECT ON hr.employees TO app_user;` のように対象を限定して与えるのが原則である。試験ではシステム権限付与とオブジェクト権限付与の構文差、`WITH ADMIN OPTION`や`WITH GRANT OPTION`の意味が問われる。実務では再付与可能オプションを乱用すると権限拡散が起きるため、管理者限定で運用する。付与時には「誰が」「何の業務理由で」「いつまで」を記録し、期限付き運用へつなげるのが望ましい。</p>
+<h2><span class="sql-num">14.3</span> <span class="sql-kw">GRANT</span></h2>
+<p>GRANTは権限を付与する命令である。<br>`<span class="sql-kw">GRANT</span> <span class="sql-kw">SELECT</span> <span class="sql-kw">ON</span> hr.employees <span class="sql-kw">TO</span> app_user;` のように対象を限定して与えるのが原則である。<br>試験ではシステム権限付与とオブジェクト権限付与の構文差、`<span class="sql-kw">WITH</span> ADMIN OPTION`や`<span class="sql-kw">WITH GRANT OPTION</span>`の意味が問われる。<br>実務では再付与可能オプションを乱用すると権限拡散が起きるため、管理者限定で運用する。<br>付与時には「誰が」「何の業務理由で」「いつまで」を記録し、期限付き運用へつなげるのが望ましい。</p>
 <pre><code><span class="sql-kw">GRANT</span> <span class="sql-kw">CREATE</span> SESSION <span class="sql-kw">TO</span> analyst_user;
 <span class="sql-kw">GRANT</span> <span class="sql-kw">SELECT</span>, <span class="sql-kw">INSERT</span> <span class="sql-kw">ON</span> sales.orders <span class="sql-kw">TO</span> app_writer;</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="revoke">
-<h2>14.4 REVOKE</h2>
-<p>REVOKEは付与済み権限を剥奪する命令である。運用で見落とされがちだが、異動・退職・役割変更時に即時回収できるかがセキュリティ品質を左右する。試験ではGRANTと対で構文理解が問われる。実務では剥奪による業務影響があるため、事前にアクセス実績と依存処理を確認し、必要なら段階的に回収する。付与だけ増えて剥奪が運用されない環境は、長期的に過剰権限の温床になり、監査で高確率で指摘される。</p>
+<h2><span class="sql-num">14.4</span> <span class="sql-kw">REVOKE</span></h2>
+<p>REVOKEは付与済み権限を剥奪する命令である。<br>運用で見落とされがちだが、異動・退職・役割変更時に即時回収できるかがセキュリティ品質を左右する。<br>試験ではGRANTと対で構文理解が問われる。<br>実務では剥奪による業務影響があるため、事前にアクセス実績と依存処理を確認し、必要なら段階的に回収する。<br>付与だけ増えて剥奪が運用されない環境は、長期的に過剰権限の温床になり、監査で高確率で指摘される。</p>
 <pre><code><span class="sql-kw">REVOKE</span> <span class="sql-kw">INSERT</span> <span class="sql-kw">ON</span> sales.orders <span class="sql-kw">FROM</span> app_writer;
 <span class="sql-kw">REVOKE</span> <span class="sql-kw">CREATE TABLE</span> <span class="sql-kw">FROM</span> analyst_user;</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="role-basic">
-<h2>14.5 ロールの定義</h2>
-<p>ロールは複数権限をまとめた論理グループであり、ユーザーへ一括適用するための仕組みである。試験ではロール作成、権限付与、ユーザー付与の順序が問われやすい。実務では職務単位でロールを定義し、個別ユーザーへの直接付与を最小化することで管理性を確保する。ロールがない環境では、数百ユーザーへ個別権限を配る運用になり、変更時に漏れが発生しやすい。ロールは可読性の高い命名（`ROLE_REPORT_VIEWER` など）で責務を明確化することが重要である。</p>
+<h2><span class="sql-num">14.5</span> ロールの定義</h2>
+<p>ロールは複数権限をまとめた論理グループであり、ユーザーへ一括適用するための仕組みである。<br>試験ではロール作成、権限付与、ユーザー付与の順序が問われやすい。<br>実務では職務単位でロールを定義し、個別ユーザーへの直接付与を最小化することで管理性を確保する。<br>ロールがない環境では、数百ユーザーへ個別権限を配る運用になり、変更時に漏れが発生しやすい。<br>ロールは可読性の高い命名（`ROLE_REPORT_VIEWER` など）で責務を明確化することが重要である。</p>
 <pre><code><span class="sql-kw">CREATE</span> ROLE role_report_viewer;
 <span class="sql-kw">GRANT</span> <span class="sql-kw">SELECT</span> <span class="sql-kw">ON</span> sales.monthly_report <span class="sql-kw">TO</span> role_report_viewer;
 <span class="sql-kw">GRANT</span> role_report_viewer <span class="sql-kw">TO</span> bi_user;</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="role-design">
-<h2>14.6 ロール設計と最小権限</h2>
-<p>最小権限原則は「業務遂行に必要な最小限のみ許可する」考え方である。実務では閲覧専用、入力担当、運用管理など職務ごとにロールを分離する。試験では原則名そのものは出なくても、過剰権限の不適切性を問う設問が出る。設計時は「普段使わない強権限を含めない」「一時権限は期限管理」「定期棚卸しで不要権限を回収」の3点が有効である。権限は増やすより減らす方が難しいため、初期設計で保守しやすい粒度に分割することが長期運用を安定させる。</p>
+<h2><span class="sql-num">14.6</span> ロール設計と最小権限</h2>
+<p>最小権限原則は「業務遂行に必要な最小限のみ許可する」考え方である。<br>実務では閲覧専用、入力担当、運用管理など職務ごとにロールを分離する。<br>試験では原則名そのものは出なくても、過剰権限の不適切性を問う設問が出る。<br>設計時は「普段使わない強権限を含めない」「一時権限は期限管理」「定期棚卸しで不要権限を回収」の3点が有効である。<br>権限は増やすより減らす方が難しいため、初期設計で保守しやすい粒度に分割することが長期運用を安定させる。</p>
 <div class="warn"><b>注意:</b> 便利だからと `DBA` 相当権限を配る運用は、最終的に回収不能になりやすい。</div>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="dict">
-<h2>14.7 辞書ビューで確認</h2>
-<p>権限状態は辞書ビューで確認する。ユーザーのシステム権限は`USER_SYS_PRIVS`/`DBA_SYS_PRIVS`、オブジェクト権限は`USER_TAB_PRIVS`/`DBA_TAB_PRIVS`、ロールは`USER_ROLE_PRIVS`/`DBA_ROLE_PRIVS`で追跡できる。試験ではビュー名と確認対象の対応が問われる。実務では権限変更後に差分確認SQLを実行し、申請内容と実体が一致するかを検証する。監査対応では「設定してあるはず」では通らないため、辞書ビュー出力を証跡として保管することが重要である。</p>
+<h2><span class="sql-num">14.7</span> 辞書ビューで確認</h2>
+<p>権限状態は辞書ビューで確認する。<br>ユーザーのシステム権限は`USER_SYS_PRIVS`/`DBA_SYS_PRIVS`、オブジェクト権限は`USER_TAB_PRIVS`/`DBA_TAB_PRIVS`、ロールは`USER_ROLE_PRIVS`/`DBA_ROLE_PRIVS`で追跡できる。<br>試験ではビュー名と確認対象の対応が問われる。<br>実務では権限変更後に差分確認SQLを実行し、申請内容と実体が一致するかを検証する。<br>監査対応では「設定してあるはず」では通らないため、辞書ビュー出力を証跡として保管することが重要である。</p>
 <pre><code><span class="sql-kw">SELECT</span> granted_role, admin_option, default_role
 <span class="sql-kw">FROM</span> user_role_privs
 <span class="sql-kw">ORDER BY</span> granted_role;</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="errors">
-<h2>14.8 典型エラーと修正</h2>
+<h2><span class="sql-num">14.8</span> 典型エラーと修正</h2>
 <div class="warn"><b>失敗1:</b> 直接権限の乱発。<b>修正:</b> ロール経由付与へ集約。</div>
-<div class="warn"><b>失敗2:</b> ADMIN/GRANT OPTIONの過剰付与。<b>修正:</b> 管理者限定で厳格化。</div>
+<div class="warn"><b>失敗2:</b> ADMIN/<span class="sql-kw">GRANT</span> OPTIONの過剰付与。<b>修正:</b> 管理者限定で厳格化。</div>
 <div class="warn"><b>失敗3:</b> 剥奪運用なし。<b>修正:</b> 異動・退職イベントでREVOKEを標準化。</div>
 <div class="warn"><b>失敗4:</b> 権限変更後の確認省略。<b>修正:</b> 辞書ビュー差分確認を必須化。</div>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="patterns">
-<h2>14.9 実務運用パターン</h2>
-<p>推奨運用は「申請→レビュー→GRANT/REVOKE実行→辞書確認→証跡保管→定期棚卸し」である。特にロール中心運用へ統一すると、担当変更時にユーザーをロールへ出し入れするだけで権限管理できる。試験対策ではGRANT/REVOKE構文暗記に加え、権限分類とロール化の意図を説明できるようにする。第14章の本質は、技術的正しさだけでなく統制可能な運用プロセスを設計する点にある。</p>
+<h2><span class="sql-num">14.9</span> 実務運用パターン</h2>
+<p>推奨運用は「申請→レビュー→<span class="sql-kw">GRANT</span>/REVOKE実行→辞書確認→証跡保管→定期棚卸し」である。<br>特にロール中心運用へ統一すると、担当変更時にユーザーをロールへ出し入れするだけで権限管理できる。<br>試験対策ではGRANT/REVOKE構文暗記に加え、権限分類とロール化の意図を説明できるようにする。<br>第14章の本質は、技術的正しさだけでなく統制可能な運用プロセスを設計する点にある。</p>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 
 <section class="card" id="exam">
 <h2>第14章 試験ひっかけパターン集</h2>
-<div class="warn"><b>ひっかけ1:</b> シノニムで権限付与できるか → できない。権限はGRANT。</div>
+<div class="warn"><b>ひっかけ1:</b> シノニムで権限付与できるか → できない。<br>権限はGRANT。</div>
 <div class="warn"><b>ひっかけ2:</b> ロールはユーザーにのみ付与可能か → 権限をロールに付与してからユーザーへ付与できる。</div>
-<div class="warn"><b>ひっかけ3:</b> CREATE TABLEはオブジェクト権限か → いいえ。システム権限。</div>
-<div class="warn"><b>ひっかけ4:</b> REVOKEは不要でGRANT上書きでよいか → 不適切。不要権限は回収する。</div>
-<div class="warn"><b>ひっかけ5:</b> 最小権限は運用効率を下げるだけか → いいえ。事故と監査リスクを下げる。</div>
+<div class="warn"><b>ひっかけ3:</b> <span class="sql-kw">CREATE</span> TABLEはオブジェクト権限か → いいえ。<br>システム権限。</div>
+<div class="warn"><b>ひっかけ4:</b> REVOKEは不要でGRANT上書きでよいか → 不適切。<br>不要権限は回収する。</div>
+<div class="warn"><b>ひっかけ5:</b> 最小権限は運用効率を下げるだけか → いいえ。<br>事故と監査リスクを下げる。</div>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="practice">

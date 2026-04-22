@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Chapter 11 | SQL参考資料</title>
+<title>Chapter <span class="sql-num">11</span> | SQL参考資料</title>
 <style>
 :root{--bg:#f4f8fc;--card:#ffffff;--line:#d8e4f5;--pri:#1d4f91;--sec:#2f6fbe;--txt:#1f2d3d;--code:#f2f7fc}
 *{box-sizing:border-box}
@@ -26,16 +26,26 @@ code{font-family:"Consolas","Monaco",monospace;font-size:.88rem}
 .top{text-align:right;margin-top:12px}
 @media(max-width:1120px){.layout{grid-template-columns:1fr}.sidebar{position:static;max-height:none}}
 
-  pre .sql-kw { color: #fbbf24; font-weight: 700; }
-  pre .sql-fn { color: #60a5fa; font-weight: 600; }
+
+  /* sql-highlight-v3 */
+  /* default (light bg): warm tone */
+  .sql-kw  { color: #92400e; font-weight: 700; }
+  .sql-fn  { color: #1e40af; font-weight: 600; }
+  .sql-str { color: #065f46; }
+  .sql-num { color: #991b1b; }
+  .sql-cmt { color: #64748b; font-style: italic; }
+  /* dark bg override (pre / code) */
+  pre .sql-kw  { color: #fbbf24; }
+  pre .sql-fn  { color: #60a5fa; }
   pre .sql-str { color: #86efac; }
   pre .sql-num { color: #fca5a5; }
-  pre .sql-cmt { color: #94a3b8; font-style: italic; }
-  code .sql-kw { color: #b45309; font-weight: 700; }
-  code .sql-fn { color: #1d4ed8; font-weight: 600; }
-  code .sql-str { color: #047857; }
-  code .sql-num { color: #b91c1c; }
-  code .sql-cmt { color: #64748b; font-style: italic; }
+  pre .sql-cmt { color: #94a3b8; }
+  code .sql-kw  { color: #fbbf24; }
+  code .sql-fn  { color: #60a5fa; }
+  code .sql-str { color: #86efac; }
+  code .sql-num { color: #fca5a5; }
+  code .sql-cmt { color: #94a3b8; }
+  /* clause-order div uses its own kw/fn/desc/note classes — no override needed */
 </style>
 </head>
 <body>
@@ -45,15 +55,15 @@ code{font-family:"Consolas","Monaco",monospace;font-size:.88rem}
 <ul>
 <li><a href="#scope">スコープ宣言</a></li>
 <li><a href="#intro">第11章の学習目的</a></li>
-<li><a href="#ddl">11.1 DDLの定義</a></li>
-<li><a href="#create">11.2 CREATE TABLE</a></li>
-<li><a href="#constraints">11.3 制約（PK/UK/NN/FK/CHECK）</a></li>
-<li><a href="#alter">11.4 ALTER TABLE</a></li>
-<li><a href="#drop">11.5 DROP</a></li>
-<li><a href="#truncate">11.6 TRUNCATE</a></li>
-<li><a href="#dict">11.7 データディクショナリで確認</a></li>
-<li><a href="#errors">11.8 典型エラーと修正</a></li>
-<li><a href="#patterns">11.9 実務運用パターン</a></li>
+<li><a href="#ddl"><span class="sql-num">11.1</span> DDLの定義</a></li>
+<li><a href="#create"><span class="sql-num">11.2</span> <span class="sql-kw">CREATE TABLE</span></a></li>
+<li><a href="#constraints"><span class="sql-num">11.3</span> 制約（PK/UK/NN/FK/<span class="sql-kw">CHECK</span>）</a></li>
+<li><a href="#alter"><span class="sql-num">11.4</span> <span class="sql-kw">ALTER TABLE</span></a></li>
+<li><a href="#drop"><span class="sql-num">11.5</span> <span class="sql-kw">DROP</span></a></li>
+<li><a href="#truncate"><span class="sql-num">11.6</span> <span class="sql-kw">TRUNCATE</span></a></li>
+<li><a href="#dict"><span class="sql-num">11.7</span> データディクショナリで確認</a></li>
+<li><a href="#errors"><span class="sql-num">11.8</span> 典型エラーと修正</a></li>
+<li><a href="#patterns"><span class="sql-num">11.9</span> 実務運用パターン</a></li>
 <li><a href="#exam">試験ひっかけパターン集</a></li>
 <li><a href="#practice">実務アンチパターン集</a></li>
 </ul>
@@ -61,22 +71,22 @@ code{font-family:"Consolas","Monaco",monospace;font-size:.88rem}
 <main class="main">
 <section class="hero" id="scope">
 <h1>Oracle DBA Silver SQL（第11章のみ）</h1>
-<p>本ファイルは第11章「DDL（CREATE/ALTER/DROP/TRUNCATE）と制約」に集中し、スキーマ変更の安全運用を高密度で解説する。</p>
+<p>本ファイルは第11章「DDL（<span class="sql-kw">CREATE</span>/<span class="sql-kw">ALTER</span>/<span class="sql-kw">DROP</span>/<span class="sql-kw">TRUNCATE</span>）と制約」に集中し、スキーマ変更の安全運用を高密度で解説する。</p>
 </section>
-<div style="background:#fff3cd;border:1px solid #ffc107;border-left:5px solid #fd7e14;border-radius:8px;padding:12px 16px;margin:14px 0;font-size:0.88rem;color:#856404;"><strong>【参考資料】</strong> このファイルは Oracle Master Silver SQL (1Z0-071) の試験範囲外の内容を含みます。OracleアーキテクチャなどDBAに関する内容は実務参考としてご利用ください。試験対策には <a href="index.html" style="color:#856404;">トップページ D1〜D8</a> を使用してください。</div>
+<div style="background:#fff3cd;border:1px solid #ffc107;border-left:5px solid #fd7e14;border-radius:8px;padding:12px 16px;margin:14px 0;font-size:0.88rem;color:#856404;"><strong>【参考資料】</strong> このファイルは Oracle Master Silver SQL (1Z0-<span class="sql-num">071</span>) の試験範囲外の内容を含みます。<br>OracleアーキテクチャなどDBAに関する内容は実務参考としてご利用ください。<br>試験対策には <a href="index.html" style="color:#856404;">トップページ D1〜D8</a> を使用してください。</div>
 <section class="card" id="intro">
 <h2>第11章の学習目的</h2>
-<p>第11章は、データを操作するDMLから一段進み、表定義そのものを作成・変更・削除するDDLを扱う。DDLは「構造」を変える命令であり、誤るとアプリ全体に影響する。試験ではCREATE TABLEの列定義、制約の種類、ALTER TABLEで何を変更できるか、TRUNCATEとDELETEの違いが繰り返し問われる。実務ではDDLは変更管理の中心で、事前レビュー、影響範囲調査、ロールバック方針の設計が不可欠である。到達点は、DDLの意味を暗記でなく運用視点で理解し、事故なく適用できる手順を説明できる状態である。</p>
+<p>第11章は、データを操作するDMLから一段進み、表定義そのものを作成・変更・削除するDDLを扱う。<br>DDLは「構造」を変える命令であり、誤るとアプリ全体に影響する。<br>試験ではCREATE TABLEの列定義、制約の種類、<span class="sql-kw">ALTER</span> TABLEで何を変更できるか、TRUNCATEとDELETEの違いが繰り返し問われる。<br>実務ではDDLは変更管理の中心で、事前レビュー、影響範囲調査、ロールバック方針の設計が不可欠である。<br>到達点は、DDLの意味を暗記でなく運用視点で理解し、事故なく適用できる手順を説明できる状態である。</p>
 <div class="note"><strong>重要:</strong> DDLは暗黙COMMITと連動するため、DMLと同じ感覚で実行すると復旧不能を招く。</div>
 </section>
 <section class="card" id="ddl">
-<h2>11.1 DDLの定義</h2>
-<p>DDL（Data Definition Language）は、表・ビュー・索引などのオブジェクト構造を定義するSQL群である。DMLが「行データ」を変えるのに対し、DDLは「器そのもの」を変える。OracleではDDL実行時に暗黙COMMITが発生しうるため、未確定DMLを抱えたままDDLを打つ設計は危険である。試験では分類問題（これはDDLかDMLか）が基本だが、実務では分類に加えて「実行タイミング」「排他影響」「失敗時の復元手順」が評価対象となる。DDLを単なる構文問題として扱わず、変更管理の単位として扱うことが重要である。</p>
+<h2><span class="sql-num">11.1</span> DDLの定義</h2>
+<p>DDL（Data Definition Language）は、表・ビュー・索引などのオブジェクト構造を定義するSQL群である。<br>DMLが「行データ」を変えるのに対し、DDLは「器そのもの」を変える。<br>OracleではDDL実行時に暗黙COMMITが発生しうるため、未確定DMLを抱えたままDDLを打つ設計は危険である。<br>試験では分類問題（これはDDLかDMLか）が基本だが、実務では分類に加えて「実行タイミング」「排他影響」「失敗時の復元手順」が評価対象となる。<br>DDLを単なる構文問題として扱わず、変更管理の単位として扱うことが重要である。</p>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="create">
-<h2>11.2 CREATE TABLE</h2>
-<p>CREATE TABLEは、列名・データ型・制約を定義し、データ格納の契約を作る命令である。よくある失敗は、将来の値幅を考えずに桁を小さく定義し、後続で型変更を連発する設計である。実務では命名規約（`_ID`や`CREATED_AT`）を揃え、NULL可否を業務要件と一致させる。試験ではVARCHAR2の長さ、NUMBERの精度、DATE/TIMESTAMPの違い、列レベル制約と表レベル制約の書き方が狙われる。作成時点で品質を入れると、後続のDMLとアプリ実装コストが大幅に下がる。</p>
+<h2><span class="sql-num">11.2</span> <span class="sql-kw">CREATE TABLE</span></h2>
+<p><span class="sql-kw">CREATE</span> TABLEは、列名・データ型・制約を定義し、データ格納の契約を作る命令である。<br>よくある失敗は、将来の値幅を考えずに桁を小さく定義し、後続で型変更を連発する設計である。<br>実務では命名規約（`_ID`や`CREATED_AT`）を揃え、NULL可否を業務要件と一致させる。<br>試験ではVARCHAR2の長さ、NUMBERの精度、DATE/TIMESTAMPの違い、列レベル制約と表レベル制約の書き方が狙われる。<br>作成時点で品質を入れると、後続のDMLとアプリ実装コストが大幅に下がる。</p>
 <pre><code><span class="sql-kw">CREATE TABLE</span> project_tasks (
   task_id        NUMBER(<span class="sql-num">10</span>)      <span class="sql-kw">CONSTRAINT</span> pk_project_tasks <span class="sql-kw">PRIMARY KEY</span>,
   task_name      VARCHAR2(<span class="sql-num">100</span>)   <span class="sql-kw">CONSTRAINT</span> nn_task_name <span class="sql-kw">NOT NULL</span>,
@@ -87,31 +97,31 @@ code{font-family:"Consolas","Monaco",monospace;font-size:.88rem}
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="constraints">
-<h2>11.3 制約（PK/UK/NN/FK/CHECK）</h2>
-<p>制約は、データ品質をDB層で保証するルールである。PRIMARY KEYは行の一意識別、UNIQUEは候補キーの一意性、NOT NULLは必須入力、FOREIGN KEYは参照整合、CHECKは値域制御を担う。アプリ側だけで制御すると、バッチや直接SQLから不正データが混入するため、実務ではDB制約が最終防衛線になる。試験では各制約の役割差分と、FKで参照先が存在しない場合の挙動が頻出である。制約名を明示しておくと、違反時メッセージから原因特定しやすく運用効率が上がる。</p>
+<h2><span class="sql-num">11.3</span> 制約（PK/UK/NN/FK/<span class="sql-kw">CHECK</span>）</h2>
+<p>制約は、データ品質をDB層で保証するルールである。<br>PRIMARY KEYは行の一意識別、UNIQUEは候補キーの一意性、<span class="sql-kw">NOT</span> NULLは必須入力、FOREIGN KEYは参照整合、CHECKは値域制御を担う。<br>アプリ側だけで制御すると、バッチや直接SQLから不正データが混入するため、実務ではDB制約が最終防衛線になる。<br>試験では各制約の役割差分と、FKで参照先が存在しない場合の挙動が頻出である。<br>制約名を明示しておくと、違反時メッセージから原因特定しやすく運用効率が上がる。</p>
 <div class="warn"><b>注意:</b> FK未設計のまま運用すると孤児データが蓄積し、後で整合回復に大きな工数がかかる。</div>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="alter">
-<h2>11.4 ALTER TABLE</h2>
-<p>ALTER TABLEは既存表の列追加・列型変更・制約追加/削除を行う。オンライン業務中の変更は、既存データとの整合を崩しやすい。たとえばNOT NULL追加時は、既存NULL行があると失敗する。実務では「事前データ補正→制約追加」の2段階適用が定石である。試験ではADD/MODIFY/DROPの可否、列型変更時の制限、制約状態（ENABLE/DISABLE）が問われる。変更SQLは単体ではなく、検証SQLとセットで管理する。</p>
+<h2><span class="sql-num">11.4</span> <span class="sql-kw">ALTER TABLE</span></h2>
+<p><span class="sql-kw">ALTER</span> TABLEは既存表の列追加・列型変更・制約追加/削除を行う。<br>オンライン業務中の変更は、既存データとの整合を崩しやすい。<br>たとえばNOT NULL追加時は、既存NULL行があると失敗する。<br>実務では「事前データ補正→制約追加」の2段階適用が定石である。<br>試験ではADD/<span class="sql-kw">MODIFY</span>/DROPの可否、列型変更時の制限、制約状態（ENABLE/DISABLE）が問われる。<br>変更SQLは単体ではなく、検証SQLとセットで管理する。</p>
 <pre><code><span class="sql-kw">ALTER TABLE</span> project_tasks
 <span class="sql-kw">ADD</span> (priority NUMBER(<span class="sql-num">2</span>) <span class="sql-kw">DEFAULT</span> <span class="sql-num">3</span> <span class="sql-kw">CONSTRAINT</span> ck_priority <span class="sql-kw">CHECK</span> (priority <span class="sql-kw">BETWEEN</span> <span class="sql-num">1</span> <span class="sql-kw">AND</span> <span class="sql-num">5</span>));</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="drop">
-<h2>11.5 DROP</h2>
-<p>DROPはオブジェクト定義を削除する命令で、影響は大きい。DROP TABLEは表データも失うため、誤実行時の復旧コストが高い。参照関係がある表を安易にDROPすると、依存オブジェクトやアプリが連鎖的に障害化する。試験ではDROPとDELETE/TRUNCATEの違い、依存制約の存在時の挙動が出題される。実務では本番直打ちを避け、対象確認、依存調査、バックアップ確認後に実行する。DDLは「実行できる」ではなく「実行してよい状態か」で判断する。</p>
+<h2><span class="sql-num">11.5</span> <span class="sql-kw">DROP</span></h2>
+<p>DROPはオブジェクト定義を削除する命令で、影響は大きい。<br><span class="sql-kw">DROP</span> TABLEは表データも失うため、誤実行時の復旧コストが高い。<br>参照関係がある表を安易にDROPすると、依存オブジェクトやアプリが連鎖的に障害化する。<br>試験ではDROPとDELETE/TRUNCATEの違い、依存制約の存在時の挙動が出題される。<br>実務では本番直打ちを避け、対象確認、依存調査、バックアップ確認後に実行する。<br>DDLは「実行できる」ではなく「実行してよい状態か」で判断する。</p>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="truncate">
-<h2>11.6 TRUNCATE</h2>
-<p>TRUNCATEは表構造を残したまま全行を高速削除するDDLである。DELETEと違いWHERE句は使えず、全件対象のみである。多量データの初期化には有効だが、暗黙COMMIT性と復旧困難性を理解せず使うと事故化する。試験では「TRUNCATEはDDL」「ROLLBACK不可が原則」「高速性」の3点が定番。実務では一時表や検証環境での利用に限定し、本番では実行条件と承認手順を明文化する。速度だけで選ぶと、可逆性を失って運用リスクが上がる。</p>
+<h2><span class="sql-num">11.6</span> <span class="sql-kw">TRUNCATE</span></h2>
+<p>TRUNCATEは表構造を残したまま全行を高速削除するDDLである。<br>DELETEと違いWHERE句は使えず、全件対象のみである。<br>多量データの初期化には有効だが、暗黙COMMIT性と復旧困難性を理解せず使うと事故化する。<br>試験では「TRUNCATEはDDL」「ROLLBACK不可が原則」「高速性」の3点が定番。<br>実務では一時表や検証環境での利用に限定し、本番では実行条件と承認手順を明文化する。<br>速度だけで選ぶと、可逆性を失って運用リスクが上がる。</p>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="dict">
-<h2>11.7 データディクショナリで確認</h2>
-<p>DDL適用後は必ず辞書ビューで実体を確認する。`USER_TABLES`で表、`USER_TAB_COLUMNS`で列定義、`USER_CONSTRAINTS`で制約状態を検証する。手動確認を省略すると、想定と実体のずれを本番障害まで見逃す。試験でも辞書ビュー名は頻出なので、目的別に覚えると得点が安定する。実務では「適用SQL」だけでなく「確認SQL」も変更手順書に含め、誰が実行しても同一品質になるように標準化する。</p>
+<h2><span class="sql-num">11.7</span> データディクショナリで確認</h2>
+<p>DDL適用後は必ず辞書ビューで実体を確認する。<br>`USER_TABLES`で表、`USER_TAB_COLUMNS`で列定義、`USER_CONSTRAINTS`で制約状態を検証する。<br>手動確認を省略すると、想定と実体のずれを本番障害まで見逃す。<br>試験でも辞書ビュー名は頻出なので、目的別に覚えると得点が安定する。<br>実務では「適用SQL」だけでなく「確認SQL」も変更手順書に含め、誰が実行しても同一品質になるように標準化する。</p>
 <pre><code><span class="sql-kw">SELECT</span> constraint_name, constraint_type, status
 <span class="sql-kw">FROM</span> user_constraints
 <span class="sql-kw">WHERE</span> table_name = <span class="sql-str">'PROJECT_TASKS'</span>
@@ -119,7 +129,7 @@ code{font-family:"Consolas","Monaco",monospace;font-size:.88rem}
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="errors">
-<h2>11.8 典型エラーと修正</h2>
+<h2><span class="sql-num">11.8</span> 典型エラーと修正</h2>
 <div class="warn"><b>失敗1:</b> 既存NULL行がある列にNOT NULL追加。<b>修正:</b> 先にNULL補正してから制約追加。</div>
 <div class="warn"><b>失敗2:</b> FK無しで運用し孤児データ増加。<b>修正:</b> 参照整合制約を設計段階で導入。</div>
 <div class="warn"><b>失敗3:</b> TRUNCATEをDELETEと同じ感覚で使用。<b>修正:</b> DDL扱いと復旧困難性を前提化。</div>
@@ -127,18 +137,18 @@ code{font-family:"Consolas","Monaco",monospace;font-size:.88rem}
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="patterns">
-<h2>11.9 実務運用パターン</h2>
-<p>推奨手順は「影響調査→DDLレビュー→メンテナンス窓確保→実行→辞書ビュー検証→アプリ疎通確認」である。特に制約追加は、既存データ品質に依存するため事前クレンジングが成功率を決める。DDLを運用するときは、可逆性の低い命令（DROP/TRUNCATE）を別管理し、承認レベルを上げるのが現実的である。試験対策としては分類暗記に加え、なぜその制約が必要かを説明できるようにしておくと、実務移行時に強い。</p>
+<h2><span class="sql-num">11.9</span> 実務運用パターン</h2>
+<p>推奨手順は「影響調査→DDLレビュー→メンテナンス窓確保→実行→辞書ビュー検証→アプリ疎通確認」である。<br>特に制約追加は、既存データ品質に依存するため事前クレンジングが成功率を決める。<br>DDLを運用するときは、可逆性の低い命令（<span class="sql-kw">DROP</span>/<span class="sql-kw">TRUNCATE</span>）を別管理し、承認レベルを上げるのが現実的である。<br>試験対策としては分類暗記に加え、なぜその制約が必要かを説明できるようにしておくと、実務移行時に強い。</p>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 
 <section class="card" id="exam">
 <h2>第11章 試験ひっかけパターン集</h2>
 <div class="warn"><b>ひっかけ1:</b> TRUNCATEはDMLか → いいえ、DDL。</div>
-<div class="warn"><b>ひっかけ2:</b> NOT NULLはUNIQUEと同義か → いいえ、役割が異なる。</div>
-<div class="warn"><b>ひっかけ3:</b> FKは性能低下だけで不要か → 不要ではない。整合性確保が目的。</div>
+<div class="warn"><b>ひっかけ2:</b> <span class="sql-kw">NOT</span> NULLはUNIQUEと同義か → いいえ、役割が異なる。</div>
+<div class="warn"><b>ひっかけ3:</b> FKは性能低下だけで不要か → 不要ではない。<br>整合性確保が目的。</div>
 <div class="warn"><b>ひっかけ4:</b> DDL後にROLLBACKで戻せるか → 通常は戻せない前提で設計。</div>
-<div class="warn"><b>ひっかけ5:</b> CHECK制約は文字列列に使えないか → 使える。条件式で定義可能。</div>
+<div class="warn"><b>ひっかけ5:</b> CHECK制約は文字列列に使えないか → 使える。<br>条件式で定義可能。</div>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="practice">
@@ -147,7 +157,7 @@ code{font-family:"Consolas","Monaco",monospace;font-size:.88rem}
 <tr><th>アンチパターン</th><th>起きる障害</th><th>予防策</th></tr>
 <tr><td>要件未確定でCREATE</td><td>ALTER連発・定義ぶれ</td><td>業務項目と制約を先に確定</td></tr>
 <tr><td>制約名を自動任せ</td><td>障害解析に時間</td><td>明示的命名規約を適用</td></tr>
-<tr><td>本番で直接DROP/TRUNCATE</td><td>復旧コスト増大</td><td>承認フローとバックアップ確認</td></tr>
+<tr><td>本番で直接DROP/<span class="sql-kw">TRUNCATE</span></td><td>復旧コスト増大</td><td>承認フローとバックアップ確認</td></tr>
 <tr><td>適用後の辞書確認省略</td><td>設計との差異見逃し</td><td>確認SQLを手順書へ組み込み</td></tr>
 </table></div>
 <div class="note"><strong>第11章完了基準:</strong> DDLと制約を安全手順で適用し、検証SQLまで説明できること。</div>

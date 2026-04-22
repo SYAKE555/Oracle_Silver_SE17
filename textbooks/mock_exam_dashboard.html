@@ -34,16 +34,26 @@
   .mini-link.strong { border-left: 4px solid #16a34a; }
   .mini-link span { font-weight: 800; color: #334155; }
 
-  pre .sql-kw { color: #fbbf24; font-weight: 700; }
-  pre .sql-fn { color: #60a5fa; font-weight: 600; }
+
+  /* sql-highlight-v3 */
+  /* default (light bg): warm tone */
+  .sql-kw  { color: #92400e; font-weight: 700; }
+  .sql-fn  { color: #1e40af; font-weight: 600; }
+  .sql-str { color: #065f46; }
+  .sql-num { color: #991b1b; }
+  .sql-cmt { color: #64748b; font-style: italic; }
+  /* dark bg override (pre / code) */
+  pre .sql-kw  { color: #fbbf24; }
+  pre .sql-fn  { color: #60a5fa; }
   pre .sql-str { color: #86efac; }
   pre .sql-num { color: #fca5a5; }
-  pre .sql-cmt { color: #94a3b8; font-style: italic; }
-  code .sql-kw { color: #b45309; font-weight: 700; }
-  code .sql-fn { color: #1d4ed8; font-weight: 600; }
-  code .sql-str { color: #047857; }
-  code .sql-num { color: #b91c1c; }
-  code .sql-cmt { color: #64748b; font-style: italic; }
+  pre .sql-cmt { color: #94a3b8; }
+  code .sql-kw  { color: #fbbf24; }
+  code .sql-fn  { color: #60a5fa; }
+  code .sql-str { color: #86efac; }
+  code .sql-num { color: #fca5a5; }
+  code .sql-cmt { color: #94a3b8; }
+  /* clause-order div uses its own kw/fn/desc/note classes — no override needed */
 </style>
 </head>
 <body>
@@ -56,25 +66,25 @@
   <div class="hero">
     <div style="font-size:.95rem;color:#64748b;font-weight:700">Overview</div>
     <div style="font-size:1.45rem;font-weight:900;margin-top:4px">結果分析、誤答補強、正答維持をここで統合</div>
-    <p style="margin-top:8px;color:#334155">模擬試験の詳細分析はこの先のレポートにまとめ、トップ導線は 1 箇所に集約しています。まずは誤答か正答かで入り口を分け、必要なら結果分析へ進みます。</p>
+    <p style="margin-top:8px;color:#334155">模擬試験の詳細分析はこの先のレポートにまとめ、トップ導線は <span class="sql-num">1</span> 箇所に集約しています。<br>まずは誤答か正答かで入り口を分け、必要なら結果分析へ進みます。</p>
     <div class="stats">
       
             <div class="stat-card">
               <div class="stat-label">第1回 模擬試験</div>
-              <div class="stat-value">48%</div>
-              <div class="stat-copy">設問正答率 49%</div>
+              <div class="stat-value"><span class="sql-num">48</span>%</div>
+              <div class="stat-copy">設問正答率 <span class="sql-num">49</span>%</div>
             </div>
             
             <div class="stat-card">
               <div class="stat-label">第2回 模擬試験</div>
-              <div class="stat-value">33%</div>
-              <div class="stat-copy">設問正答率 32%</div>
+              <div class="stat-value"><span class="sql-num">33</span>%</div>
+              <div class="stat-copy">設問正答率 <span class="sql-num">32</span>%</div>
             </div>
             
             <div class="stat-card">
               <div class="stat-label">第3回 模擬試験</div>
-              <div class="stat-value">34%</div>
-              <div class="stat-copy">設問正答率 35%</div>
+              <div class="stat-value"><span class="sql-num">34</span>%</div>
+              <div class="stat-copy">設問正答率 <span class="sql-num">35</span>%</div>
             </div>
             
     </div>
@@ -87,7 +97,7 @@
     </a>
     <a class="entry-card wrong" href="mock_exam_reinforce.html">
       <div class="entry-title">誤答の徹底解説</div>
-      <div class="entry-copy">落とした問題だけをカテゴリ別にまとめた補強導線。弱点回収を優先する。</div>
+      <div class="entry-copy">落とした問題だけをカテゴリ別にまとめた補強導線。<br>弱点回収を優先する。</div>
     </a>
     <a class="entry-card correct" href="mock_exam_correct.html">
       <div class="entry-title">正答の総点検</div>

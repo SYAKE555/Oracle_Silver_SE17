@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Chapter 8 | SQL参考資料</title>
+<title>Chapter <span class="sql-num">8</span> | SQL参考資料</title>
 <style>
 :root{--bg:#f4f8fc;--card:#ffffff;--line:#d8e4f5;--pri:#1d4f91;--sec:#2f6fbe;--txt:#1f2d3d;--muted:#4c6077;--code:#f2f7fc;--kw:#1d4ed8;--obj:#0f172a;--str:#b45309}
 *{box-sizing:border-box}
@@ -36,16 +36,26 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 .top{text-align:right;margin-top:12px}
 @media(max-width:1120px){.layout{grid-template-columns:1fr}.sidebar{position:static;max-height:none}}
 
-  pre .sql-kw { color: #fbbf24; font-weight: 700; }
-  pre .sql-fn { color: #60a5fa; font-weight: 600; }
+
+  /* sql-highlight-v3 */
+  /* default (light bg): warm tone */
+  .sql-kw  { color: #92400e; font-weight: 700; }
+  .sql-fn  { color: #1e40af; font-weight: 600; }
+  .sql-str { color: #065f46; }
+  .sql-num { color: #991b1b; }
+  .sql-cmt { color: #64748b; font-style: italic; }
+  /* dark bg override (pre / code) */
+  pre .sql-kw  { color: #fbbf24; }
+  pre .sql-fn  { color: #60a5fa; }
   pre .sql-str { color: #86efac; }
   pre .sql-num { color: #fca5a5; }
-  pre .sql-cmt { color: #94a3b8; font-style: italic; }
-  code .sql-kw { color: #b45309; font-weight: 700; }
-  code .sql-fn { color: #1d4ed8; font-weight: 600; }
-  code .sql-str { color: #047857; }
-  code .sql-num { color: #b91c1c; }
-  code .sql-cmt { color: #64748b; font-style: italic; }
+  pre .sql-cmt { color: #94a3b8; }
+  code .sql-kw  { color: #fbbf24; }
+  code .sql-fn  { color: #60a5fa; }
+  code .sql-str { color: #86efac; }
+  code .sql-num { color: #fca5a5; }
+  code .sql-cmt { color: #94a3b8; }
+  /* clause-order div uses its own kw/fn/desc/note classes — no override needed */
 </style>
 </head>
 <body>
@@ -55,16 +65,16 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 <ul>
 <li><a href="#scope">スコープ宣言</a></li>
 <li><a href="#intro">第8章の学習目的</a></li>
-<li><a href="#subquery-basic">8.1 副問合せの定義と分類</a></li>
-<li><a href="#single-row">8.2 単一行副問合せ</a></li>
-<li><a href="#multi-row">8.3 複数行副問合せ（IN/ANY/ALL）</a></li>
-<li><a href="#exists">8.4 EXISTS / NOT EXISTS</a></li>
-<li><a href="#correlated">8.5 相関副問合せ</a></li>
-<li><a href="#position">8.6 副問合せの配置（WHERE/FROM/SELECT）</a></li>
-<li><a href="#null-trap">8.7 NOT IN + NULL の罠</a></li>
-<li><a href="#errors">8.8 典型エラー（ORA-01427等）</a></li>
-<li><a href="#rewrite">8.9 JOINへの書換え判断</a></li>
-<li><a href="#patterns">8.10 実務設計パターン</a></li>
+<li><a href="#subquery-basic"><span class="sql-num">8.1</span> 副問合せの定義と分類</a></li>
+<li><a href="#single-row"><span class="sql-num">8.2</span> 単一行副問合せ</a></li>
+<li><a href="#multi-row"><span class="sql-num">8.3</span> 複数行副問合せ（<span class="sql-kw">IN</span>/<span class="sql-kw">ANY</span>/<span class="sql-kw">ALL</span>）</a></li>
+<li><a href="#exists"><span class="sql-num">8.4</span> <span class="sql-kw">EXISTS</span> / <span class="sql-kw">NOT EXISTS</span></a></li>
+<li><a href="#correlated"><span class="sql-num">8.5</span> 相関副問合せ</a></li>
+<li><a href="#position"><span class="sql-num">8.6</span> 副問合せの配置（<span class="sql-kw">WHERE</span>/<span class="sql-kw">FROM</span>/<span class="sql-kw">SELECT</span>）</a></li>
+<li><a href="#null-trap"><span class="sql-num">8.7</span> <span class="sql-kw">NOT IN</span> + <span class="sql-kw">NULL</span> の罠</a></li>
+<li><a href="#errors"><span class="sql-num">8.8</span> 典型エラー（ORA-01427等）</a></li>
+<li><a href="#rewrite"><span class="sql-num">8.9</span> JOINへの書換え判断</a></li>
+<li><a href="#patterns"><span class="sql-num">8.10</span> 実務設計パターン</a></li>
 <li><a href="#exam">試験ひっかけパターン集</a></li>
 <li><a href="#practice">実務アンチパターン集</a></li>
 </ul>
@@ -74,20 +84,20 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 <h1>Oracle DBA Silver SQL（第8章のみ）</h1>
 <p>本ファイルは第8章「副問合せ（単一行/複数行/相関）」に集中し、演算子選択・件数整合・NULL罠回避を高密度で解説する。</p>
 </section>
-<div style="background:#fff3cd;border:1px solid #ffc107;border-left:5px solid #fd7e14;border-radius:8px;padding:12px 16px;margin:14px 0;font-size:0.88rem;color:#856404;"><strong>【参考資料】</strong> このファイルは Oracle Master Silver SQL (1Z0-071) の試験範囲外の内容を含みます。OracleアーキテクチャなどDBAに関する内容は実務参考としてご利用ください。試験対策には <a href="index.html" style="color:#856404;">トップページ D1〜D8</a> を使用してください。</div>
+<div style="background:#fff3cd;border:1px solid #ffc107;border-left:5px solid #fd7e14;border-radius:8px;padding:12px 16px;margin:14px 0;font-size:0.88rem;color:#856404;"><strong>【参考資料】</strong> このファイルは Oracle Master Silver SQL (1Z0-<span class="sql-num">071</span>) の試験範囲外の内容を含みます。<br>OracleアーキテクチャなどDBAに関する内容は実務参考としてご利用ください。<br>試験対策には <a href="index.html" style="color:#856404;">トップページ D1〜D8</a> を使用してください。</div>
 <section class="card" id="intro">
 <h2>第8章の学習目的</h2>
-<p>第8章は、1本のSELECTで表現しにくい条件を段階評価で記述する章である。例えば「部署平均以上の社員」「未注文明細の顧客」「存在判定」などは副問合せが有効である。試験では単一行/複数行の演算子選択、相関副問合せの評価順、NOT INとNULLの落とし穴が頻出となる。実務では副問合せの可読性と性能のバランス判断が重要で、場面によってJOINへ書換えるべきこともある。第8章の到達点は、副問合せが返す行数を事前に予測し、適切な比較演算子を選べる状態にすることである。</p>
-<div class="gloss"><strong>重要:</strong> 副問合せは「ネスト」ではなく「段階評価」。返る行数を読めないSQLは危険。</div>
+<p>第8章は、1本のSELECTで表現しにくい条件を段階評価で記述する章である。<br>例えば「部署平均以上の社員」「未注文明細の顧客」「存在判定」などは副問合せが有効である。<br>試験では単一行/複数行の演算子選択、相関副問合せの評価順、<span class="sql-kw">NOT</span> INとNULLの落とし穴が頻出となる。<br>実務では副問合せの可読性と性能のバランス判断が重要で、場面によってJOINへ書換えるべきこともある。<br>第8章の到達点は、副問合せが返す行数を事前に予測し、適切な比較演算子を選べる状態にすることである。</p>
+<div class="gloss"><strong>重要:</strong> 副問合せは「ネスト」ではなく「段階評価」。<br>返る行数を読めないSQLは危険。</div>
 </section>
 <section class="card" id="subquery-basic">
-<h2>8.1 副問合せの定義と分類</h2>
-<p>副問合せはSQL文の内部に入れ子で記述されたSELECTである。戻り行数により単一行副問合せと複数行副問合せに分かれ、外側SQLとの依存有無で非相関と相関に分かれる。定義上の要点は、外側SQLが期待する値の形（1値か複数値か）と副問合せの実際の返却形を一致させることだ。これが一致しないと実行時エラーまたは論理誤りになる。副問合せは万能ではないが、段階的条件表現を明確にできる強力な道具である。</p>
+<h2><span class="sql-num">8.1</span> 副問合せの定義と分類</h2>
+<p>副問合せはSQL文の内部に入れ子で記述されたSELECTである。<br>戻り行数により単一行副問合せと複数行副問合せに分かれ、外側SQLとの依存有無で非相関と相関に分かれる。<br>定義上の要点は、外側SQLが期待する値の形（1値か複数値か）と副問合せの実際の返却形を一致させることだ。<br>これが一致しないと実行時エラーまたは論理誤りになる。<br>副問合せは万能ではないが、段階的条件表現を明確にできる強力な道具である。</p>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="single-row">
-<h2>8.2 単一行副問合せ</h2>
-<p>単一行副問合せは1行1値を返し、`=`、`&gt;`、`&lt;`など単一値比較演算子と組み合わせる。典型例は「全体平均以上」「最大値と一致」などである。試験では単一行比較に複数行が返る誤り（ORA-01427）が頻出。実務では副問合せの結果が本当に単一になるかを先に単体実行して確認するのが安全である。単一前提が揺らぐならINやANY/ALLへ切替えるべきである。</p>
+<h2><span class="sql-num">8.2</span> 単一行副問合せ</h2>
+<p>単一行副問合せは1行1値を返し、`=`、`&gt;`、`&lt;`など単一値比較演算子と組み合わせる。<br>典型例は「全体平均以上」「最大値と一致」などである。<br>試験では単一行比較に複数行が返る誤り（ORA-<span class="sql-num">01427</span>）が頻出。<br>実務では副問合せの結果が本当に単一になるかを先に単体実行して確認するのが安全である。<br>単一前提が揺らぐならINやANY/ALLへ切替えるべきである。</p>
 <pre><code><span class="kw"><span class="sql-kw">SELECT</span></span> <span class="obj">employee_id</span>, <span class="obj">salary</span>
 <span class="kw"><span class="sql-kw">FROM</span></span> <span class="obj">employees</span>
 <span class="kw"><span class="sql-kw">WHERE</span></span> <span class="obj">salary</span> &gt; (
@@ -97,18 +107,18 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="multi-row">
-<h2>8.3 複数行副問合せ（IN/ANY/ALL）</h2>
-<p>複数行副問合せには`IN`、`ANY`、`ALL`を使う。INは集合内いずれか一致、ANYは比較演算と組み合わせて「いずれかに対して成立」、ALLは「すべてに対して成立」を意味する。試験では演算子意味の取り違えが定番。実務では副問合せ結果の重複やNULL混在で挙動が変わるため、事前検証が必須である。単一行比較演算子と混用しないことが基本ルールとなる。</p>
+<h2><span class="sql-num">8.3</span> 複数行副問合せ（<span class="sql-kw">IN</span>/<span class="sql-kw">ANY</span>/<span class="sql-kw">ALL</span>）</h2>
+<p>複数行副問合せには`<span class="sql-kw">IN</span>`、`<span class="sql-kw">ANY</span>`、`<span class="sql-kw">ALL</span>`を使う。<br>INは集合内いずれか一致、ANYは比較演算と組み合わせて「いずれかに対して成立」、ALLは「すべてに対して成立」を意味する。<br>試験では演算子意味の取り違えが定番。<br>実務では副問合せ結果の重複やNULL混在で挙動が変わるため、事前検証が必須である。<br>単一行比較演算子と混用しないことが基本ルールとなる。</p>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="exists">
-<h2>8.4 EXISTS / NOT EXISTS</h2>
-<p>EXISTSは副問合せに1行でも存在すればTRUEとなる存在判定で、列値より「存在そのもの」を評価する。NOT EXISTSはその否定で、欠損検出に強い。NOT IN + NULL問題を避ける代替として実務で多用される。試験でもEXISTSの意味は頻出で、返却列内容より存在行の有無だけを見ている点が急所である。実務では参照整合の検証や未処理データ抽出に有効である。</p>
+<h2><span class="sql-num">8.4</span> <span class="sql-kw">EXISTS</span> / <span class="sql-kw">NOT EXISTS</span></h2>
+<p>EXISTSは副問合せに1行でも存在すればTRUEとなる存在判定で、列値より「存在そのもの」を評価する。<br><span class="sql-kw">NOT</span> EXISTSはその否定で、欠損検出に強い。<br><span class="sql-kw">NOT IN</span> + NULL問題を避ける代替として実務で多用される。<br>試験でもEXISTSの意味は頻出で、返却列内容より存在行の有無だけを見ている点が急所である。<br>実務では参照整合の検証や未処理データ抽出に有効である。</p>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="correlated">
-<h2>8.5 相関副問合せ</h2>
-<p>相関副問合せは外側SQLの各行値を内側SQLで参照し、行ごとに再評価される。例として「同部署平均以上の社員抽出」がある。非相関より表現力は高いが、行ごと評価のため性能に注意が必要である。試験では評価順を問う設問が多く、内側が外側列を参照する構造を見抜けるかが鍵になる。実務では必要に応じてJOIN+集約へ書換え、実行計画を比較することが推奨される。</p>
+<h2><span class="sql-num">8.5</span> 相関副問合せ</h2>
+<p>相関副問合せは外側SQLの各行値を内側SQLで参照し、行ごとに再評価される。<br>例として「同部署平均以上の社員抽出」がある。<br>非相関より表現力は高いが、行ごと評価のため性能に注意が必要である。<br>試験では評価順を問う設問が多く、内側が外側列を参照する構造を見抜けるかが鍵になる。<br>実務では必要に応じてJOIN+集約へ書換え、実行計画を比較することが推奨される。</p>
 <pre><code><span class="kw"><span class="sql-kw">SELECT</span></span> <span class="obj">e.employee_id</span>
 <span class="kw"><span class="sql-kw">FROM</span></span> <span class="obj">employees</span> <span class="obj">e</span>
 <span class="kw"><span class="sql-kw">WHERE</span></span> <span class="obj">e.salary</span> &gt; (
@@ -119,31 +129,31 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="position">
-<h2>8.6 副問合せの配置（WHERE/FROM/SELECT）</h2>
-<p>副問合せはWHERE句以外にもFROM句（インラインビュー）やSELECT句（スカラー副問合せ）で使える。配置場所により責務が変わる。WHERE配置は抽出条件、FROM配置は中間集合構築、SELECT配置は列値導出に向く。試験では配置と挙動の対応が問われる。実務では可読性と性能観点から、最も意図が伝わる配置を選ぶべきである。</p>
+<h2><span class="sql-num">8.6</span> 副問合せの配置（<span class="sql-kw">WHERE</span>/<span class="sql-kw">FROM</span>/<span class="sql-kw">SELECT</span>）</h2>
+<p>副問合せはWHERE句以外にもFROM句（インラインビュー）やSELECT句（スカラー副問合せ）で使える。<br>配置場所により責務が変わる。<br>WHERE配置は抽出条件、FROM配置は中間集合構築、SELECT配置は列値導出に向く。<br>試験では配置と挙動の対応が問われる。<br>実務では可読性と性能観点から、最も意図が伝わる配置を選ぶべきである。</p>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="null-trap">
-<h2>8.7 NOT IN + NULL の罠</h2>
-<p>NOT INの副問合せ結果にNULLが含まれると、条件全体がUNKNOWN化し、期待外れの0件になりやすい。これは試験と実務で最重要の罠の一つである。回避策は副問合せでNULL除去を明示するか、NOT EXISTSへ置換すること。NULLを含む可能性がある集合には、原則としてNOT INを直接使わない運用が安全である。</p>
-<div class="warn"><b>要注意:</b> NOT INを使う前に副問合せ結果のNULL有無を必ず確認する。</div>
+<h2><span class="sql-num">8.7</span> <span class="sql-kw">NOT IN</span> + <span class="sql-kw">NULL</span> の罠</h2>
+<p><span class="sql-kw">NOT</span> INの副問合せ結果にNULLが含まれると、条件全体がUNKNOWN化し、期待外れの0件になりやすい。<br>これは試験と実務で最重要の罠の一つである。<br>回避策は副問合せでNULL除去を明示するか、<span class="sql-kw">NOT</span> EXISTSへ置換すること。<br>NULLを含む可能性がある集合には、原則としてNOT INを直接使わない運用が安全である。</p>
+<div class="warn"><b>要注意:</b> <span class="sql-kw">NOT</span> INを使う前に副問合せ結果のNULL有無を必ず確認する。</div>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="errors">
-<h2>8.8 典型エラー（ORA-01427等）</h2>
-<div class="warn"><b>ORA-01427:</b> 単一行比較に複数行副問合せ。修正はIN/ANY/ALLへの変更か副問合せ単一化。</div>
-<div class="warn"><b>論理エラー:</b> NOT IN + NULLで0件化。修正はNULL除去またはNOT EXISTS化。</div>
-<div class="warn"><b>性能劣化:</b> 相関副問合せを無検証で多用。修正はJOIN書換え比較。</div>
+<h2><span class="sql-num">8.8</span> 典型エラー（ORA-01427等）</h2>
+<div class="warn"><b>ORA-<span class="sql-num">01427</span>:</b> 単一行比較に複数行副問合せ。<br>修正はIN/<span class="sql-kw">ANY</span>/ALLへの変更か副問合せ単一化。</div>
+<div class="warn"><b>論理エラー:</b> <span class="sql-kw">NOT IN</span> + NULLで0件化。<br>修正はNULL除去またはNOT EXISTS化。</div>
+<div class="warn"><b>性能劣化:</b> 相関副問合せを無検証で多用。<br>修正はJOIN書換え比較。</div>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="rewrite">
-<h2>8.9 JOINへの書換え判断</h2>
-<p>副問合せは可読性が高い一方、相関評価でコストが増える場合がある。大量データではJOIN+GROUP BYへ書換えたほうが計画が安定することが多い。逆に存在判定だけならEXISTSの方が意図が明確な場合もある。重要なのは「どちらが速いか」ではなく、要件に対し説明可能で再現性が高い構文を選ぶことだ。実務では実行計画と件数結果を比較して判断するのが定石である。</p>
+<h2><span class="sql-num">8.9</span> JOINへの書換え判断</h2>
+<p>副問合せは可読性が高い一方、相関評価でコストが増える場合がある。<br>大量データではJOIN+GROUP BYへ書換えたほうが計画が安定することが多い。<br>逆に存在判定だけならEXISTSの方が意図が明確な場合もある。<br>重要なのは「どちらが速いか」ではなく、要件に対し説明可能で再現性が高い構文を選ぶことだ。<br>実務では実行計画と件数結果を比較して判断するのが定石である。</p>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="patterns">
-<h2>8.10 実務設計パターン</h2>
-<p>実務では、副問合せ単体を先に実行して返却行数を確認し、その後に外側SQLへ組み込む手順が有効である。さらに、副問合せ結果のNULL有無確認、演算子妥当性確認、実行計画確認をセットで実施すると事故を減らせる。副問合せは「書ける」より「検証できる」ことが価値であり、検証手順を省略すると障害時の切り分けが困難になる。</p>
+<h2><span class="sql-num">8.10</span> 実務設計パターン</h2>
+<p>実務では、副問合せ単体を先に実行して返却行数を確認し、その後に外側SQLへ組み込む手順が有効である。<br>さらに、副問合せ結果のNULL有無確認、演算子妥当性確認、実行計画確認をセットで実施すると事故を減らせる。<br>副問合せは「書ける」より「検証できる」ことが価値であり、検証手順を省略すると障害時の切り分けが困難になる。</p>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 
@@ -152,7 +162,7 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 <div class="warn"><b>ひっかけ1:</b> 単一行副問合せに複数行が返っても比較できるか → できない。</div>
 <div class="warn"><b>ひっかけ2:</b> INとANYは常に同義か → 演算子次第で差が出る。</div>
 <div class="warn"><b>ひっかけ3:</b> EXISTSは列値を比較するか → 存在有無のみ評価。</div>
-<div class="warn"><b>ひっかけ4:</b> NOT INはNULL混在でも安全か → 危険。</div>
+<div class="warn"><b>ひっかけ4:</b> <span class="sql-kw">NOT</span> INはNULL混在でも安全か → 危険。</div>
 <div class="warn"><b>ひっかけ5:</b> 相関副問合せは1回だけ評価か → 外側行ごと評価。</div>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
@@ -161,9 +171,9 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 <div class="table-wrap"><table>
 <tr><th>アンチパターン</th><th>起きる障害</th><th>予防策</th></tr>
 <tr><td>副問合せ行数未検証</td><td>ORA-01427や誤判定</td><td>副問合せ単体で先行検証</td></tr>
-<tr><td>NOT IN + NULL混在</td><td>0件化</td><td>NULL除去/NOT EXISTS化</td></tr>
+<tr><td><span class="sql-kw">NOT IN</span> + NULL混在</td><td>0件化</td><td>NULL除去/<span class="sql-kw">NOT</span> EXISTS化</td></tr>
 <tr><td>相関副問合せの過用</td><td>性能劣化</td><td>JOIN書換えを比較検討</td></tr>
-<tr><td>演算子誤選択（= と IN）</td><td>件数不一致</td><td>返却行数に合わせて選択</td></tr>
+<tr><td>演算子誤選択（= と <span class="sql-kw">IN</span>）</td><td>件数不一致</td><td>返却行数に合わせて選択</td></tr>
 </table></div>
 <div class="note"><strong>第8章完了基準:</strong> 副問合せの返却行数を予測し、適切な演算子とNULL対策を説明できること。</div>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>

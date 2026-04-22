@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Chapter 10 | SQL参考資料</title>
+<title>Chapter <span class="sql-num">10</span> | SQL参考資料</title>
 <style>
 :root{--bg:#f4f8fc;--card:#ffffff;--line:#d8e4f5;--pri:#1d4f91;--sec:#2f6fbe;--txt:#1f2d3d;--muted:#4c6077;--code:#f2f7fc;--kw:#1d4ed8;--obj:#0f172a;--str:#b45309}
 *{box-sizing:border-box}
@@ -24,16 +24,26 @@ pre{background:var(--code);border:1px solid #dce8f8;border-radius:10px;padding:1
 code{font-family:"Consolas","Monaco",monospace;font-size:.88rem}.top{text-align:right;margin-top:12px}
 @media(max-width:1120px){.layout{grid-template-columns:1fr}.sidebar{position:static;max-height:none}}
 
-  pre .sql-kw { color: #fbbf24; font-weight: 700; }
-  pre .sql-fn { color: #60a5fa; font-weight: 600; }
+
+  /* sql-highlight-v3 */
+  /* default (light bg): warm tone */
+  .sql-kw  { color: #92400e; font-weight: 700; }
+  .sql-fn  { color: #1e40af; font-weight: 600; }
+  .sql-str { color: #065f46; }
+  .sql-num { color: #991b1b; }
+  .sql-cmt { color: #64748b; font-style: italic; }
+  /* dark bg override (pre / code) */
+  pre .sql-kw  { color: #fbbf24; }
+  pre .sql-fn  { color: #60a5fa; }
   pre .sql-str { color: #86efac; }
   pre .sql-num { color: #fca5a5; }
-  pre .sql-cmt { color: #94a3b8; font-style: italic; }
-  code .sql-kw { color: #b45309; font-weight: 700; }
-  code .sql-fn { color: #1d4ed8; font-weight: 600; }
-  code .sql-str { color: #047857; }
-  code .sql-num { color: #b91c1c; }
-  code .sql-cmt { color: #64748b; font-style: italic; }
+  pre .sql-cmt { color: #94a3b8; }
+  code .sql-kw  { color: #fbbf24; }
+  code .sql-fn  { color: #60a5fa; }
+  code .sql-str { color: #86efac; }
+  code .sql-num { color: #fca5a5; }
+  code .sql-cmt { color: #94a3b8; }
+  /* clause-order div uses its own kw/fn/desc/note classes — no override needed */
 </style>
 </head>
 <body>
@@ -43,16 +53,16 @@ code{font-family:"Consolas","Monaco",monospace;font-size:.88rem}.top{text-align:
 <ul>
 <li><a href="#scope">スコープ宣言</a></li>
 <li><a href="#intro">第10章の学習目的</a></li>
-<li><a href="#dml-basic">10.1 DMLの定義</a></li>
-<li><a href="#insert">10.2 INSERT</a></li>
-<li><a href="#update">10.3 UPDATE</a></li>
-<li><a href="#delete">10.4 DELETE</a></li>
-<li><a href="#merge">10.5 MERGE</a></li>
-<li><a href="#tx">10.6 トランザクション（COMMIT/ROLLBACK）</a></li>
-<li><a href="#savepoint">10.7 SAVEPOINT</a></li>
-<li><a href="#implicit">10.8 暗黙COMMITとDDL混在リスク</a></li>
-<li><a href="#errors">10.9 典型エラーと修正</a></li>
-<li><a href="#patterns">10.10 実務運用パターン</a></li>
+<li><a href="#dml-basic"><span class="sql-num">10.1</span> DMLの定義</a></li>
+<li><a href="#insert"><span class="sql-num">10.2</span> <span class="sql-kw">INSERT</span></a></li>
+<li><a href="#update"><span class="sql-num">10.3</span> <span class="sql-kw">UPDATE</span></a></li>
+<li><a href="#delete"><span class="sql-num">10.4</span> <span class="sql-kw">DELETE</span></a></li>
+<li><a href="#merge"><span class="sql-num">10.5</span> <span class="sql-kw">MERGE</span></a></li>
+<li><a href="#tx"><span class="sql-num">10.6</span> トランザクション（<span class="sql-kw">COMMIT</span>/<span class="sql-kw">ROLLBACK</span>）</a></li>
+<li><a href="#savepoint"><span class="sql-num">10.7</span> <span class="sql-kw">SAVEPOINT</span></a></li>
+<li><a href="#implicit"><span class="sql-num">10.8</span> 暗黙COMMITとDDL混在リスク</a></li>
+<li><a href="#errors"><span class="sql-num">10.9</span> 典型エラーと修正</a></li>
+<li><a href="#patterns"><span class="sql-num">10.10</span> 実務運用パターン</a></li>
 <li><a href="#exam">試験ひっかけパターン集</a></li>
 <li><a href="#practice">実務アンチパターン集</a></li>
 </ul>
@@ -62,42 +72,42 @@ code{font-family:"Consolas","Monaco",monospace;font-size:.88rem}.top{text-align:
 <h1>Oracle DBA Silver SQL（第10章のみ）</h1>
 <p>本ファイルは第10章「DMLとトランザクション」に集中し、更新安全性と復旧可能性を高密度で解説する。</p>
 </section>
-<div style="background:#fff3cd;border:1px solid #ffc107;border-left:5px solid #fd7e14;border-radius:8px;padding:12px 16px;margin:14px 0;font-size:0.88rem;color:#856404;"><strong>【参考資料】</strong> このファイルは Oracle Master Silver SQL (1Z0-071) の試験範囲外の内容を含みます。OracleアーキテクチャなどDBAに関する内容は実務参考としてご利用ください。試験対策には <a href="index.html" style="color:#856404;">トップページ D1〜D8</a> を使用してください。</div>
+<div style="background:#fff3cd;border:1px solid #ffc107;border-left:5px solid #fd7e14;border-radius:8px;padding:12px 16px;margin:14px 0;font-size:0.88rem;color:#856404;"><strong>【参考資料】</strong> このファイルは Oracle Master Silver SQL (1Z0-<span class="sql-num">071</span>) の試験範囲外の内容を含みます。<br>OracleアーキテクチャなどDBAに関する内容は実務参考としてご利用ください。<br>試験対策には <a href="index.html" style="color:#856404;">トップページ D1〜D8</a> を使用してください。</div>
 <section class="card" id="intro">
 <h2>第10章の学習目的</h2>
-<p>第10章は参照中心のSQLから、実データを書き換える領域へ進む章である。INSERT/UPDATE/DELETE/MERGEはいずれも業務状態を直接変更するため、1つのWHERE漏れが重大事故になる。試験ではDML文法に加え、COMMIT/ROLLBACK/SAVEPOINT、DDLの暗黙COMMITとの関係が問われる。実務では「変更前件数確認」「差分確認」「復旧可能性の確保」が必須であり、SQLの正しさだけでなく手順の正しさが品質を決める。第10章の到達点は、変更系SQLを安全に実行する標準手順を説明し、再現可能に運用できる状態へ到達することである。</p>
-<div class="note"><strong>重要:</strong> DMLは書けるだけでは不十分。実行順と復旧手順をセットで設計する。</div>
+<p>第10章は参照中心のSQLから、実データを書き換える領域へ進む章である。<br><span class="sql-kw">INSERT</span>/<span class="sql-kw">UPDATE</span>/<span class="sql-kw">DELETE</span>/MERGEはいずれも業務状態を直接変更するため、1つのWHERE漏れが重大事故になる。<br>試験ではDML文法に加え、<span class="sql-kw">COMMIT</span>/<span class="sql-kw">ROLLBACK</span>/<span class="sql-kw">SAVEPOINT</span>、DDLの暗黙COMMITとの関係が問われる。<br>実務では「変更前件数確認」「差分確認」「復旧可能性の確保」が必須であり、SQLの正しさだけでなく手順の正しさが品質を決める。<br>第10章の到達点は、変更系SQLを安全に実行する標準手順を説明し、再現可能に運用できる状態へ到達することである。</p>
+<div class="note"><strong>重要:</strong> DMLは書けるだけでは不十分。<br>実行順と復旧手順をセットで設計する。</div>
 </section>
 <section class="card" id="dml-basic">
-<h2>10.1 DMLの定義</h2>
-<p>DMLは表データの追加・更新・削除を行う命令群である。変更はトランザクション単位で管理され、COMMITで確定、ROLLBACKで取消される。定義上の急所は「SQLが成功した」と「業務上安全に確定した」は別概念という点である。実務ではDMLの前後で検証SQLを実行し、対象件数と影響範囲を可視化する。</p>
+<h2><span class="sql-num">10.1</span> DMLの定義</h2>
+<p>DMLは表データの追加・更新・削除を行う命令群である。<br>変更はトランザクション単位で管理され、COMMITで確定、ROLLBACKで取消される。<br>定義上の急所は「SQLが成功した」と「業務上安全に確定した」は別概念という点である。<br>実務ではDMLの前後で検証SQLを実行し、対象件数と影響範囲を可視化する。</p>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="insert">
-<h2>10.2 INSERT</h2>
-<p>INSERTは新規行を追加する。列順省略時は表定義順依存になるため、実務では列名明示が原則である。NOT NULLやFK制約違反で失敗するため、入力検証と参照先確認が必要。試験ではVALUES句、INSERT SELECT、制約違反時挙動が頻出である。</p>
+<h2><span class="sql-num">10.2</span> <span class="sql-kw">INSERT</span></h2>
+<p>INSERTは新規行を追加する。<br>列順省略時は表定義順依存になるため、実務では列名明示が原則である。<br><span class="sql-kw">NOT</span> NULLやFK制約違反で失敗するため、入力検証と参照先確認が必要。<br>試験ではVALUES句、<span class="sql-kw">INSERT</span> <span class="sql-kw">SELECT</span>、制約違反時挙動が頻出である。</p>
 <pre><code><span class="sql-kw">INSERT INTO</span> departments(department_id, department_name)
 <span class="sql-kw">VALUES</span>(<span class="sql-num">290</span>, <span class="sql-str">'Ops'</span>);</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="update">
-<h2>10.3 UPDATE</h2>
-<p>UPDATEは既存行を変更する。最大リスクはWHERE漏れ全件更新であり、実務では同条件SELECTで件数確認を必須化する。複数列更新や副問合せ更新では型整合・NULL補完も重要。試験では構文よりWHERE有無の影響理解が得点差になる。</p>
+<h2><span class="sql-num">10.3</span> <span class="sql-kw">UPDATE</span></h2>
+<p>UPDATEは既存行を変更する。<br>最大リスクはWHERE漏れ全件更新であり、実務では同条件SELECTで件数確認を必須化する。<br>複数列更新や副問合せ更新では型整合・NULL補完も重要。<br>試験では構文よりWHERE有無の影響理解が得点差になる。</p>
 <pre><code><span class="sql-kw">UPDATE</span> employees
 <span class="sql-kw">SET</span> salary = salary * <span class="sql-num">1.03</span>
 <span class="sql-kw">WHERE</span> department_id = <span class="sql-num">50</span>;</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="delete">
-<h2>10.4 DELETE</h2>
-<p>DELETEは行削除を行う。参照整合制約により削除できない場合があり、子表存在を先に確認する必要がある。WHERE漏れは全件削除事故に直結する。試験ではDELETEとTRUNCATEの違い（DML/DDL、ROLLBACK可否）が重要論点になる。</p>
+<h2><span class="sql-num">10.4</span> <span class="sql-kw">DELETE</span></h2>
+<p>DELETEは行削除を行う。<br>参照整合制約により削除できない場合があり、子表存在を先に確認する必要がある。<br>WHERE漏れは全件削除事故に直結する。<br>試験ではDELETEとTRUNCATEの違い（DML/DDL、ROLLBACK可否）が重要論点になる。</p>
 <pre><code><span class="sql-kw">DELETE FROM</span> departments
 <span class="sql-kw">WHERE</span> department_id = <span class="sql-num">290</span>;</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="merge">
-<h2>10.5 MERGE</h2>
-<p>MERGEは一致時UPDATE・不一致時INSERTを1文で行う。ETLやマスタ同期で有効だが、ON条件の誤りで意図外更新が発生しやすい。実務ではONキーの一意性確認が最重要で、重複キーを許したまま使うと品質が崩れる。試験ではWHEN MATCHED/NOT MATCHEDの意味理解が問われる。</p>
+<h2><span class="sql-num">10.5</span> <span class="sql-kw">MERGE</span></h2>
+<p>MERGEは一致時UPDATE・不一致時INSERTを1文で行う。<br>ETLやマスタ同期で有効だが、ON条件の誤りで意図外更新が発生しやすい。<br>実務ではONキーの一意性確認が最重要で、重複キーを許したまま使うと品質が崩れる。<br>試験ではWHEN <span class="sql-kw">MATCHED</span>/<span class="sql-kw">NOT</span> MATCHEDの意味理解が問われる。</p>
 <pre><code><span class="sql-kw">MERGE INTO</span> sales_target t
 <span class="sql-kw">USING</span> (<span class="sql-kw">SELECT</span> <span class="sql-num">10</span> dept_id, <span class="sql-num">1200000</span> amt <span class="sql-kw">FROM</span> dual) s
 <span class="sql-kw">ON</span> (t.dept_id = s.dept_id)
@@ -106,31 +116,31 @@ code{font-family:"Consolas","Monaco",monospace;font-size:.88rem}.top{text-align:
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="tx">
-<h2>10.6 トランザクション（COMMIT/ROLLBACK）</h2>
-<p>トランザクションは一連の変更をひとまとまりとして扱う単位である。COMMITで確定し、ROLLBACKで未確定変更を取消す。重要なのは確定タイミングを設計することで、早すぎるCOMMITは復旧不能化、遅すぎるCOMMITはロック保持時間増大を招く。試験では基本動作、実務では境界設計が急所となる。</p>
+<h2><span class="sql-num">10.6</span> トランザクション（<span class="sql-kw">COMMIT</span>/<span class="sql-kw">ROLLBACK</span>）</h2>
+<p>トランザクションは一連の変更をひとまとまりとして扱う単位である。<br>COMMITで確定し、ROLLBACKで未確定変更を取消す。<br>重要なのは確定タイミングを設計することで、早すぎるCOMMITは復旧不能化、遅すぎるCOMMITはロック保持時間増大を招く。<br>試験では基本動作、実務では境界設計が急所となる。</p>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="savepoint">
-<h2>10.7 SAVEPOINT</h2>
-<p>SAVEPOINTはトランザクション内の中間復帰点を作る。部分的な失敗時に全取消ではなく段階巻戻しが可能になる。実務では大きな更新手順を安全化するため、事前件数確認→SAVEPOINT→更新→検証の流れを標準化すると有効。試験でもSAVEPOINTの役割は頻出である。</p>
+<h2><span class="sql-num">10.7</span> <span class="sql-kw">SAVEPOINT</span></h2>
+<p>SAVEPOINTはトランザクション内の中間復帰点を作る。<br>部分的な失敗時に全取消ではなく段階巻戻しが可能になる。<br>実務では大きな更新手順を安全化するため、事前件数確認→<span class="sql-kw">SAVEPOINT</span>→更新→検証の流れを標準化すると有効。<br>試験でもSAVEPOINTの役割は頻出である。</p>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="implicit">
-<h2>10.8 暗黙COMMITとDDL混在リスク</h2>
-<p>OracleではDDL実行時に暗黙COMMITが関わるため、DML途中でDDLを混在させると想定外に確定される危険がある。更新作業中はDDLを分離し、変更分類ごとに手順を分けるべきである。試験ではDML/DDL/TCLの違いと復旧可否が問われる。実務ではこの分類理解が事故防止の鍵になる。</p>
+<h2><span class="sql-num">10.8</span> 暗黙COMMITとDDL混在リスク</h2>
+<p>OracleではDDL実行時に暗黙COMMITが関わるため、DML途中でDDLを混在させると想定外に確定される危険がある。<br>更新作業中はDDLを分離し、変更分類ごとに手順を分けるべきである。<br>試験ではDML/DDL/TCLの違いと復旧可否が問われる。<br>実務ではこの分類理解が事故防止の鍵になる。</p>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="errors">
-<h2>10.9 典型エラーと修正</h2>
-<div class="warn"><b>失敗1:</b> WHERE漏れUPDATE/DELETE。<b>修正:</b> 事前に同条件SELECTで件数確認。</div>
+<h2><span class="sql-num">10.9</span> 典型エラーと修正</h2>
+<div class="warn"><b>失敗1:</b> WHERE漏れUPDATE/<span class="sql-kw">DELETE</span>。<b>修正:</b> 事前に同条件SELECTで件数確認。</div>
 <div class="warn"><b>失敗2:</b> COMMIT後に取消不能。<b>修正:</b> SAVEPOINTと確認手順を先に設計。</div>
 <div class="warn"><b>失敗3:</b> MERGEのON条件不備。<b>修正:</b> キー一意性を先に検証。</div>
 <div class="warn"><b>失敗4:</b> DML中のDDL混在。<b>修正:</b> 作業分類を分離。</div>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="patterns">
-<h2>10.10 実務運用パターン</h2>
-<p>推奨手順は「対象確認SELECT → SAVEPOINT → DML実行 → 差分確認SELECT → COMMIT」である。これにより誤更新を早期検知し、必要ならROLLBACKできる。更新SQLは単体で管理せず、確認SQLとセットで運用するのが安全である。監査向けには実行件数と実行時刻の記録を残すことが望ましい。</p>
+<h2><span class="sql-num">10.10</span> 実務運用パターン</h2>
+<p>推奨手順は「対象確認SELECT → <span class="sql-kw">SAVEPOINT</span> → DML実行 → 差分確認SELECT → <span class="sql-kw">COMMIT</span>」である。<br>これにより誤更新を早期検知し、必要ならROLLBACKできる。<br>更新SQLは単体で管理せず、確認SQLとセットで運用するのが安全である。<br>監査向けには実行件数と実行時刻の記録を残すことが望ましい。</p>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 

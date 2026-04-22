@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Oracle Database SQL (1Z0-071) 教科書</title>
+<title>Oracle Database SQL (1Z0-<span class="sql-num">071</span>) 教科書</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'Segoe UI', Arial, sans-serif; background: #f5f7fa; color: #2d3748; line-height: 1.7; }
@@ -52,45 +52,55 @@
   }
   .dba-notice strong { color: #495057; }
 
-  pre .sql-kw { color: #fbbf24; font-weight: 700; }
-  pre .sql-fn { color: #60a5fa; font-weight: 600; }
+
+  /* sql-highlight-v3 */
+  /* default (light bg): warm tone */
+  .sql-kw  { color: #92400e; font-weight: 700; }
+  .sql-fn  { color: #1e40af; font-weight: 600; }
+  .sql-str { color: #065f46; }
+  .sql-num { color: #991b1b; }
+  .sql-cmt { color: #64748b; font-style: italic; }
+  /* dark bg override (pre / code) */
+  pre .sql-kw  { color: #fbbf24; }
+  pre .sql-fn  { color: #60a5fa; }
   pre .sql-str { color: #86efac; }
   pre .sql-num { color: #fca5a5; }
-  pre .sql-cmt { color: #94a3b8; font-style: italic; }
-  code .sql-kw { color: #b45309; font-weight: 700; }
-  code .sql-fn { color: #1d4ed8; font-weight: 600; }
-  code .sql-str { color: #047857; }
-  code .sql-num { color: #b91c1c; }
-  code .sql-cmt { color: #64748b; font-style: italic; }
+  pre .sql-cmt { color: #94a3b8; }
+  code .sql-kw  { color: #fbbf24; }
+  code .sql-fn  { color: #60a5fa; }
+  code .sql-str { color: #86efac; }
+  code .sql-num { color: #fca5a5; }
+  code .sql-cmt { color: #94a3b8; }
+  /* clause-order div uses its own kw/fn/desc/note classes — no override needed */
 </style>
 </head>
 <body>
 <div class="page-header">
   <h1>Oracle Database SQL 教科書</h1>
-  <div class="subtitle">Oracle Database SQL (1Z0-071) 試験対策・実務参照</div>
+  <div class="subtitle">Oracle Database SQL (1Z0-<span class="sql-num">071</span>) 試験対策・実務参照</div>
 </div>
 <div class="container">
 
   <div class="section-heading" style="border-left-color:#2c3e50">模擬試験ダッシュボード</div>
-  <p class="section-desc">模擬試験まわりの入口は 1 箇所に統合しました。詳細な結果分析は次画面に集約し、このトップでは誤答補強と正答維持へ最短で入れる構成にしています。</p>
+  <p class="section-desc">模擬試験まわりの入口は <span class="sql-num">1</span> 箇所に統合しました。<br>詳細な結果分析は次画面に集約し、このトップでは誤答補強と正答維持へ最短で入れる構成にしています。</p>
   <div class="index-grid" style="grid-template-columns:repeat(auto-fit,minmax(320px,1fr));margin-bottom:24px">
     <div class="index-card" style="border-top:4px solid #2c3e50">
       <a href="mock_exam_dashboard.html">
         <div class="card-domain" style="color:#2c3e50">MOCK</div>
         <div class="card-title">模擬試験ダッシュボード</div>
-        <div class="card-sections">平均得点比率 38.3% / 直近 第3回 34% / 結果分析 / 誤答の徹底解説 / 正答の総点検 を統合</div>
+        <div class="card-sections">平均得点比率 <span class="sql-num">38.3</span>% / 直近 第3回 <span class="sql-num">34</span>% / 結果分析 / 誤答の徹底解説 / 正答の総点検 を統合</div>
       </a>
     </div>
   </div>
 
-  <div class="section-heading">SQL Silver 試験対策（1Z0-071）</div>
-  <p class="section-desc">試験出題ドメイン（D1〜D8）に対応した学習教材です。各ドメインを順に学ぶことで試験範囲を体系的に網羅できます。</p>
+  <div class="section-heading">SQL Silver 試験対策（1Z0-<span class="sql-num">071</span>）</div>
+  <p class="section-desc">試験出題ドメイン（D1〜D8）に対応した学習教材です。<br>各ドメインを順に学ぶことで試験範囲を体系的に網羅できます。</p>
   <div class="index-grid">
     <div class="index-card">
       <a href="D1_textbook.html">
         <div class="card-domain">D1</div>
         <div class="card-title">SQLとリレーショナルデータベースの基礎</div>
-        <div class="card-sections">リレーショナルデータベースとSQL概要 / SELECT文の基本構文 / NULL の基礎</div>
+        <div class="card-sections">リレーショナルデータベースとSQL概要 / SELECT文の基本構文 / <span class="sql-kw">NULL</span> の基礎</div>
       </a>
     </div>
     <div class="index-card">
@@ -111,50 +121,50 @@
       <a href="D4_textbook.html">
         <div class="card-domain">D4</div>
         <div class="card-title">グループ関数と集計</div>
-        <div class="card-sections">グループ関数 / GROUP BY と HAVING</div>
+        <div class="card-sections">グループ関数 / <span class="sql-kw">GROUP BY</span> と <span class="sql-kw">HAVING</span></div>
       </a>
     </div>
     <div class="index-card">
       <a href="D5_textbook.html">
         <div class="card-domain">D5</div>
         <div class="card-title">複数表の結合</div>
-        <div class="card-sections">INNER JOIN / OUTER JOIN / 自己結合とクロス結合</div>
+        <div class="card-sections"><span class="sql-kw">INNER JOIN</span> / <span class="sql-kw">OUTER JOIN</span> / 自己結合とクロス結合</div>
       </a>
     </div>
     <div class="index-card">
       <a href="D6_textbook.html">
         <div class="card-domain">D6</div>
         <div class="card-title">サブクエリ</div>
-        <div class="card-sections">単一行サブクエリ / 複数行サブクエリ / 集合演算子（UNION / INTERSECT / MINUS） / 相関サブクエリとEXISTS</div>
+        <div class="card-sections">単一行サブクエリ / 複数行サブクエリ / 集合演算子（<span class="sql-kw">UNION</span> / <span class="sql-kw">INTERSECT</span> / <span class="sql-kw">MINUS</span>） / 相関サブクエリとEXISTS</div>
       </a>
     </div>
     <div class="index-card">
       <a href="D7_textbook.html">
         <div class="card-domain">D7</div>
         <div class="card-title">DML（データ操作言語）</div>
-        <div class="card-sections">INSERT と UPDATE / DELETE・TRUNCATE とトランザクション / MERGE とマルチテーブル挿入</div>
+        <div class="card-sections"><span class="sql-kw">INSERT</span> と <span class="sql-kw">UPDATE</span> / <span class="sql-kw">DELETE</span>・<span class="sql-kw">TRUNCATE</span> とトランザクション / <span class="sql-kw">MERGE</span> とマルチテーブル挿入</div>
       </a>
     </div>
     <div class="index-card">
       <a href="D8_textbook.html">
         <div class="card-domain">D8</div>
         <div class="card-title">DDL・オブジェクト管理</div>
-        <div class="card-sections">CREATE TABLE と制約 / VIEW・SEQUENCE・INDEX / 権限・ロール・辞書ビュー・タイムゾーン</div>
+        <div class="card-sections"><span class="sql-kw">CREATE TABLE</span> と制約 / <span class="sql-kw">VIEW</span>・<span class="sql-kw">SEQUENCE</span>・<span class="sql-kw">INDEX</span> / 権限・ロール・辞書ビュー・タイムゾーン</div>
       </a>
     </div>
   </div>
 
   <div class="section-heading dba">DBA 参考資料</div>
   <div class="dba-notice">
-    <strong>注意：</strong>以下の資料は Oracle Master Silver SQL（1Z0-071）の試験範囲外の内容を含みます。
-    OracleアーキテクチャやDBA操作など、実務での応用知識として参照してください。試験対策は上記 D1〜D8 を使用してください。
+    <strong>注意：</strong>以下の資料は Oracle Master Silver SQL（1Z0-<span class="sql-num">071</span>）の試験範囲外の内容を含みます。
+    OracleアーキテクチャやDBA操作など、実務での応用知識として参照してください。<br>試験対策は上記 D1〜D8 を使用してください。
   </div>
   <div class="index-grid">
     <div class="index-card dba-card">
       <a href="Ver_5_0_Chapter_1_Oracle_DBA_Silver.html">
         <div class="card-domain">第1章</div>
         <div class="card-title">リレーショナルデータベースの基礎（参考）</div>
-        <div class="card-sections">RDBの定義と役割 / 表・主キー・外部キー / NULL / SQL分類 / 正規化 / Oracleアーキテクチャ</div>
+        <div class="card-sections">RDBの定義と役割 / 表・主キー・外部キー / <span class="sql-kw">NULL</span> / SQL分類 / 正規化 / Oracleアーキテクチャ</div>
       </a>
     </div>
     <div class="index-card dba-card">
@@ -175,63 +185,63 @@
       <a href="Ver_5_0_Chapter_4_Oracle_DBA_Silver.html">
         <div class="card-domain">第4章</div>
         <div class="card-title">単一行関数（参考）</div>
-        <div class="card-sections">文字・数値・日付関数 / 変換・NULL・性能観点 / 試験急所</div>
+        <div class="card-sections">文字・数値・日付関数 / 変換・<span class="sql-kw">NULL</span>・性能観点 / 試験急所</div>
       </a>
     </div>
     <div class="index-card dba-card">
       <a href="Ver_5_0_Chapter_5_Oracle_DBA_Silver.html">
         <div class="card-domain">第5章</div>
         <div class="card-title">変換関数・NULL処理・条件式（参考）</div>
-        <div class="card-sections">型整合 / CASE / 典型エラー対策 / 試験急所</div>
+        <div class="card-sections">型整合 / <span class="sql-kw">CASE</span> / 典型エラー対策 / 試験急所</div>
       </a>
     </div>
     <div class="index-card dba-card">
       <a href="Ver_5_0_Chapter_6_Oracle_DBA_Silver.html">
         <div class="card-domain">第6章</div>
         <div class="card-title">集計データのレポート（参考）</div>
-        <div class="card-sections">GROUP BY / HAVING / 疑似列 / 集計検証</div>
+        <div class="card-sections"><span class="sql-kw">GROUP BY</span> / <span class="sql-kw">HAVING</span> / 疑似列 / 集計検証</div>
       </a>
     </div>
     <div class="index-card dba-card">
       <a href="Ver_5_0_Chapter_7_Oracle_DBA_Silver.html">
         <div class="card-domain">第7章</div>
         <div class="card-title">複数表結合（参考）</div>
-        <div class="card-sections">INNER / OUTER / CROSS / NATURAL / 件数制御</div>
+        <div class="card-sections"><span class="sql-kw">INNER</span> / <span class="sql-kw">OUTER</span> / <span class="sql-kw">CROSS</span> / <span class="sql-kw">NATURAL</span> / 件数制御</div>
       </a>
     </div>
     <div class="index-card dba-card">
       <a href="Ver_5_0_Chapter_8_Oracle_DBA_Silver.html">
         <div class="card-domain">第8章</div>
         <div class="card-title">副問合せ（参考）</div>
-        <div class="card-sections">単一行・複数行・相関 / NOT INのNULL罠対策</div>
+        <div class="card-sections">単一行・複数行・相関 / <span class="sql-kw">NOT</span> INのNULL罠対策</div>
       </a>
     </div>
     <div class="index-card dba-card">
       <a href="Ver_5_0_Chapter_9_Oracle_DBA_Silver.html">
         <div class="card-domain">第9章</div>
         <div class="card-title">集合演算子（参考）</div>
-        <div class="card-sections">UNION系 / INTERSECT / MINUS / 型整合と性能</div>
+        <div class="card-sections">UNION系 / <span class="sql-kw">INTERSECT</span> / <span class="sql-kw">MINUS</span> / 型整合と性能</div>
       </a>
     </div>
     <div class="index-card dba-card">
       <a href="Ver_5_0_Chapter_10_Oracle_DBA_Silver.html">
         <div class="card-domain">第10章</div>
         <div class="card-title">DMLとトランザクション（参考）</div>
-        <div class="card-sections">COMMIT / ROLLBACK / SAVEPOINT / 安全更新手順</div>
+        <div class="card-sections"><span class="sql-kw">COMMIT</span> / <span class="sql-kw">ROLLBACK</span> / <span class="sql-kw">SAVEPOINT</span> / 安全更新手順</div>
       </a>
     </div>
     <div class="index-card dba-card">
       <a href="Ver_5_0_Chapter_11_Oracle_DBA_Silver.html">
         <div class="card-domain">第11章</div>
         <div class="card-title">DDLと制約（参考）</div>
-        <div class="card-sections">CREATE / ALTER / DROP / TRUNCATE / 辞書ビュー検証</div>
+        <div class="card-sections"><span class="sql-kw">CREATE</span> / <span class="sql-kw">ALTER</span> / <span class="sql-kw">DROP</span> / <span class="sql-kw">TRUNCATE</span> / 辞書ビュー検証</div>
       </a>
     </div>
     <div class="index-card dba-card">
       <a href="Ver_5_0_Chapter_12_Oracle_DBA_Silver.html">
         <div class="card-domain">第12章</div>
         <div class="card-title">ビューの管理（参考）</div>
-        <div class="card-sections">更新可否 / CHECK OPTION / READ ONLY / 依存管理</div>
+        <div class="card-sections">更新可否 / <span class="sql-kw">CHECK</span> OPTION / READ <span class="sql-kw">ONLY</span> / 依存管理</div>
       </a>
     </div>
     <div class="index-card dba-card">
@@ -252,14 +262,14 @@
       <a href="Ver_5_0_Chapter_15_Oracle_DBA_Silver.html">
         <div class="card-domain">第15章</div>
         <div class="card-title">データ・ディクショナリ・ビュー（参考）</div>
-        <div class="card-sections">USER・ALL・DBA系ビュー / 監査活用</div>
+        <div class="card-sections">USER・<span class="sql-kw">ALL</span>・DBA系ビュー / 監査活用</div>
       </a>
     </div>
     <div class="index-card dba-card">
       <a href="Ver_5_0_Chapter_16_Oracle_DBA_Silver.html">
         <div class="card-domain">第16章</div>
         <div class="card-title">タイムゾーンと期間データ型（参考）</div>
-        <div class="card-sections">TIMESTAMP WITH TIME ZONE / INTERVAL / 時差設計</div>
+        <div class="card-sections">TIMESTAMP <span class="sql-kw">WITH</span> TIME ZONE / INTERVAL / 時差設計</div>
       </a>
     </div>
   </div>
