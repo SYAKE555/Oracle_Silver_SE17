@@ -93,7 +93,7 @@ class TestMockExamPipeline(unittest.TestCase):
         self.assertIn("EX3_reinforce.html", phase1_html)
         self.assertIn("EX5_reinforce.html", phase1_html)
 
-    def test_domain_page_keeps_sql_text_without_redundant_labels(self):
+    def test_domain_page_uses_recorded_full_text_as_canonical_problem(self):
         ranked = split_ex_pages.priority_data()
         split_ex_pages.assign_phases(ranked)
         ex2 = next(item for item in ranked if item["ex_id"] == "EX2")
@@ -101,7 +101,7 @@ class TestMockExamPipeline(unittest.TestCase):
         html = split_ex_pages.build_domain_page(ex2)
 
         self.assertIn("問題文", html)
-        self.assertIn("選択肢", html)
+        self.assertNotIn('<div class="block-title">選択肢</div>', html)
         self.assertNotIn("記録原文（省略なし）", html)
         self.assertNotIn("（抽出）", html)
         self.assertIn('SELECT dummy &quot;DUMMY1&quot; FROM DUAL', html)

@@ -32,16 +32,6 @@
   .question-meta { font-size: .8rem; color: #64748b; margin-bottom: 10px; font-weight: 700; }
   .block-title { font-size: .85rem; font-weight: 800; color: #c0392b; margin: 10px 0 6px; }
   pre { white-space: pre-wrap; word-break: break-word; background: #0f172a; color: #e2e8f0; border-radius: 12px; padding: 14px; font-size: .84rem; overflow-x: auto; }
-  .options-grid { display: grid; gap: 8px; }
-  .option-card { display: grid; grid-template-columns: 32px 1fr; gap: 10px; align-items: start; border: 1px solid #dbe4ef; border-radius: 12px; padding: 10px 12px; background: white; }
-  .option-card.correct { border-color: #22c55e; box-shadow: inset 0 0 0 1px #22c55e; }
-  .option-card.selected { background: #fff7ed; }
-  .option-card.correct.selected { background: #f0fdf4; }
-  .option-key { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 999px; font-size: .82rem; font-weight: 900; background: #e2e8f0; color: #0f172a; }
-  .option-card.correct .option-key { background: #dcfce7; color: #166534; }
-  .option-card.selected .option-key { background: #ffedd5; color: #9a3412; }
-  .option-card.correct.selected .option-key { background: linear-gradient(90deg,#dcfce7,#ffedd5); color: #166534; }
-  .option-text { font-size: .88rem; color: #1f2937; line-height: 1.6; padding-top: 3px; word-break: break-word; }
   .analysis-block p { color: #334155; font-size: .9rem; margin-bottom: 8px; }
   .rebuild-list { padding-left: 20px; color: #334155; font-size: .9rem; }
   .rebuild-list li { margin-bottom: 5px; }
@@ -66,7 +56,7 @@
   <div class="hero-card">
     <div style="font-size:.9rem;color:#64748b;font-weight:700">D6 / 最優先</div>
     <div style="font-size:1.4rem;font-weight:900;margin-top:4px">サブクエリ・集合演算</div>
-    <p style="margin-top:8px;color:#334155">このページは、実際に間違えた設問をカテゴリ別に並べ、問題文・選択肢・正答理由・誤答理由・叩き直しポイントまで一気に確認するための再構築教材です。</p>
+    <p style="margin-top:8px;color:#334155">このページは、実際に間違えた設問をカテゴリ別に並べ、記録された問題全文を正本として、正答理由・誤答理由・叩き直しポイントまで一気に確認するための再構築教材です。</p>
     <div class="hero-grid">
       <div class="metric"><div class="label">フェーズ</div><div class="value">Phase 1</div></div>
       <div class="metric"><div class="label">進捗率</div><div class="value">24.0%</div></div>
@@ -93,34 +83,13 @@
                   <pre>商品情報マスター表と、商品取引履歴表が存在していて、
 商品の取引があると商品取引履歴表に取引情報を登録するとします。
 履歴は商品毎に1件のみ、商品情報マスター表と同じ形式のものを登録します。
-一度も取引が無い商品情報を取得するには、以下のどれを使用すべきでしょうか。</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card">
-              <div class="option-key">1</div>
-              <div class="option-text">INTERSECT</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">2</div>
-              <div class="option-text">MINUS</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">3</div>
-              <div class="option-text">MINUS ALL</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">4</div>
-              <div class="option-text">UNION</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">5</div>
-              <div class="option-text">UNION ALL</div>
-            </div>
-            </div>
+
+一度も取引が無い商品情報を取得するには、以下のどれを使用すべきでしょうか。
+(1)		INTERSECT
+(2)		MINUS
+(3)		MINUS ALL
+(4)		UNION
+(5)		UNION ALL</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「INTERSECT を含む集合演算の基本」です。複合問合せでは、各 SELECT の列数と対応するデータ型をそろえる必要がある。INTERSECT は両方の結果に共通する行を返し、NULL を含む行も比較対象になる。 したがって正答は 2「MINUS」 になります。</p>
@@ -136,34 +105,12 @@
                 <article class="question-card">
                   <div class="question-meta">第2回 模擬試験 / 問34 / 正答 BD / 自己回答 AD</div>
                   <div class="block-title">問題文</div>
-                  <pre>複合問合せで INTERSECT 演算子を使用した結果について正しいのはどれでしょうか。（2つ選択）</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card selected">
-              <div class="option-key">A</div>
-              <div class="option-text">複合問合せの各SELECT文の列数は異なる場合があります。</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">B</div>
-              <div class="option-text">複合問合せの各SELECT文の列名は異なる場合があります。</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">C</div>
-              <div class="option-text">複合問合せの各SELECT文のデータ型は異なる場合があります。</div>
-            </div>
-            
-            <div class="option-card correct selected">
-              <div class="option-key">D</div>
-              <div class="option-text">INTERSECT演算子は、結果にNULLがあった場合、データを抽出します。</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">E</div>
-              <div class="option-text">INTERSECT演算子は、結果にNULLがあった場合、データを抽出しません。</div>
-            </div>
-            </div>
+                  <pre>複合問合せで INTERSECT 演算子を使用した結果について正しいのはどれでしょうか。（2つ選択）
+(1)		A.　複合問合せの各SELECT文の列数は異なる場合があります。
+(2)		B.　複合問合せの各SELECT文の列名は異なる場合があります。
+(3)		C.　複合問合せの各SELECT文のデータ型は異なる場合があります。
+(4)		D.　INTERSECT演算子は、結果にNULLがあった場合、データを抽出します。
+(5)		E.　INTERSECT演算子は、結果にNULLがあった場合、データを抽出しません。</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「INTERSECT を含む集合演算の基本」です。複合問合せでは、各 SELECT の列数と対応するデータ型をそろえる必要がある。INTERSECT は両方の結果に共通する行を返し、NULL を含む行も比較対象になる。 したがって正答は B「複合問合せの各SELECT文の列名は異なる場合があります。」 / D「INTERSECT演算子は、結果にNULLがあった場合、データを抽出します。」 になります。</p>
@@ -180,33 +127,20 @@
                   <div class="question-meta">第2回 模擬試験 / 問36 / 正答 AB / 自己回答 AD</div>
                   <div class="block-title">問題文</div>
                   <pre>図のような表があります。
+
 以下の従業員の詳細を表示する必要があります。
+
 ・DEPT_ID &#x27;10101&#x27; の部署に所属
 ・入社年数(START_DATE)が1年以下
 ・月の定期代(PASS_PRICE)が5万円を超える
-必要な結果を取得するSQLはどれですか。（2つ選択）</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card correct selected">
-              <div class="option-key">A</div>
-              <div class="option-text">SELECT NAME, PASS_PRICE, START_DATE FROM EMP WHERE START_DATE &gt; SYSDATE-365 AND DEPT_ID = &#x27;10101&#x27; INTERSECT SELECT NAME, PASS_PRICE, START_DATE FROM EMP WHERE PASS_PRICE &gt; 50000;</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">B</div>
-              <div class="option-text">SELECT NAME, PASS_PRICE, START_DATE FROM EMP WHERE PASS_PRICE &gt; 50000 AND DEPT_ID = 10101 INTERSECT SELECT NAME, PASS_PRICE, START_DATE FROM EMP WHERE START_DATE &gt; SYSDATE-365;</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">C</div>
-              <div class="option-text">SELECT NAME, PASS_PRICE, START_DATE FROM EMP WHERE START_DATE &gt; SYSDATE-365 AND DEPT_ID = &#x27;10101&#x27; UNION ALL SELECT NAME, PASS_PRICE, START_DATE FROM EMP WHERE PASS_PRICE &gt; 50000;</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">D</div>
-              <div class="option-text">SELECT NAME, PASS_PRICE, START_DATE FROM EMP WHERE START_DATE &gt; SYSDATE-365 AND DEPT_ID = &#x27;10101&#x27; UNION SELECT NAME, PASS_PRICE, START_DATE FROM EMP WHERE PASS_PRICE &gt; 50000;</div>
-            </div>
-            </div>
+
+必要な結果を取得するSQLはどれですか。（2つ選択）
+　
+拡大する
+(1)		A.　SELECT NAME, PASS_PRICE, START_DATE FROM EMP WHERE START_DATE &gt; SYSDATE-365 AND DEPT_ID = &#x27;10101&#x27; INTERSECT SELECT NAME, PASS_PRICE, START_DATE FROM EMP WHERE PASS_PRICE &gt; 50000;
+(2)		B.　SELECT NAME, PASS_PRICE, START_DATE FROM EMP WHERE PASS_PRICE &gt; 50000 AND DEPT_ID = 10101 INTERSECT SELECT NAME, PASS_PRICE, START_DATE FROM EMP WHERE START_DATE &gt; SYSDATE-365;
+(3)		C.　SELECT NAME, PASS_PRICE, START_DATE FROM EMP WHERE START_DATE &gt; SYSDATE-365 AND DEPT_ID = &#x27;10101&#x27; UNION ALL SELECT NAME, PASS_PRICE, START_DATE FROM EMP WHERE PASS_PRICE &gt; 50000;
+(4)		D.　SELECT NAME, PASS_PRICE, START_DATE FROM EMP WHERE START_DATE &gt; SYSDATE-365 AND DEPT_ID = &#x27;10101&#x27; UNION SELECT NAME, PASS_PRICE, START_DATE FROM EMP WHERE PASS_PRICE &gt; 50000;</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「INTERSECT を含む集合演算の基本」です。複合問合せでは、各 SELECT の列数と対応するデータ型をそろえる必要がある。INTERSECT は両方の結果に共通する行を返し、NULL を含む行も比較対象になる。 したがって正答は A「SELECT NAME, PASS_PRICE, START_DATE FROM EMP WHERE STAR…」 / B「SELECT NAME, PASS_PRICE, START_DATE FROM EMP WHERE PASS…」 になります。</p>
@@ -222,34 +156,12 @@
                 <article class="question-card">
                   <div class="question-meta">第2回 模擬試験 / 問53 / 正答 AC / 自己回答 DE</div>
                   <div class="block-title">問題文</div>
-                  <pre>複合問合せ（UNION / INTERSECT / MINUS 等）において、次の記述のうち正しいものを2つ選択してください。</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card correct">
-              <div class="option-key">A</div>
-              <div class="option-text">SELECT句の列数はすべて同一である必要がある</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">B</div>
-              <div class="option-text">SELECT句の列名はすべて同一である必要がある</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">C</div>
-              <div class="option-text">ORDER BY句は最初のSELECTの列を指定する</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">D</div>
-              <div class="option-text">結果セットの列名は、指定した最後のSELECTの列名が使用される</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">E</div>
-              <div class="option-text">NULL値は無視される</div>
-            </div>
-            </div>
+                  <pre>複合問合せ（UNION / INTERSECT / MINUS 等）において、次の記述のうち正しいものを2つ選択してください。
+(1)		A. SELECT句の列数はすべて同一である必要がある
+(2)		B. SELECT句の列名はすべて同一である必要がある
+(3)		C. ORDER BY句は最初のSELECTの列を指定する
+(4)		D. 結果セットの列名は、指定した最後のSELECTの列名が使用される
+(5)		E. NULL値は無視される</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「INTERSECT を含む集合演算の基本」です。複合問合せでは、各 SELECT の列数と対応するデータ型をそろえる必要がある。INTERSECT は両方の結果に共通する行を返し、NULL を含む行も比較対象になる。 したがって正答は A「SELECT句の列数はすべて同一である必要がある」 / C「ORDER BY句は最初のSELECTの列を指定する」 になります。</p>
@@ -265,34 +177,12 @@
                 <article class="question-card">
                   <div class="question-meta">第2回 模擬試験 / 問60 / 正答 BE / 自己回答 BD</div>
                   <div class="block-title">問題文</div>
-                  <pre>INTERSECTの特徴として正しいものを2つ選択してください。</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card">
-              <div class="option-key">A</div>
-              <div class="option-text">列数やデータ型が異なるSELECT同士でも使用できる</div>
-            </div>
-            
-            <div class="option-card correct selected">
-              <div class="option-key">B</div>
-              <div class="option-text">2つの結果の共通する行を選択する</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">C</div>
-              <div class="option-text">結果はソートされない</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">D</div>
-              <div class="option-text">NULL値は除外される</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">E</div>
-              <div class="option-text">SELECT文の順番を入れ替えても結果は変わらない</div>
-            </div>
-            </div>
+                  <pre>INTERSECTの特徴として正しいものを2つ選択してください。
+(1)		A. 列数やデータ型が異なるSELECT同士でも使用できる
+(2)		B. 2つの結果の共通する行を選択する
+(3)		C. 結果はソートされない
+(4)		D. NULL値は除外される
+(5)		E. SELECT文の順番を入れ替えても結果は変わらない</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「INTERSECT を含む集合演算の基本」です。複合問合せでは、各 SELECT の列数と対応するデータ型をそろえる必要がある。INTERSECT は両方の結果に共通する行を返し、NULL を含む行も比較対象になる。 したがって正答は B「2つの結果の共通する行を選択する」 / E「SELECT文の順番を入れ替えても結果は変わらない」 になります。</p>
@@ -309,33 +199,16 @@
                   <div class="question-meta">第3回 模擬試験 / 問63 / 正答 B / 自己回答 D</div>
                   <div class="block-title">問題文</div>
                   <pre>次のクエリを実行して検索される行数は何行でしょうか。1つ選択してください。
+
 SELECT dummy &quot;DUMMY1&quot; FROM DUAL
 INTERSECT
 SELECT dummy FROM DUAL
 INTERSECT
-SELECT dummy &quot;DUMMY3&quot; FROM DUAL</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card">
-              <div class="option-key">A</div>
-              <div class="option-text">0</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">B</div>
-              <div class="option-text">1</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">C</div>
-              <div class="option-text">3</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">D</div>
-              <div class="option-text">エラーになる</div>
-            </div>
-            </div>
+SELECT dummy &quot;DUMMY3&quot; FROM DUAL
+(1)		A. 0
+(2)		B. 1
+(3)		C. 3
+(4)		D. エラーになる</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「INTERSECT を含む集合演算の基本」です。複合問合せでは、各 SELECT の列数と対応するデータ型をそろえる必要がある。INTERSECT は両方の結果に共通する行を返し、NULL を含む行も比較対象になる。 したがって正答は B「1」 になります。</p>
@@ -357,29 +230,11 @@ SELECT dummy &quot;DUMMY3&quot; FROM DUAL</pre>
                 <article class="question-card">
                   <div class="question-meta">第1回 模擬試験 / 問32 / 正答 D / 自己回答 C</div>
                   <div class="block-title">問題文</div>
-                  <pre>SQLのUNION演算子でORDER BY句を使用する場合の説明で正しい記述はどれでしょうか。</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card">
-              <div class="option-key">A</div>
-              <div class="option-text">各SELECT文には、それぞれORDER BY句が必要です。</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">B</div>
-              <div class="option-text">ORDER BY句では、列名ではなく位置で指定する必要があります。</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">C</div>
-              <div class="option-text">ORDER BY句がない場合は、最初のSELECT文の最初の列名でソートされます。</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">D</div>
-              <div class="option-text">ORDER BY句には、最初のSELECT文の列名を指定します。</div>
-            </div>
-            </div>
+                  <pre>SQLのUNION演算子でORDER BY句を使用する場合の説明で正しい記述はどれでしょうか。
+(1)		A.　各SELECT文には、それぞれORDER BY句が必要です。
+(2)		B.　ORDER BY句では、列名ではなく位置で指定する必要があります。
+(3)		C.　ORDER BY句がない場合は、最初のSELECT文の最初の列名でソートされます。
+(4)		D.　ORDER BY句には、最初のSELECT文の列名を指定します。</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「集合演算と ORDER BY」です。UNION、INTERSECT、MINUS を使った文では、ORDER BY は最後に1回だけ書ける。列名は先頭 SELECT の列名、または位置番号で指定する。 したがって正答は D「ORDER BY句には、最初のSELECT文の列名を指定します。」 になります。</p>
@@ -396,6 +251,7 @@ SELECT dummy &quot;DUMMY3&quot; FROM DUAL</pre>
                   <div class="question-meta">第2回 模擬試験 / 問32 / 正答 ACE / 自己回答 CDE</div>
                   <div class="block-title">問題文</div>
                   <pre>次のSQLを確認してください。
+
 SELECT ITEM_ID, ITEM_NAME &quot;商品名&quot;
 FROM ITEM
 WHERE ITEM_TYPE = &#x27;FOOD&#x27;
@@ -403,34 +259,13 @@ UNION
 SELECT ITEM_ID ITEM_TYPE, ITEM_NAME
 FROM ITEM
 WHERE ITEM_TYPE = &#x27;CASUAL&#x27;
-このSQLにORDER BY句を記述するとした場合、正常に実行できるものはどれでしょうか。（3つ選択）</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card correct">
-              <div class="option-key">A</div>
-              <div class="option-text">ORDER BY &quot;商品名&quot;</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">B</div>
-              <div class="option-text">ORDER BY &quot;ITEM_TYPE&quot;</div>
-            </div>
-            
-            <div class="option-card correct selected">
-              <div class="option-key">C</div>
-              <div class="option-text">ORDER BY 1</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">D</div>
-              <div class="option-text">ORDER BY ITEM_TYPE</div>
-            </div>
-            
-            <div class="option-card correct selected">
-              <div class="option-key">E</div>
-              <div class="option-text">ORDER BY 2, ITEM_ID</div>
-            </div>
-            </div>
+
+このSQLにORDER BY句を記述するとした場合、正常に実行できるものはどれでしょうか。（3つ選択）
+(1)		A.　ORDER BY &quot;商品名&quot;
+(2)		B.　ORDER BY &quot;ITEM_TYPE&quot;
+(3)		C.　ORDER BY 1
+(4)		D.　ORDER BY ITEM_TYPE
+(5)		E.　ORDER BY 2, ITEM_ID</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「集合演算と ORDER BY」です。UNION、INTERSECT、MINUS を使った文では、ORDER BY は最後に1回だけ書ける。列名は先頭 SELECT の列名、または位置番号で指定する。 したがって正答は A「ORDER BY &quot;商品名&quot;」 / C「ORDER BY 1」 / E「ORDER BY 2, ITEM_ID」 になります。</p>
@@ -447,6 +282,7 @@ WHERE ITEM_TYPE = &#x27;CASUAL&#x27;
                   <div class="question-meta">第2回 模擬試験 / 問33 / 正答 C / 自己回答 D</div>
                   <div class="block-title">問題文</div>
                   <pre>以下のSQL文を実行するとします。
+
 SELECT ITEM_ID, MAKER_ID
 FROM ITEM
 WHERE MAKER_ID LIKE &#x27;1%&#x27; ORDER BY MAKER_ID
@@ -458,29 +294,14 @@ UNION
 SELECT ITEM_ID, MAKER_ID
 FROM ITEM
 WHERE MAKER_ID LIKE &#x27;2%&#x27;;
-実行結果はどうなるでしょうか。</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card">
-              <div class="option-key">A</div>
-              <div class="option-text">正常に実行され、すべての行がMAKER_IDの昇順で表示されます。</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">B</div>
-              <div class="option-text">列名の代わりに位置番号（数値）をORDER BY句で使用する必要があるため、エラーとなります。</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">C</div>
-              <div class="option-text">ORDER BY句は最後のSELECT文に記述する必要があるため、エラーとなります。</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">D</div>
-              <div class="option-text">正常に実行されますが、ORDER BY句が無視され、ソートされません。</div>
-            </div>
-            </div>
+
+実行結果はどうなるでしょうか。
+　
+
+(1)		A.　正常に実行され、すべての行がMAKER_IDの昇順で表示されます。
+(2)		B.　列名の代わりに位置番号（数値）をORDER BY句で使用する必要があるため、エラーとなります。
+(3)		C.　ORDER BY句は最後のSELECT文に記述する必要があるため、エラーとなります。
+(4)		D.　正常に実行されますが、ORDER BY句が無視され、ソートされません。</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「集合演算と ORDER BY」です。UNION、INTERSECT、MINUS を使った文では、ORDER BY は最後に1回だけ書ける。列名は先頭 SELECT の列名、または位置番号で指定する。 したがって正答は C「ORDER BY句は最後のSELECT文に記述する必要があるため、エラーとなります。」 になります。</p>
@@ -496,39 +317,50 @@ WHERE MAKER_ID LIKE &#x27;2%&#x27;;
                 <article class="question-card">
                   <div class="question-meta">第3回 模擬試験 / 問75 / 正答 AC / 自己回答 BE</div>
                   <div class="block-title">問題文</div>
-                  <pre>次の SQL 文のうち、正常に実行されるものはどれですか？（2つ選択）</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card correct">
-              <div class="option-key">A</div>
-              <div class="option-text">SELECT 1, 2 FROM DUAL<br>UNION<br>SELECT 3, 4 FROM DUAL<br>ORDER BY 2;</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">B</div>
-              <div class="option-text">SELECT 1, 2 FROM DUAL<br>UNION<br>SELECT 3, 4 FROM DUAL<br>ORDER BY 3, 4;</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">C</div>
-              <div class="option-text">SELECT 1, 2 FROM DUAL<br>UNION<br>SELECT 3, 4 FROM DUAL<br>ORDER BY 1, 2;</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">D</div>
-              <div class="option-text">SELECT 1 FROM DUAL<br>UNION<br>SELECT 2 FROM DUAL<br>ORDER BY 1, 2;</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">E</div>
-              <div class="option-text">SELECT 2 FROM DUAL<br>UNION<br>SELECT 2, 3 FROM DUAL<br>ORDER BY 2;</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">F</div>
-              <div class="option-text">SELECT 1, 2 FROM DUAL<br>ORDER BY 1;<br>UNION<br>SELECT 3, 4 FROM DUAL<br>ORDER BY 2;</div>
-            </div>
-            </div>
+                  <pre>次の SQL 文のうち、正常に実行されるものはどれですか？（2つ選択）
+A.
+SELECT 1, 2 FROM DUAL
+UNION
+SELECT 3, 4 FROM DUAL
+ORDER BY 2;
+
+B.
+SELECT 1, 2 FROM DUAL
+UNION
+SELECT 3, 4 FROM DUAL
+ORDER BY 3, 4;
+
+C.
+SELECT 1, 2 FROM DUAL
+UNION
+SELECT 3, 4 FROM DUAL
+ORDER BY 1, 2;
+
+D.
+SELECT 1 FROM DUAL
+UNION
+SELECT 2 FROM DUAL
+ORDER BY 1, 2;
+
+E.
+SELECT 2 FROM DUAL
+UNION
+SELECT 2, 3 FROM DUAL
+ORDER BY 2;
+
+F.
+SELECT 1, 2 FROM DUAL
+ORDER BY 1;
+UNION
+SELECT 3, 4 FROM DUAL
+ORDER BY 2;
+
+(1)		A
+(2)		B
+(3)		C
+(4)		D
+(5)		E
+(6)		F</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「集合演算と ORDER BY」です。UNION、INTERSECT、MINUS を使った文では、ORDER BY は最後に1回だけ書ける。列名は先頭 SELECT の列名、または位置番号で指定する。 したがって正答は A「SELECT 1, 2 FROM DUAL UNION SELECT 3, 4 FROM DUAL ORDER…」 / C「SELECT 1, 2 FROM DUAL UNION SELECT 3, 4 FROM DUAL ORDER…」 になります。</p>
@@ -550,29 +382,11 @@ WHERE MAKER_ID LIKE &#x27;2%&#x27;;
                 <article class="question-card">
                   <div class="question-meta">第1回 模擬試験 / 問31 / 正答 B.C / 自己回答 A.D</div>
                   <div class="block-title">問題文</div>
-                  <pre>相関副問合せの実行に関して正しいのはどれでしょうか。（2つ選択）</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card selected">
-              <div class="option-key">A</div>
-              <div class="option-text">内側の文が最初に実行され、次に外側の文が実行されます。</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">B</div>
-              <div class="option-text">内側の文は、外側の文が実行された後に実行されます。</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">C</div>
-              <div class="option-text">外側の文の1行ごとに、内側の文を実行します。</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">D</div>
-              <div class="option-text">内側の文の1行ごとに、外側の文を実行します。</div>
-            </div>
-            </div>
+                  <pre>相関副問合せの実行に関して正しいのはどれでしょうか。（2つ選択）
+(1)		A.　内側の文が最初に実行され、次に外側の文が実行されます。
+(2)		B.　内側の文は、外側の文が実行された後に実行されます。
+(3)		C.　外側の文の1行ごとに、内側の文を実行します。
+(4)		D.　内側の文の1行ごとに、外側の文を実行します。</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「相関サブクエリの実行順」です。相関サブクエリは、外側問い合わせの行を1行ずつ評価し、その行ごとに内側問い合わせを再実行する。非相関サブクエリのように内側が先に1回だけ動くわけではない。 したがって正答は B「内側の文は、外側の文が実行された後に実行されます。」 / C「外側の文の1行ごとに、内側の文を実行します。」 になります。</p>
@@ -588,29 +402,11 @@ WHERE MAKER_ID LIKE &#x27;2%&#x27;;
                 <article class="question-card">
                   <div class="question-meta">第2回 模擬試験 / 問31 / 正答 AD / 自己回答 CD</div>
                   <div class="block-title">問題文</div>
-                  <pre>相関副問合せのEXISTS演算子に関して正しい記述はどれでしょうか。（2つ選択）</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card correct">
-              <div class="option-key">A</div>
-              <div class="option-text">内部問合せ結果にNULL値以外の値が見つかると、外部問合せは内部問合せの実行を中断します。</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">B</div>
-              <div class="option-text">外部問合せは、副問合せのすべての結果の実行が完了するまで、内部問合せを実行し続けます。</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">C</div>
-              <div class="option-text">内部問合せによって取得された値が、外部問合せの結果に存在するかどうかを判定するために使用されます。</div>
-            </div>
-            
-            <div class="option-card correct selected">
-              <div class="option-key">D</div>
-              <div class="option-text">外部問合せによって取得された値が、内部問合せの結果に存在するかどうかを判定するために使用されます。</div>
-            </div>
-            </div>
+                  <pre>相関副問合せのEXISTS演算子に関して正しい記述はどれでしょうか。（2つ選択）
+(1)		A.　内部問合せ結果にNULL値以外の値が見つかると、外部問合せは内部問合せの実行を中断します。
+(2)		B.　外部問合せは、副問合せのすべての結果の実行が完了するまで、内部問合せを実行し続けます。
+(3)		C.　内部問合せによって取得された値が、外部問合せの結果に存在するかどうかを判定するために使用されます。
+(4)		D.　外部問合せによって取得された値が、内部問合せの結果に存在するかどうかを判定するために使用されます。</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「相関サブクエリの実行順」です。相関サブクエリは、外側問い合わせの行を1行ずつ評価し、その行ごとに内側問い合わせを再実行する。非相関サブクエリのように内側が先に1回だけ動くわけではない。 したがって正答は A「内部問合せ結果にNULL値以外の値が見つかると、外部問合せは内部問合せの実行を中断します。」 / D「外部問合せによって取得された値が、内部問合せの結果に存在するかどうかを判定するために使用されます。」 になります。</p>
@@ -632,29 +428,42 @@ WHERE MAKER_ID LIKE &#x27;2%&#x27;;
 | EMP_ID  | NOT NULL  | NUMBER(6)    |
 | NAME    | NOT NULL  | VARCHAR2(20) |
 | SALARY  | NOT NULL  | NUMBER       |
-| DEPT_ID | NOT NULL  | NUMBER(6)    |</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card correct">
-              <div class="option-key">A</div>
-              <div class="option-text">SELECT * FROM employees e1<br>WHERE salary &gt; (<br>  SELECT AVG(salary) FROM employees e2<br>  WHERE e1.dept_id = e2.dept_id<br>);</div>
-            </div>
-            
-            <div class="option-card correct selected">
-              <div class="option-key">B</div>
-              <div class="option-text">SELECT e1.* FROM employees e1<br>JOIN (<br>  SELECT dept_id, AVG(salary) AS avg_sal FROM employees<br>  GROUP BY dept_id<br>) e2 ON e1.dept_id = e2.dept_id<br>WHERE e1.salary &gt; e2.avg_sal;</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">C</div>
-              <div class="option-text">SELECT * FROM employees<br>WHERE salary &gt; ANY (<br>  SELECT AVG(salary) FROM employees<br>  GROUP BY dept_id<br>);</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">D</div>
-              <div class="option-text">SELECT * FROM employees<br>WHERE salary &gt; (<br>  SELECT AVG(salary) FROM employees<br>  GROUP BY dept_id<br>);</div>
-            </div>
-            </div>
+| DEPT_ID | NOT NULL  | NUMBER(6)    |
+
+A.
+SELECT * FROM employees e1
+WHERE salary &gt; (
+  SELECT AVG(salary) FROM employees e2
+  WHERE e1.dept_id = e2.dept_id
+);
+
+B.
+SELECT e1.* FROM employees e1
+JOIN (
+  SELECT dept_id, AVG(salary) AS avg_sal FROM employees
+  GROUP BY dept_id
+) e2 ON e1.dept_id = e2.dept_id
+WHERE e1.salary &gt; e2.avg_sal;
+
+C.
+SELECT * FROM employees
+WHERE salary &gt; ANY (
+  SELECT AVG(salary) FROM employees
+  GROUP BY dept_id
+);
+
+D.
+SELECT * FROM employees
+WHERE salary &gt; (
+  SELECT AVG(salary) FROM employees
+  GROUP BY dept_id
+);
+
+
+(1)		A
+(2)		B
+(3)		C
+(4)		D</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「相関サブクエリの実行順」です。相関サブクエリは、外側問い合わせの行を1行ずつ評価し、その行ごとに内側問い合わせを再実行する。非相関サブクエリのように内側が先に1回だけ動くわけではない。 したがって正答は A「SELECT * FROM employees e1 WHERE salary &gt; ( SELECT AVG(…」 / B「SELECT e1.* FROM employees e1 JOIN ( SELECT dept_id, AV…」 になります。</p>
@@ -677,46 +486,25 @@ WHERE MAKER_ID LIKE &#x27;2%&#x27;;
                   <div class="question-meta">第2回 模擬試験 / 問49 / 正答 AE / 自己回答 CD</div>
                   <div class="block-title">問題文</div>
                   <pre>以下のSELECT文について、正しい記載を2つ選択してください。
+
 SELECT
- product_id, price - cost AS profit
+　product_id, price - cost AS profit
 FROM
- Products
+　Products
 WHERE
- price - cost &lt; ALL (
-  SELECT
-   AVG(price - cost)
-  FROM
-   Products
-  GROUP BY
-  dept_id
- );</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card correct">
-              <div class="option-key">A</div>
-              <div class="option-text">製品ごとの利益が全ての部門平均利益より小さい製品を抽出する</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">B</div>
-              <div class="option-text">製品ごとの利益が全ての部門平均利益より大きい製品を抽出する</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">C</div>
-              <div class="option-text">WHERE句で集合関数を使用しているためエラーになる</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">D</div>
-              <div class="option-text">サブクエリのGROUP BYで指定した列名をサブクエリのSELECT句で使用していないためエラーになる</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">E</div>
-              <div class="option-text">ALL内でグループ関数やGROUP BYを使用したサブクエリは使用できる</div>
-            </div>
-            </div>
+　price - cost &lt; ALL (
+　　SELECT
+　　　AVG(price - cost)
+　　FROM
+　　　Products
+　　GROUP BY
+　　dept_id
+　);
+(1)		A. 製品ごとの利益が全ての部門平均利益より小さい製品を抽出する
+(2)		B. 製品ごとの利益が全ての部門平均利益より大きい製品を抽出する
+(3)		C. WHERE句で集合関数を使用しているためエラーになる
+(4)		D. サブクエリのGROUP BYで指定した列名をサブクエリのSELECT句で使用していないためエラーになる
+(5)		E. ALL内でグループ関数やGROUP BYを使用したサブクエリは使用できる</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「ANY・ALL・平均比較」です。サブクエリ結果が複数行になるときは、IN、ANY、ALL を使って比較する。部門別平均より高い給与のような問題では、相関サブクエリか集約結果との結合で表現する。 したがって正答は A「製品ごとの利益が全ての部門平均利益より小さい製品を抽出する」 / E「ALL内でグループ関数やGROUP BYを使用したサブクエリは使用できる」 になります。</p>
@@ -738,39 +526,13 @@ WHERE
                 <article class="question-card">
                   <div class="question-meta">第1回 模擬試験 / 問34 / 正答 B.C.D / 自己回答 B.D.E</div>
                   <div class="block-title">問題文</div>
-                  <pre>UNION演算子とUNION ALL演算子について、正しい記述はどれでしょうか。(3つ選択)</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card">
-              <div class="option-key">A</div>
-              <div class="option-text">それぞれのSELECT文で抽出された列の名前は同じである必要があります。</div>
-            </div>
-            
-            <div class="option-card correct selected">
-              <div class="option-key">B</div>
-              <div class="option-text">それぞれのSELECT文で抽出された列の数は同数である必要があります。</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">C</div>
-              <div class="option-text">UNION演算子を使用すると、ソートされます。</div>
-            </div>
-            
-            <div class="option-card correct selected">
-              <div class="option-key">D</div>
-              <div class="option-text">UNION演算子を使用すると、重複行は削除されます。</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">E</div>
-              <div class="option-text">UNION ALL演算子を使用すると、ソートされます。</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">F</div>
-              <div class="option-text">UNION ALL演算子を使用すると、重複行は削除されます。</div>
-            </div>
-            </div>
+                  <pre>UNION演算子とUNION ALL演算子について、正しい記述はどれでしょうか。(3つ選択)
+(1)		A.　それぞれのSELECT文で抽出された列の名前は同じである必要があります。
+(2)		B.　それぞれのSELECT文で抽出された列の数は同数である必要があります。
+(3)		C.　UNION演算子を使用すると、ソートされます。
+(4)		D.　UNION演算子を使用すると、重複行は削除されます。
+(5)		E.　UNION ALL演算子を使用すると、ソートされます。
+(6)		F.　UNION ALL演算子を使用すると、重複行は削除されます。</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「UNION と UNION ALL の違い」です。UNION は列数と型をそろえたうえで重複行を削除する。UNION ALL は重複を残し、重複排除のソート処理も行わない。 したがって正答は B「それぞれのSELECT文で抽出された列の数は同数である必要があります。」 / C「UNION演算子を使用すると、ソートされます。」 / D「UNION演算子を使用すると、重複行は削除されます。」 になります。</p>
@@ -792,34 +554,12 @@ WHERE
                 <article class="question-card">
                   <div class="question-meta">第2回 模擬試験 / 問62 / 正答 AC / 自己回答 AB</div>
                   <div class="block-title">問題文</div>
-                  <pre>次のうち、サブクエリが必要なケースはどれでしょうか。最適なものを2つ選択してください。</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card correct selected">
-              <div class="option-key">A</div>
-              <div class="option-text">全商品の平均価格より高い価格の商品を表示する</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">B</div>
-              <div class="option-text">各カテゴリごとの平均価格を表示する</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">C</div>
-              <div class="option-text">注文テーブルから最も高額の注文を表示する</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">D</div>
-              <div class="option-text">各顧客ごとの注文数を表示する</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">E</div>
-              <div class="option-text">商品テーブルとカテゴリテーブルから商品名とカテゴリ名を表示する</div>
-            </div>
-            </div>
+                  <pre>次のうち、サブクエリが必要なケースはどれでしょうか。最適なものを2つ選択してください。
+(1)		A. 全商品の平均価格より高い価格の商品を表示する
+(2)		B. 各カテゴリごとの平均価格を表示する
+(3)		C. 注文テーブルから最も高額の注文を表示する
+(4)		D. 各顧客ごとの注文数を表示する
+(5)		E. 商品テーブルとカテゴリテーブルから商品名とカテゴリ名を表示する</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「サブクエリが必要になる場面」です。外側の検索条件で『別の結果を先に求めてから比較する』必要があるとき、サブクエリが必要になる。平均値との比較や、他の検索結果を条件に使う問題が典型である。 したがって正答は A「全商品の平均価格より高い価格の商品を表示する」 / C「注文テーブルから最も高額の注文を表示する」 になります。</p>
@@ -841,29 +581,23 @@ WHERE
                 <article class="question-card">
                   <div class="question-meta">第3回 模擬試験 / 問12 / 正答 C / 自己回答 D</div>
                   <div class="block-title">問題文</div>
-                  <pre>図のSQL文でエラーにならないものを1つ選びなさい。</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card">
-              <div class="option-key">A</div>
-              <div class="option-text">SELECT name FROM employees WHERE dept_id =<br>   (SELECT dept_id FROM departments WHERE location_id = 100 ORDER BY dept_name);</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">B</div>
-              <div class="option-text">SELECT name FROM employees WHERE dept_id =<br>   (SELECT dept_id FROM departments WHERE location_id = 200);</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">C</div>
-              <div class="option-text">SELECT name FROM employees e WHERE EXISTS<br>   (SELECT 1 FROM departments d WHERE d.deptid = e.dept_id AND d.dept_name LIKE &#x27;SALES%&#x27;);</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">D</div>
-              <div class="option-text">SELECT name FROM employees WHERE dept_id IN<br>   (SELECT deptid, dept_name FROM departments);</div>
-            </div>
-            </div>
+                  <pre>図のSQL文でエラーにならないものを1つ選びなさい。
+A. SELECT name FROM employees WHERE dept_id =
+   (SELECT dept_id FROM departments WHERE location_id = 100 ORDER BY dept_name);
+
+B. SELECT name FROM employees WHERE dept_id =
+   (SELECT dept_id FROM departments WHERE location_id = 200);
+
+C. SELECT name FROM employees e WHERE EXISTS
+   (SELECT 1 FROM departments d WHERE d.deptid = e.dept_id AND d.dept_name LIKE &#x27;SALES%&#x27;);
+
+D. SELECT name FROM employees WHERE dept_id IN
+   (SELECT deptid, dept_name FROM departments);
+
+(1)		A
+(2)		B
+(3)		C
+(4)		D</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「スカラサブクエリの制約」です。スカラサブクエリは1行1列だけを返すサブクエリであり、0行なら NULL、2行以上ならエラーになる。使える句と使えない場所を区別する必要がある。 したがって正答は C「SELECT name FROM employees e WHERE EXISTS (SELECT 1 FRO…」 になります。</p>
@@ -885,34 +619,12 @@ WHERE
                 <article class="question-card">
                   <div class="question-meta">第2回 模擬試験 / 問25 / 正答 AB / 自己回答 AC</div>
                   <div class="block-title">問題文</div>
-                  <pre>異なるITEM_IDで同じ商品名（ITEM_NAME）が入力されているものをチェックする方法は下記のどれでしょうか。（2つ選択）</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card correct selected">
-              <div class="option-key">A</div>
-              <div class="option-text">自己結合</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">B</div>
-              <div class="option-text">副問合せ</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">C</div>
-              <div class="option-text">自己結合によるFULL OUTER JOIN</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">D</div>
-              <div class="option-text">自己結合によるRIGHT OUTER JOIN</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">E</div>
-              <div class="option-text">自己結合によるLEFT OUTER JOIN</div>
-            </div>
-            </div>
+                  <pre>異なるITEM_IDで同じ商品名（ITEM_NAME）が入力されているものをチェックする方法は下記のどれでしょうか。（2つ選択）
+(1)		A.　自己結合
+(2)		B.　副問合せ
+(3)		C.　自己結合によるFULL OUTER JOIN
+(4)		D.　自己結合によるRIGHT OUTER JOIN
+(5)		E.　自己結合によるLEFT OUTER JOIN</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「自己結合と副問合せの使い分け」です。同一表内の重複や対応関係を確認するときは、同じ表を別名で比較する自己結合でも、集約や存在確認を使う副問合せでも表現できる。要件に対して成立する手法を見分けるのが論点である。 したがって正答は A「自己結合」 / B「副問合せ」 になります。</p>
@@ -934,39 +646,13 @@ WHERE
                 <article class="question-card">
                   <div class="question-meta">第3回 模擬試験 / 問69 / 正答 ACD / 自己回答 ABC</div>
                   <div class="block-title">問題文</div>
-                  <pre>複数行の副問合せについて、正しいものを3つ選んでください</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card correct selected">
-              <div class="option-key">A</div>
-              <div class="option-text">HAVING 句を含めることができる。</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">B</div>
-              <div class="option-text">WHERE句は使えない。</div>
-            </div>
-            
-            <div class="option-card correct selected">
-              <div class="option-key">C</div>
-              <div class="option-text">GROUP BY 句を含めることができる。</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">D</div>
-              <div class="option-text">複数の列を返すことができる。</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">E</div>
-              <div class="option-text">副問合せ内で IN を使用できない。</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">F</div>
-              <div class="option-text">副問合せから常に2つ以上の値が返される。</div>
-            </div>
-            </div>
+                  <pre>複数行の副問合せについて、正しいものを3つ選んでください
+(1)		A. HAVING 句を含めることができる。
+(2)		B. WHERE句は使えない。
+(3)		C. GROUP BY 句を含めることができる。
+(4)		D. 複数の列を返すことができる。
+(5)		E. 副問合せ内で IN を使用できない。
+(6)		F. 副問合せから常に2つ以上の値が返される。</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「複数行サブクエリの性質」です。複数行サブクエリは、複数行を返し得る副問合せであり、WHERE、HAVING、GROUP BY を内部に持つこともできる。比較では IN、ANY、ALL など複数行対応の演算子を使う必要がある。 したがって正答は A「HAVING 句を含めることができる。」 / C「GROUP BY 句を含めることができる。」 / D「複数の列を返すことができる。」 になります。</p>

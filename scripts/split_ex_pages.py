@@ -935,9 +935,7 @@ def build_domain_page(domain_info: dict) -> str:
                 <article class="question-card">
                   <div class="question-meta">{html.escape(question['exam_title'])} / 問{question['q']} / 正答 {html.escape(question['ans'] or '-')} / 自己回答 {html.escape(question.get('self_ans') or '-')}</div>
                   <div class="block-title">問題文</div>
-                  {html_pre(question['parsed']['stem'] or question['text'])}
-                  <div class="block-title">選択肢</div>
-                  {render_options(question['parsed'], correct_keys, self_keys)}
+                  {html_pre(question['text'])}
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>{explain}</p>
@@ -999,16 +997,6 @@ def build_domain_page(domain_info: dict) -> str:
   .question-meta {{ font-size: .8rem; color: #64748b; margin-bottom: 10px; font-weight: 700; }}
   .block-title {{ font-size: .85rem; font-weight: 800; color: {color}; margin: 10px 0 6px; }}
   pre {{ white-space: pre-wrap; word-break: break-word; background: #0f172a; color: #e2e8f0; border-radius: 12px; padding: 14px; font-size: .84rem; overflow-x: auto; }}
-  .options-grid {{ display: grid; gap: 8px; }}
-  .option-card {{ display: grid; grid-template-columns: 32px 1fr; gap: 10px; align-items: start; border: 1px solid #dbe4ef; border-radius: 12px; padding: 10px 12px; background: white; }}
-  .option-card.correct {{ border-color: #22c55e; box-shadow: inset 0 0 0 1px #22c55e; }}
-  .option-card.selected {{ background: #fff7ed; }}
-  .option-card.correct.selected {{ background: #f0fdf4; }}
-  .option-key {{ display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 999px; font-size: .82rem; font-weight: 900; background: #e2e8f0; color: #0f172a; }}
-  .option-card.correct .option-key {{ background: #dcfce7; color: #166534; }}
-  .option-card.selected .option-key {{ background: #ffedd5; color: #9a3412; }}
-  .option-card.correct.selected .option-key {{ background: linear-gradient(90deg,#dcfce7,#ffedd5); color: #166534; }}
-  .option-text {{ font-size: .88rem; color: #1f2937; line-height: 1.6; padding-top: 3px; word-break: break-word; }}
   .analysis-block p {{ color: #334155; font-size: .9rem; margin-bottom: 8px; }}
   .rebuild-list {{ padding-left: 20px; color: #334155; font-size: .9rem; }}
   .rebuild-list li {{ margin-bottom: 5px; }}
@@ -1033,7 +1021,7 @@ def build_domain_page(domain_info: dict) -> str:
   <div class="hero-card">
     <div style="font-size:.9rem;color:#64748b;font-weight:700">{domain} / {PRIORITY_LABEL[priority]}</div>
     <div style="font-size:1.4rem;font-weight:900;margin-top:4px">{label}</div>
-    <p style="margin-top:8px;color:#334155">このページは、実際に間違えた設問をカテゴリ別に並べ、問題文・選択肢・正答理由・誤答理由・叩き直しポイントまで一気に確認するための再構築教材です。</p>
+    <p style="margin-top:8px;color:#334155">このページは、実際に間違えた設問をカテゴリ別に並べ、記録された問題全文を正本として、正答理由・誤答理由・叩き直しポイントまで一気に確認するための再構築教材です。</p>
     <div class="hero-grid">
       <div class="metric"><div class="label">フェーズ</div><div class="value">Phase {phase_no}</div></div>
       <div class="metric"><div class="label">進捗率</div><div class="value">{domain_info['accuracy']:.1f}%</div></div>
@@ -1182,7 +1170,7 @@ def build_hub_page(phases: list[dict]) -> str:
   <div class="intro">
     <div style="font-size:.95rem;color:#64748b;font-weight:700">方針</div>
     <div style="font-size:1.4rem;font-weight:900;margin-top:4px">フェーズ単位で、全誤答を徹底解説ページへ分割</div>
-    <p style="margin-top:8px;color:#334155">Phase 1 から順に進み、各 EX ページで実際に間違えた問題だけを確認します。各設問には問題文・選択肢・正答理由・誤答理由・叩き直しポイントを載せています。</p>
+    <p style="margin-top:8px;color:#334155">Phase 1 から順に進み、各 EX ページで実際に間違えた問題だけを確認します。各設問では記録された問題全文を正本として、正答理由・誤答理由・叩き直しポイントを整理しています。</p>
   </div>
   {''.join(phase_sections)}
 </div>
