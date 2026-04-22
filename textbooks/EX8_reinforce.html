@@ -89,9 +89,16 @@
               
                 <article class="question-card">
                   <div class="question-meta">第1回 模擬試験 / 問12 / 正答 A.C / 自己回答 B.C</div>
-                  <div class="block-title">問題文</div>
+                  <div class="block-title">記録原文（省略なし）</div>
+                  <pre>VERIFYコマンドについて正しい記述はどれでしょうか。(2つ選択)
+(1)		A.　置換変数の値を表示します。
+(2)		B.　置換変数の値を作成します。
+(3)		C.　SQL DeveloperおよびSQL*Plusで使用できます。
+(4)		D.　SQL Developerでのみ使用できます。
+(5)		E.　SQL*Plusでのみ使用できます。</pre>
+                  <div class="block-title">問題文（抽出）</div>
                   <pre>VERIFYコマンドについて正しい記述はどれでしょうか。(2つ選択)</pre>
-                  <div class="block-title">選択肢</div>
+                  <div class="block-title">選択肢（抽出）</div>
                   <div class="options-grid">
             <div class="option-card correct">
               <div class="option-label">A</div>
@@ -132,12 +139,36 @@
                 
                 <article class="question-card">
                   <div class="question-meta">第2回 模擬試験 / 問10 / 正答 C / 自己回答 E</div>
-                  <div class="block-title">問題文</div>
+                  <div class="block-title">記録原文（省略なし）</div>
+                  <pre>以下のSQLを作成する必要があります。
+・SQL実行時に必ず列名を入力する
+・最初のSQL実行時に表名を入力し、次回以降のSQL実行時に表名の入力不要
+上記の条件を満たすSQLはどれでしょうか。
+(1)		A.　SELECT &amp;column FROM &amp;table;
+(2)		B.　SELECT &amp;&amp;column FROM &amp;table;
+(3)		C.　SELECT &amp;column FROM &amp;&amp;table;
+(4)		D.　SELECT &amp;&amp;column FROM &amp;&amp;table;
+
+
+以下のコマンドとSQLを実行するとします。
+
+DEFINE ITEMPRICE = &#x27;1000&#x27;
+DEFINE ITEMID = &#x27;1&#x27;
+SELECT * FROM ITEM WHERE ITEM_ID = &#x27;&amp;ITEMID&#x27; AND ITEM_PRICE = &amp;ITEMPRICE;
+
+実行結果として正しい記述はどれでしょうか。
+(1)		A.　文字入力のプロンプトが表示されません。
+(2)		B.　ITEMIDの文字入力プロンプトが表示されます。
+(3)		C.　ITEMPRICEの文字入力プロンプトが表示されます。
+(4)		D.　ITEMPRICEとITEMIDの両方の文字入力プロンプトが表示されます。
+(5)		E.　エラーとなります。
+Ans.A</pre>
+                  <div class="block-title">問題文（抽出）</div>
                   <pre>以下のSQLを作成する必要があります。
 ・SQL実行時に必ず列名を入力する
 ・最初のSQL実行時に表名を入力し、次回以降のSQL実行時に表名の入力不要
 上記の条件を満たすSQLはどれでしょうか。</pre>
-                  <div class="block-title">選択肢</div>
+                  <div class="block-title">選択肢（抽出）</div>
                   <div class="options-grid">
             <div class="option-card">
               <div class="option-label">A</div>
@@ -204,14 +235,28 @@ Ans.A</pre></div>
                 
                 <article class="question-card">
                   <div class="question-meta">第2回 模擬試験 / 問39 / 正答 D / 自己回答 A</div>
-                  <div class="block-title">問題文</div>
+                  <div class="block-title">記録原文（省略なし）</div>
+                  <pre>以下の文を実行した場合、置換変数x とy はそれぞれ何回プロンプト（入力要求）されるでしょうか。最も適切なものを1つ選択してください。
+
+SET VERIFY ON
+DEFINE x = 100
+SELECT &amp;x AS x_value, &amp;&amp;y AS y_value FROM dual;
+UNDEFINE x
+SELECT &amp;x AS x_value, &amp;&amp;y AS y_value FROM dual;
+(1)		A. x:0回、y:0回
+(2)		B. x:0回、y:1回
+(3)		C. x:1回、y:0回
+(4)		D. x:1回、y:1回
+(5)		E. x:2回、y:1回
+(6)		F. x:2回、y:2回</pre>
+                  <div class="block-title">問題文（抽出）</div>
                   <pre>以下の文を実行した場合、置換変数x とy はそれぞれ何回プロンプト（入力要求）されるでしょうか。最も適切なものを1つ選択してください。
 SET VERIFY ON
 DEFINE x = 100
 SELECT &amp;x AS x_value, &amp;&amp;y AS y_value FROM dual;
 UNDEFINE x
 SELECT &amp;x AS x_value, &amp;&amp;y AS y_value FROM dual;</pre>
-                  <div class="block-title">選択肢</div>
+                  <div class="block-title">選択肢（抽出）</div>
                   <div class="options-grid">
             <div class="option-card selected">
               <div class="option-label">A</div>
@@ -257,9 +302,15 @@ SELECT &amp;x AS x_value, &amp;&amp;y AS y_value FROM dual;</pre>
                 
                 <article class="question-card">
                   <div class="question-meta">第3回 模擬試験 / 問45 / 正答 CD / 自己回答 BD</div>
-                  <div class="block-title">問題文</div>
+                  <div class="block-title">記録原文（省略なし）</div>
+                  <pre>SET VERIFY ON コマンドについて、正しいものを2つ選んでください。
+(1)		A. WHERE 句で使用される変数の値のみを表示する。
+(2)		B. DEFINE コマンドで作成された変数の値を表示する。
+(3)		C. SQL*Plus で使用できる。
+(4)		D. &amp;&amp; で始まる変数の値を表示する。</pre>
+                  <div class="block-title">問題文（抽出）</div>
                   <pre>SET VERIFY ON コマンドについて、正しいものを2つ選んでください。</pre>
-                  <div class="block-title">選択肢</div>
+                  <div class="block-title">選択肢（抽出）</div>
                   <div class="options-grid">
             <div class="option-card">
               <div class="option-label">A</div>
@@ -301,10 +352,17 @@ SELECT &amp;x AS x_value, &amp;&amp;y AS y_value FROM dual;</pre>
               
                 <article class="question-card">
                   <div class="question-meta">第2回 模擬試験 / 問24 / 正答 B / 自己回答 C</div>
-                  <div class="block-title">問題文</div>
+                  <div class="block-title">記録原文（省略なし）</div>
+                  <pre>ITEM_TYPE=FOODの商品を&quot;;&quot;区切りで1行に表示するためのSQLはどれでしょうか。
+なお、ソートは製造年月日（MADE_DATE）の順とします。
+(1)		A.　SELECT LISTAGG(ITEM_NAME) WITHIN GROUP (ORDER BY MADE_DATE) &quot;FoodList&quot; FROM ITEM WHERE ITEM_TYPE = &#x27;FOOD&#x27;;
+(2)		B.　SELECT LISTAGG(ITEM_NAME, &#x27;; &#x27;) WITHIN GROUP (ORDER BY MADE_DATE) &quot;FoodList&quot; FROM ITEM WHERE ITEM_TYPE = &#x27;FOOD&#x27;;
+(3)		C.　SELECT LISTAGG(ITEM_NAME, &#x27;; &#x27;) &quot;FoodList&quot; FROM ITEM WHERE ITEM_TYPE = &#x27;FOOD&#x27;; WITHIN GROUP (ORDER BY MADE_DATE);
+(4)		D.　SELECT LISTAGG(ITEM_NAME) WITHIN GROUP ORDER BY (MADE_DATE) &quot;FoodList&quot; FROM ITEM WHERE ITEM_TYPE = &#x27;FOOD&#x27;;</pre>
+                  <div class="block-title">問題文（抽出）</div>
                   <pre>ITEM_TYPE=FOODの商品を&quot;;&quot;区切りで1行に表示するためのSQLはどれでしょうか。
 なお、ソートは製造年月日（MADE_DATE）の順とします。</pre>
-                  <div class="block-title">選択肢</div>
+                  <div class="block-title">選択肢（抽出）</div>
                   <div class="options-grid">
             <div class="option-card">
               <div class="option-label">A</div>
@@ -340,7 +398,27 @@ SELECT &amp;x AS x_value, &amp;&amp;y AS y_value FROM dual;</pre>
                 
                 <article class="question-card">
                   <div class="question-meta">第3回 模擬試験 / 問3 / 正答 A / 自己回答 D</div>
-                  <div class="block-title">問題文</div>
+                  <div class="block-title">記録原文（省略なし）</div>
+                  <pre>次のInventory表を対象とするSQLを実行した結果として正しいものはどれですか。1つ選択してください。
+
+---- 実行するSQL ----
+SELECT item_id FROM Inventory
+WHERE NOT (tax &gt; 80 OR quantity &lt; 2)
+ORDER BY (selling_price + tax) ASC, (discount * quantity) DESC;
+
+| item_id | selling_price | tax | discount | quantity |
+|---------|----------------|-----|----------|----------|
+| 101     | 1000           | 80  | 50       | 2        |
+| 102     | 900            | 100 | 30       | 3        |
+| 103     | 950            | 50  | 70       | 1        |
+| 104     | 950            | 50  | 40       | 4        |
+
+
+(1)		A. 104, 101
+(2)		B. 101, 104
+(3)		C. 103, 104
+(4)		D. 104, 102</pre>
+                  <div class="block-title">問題文（抽出）</div>
                   <pre>次のInventory表を対象とするSQLを実行した結果として正しいものはどれですか。1つ選択してください。
 ---- 実行するSQL ----
 SELECT item_id FROM Inventory
@@ -352,7 +430,7 @@ ORDER BY (selling_price + tax) ASC, (discount * quantity) DESC;
 | 102     | 900            | 100 | 30       | 3        |
 | 103     | 950            | 50  | 70       | 1        |
 | 104     | 950            | 50  | 40       | 4        |</pre>
-                  <div class="block-title">選択肢</div>
+                  <div class="block-title">選択肢（抽出）</div>
                   <div class="options-grid">
             <div class="option-card correct">
               <div class="option-label">A</div>
@@ -388,9 +466,15 @@ ORDER BY (selling_price + tax) ASC, (discount * quantity) DESC;
                 
                 <article class="question-card">
                   <div class="question-meta">第3回 模擬試験 / 問6 / 正答 AD / 自己回答 BC</div>
-                  <div class="block-title">問題文</div>
+                  <div class="block-title">記録原文（省略なし）</div>
+                  <pre>次のSQLのうち、Employees表から給与の高い順に並べたうえで、先頭から5件を抽出する処理として正しいものはどれですか。2つ選択してください。
+(1)		A. SELECT * FROM Employees ORDER BY salary DESC OFFSET 0 ROWS FETCH FIRST 5 ROWS ONLY;
+(2)		B. SELECT * FROM Employees FETCH FIRST 5 ROWS ONLY OFFSET 0 ROWS ORDER BY salary DESC;
+(3)		C. SELECT * FROM Employees WHERE ROWNUM &lt;= 5 ORDER BY salary DESC;
+(4)		D. SELECT * FROM (SELECT * FROM Employees ORDER BY salary DESC) WHERE ROWNUM &lt;= 5;</pre>
+                  <div class="block-title">問題文（抽出）</div>
                   <pre>次のSQLのうち、Employees表から給与の高い順に並べたうえで、先頭から5件を抽出する処理として正しいものはどれですか。2つ選択してください。</pre>
-                  <div class="block-title">選択肢</div>
+                  <div class="block-title">選択肢（抽出）</div>
                   <div class="options-grid">
             <div class="option-card correct">
               <div class="option-label">A</div>
@@ -432,13 +516,27 @@ ORDER BY (selling_price + tax) ASC, (discount * quantity) DESC;
               
                 <article class="question-card">
                   <div class="question-meta">第1回 模擬試験 / 問8 / 正答 D / 自己回答 C</div>
-                  <div class="block-title">問題文</div>
+                  <div class="block-title">記録原文（省略なし）</div>
+                  <pre>次の条件に合ったSQLを作成する必要があります。
+
+1. ITEM_NAMEと消費税（10%積算）を含めた価格を表示します。
+2. ITEM_PRICEがNULLではない商品が対象です。
+3. ITEM_NAMEがNULLの商品は対象外です。
+
+上記の条件に合ったSQLはどれでしょうか。
+　
+拡大する
+(1)		A.　SELECT ITEM_NAME, ITEM_PRICE * 1.10 FROM ITEM WHERE ITEM_NAME AND ITEM_PRICE IS NOT NULL;
+(2)		B.　SELECT ITEM_NAME, ITEM_PRICE * 1.10 FROM ITEM WHERE ITEM_NAME IS NOT NULL AND ITEM_TYPE IS NOT NULL;
+(3)		C.　SELECT ITEM_NAME, ITEM_PRICE * 1.10 FROM ITEM WHERE ITEM_NAME, ITEM_PRICE IS NOT NULL;
+(4)		D.　SELECT ITEM_NAME, ITEM_PRICE * 1.10 FROM ITEM WHERE ITEM_NAME IS NOT NULL AND ITEM_PRICE IS NOT NULL;</pre>
+                  <div class="block-title">問題文（抽出）</div>
                   <pre>次の条件に合ったSQLを作成する必要があります。
 1. ITEM_NAMEと消費税（10%積算）を含めた価格を表示します。
 2. ITEM_PRICEがNULLではない商品が対象です。
 3. ITEM_NAMEがNULLの商品は対象外です。
 上記の条件に合ったSQLはどれでしょうか。</pre>
-                  <div class="block-title">選択肢</div>
+                  <div class="block-title">選択肢（抽出）</div>
                   <div class="options-grid">
             <div class="option-card">
               <div class="option-label">A</div>
@@ -474,9 +572,16 @@ ORDER BY (selling_price + tax) ASC, (discount * quantity) DESC;
                 
                 <article class="question-card">
                   <div class="question-meta">第3回 模擬試験 / 問42 / 正答 AC / 自己回答 AB</div>
-                  <div class="block-title">問題文</div>
+                  <div class="block-title">記録原文（省略なし）</div>
+                  <pre>COUNT 関数について、正しいものを2つ選んでください。
+(1)		A. COUNT(DISTINCT name) は、重複を排除し、NAME 列に NULL がある場合はカウントしない。
+(2)		B. DISTINCT を使用した COUNT 関数は、WHERE 句を指定できない。
+(3)		C. COUNT(*) は、重複を含む行、および NULL を含む列のある行もカウントする。
+(4)		D. COUNT関数は NUMBER型とDATE型のデータに対してのみ使用できる。
+(5)		E. COUNT(name) は、NAME 列に NULL がある場合でもカウントする。</pre>
+                  <div class="block-title">問題文（抽出）</div>
                   <pre>COUNT 関数について、正しいものを2つ選んでください。</pre>
-                  <div class="block-title">選択肢</div>
+                  <div class="block-title">選択肢（抽出）</div>
                   <div class="options-grid">
             <div class="option-card correct selected">
               <div class="option-label">A</div>
@@ -523,9 +628,16 @@ ORDER BY (selling_price + tax) ASC, (discount * quantity) DESC;
               
                 <article class="question-card">
                   <div class="question-meta">第1回 模擬試験 / 問26 / 正答 C.E / 自己回答 B.C</div>
-                  <div class="block-title">問題文</div>
+                  <div class="block-title">記録原文（省略なし）</div>
+                  <pre>非等価結合のパフォーマンスについて正しい記述はどれでしょうか。（2つ選択）
+(1)		A.　BETWEEN条件は、等号・不等号条件よりもパフォーマンスが低下します。
+(2)		B.　BETWEEN条件は、等号・不等号条件よりもパフォーマンスが優れています。
+(3)		C.　ANSI結合構文とOracle結合構文では、パフォーマンスに違いはありません。
+(4)		D.　ANSI結合構文よりもOracle結合構文の方がパフォーマンスは優れています。
+(5)		E.　表に別名をつけて列を表別名で修飾すると、パフォーマンスが向上します。</pre>
+                  <div class="block-title">問題文（抽出）</div>
                   <pre>非等価結合のパフォーマンスについて正しい記述はどれでしょうか。（2つ選択）</pre>
-                  <div class="block-title">選択肢</div>
+                  <div class="block-title">選択肢（抽出）</div>
                   <div class="options-grid">
             <div class="option-card">
               <div class="option-label">A</div>
