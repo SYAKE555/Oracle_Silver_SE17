@@ -28,17 +28,35 @@
   .concept-section h3 { display: flex; justify-content: space-between; gap: 12px; align-items: center; font-size: 1.15rem; margin-bottom: 8px; color: #0f172a; }
   .concept-section h3 span { font-size: .82rem; padding: 5px 10px; border-radius: 999px; background: #e67e22; color: white; }
   .concept-copy { color: #475569; font-size: .92rem; margin-bottom: 16px; }
+  .concept-guide { border-top: 5px solid #e67e22; background: #f8fafc; border-radius: 16px; padding: 16px; margin-bottom: 18px; }
+  .guide-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+  .guide-block { margin-bottom: 12px; }
+  .guide-title { font-size: .82rem; font-weight: 900; color: #e67e22; margin-bottom: 6px; }
+  .guide-block p { color: #334155; font-size: .9rem; }
+  .guide-list { padding-left: 20px; color: #334155; font-size: .9rem; }
+  .guide-list li { margin-bottom: 5px; }
+  .guide-note { background: #fff7ed; border-left: 4px solid #e67e22; border-radius: 10px; padding: 10px 12px; color: #7c2d12; font-size: .88rem; margin-top: 6px; }
   .question-card { border: 1px solid #dbe4ef; border-radius: 16px; padding: 16px; margin-bottom: 14px; background: #fcfdff; }
   .question-meta { font-size: .8rem; color: #64748b; margin-bottom: 10px; font-weight: 700; }
   .block-title { font-size: .85rem; font-weight: 800; color: #e67e22; margin: 10px 0 6px; }
   pre { white-space: pre-wrap; word-break: break-word; background: #0f172a; color: #e2e8f0; border-radius: 12px; padding: 14px; font-size: .84rem; overflow-x: auto; }
   .analysis-block p { color: #334155; font-size: .9rem; margin-bottom: 8px; }
-  .rebuild-list { padding-left: 20px; color: #334155; font-size: .9rem; }
-  .rebuild-list li { margin-bottom: 5px; }
+  .option-review-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 10px; margin-bottom: 8px; }
+  .option-review { border-radius: 14px; padding: 12px; border: 1px solid #dbe4ef; background: white; }
+  .option-review.correct { border-left: 5px solid #16a34a; }
+  .option-review.wrong { border-left: 5px solid #c0392b; }
+  .option-review-head { display: flex; justify-content: space-between; gap: 10px; align-items: center; margin-bottom: 8px; }
+  .option-review-key { font-size: .92rem; font-weight: 900; color: #0f172a; }
+  .option-review-badges span { display: inline-block; background: #eef2f7; color: #334155; font-size: .74rem; font-weight: 800; border-radius: 999px; padding: 3px 8px; margin-left: 6px; }
+  .option-review-text { color: #1f2937; font-size: .88rem; margin-bottom: 8px; }
+  .option-review-reason { color: #475569; font-size: .86rem; }
+  .study-step-list { padding-left: 20px; color: #334155; font-size: .9rem; }
+  .study-step-list li { margin-bottom: 5px; }
   @media (max-width: 720px) {
     .page-header h1 { font-size: 1.55rem; }
     .container { padding: 18px; }
     .concept-section h3 { flex-direction: column; align-items: flex-start; }
+    .option-review-head { flex-direction: column; align-items: flex-start; }
   }
 </style>
 </head>
@@ -78,6 +96,33 @@
               <h3>WHERE と HAVING<span>3問</span></h3>
               <p class="concept-copy">WHERE は集計前の行条件、HAVING は集計後のグループ条件である。集計関数を WHERE に直接書くとエラーになる。</p>
               
+    <div class="concept-guide" style="border-top-color:#e67e22">
+      <div class="guide-block">
+        <div class="guide-title">論点の定義</div>
+        <p>集計問題では、行条件は WHERE、グループ条件は HAVING、集計関数以外の列は GROUP BY に含める、という基本規則を守る必要がある。</p>
+      </div>
+      <div class="guide-block">
+        <div class="guide-title">正式構文・基本形</div>
+        <pre>SELECT department_id, COUNT(*)
+FROM   employees
+WHERE  salary IS NOT NULL
+GROUP  BY department_id
+HAVING COUNT(*) &gt;= 2;</pre>
+      </div>
+      <div class="guide-grid">
+        <div class="guide-block">
+          <div class="guide-title">成立条件</div>
+          <ul class="guide-list"><li>WHERE は集計前、HAVING は集計後に適用される。</li><li>COUNT(*) は全行、COUNT(col) は NULL を除く行数を返す。</li><li>SELECT に出す非集計列は GROUP BY にすべて含める。</li></ul>
+        </div>
+        <div class="guide-block">
+          <div class="guide-title">判定手順</div>
+          <ol class="guide-list ordered"><li>条件が行単位かグループ単位かを最初に判定する。</li><li>次に SELECT 列と GROUP BY 列の整合を確認する。</li><li>NULL を含む列では COUNT(*) と COUNT(col) の違いを明示的に追う。</li></ol>
+        </div>
+      </div>
+      <div class="guide-note">失点しやすい点: COUNT や AVG 条件を WHERE に置いてしまい、GROUP BY 後の条件だと気付けないことが多い。</div>
+    </div>
+    
+              
                 <article class="question-card">
                   <div class="question-meta">第1回 模擬試験 / 問21 / 正答 B.D.E / 自己回答 -</div>
                   <div class="block-title">問題文</div>
@@ -89,13 +134,69 @@
 (5)		E.　WHEREとHAVINGを同時に使用した場合、WHEREはHAVINGの前に実行されます。
 (6)		F.　HAVINGの条件に、列別名を使用できます。</pre>
                   <div class="analysis-block">
-                    <div class="block-title">なぜそうなるか</div>
-                    <p>この問題の論点は「WHERE と HAVING」です。WHERE は集計前の行条件、HAVING は集計後のグループ条件である。集計関数を WHERE に直接書くとエラーになる。 この設問では正答 B「HAVINGの条件に、COUNT関数を含めることはできます。」 / D「WHEREとHAVINGを同時に使用することは可能です。」 / E「WHEREとHAVINGを同時に使用した場合、WHEREはHAVINGの前に実行されます。」 を選べており、論点自体は取れています。</p>
-                    <div class="block-title">維持ポイント</div>
-                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
-                    <div class="block-title">叩き直しポイント</div>
-                    <ul class="rebuild-list">
-                      <li>行条件は WHERE、集計結果条件は HAVING と固定する。</li><li>SELECT の論理処理順を FROM→WHERE→GROUP BY→HAVING で覚える。</li><li>HAVING が必要かどうかは『集計後に絞るか』で判断する。</li>
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「WHERE と HAVING」です。問題文は「SQLのHAVING句とWHERE句について正しい記述はどれでしょうか。（3つ選択）」という条件を満たす説明または SQL を求めています。WHERE は集計前の行条件、HAVING は集計後のグループ条件である。集計関数を WHERE に直接書くとエラーになる。 この設問では正答 B「HAVINGの条件に、COUNT関数を含めることはできます。」 / D「WHEREとHAVINGを同時に使用することは可能です。」 / E「WHEREとHAVINGを同時に使用した場合、WHEREはHAVINGの前に実行されます。」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">HAVINGの条件に、MAX関数を含めることはできません。</div>
+              <div class="option-review-reason">誤り。 HAVING は集計後のグループに対して条件を適用します。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">HAVINGの条件に、COUNT関数を含めることはできます。</div>
+              <div class="option-review-reason">正しい。 HAVING は集計後のグループに対して条件を適用します。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">WHEREとHAVINGを同時に使用することはできません。</div>
+              <div class="option-review-reason">誤り。 HAVING は集計後のグループに対して条件を適用します。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">WHEREとHAVINGを同時に使用することは可能です。</div>
+              <div class="option-review-reason">正しい。 HAVING は集計後のグループに対して条件を適用します。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">E</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">WHEREとHAVINGを同時に使用した場合、WHEREはHAVINGの前に実行されます。</div>
+              <div class="option-review-reason">正しい。 HAVING は集計後のグループに対して条件を適用します。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">F</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">HAVINGの条件に、列別名を使用できます。</div>
+              <div class="option-review-reason">誤り。 HAVING は集計後のグループに対して条件を適用します。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>条件が行単位かグループ単位かを最初に判定する。</li><li>次に SELECT 列と GROUP BY 列の整合を確認する。</li><li>NULL を含む列では COUNT(*) と COUNT(col) の違いを明示的に追う。</li>
                     </ul>
                   </div>
                 </article>
@@ -110,13 +211,60 @@
 (4)		D.　SELECTで集計関数を使用している場合、GROUP BYは使用できません。
 (5)		E.　SELECTで集計関数を使用している場合、GROUP BYを使用する必要があります。</pre>
                   <div class="analysis-block">
-                    <div class="block-title">なぜそうなるか</div>
-                    <p>この問題の論点は「WHERE と HAVING」です。WHERE は集計前の行条件、HAVING は集計後のグループ条件である。集計関数を WHERE に直接書くとエラーになる。 この設問では正答 A「GROUP BYとWHEREは併用できます。」 を選べており、論点自体は取れています。</p>
-                    <div class="block-title">維持ポイント</div>
-                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
-                    <div class="block-title">叩き直しポイント</div>
-                    <ul class="rebuild-list">
-                      <li>行条件は WHERE、集計結果条件は HAVING と固定する。</li><li>SELECT の論理処理順を FROM→WHERE→GROUP BY→HAVING で覚える。</li><li>HAVING が必要かどうかは『集計後に絞るか』で判断する。</li>
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「WHERE と HAVING」です。問題文は「GROUP BYの説明で正しい記述はどれでしょうか。」という条件を満たす説明または SQL を求めています。WHERE は集計前の行条件、HAVING は集計後のグループ条件である。集計関数を WHERE に直接書くとエラーになる。 この設問では正答 A「GROUP BYとWHEREは併用できます。」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">GROUP BYとWHEREは併用できます。</div>
+              <div class="option-review-reason">正しい。 集計問題では、WHERE・GROUP BY・HAVING の役割分担を崩していないかが判定基準です。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">GROUP BYの後にWHEREを使用すると、グループの作成後に行が除外されます。</div>
+              <div class="option-review-reason">誤り。 集計問題では、WHERE・GROUP BY・HAVING の役割分担を崩していないかが判定基準です。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">GROUP BYで列別名を使用できます。</div>
+              <div class="option-review-reason">誤り。 集計問題では、WHERE・GROUP BY・HAVING の役割分担を崩していないかが判定基準です。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECTで集計関数を使用している場合、GROUP BYは使用できません。</div>
+              <div class="option-review-reason">誤り。 集計問題では、WHERE・GROUP BY・HAVING の役割分担を崩していないかが判定基準です。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">E</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECTで集計関数を使用している場合、GROUP BYを使用する必要があります。</div>
+              <div class="option-review-reason">誤り。 集計問題では、WHERE・GROUP BY・HAVING の役割分担を崩していないかが判定基準です。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>条件が行単位かグループ単位かを最初に判定する。</li><li>次に SELECT 列と GROUP BY 列の整合を確認する。</li><li>NULL を含む列では COUNT(*) と COUNT(col) の違いを明示的に追う。</li>
                     </ul>
                   </div>
                 </article>
@@ -138,13 +286,51 @@ HAVING MAX(ITEM_PRICE) BETWEEN 1500 and 3000;
 (3)		C.　正常に実行されます。
 (4)		D.　WHERE句とHAVING句を同じSELECTで使用できないため、エラーとなります。</pre>
                   <div class="analysis-block">
-                    <div class="block-title">なぜそうなるか</div>
-                    <p>この問題の論点は「WHERE と HAVING」です。WHERE は集計前の行条件、HAVING は集計後のグループ条件である。集計関数を WHERE に直接書くとエラーになる。 この設問では正答 C「正常に実行されます。」 を選べており、論点自体は取れています。</p>
-                    <div class="block-title">維持ポイント</div>
-                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
-                    <div class="block-title">叩き直しポイント</div>
-                    <ul class="rebuild-list">
-                      <li>行条件は WHERE、集計結果条件は HAVING と固定する。</li><li>SELECT の論理処理順を FROM→WHERE→GROUP BY→HAVING で覚える。</li><li>HAVING が必要かどうかは『集計後に絞るか』で判断する。</li>
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「WHERE と HAVING」です。問題文は「以下のSQLを実行するとします。 SELECT ITEM_TYPE,COUNT(ITEM_TYPE) FROM ITEM WHERE ITEM_PRICE >= 2000 GROUP BY ITEM_TYPE HAVING MAX(ITE…」という条件を満たす説明または SQL を求めています。WHERE は集計前の行条件、HAVING は集計後のグループ条件である。集計関数を WHERE に直接書くとエラーになる。 この設問では正答 C「正常に実行されます。」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">HAVING句ではMAX演算子を使用できないため、エラーとなります。</div>
+              <div class="option-review-reason">誤り。 HAVING は集計後のグループに対して条件を適用します。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">HAVING句ではBETWEEN演算子を使用できないため、エラーとなります。</div>
+              <div class="option-review-reason">誤り。 HAVING は集計後のグループに対して条件を適用します。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">正常に実行されます。</div>
+              <div class="option-review-reason">正しい。 集計問題では、WHERE・GROUP BY・HAVING の役割分担を崩していないかが判定基準です。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">WHERE句とHAVING句を同じSELECTで使用できないため、エラーとなります。</div>
+              <div class="option-review-reason">誤り。 HAVING は集計後のグループに対して条件を適用します。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>条件が行単位かグループ単位かを最初に判定する。</li><li>次に SELECT 列と GROUP BY 列の整合を確認する。</li><li>NULL を含む列では COUNT(*) と COUNT(col) の違いを明示的に追う。</li>
                     </ul>
                   </div>
                 </article>
@@ -154,6 +340,33 @@ HAVING MAX(ITEM_PRICE) BETWEEN 1500 and 3000;
             <section class="concept-section" id="d4-2">
               <h3>COUNT・AVG と NULL<span>1問</span></h3>
               <p class="concept-copy">COUNT(*) は行数、COUNT(col) は NULL を除く列数、AVG(col) は NULL を平均計算から除外する。集計関数ごとに NULL の扱いが異なる。</p>
+              
+    <div class="concept-guide" style="border-top-color:#e67e22">
+      <div class="guide-block">
+        <div class="guide-title">論点の定義</div>
+        <p>集計問題では、行条件は WHERE、グループ条件は HAVING、集計関数以外の列は GROUP BY に含める、という基本規則を守る必要がある。</p>
+      </div>
+      <div class="guide-block">
+        <div class="guide-title">正式構文・基本形</div>
+        <pre>SELECT department_id, COUNT(*)
+FROM   employees
+WHERE  salary IS NOT NULL
+GROUP  BY department_id
+HAVING COUNT(*) &gt;= 2;</pre>
+      </div>
+      <div class="guide-grid">
+        <div class="guide-block">
+          <div class="guide-title">成立条件</div>
+          <ul class="guide-list"><li>WHERE は集計前、HAVING は集計後に適用される。</li><li>COUNT(*) は全行、COUNT(col) は NULL を除く行数を返す。</li><li>SELECT に出す非集計列は GROUP BY にすべて含める。</li></ul>
+        </div>
+        <div class="guide-block">
+          <div class="guide-title">判定手順</div>
+          <ol class="guide-list ordered"><li>条件が行単位かグループ単位かを最初に判定する。</li><li>次に SELECT 列と GROUP BY 列の整合を確認する。</li><li>NULL を含む列では COUNT(*) と COUNT(col) の違いを明示的に追う。</li></ol>
+        </div>
+      </div>
+      <div class="guide-note">失点しやすい点: COUNT(*) と COUNT(col) を同一視し、AVG の分母に NULL 行まで含めて考えやすい。</div>
+    </div>
+    
               
                 <article class="question-card">
                   <div class="question-meta">第2回 模擬試験 / 問22 / 正答 B / 自己回答 -</div>
@@ -169,13 +382,51 @@ GROUP BY TO_CHAR(MADE_DATE, &#x27;YYYY&#x27;);
 (3)		C.　AVGとTO_CHARは同時に使用できません。
 (4)		D.　正常に実行されます。</pre>
                   <div class="analysis-block">
-                    <div class="block-title">なぜそうなるか</div>
-                    <p>この問題の論点は「COUNT・AVG と NULL」です。COUNT(*) は行数、COUNT(col) は NULL を除く列数、AVG(col) は NULL を平均計算から除外する。集計関数ごとに NULL の扱いが異なる。 この設問では正答 B「2つのTO_CHAR関数のパラメータが合っていないため、エラーとなります。」 を選べており、論点自体は取れています。</p>
-                    <div class="block-title">維持ポイント</div>
-                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
-                    <div class="block-title">叩き直しポイント</div>
-                    <ul class="rebuild-list">
-                      <li>COUNT(*) は全行、COUNT(col) は NULL 除外を声に出して確認する。</li><li>AVG(col)=SUM(col)/COUNT(col) に近い考え方で整理する。</li><li>NULL を含む列の集計問題は分母を必ず確認する。</li>
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「COUNT・AVG と NULL」です。問題文は「以下のSQLを実行するとします。 SELECT TO_CHAR(MADE_DATE,'RR'), AVG(ITEM_PRICE) FROM ITEM GROUP BY TO_CHAR(MADE_DATE, 'YYYY'); 実行結果につい…」という条件を満たす説明または SQL を求めています。COUNT(*) は行数、COUNT(col) は NULL を除く列数、AVG(col) は NULL を平均計算から除外する。集計関数ごとに NULL の扱いが異なる。 この設問では正答 B「2つのTO_CHAR関数のパラメータが合っていないため、エラーとなります。」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">AVGとGROUP BYは同時に使用できません。</div>
+              <div class="option-review-reason">誤り。 集計問題では、WHERE・GROUP BY・HAVING の役割分担を崩していないかが判定基準です。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">2つのTO_CHAR関数のパラメータが合っていないため、エラーとなります。</div>
+              <div class="option-review-reason">正しい。 集計問題では、WHERE・GROUP BY・HAVING の役割分担を崩していないかが判定基準です。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">AVGとTO_CHARは同時に使用できません。</div>
+              <div class="option-review-reason">誤り。 集計問題では、WHERE・GROUP BY・HAVING の役割分担を崩していないかが判定基準です。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">正常に実行されます。</div>
+              <div class="option-review-reason">誤り。 集計問題では、WHERE・GROUP BY・HAVING の役割分担を崩していないかが判定基準です。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>条件が行単位かグループ単位かを最初に判定する。</li><li>次に SELECT 列と GROUP BY 列の整合を確認する。</li><li>NULL を含む列では COUNT(*) と COUNT(col) の違いを明示的に追う。</li>
                     </ul>
                   </div>
                 </article>

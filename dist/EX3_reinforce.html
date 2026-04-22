@@ -28,17 +28,35 @@
   .concept-section h3 { display: flex; justify-content: space-between; gap: 12px; align-items: center; font-size: 1.15rem; margin-bottom: 8px; color: #0f172a; }
   .concept-section h3 span { font-size: .82rem; padding: 5px 10px; border-radius: 999px; background: #c0392b; color: white; }
   .concept-copy { color: #475569; font-size: .92rem; margin-bottom: 16px; }
+  .concept-guide { border-top: 5px solid #c0392b; background: #f8fafc; border-radius: 16px; padding: 16px; margin-bottom: 18px; }
+  .guide-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+  .guide-block { margin-bottom: 12px; }
+  .guide-title { font-size: .82rem; font-weight: 900; color: #c0392b; margin-bottom: 6px; }
+  .guide-block p { color: #334155; font-size: .9rem; }
+  .guide-list { padding-left: 20px; color: #334155; font-size: .9rem; }
+  .guide-list li { margin-bottom: 5px; }
+  .guide-note { background: #fff7ed; border-left: 4px solid #c0392b; border-radius: 10px; padding: 10px 12px; color: #7c2d12; font-size: .88rem; margin-top: 6px; }
   .question-card { border: 1px solid #dbe4ef; border-radius: 16px; padding: 16px; margin-bottom: 14px; background: #fcfdff; }
   .question-meta { font-size: .8rem; color: #64748b; margin-bottom: 10px; font-weight: 700; }
   .block-title { font-size: .85rem; font-weight: 800; color: #c0392b; margin: 10px 0 6px; }
   pre { white-space: pre-wrap; word-break: break-word; background: #0f172a; color: #e2e8f0; border-radius: 12px; padding: 14px; font-size: .84rem; overflow-x: auto; }
   .analysis-block p { color: #334155; font-size: .9rem; margin-bottom: 8px; }
-  .rebuild-list { padding-left: 20px; color: #334155; font-size: .9rem; }
-  .rebuild-list li { margin-bottom: 5px; }
+  .option-review-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 10px; margin-bottom: 8px; }
+  .option-review { border-radius: 14px; padding: 12px; border: 1px solid #dbe4ef; background: white; }
+  .option-review.correct { border-left: 5px solid #16a34a; }
+  .option-review.wrong { border-left: 5px solid #c0392b; }
+  .option-review-head { display: flex; justify-content: space-between; gap: 10px; align-items: center; margin-bottom: 8px; }
+  .option-review-key { font-size: .92rem; font-weight: 900; color: #0f172a; }
+  .option-review-badges span { display: inline-block; background: #eef2f7; color: #334155; font-size: .74rem; font-weight: 800; border-radius: 999px; padding: 3px 8px; margin-left: 6px; }
+  .option-review-text { color: #1f2937; font-size: .88rem; margin-bottom: 8px; }
+  .option-review-reason { color: #475569; font-size: .86rem; }
+  .study-step-list { padding-left: 20px; color: #334155; font-size: .9rem; }
+  .study-step-list li { margin-bottom: 5px; }
   @media (max-width: 720px) {
     .page-header h1 { font-size: 1.55rem; }
     .container { padding: 18px; }
     .concept-section h3 { flex-direction: column; align-items: flex-start; }
+    .option-review-head { flex-direction: column; align-items: flex-start; }
   }
 </style>
 </head>
@@ -78,6 +96,33 @@
               <h3>TO_CHAR・TO_NUMBER・TO_DATE の書式変換<span>6問</span></h3>
               <p class="concept-copy">文字列として保持された数値や日付を演算するには、まず TO_NUMBER や TO_DATE で型変換し、その後に TO_CHAR で表示形式を整える。書式モデルが一致しなければ失敗する。</p>
               
+    <div class="concept-guide" style="border-top-color:#c0392b">
+      <div class="guide-block">
+        <div class="guide-title">論点の定義</div>
+        <p>型変換関数は、内部計算のために元の型へ戻す処理と、表示形式へ整える処理を分けて書く。数値演算の前に TO_NUMBER、日付演算の前に TO_DATE、表示の直前に TO_CHAR を使う。</p>
+      </div>
+      <div class="guide-block">
+        <div class="guide-title">正式構文・基本形</div>
+        <pre>SELECT TO_CHAR(
+         TO_NUMBER(shohin_kakaku, &#x27;999,999.99&#x27;) * 0.30,
+         &#x27;999,999.00&#x27;
+       ) AS discount_price
+FROM   shohin;</pre>
+      </div>
+      <div class="guide-grid">
+        <div class="guide-block">
+          <div class="guide-title">成立条件</div>
+          <ul class="guide-list"><li>文字列として保存された数値へ直接乗算や加算を行う前に、TO_NUMBER で数値へ変換する。</li><li>表示形式を指定する最終段階では TO_CHAR を使い、TO_NUMBER を外側に置かない。</li><li>書式モデルは元データまたは出力形式と桁数・小数点位置が一致していなければならない。</li></ul>
+        </div>
+        <div class="guide-block">
+          <div class="guide-title">判定手順</div>
+          <ol class="guide-list ordered"><li>まず元データの型が文字列か数値か日付かを確認する。</li><li>次に演算前の型変換と表示直前の書式変換を分離して読む。</li><li>最後に書式モデルが入力側・出力側のどちらへ掛かっているかを確認する。</li></ol>
+        </div>
+      </div>
+      <div class="guide-note">失点しやすい点: 変換の向きを逆にしたり、表示書式と内部型の処理順を取り違えやすい。</div>
+    </div>
+    
+              
                 <article class="question-card">
                   <div class="question-meta">第1回 模擬試験 / 問20 / 正答 E / 自己回答 D</div>
                   <div class="block-title">問題文</div>
@@ -93,13 +138,60 @@
 (4)		D.　SELECT TO_CHAR (TO_NUMBER(SHOHIN_KAKAKU) * .30, &#x27;99,999.00&#x27;) FROM SHOHIN
 (5)		E.　SELECT TO_CHAR (TO_NUMBER(SHOHIN_KAKAKU, &#x27;999,999.99&#x27;) * .30, &#x27;999,999.00&#x27;) FROM SHOHIN</pre>
                   <div class="analysis-block">
-                    <div class="block-title">なぜそうなるか</div>
-                    <p>この問題の論点は「TO_CHAR・TO_NUMBER・TO_DATE の書式変換」です。文字列として保持された数値や日付を演算するには、まず TO_NUMBER や TO_DATE で型変換し、その後に TO_CHAR で表示形式を整える。書式モデルが一致しなければ失敗する。 したがって正答は E「SELECT TO_CHAR (TO_NUMBER(SHOHIN_KAKAKU, &#x27;999,999.99&#x27;) …」 になります。</p>
-                    <div class="block-title">今回の誤り</div>
-                    <p>自己回答は D「SELECT TO_CHAR (TO_NUMBER(SHOHIN_KAKAKU) * .30, &#x27;99,999…」 でした。変換の向きを逆にしたり、表示書式と内部型の処理順を取り違えやすい。 正答との差は、条件の向き、句の置き場所、またはオブジェクトの性質を正確に読み切れていない点にあります。</p>
-                    <div class="block-title">叩き直しポイント</div>
-                    <ul class="rebuild-list">
-                      <li>演算前に元の型へ戻し、表示直前に TO_CHAR で整形する。</li><li>書式モデルの桁数、カンマ、小数点位置まで確認する。</li><li>TO_CHAR は表示、TO_NUMBER/TO_DATE は演算準備と役割分担で覚える。</li>
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問で確定させる論点は「TO_CHAR・TO_NUMBER・TO_DATE の書式変換」です。問題文は「図のような表があります。 これらの商品について、30%割引価格を提供する予定です。 割引額をSHOHIN_KAKAKUと同じ形式にして表示するSQLはどれですか。」を満たす記述または SQL を求めています。文字列として保持された数値や日付を演算するには、まず TO_NUMBER や TO_DATE で型変換し、その後に TO_CHAR で表示形式を整える。書式モデルが一致しなければ失敗する。 そのため、成立条件を満たす正答は E「SELECT TO_CHAR (TO_NUMBER(SHOHIN_KAKAKU, &#x27;999,999.99&#x27;) …」 です。</p>
+                    <div class="block-title">今回の失点要因</div>
+                    <p>自己回答は D「SELECT TO_CHAR (TO_NUMBER(SHOHIN_KAKAKU) * .30, &#x27;99,999…」 でした。失点要因は 変換の向きを逆にしたり、表示書式と内部型の処理順を取り違えやすい。 正答との差は、条件の向き、句の位置、返却行数、またはオブジェクトの性質を正式定義のレベルで確認し切れていない点にあります。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT TO_NUMBER(TO_NUMBER(SHOHIN_KAKAKU, &#x27;999,999.99&#x27;) * .30, &#x27;999,999.00&#x27;) FROM SHOHIN</div>
+              <div class="option-review-reason">誤り。 最終出力の書式整形段階では TO_NUMBER ではなく TO_CHAR を使う必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT TO_CHAR (SHOHIN_KAKAKU * .30, &#x27;99,999.99&#x27;) FROM SHOHIN</div>
+              <div class="option-review-reason">誤り。 文字列列へ直接乗算しているなら、演算前の数値変換が不足しています。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT TO_CHAR (SHOHIN_KAKAKU * .30) FROM SHOHIN</div>
+              <div class="option-review-reason">誤り。 文字列列へ直接乗算しているなら、演算前の数値変換が不足しています。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span><span>自己回答</span></div>
+              </div>
+              <div class="option-review-text">SELECT TO_CHAR (TO_NUMBER(SHOHIN_KAKAKU) * .30, &#x27;99,999.00&#x27;) FROM SHOHIN</div>
+              <div class="option-review-reason">誤り。 文字列価格を TO_NUMBER で数値へ直してから乗算し、最後に TO_CHAR で書式整形しているなら、型変換の順序として適切です。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">E</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT TO_CHAR (TO_NUMBER(SHOHIN_KAKAKU, &#x27;999,999.99&#x27;) * .30, &#x27;999,999.00&#x27;) FROM SHOHIN</div>
+              <div class="option-review-reason">正しい。 文字列価格を TO_NUMBER で数値へ直してから乗算し、最後に TO_CHAR で書式整形しているなら、型変換の順序として適切です。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>まず元データの型が文字列か数値か日付かを確認する。</li><li>次に演算前の型変換と表示直前の書式変換を分離して読む。</li><li>最後に書式モデルが入力側・出力側のどちらへ掛かっているかを確認する。</li>
                     </ul>
                   </div>
                 </article>
@@ -114,13 +206,51 @@
 (3)		C.　SELECT AVG(MADE_DATE) FROM ITEM
 (4)		D.　SELECT TO_CHAR(SYSDATE - MADE_DATE) FROM ITEM</pre>
                   <div class="analysis-block">
-                    <div class="block-title">なぜそうなるか</div>
-                    <p>この問題の論点は「TO_CHAR・TO_NUMBER・TO_DATE の書式変換」です。文字列として保持された数値や日付を演算するには、まず TO_NUMBER や TO_DATE で型変換し、その後に TO_CHAR で表示形式を整える。書式モデルが一致しなければ失敗する。 したがって正答は C「SELECT AVG(MADE_DATE) FROM ITEM」 になります。</p>
-                    <div class="block-title">今回の誤り</div>
-                    <p>自己回答は D「SELECT TO_CHAR(SYSDATE - MADE_DATE) FROM ITEM」 でした。変換の向きを逆にしたり、表示書式と内部型の処理順を取り違えやすい。 正答との差は、条件の向き、句の置き場所、またはオブジェクトの性質を正確に読み切れていない点にあります。</p>
-                    <div class="block-title">叩き直しポイント</div>
-                    <ul class="rebuild-list">
-                      <li>演算前に元の型へ戻し、表示直前に TO_CHAR で整形する。</li><li>書式モデルの桁数、カンマ、小数点位置まで確認する。</li><li>TO_CHAR は表示、TO_NUMBER/TO_DATE は演算準備と役割分担で覚える。</li>
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問で確定させる論点は「TO_CHAR・TO_NUMBER・TO_DATE の書式変換」です。問題文は「ITEM表には製造年月日（DATE型）が存在します。 次のSQLでエラーになるものはどれでしょうか。」を満たす記述または SQL を求めています。文字列として保持された数値や日付を演算するには、まず TO_NUMBER や TO_DATE で型変換し、その後に TO_CHAR で表示形式を整える。書式モデルが一致しなければ失敗する。 そのため、成立条件を満たす正答は C「SELECT AVG(MADE_DATE) FROM ITEM」 です。</p>
+                    <div class="block-title">今回の失点要因</div>
+                    <p>自己回答は D「SELECT TO_CHAR(SYSDATE - MADE_DATE) FROM ITEM」 でした。失点要因は 変換の向きを逆にしたり、表示書式と内部型の処理順を取り違えやすい。 正答との差は、条件の向き、句の位置、返却行数、またはオブジェクトの性質を正式定義のレベルで確認し切れていない点にあります。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT MIN(SYSDATE - MADE_DATE) FROM ITEM</div>
+              <div class="option-review-reason">誤り。 DATE の減算結果は数値であり、MIN/MAX はその型へ適用できます。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT MAX(MADE_DATE) FROM ITEM</div>
+              <div class="option-review-reason">誤り。 DATE の減算結果は数値であり、MIN/MAX はその型へ適用できます。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT AVG(MADE_DATE) FROM ITEM</div>
+              <div class="option-review-reason">正しい。 AVG 集計は DATE 型へ適用できないため、この式はエラーになります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span><span>自己回答</span></div>
+              </div>
+              <div class="option-review-text">SELECT TO_CHAR(SYSDATE - MADE_DATE) FROM ITEM</div>
+              <div class="option-review-reason">誤り。 `SYSDATE - MADE_DATE` は日数を表す数値であり、TO_CHAR による文字列化自体は成立します。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>まず元データの型が文字列か数値か日付かを確認する。</li><li>次に演算前の型変換と表示直前の書式変換を分離して読む。</li><li>最後に書式モデルが入力側・出力側のどちらへ掛かっているかを確認する。</li>
                     </ul>
                   </div>
                 </article>
@@ -137,13 +267,60 @@ SELECT TO_CHAR(_____, &#x27;$9,999&#x27;) FROM dual;
 (4)		D. 1234.56
 (5)		E. 9999.9</pre>
                   <div class="analysis-block">
-                    <div class="block-title">なぜそうなるか</div>
-                    <p>この問題の論点は「TO_CHAR・TO_NUMBER・TO_DATE の書式変換」です。文字列として保持された数値や日付を演算するには、まず TO_NUMBER や TO_DATE で型変換し、その後に TO_CHAR で表示形式を整える。書式モデルが一致しなければ失敗する。 したがって正答は A「123.4」 / B「1.234」 / D「1234.56」 になります。</p>
-                    <div class="block-title">今回の誤り</div>
-                    <p>自己回答は C「12345」 / D「1234.56」 / E「9999.9」 でした。一部は当たっていますが、C「12345」 / E「9999.9」 に引っ張られて取りこぼしています。変換の向きを逆にしたり、表示書式と内部型の処理順を取り違えやすい。</p>
-                    <div class="block-title">叩き直しポイント</div>
-                    <ul class="rebuild-list">
-                      <li>演算前に元の型へ戻し、表示直前に TO_CHAR で整形する。</li><li>書式モデルの桁数、カンマ、小数点位置まで確認する。</li><li>TO_CHAR は表示、TO_NUMBER/TO_DATE は演算準備と役割分担で覚える。</li>
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問で確定させる論点は「TO_CHAR・TO_NUMBER・TO_DATE の書式変換」です。問題文は「次のSQL文の「_____」に入れる値として、$付きで表示されるものを3つ選択してください。 SELECT TO_CHAR(_____, '$9,999') FROM dual;」を満たす記述または SQL を求めています。文字列として保持された数値や日付を演算するには、まず TO_NUMBER や TO_DATE で型変換し、その後に TO_CHAR で表示形式を整える。書式モデルが一致しなければ失敗する。 そのため、成立条件を満たす正答は A「123.4」 / B「1.234」 / D「1234.56」 です。</p>
+                    <div class="block-title">今回の失点要因</div>
+                    <p>自己回答は C「12345」 / D「1234.56」 / E「9999.9」 でした。一部は論点を捉えていますが、C「12345」 / E「9999.9」 を混在させたことで正答条件を外しています。失点要因は 変換の向きを逆にしたり、表示書式と内部型の処理順を取り違えやすい。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">123.4</div>
+              <div class="option-review-reason">正しい。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">1.234</div>
+              <div class="option-review-reason">正しい。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span><span>自己回答</span></div>
+              </div>
+              <div class="option-review-text">12345</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>正答肢</span><span>自己回答</span></div>
+              </div>
+              <div class="option-review-text">1234.56</div>
+              <div class="option-review-reason">正しい。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">E</div>
+                <div class="option-review-badges"><span>非正答肢</span><span>自己回答</span></div>
+              </div>
+              <div class="option-review-text">9999.9</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>まず元データの型が文字列か数値か日付かを確認する。</li><li>次に演算前の型変換と表示直前の書式変換を分離して読む。</li><li>最後に書式モデルが入力側・出力側のどちらへ掛かっているかを確認する。</li>
                     </ul>
                   </div>
                 </article>
@@ -167,13 +344,51 @@ WHERE LENGTH(product_name) &gt;= 5 AND NVL(status, &#x27;0&#x27;) = &#x27;1&#x27
 (3)		C. DECODE関数はNULLの比較ができないため、WHERE句でNVLを使うとエラーとなる。
 (4)		D. TO_CHAR関数は文字列型以外では使えないため、このSQLは構文エラーになる。</pre>
                   <div class="analysis-block">
-                    <div class="block-title">なぜそうなるか</div>
-                    <p>この問題の論点は「TO_CHAR・TO_NUMBER・TO_DATE の書式変換」です。文字列として保持された数値や日付を演算するには、まず TO_NUMBER や TO_DATE で型変換し、その後に TO_CHAR で表示形式を整える。書式モデルが一致しなければ失敗する。 したがって正答は B「構文エラーはないため正常に実行される。」 になります。</p>
-                    <div class="block-title">今回の誤り</div>
-                    <p>自己回答は A「DECODE関数では戻り値に関数や演算子を使うことはできないため、このSQLはエラーになる。」 でした。変換の向きを逆にしたり、表示書式と内部型の処理順を取り違えやすい。 正答との差は、条件の向き、句の置き場所、またはオブジェクトの性質を正確に読み切れていない点にあります。</p>
-                    <div class="block-title">叩き直しポイント</div>
-                    <ul class="rebuild-list">
-                      <li>演算前に元の型へ戻し、表示直前に TO_CHAR で整形する。</li><li>書式モデルの桁数、カンマ、小数点位置まで確認する。</li><li>TO_CHAR は表示、TO_NUMBER/TO_DATE は演算準備と役割分担で覚える。</li>
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問で確定させる論点は「TO_CHAR・TO_NUMBER・TO_DATE の書式変換」です。問題文は「次のSQLの実行結果は次のうちどれですか。1つ選択してください。 ---- 実行するSQL ---- SELECT product_id, DECODE(TRIM(category), 'FOOD', 'F-' || TO_CHAR(pr…」を満たす記述または SQL を求めています。文字列として保持された数値や日付を演算するには、まず TO_NUMBER や TO_DATE で型変換し、その後に TO_CHAR で表示形式を整える。書式モデルが一致しなければ失敗する。 そのため、成立条件を満たす正答は B「構文エラーはないため正常に実行される。」 です。</p>
+                    <div class="block-title">今回の失点要因</div>
+                    <p>自己回答は A「DECODE関数では戻り値に関数や演算子を使うことはできないため、このSQLはエラーになる。」 でした。失点要因は 変換の向きを逆にしたり、表示書式と内部型の処理順を取り違えやすい。 正答との差は、条件の向き、句の位置、返却行数、またはオブジェクトの性質を正式定義のレベルで確認し切れていない点にあります。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>非正答肢</span><span>自己回答</span></div>
+              </div>
+              <div class="option-review-text">DECODE関数では戻り値に関数や演算子を使うことはできないため、このSQLはエラーになる。</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">構文エラーはないため正常に実行される。</div>
+              <div class="option-review-reason">正しい。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">DECODE関数はNULLの比較ができないため、WHERE句でNVLを使うとエラーとなる。</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">TO_CHAR関数は文字列型以外では使えないため、このSQLは構文エラーになる。</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>まず元データの型が文字列か数値か日付かを確認する。</li><li>次に演算前の型変換と表示直前の書式変換を分離して読む。</li><li>最後に書式モデルが入力側・出力側のどちらへ掛かっているかを確認する。</li>
                     </ul>
                   </div>
                 </article>
@@ -205,13 +420,51 @@ name（VARCHAR2型）、price（VARCHAR2型）、description（VARCHAR2型）、
 (3)		C. NVL2関数の第2引数と第3引数が連続して評価されるため構文エラーになる。
 (4)		D. SQLは正常に実行される。</pre>
                   <div class="analysis-block">
-                    <div class="block-title">なぜそうなるか</div>
-                    <p>この問題の論点は「TO_CHAR・TO_NUMBER・TO_DATE の書式変換」です。文字列として保持された数値や日付を演算するには、まず TO_NUMBER や TO_DATE で型変換し、その後に TO_CHAR で表示形式を整える。書式モデルが一致しなければ失敗する。 したがって正答は D「SQLは正常に実行される。」 になります。</p>
-                    <div class="block-title">今回の誤り</div>
-                    <p>自己回答は A「TO_NUMBER関数の引数は数値にする必要があるのに、REPLACE関数という文字変換関数を使用しているため…」 でした。変換の向きを逆にしたり、表示書式と内部型の処理順を取り違えやすい。 正答との差は、条件の向き、句の置き場所、またはオブジェクトの性質を正確に読み切れていない点にあります。</p>
-                    <div class="block-title">叩き直しポイント</div>
-                    <ul class="rebuild-list">
-                      <li>演算前に元の型へ戻し、表示直前に TO_CHAR で整形する。</li><li>書式モデルの桁数、カンマ、小数点位置まで確認する。</li><li>TO_CHAR は表示、TO_NUMBER/TO_DATE は演算準備と役割分担で覚える。</li>
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問で確定させる論点は「TO_CHAR・TO_NUMBER・TO_DATE の書式変換」です。問題文は「以下のSQL文を実行したときの結果として正しいものを1つ選びなさい。 ---- 実行するSQL ---- SELECT name, CASE WHEN TO_NUMBER(REPLACE(price, ',', '')) > 10000 …」を満たす記述または SQL を求めています。文字列として保持された数値や日付を演算するには、まず TO_NUMBER や TO_DATE で型変換し、その後に TO_CHAR で表示形式を整える。書式モデルが一致しなければ失敗する。 そのため、成立条件を満たす正答は D「SQLは正常に実行される。」 です。</p>
+                    <div class="block-title">今回の失点要因</div>
+                    <p>自己回答は A「TO_NUMBER関数の引数は数値にする必要があるのに、REPLACE関数という文字変換関数を使用しているため…」 でした。失点要因は 変換の向きを逆にしたり、表示書式と内部型の処理順を取り違えやすい。 正答との差は、条件の向き、句の位置、返却行数、またはオブジェクトの性質を正式定義のレベルで確認し切れていない点にあります。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>非正答肢</span><span>自己回答</span></div>
+              </div>
+              <div class="option-review-text">TO_NUMBER関数の引数は数値にする必要があるのに、REPLACE関数という文字変換関数を使用しているため構文エラーになる。</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">DECODE関数ではNULLIF関数を指定できないため構文エラーになる。</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">NVL2関数の第2引数と第3引数が連続して評価されるため構文エラーになる。</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">SQLは正常に実行される。</div>
+              <div class="option-review-reason">正しい。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>まず元データの型が文字列か数値か日付かを確認する。</li><li>次に演算前の型変換と表示直前の書式変換を分離して読む。</li><li>最後に書式モデルが入力側・出力側のどちらへ掛かっているかを確認する。</li>
                     </ul>
                   </div>
                 </article>
@@ -227,13 +480,51 @@ START_DATE が過去16か月以内の行のみを表示したいとします。
 (3)		C. WHERE MONTHS_BETWEEN(SYSDATE, start_date) &lt;= 16
 (4)		D. WHERE ADD_MONTHS(start_date, 16) &lt;= SYSDATE</pre>
                   <div class="analysis-block">
-                    <div class="block-title">なぜそうなるか</div>
-                    <p>この問題の論点は「TO_CHAR・TO_NUMBER・TO_DATE の書式変換」です。文字列として保持された数値や日付を演算するには、まず TO_NUMBER や TO_DATE で型変換し、その後に TO_CHAR で表示形式を整える。書式モデルが一致しなければ失敗する。 したがって正答は C「WHERE MONTHS_BETWEEN(SYSDATE, start_date) &lt;= 16」 になります。</p>
-                    <div class="block-title">今回の誤り</div>
-                    <p>自己回答は D「WHERE ADD_MONTHS(start_date, 16) &lt;= SYSDATE」 でした。変換の向きを逆にしたり、表示書式と内部型の処理順を取り違えやすい。 正答との差は、条件の向き、句の置き場所、またはオブジェクトの性質を正確に読み切れていない点にあります。</p>
-                    <div class="block-title">叩き直しポイント</div>
-                    <ul class="rebuild-list">
-                      <li>演算前に元の型へ戻し、表示直前に TO_CHAR で整形する。</li><li>書式モデルの桁数、カンマ、小数点位置まで確認する。</li><li>TO_CHAR は表示、TO_NUMBER/TO_DATE は演算準備と役割分担で覚える。</li>
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問で確定させる論点は「TO_CHAR・TO_NUMBER・TO_DATE の書式変換」です。問題文は「SHOPS テーブルには、データ型 DATE の START_DATE 列があり、行が挿入された日付を格納しています。 START_DATE が過去16か月以内の行のみを表示したいとします。 使用できる WHERE 句はどれですか？1つ選…」を満たす記述または SQL を求めています。文字列として保持された数値や日付を演算するには、まず TO_NUMBER や TO_DATE で型変換し、その後に TO_CHAR で表示形式を整える。書式モデルが一致しなければ失敗する。 そのため、成立条件を満たす正答は C「WHERE MONTHS_BETWEEN(SYSDATE, start_date) &lt;= 16」 です。</p>
+                    <div class="block-title">今回の失点要因</div>
+                    <p>自己回答は D「WHERE ADD_MONTHS(start_date, 16) &lt;= SYSDATE」 でした。失点要因は 変換の向きを逆にしたり、表示書式と内部型の処理順を取り違えやすい。 正答との差は、条件の向き、句の位置、返却行数、またはオブジェクトの性質を正式定義のレベルで確認し切れていない点にあります。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">WHERE MONTHS_BETWEEN(start_date, SYSDATE) &lt;= 16</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">WHERE TO_NUMBER(start_date - SYSDATE) &lt;= 16</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">WHERE MONTHS_BETWEEN(SYSDATE, start_date) &lt;= 16</div>
+              <div class="option-review-reason">正しい。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span><span>自己回答</span></div>
+              </div>
+              <div class="option-review-text">WHERE ADD_MONTHS(start_date, 16) &lt;= SYSDATE</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>まず元データの型が文字列か数値か日付かを確認する。</li><li>次に演算前の型変換と表示直前の書式変換を分離して読む。</li><li>最後に書式モデルが入力側・出力側のどちらへ掛かっているかを確認する。</li>
                     </ul>
                   </div>
                 </article>
@@ -243,6 +534,33 @@ START_DATE が過去16か月以内の行のみを表示したいとします。
             <section class="concept-section" id="d3-2">
               <h3>SUBSTR・INSTR・TRIM・REPLACE の使い分け<span>5問</span></h3>
               <p class="concept-copy">文字列の一部抽出では、位置取得に INSTR、切り出しに SUBSTR、不要部分の削除に TRIM、置換に REPLACE を使い分ける。空白位置の +1 を忘れると全体がずれる。</p>
+              
+    <div class="concept-guide" style="border-top-color:#c0392b">
+      <div class="guide-block">
+        <div class="guide-title">論点の定義</div>
+        <p>文字列関数は 1 行ずつ入力を受け取り、変換後の文字列または位置情報を返す。大文字小文字の正規化、部分抽出、位置探索は役割を分けて扱う。</p>
+      </div>
+      <div class="guide-block">
+        <div class="guide-title">正式構文・基本形</div>
+        <pre>SELECT UPPER(item_name),
+       SUBSTR(item_name, 1, 3),
+       INSTR(item_name, &#x27; &#x27;) 
+FROM   item
+WHERE  UPPER(item_name) LIKE &#x27;S%&#x27;;</pre>
+      </div>
+      <div class="guide-grid">
+        <div class="guide-block">
+          <div class="guide-title">成立条件</div>
+          <ul class="guide-list"><li>LIKE のワイルドカードは % が 0 文字以上、_ が 1 文字である。</li><li>INSTR は位置、SUBSTR は切り出し、TRIM は前後除去、REPLACE は置換に使う。</li><li>UPPER や LOWER を使うなら比較側の文字列も同じ規則でそろえる。</li></ul>
+        </div>
+        <div class="guide-block">
+          <div class="guide-title">判定手順</div>
+          <ol class="guide-list ordered"><li>まず要求が前方一致・部分一致・文字抽出のどれかを判定する。</li><li>次に正規化関数を列側と比較値側の両方へ必要か確認する。</li><li>位置を使う処理なら INSTR、切り出しなら SUBSTR と機能を分ける。</li></ol>
+        </div>
+      </div>
+      <div class="guide-note">失点しやすい点: 位置の起点や切り出し長を誤り、ほぼ正しそうな SQL を選んでしまいやすい。</div>
+    </div>
+    
               
                 <article class="question-card">
                   <div class="question-meta">第2回 模擬試験 / 問12 / 正答 BD / 自己回答 BE</div>
@@ -256,13 +574,60 @@ START_DATE が過去16か月以内の行のみを表示したいとします。
 (4)		D.　SELECT ITEM_NAME FROM ITEM WHERE INITCAP (SUBSTR (ITEM_NAME, INSTR(ITEM_NAME, &#x27; &#x27;)+1)) LIKE &#x27;Cu%&#x27;
 (5)		E.　SELECT ITEM_NAME FROM ITEM WHERE LOWER (SUBSTR (ITEM_NAME, INSTR(ITEM_NAME, &#x27; &#x27;)+1)) LIKE UPPER (&#x27;CU%&#x27;)</pre>
                   <div class="analysis-block">
-                    <div class="block-title">なぜそうなるか</div>
-                    <p>この問題の論点は「SUBSTR・INSTR・TRIM・REPLACE の使い分け」です。文字列の一部抽出では、位置取得に INSTR、切り出しに SUBSTR、不要部分の削除に TRIM、置換に REPLACE を使い分ける。空白位置の +1 を忘れると全体がずれる。 したがって正答は B「SELECT ITEM_NAME FROM ITEM WHERE UPPER (SUBSTR (ITEM_NA…」 / D「SELECT ITEM_NAME FROM ITEM WHERE INITCAP (SUBSTR (ITEM_…」 になります。</p>
-                    <div class="block-title">今回の誤り</div>
-                    <p>自己回答は B「SELECT ITEM_NAME FROM ITEM WHERE UPPER (SUBSTR (ITEM_NA…」 / E「SELECT ITEM_NAME FROM ITEM WHERE LOWER (SUBSTR (ITEM_NA…」 でした。一部は当たっていますが、E「SELECT ITEM_NAME FROM ITEM WHERE LOWER (SUBSTR (ITEM_NA…」 に引っ張られて取りこぼしています。位置の起点や切り出し長を誤り、ほぼ正しそうな SQL を選んでしまいやすい。</p>
-                    <div class="block-title">叩き直しポイント</div>
-                    <ul class="rebuild-list">
-                      <li>まず INSTR で位置を求め、その位置を SUBSTR に渡す。</li><li>先頭や末尾を削るなら TRIM、途中の語句置換なら REPLACE を使う。</li><li>1始まりのインデックスであることを常に意識する。</li>
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問で確定させる論点は「SUBSTR・INSTR・TRIM・REPLACE の使い分け」です。問題文は「半角スペースで区切られている商品名の2単語目が"CU"もしくは"Cu"で始まる値を表示する場合、以下のどのSELECT文を実行すればいいでしょうか。（2つ選択）」を満たす記述または SQL を求めています。文字列の一部抽出では、位置取得に INSTR、切り出しに SUBSTR、不要部分の削除に TRIM、置換に REPLACE を使い分ける。空白位置の +1 を忘れると全体がずれる。 そのため、成立条件を満たす正答は B「SELECT ITEM_NAME FROM ITEM WHERE UPPER (SUBSTR (ITEM_NA…」 / D「SELECT ITEM_NAME FROM ITEM WHERE INITCAP (SUBSTR (ITEM_…」 です。</p>
+                    <div class="block-title">今回の失点要因</div>
+                    <p>自己回答は B「SELECT ITEM_NAME FROM ITEM WHERE UPPER (SUBSTR (ITEM_NA…」 / E「SELECT ITEM_NAME FROM ITEM WHERE LOWER (SUBSTR (ITEM_NA…」 でした。一部は論点を捉えていますが、E「SELECT ITEM_NAME FROM ITEM WHERE LOWER (SUBSTR (ITEM_NA…」 を混在させたことで正答条件を外しています。失点要因は 位置の起点や切り出し長を誤り、ほぼ正しそうな SQL を選んでしまいやすい。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT ITEM_NAME FROM ITEM WHERE LOWER (SUBSTR (ITEM_NAME, INSTR(ITEM_NAME, &#x27; &#x27;)+1)) IN (&#x27;CU%&#x27;, &#x27;Cu)</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>正答肢</span><span>自己回答</span></div>
+              </div>
+              <div class="option-review-text">SELECT ITEM_NAME FROM ITEM WHERE UPPER (SUBSTR (ITEM_NAME, INSTR(ITEM_NAME, &#x27; &#x27;)+1)) LIKE UPPER (&#x27;CU%&#x27;)</div>
+              <div class="option-review-reason">正しい。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT ITEM_NAME FROM ITEM WHERE SUBSTR(ITEM_NAME, INSTR (ITEM_NAME, &#x27; &#x27;) +1) LIKE &#x27;Cu%&#x27;</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT ITEM_NAME FROM ITEM WHERE INITCAP (SUBSTR (ITEM_NAME, INSTR(ITEM_NAME, &#x27; &#x27;)+1)) LIKE &#x27;Cu%&#x27;</div>
+              <div class="option-review-reason">正しい。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">E</div>
+                <div class="option-review-badges"><span>非正答肢</span><span>自己回答</span></div>
+              </div>
+              <div class="option-review-text">SELECT ITEM_NAME FROM ITEM WHERE LOWER (SUBSTR (ITEM_NAME, INSTR(ITEM_NAME, &#x27; &#x27;)+1)) LIKE UPPER (&#x27;CU%&#x27;)</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>まず要求が前方一致・部分一致・文字抽出のどれかを判定する。</li><li>次に正規化関数を列側と比較値側の両方へ必要か確認する。</li><li>位置を使う処理なら INSTR、切り出しなら SUBSTR と機能を分ける。</li>
                     </ul>
                   </div>
                 </article>
@@ -280,13 +645,51 @@ START_DATE が過去16か月以内の行のみを表示したいとします。
 (3)		C.　SELECT REPLACE (SUBSTR(ITEM_NAME, -5), &#x27;Japanese&#x27;, &#x27;日本産&#x27;) FROM ITEM;
 (4)		D.　SELECT REPLACE (REPLACE(ITEM_NAME, &#x27;Curry&#x27;, &#x27; &#x27;), &#x27;Japanese&#x27;, &#x27;日本産&#x27;) FROM ITEM;</pre>
                   <div class="analysis-block">
-                    <div class="block-title">なぜそうなるか</div>
-                    <p>この問題の論点は「SUBSTR・INSTR・TRIM・REPLACE の使い分け」です。文字列の一部抽出では、位置取得に INSTR、切り出しに SUBSTR、不要部分の削除に TRIM、置換に REPLACE を使い分ける。空白位置の +1 を忘れると全体がずれる。 したがって正答は D「SELECT REPLACE (REPLACE(ITEM_NAME, &#x27;Curry&#x27;, &#x27; &#x27;), &#x27;Japa…」 になります。</p>
-                    <div class="block-title">今回の誤り</div>
-                    <p>自己回答は A「SELECT REPLACE (TRIM(TRAILING &#x27;Curry&#x27; FROM ITEM_NAME), …」 でした。位置の起点や切り出し長を誤り、ほぼ正しそうな SQL を選んでしまいやすい。 正答との差は、条件の向き、句の置き場所、またはオブジェクトの性質を正確に読み切れていない点にあります。</p>
-                    <div class="block-title">叩き直しポイント</div>
-                    <ul class="rebuild-list">
-                      <li>まず INSTR で位置を求め、その位置を SUBSTR に渡す。</li><li>先頭や末尾を削るなら TRIM、途中の語句置換なら REPLACE を使う。</li><li>1始まりのインデックスであることを常に意識する。</li>
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問で確定させる論点は「SUBSTR・INSTR・TRIM・REPLACE の使い分け」です。問題文は「ITEM表には、ITEM_NAMEの値が 'Japanese Beef Curry' 'Japanese Pork Curry' の2行が存在しています。 末尾の'Curry'を省いて、先頭の'Japanese'を'日本産'に置換して表示…」を満たす記述または SQL を求めています。文字列の一部抽出では、位置取得に INSTR、切り出しに SUBSTR、不要部分の削除に TRIM、置換に REPLACE を使い分ける。空白位置の +1 を忘れると全体がずれる。 そのため、成立条件を満たす正答は D「SELECT REPLACE (REPLACE(ITEM_NAME, &#x27;Curry&#x27;, &#x27; &#x27;), &#x27;Japa…」 です。</p>
+                    <div class="block-title">今回の失点要因</div>
+                    <p>自己回答は A「SELECT REPLACE (TRIM(TRAILING &#x27;Curry&#x27; FROM ITEM_NAME), …」 でした。失点要因は 位置の起点や切り出し長を誤り、ほぼ正しそうな SQL を選んでしまいやすい。 正答との差は、条件の向き、句の位置、返却行数、またはオブジェクトの性質を正式定義のレベルで確認し切れていない点にあります。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>非正答肢</span><span>自己回答</span></div>
+              </div>
+              <div class="option-review-text">SELECT REPLACE (TRIM(TRAILING &#x27;Curry&#x27; FROM ITEM_NAME), &#x27;Japanese&#x27;, &#x27;日本産&#x27;) FROM ITEM;</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT INITCAP (REPLACE(TRIM(&#x27;Curry&#x27; FROM ITEM_NAME), &#x27;Japanese&#x27;, &#x27;日本産&#x27;)) FROM ITEM;</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT REPLACE (SUBSTR(ITEM_NAME, -5), &#x27;Japanese&#x27;, &#x27;日本産&#x27;) FROM ITEM;</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT REPLACE (REPLACE(ITEM_NAME, &#x27;Curry&#x27;, &#x27; &#x27;), &#x27;Japanese&#x27;, &#x27;日本産&#x27;) FROM ITEM;</div>
+              <div class="option-review-reason">正しい。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>まず要求が前方一致・部分一致・文字抽出のどれかを判定する。</li><li>次に正規化関数を列側と比較値側の両方へ必要か確認する。</li><li>位置を使う処理なら INSTR、切り出しなら SUBSTR と機能を分ける。</li>
                     </ul>
                   </div>
                 </article>
@@ -303,13 +706,60 @@ START_DATE が過去16か月以内の行のみを表示したいとします。
 (4)		D.　SELECT ITEM_ID || &#x27; &#x27; || MADE_DATE FROM ITEM;
 (5)		E.　SELECT MADE_DATE || &#x27; &#x27; || ITEM_PRICE FROM ITEM;</pre>
                   <div class="analysis-block">
-                    <div class="block-title">なぜそうなるか</div>
-                    <p>この問題の論点は「SUBSTR・INSTR・TRIM・REPLACE の使い分け」です。文字列の一部抽出では、位置取得に INSTR、切り出しに SUBSTR、不要部分の削除に TRIM、置換に REPLACE を使い分ける。空白位置の +1 を忘れると全体がずれる。 したがって正答は A「SELECT MADE_DATE FROM ITEM WHERE MADE_DATE &gt; &#x27;01-06-202…」 になります。</p>
-                    <div class="block-title">今回の誤り</div>
-                    <p>自己回答は D「SELECT ITEM_ID || &#x27; &#x27; || MADE_DATE FROM ITEM;」 でした。位置の起点や切り出し長を誤り、ほぼ正しそうな SQL を選んでしまいやすい。 正答との差は、条件の向き、句の置き場所、またはオブジェクトの性質を正確に読み切れていない点にあります。</p>
-                    <div class="block-title">叩き直しポイント</div>
-                    <ul class="rebuild-list">
-                      <li>まず INSTR で位置を求め、その位置を SUBSTR に渡す。</li><li>先頭や末尾を削るなら TRIM、途中の語句置換なら REPLACE を使う。</li><li>1始まりのインデックスであることを常に意識する。</li>
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問で確定させる論点は「SUBSTR・INSTR・TRIM・REPLACE の使い分け」です。問題文は「NLS_DATE_FORMATはDD-MON-YYが設定されています。 明示的なデータ型変換が必要なSQLは以下のどれですか。」を満たす記述または SQL を求めています。文字列の一部抽出では、位置取得に INSTR、切り出しに SUBSTR、不要部分の削除に TRIM、置換に REPLACE を使い分ける。空白位置の +1 を忘れると全体がずれる。 そのため、成立条件を満たす正答は A「SELECT MADE_DATE FROM ITEM WHERE MADE_DATE &gt; &#x27;01-06-202…」 です。</p>
+                    <div class="block-title">今回の失点要因</div>
+                    <p>自己回答は D「SELECT ITEM_ID || &#x27; &#x27; || MADE_DATE FROM ITEM;」 でした。失点要因は 位置の起点や切り出し長を誤り、ほぼ正しそうな SQL を選んでしまいやすい。 正答との差は、条件の向き、句の位置、返却行数、またはオブジェクトの性質を正式定義のレベルで確認し切れていない点にあります。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT MADE_DATE FROM ITEM WHERE MADE_DATE &gt; &#x27;01-06-2021&#x27;;</div>
+              <div class="option-review-reason">正しい。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT ITEM_ID || &#x27; &#x27; || ITEM_PRICE FROM ITEM;</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT SUBSTR(MADE_DATE, 1, 2) FROM ITEM;</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span><span>自己回答</span></div>
+              </div>
+              <div class="option-review-text">SELECT ITEM_ID || &#x27; &#x27; || MADE_DATE FROM ITEM;</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">E</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT MADE_DATE || &#x27; &#x27; || ITEM_PRICE FROM ITEM;</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>まず要求が前方一致・部分一致・文字抽出のどれかを判定する。</li><li>次に正規化関数を列側と比較値側の両方へ必要か確認する。</li><li>位置を使う処理なら INSTR、切り出しなら SUBSTR と機能を分ける。</li>
                     </ul>
                   </div>
                 </article>
@@ -325,13 +775,69 @@ START_DATE が過去16か月以内の行のみを表示したいとします。
 (5)		E.　SELECT * FROM employees WHERE SUBSTR(name,3,1) = &#x27;o&#x27;;
 (6)		F.　SELECT * FROM employees WHERE INSTR(name,&#x27;o&#x27;,3) = 1;</pre>
                   <div class="analysis-block">
-                    <div class="block-title">なぜそうなるか</div>
-                    <p>この問題の論点は「SUBSTR・INSTR・TRIM・REPLACE の使い分け」です。文字列の一部抽出では、位置取得に INSTR、切り出しに SUBSTR、不要部分の削除に TRIM、置換に REPLACE を使い分ける。空白位置の +1 を忘れると全体がずれる。 したがって正答は A「SELECT * FROM employees WHERE name LIKE &#x27;__o%&#x27;」 / E「SELECT * FROM employees WHERE SUBSTR(name,3,1) = &#x27;o&#x27;;」 になります。</p>
-                    <div class="block-title">今回の誤り</div>
-                    <p>自己回答は B「SELECT * FROM employees WHERE name LIKE &#x27;%%o%&#x27;」 / E「SELECT * FROM employees WHERE SUBSTR(name,3,1) = &#x27;o&#x27;;」 でした。一部は当たっていますが、B「SELECT * FROM employees WHERE name LIKE &#x27;%%o%&#x27;」 に引っ張られて取りこぼしています。位置の起点や切り出し長を誤り、ほぼ正しそうな SQL を選んでしまいやすい。</p>
-                    <div class="block-title">叩き直しポイント</div>
-                    <ul class="rebuild-list">
-                      <li>まず INSTR で位置を求め、その位置を SUBSTR に渡す。</li><li>先頭や末尾を削るなら TRIM、途中の語句置換なら REPLACE を使う。</li><li>1始まりのインデックスであることを常に意識する。</li>
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問で確定させる論点は「SUBSTR・INSTR・TRIM・REPLACE の使い分け」です。問題文は「名前の3文字目が'o'となっているデータを取得したい場合、妥当なSQLはどれでしょうか。（2つ選択）」を満たす記述または SQL を求めています。文字列の一部抽出では、位置取得に INSTR、切り出しに SUBSTR、不要部分の削除に TRIM、置換に REPLACE を使い分ける。空白位置の +1 を忘れると全体がずれる。 そのため、成立条件を満たす正答は A「SELECT * FROM employees WHERE name LIKE &#x27;__o%&#x27;」 / E「SELECT * FROM employees WHERE SUBSTR(name,3,1) = &#x27;o&#x27;;」 です。</p>
+                    <div class="block-title">今回の失点要因</div>
+                    <p>自己回答は B「SELECT * FROM employees WHERE name LIKE &#x27;%%o%&#x27;」 / E「SELECT * FROM employees WHERE SUBSTR(name,3,1) = &#x27;o&#x27;;」 でした。一部は論点を捉えていますが、B「SELECT * FROM employees WHERE name LIKE &#x27;%%o%&#x27;」 を混在させたことで正答条件を外しています。失点要因は 位置の起点や切り出し長を誤り、ほぼ正しそうな SQL を選んでしまいやすい。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT * FROM employees WHERE name LIKE &#x27;__o%&#x27;</div>
+              <div class="option-review-reason">正しい。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span><span>自己回答</span></div>
+              </div>
+              <div class="option-review-text">SELECT * FROM employees WHERE name LIKE &#x27;%%o%&#x27;</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT * FROM employees WHERE name LIKE &#x27;__o&#x27;</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT * FROM employees WHERE name LIKE &#x27;%%o&#x27;</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">E</div>
+                <div class="option-review-badges"><span>正答肢</span><span>自己回答</span></div>
+              </div>
+              <div class="option-review-text">SELECT * FROM employees WHERE SUBSTR(name,3,1) = &#x27;o&#x27;;</div>
+              <div class="option-review-reason">正しい。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">F</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT * FROM employees WHERE INSTR(name,&#x27;o&#x27;,3) = 1;</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>まず要求が前方一致・部分一致・文字抽出のどれかを判定する。</li><li>次に正規化関数を列側と比較値側の両方へ必要か確認する。</li><li>位置を使う処理なら INSTR、切り出しなら SUBSTR と機能を分ける。</li>
                     </ul>
                   </div>
                 </article>
@@ -348,13 +854,60 @@ START_DATE が過去16か月以内の行のみを表示したいとします。
 (4)		D. start_date = &#x27;05-04-2025&#x27;　：左式は暗黙的な変換を使用
 (5)		E. salary = 0150000　 ：左式は明示的な変換を使用</pre>
                   <div class="analysis-block">
-                    <div class="block-title">なぜそうなるか</div>
-                    <p>この問題の論点は「SUBSTR・INSTR・TRIM・REPLACE の使い分け」です。文字列の一部抽出では、位置取得に INSTR、切り出しに SUBSTR、不要部分の削除に TRIM、置換に REPLACE を使い分ける。空白位置の +1 を忘れると全体がずれる。 したがって正答は A「start_date = &#x27;15-JUL-2025&#x27; ：左式は暗黙的な変換を使用」 / C「salary BETWEEN &#x27;101000&#x27; AND &#x27;110000&#x27; ：左式は暗黙的な変換を使用」 になります。</p>
-                    <div class="block-title">今回の誤り</div>
-                    <p>自己回答は C「salary BETWEEN &#x27;101000&#x27; AND &#x27;110000&#x27; ：左式は暗黙的な変換を使用」 / D「start_date = &#x27;05-04-2025&#x27; ：左式は暗黙的な変換を使用」 でした。一部は当たっていますが、D「start_date = &#x27;05-04-2025&#x27; ：左式は暗黙的な変換を使用」 に引っ張られて取りこぼしています。位置の起点や切り出し長を誤り、ほぼ正しそうな SQL を選んでしまいやすい。</p>
-                    <div class="block-title">叩き直しポイント</div>
-                    <ul class="rebuild-list">
-                      <li>まず INSTR で位置を求め、その位置を SUBSTR に渡す。</li><li>先頭や末尾を削るなら TRIM、途中の語句置換なら REPLACE を使う。</li><li>1始まりのインデックスであることを常に意識する。</li>
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問で確定させる論点は「SUBSTR・INSTR・TRIM・REPLACE の使い分け」です。問題文は「Employees表には、START_DATE列（データ型: DATE）とSALARY列（データ型: NUMBER）が存在します。 次の記載で正しいものを2つ選んでください。 なお、NLS_DATE_FORMATはDD-MON-RRに設定…」を満たす記述または SQL を求めています。文字列の一部抽出では、位置取得に INSTR、切り出しに SUBSTR、不要部分の削除に TRIM、置換に REPLACE を使い分ける。空白位置の +1 を忘れると全体がずれる。 そのため、成立条件を満たす正答は A「start_date = &#x27;15-JUL-2025&#x27; ：左式は暗黙的な変換を使用」 / C「salary BETWEEN &#x27;101000&#x27; AND &#x27;110000&#x27; ：左式は暗黙的な変換を使用」 です。</p>
+                    <div class="block-title">今回の失点要因</div>
+                    <p>自己回答は C「salary BETWEEN &#x27;101000&#x27; AND &#x27;110000&#x27; ：左式は暗黙的な変換を使用」 / D「start_date = &#x27;05-04-2025&#x27; ：左式は暗黙的な変換を使用」 でした。一部は論点を捉えていますが、D「start_date = &#x27;05-04-2025&#x27; ：左式は暗黙的な変換を使用」 を混在させたことで正答条件を外しています。失点要因は 位置の起点や切り出し長を誤り、ほぼ正しそうな SQL を選んでしまいやすい。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">start_date = &#x27;15-JUL-2025&#x27; ：左式は暗黙的な変換を使用</div>
+              <div class="option-review-reason">正しい。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">CONCAT(salary, start_date)  ：左式は明示的な変換を使用</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>正答肢</span><span>自己回答</span></div>
+              </div>
+              <div class="option-review-text">salary BETWEEN &#x27;101000&#x27; AND &#x27;110000&#x27; ：左式は暗黙的な変換を使用</div>
+              <div class="option-review-reason">正しい。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span><span>自己回答</span></div>
+              </div>
+              <div class="option-review-text">start_date = &#x27;05-04-2025&#x27; ：左式は暗黙的な変換を使用</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">E</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">salary = 0150000  ：左式は明示的な変換を使用</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>まず要求が前方一致・部分一致・文字抽出のどれかを判定する。</li><li>次に正規化関数を列側と比較値側の両方へ必要か確認する。</li><li>位置を使う処理なら INSTR、切り出しなら SUBSTR と機能を分ける。</li>
                     </ul>
                   </div>
                 </article>
@@ -364,6 +917,32 @@ START_DATE が過去16か月以内の行のみを表示したいとします。
             <section class="concept-section" id="d3-3">
               <h3>日付演算と月数計算<span>4問</span></h3>
               <p class="concept-copy">DATE 型の差は日数で返る。月単位なら MONTHS_BETWEEN、月加算なら ADD_MONTHS を使う。年数を 365 日換算で書くと境界条件を外しやすい。</p>
+              
+    <div class="concept-guide" style="border-top-color:#c0392b">
+      <div class="guide-block">
+        <div class="guide-title">論点の定義</div>
+        <p>DATE 型の減算結果は日数であり、月単位の計算には MONTHS_BETWEEN や ADD_MONTHS を用いる。表示形式の整形は TO_CHAR、演算前の型変換は TO_DATE や TO_NUMBER が担当する。</p>
+      </div>
+      <div class="guide-block">
+        <div class="guide-title">正式構文・基本形</div>
+        <pre>SELECT ADD_MONTHS(made_date, 24) AS two_years_later,
+       MONTHS_BETWEEN(SYSDATE, made_date) AS elapsed_months,
+       TO_CHAR(made_date, &#x27;YYYY-MM-DD&#x27;) AS made_ymd
+FROM   item;</pre>
+      </div>
+      <div class="guide-grid">
+        <div class="guide-block">
+          <div class="guide-title">成立条件</div>
+          <ul class="guide-list"><li>DATE の差は日数、月差は MONTHS_BETWEEN(date1, date2) を使う。</li><li>2 年以上経過のような条件は、日本語を `SYSDATE - 730 &gt;= made_date` などへ書き換えて判定する。</li><li>型変換は演算前、書式変換は表示直前に行う。</li></ul>
+        </div>
+        <div class="guide-block">
+          <div class="guide-title">判定手順</div>
+          <ol class="guide-list ordered"><li>まず設問が日数計算か月数計算かを分ける。</li><li>次に不等号の向きを『いつより古いか』という日本語で確認する。</li><li>文字列との比較や表示整形がある場合は変換順序を確認する。</li></ol>
+        </div>
+      </div>
+      <div class="guide-note">失点しやすい点: 日付差と月差を同じように扱ったり、MONTHS_BETWEEN の引数順を逆に覚えやすい。</div>
+    </div>
+    
               
                 <article class="question-card">
                   <div class="question-meta">第1回 模擬試験 / 問14 / 正答 C / 自己回答 D</div>
@@ -375,13 +954,51 @@ START_DATE が過去16か月以内の行のみを表示したいとします。
 (3)		C.　SELECT ITEM_NAME,MADE_DATE FROM ITEM WHERE SYSDATE - 2*365 &gt;= MADE_DATE;
 (4)		D.　SELECT ITEM_NAME,MADE_DATE FROM ITEM WHERE MADE_DATE &gt;= SYSDATE - 2*365;</pre>
                   <div class="analysis-block">
-                    <div class="block-title">なぜそうなるか</div>
-                    <p>この問題の論点は「日付演算と月数計算」です。DATE 型の差は日数で返る。月単位なら MONTHS_BETWEEN、月加算なら ADD_MONTHS を使う。年数を 365 日換算で書くと境界条件を外しやすい。 したがって正答は C「SELECT ITEM_NAME,MADE_DATE FROM ITEM WHERE SYSDATE - 2*…」 になります。</p>
-                    <div class="block-title">今回の誤り</div>
-                    <p>自己回答は D「SELECT ITEM_NAME,MADE_DATE FROM ITEM WHERE MADE_DATE &gt;=…」 でした。日付差と月差を同じように扱ったり、MONTHS_BETWEEN の引数順を逆に覚えやすい。 正答との差は、条件の向き、句の置き場所、またはオブジェクトの性質を正確に読み切れていない点にあります。</p>
-                    <div class="block-title">叩き直しポイント</div>
-                    <ul class="rebuild-list">
-                      <li>日数差は date1 - date2、月差は MONTHS_BETWEEN(date1, date2)。</li><li>nか月後・前は ADD_MONTHS(date, n) で書く。</li><li>条件式では『過去16か月以内』のような日本語を数式に言い換えてから書く。</li>
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問で確定させる論点は「日付演算と月数計算」です。問題文は「ITEM表には商品名と製造年月日（DATE型）が存在します。 製造から2年以上経過した商品を抽出するSQLはどれでしょうか。」を満たす記述または SQL を求めています。DATE 型の差は日数で返る。月単位なら MONTHS_BETWEEN、月加算なら ADD_MONTHS を使う。年数を 365 日換算で書くと境界条件を外しやすい。 そのため、成立条件を満たす正答は C「SELECT ITEM_NAME,MADE_DATE FROM ITEM WHERE SYSDATE - 2*…」 です。</p>
+                    <div class="block-title">今回の失点要因</div>
+                    <p>自己回答は D「SELECT ITEM_NAME,MADE_DATE FROM ITEM WHERE MADE_DATE &gt;=…」 でした。失点要因は 日付差と月差を同じように扱ったり、MONTHS_BETWEEN の引数順を逆に覚えやすい。 正答との差は、条件の向き、句の位置、返却行数、またはオブジェクトの性質を正式定義のレベルで確認し切れていない点にあります。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT ITEM_NAME,MADE_DATE FROM ITEM WHERE MADE_DATE + 2*365 = SYSDATE;</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT ITEM_NAME,MADE_DATE FROM ITEM WHERE SYSDATE &gt; MADE_DATE - 2*365;</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT ITEM_NAME,MADE_DATE FROM ITEM WHERE SYSDATE - 2*365 &gt;= MADE_DATE;</div>
+              <div class="option-review-reason">正しい。 `SYSDATE - 2*365 &gt;= made_date` の形なら、2 年以上前に製造された行を抽出できます。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span><span>自己回答</span></div>
+              </div>
+              <div class="option-review-text">SELECT ITEM_NAME,MADE_DATE FROM ITEM WHERE MADE_DATE &gt;= SYSDATE - 2*365;</div>
+              <div class="option-review-reason">誤り。 `SYSDATE - 2*365 &gt;= made_date` の形なら、2 年以上前に製造された行を抽出できます。 この不等号の向きでは、古い商品ではなく直近 2 年以内の商品を残してしまいます。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>まず設問が日数計算か月数計算かを分ける。</li><li>次に不等号の向きを『いつより古いか』という日本語で確認する。</li><li>文字列との比較や表示整形がある場合は変換順序を確認する。</li>
                     </ul>
                   </div>
                 </article>
@@ -396,13 +1013,60 @@ START_DATE が過去16か月以内の行のみを表示したいとします。
 (4)		D. SELECT START_DATE FROM EMP WHERE START_DATE &gt; (SELECT SYSDATE-365 FROM DUAL);
 (5)		E. SELECT START_DATE FROM EMP WHERE MONTHS_BETWEEN(SYSDATE,START_DATE) &lt; 12;</pre>
                   <div class="analysis-block">
-                    <div class="block-title">なぜそうなるか</div>
-                    <p>この問題の論点は「日付演算と月数計算」です。DATE 型の差は日数で返る。月単位なら MONTHS_BETWEEN、月加算なら ADD_MONTHS を使う。年数を 365 日換算で書くと境界条件を外しやすい。 したがって正答は A「SELECT START_DATE FROM EMP WHERE START_DATE &gt; TRUNC(SYS…」 / D「SELECT START_DATE FROM EMP WHERE START_DATE &gt; (SELECT S…」 になります。</p>
-                    <div class="block-title">今回の誤り</div>
-                    <p>自己回答は B「SELECT START_DATE FROM EMP WHERE START_DATE &gt; ROUND(SYS…」 / E「SELECT START_DATE FROM EMP WHERE MONTHS_BETWEEN(SYSDATE…」 でした。日付差と月差を同じように扱ったり、MONTHS_BETWEEN の引数順を逆に覚えやすい。 正答との差は、条件の向き、句の置き場所、またはオブジェクトの性質を正確に読み切れていない点にあります。</p>
-                    <div class="block-title">叩き直しポイント</div>
-                    <ul class="rebuild-list">
-                      <li>日数差は date1 - date2、月差は MONTHS_BETWEEN(date1, date2)。</li><li>nか月後・前は ADD_MONTHS(date, n) で書く。</li><li>条件式では『過去16か月以内』のような日本語を数式に言い換えてから書く。</li>
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問で確定させる論点は「日付演算と月数計算」です。問題文は「以下のうち、過去365日のSTART_DATEを抽出するSQL文はどれでしょうか。2つ選択してください。」を満たす記述または SQL を求めています。DATE 型の差は日数で返る。月単位なら MONTHS_BETWEEN、月加算なら ADD_MONTHS を使う。年数を 365 日換算で書くと境界条件を外しやすい。 そのため、成立条件を満たす正答は A「SELECT START_DATE FROM EMP WHERE START_DATE &gt; TRUNC(SYS…」 / D「SELECT START_DATE FROM EMP WHERE START_DATE &gt; (SELECT S…」 です。</p>
+                    <div class="block-title">今回の失点要因</div>
+                    <p>自己回答は B「SELECT START_DATE FROM EMP WHERE START_DATE &gt; ROUND(SYS…」 / E「SELECT START_DATE FROM EMP WHERE MONTHS_BETWEEN(SYSDATE…」 でした。失点要因は 日付差と月差を同じように扱ったり、MONTHS_BETWEEN の引数順を逆に覚えやすい。 正答との差は、条件の向き、句の位置、返却行数、またはオブジェクトの性質を正式定義のレベルで確認し切れていない点にあります。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT START_DATE FROM EMP WHERE START_DATE &gt; TRUNC(SYSDATE)-365;</div>
+              <div class="option-review-reason">正しい。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span><span>自己回答</span></div>
+              </div>
+              <div class="option-review-text">SELECT START_DATE FROM EMP WHERE START_DATE &gt; ROUND(SYSDATE)+365;</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT START_DATE FROM EMP WHERE START_DATE &gt; ADD_MONTHS(SYSDATE,-12);</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT START_DATE FROM EMP WHERE START_DATE &gt; (SELECT SYSDATE-365 FROM DUAL);</div>
+              <div class="option-review-reason">正しい。 DUAL は Oracle 固有の 1 行 1 列の疑似表で、式や関数結果の確認に使います。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">E</div>
+                <div class="option-review-badges"><span>非正答肢</span><span>自己回答</span></div>
+              </div>
+              <div class="option-review-text">SELECT START_DATE FROM EMP WHERE MONTHS_BETWEEN(SYSDATE,START_DATE) &lt; 12;</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>まず設問が日数計算か月数計算かを分ける。</li><li>次に不等号の向きを『いつより古いか』という日本語で確認する。</li><li>文字列との比較や表示整形がある場合は変換順序を確認する。</li>
                     </ul>
                   </div>
                 </article>
@@ -417,13 +1081,51 @@ START_DATE が過去16か月以内の行のみを表示したいとします。
 (3)		C. SELECT staff_id, NEXT_DAY(MONTHS_BETWEEN(start_date, SYSDATE), 6) FROM staff;
 (4)		D. SELECT staff_id, ADD_MONTHS(start_date, 1), NEXT_DAY(&#x27;MONDAY&#x27;) FROM staff;</pre>
                   <div class="analysis-block">
-                    <div class="block-title">なぜそうなるか</div>
-                    <p>この問題の論点は「日付演算と月数計算」です。DATE 型の差は日数で返る。月単位なら MONTHS_BETWEEN、月加算なら ADD_MONTHS を使う。年数を 365 日換算で書くと境界条件を外しやすい。 したがって正答は B「SELECT staff_id, NEXT_DAY(ADD_MONTHS(start_date, 1), &#x27;M…」 になります。</p>
-                    <div class="block-title">今回の誤り</div>
-                    <p>自己回答は A「SELECT staff_id, NEXT_DAY(ADD_MONTHS(start_date, 1), 1)…」 でした。日付差と月差を同じように扱ったり、MONTHS_BETWEEN の引数順を逆に覚えやすい。 正答との差は、条件の向き、句の置き場所、またはオブジェクトの性質を正確に読み切れていない点にあります。</p>
-                    <div class="block-title">叩き直しポイント</div>
-                    <ul class="rebuild-list">
-                      <li>日数差は date1 - date2、月差は MONTHS_BETWEEN(date1, date2)。</li><li>nか月後・前は ADD_MONTHS(date, n) で書く。</li><li>条件式では『過去16か月以内』のような日本語を数式に言い換えてから書く。</li>
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問で確定させる論点は「日付演算と月数計算」です。問題文は「従業員の入社1か月後の最初の月曜日の日付を取得するクエリを選んでください。 なお、STAFF テーブルには、NUMBER型 の STAFF_ID 列と、DATE型 の START_DATE 列が存在しています。」を満たす記述または SQL を求めています。DATE 型の差は日数で返る。月単位なら MONTHS_BETWEEN、月加算なら ADD_MONTHS を使う。年数を 365 日換算で書くと境界条件を外しやすい。 そのため、成立条件を満たす正答は B「SELECT staff_id, NEXT_DAY(ADD_MONTHS(start_date, 1), &#x27;M…」 です。</p>
+                    <div class="block-title">今回の失点要因</div>
+                    <p>自己回答は A「SELECT staff_id, NEXT_DAY(ADD_MONTHS(start_date, 1), 1)…」 でした。失点要因は 日付差と月差を同じように扱ったり、MONTHS_BETWEEN の引数順を逆に覚えやすい。 正答との差は、条件の向き、句の位置、返却行数、またはオブジェクトの性質を正式定義のレベルで確認し切れていない点にあります。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>非正答肢</span><span>自己回答</span></div>
+              </div>
+              <div class="option-review-text">SELECT staff_id, NEXT_DAY(ADD_MONTHS(start_date, 1), 1) FROM staff;</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT staff_id, NEXT_DAY(ADD_MONTHS(start_date, 1), &#x27;MONDAY&#x27;) FROM staff;</div>
+              <div class="option-review-reason">正しい。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT staff_id, NEXT_DAY(MONTHS_BETWEEN(start_date, SYSDATE), 6) FROM staff;</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT staff_id, ADD_MONTHS(start_date, 1), NEXT_DAY(&#x27;MONDAY&#x27;) FROM staff;</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>まず設問が日数計算か月数計算かを分ける。</li><li>次に不等号の向きを『いつより古いか』という日本語で確認する。</li><li>文字列との比較や表示整形がある場合は変換順序を確認する。</li>
                     </ul>
                   </div>
                 </article>
@@ -475,13 +1177,51 @@ ORDER BY weeks_employed DESC;
 (3)		C
 (4)		D</pre>
                   <div class="analysis-block">
-                    <div class="block-title">なぜそうなるか</div>
-                    <p>この問題の論点は「日付演算と月数計算」です。DATE 型の差は日数で返る。月単位なら MONTHS_BETWEEN、月加算なら ADD_MONTHS を使う。年数を 365 日換算で書くと境界条件を外しやすい。 したがって正答は A「SELECT last_name, TRUNC((SYSDATE - start_date) / 7) AS …」 になります。</p>
-                    <div class="block-title">今回の誤り</div>
-                    <p>自己回答は D「SELECT last_name, ROUND((SYSDATE - start_date) / 7) AS …」 でした。日付差と月差を同じように扱ったり、MONTHS_BETWEEN の引数順を逆に覚えやすい。 正答との差は、条件の向き、句の置き場所、またはオブジェクトの性質を正確に読み切れていない点にあります。</p>
-                    <div class="block-title">叩き直しポイント</div>
-                    <ul class="rebuild-list">
-                      <li>日数差は date1 - date2、月差は MONTHS_BETWEEN(date1, date2)。</li><li>nか月後・前は ADD_MONTHS(date, n) で書く。</li><li>条件式では『過去16か月以内』のような日本語を数式に言い換えてから書く。</li>
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問で確定させる論点は「日付演算と月数計算」です。問題文は「EMPLOYEES表について、部門 10 の従業員の以下の情報を表示する必要があります。 ・従業員の姓 ・雇用されてからの週間数 | Name | Null? | Type | |------------|-----------|----…」を満たす記述または SQL を求めています。DATE 型の差は日数で返る。月単位なら MONTHS_BETWEEN、月加算なら ADD_MONTHS を使う。年数を 365 日換算で書くと境界条件を外しやすい。 そのため、成立条件を満たす正答は A「SELECT last_name, TRUNC((SYSDATE - start_date) / 7) AS …」 です。</p>
+                    <div class="block-title">今回の失点要因</div>
+                    <p>自己回答は D「SELECT last_name, ROUND((SYSDATE - start_date) / 7) AS …」 でした。失点要因は 日付差と月差を同じように扱ったり、MONTHS_BETWEEN の引数順を逆に覚えやすい。 正答との差は、条件の向き、句の位置、返却行数、またはオブジェクトの性質を正式定義のレベルで確認し切れていない点にあります。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT last_name, TRUNC((SYSDATE - start_date) / 7) AS weeks_employed<br>FROM employees<br>WHERE dept_id = 10<br>ORDER BY weeks_employed DESC;</div>
+              <div class="option-review-reason">正しい。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT last_name, TRUNC((SYSDATE - start_date) / 7) AS weeks_employed<br>FROM employees<br>WHERE dept_id = 10<br>ORDER BY weeks_employed;</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT last_name, ROUND((SYSDATE - start_date) / 7) AS weeks_employed<br>FROM employees<br>WHERE dept_id = 10<br>ORDER BY weeks_employed;</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span><span>自己回答</span></div>
+              </div>
+              <div class="option-review-text">SELECT last_name, ROUND((SYSDATE - start_date) / 7) AS weeks_employed<br>FROM employees<br>WHERE dept_id = 10<br>ORDER BY weeks_employed DESC;<br>結果は、週間数の多い順にソートする必要があります。どの SQL 文が適切ですか。1つ選択してください。</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>まず設問が日数計算か月数計算かを分ける。</li><li>次に不等号の向きを『いつより古いか』という日本語で確認する。</li><li>文字列との比較や表示整形がある場合は変換順序を確認する。</li>
                     </ul>
                   </div>
                 </article>
@@ -491,6 +1231,32 @@ ORDER BY weeks_employed DESC;
             <section class="concept-section" id="d3-4">
               <h3>NULL 関数と条件式<span>2問</span></h3>
               <p class="concept-copy">NVL、NVL2、NULLIF、COALESCE、CASE、DECODE は、NULL や条件分岐を表すための関数群であり、引数順と戻り値の型整合が重要である。</p>
+              
+    <div class="concept-guide" style="border-top-color:#c0392b">
+      <div class="guide-block">
+        <div class="guide-title">論点の定義</div>
+        <p>単一行関数は各行に対して 1 つの結果を返し、文字列・数値・日付・NULL・条件分岐の各カテゴリで役割が分かれる。</p>
+      </div>
+      <div class="guide-block">
+        <div class="guide-title">正式構文・基本形</div>
+        <pre>SELECT ROUND(price, 2),
+       NVL(discount, 0),
+       CASE WHEN quantity IS NULL THEN 0 ELSE quantity END
+FROM   item;</pre>
+      </div>
+      <div class="guide-grid">
+        <div class="guide-block">
+          <div class="guide-title">成立条件</div>
+          <ul class="guide-list"><li>ROUND は四捨五入、TRUNC は切り捨てであり、結果が変わる境界値を意識する。</li><li>NVL と NVL2 は引数の意味が異なり、CASE は一般的な条件分岐に使える。</li><li>単一行関数は SELECT 句だけでなく WHERE 句や ORDER BY でも利用できる。</li></ul>
+        </div>
+        <div class="guide-block">
+          <div class="guide-title">判定手順</div>
+          <ol class="guide-list ordered"><li>何を変換したいのかを文字列・数値・日付・NULL 処理に分ける。</li><li>入力型と戻り値型が式全体で整合しているか確認する。</li><li>境界値が変わる関数では、丸め・切り捨て・NULL 代替の効果を具体的に追う。</li></ol>
+        </div>
+      </div>
+      <div class="guide-note">失点しやすい点: NVL と NVL2 の引数順、CASE と DECODE の使い分け、NULLIF の意味を混同しやすい。</div>
+    </div>
+    
               
                 <article class="question-card">
                   <div class="question-meta">第2回 模擬試験 / 問55 / 正答 AD / 自己回答 BC</div>
@@ -504,13 +1270,60 @@ SELECT COUNT(*) FROM employees;
 (4)		D.　SELECT COUNT(COALESCE(salary, 0)) FROM employees;
 (5)		E.　SELECT COUNT(NVL2(salary, 0, NULL)) FROM employees;</pre>
                   <div class="analysis-block">
-                    <div class="block-title">なぜそうなるか</div>
-                    <p>この問題の論点は「NULL 関数と条件式」です。NVL、NVL2、NULLIF、COALESCE、CASE、DECODE は、NULL や条件分岐を表すための関数群であり、引数順と戻り値の型整合が重要である。 したがって正答は A「SELECT COUNT(NVL(salary, 0)) FROM employees;」 / D「SELECT COUNT(COALESCE(salary, 0)) FROM employees;」 になります。</p>
-                    <div class="block-title">今回の誤り</div>
-                    <p>自己回答は B「SELECT COUNT(salary) FROM employees WHERE salary IS NOT…」 / C「SELECT COUNT(NULLIF(salary, 0)) FROM employees;」 でした。NVL と NVL2 の引数順、CASE と DECODE の使い分け、NULLIF の意味を混同しやすい。 正答との差は、条件の向き、句の置き場所、またはオブジェクトの性質を正確に読み切れていない点にあります。</p>
-                    <div class="block-title">叩き直しポイント</div>
-                    <ul class="rebuild-list">
-                      <li>NVL(a,b)=a が NULL なら b、NVL2(a,b,c)=a が NULL でなければ b。</li><li>範囲条件や IS NULL は CASE、単純一致だけなら DECODE でもよい。</li><li>NULLIF(a,b)=等しければ NULL と声に出して覚える。</li>
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問で確定させる論点は「NULL 関数と条件式」です。問題文は「以下の文の実行結果と同じ結果になるものを2つ選択してください。 SELECT COUNT(*) FROM employees;」を満たす記述または SQL を求めています。NVL、NVL2、NULLIF、COALESCE、CASE、DECODE は、NULL や条件分岐を表すための関数群であり、引数順と戻り値の型整合が重要である。 そのため、成立条件を満たす正答は A「SELECT COUNT(NVL(salary, 0)) FROM employees;」 / D「SELECT COUNT(COALESCE(salary, 0)) FROM employees;」 です。</p>
+                    <div class="block-title">今回の失点要因</div>
+                    <p>自己回答は B「SELECT COUNT(salary) FROM employees WHERE salary IS NOT…」 / C「SELECT COUNT(NULLIF(salary, 0)) FROM employees;」 でした。失点要因は NVL と NVL2 の引数順、CASE と DECODE の使い分け、NULLIF の意味を混同しやすい。 正答との差は、条件の向き、句の位置、返却行数、またはオブジェクトの性質を正式定義のレベルで確認し切れていない点にあります。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT COUNT(NVL(salary, 0)) FROM employees;</div>
+              <div class="option-review-reason">正しい。 COUNT(列) はその列が NULL の行を数えません。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span><span>自己回答</span></div>
+              </div>
+              <div class="option-review-text">SELECT COUNT(salary) FROM employees WHERE salary IS NOT NULL;</div>
+              <div class="option-review-reason">誤り。 COUNT(列) はその列が NULL の行を数えません。 NULL 判定は `= NULL` ではなく `IS NULL` / `IS NOT NULL` を使います。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span><span>自己回答</span></div>
+              </div>
+              <div class="option-review-text">SELECT COUNT(NULLIF(salary, 0)) FROM employees;</div>
+              <div class="option-review-reason">誤り。 COUNT(列) はその列が NULL の行を数えません。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT COUNT(COALESCE(salary, 0)) FROM employees;</div>
+              <div class="option-review-reason">正しい。 COUNT(列) はその列が NULL の行を数えません。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">E</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT COUNT(NVL2(salary, 0, NULL)) FROM employees;</div>
+              <div class="option-review-reason">誤り。 COUNT(列) はその列が NULL の行を数えません。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>何を変換したいのかを文字列・数値・日付・NULL 処理に分ける。</li><li>入力型と戻り値型が式全体で整合しているか確認する。</li><li>境界値が変わる関数では、丸め・切り捨て・NULL 代替の効果を具体的に追う。</li>
                     </ul>
                   </div>
                 </article>
@@ -549,13 +1362,51 @@ END, product_name DESC;
 (3)		C. 最高価格の商品が複数ある場合、商品名の昇順で表示される。
 (4)		D. ORDER BY 句の CASE 式の中で複数の式を組み合わせているため、構文エラーとなる。</pre>
                   <div class="analysis-block">
-                    <div class="block-title">なぜそうなるか</div>
-                    <p>この問題の論点は「NULL 関数と条件式」です。NVL、NVL2、NULLIF、COALESCE、CASE、DECODE は、NULL や条件分岐を表すための関数群であり、引数順と戻り値の型整合が重要である。 したがって正答は A「最高価格の商品は、先頭に表示される。」 になります。</p>
-                    <div class="block-title">今回の誤り</div>
-                    <p>自己回答は D「ORDER BY 句の CASE 式の中で複数の式を組み合わせているため、構文エラーとなる。」 でした。NVL と NVL2 の引数順、CASE と DECODE の使い分け、NULLIF の意味を混同しやすい。 正答との差は、条件の向き、句の置き場所、またはオブジェクトの性質を正確に読み切れていない点にあります。</p>
-                    <div class="block-title">叩き直しポイント</div>
-                    <ul class="rebuild-list">
-                      <li>NVL(a,b)=a が NULL なら b、NVL2(a,b,c)=a が NULL でなければ b。</li><li>範囲条件や IS NULL は CASE、単純一致だけなら DECODE でもよい。</li><li>NULLIF(a,b)=等しければ NULL と声に出して覚える。</li>
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問で確定させる論点は「NULL 関数と条件式」です。問題文は「次のSQLを実行したときのソート順を確認してください。 SELECT product_name FROM products ORDER BY CASE WHEN price = (SELECT MAX(price) FROM produc…」を満たす記述または SQL を求めています。NVL、NVL2、NULLIF、COALESCE、CASE、DECODE は、NULL や条件分岐を表すための関数群であり、引数順と戻り値の型整合が重要である。 そのため、成立条件を満たす正答は A「最高価格の商品は、先頭に表示される。」 です。</p>
+                    <div class="block-title">今回の失点要因</div>
+                    <p>自己回答は D「ORDER BY 句の CASE 式の中で複数の式を組み合わせているため、構文エラーとなる。」 でした。失点要因は NVL と NVL2 の引数順、CASE と DECODE の使い分け、NULLIF の意味を混同しやすい。 正答との差は、条件の向き、句の位置、返却行数、またはオブジェクトの性質を正式定義のレベルで確認し切れていない点にあります。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">最高価格の商品は、先頭に表示される。</div>
+              <div class="option-review-reason">正しい。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">最高価格以外の商品は、商品名の降順で表示される。</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">最高価格の商品が複数ある場合、商品名の昇順で表示される。</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span><span>自己回答</span></div>
+              </div>
+              <div class="option-review-text">ORDER BY 句の CASE 式の中で複数の式を組み合わせているため、構文エラーとなる。</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>何を変換したいのかを文字列・数値・日付・NULL 処理に分ける。</li><li>入力型と戻り値型が式全体で整合しているか確認する。</li><li>境界値が変わる関数では、丸め・切り捨て・NULL 代替の効果を具体的に追う。</li>
                     </ul>
                   </div>
                 </article>
@@ -565,6 +1416,32 @@ END, product_name DESC;
             <section class="concept-section" id="d3-5">
               <h3>ROUND・TRUNC・FLOOR などの数値関数<span>2問</span></h3>
               <p class="concept-copy">ROUND は四捨五入、TRUNC は切り捨て、FLOOR は指定値以下の最大整数、CEIL は指定値以上の最小整数を返す。関数ごとの戻り値を正確に区別する必要がある。</p>
+              
+    <div class="concept-guide" style="border-top-color:#c0392b">
+      <div class="guide-block">
+        <div class="guide-title">論点の定義</div>
+        <p>単一行関数は各行に対して 1 つの結果を返し、文字列・数値・日付・NULL・条件分岐の各カテゴリで役割が分かれる。</p>
+      </div>
+      <div class="guide-block">
+        <div class="guide-title">正式構文・基本形</div>
+        <pre>SELECT ROUND(price, 2),
+       NVL(discount, 0),
+       CASE WHEN quantity IS NULL THEN 0 ELSE quantity END
+FROM   item;</pre>
+      </div>
+      <div class="guide-grid">
+        <div class="guide-block">
+          <div class="guide-title">成立条件</div>
+          <ul class="guide-list"><li>ROUND は四捨五入、TRUNC は切り捨てであり、結果が変わる境界値を意識する。</li><li>NVL と NVL2 は引数の意味が異なり、CASE は一般的な条件分岐に使える。</li><li>単一行関数は SELECT 句だけでなく WHERE 句や ORDER BY でも利用できる。</li></ul>
+        </div>
+        <div class="guide-block">
+          <div class="guide-title">判定手順</div>
+          <ol class="guide-list ordered"><li>何を変換したいのかを文字列・数値・日付・NULL 処理に分ける。</li><li>入力型と戻り値型が式全体で整合しているか確認する。</li><li>境界値が変わる関数では、丸め・切り捨て・NULL 代替の効果を具体的に追う。</li></ol>
+        </div>
+      </div>
+      <div class="guide-note">失点しやすい点: 丸める関数と切り捨てる関数を曖昧に覚えて、似た選択肢を取り違えやすい。</div>
+    </div>
+    
               
                 <article class="question-card">
                   <div class="question-meta">第1回 模擬試験 / 問13 / 正答 A.E / 自己回答 A.B</div>
@@ -577,13 +1454,60 @@ END, product_name DESC;
 (4)		D.　SELECT ITEM_NAME , ITEM_PRICE FROM ITEM WHERE (UPPER(ITEM_NAME) LIKE INITCAP(&#x27;S&#x27;) OR UPPER(ITEM_NAME) LIKE INITCAP(&#x27;T&#x27;)) AND ROUND(ITEM_PRICE) &lt; ROUND(1500);
 (5)		E.　SELECT ITEM_NAME , ITEM_PRICE FROM ITEM WHERE (UPPER(ITEM_NAME) LIKE &#x27;S%&#x27; OR UPPER(ITEM_NAME) LIKE &#x27;T%&#x27;) AND TRUNC(ITEM_PRICE) &lt; 1500;</pre>
                   <div class="analysis-block">
-                    <div class="block-title">なぜそうなるか</div>
-                    <p>この問題の論点は「ROUND・TRUNC・FLOOR などの数値関数」です。ROUND は四捨五入、TRUNC は切り捨て、FLOOR は指定値以下の最大整数、CEIL は指定値以上の最小整数を返す。関数ごとの戻り値を正確に区別する必要がある。 したがって正答は A「SELECT ITEM_NAME , ITEM_PRICE FROM ITEM WHERE (INITCAP(…」 / E「SELECT ITEM_NAME , ITEM_PRICE FROM ITEM WHERE (UPPER(IT…」 になります。</p>
-                    <div class="block-title">今回の誤り</div>
-                    <p>自己回答は A「SELECT ITEM_NAME , ITEM_PRICE FROM ITEM WHERE (INITCAP(…」 / B「SELECT ITEM_NAME , ITEM_PRICE FROM ITEM WHERE (UPPER(IT…」 でした。一部は当たっていますが、B「SELECT ITEM_NAME , ITEM_PRICE FROM ITEM WHERE (UPPER(IT…」 に引っ張られて取りこぼしています。丸める関数と切り捨てる関数を曖昧に覚えて、似た選択肢を取り違えやすい。</p>
-                    <div class="block-title">叩き直しポイント</div>
-                    <ul class="rebuild-list">
-                      <li>ROUND=四捨五入、TRUNC=切り落とし、FLOOR/CEIL=整数方向と覚える。</li><li>小数点桁数指定があるときは第何位を見るのかを書き出す。</li><li>日付に対する ROUND/TRUNC も使えることを別で覚える。</li>
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問で確定させる論点は「ROUND・TRUNC・FLOOR などの数値関数」です。問題文は「品名（ITEM_NAME）の先頭文字がS,sまたはT,tで始まるもので、かつ価格（ITEM_PRICE）が1500円未満の商品情報を取得する場合、以下のどのSQLを実行すればいいでしょうか。（2つ選択してください）」を満たす記述または SQL を求めています。ROUND は四捨五入、TRUNC は切り捨て、FLOOR は指定値以下の最大整数、CEIL は指定値以上の最小整数を返す。関数ごとの戻り値を正確に区別する必要がある。 そのため、成立条件を満たす正答は A「SELECT ITEM_NAME , ITEM_PRICE FROM ITEM WHERE (INITCAP(…」 / E「SELECT ITEM_NAME , ITEM_PRICE FROM ITEM WHERE (UPPER(IT…」 です。</p>
+                    <div class="block-title">今回の失点要因</div>
+                    <p>自己回答は A「SELECT ITEM_NAME , ITEM_PRICE FROM ITEM WHERE (INITCAP(…」 / B「SELECT ITEM_NAME , ITEM_PRICE FROM ITEM WHERE (UPPER(IT…」 でした。一部は論点を捉えていますが、B「SELECT ITEM_NAME , ITEM_PRICE FROM ITEM WHERE (UPPER(IT…」 を混在させたことで正答条件を外しています。失点要因は 丸める関数と切り捨てる関数を曖昧に覚えて、似た選択肢を取り違えやすい。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>正答肢</span><span>自己回答</span></div>
+              </div>
+              <div class="option-review-text">SELECT ITEM_NAME , ITEM_PRICE FROM ITEM WHERE (INITCAP(ITEM_NAME) LIKE &#x27;S%&#x27; OR INITCAP(ITEM_NAME) LIKE &#x27;T%&#x27;) AND ITEM_PRICE &lt; 1500;</div>
+              <div class="option-review-reason">正しい。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span><span>自己回答</span></div>
+              </div>
+              <div class="option-review-text">SELECT ITEM_NAME , ITEM_PRICE FROM ITEM WHERE (UPPER(ITEM_NAME) LIKE &#x27;S%&#x27; OR UPPER(ITEM_NAME) LIKE &#x27;T&#x27;) AND ROUND(ITEM_PRICE) &lt; 1500;</div>
+              <div class="option-review-reason">誤り。 `LIKE &#x27;T&#x27;` は T 一文字との一致であり、T で始まる文字列全体は対象にできません。 ROUND による四捨五入は、価格条件の境界値を変えるため、問題文が単純比較を求める場合は不要または不適切です。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT ITEM_NAME , ITEM_PRICE FROM ITEM WHERE UPPER(ITEM_NAME) BETWEEN UPPER(&#x27;S%&#x27; AND &#x27;T%&#x27;) AND ROUND(ITEM_PRICE) &lt; 1500;</div>
+              <div class="option-review-reason">誤り。 ROUND による四捨五入は、価格条件の境界値を変えるため、問題文が単純比較を求める場合は不要または不適切です。 BETWEEN は大小比較であり、LIKE のワイルドカード判定を代替できません。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT ITEM_NAME , ITEM_PRICE FROM ITEM WHERE (UPPER(ITEM_NAME) LIKE INITCAP(&#x27;S&#x27;) OR UPPER(ITEM_NAME) LIKE INITCAP(&#x27;T&#x27;)) AND ROUND(ITEM_PRICE) &lt; ROUND(1500);</div>
+              <div class="option-review-reason">誤り。 ROUND による四捨五入は、価格条件の境界値を変えるため、問題文が単純比較を求める場合は不要または不適切です。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">E</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT ITEM_NAME , ITEM_PRICE FROM ITEM WHERE (UPPER(ITEM_NAME) LIKE &#x27;S%&#x27; OR UPPER(ITEM_NAME) LIKE &#x27;T%&#x27;) AND TRUNC(ITEM_PRICE) &lt; 1500;</div>
+              <div class="option-review-reason">正しい。 TRUNC は小数点以下を切り捨てるため、価格列の扱いを整数化したうえで比較する文になります。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>何を変換したいのかを文字列・数値・日付・NULL 処理に分ける。</li><li>入力型と戻り値型が式全体で整合しているか確認する。</li><li>境界値が変わる関数では、丸め・切り捨て・NULL 代替の効果を具体的に追う。</li>
                     </ul>
                   </div>
                 </article>
@@ -597,13 +1521,51 @@ END, product_name DESC;
 (3)		C. ROUND(MOD(12.7,-2)) と TRUNC(MOD(12.7,-2)) はどちらも使用でき、同じ結果を返す。
 (4)		D. ROUND(MOD(12.7,-2)) と TRUNC(MOD(12.7,-2)) はどちらも使用できるが、異なる結果を返す。</pre>
                   <div class="analysis-block">
-                    <div class="block-title">なぜそうなるか</div>
-                    <p>この問題の論点は「ROUND・TRUNC・FLOOR などの数値関数」です。ROUND は四捨五入、TRUNC は切り捨て、FLOOR は指定値以下の最大整数、CEIL は指定値以上の最小整数を返す。関数ごとの戻り値を正確に区別する必要がある。 したがって正答は D「ROUND(MOD(12.7,-2)) と TRUNC(MOD(12.7,-2)) はどちらも使用できるが、異…」 になります。</p>
-                    <div class="block-title">今回の誤り</div>
-                    <p>自己回答は A「TRUNC(MOD(12.7,-2)) は無効である。」 でした。丸める関数と切り捨てる関数を曖昧に覚えて、似た選択肢を取り違えやすい。 正答との差は、条件の向き、句の置き場所、またはオブジェクトの性質を正確に読み切れていない点にあります。</p>
-                    <div class="block-title">叩き直しポイント</div>
-                    <ul class="rebuild-list">
-                      <li>ROUND=四捨五入、TRUNC=切り落とし、FLOOR/CEIL=整数方向と覚える。</li><li>小数点桁数指定があるときは第何位を見るのかを書き出す。</li><li>日付に対する ROUND/TRUNC も使えることを別で覚える。</li>
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問で確定させる論点は「ROUND・TRUNC・FLOOR などの数値関数」です。問題文は「MOD、ROUND、TRUNC 関数の動作に関して、正しいものを1つ選んでください。」を満たす記述または SQL を求めています。ROUND は四捨五入、TRUNC は切り捨て、FLOOR は指定値以下の最大整数、CEIL は指定値以上の最小整数を返す。関数ごとの戻り値を正確に区別する必要がある。 そのため、成立条件を満たす正答は D「ROUND(MOD(12.7,-2)) と TRUNC(MOD(12.7,-2)) はどちらも使用できるが、異…」 です。</p>
+                    <div class="block-title">今回の失点要因</div>
+                    <p>自己回答は A「TRUNC(MOD(12.7,-2)) は無効である。」 でした。失点要因は 丸める関数と切り捨てる関数を曖昧に覚えて、似た選択肢を取り違えやすい。 正答との差は、条件の向き、句の位置、返却行数、またはオブジェクトの性質を正式定義のレベルで確認し切れていない点にあります。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>非正答肢</span><span>自己回答</span></div>
+              </div>
+              <div class="option-review-text">TRUNC(MOD(12.7,-2)) は無効である。</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">ROUND(MOD(12.7,-2)) は無効である。</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">ROUND(MOD(12.7,-2)) と TRUNC(MOD(12.7,-2)) はどちらも使用でき、同じ結果を返す。</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">ROUND(MOD(12.7,-2)) と TRUNC(MOD(12.7,-2)) はどちらも使用できるが、異なる結果を返す。</div>
+              <div class="option-review-reason">正しい。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>何を変換したいのかを文字列・数値・日付・NULL 処理に分ける。</li><li>入力型と戻り値型が式全体で整合しているか確認する。</li><li>境界値が変わる関数では、丸め・切り捨て・NULL 代替の効果を具体的に追う。</li>
                     </ul>
                   </div>
                 </article>
@@ -613,6 +1575,32 @@ END, product_name DESC;
             <section class="concept-section" id="d3-6">
               <h3>単一行関数の基本性質<span>2問</span></h3>
               <p class="concept-copy">単一行関数は入力 1 行ごとに 1 つの結果を返し、ネストもできる。引数には列、リテラル、式が使え、戻り値の型は引数と異なる場合もある。</p>
+              
+    <div class="concept-guide" style="border-top-color:#c0392b">
+      <div class="guide-block">
+        <div class="guide-title">論点の定義</div>
+        <p>単一行関数は各行に対して 1 つの結果を返し、文字列・数値・日付・NULL・条件分岐の各カテゴリで役割が分かれる。</p>
+      </div>
+      <div class="guide-block">
+        <div class="guide-title">正式構文・基本形</div>
+        <pre>SELECT ROUND(price, 2),
+       NVL(discount, 0),
+       CASE WHEN quantity IS NULL THEN 0 ELSE quantity END
+FROM   item;</pre>
+      </div>
+      <div class="guide-grid">
+        <div class="guide-block">
+          <div class="guide-title">成立条件</div>
+          <ul class="guide-list"><li>ROUND は四捨五入、TRUNC は切り捨てであり、結果が変わる境界値を意識する。</li><li>NVL と NVL2 は引数の意味が異なり、CASE は一般的な条件分岐に使える。</li><li>単一行関数は SELECT 句だけでなく WHERE 句や ORDER BY でも利用できる。</li></ul>
+        </div>
+        <div class="guide-block">
+          <div class="guide-title">判定手順</div>
+          <ol class="guide-list ordered"><li>何を変換したいのかを文字列・数値・日付・NULL 処理に分ける。</li><li>入力型と戻り値型が式全体で整合しているか確認する。</li><li>境界値が変わる関数では、丸め・切り捨て・NULL 代替の効果を具体的に追う。</li></ol>
+        </div>
+      </div>
+      <div class="guide-note">失点しやすい点: 引数は 1 つだけ、SELECT 句でしか使えない、戻り値型は同じ、といった表面的な思い込みで落としやすい。</div>
+    </div>
+    
               
                 <article class="question-card">
                   <div class="question-meta">第2回 模擬試験 / 問15 / 正答 DE / 自己回答 EF</div>
@@ -625,13 +1613,69 @@ END, product_name DESC;
 (5)		E.　MOD ：除算演算の余りを返します。
 (6)		F.　TRUNC：NUMBERのみで使用できます 。</pre>
                   <div class="analysis-block">
-                    <div class="block-title">なぜそうなるか</div>
-                    <p>この問題の論点は「単一行関数の基本性質」です。単一行関数は入力 1 行ごとに 1 つの結果を返し、ネストもできる。引数には列、リテラル、式が使え、戻り値の型は引数と異なる場合もある。 したがって正答は D「TRUNC：NUMBER および DATE 値で使用できます 。」 / E「MOD ：除算演算の余りを返します。」 になります。</p>
-                    <div class="block-title">今回の誤り</div>
-                    <p>自己回答は E「MOD ：除算演算の余りを返します。」 / F「TRUNC：NUMBERのみで使用できます 。」 でした。一部は当たっていますが、F「TRUNC：NUMBERのみで使用できます 。」 に引っ張られて取りこぼしています。引数は 1 つだけ、SELECT 句でしか使えない、戻り値型は同じ、といった表面的な思い込みで落としやすい。</p>
-                    <div class="block-title">叩き直しポイント</div>
-                    <ul class="rebuild-list">
-                      <li>単一行関数は『各行ごとに 1 結果』であって『表全体で 1 行』ではない。</li><li>ネスト可、句も SELECT 限定ではないと整理する。</li><li>引数型と戻り値型が一致しない関数も多いと覚える。</li>
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問で確定させる論点は「単一行関数の基本性質」です。問題文は「単一行関数について正しい記述はどれでしょうか。 (2つ選択)」を満たす記述または SQL を求めています。単一行関数は入力 1 行ごとに 1 つの結果を返し、ネストもできる。引数には列、リテラル、式が使え、戻り値の型は引数と異なる場合もある。 そのため、成立条件を満たす正答は D「TRUNC：NUMBER および DATE 値で使用できます 。」 / E「MOD ：除算演算の余りを返します。」 です。</p>
+                    <div class="block-title">今回の失点要因</div>
+                    <p>自己回答は E「MOD ：除算演算の余りを返します。」 / F「TRUNC：NUMBERのみで使用できます 。」 でした。一部は論点を捉えていますが、F「TRUNC：NUMBERのみで使用できます 。」 を混在させたことで正答条件を外しています。失点要因は 引数は 1 つだけ、SELECT 句でしか使えない、戻り値型は同じ、といった表面的な思い込みで落としやすい。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">ROUND：最大の整数を返します。</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">FLOOR：最小の整数を返します。</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">ABS ：四捨五入した整数を返します。</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">TRUNC：NUMBER および DATE 値で使用できます 。</div>
+              <div class="option-review-reason">正しい。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">E</div>
+                <div class="option-review-badges"><span>正答肢</span><span>自己回答</span></div>
+              </div>
+              <div class="option-review-text">MOD ：除算演算の余りを返します。</div>
+              <div class="option-review-reason">正しい。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">F</div>
+                <div class="option-review-badges"><span>非正答肢</span><span>自己回答</span></div>
+              </div>
+              <div class="option-review-text">TRUNC：NUMBERのみで使用できます 。</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>何を変換したいのかを文字列・数値・日付・NULL 処理に分ける。</li><li>入力型と戻り値型が式全体で整合しているか確認する。</li><li>境界値が変わる関数では、丸め・切り捨て・NULL 代替の効果を具体的に追う。</li>
                     </ul>
                   </div>
                 </article>
@@ -647,13 +1691,69 @@ END, product_name DESC;
 (5)		E. 引数には、カラム名、変数、リテラル、または式を指定できる。
 (6)		F. 戻り値のデータ型は、引数のデータ型とは異なる場合がある。</pre>
                   <div class="analysis-block">
-                    <div class="block-title">なぜそうなるか</div>
-                    <p>この問題の論点は「単一行関数の基本性質」です。単一行関数は入力 1 行ごとに 1 つの結果を返し、ネストもできる。引数には列、リテラル、式が使え、戻り値の型は引数と異なる場合もある。 したがって正答は B「ネスト（入れ子）できる。」 / E「引数には、カラム名、変数、リテラル、または式を指定できる。」 / F「戻り値のデータ型は、引数のデータ型とは異なる場合がある。」 になります。</p>
-                    <div class="block-title">今回の誤り</div>
-                    <p>自己回答は A「引数は1つしか受け取ることができない。」 / D「各テーブルで1行だけを返す。」 / E「引数には、カラム名、変数、リテラル、または式を指定できる。」 でした。一部は当たっていますが、A「引数は1つしか受け取ることができない。」 / D「各テーブルで1行だけを返す。」 に引っ張られて取りこぼしています。引数は 1 つだけ、SELECT 句でしか使えない、戻り値型は同じ、といった表面的な思い込みで落としやすい。</p>
-                    <div class="block-title">叩き直しポイント</div>
-                    <ul class="rebuild-list">
-                      <li>単一行関数は『各行ごとに 1 結果』であって『表全体で 1 行』ではない。</li><li>ネスト可、句も SELECT 限定ではないと整理する。</li><li>引数型と戻り値型が一致しない関数も多いと覚える。</li>
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問で確定させる論点は「単一行関数の基本性質」です。問題文は「シングル行関数（単一行関数）について、正しいものを3つ選んでください。」を満たす記述または SQL を求めています。単一行関数は入力 1 行ごとに 1 つの結果を返し、ネストもできる。引数には列、リテラル、式が使え、戻り値の型は引数と異なる場合もある。 そのため、成立条件を満たす正答は B「ネスト（入れ子）できる。」 / E「引数には、カラム名、変数、リテラル、または式を指定できる。」 / F「戻り値のデータ型は、引数のデータ型とは異なる場合がある。」 です。</p>
+                    <div class="block-title">今回の失点要因</div>
+                    <p>自己回答は A「引数は1つしか受け取ることができない。」 / D「各テーブルで1行だけを返す。」 / E「引数には、カラム名、変数、リテラル、または式を指定できる。」 でした。一部は論点を捉えていますが、A「引数は1つしか受け取ることができない。」 / D「各テーブルで1行だけを返す。」 を混在させたことで正答条件を外しています。失点要因は 引数は 1 つだけ、SELECT 句でしか使えない、戻り値型は同じ、といった表面的な思い込みで落としやすい。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>非正答肢</span><span>自己回答</span></div>
+              </div>
+              <div class="option-review-text">引数は1つしか受け取ることができない。</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">ネスト（入れ子）できる。</div>
+              <div class="option-review-reason">正しい。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT句でのみ使用できる。</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span><span>自己回答</span></div>
+              </div>
+              <div class="option-review-text">各テーブルで1行だけを返す。</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">E</div>
+                <div class="option-review-badges"><span>正答肢</span><span>自己回答</span></div>
+              </div>
+              <div class="option-review-text">引数には、カラム名、変数、リテラル、または式を指定できる。</div>
+              <div class="option-review-reason">正しい。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">F</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">戻り値のデータ型は、引数のデータ型とは異なる場合がある。</div>
+              <div class="option-review-reason">正しい。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>何を変換したいのかを文字列・数値・日付・NULL 処理に分ける。</li><li>入力型と戻り値型が式全体で整合しているか確認する。</li><li>境界値が変わる関数では、丸め・切り捨て・NULL 代替の効果を具体的に追う。</li>
                     </ul>
                   </div>
                 </article>
