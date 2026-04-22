@@ -17,6 +17,7 @@ def load_module(module_name: str, relative_path: str):
 
 
 parse_mock_exams = load_module("parse_mock_exams", "scripts/parse_mock_exams.py")
+split_ex_pages = load_module("split_ex_pages", "scripts/split_ex_pages.py")
 
 
 class TestMockExamPipeline(unittest.TestCase):
@@ -38,6 +39,21 @@ class TestMockExamPipeline(unittest.TestCase):
         self.assertEqual(third_question["self_ans"], "D")
         self.assertFalse(third_question["correct"])
         self.assertEqual(exam["correct_questions"], 27)
+
+    def test_phase_priority_order_matches_weak_domains(self):
+        ranked = split_ex_pages.priority_data()
+        phases = split_ex_pages.assign_phases(ranked)
+
+        self.assertEqual([item["ex_id"] for item in ranked[:3]], ["EX2", "EX3", "EX5"])
+        self.assertEqual([len(phase["items"]) for phase in phases], [3, 3, 2])
+
+    def test_domain_pages_cover_all_wrong_questions(self):
+        ranked = split_ex_pages.priority_data()
+        split_ex_pages.assign_phases(ranked)
+
+        for item in ranked:
+            html = split_ex_pages.build_domain_page(item)
+            self.assertEqual(html.count('class="question-card"'), item["wrong_count"])
 
 
 if __name__ == "__main__":

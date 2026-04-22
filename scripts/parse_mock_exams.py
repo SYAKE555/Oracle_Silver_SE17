@@ -228,7 +228,7 @@ def parse_exam(path: Path, exam_id: int, title: str) -> dict:
             {
                 "exam": exam_id,
                 "q": qnum,
-                "text": q_text[:1000],
+                "text": q_text,
                 "ans": ans,
                 "self_ans": self_ans,
                 "mark": mark,
