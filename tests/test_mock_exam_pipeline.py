@@ -102,7 +102,6 @@ class TestMockExamPipeline(unittest.TestCase):
         self.assertIn("EX2_reinforce.html", phase1_html)
         self.assertIn("EX3_reinforce.html", phase1_html)
         self.assertIn("EX5_reinforce.html", phase1_html)
-
         correct_hub_html = split_ex_pages.build_correct_hub_page(ranked)
         self.assertIn("EX2_correct.html", correct_hub_html)
         self.assertIn("EX8_correct.html", correct_hub_html)
@@ -111,7 +110,6 @@ class TestMockExamPipeline(unittest.TestCase):
         self.assertIn("mock_exam_report.html", dashboard_html)
         self.assertIn("mock_exam_reinforce.html", dashboard_html)
         self.assertIn("mock_exam_correct.html", dashboard_html)
-
     def test_domain_page_uses_recorded_full_text_as_canonical_problem(self):
         ranked = split_ex_pages.priority_data()
         split_ex_pages.assign_phases(ranked)
