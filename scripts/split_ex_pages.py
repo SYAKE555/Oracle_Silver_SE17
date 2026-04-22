@@ -62,6 +62,16 @@ CONCEPT_META = {
             "性能面では通常 UNION ALL の方が軽い。",
         ],
     },
+    "set_operator_general": {
+        "title": "INTERSECT を含む集合演算の基本",
+        "why": "複合問合せでは、各 SELECT の列数と対応するデータ型をそろえる必要がある。INTERSECT は両方の結果に共通する行を返し、NULL を含む行も比較対象になる。",
+        "pitfall": "列名まで一致必須と思い込んだり、列数・型の一致条件と、INTERSECT が返す行の意味を切り分けられずに失点しやすい。",
+        "rebuild": [
+            "集合演算はまず『列数一致』『対応型一致』を確認する。",
+            "UNION は和、INTERSECT は共通、MINUS は差集合と役割を分ける。",
+            "列名は先頭 SELECT 基準で決まり、完全一致は必須ではない。",
+        ],
+    },
     "minus_set": {
         "title": "MINUS による差集合",
         "why": "片方にはあり、もう片方にはない行を取りたいときは MINUS を使う。一度も取引がない商品や、存在しない組合せの抽出で使う典型論点である。",
@@ -92,6 +102,16 @@ CONCEPT_META = {
             "ANY はどれか1つ、ALL は全て、という日本語で確認する。",
         ],
     },
+    "subquery_usage": {
+        "title": "サブクエリが必要になる場面",
+        "why": "外側の検索条件で『別の結果を先に求めてから比較する』必要があるとき、サブクエリが必要になる。平均値との比較や、他の検索結果を条件に使う問題が典型である。",
+        "pitfall": "単純な集計や結合だけで済む処理までサブクエリ必須だと思い込み、逆に比較対象を先に求める必要がある場面を見落としやすい。",
+        "rebuild": [
+            "先に別結果を求めて、その値で外側を絞るならサブクエリを疑う。",
+            "単なる GROUP BY 集計だけで済む処理と切り分ける。",
+            "結合で済むのか、比較用の値生成が必要なのかを日本語で判定する。",
+        ],
+    },
     "exists_notexists": {
         "title": "EXISTS と NOT IN / NOT EXISTS",
         "why": "EXISTS は行の存在だけを見る。NOT IN はサブクエリ結果に NULL が混ざると全体が不明になりやすいため、存在否定は NOT EXISTS の方が安全である。",
@@ -100,6 +120,26 @@ CONCEPT_META = {
             "EXISTS は真偽判定だけなので SELECT 1 で十分と覚える。",
             "除外条件で NULL の可能性があるなら NOT EXISTS を優先する。",
             "存在確認と値比較を別物として扱う。",
+        ],
+    },
+    "multiple_row_subquery": {
+        "title": "複数行サブクエリの性質",
+        "why": "複数行サブクエリは、複数行を返し得る副問合せであり、WHERE、HAVING、GROUP BY を内部に持つこともできる。比較では IN、ANY、ALL など複数行対応の演算子を使う必要がある。",
+        "pitfall": "複数行サブクエリなのに 2 行以上が必須だと思い込んだり、WHERE や GROUP BY を書けないと誤認しやすい。",
+        "rebuild": [
+            "複数行サブクエリは『複数行になり得る』のであって、常に複数行とは限らない。",
+            "内部では WHERE、GROUP BY、HAVING も通常どおり使える。",
+            "外側との比較演算子が複数行対応かを必ず確認する。",
+        ],
+    },
+    "self_join_vs_subquery": {
+        "title": "自己結合と副問合せの使い分け",
+        "why": "同一表内の重複や対応関係を確認するときは、同じ表を別名で比較する自己結合でも、集約や存在確認を使う副問合せでも表現できる。要件に対して成立する手法を見分けるのが論点である。",
+        "pitfall": "JOIN の種類に引っ張られて不要な外部結合を選んだり、自己結合で十分な場面を特殊な結合に広げてしまいやすい。",
+        "rebuild": [
+            "同一表の比較なら、まず自己結合で書けるかを考える。",
+            "重複確認や存在確認は副問合せでも書けることを押さえる。",
+            "FULL OUTER や LEFT/RIGHT OUTER が本当に必要かを要件から判断する。",
         ],
     },
     "like_case_functions": {
@@ -160,6 +200,16 @@ CONCEPT_META = {
             "ROUND=四捨五入、TRUNC=切り落とし、FLOOR/CEIL=整数方向と覚える。",
             "小数点桁数指定があるときは第何位を見るのかを書き出す。",
             "日付に対する ROUND/TRUNC も使えることを別で覚える。",
+        ],
+    },
+    "single_row_function_basics": {
+        "title": "単一行関数の基本性質",
+        "why": "単一行関数は入力 1 行ごとに 1 つの結果を返し、ネストもできる。引数には列、リテラル、式が使え、戻り値の型は引数と異なる場合もある。",
+        "pitfall": "引数は 1 つだけ、SELECT 句でしか使えない、戻り値型は同じ、といった表面的な思い込みで落としやすい。",
+        "rebuild": [
+            "単一行関数は『各行ごとに 1 結果』であって『表全体で 1 行』ではない。",
+            "ネスト可、句も SELECT 限定ではないと整理する。",
+            "引数型と戻り値型が一致しない関数も多いと覚える。",
         ],
     },
     "default_and_add_column": {
@@ -290,6 +340,16 @@ CONCEPT_META = {
             "MERGE INTO 対象表 / USING 比較元の構文を固定する。",
             "一致時と非一致時で何が許されるかを整理する。",
             "UPDATE 対象に主キー列を書けるかなど、細部の制約を確認する。",
+        ],
+    },
+    "update_syntax": {
+        "title": "UPDATE 文の基本構文",
+        "why": "UPDATE は `UPDATE 表名 SET 列1=値1, 列2=値2 WHERE 条件` の形で書く。SET は 1 回だけ書き、列代入はカンマで並べる。",
+        "pitfall": "SET を重ねたり、代入列の途中に AND を入れたりして、意味ではなく文法エラーを起こしやすい。",
+        "rebuild": [
+            "UPDATE の骨格を丸ごと暗記する。",
+            "複数列更新は `,` でつなぎ、条件は WHERE に分離する。",
+            "日付リテラルや NULL 代入は文法上そのまま書けると確認する。",
         ],
     },
     "self_join": {
@@ -642,14 +702,19 @@ def detect_concept(domain: str, text: str) -> str:
     rules = {
         "D6": [
             ("corr_subquery", r"相関|外側の文|内側の文|各部門の平均給与"),
+            ("set_operator_general", r"INTERSECT|複合問合せ"),
             ("union_order", r"ORDER BY.*UNION|UNION.*ORDER BY|集合演算.*ORDER BY"),
             ("union_vs_unionall", r"UNION ALL|UNION演算子とUNION ALL"),
             ("minus_set", r"一度も取引が無い|MINUS"),
             ("scalar_subquery", r"スカラサブクエリ|エラーにならないもの"),
+            ("self_join_vs_subquery", r"自己結合|同じ商品名"),
+            ("subquery_usage", r"サブクエリが必要なケース|平均価格より高い"),
             ("exists_notexists", r"EXISTS|NOT EXISTS|NOT IN"),
+            ("multiple_row_subquery", r"複数行の副問合せ|複数行のサブクエリ"),
             ("subquery_comparison", r"ANY| ALL |平均給与|AVG\(salary\)|GROUP BY dept_id"),
         ],
         "D3": [
+            ("single_row_function_basics", r"シングル行関数|単一行関数について"),
             ("conversion_format", r"TO_CHAR|TO_NUMBER|TO_DATE|形式|書式"),
             ("date_arithmetic", r"MONTHS_BETWEEN|ADD_MONTHS|LAST_DAY|NEXT_DAY|SYSDATE|DATE型|過去16か月|CURRENT_DATE"),
             ("null_case", r"NVL|NVL2|NULLIF|COALESCE|CASE|DECODE"),
@@ -672,6 +737,7 @@ def detect_concept(domain: str, text: str) -> str:
             ("truncate_delete", r"TRUNCATE|DELETE"),
             ("merge_dml", r"MERGE"),
             ("multitable_insert", r"INSERT ALL|INSERT FIRST|マルチテーブル"),
+            ("update_syntax", r"有効なSQL|UPDATE .* SET "),
             ("update_subquery", r"UPDATE .*SELECT|UPDATE invoices|相関サブクエリ"),
         ],
         "D5": [

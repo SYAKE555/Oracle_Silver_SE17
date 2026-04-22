@@ -78,7 +78,7 @@
   <div class="toc">
     <h2>カテゴリ別目次</h2>
     <div class="toc-grid">
-      <a href="#d7-1" class="low">COMMIT・ROLLBACK・SAVEPOINT <span>4問</span></a><a href="#d7-2" class="low">INSERT ALL / FIRST <span>3問</span></a><a href="#d7-3" class="low">DML としての MERGE <span>2問</span></a><a href="#d7-4" class="low">TRUNCATE と DELETE の違い <span>2問</span></a><a href="#d7-5" class="low">UPDATE とサブクエリ <span>2問</span></a><a href="#d7-6" class="low">DML 総合 <span>1問</span></a>
+      <a href="#d7-1" class="low">COMMIT・ROLLBACK・SAVEPOINT <span>4問</span></a><a href="#d7-2" class="low">INSERT ALL / FIRST <span>3問</span></a><a href="#d7-3" class="low">DML としての MERGE <span>2問</span></a><a href="#d7-4" class="low">TRUNCATE と DELETE の違い <span>2問</span></a><a href="#d7-5" class="low">UPDATE とサブクエリ <span>2問</span></a><a href="#d7-6" class="low">UPDATE 文の基本構文 <span>1問</span></a>
     </div>
   </div>
 
@@ -728,8 +728,8 @@ WHERE client_id = i.client_id);
             </section>
             
             <section class="concept-section" id="d7-6">
-              <h3>DML 総合<span>1問</span></h3>
-              <p class="concept-copy">DML 問題では、対象行の決まり方、更新タイミング、トランザクション制御を順番に読む必要がある。1文の中で何が確定し、何が取り消せるかが核心になる。</p>
+              <h3>UPDATE 文の基本構文<span>1問</span></h3>
+              <p class="concept-copy">UPDATE は `UPDATE 表名 SET 列1=値1, 列2=値2 WHERE 条件` の形で書く。SET は 1 回だけ書き、列代入はカンマで並べる。</p>
               
                 <article class="question-card">
                   <div class="question-meta">第1回 模擬試験 / 問42 / 正答 A.D / 自己回答 A.C</div>
@@ -764,12 +764,12 @@ WHERE client_id = i.client_id);
             </div>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
-                    <p>この問題の論点は「DML 総合」です。DML 問題では、対象行の決まり方、更新タイミング、トランザクション制御を順番に読む必要がある。1文の中で何が確定し、何が取り消せるかが核心になる。 したがって正答は A「UPDATE ITEM SET MADE_DATE = &#x27;23-JUN-2021&#x27;, ITEM_PRICE =…」 / D「UPDATE ITEM SET MADE_DATE = SYSDATE, ITEM_PRICE = NULL …」 になります。</p>
+                    <p>この問題の論点は「UPDATE 文の基本構文」です。UPDATE は `UPDATE 表名 SET 列1=値1, 列2=値2 WHERE 条件` の形で書く。SET は 1 回だけ書き、列代入はカンマで並べる。 したがって正答は A「UPDATE ITEM SET MADE_DATE = &#x27;23-JUN-2021&#x27;, ITEM_PRICE =…」 / D「UPDATE ITEM SET MADE_DATE = SYSDATE, ITEM_PRICE = NULL …」 になります。</p>
                     <div class="block-title">今回の誤り</div>
-                    <p>自己回答は A「UPDATE ITEM SET MADE_DATE = &#x27;23-JUN-2021&#x27;, ITEM_PRICE =…」 / C「UPDATE ITEM SET MADE_DATE = &#x27;23-JUN-2021&#x27; AND SET ITEM_…」 でした。一部は当たっていますが、C「UPDATE ITEM SET MADE_DATE = &#x27;23-JUN-2021&#x27; AND SET ITEM_…」 に引っ張られて取りこぼしています。構文だけを見て、実行後の状態変化まで追えずに失点しやすい。</p>
+                    <p>自己回答は A「UPDATE ITEM SET MADE_DATE = &#x27;23-JUN-2021&#x27;, ITEM_PRICE =…」 / C「UPDATE ITEM SET MADE_DATE = &#x27;23-JUN-2021&#x27; AND SET ITEM_…」 でした。一部は当たっていますが、C「UPDATE ITEM SET MADE_DATE = &#x27;23-JUN-2021&#x27; AND SET ITEM_…」 に引っ張られて取りこぼしています。SET を重ねたり、代入列の途中に AND を入れたりして、意味ではなく文法エラーを起こしやすい。</p>
                     <div class="block-title">叩き直しポイント</div>
                     <ul class="rebuild-list">
-                      <li>対象行、変更内容、確定/取消の可否を3段階で確認する。</li><li>DDL と混ざっていないかを見る。</li><li>副問合せがある場合は相関性と返却行数を先に確認する。</li>
+                      <li>UPDATE の骨格を丸ごと暗記する。</li><li>複数列更新は `,` でつなぎ、条件は WHERE に分離する。</li><li>日付リテラルや NULL 代入は文法上そのまま書けると確認する。</li>
                     </ul>
                   </div>
                 </article>

@@ -71,61 +71,64 @@
       <div class="metric"><div class="label">フェーズ</div><div class="value">Phase 1</div></div>
       <div class="metric"><div class="label">進捗率</div><div class="value">24.0%</div></div>
       <div class="metric"><div class="label">誤答数</div><div class="value">19問</div></div>
-      <div class="metric"><div class="label">カテゴリ数</div><div class="value">6</div></div>
+      <div class="metric"><div class="label">カテゴリ数</div><div class="value">9</div></div>
     </div>
   </div>
 
   <div class="toc">
     <h2>カテゴリ別目次</h2>
     <div class="toc-grid">
-      <a href="#d6-1" class="high">サブクエリ総合 <span>6問</span></a><a href="#d6-2" class="high">集合演算と ORDER BY <span>5問</span></a><a href="#d6-3" class="high">UNION と UNION ALL の違い <span>3問</span></a><a href="#d6-4" class="high">相関サブクエリの実行順 <span>3問</span></a><a href="#d6-5" class="high">ANY・ALL・平均比較 <span>1問</span></a><a href="#d6-6" class="high">スカラサブクエリの制約 <span>1問</span></a>
+      <a href="#d6-1" class="high">INTERSECT を含む集合演算の基本 <span>6問</span></a><a href="#d6-2" class="high">集合演算と ORDER BY <span>4問</span></a><a href="#d6-3" class="high">相関サブクエリの実行順 <span>3問</span></a><a href="#d6-4" class="high">ANY・ALL・平均比較 <span>1問</span></a><a href="#d6-5" class="high">UNION と UNION ALL の違い <span>1問</span></a><a href="#d6-6" class="high">サブクエリが必要になる場面 <span>1問</span></a><a href="#d6-7" class="high">スカラサブクエリの制約 <span>1問</span></a><a href="#d6-8" class="high">自己結合と副問合せの使い分け <span>1問</span></a><a href="#d6-9" class="high">複数行サブクエリの性質 <span>1問</span></a>
     </div>
   </div>
 
   
             <section class="concept-section" id="d6-1">
-              <h3>サブクエリ総合<span>6問</span></h3>
-              <p class="concept-copy">サブクエリは返す行数と比較演算子の組合せで意味が決まる。まず単一行か複数行か、相関か非相関かを切り分ける必要がある。</p>
+              <h3>INTERSECT を含む集合演算の基本<span>6問</span></h3>
+              <p class="concept-copy">複合問合せでは、各 SELECT の列数と対応するデータ型をそろえる必要がある。INTERSECT は両方の結果に共通する行を返し、NULL を含む行も比較対象になる。</p>
               
                 <article class="question-card">
-                  <div class="question-meta">第2回 模擬試験 / 問25 / 正答 AB / 自己回答 AC</div>
+                  <div class="question-meta">第1回 模擬試験 / 問35 / 正答 2 / 自己回答 5</div>
                   <div class="block-title">問題文</div>
-                  <pre>異なるITEM_IDで同じ商品名（ITEM_NAME）が入力されているものをチェックする方法は下記のどれでしょうか。（2つ選択）</pre>
+                  <pre>商品情報マスター表と、商品取引履歴表が存在していて、
+商品の取引があると商品取引履歴表に取引情報を登録するとします。
+履歴は商品毎に1件のみ、商品情報マスター表と同じ形式のものを登録します。
+一度も取引が無い商品情報を取得するには、以下のどれを使用すべきでしょうか。</pre>
                   <div class="block-title">選択肢</div>
                   <div class="options-grid">
-            <div class="option-card correct selected">
-              <div class="option-label">A</div>
-              <div class="option-body"><pre>自己結合</pre></div>
+            <div class="option-card">
+              <div class="option-label">1</div>
+              <div class="option-body"><pre>INTERSECT</pre></div>
             </div>
             
             <div class="option-card correct">
-              <div class="option-label">B</div>
-              <div class="option-body"><pre>副問合せ</pre></div>
+              <div class="option-label">2</div>
+              <div class="option-body"><pre>MINUS</pre></div>
+            </div>
+            
+            <div class="option-card">
+              <div class="option-label">3</div>
+              <div class="option-body"><pre>MINUS ALL</pre></div>
+            </div>
+            
+            <div class="option-card">
+              <div class="option-label">4</div>
+              <div class="option-body"><pre>UNION</pre></div>
             </div>
             
             <div class="option-card selected">
-              <div class="option-label">C</div>
-              <div class="option-body"><pre>自己結合によるFULL OUTER JOIN</pre></div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-label">D</div>
-              <div class="option-body"><pre>自己結合によるRIGHT OUTER JOIN</pre></div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-label">E</div>
-              <div class="option-body"><pre>自己結合によるLEFT OUTER JOIN</pre></div>
+              <div class="option-label">5</div>
+              <div class="option-body"><pre>UNION ALL</pre></div>
             </div>
             </div>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
-                    <p>この問題の論点は「サブクエリ総合」です。サブクエリは返す行数と比較演算子の組合せで意味が決まる。まず単一行か複数行か、相関か非相関かを切り分ける必要がある。 したがって正答は A「自己結合」 / B「副問合せ」 になります。</p>
+                    <p>この問題の論点は「INTERSECT を含む集合演算の基本」です。複合問合せでは、各 SELECT の列数と対応するデータ型をそろえる必要がある。INTERSECT は両方の結果に共通する行を返し、NULL を含む行も比較対象になる。 したがって正答は 2「MINUS」 になります。</p>
                     <div class="block-title">今回の誤り</div>
-                    <p>自己回答は A「自己結合」 / C「自己結合によるFULL OUTER JOIN」 でした。一部は当たっていますが、C「自己結合によるFULL OUTER JOIN」 に引っ張られて取りこぼしています。行数判定を飛ばして記号だけで選ぶと、正しそうな選択肢に流れやすい。</p>
+                    <p>自己回答は 5「UNION ALL」 でした。列名まで一致必須と思い込んだり、列数・型の一致条件と、INTERSECT が返す行の意味を切り分けられずに失点しやすい。 正答との差は、条件の向き、句の置き場所、またはオブジェクトの性質を正確に読み切れていない点にあります。</p>
                     <div class="block-title">叩き直しポイント</div>
                     <ul class="rebuild-list">
-                      <li>1行か複数行かを先に判定する。</li><li>相関か非相関かを次に判定する。</li><li>最後に比較演算子が合っているかを確認する。</li>
+                      <li>集合演算はまず『列数一致』『対応型一致』を確認する。</li><li>UNION は和、INTERSECT は共通、MINUS は差集合と役割を分ける。</li><li>列名は先頭 SELECT 基準で決まり、完全一致は必須ではない。</li>
                     </ul>
                   </div>
                 </article>
@@ -163,12 +166,98 @@
             </div>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
-                    <p>この問題の論点は「サブクエリ総合」です。サブクエリは返す行数と比較演算子の組合せで意味が決まる。まず単一行か複数行か、相関か非相関かを切り分ける必要がある。 したがって正答は B「複合問合せの各SELECT文の列名は異なる場合があります。」 / D「INTERSECT演算子は、結果にNULLがあった場合、データを抽出します。」 になります。</p>
+                    <p>この問題の論点は「INTERSECT を含む集合演算の基本」です。複合問合せでは、各 SELECT の列数と対応するデータ型をそろえる必要がある。INTERSECT は両方の結果に共通する行を返し、NULL を含む行も比較対象になる。 したがって正答は B「複合問合せの各SELECT文の列名は異なる場合があります。」 / D「INTERSECT演算子は、結果にNULLがあった場合、データを抽出します。」 になります。</p>
                     <div class="block-title">今回の誤り</div>
-                    <p>自己回答は A「複合問合せの各SELECT文の列数は異なる場合があります。」 / D「INTERSECT演算子は、結果にNULLがあった場合、データを抽出します。」 でした。一部は当たっていますが、A「複合問合せの各SELECT文の列数は異なる場合があります。」 に引っ張られて取りこぼしています。行数判定を飛ばして記号だけで選ぶと、正しそうな選択肢に流れやすい。</p>
+                    <p>自己回答は A「複合問合せの各SELECT文の列数は異なる場合があります。」 / D「INTERSECT演算子は、結果にNULLがあった場合、データを抽出します。」 でした。一部は当たっていますが、A「複合問合せの各SELECT文の列数は異なる場合があります。」 に引っ張られて取りこぼしています。列名まで一致必須と思い込んだり、列数・型の一致条件と、INTERSECT が返す行の意味を切り分けられずに失点しやすい。</p>
                     <div class="block-title">叩き直しポイント</div>
                     <ul class="rebuild-list">
-                      <li>1行か複数行かを先に判定する。</li><li>相関か非相関かを次に判定する。</li><li>最後に比較演算子が合っているかを確認する。</li>
+                      <li>集合演算はまず『列数一致』『対応型一致』を確認する。</li><li>UNION は和、INTERSECT は共通、MINUS は差集合と役割を分ける。</li><li>列名は先頭 SELECT 基準で決まり、完全一致は必須ではない。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第2回 模擬試験 / 問36 / 正答 AB / 自己回答 AD</div>
+                  <div class="block-title">問題文</div>
+                  <pre>図のような表があります。
+以下の従業員の詳細を表示する必要があります。
+・DEPT_ID &#x27;10101&#x27; の部署に所属
+・入社年数(START_DATE)が1年以下
+・月の定期代(PASS_PRICE)が5万円を超える
+必要な結果を取得するSQLはどれですか。（2つ選択）</pre>
+                  <div class="block-title">選択肢</div>
+                  <div class="options-grid">
+            <div class="option-card correct selected">
+              <div class="option-label">A</div>
+              <div class="option-body"><pre>SELECT NAME, PASS_PRICE, START_DATE FROM EMP WHERE START_DATE &gt; SYSDATE-365 AND DEPT_ID = &#x27;10101&#x27; INTERSECT SELECT NAME, PASS_PRICE, START_DATE FROM EMP WHERE PASS_PRICE &gt; 50000;</pre></div>
+            </div>
+            
+            <div class="option-card correct">
+              <div class="option-label">B</div>
+              <div class="option-body"><pre>SELECT NAME, PASS_PRICE, START_DATE FROM EMP WHERE PASS_PRICE &gt; 50000 AND DEPT_ID = 10101 INTERSECT SELECT NAME, PASS_PRICE, START_DATE FROM EMP WHERE START_DATE &gt; SYSDATE-365;</pre></div>
+            </div>
+            
+            <div class="option-card">
+              <div class="option-label">C</div>
+              <div class="option-body"><pre>SELECT NAME, PASS_PRICE, START_DATE FROM EMP WHERE START_DATE &gt; SYSDATE-365 AND DEPT_ID = &#x27;10101&#x27; UNION ALL SELECT NAME, PASS_PRICE, START_DATE FROM EMP WHERE PASS_PRICE &gt; 50000;</pre></div>
+            </div>
+            
+            <div class="option-card selected">
+              <div class="option-label">D</div>
+              <div class="option-body"><pre>SELECT NAME, PASS_PRICE, START_DATE FROM EMP WHERE START_DATE &gt; SYSDATE-365 AND DEPT_ID = &#x27;10101&#x27; UNION SELECT NAME, PASS_PRICE, START_DATE FROM EMP WHERE PASS_PRICE &gt; 50000;</pre></div>
+            </div>
+            </div>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「INTERSECT を含む集合演算の基本」です。複合問合せでは、各 SELECT の列数と対応するデータ型をそろえる必要がある。INTERSECT は両方の結果に共通する行を返し、NULL を含む行も比較対象になる。 したがって正答は A「SELECT NAME, PASS_PRICE, START_DATE FROM EMP WHERE STAR…」 / B「SELECT NAME, PASS_PRICE, START_DATE FROM EMP WHERE PASS…」 になります。</p>
+                    <div class="block-title">今回の誤り</div>
+                    <p>自己回答は A「SELECT NAME, PASS_PRICE, START_DATE FROM EMP WHERE STAR…」 / D「SELECT NAME, PASS_PRICE, START_DATE FROM EMP WHERE STAR…」 でした。一部は当たっていますが、D「SELECT NAME, PASS_PRICE, START_DATE FROM EMP WHERE STAR…」 に引っ張られて取りこぼしています。列名まで一致必須と思い込んだり、列数・型の一致条件と、INTERSECT が返す行の意味を切り分けられずに失点しやすい。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>集合演算はまず『列数一致』『対応型一致』を確認する。</li><li>UNION は和、INTERSECT は共通、MINUS は差集合と役割を分ける。</li><li>列名は先頭 SELECT 基準で決まり、完全一致は必須ではない。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第2回 模擬試験 / 問53 / 正答 AC / 自己回答 DE</div>
+                  <div class="block-title">問題文</div>
+                  <pre>複合問合せ（UNION / INTERSECT / MINUS 等）において、次の記述のうち正しいものを2つ選択してください。</pre>
+                  <div class="block-title">選択肢</div>
+                  <div class="options-grid">
+            <div class="option-card correct">
+              <div class="option-label">A</div>
+              <div class="option-body"><pre>SELECT句の列数はすべて同一である必要がある</pre></div>
+            </div>
+            
+            <div class="option-card">
+              <div class="option-label">B</div>
+              <div class="option-body"><pre>SELECT句の列名はすべて同一である必要がある</pre></div>
+            </div>
+            
+            <div class="option-card correct">
+              <div class="option-label">C</div>
+              <div class="option-body"><pre>ORDER BY句は最初のSELECTの列を指定する</pre></div>
+            </div>
+            
+            <div class="option-card selected">
+              <div class="option-label">D</div>
+              <div class="option-body"><pre>結果セットの列名は、指定した最後のSELECTの列名が使用される</pre></div>
+            </div>
+            
+            <div class="option-card selected">
+              <div class="option-label">E</div>
+              <div class="option-body"><pre>NULL値は無視される</pre></div>
+            </div>
+            </div>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「INTERSECT を含む集合演算の基本」です。複合問合せでは、各 SELECT の列数と対応するデータ型をそろえる必要がある。INTERSECT は両方の結果に共通する行を返し、NULL を含む行も比較対象になる。 したがって正答は A「SELECT句の列数はすべて同一である必要がある」 / C「ORDER BY句は最初のSELECTの列を指定する」 になります。</p>
+                    <div class="block-title">今回の誤り</div>
+                    <p>自己回答は D「結果セットの列名は、指定した最後のSELECTの列名が使用される」 / E「NULL値は無視される」 でした。列名まで一致必須と思い込んだり、列数・型の一致条件と、INTERSECT が返す行の意味を切り分けられずに失点しやすい。 正答との差は、条件の向き、句の置き場所、またはオブジェクトの性質を正確に読み切れていない点にあります。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>集合演算はまず『列数一致』『対応型一致』を確認する。</li><li>UNION は和、INTERSECT は共通、MINUS は差集合と役割を分ける。</li><li>列名は先頭 SELECT 基準で決まり、完全一致は必須ではない。</li>
                     </ul>
                   </div>
                 </article>
@@ -206,55 +295,12 @@
             </div>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
-                    <p>この問題の論点は「サブクエリ総合」です。サブクエリは返す行数と比較演算子の組合せで意味が決まる。まず単一行か複数行か、相関か非相関かを切り分ける必要がある。 したがって正答は B「2つの結果の共通する行を選択する」 / E「SELECT文の順番を入れ替えても結果は変わらない」 になります。</p>
+                    <p>この問題の論点は「INTERSECT を含む集合演算の基本」です。複合問合せでは、各 SELECT の列数と対応するデータ型をそろえる必要がある。INTERSECT は両方の結果に共通する行を返し、NULL を含む行も比較対象になる。 したがって正答は B「2つの結果の共通する行を選択する」 / E「SELECT文の順番を入れ替えても結果は変わらない」 になります。</p>
                     <div class="block-title">今回の誤り</div>
-                    <p>自己回答は B「2つの結果の共通する行を選択する」 / D「NULL値は除外される」 でした。一部は当たっていますが、D「NULL値は除外される」 に引っ張られて取りこぼしています。行数判定を飛ばして記号だけで選ぶと、正しそうな選択肢に流れやすい。</p>
+                    <p>自己回答は B「2つの結果の共通する行を選択する」 / D「NULL値は除外される」 でした。一部は当たっていますが、D「NULL値は除外される」 に引っ張られて取りこぼしています。列名まで一致必須と思い込んだり、列数・型の一致条件と、INTERSECT が返す行の意味を切り分けられずに失点しやすい。</p>
                     <div class="block-title">叩き直しポイント</div>
                     <ul class="rebuild-list">
-                      <li>1行か複数行かを先に判定する。</li><li>相関か非相関かを次に判定する。</li><li>最後に比較演算子が合っているかを確認する。</li>
-                    </ul>
-                  </div>
-                </article>
-                
-                <article class="question-card">
-                  <div class="question-meta">第2回 模擬試験 / 問62 / 正答 AC / 自己回答 AB</div>
-                  <div class="block-title">問題文</div>
-                  <pre>次のうち、サブクエリが必要なケースはどれでしょうか。最適なものを2つ選択してください。</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card correct selected">
-              <div class="option-label">A</div>
-              <div class="option-body"><pre>全商品の平均価格より高い価格の商品を表示する</pre></div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-label">B</div>
-              <div class="option-body"><pre>各カテゴリごとの平均価格を表示する</pre></div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-label">C</div>
-              <div class="option-body"><pre>注文テーブルから最も高額の注文を表示する</pre></div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-label">D</div>
-              <div class="option-body"><pre>各顧客ごとの注文数を表示する</pre></div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-label">E</div>
-              <div class="option-body"><pre>商品テーブルとカテゴリテーブルから商品名とカテゴリ名を表示する</pre></div>
-            </div>
-            </div>
-                  <div class="analysis-block">
-                    <div class="block-title">なぜそうなるか</div>
-                    <p>この問題の論点は「サブクエリ総合」です。サブクエリは返す行数と比較演算子の組合せで意味が決まる。まず単一行か複数行か、相関か非相関かを切り分ける必要がある。 したがって正答は A「全商品の平均価格より高い価格の商品を表示する」 / C「注文テーブルから最も高額の注文を表示する」 になります。</p>
-                    <div class="block-title">今回の誤り</div>
-                    <p>自己回答は A「全商品の平均価格より高い価格の商品を表示する」 / B「各カテゴリごとの平均価格を表示する」 でした。一部は当たっていますが、B「各カテゴリごとの平均価格を表示する」 に引っ張られて取りこぼしています。行数判定を飛ばして記号だけで選ぶと、正しそうな選択肢に流れやすい。</p>
-                    <div class="block-title">叩き直しポイント</div>
-                    <ul class="rebuild-list">
-                      <li>1行か複数行かを先に判定する。</li><li>相関か非相関かを次に判定する。</li><li>最後に比較演算子が合っているかを確認する。</li>
+                      <li>集合演算はまず『列数一致』『対応型一致』を確認する。</li><li>UNION は和、INTERSECT は共通、MINUS は差集合と役割を分ける。</li><li>列名は先頭 SELECT 基準で決まり、完全一致は必須ではない。</li>
                     </ul>
                   </div>
                 </article>
@@ -292,60 +338,12 @@ SELECT dummy &quot;DUMMY3&quot; FROM DUAL</pre>
             </div>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
-                    <p>この問題の論点は「サブクエリ総合」です。サブクエリは返す行数と比較演算子の組合せで意味が決まる。まず単一行か複数行か、相関か非相関かを切り分ける必要がある。 したがって正答は B「1」 になります。</p>
+                    <p>この問題の論点は「INTERSECT を含む集合演算の基本」です。複合問合せでは、各 SELECT の列数と対応するデータ型をそろえる必要がある。INTERSECT は両方の結果に共通する行を返し、NULL を含む行も比較対象になる。 したがって正答は B「1」 になります。</p>
                     <div class="block-title">今回の誤り</div>
-                    <p>自己回答は D「エラーになる」 でした。行数判定を飛ばして記号だけで選ぶと、正しそうな選択肢に流れやすい。 正答との差は、条件の向き、句の置き場所、またはオブジェクトの性質を正確に読み切れていない点にあります。</p>
+                    <p>自己回答は D「エラーになる」 でした。列名まで一致必須と思い込んだり、列数・型の一致条件と、INTERSECT が返す行の意味を切り分けられずに失点しやすい。 正答との差は、条件の向き、句の置き場所、またはオブジェクトの性質を正確に読み切れていない点にあります。</p>
                     <div class="block-title">叩き直しポイント</div>
                     <ul class="rebuild-list">
-                      <li>1行か複数行かを先に判定する。</li><li>相関か非相関かを次に判定する。</li><li>最後に比較演算子が合っているかを確認する。</li>
-                    </ul>
-                  </div>
-                </article>
-                
-                <article class="question-card">
-                  <div class="question-meta">第3回 模擬試験 / 問69 / 正答 ACD / 自己回答 ABC</div>
-                  <div class="block-title">問題文</div>
-                  <pre>複数行の副問合せについて、正しいものを3つ選んでください</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card correct selected">
-              <div class="option-label">A</div>
-              <div class="option-body"><pre>HAVING 句を含めることができる。</pre></div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-label">B</div>
-              <div class="option-body"><pre>WHERE句は使えない。</pre></div>
-            </div>
-            
-            <div class="option-card correct selected">
-              <div class="option-label">C</div>
-              <div class="option-body"><pre>GROUP BY 句を含めることができる。</pre></div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-label">D</div>
-              <div class="option-body"><pre>複数の列を返すことができる。</pre></div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-label">E</div>
-              <div class="option-body"><pre>副問合せ内で IN を使用できない。</pre></div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-label">F</div>
-              <div class="option-body"><pre>副問合せから常に2つ以上の値が返される。</pre></div>
-            </div>
-            </div>
-                  <div class="analysis-block">
-                    <div class="block-title">なぜそうなるか</div>
-                    <p>この問題の論点は「サブクエリ総合」です。サブクエリは返す行数と比較演算子の組合せで意味が決まる。まず単一行か複数行か、相関か非相関かを切り分ける必要がある。 したがって正答は A「HAVING 句を含めることができる。」 / C「GROUP BY 句を含めることができる。」 / D「複数の列を返すことができる。」 になります。</p>
-                    <div class="block-title">今回の誤り</div>
-                    <p>自己回答は A「HAVING 句を含めることができる。」 / B「WHERE句は使えない。」 / C「GROUP BY 句を含めることができる。」 でした。一部は当たっていますが、B「WHERE句は使えない。」 に引っ張られて取りこぼしています。行数判定を飛ばして記号だけで選ぶと、正しそうな選択肢に流れやすい。</p>
-                    <div class="block-title">叩き直しポイント</div>
-                    <ul class="rebuild-list">
-                      <li>1行か複数行かを先に判定する。</li><li>相関か非相関かを次に判定する。</li><li>最後に比較演算子が合っているかを確認する。</li>
+                      <li>集合演算はまず『列数一致』『対応型一致』を確認する。</li><li>UNION は和、INTERSECT は共通、MINUS は差集合と役割を分ける。</li><li>列名は先頭 SELECT 基準で決まり、完全一致は必須ではない。</li>
                     </ul>
                   </div>
                 </article>
@@ -353,7 +351,7 @@ SELECT dummy &quot;DUMMY3&quot; FROM DUAL</pre>
             </section>
             
             <section class="concept-section" id="d6-2">
-              <h3>集合演算と ORDER BY<span>5問</span></h3>
+              <h3>集合演算と ORDER BY<span>4問</span></h3>
               <p class="concept-copy">UNION、INTERSECT、MINUS を使った文では、ORDER BY は最後に1回だけ書ける。列名は先頭 SELECT の列名、または位置番号で指定する。</p>
               
                 <article class="question-card">
@@ -496,49 +494,6 @@ WHERE MAKER_ID LIKE &#x27;2%&#x27;;
                 </article>
                 
                 <article class="question-card">
-                  <div class="question-meta">第2回 模擬試験 / 問53 / 正答 AC / 自己回答 DE</div>
-                  <div class="block-title">問題文</div>
-                  <pre>複合問合せ（UNION / INTERSECT / MINUS 等）において、次の記述のうち正しいものを2つ選択してください。</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card correct">
-              <div class="option-label">A</div>
-              <div class="option-body"><pre>SELECT句の列数はすべて同一である必要がある</pre></div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-label">B</div>
-              <div class="option-body"><pre>SELECT句の列名はすべて同一である必要がある</pre></div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-label">C</div>
-              <div class="option-body"><pre>ORDER BY句は最初のSELECTの列を指定する</pre></div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-label">D</div>
-              <div class="option-body"><pre>結果セットの列名は、指定した最後のSELECTの列名が使用される</pre></div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-label">E</div>
-              <div class="option-body"><pre>NULL値は無視される</pre></div>
-            </div>
-            </div>
-                  <div class="analysis-block">
-                    <div class="block-title">なぜそうなるか</div>
-                    <p>この問題の論点は「集合演算と ORDER BY」です。UNION、INTERSECT、MINUS を使った文では、ORDER BY は最後に1回だけ書ける。列名は先頭 SELECT の列名、または位置番号で指定する。 したがって正答は A「SELECT句の列数はすべて同一である必要がある」 / C「ORDER BY句は最初のSELECTの列を指定する」 になります。</p>
-                    <div class="block-title">今回の誤り</div>
-                    <p>自己回答は D「結果セットの列名は、指定した最後のSELECTの列名が使用される」 / E「NULL値は無視される」 でした。各 SELECT ごとに ORDER BY が書ける、または任意の列番号を指定できると誤認しやすい。 正答との差は、条件の向き、句の置き場所、またはオブジェクトの性質を正確に読み切れていない点にあります。</p>
-                    <div class="block-title">叩き直しポイント</div>
-                    <ul class="rebuild-list">
-                      <li>集合演算の ORDER BY は文末に1回だけと覚える。</li><li>位置番号は最終結果の列数の範囲内だけ使える。</li><li>ORDER BY の列名は先頭 SELECT 基準で決まる。</li>
-                    </ul>
-                  </div>
-                </article>
-                
-                <article class="question-card">
                   <div class="question-meta">第3回 模擬試験 / 問75 / 正答 AC / 自己回答 BE</div>
                   <div class="block-title">問題文</div>
                   <pre>次の SQL 文のうち、正常に実行されるものはどれですか？（2つ選択）</pre>
@@ -608,149 +563,6 @@ ORDER BY 2;</pre></div>
             </section>
             
             <section class="concept-section" id="d6-3">
-              <h3>UNION と UNION ALL の違い<span>3問</span></h3>
-              <p class="concept-copy">UNION は列数と型をそろえたうえで重複行を削除する。UNION ALL は重複を残し、重複排除のソート処理も行わない。</p>
-              
-                <article class="question-card">
-                  <div class="question-meta">第1回 模擬試験 / 問34 / 正答 B.C.D / 自己回答 B.D.E</div>
-                  <div class="block-title">問題文</div>
-                  <pre>UNION演算子とUNION ALL演算子について、正しい記述はどれでしょうか。(3つ選択)</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card">
-              <div class="option-label">A</div>
-              <div class="option-body"><pre>それぞれのSELECT文で抽出された列の名前は同じである必要があります。</pre></div>
-            </div>
-            
-            <div class="option-card correct selected">
-              <div class="option-label">B</div>
-              <div class="option-body"><pre>それぞれのSELECT文で抽出された列の数は同数である必要があります。</pre></div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-label">C</div>
-              <div class="option-body"><pre>UNION演算子を使用すると、ソートされます。</pre></div>
-            </div>
-            
-            <div class="option-card correct selected">
-              <div class="option-label">D</div>
-              <div class="option-body"><pre>UNION演算子を使用すると、重複行は削除されます。</pre></div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-label">E</div>
-              <div class="option-body"><pre>UNION ALL演算子を使用すると、ソートされます。</pre></div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-label">F</div>
-              <div class="option-body"><pre>UNION ALL演算子を使用すると、重複行は削除されます。</pre></div>
-            </div>
-            </div>
-                  <div class="analysis-block">
-                    <div class="block-title">なぜそうなるか</div>
-                    <p>この問題の論点は「UNION と UNION ALL の違い」です。UNION は列数と型をそろえたうえで重複行を削除する。UNION ALL は重複を残し、重複排除のソート処理も行わない。 したがって正答は B「それぞれのSELECT文で抽出された列の数は同数である必要があります。」 / C「UNION演算子を使用すると、ソートされます。」 / D「UNION演算子を使用すると、重複行は削除されます。」 になります。</p>
-                    <div class="block-title">今回の誤り</div>
-                    <p>自己回答は B「それぞれのSELECT文で抽出された列の数は同数である必要があります。」 / D「UNION演算子を使用すると、重複行は削除されます。」 / E「UNION ALL演算子を使用すると、ソートされます。」 でした。一部は当たっていますが、E「UNION ALL演算子を使用すると、ソートされます。」 に引っ張られて取りこぼしています。列名まで完全一致が必要と思い込んだり、UNION ALL でも重複排除やソートが起きると誤解しやすい。</p>
-                    <div class="block-title">叩き直しポイント</div>
-                    <ul class="rebuild-list">
-                      <li>必要なのは列数と対応する型であり、列名一致は必須ではない。</li><li>UNION=重複削除あり、UNION ALL=重複削除なしで分けて覚える。</li><li>性能面では通常 UNION ALL の方が軽い。</li>
-                    </ul>
-                  </div>
-                </article>
-                
-                <article class="question-card">
-                  <div class="question-meta">第1回 模擬試験 / 問35 / 正答 2 / 自己回答 5</div>
-                  <div class="block-title">問題文</div>
-                  <pre>商品情報マスター表と、商品取引履歴表が存在していて、
-商品の取引があると商品取引履歴表に取引情報を登録するとします。
-履歴は商品毎に1件のみ、商品情報マスター表と同じ形式のものを登録します。
-一度も取引が無い商品情報を取得するには、以下のどれを使用すべきでしょうか。</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card">
-              <div class="option-label">1</div>
-              <div class="option-body"><pre>INTERSECT</pre></div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-label">2</div>
-              <div class="option-body"><pre>MINUS</pre></div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-label">3</div>
-              <div class="option-body"><pre>MINUS ALL</pre></div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-label">4</div>
-              <div class="option-body"><pre>UNION</pre></div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-label">5</div>
-              <div class="option-body"><pre>UNION ALL</pre></div>
-            </div>
-            </div>
-                  <div class="analysis-block">
-                    <div class="block-title">なぜそうなるか</div>
-                    <p>この問題の論点は「UNION と UNION ALL の違い」です。UNION は列数と型をそろえたうえで重複行を削除する。UNION ALL は重複を残し、重複排除のソート処理も行わない。 したがって正答は 2「MINUS」 になります。</p>
-                    <div class="block-title">今回の誤り</div>
-                    <p>自己回答は 5「UNION ALL」 でした。列名まで完全一致が必要と思い込んだり、UNION ALL でも重複排除やソートが起きると誤解しやすい。 正答との差は、条件の向き、句の置き場所、またはオブジェクトの性質を正確に読み切れていない点にあります。</p>
-                    <div class="block-title">叩き直しポイント</div>
-                    <ul class="rebuild-list">
-                      <li>必要なのは列数と対応する型であり、列名一致は必須ではない。</li><li>UNION=重複削除あり、UNION ALL=重複削除なしで分けて覚える。</li><li>性能面では通常 UNION ALL の方が軽い。</li>
-                    </ul>
-                  </div>
-                </article>
-                
-                <article class="question-card">
-                  <div class="question-meta">第2回 模擬試験 / 問36 / 正答 AB / 自己回答 AD</div>
-                  <div class="block-title">問題文</div>
-                  <pre>図のような表があります。
-以下の従業員の詳細を表示する必要があります。
-・DEPT_ID &#x27;10101&#x27; の部署に所属
-・入社年数(START_DATE)が1年以下
-・月の定期代(PASS_PRICE)が5万円を超える
-必要な結果を取得するSQLはどれですか。（2つ選択）</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card correct selected">
-              <div class="option-label">A</div>
-              <div class="option-body"><pre>SELECT NAME, PASS_PRICE, START_DATE FROM EMP WHERE START_DATE &gt; SYSDATE-365 AND DEPT_ID = &#x27;10101&#x27; INTERSECT SELECT NAME, PASS_PRICE, START_DATE FROM EMP WHERE PASS_PRICE &gt; 50000;</pre></div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-label">B</div>
-              <div class="option-body"><pre>SELECT NAME, PASS_PRICE, START_DATE FROM EMP WHERE PASS_PRICE &gt; 50000 AND DEPT_ID = 10101 INTERSECT SELECT NAME, PASS_PRICE, START_DATE FROM EMP WHERE START_DATE &gt; SYSDATE-365;</pre></div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-label">C</div>
-              <div class="option-body"><pre>SELECT NAME, PASS_PRICE, START_DATE FROM EMP WHERE START_DATE &gt; SYSDATE-365 AND DEPT_ID = &#x27;10101&#x27; UNION ALL SELECT NAME, PASS_PRICE, START_DATE FROM EMP WHERE PASS_PRICE &gt; 50000;</pre></div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-label">D</div>
-              <div class="option-body"><pre>SELECT NAME, PASS_PRICE, START_DATE FROM EMP WHERE START_DATE &gt; SYSDATE-365 AND DEPT_ID = &#x27;10101&#x27; UNION SELECT NAME, PASS_PRICE, START_DATE FROM EMP WHERE PASS_PRICE &gt; 50000;</pre></div>
-            </div>
-            </div>
-                  <div class="analysis-block">
-                    <div class="block-title">なぜそうなるか</div>
-                    <p>この問題の論点は「UNION と UNION ALL の違い」です。UNION は列数と型をそろえたうえで重複行を削除する。UNION ALL は重複を残し、重複排除のソート処理も行わない。 したがって正答は A「SELECT NAME, PASS_PRICE, START_DATE FROM EMP WHERE STAR…」 / B「SELECT NAME, PASS_PRICE, START_DATE FROM EMP WHERE PASS…」 になります。</p>
-                    <div class="block-title">今回の誤り</div>
-                    <p>自己回答は A「SELECT NAME, PASS_PRICE, START_DATE FROM EMP WHERE STAR…」 / D「SELECT NAME, PASS_PRICE, START_DATE FROM EMP WHERE STAR…」 でした。一部は当たっていますが、D「SELECT NAME, PASS_PRICE, START_DATE FROM EMP WHERE STAR…」 に引っ張られて取りこぼしています。列名まで完全一致が必要と思い込んだり、UNION ALL でも重複排除やソートが起きると誤解しやすい。</p>
-                    <div class="block-title">叩き直しポイント</div>
-                    <ul class="rebuild-list">
-                      <li>必要なのは列数と対応する型であり、列名一致は必須ではない。</li><li>UNION=重複削除あり、UNION ALL=重複削除なしで分けて覚える。</li><li>性能面では通常 UNION ALL の方が軽い。</li>
-                    </ul>
-                  </div>
-                </article>
-                
-            </section>
-            
-            <section class="concept-section" id="d6-4">
               <h3>相関サブクエリの実行順<span>3問</span></h3>
               <p class="concept-copy">相関サブクエリは、外側問い合わせの行を1行ずつ評価し、その行ごとに内側問い合わせを再実行する。非相関サブクエリのように内側が先に1回だけ動くわけではない。</p>
               
@@ -893,7 +705,7 @@ WHERE salary &gt; (
                 
             </section>
             
-            <section class="concept-section" id="d6-5">
+            <section class="concept-section" id="d6-4">
               <h3>ANY・ALL・平均比較<span>1問</span></h3>
               <p class="concept-copy">サブクエリ結果が複数行になるときは、IN、ANY、ALL を使って比較する。部門別平均より高い給与のような問題では、相関サブクエリか集約結果との結合で表現する。</p>
               
@@ -955,7 +767,110 @@ WHERE
                 
             </section>
             
+            <section class="concept-section" id="d6-5">
+              <h3>UNION と UNION ALL の違い<span>1問</span></h3>
+              <p class="concept-copy">UNION は列数と型をそろえたうえで重複行を削除する。UNION ALL は重複を残し、重複排除のソート処理も行わない。</p>
+              
+                <article class="question-card">
+                  <div class="question-meta">第1回 模擬試験 / 問34 / 正答 B.C.D / 自己回答 B.D.E</div>
+                  <div class="block-title">問題文</div>
+                  <pre>UNION演算子とUNION ALL演算子について、正しい記述はどれでしょうか。(3つ選択)</pre>
+                  <div class="block-title">選択肢</div>
+                  <div class="options-grid">
+            <div class="option-card">
+              <div class="option-label">A</div>
+              <div class="option-body"><pre>それぞれのSELECT文で抽出された列の名前は同じである必要があります。</pre></div>
+            </div>
+            
+            <div class="option-card correct selected">
+              <div class="option-label">B</div>
+              <div class="option-body"><pre>それぞれのSELECT文で抽出された列の数は同数である必要があります。</pre></div>
+            </div>
+            
+            <div class="option-card correct">
+              <div class="option-label">C</div>
+              <div class="option-body"><pre>UNION演算子を使用すると、ソートされます。</pre></div>
+            </div>
+            
+            <div class="option-card correct selected">
+              <div class="option-label">D</div>
+              <div class="option-body"><pre>UNION演算子を使用すると、重複行は削除されます。</pre></div>
+            </div>
+            
+            <div class="option-card selected">
+              <div class="option-label">E</div>
+              <div class="option-body"><pre>UNION ALL演算子を使用すると、ソートされます。</pre></div>
+            </div>
+            
+            <div class="option-card">
+              <div class="option-label">F</div>
+              <div class="option-body"><pre>UNION ALL演算子を使用すると、重複行は削除されます。</pre></div>
+            </div>
+            </div>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「UNION と UNION ALL の違い」です。UNION は列数と型をそろえたうえで重複行を削除する。UNION ALL は重複を残し、重複排除のソート処理も行わない。 したがって正答は B「それぞれのSELECT文で抽出された列の数は同数である必要があります。」 / C「UNION演算子を使用すると、ソートされます。」 / D「UNION演算子を使用すると、重複行は削除されます。」 になります。</p>
+                    <div class="block-title">今回の誤り</div>
+                    <p>自己回答は B「それぞれのSELECT文で抽出された列の数は同数である必要があります。」 / D「UNION演算子を使用すると、重複行は削除されます。」 / E「UNION ALL演算子を使用すると、ソートされます。」 でした。一部は当たっていますが、E「UNION ALL演算子を使用すると、ソートされます。」 に引っ張られて取りこぼしています。列名まで完全一致が必要と思い込んだり、UNION ALL でも重複排除やソートが起きると誤解しやすい。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>必要なのは列数と対応する型であり、列名一致は必須ではない。</li><li>UNION=重複削除あり、UNION ALL=重複削除なしで分けて覚える。</li><li>性能面では通常 UNION ALL の方が軽い。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+            </section>
+            
             <section class="concept-section" id="d6-6">
+              <h3>サブクエリが必要になる場面<span>1問</span></h3>
+              <p class="concept-copy">外側の検索条件で『別の結果を先に求めてから比較する』必要があるとき、サブクエリが必要になる。平均値との比較や、他の検索結果を条件に使う問題が典型である。</p>
+              
+                <article class="question-card">
+                  <div class="question-meta">第2回 模擬試験 / 問62 / 正答 AC / 自己回答 AB</div>
+                  <div class="block-title">問題文</div>
+                  <pre>次のうち、サブクエリが必要なケースはどれでしょうか。最適なものを2つ選択してください。</pre>
+                  <div class="block-title">選択肢</div>
+                  <div class="options-grid">
+            <div class="option-card correct selected">
+              <div class="option-label">A</div>
+              <div class="option-body"><pre>全商品の平均価格より高い価格の商品を表示する</pre></div>
+            </div>
+            
+            <div class="option-card selected">
+              <div class="option-label">B</div>
+              <div class="option-body"><pre>各カテゴリごとの平均価格を表示する</pre></div>
+            </div>
+            
+            <div class="option-card correct">
+              <div class="option-label">C</div>
+              <div class="option-body"><pre>注文テーブルから最も高額の注文を表示する</pre></div>
+            </div>
+            
+            <div class="option-card">
+              <div class="option-label">D</div>
+              <div class="option-body"><pre>各顧客ごとの注文数を表示する</pre></div>
+            </div>
+            
+            <div class="option-card">
+              <div class="option-label">E</div>
+              <div class="option-body"><pre>商品テーブルとカテゴリテーブルから商品名とカテゴリ名を表示する</pre></div>
+            </div>
+            </div>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「サブクエリが必要になる場面」です。外側の検索条件で『別の結果を先に求めてから比較する』必要があるとき、サブクエリが必要になる。平均値との比較や、他の検索結果を条件に使う問題が典型である。 したがって正答は A「全商品の平均価格より高い価格の商品を表示する」 / C「注文テーブルから最も高額の注文を表示する」 になります。</p>
+                    <div class="block-title">今回の誤り</div>
+                    <p>自己回答は A「全商品の平均価格より高い価格の商品を表示する」 / B「各カテゴリごとの平均価格を表示する」 でした。一部は当たっていますが、B「各カテゴリごとの平均価格を表示する」 に引っ張られて取りこぼしています。単純な集計や結合だけで済む処理までサブクエリ必須だと思い込み、逆に比較対象を先に求める必要がある場面を見落としやすい。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>先に別結果を求めて、その値で外側を絞るならサブクエリを疑う。</li><li>単なる GROUP BY 集計だけで済む処理と切り分ける。</li><li>結合で済むのか、比較用の値生成が必要なのかを日本語で判定する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+            </section>
+            
+            <section class="concept-section" id="d6-7">
               <h3>スカラサブクエリの制約<span>1問</span></h3>
               <p class="concept-copy">スカラサブクエリは1行1列だけを返すサブクエリであり、0行なら NULL、2行以上ならエラーになる。使える句と使えない場所を区別する必要がある。</p>
               
@@ -997,6 +912,109 @@ WHERE
                     <div class="block-title">叩き直しポイント</div>
                     <ul class="rebuild-list">
                       <li>スカラ=1行1列だけ、と定義から覚える。</li><li>0行時は NULL、複数行時はエラーをセットで覚える。</li><li>INSERT VALUES や SELECT 句など、式を書ける位置で使う意識を持つ。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+            </section>
+            
+            <section class="concept-section" id="d6-8">
+              <h3>自己結合と副問合せの使い分け<span>1問</span></h3>
+              <p class="concept-copy">同一表内の重複や対応関係を確認するときは、同じ表を別名で比較する自己結合でも、集約や存在確認を使う副問合せでも表現できる。要件に対して成立する手法を見分けるのが論点である。</p>
+              
+                <article class="question-card">
+                  <div class="question-meta">第2回 模擬試験 / 問25 / 正答 AB / 自己回答 AC</div>
+                  <div class="block-title">問題文</div>
+                  <pre>異なるITEM_IDで同じ商品名（ITEM_NAME）が入力されているものをチェックする方法は下記のどれでしょうか。（2つ選択）</pre>
+                  <div class="block-title">選択肢</div>
+                  <div class="options-grid">
+            <div class="option-card correct selected">
+              <div class="option-label">A</div>
+              <div class="option-body"><pre>自己結合</pre></div>
+            </div>
+            
+            <div class="option-card correct">
+              <div class="option-label">B</div>
+              <div class="option-body"><pre>副問合せ</pre></div>
+            </div>
+            
+            <div class="option-card selected">
+              <div class="option-label">C</div>
+              <div class="option-body"><pre>自己結合によるFULL OUTER JOIN</pre></div>
+            </div>
+            
+            <div class="option-card">
+              <div class="option-label">D</div>
+              <div class="option-body"><pre>自己結合によるRIGHT OUTER JOIN</pre></div>
+            </div>
+            
+            <div class="option-card">
+              <div class="option-label">E</div>
+              <div class="option-body"><pre>自己結合によるLEFT OUTER JOIN</pre></div>
+            </div>
+            </div>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「自己結合と副問合せの使い分け」です。同一表内の重複や対応関係を確認するときは、同じ表を別名で比較する自己結合でも、集約や存在確認を使う副問合せでも表現できる。要件に対して成立する手法を見分けるのが論点である。 したがって正答は A「自己結合」 / B「副問合せ」 になります。</p>
+                    <div class="block-title">今回の誤り</div>
+                    <p>自己回答は A「自己結合」 / C「自己結合によるFULL OUTER JOIN」 でした。一部は当たっていますが、C「自己結合によるFULL OUTER JOIN」 に引っ張られて取りこぼしています。JOIN の種類に引っ張られて不要な外部結合を選んだり、自己結合で十分な場面を特殊な結合に広げてしまいやすい。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>同一表の比較なら、まず自己結合で書けるかを考える。</li><li>重複確認や存在確認は副問合せでも書けることを押さえる。</li><li>FULL OUTER や LEFT/RIGHT OUTER が本当に必要かを要件から判断する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+            </section>
+            
+            <section class="concept-section" id="d6-9">
+              <h3>複数行サブクエリの性質<span>1問</span></h3>
+              <p class="concept-copy">複数行サブクエリは、複数行を返し得る副問合せであり、WHERE、HAVING、GROUP BY を内部に持つこともできる。比較では IN、ANY、ALL など複数行対応の演算子を使う必要がある。</p>
+              
+                <article class="question-card">
+                  <div class="question-meta">第3回 模擬試験 / 問69 / 正答 ACD / 自己回答 ABC</div>
+                  <div class="block-title">問題文</div>
+                  <pre>複数行の副問合せについて、正しいものを3つ選んでください</pre>
+                  <div class="block-title">選択肢</div>
+                  <div class="options-grid">
+            <div class="option-card correct selected">
+              <div class="option-label">A</div>
+              <div class="option-body"><pre>HAVING 句を含めることができる。</pre></div>
+            </div>
+            
+            <div class="option-card selected">
+              <div class="option-label">B</div>
+              <div class="option-body"><pre>WHERE句は使えない。</pre></div>
+            </div>
+            
+            <div class="option-card correct selected">
+              <div class="option-label">C</div>
+              <div class="option-body"><pre>GROUP BY 句を含めることができる。</pre></div>
+            </div>
+            
+            <div class="option-card correct">
+              <div class="option-label">D</div>
+              <div class="option-body"><pre>複数の列を返すことができる。</pre></div>
+            </div>
+            
+            <div class="option-card">
+              <div class="option-label">E</div>
+              <div class="option-body"><pre>副問合せ内で IN を使用できない。</pre></div>
+            </div>
+            
+            <div class="option-card">
+              <div class="option-label">F</div>
+              <div class="option-body"><pre>副問合せから常に2つ以上の値が返される。</pre></div>
+            </div>
+            </div>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「複数行サブクエリの性質」です。複数行サブクエリは、複数行を返し得る副問合せであり、WHERE、HAVING、GROUP BY を内部に持つこともできる。比較では IN、ANY、ALL など複数行対応の演算子を使う必要がある。 したがって正答は A「HAVING 句を含めることができる。」 / C「GROUP BY 句を含めることができる。」 / D「複数の列を返すことができる。」 になります。</p>
+                    <div class="block-title">今回の誤り</div>
+                    <p>自己回答は A「HAVING 句を含めることができる。」 / B「WHERE句は使えない。」 / C「GROUP BY 句を含めることができる。」 でした。一部は当たっていますが、B「WHERE句は使えない。」 に引っ張られて取りこぼしています。複数行サブクエリなのに 2 行以上が必須だと思い込んだり、WHERE や GROUP BY を書けないと誤認しやすい。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>複数行サブクエリは『複数行になり得る』のであって、常に複数行とは限らない。</li><li>内部では WHERE、GROUP BY、HAVING も通常どおり使える。</li><li>外側との比較演算子が複数行対応かを必ず確認する。</li>
                     </ul>
                   </div>
                 </article>
