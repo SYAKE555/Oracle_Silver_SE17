@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>模擬試験 弱点強化教材 - Oracle Silver SQL</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', 'Hiragino Sans', Arial, sans-serif; background: #f5f7fa; color: #2d3748; line-height: 1.7; }
+  .page-header { background: linear-gradient(135deg, #8e2de2 0%, #4a00e0 50%, #c0392b 100%); color: white; padding: 36px 24px; text-align: center; }
+  .page-header h1 { font-size: 1.7rem; margin-bottom: 6px; }
+  .page-header .subtitle { opacity: .9; font-size: .92rem; }
+  .container { max-width: 1000px; margin: 0 auto; padding: 24px; }
+  .nav-back { display: inline-block; padding: 8px 16px; background: white; border-radius: 6px; text-decoration: none; color: #2d3748; box-shadow: 0 2px 4px rgba(0,0,0,.08); font-size: .88rem; margin-bottom: 16px; }
+
+  .toc { background: white; border-radius: 12px; padding: 18px 22px; box-shadow: 0 2px 8px rgba(0,0,0,.08); margin-bottom: 28px; }
+  .toc h2 { font-size: 1rem; margin-bottom: 10px; color: #4a00e0; }
+  .toc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; }
+  .toc a { display: block; padding: 8px 12px; background: #f7fafc; border-radius: 6px; text-decoration: none; color: #2d3748; font-size: .88rem; border-left: 3px solid #cbd5e0; }
+  .toc a:hover { background: #edf2f7; border-left-color: #4a00e0; }
+  .toc a.high { border-left-color: #c0392b; background: #fef5f5; }
+  .toc a.mid { border-left-color: #e67e22; background: #fef8f0; }
+
+  .domain-block { background: white; border-radius: 14px; padding: 28px 30px; box-shadow: 0 3px 12px rgba(0,0,0,.08); margin-bottom: 28px; scroll-margin-top: 16px; }
+  .domain-block h2 { font-size: 1.4rem; padding-bottom: 10px; border-bottom: 3px solid; margin-bottom: 18px; display: flex; align-items: center; gap: 12px; }
+  .d-tag { background: #4a00e0; color: white; padding: 3px 10px; border-radius: 6px; font-size: 1rem; font-weight: 900; }
+  .priority-pill { margin-left: auto; font-size: .8rem; padding: 4px 10px; border-radius: 10px; font-weight: 700; }
+  .p-high { background: #c0392b; color: white; }
+  .p-mid { background: #e67e22; color: white; }
+  .p-low { background: #f1c40f; color: #4a3800; }
+  .p-ok { background: #2ecc71; color: white; }
+
+  .domain-block h3 { font-size: 1.05rem; margin: 20px 0 10px; padding: 8px 12px; background: #f7fafc; border-left: 4px solid #4a00e0; border-radius: 4px; }
+  .domain-block h3.mistakes { border-left-color: #c0392b; }
+  .domain-block h3.rules { border-left-color: #2ecc71; }
+  .domain-block h3.check { border-left-color: #3498db; }
+  .domain-block h3.quiz { border-left-color: #e67e22; }
+
+  .mistake-list { list-style: none; padding: 0; }
+  .mistake-list li { padding: 8px 0 8px 28px; border-bottom: 1px dashed #e2e8f0; position: relative; font-size: .92rem; }
+  .mistake-list li::before { content: "⚠"; position: absolute; left: 6px; top: 8px; color: #c0392b; font-weight: 700; }
+  .mistake-list b.correct { color: #2ecc71; }
+  .mistake-list b.wrong { color: #c0392b; text-decoration: line-through; }
+
+  .rule-list { padding-left: 22px; font-size: .92rem; }
+  .rule-list li { margin-bottom: 6px; }
+  .rule-list code { background: #edf2f7; padding: 1px 6px; border-radius: 4px; font-size: .85em; color: #2d3748; }
+
+  table.check-tbl { width: 100%; border-collapse: collapse; font-size: .88rem; margin-top: 6px; }
+  table.check-tbl th, table.check-tbl td { padding: 8px 10px; border: 1px solid #e2e8f0; text-align: left; vertical-align: top; }
+  table.check-tbl th { background: #f7fafc; font-weight: 700; }
+  table.check-tbl td code { background: #edf2f7; padding: 1px 4px; border-radius: 3px; font-size: .92em; }
+
+  .quiz { background: #fef5eb; padding: 12px 16px; border-radius: 8px; margin-bottom: 10px; }
+  .quiz .q { font-weight: 700; font-size: .92rem; margin-bottom: 6px; }
+  .quiz .a { font-size: .88rem; color: #4a5568; padding-top: 6px; border-top: 1px dashed #e2e8f0; }
+  .quiz .a b { color: #2ecc71; }
+
+  pre { background: #2d3748; color: #f7fafc; padding: 10px 14px; border-radius: 6px; overflow-x: auto; font-size: .82rem; margin: 6px 0; }
+  code.inline { background: #edf2f7; padding: 1px 6px; border-radius: 3px; font-size: .9em; }
+
+  @media (max-width: 640px) {
+    .domain-block { padding: 18px; }
+    .domain-block h2 { font-size: 1.1rem; flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+<div class="page-header">
+  <h1>模擬試験 弱点強化教材</h1>
+  <div class="subtitle">模擬試験で落とした問題を起点に、試験直前に読み返せる形式で凝縮</div>
+</div>
+<div class="container">
+  <a class="nav-back" href="mock_exam_report.html">← 結果レポートへ戻る</a>
+  <a class="nav-back" href="index.html" style="margin-left:8px">📚 教科書トップへ</a>
+
+  <div class="toc">
+    <h2>🎯 弱点ドメイン一覧（正答率の低い順）</h2>
+    <div class="toc-grid">
+      <a class="high" href="#d5">D5 結合（最優先）</a>
+      <a class="high" href="#d6">D6 サブクエリ・集合演算（最優先）</a>
+      <a class="mid" href="#d3">D3 単一行関数</a>
+      <a class="mid" href="#d7">D7 DML・トランザクション</a>
+      <a class="mid" href="#d8">D8 DDL・オブジェクト</a>
+      <a href="#d4">D4 集計</a>
+      <a href="#d1">D1 SQL/RDB基礎</a>
+      <a href="#d2">D2 絞り込み・ソート</a>
+    </div>
+  </div>
+
+  <!-- D5 -->
+  <div class="domain-block" id="d5" style="border-top:5px solid #c0392b">
+    <h2 style="border-bottom-color:#c0392b"><span class="d-tag" style="background:#c0392b">D5</span>複数表の結合<span class="priority-pill p-high">最優先</span></h2>
+
+    <h3 class="mistakes">🔥 模試で落とした典型ミス</h3>
+    <ul class="mistake-list">
+      <li>自己結合で <code class="inline">USING</code> 句を使えると誤認。<b class="correct">正：表別名が必須で INNER JOIN も可</b> / <b class="wrong">誤：USING が使える / 必ず OUTER JOIN</b></li>
+      <li>FULL OUTER JOIN を「デカルト積と同じ」と誤認。<b class="correct">正：両表の全行を返し不一致側は NULL 埋め</b> / <b class="wrong">誤：デカルト積＝全組合せ</b></li>
+      <li>Oracle独自結合構文（<code class="inline">(+)</code>）と標準構文の区別。<b class="correct">FULL OUTER は Oracle 独自構文では非サポート</b>、ANSI 構文のみ。</li>
+      <li>NATURAL JOIN と USING の併用不可ルール、ON と USING の相互排他ルールを見落とす。</li>
+    </ul>
+
+    <h3 class="rules">📌 必修ルール</h3>
+    <ul class="rule-list">
+      <li><b>結合の種類と結果件数：</b>CROSS＝デカルト積 / INNER＝一致行のみ / LEFT・RIGHT＝片側全行＋相手NULL / FULL＝両側全行＋NULL / NATURAL＝同名列で自動結合。</li>
+      <li><b>USING：</b>両表の列名が完全一致するときのみ使用可。USING で指定した列は <code>表別名.</code> を付けると構文エラー。</li>
+      <li><b>ON：</b>任意の条件で結合可能。USING と同時使用不可。</li>
+      <li><b>NATURAL JOIN：</b>同名列を自動で結合条件にする。ON・USING と併用不可。列が1つも一致しなければデカルト積。</li>
+      <li><b>自己結合：</b>同じ表を参照するため<b>表別名が必須</b>。INNER でも OUTER でも可、USING は列名がぶつかるので使えない。</li>
+      <li><b>Oracle独自構文：</b>WHERE 句に <code>(+)</code> を付ける。FULL OUTER は <code>(+)</code> で表現できないので ANSI を使う。</li>
+      <li><b>NULL と結合：</b>結合キーに NULL がある行は INNER JOIN から除外される。NULL を含めたい場合は OUTER JOIN。</li>
+    </ul>
+
+    <h3 class="check">✅ 構文・語彙チェックリスト</h3>
+    <table class="check-tbl">
+      <tr><th>書ける</th><th>書けない（構文エラー）</th></tr>
+      <tr><td><code>FROM A JOIN B ON A.id=B.id</code></td><td><code>FROM A JOIN B ON A.id=B.id USING (id)</code></td></tr>
+      <tr><td><code>FROM A NATURAL JOIN B</code></td><td><code>FROM A NATURAL JOIN B ON ...</code></td></tr>
+      <tr><td><code>FROM emp e1, emp e2 WHERE e1.mgr=e2.empno</code></td><td><code>FROM emp JOIN emp USING(empno)</code>（自己結合）</td></tr>
+      <tr><td><code>FROM A LEFT JOIN B USING (id)</code></td><td><code>SELECT B.id FROM A JOIN B USING(id)</code>（USING列は別名不可）</td></tr>
+    </table>
+
+    <h3 class="quiz">🎯 ミニ演習（3問）</h3>
+    <div class="quiz">
+      <div class="q">Q1. 自己結合で絶対に必要なものは？</div>
+      <div class="a">A. <b>表別名（エイリアス）</b>。同じ表を2回参照するため列名が衝突する。</div>
+    </div>
+    <div class="quiz">
+      <div class="q">Q2. FULL OUTER JOIN を Oracle 独自構文 <code class="inline">(+)</code> で書けるか？</div>
+      <div class="a">A. <b>書けない</b>。FULL は ANSI の <code class="inline">FULL [OUTER] JOIN</code> でのみ記述可能。</div>
+    </div>
+    <div class="quiz">
+      <div class="q">Q3. <code class="inline">NATURAL JOIN</code> の2表に同名列が存在しない場合の結果は？</div>
+      <div class="a">A. <b>デカルト積（CROSS JOIN）と同じ結果</b>。結合条件が生成できないため。</div>
+    </div>
+  </div>
+
+  <!-- D6 -->
+  <div class="domain-block" id="d6" style="border-top:5px solid #c0392b">
+    <h2 style="border-bottom-color:#c0392b"><span class="d-tag" style="background:#c0392b">D6</span>サブクエリ・集合演算<span class="priority-pill p-high">最優先</span></h2>
+
+    <h3 class="mistakes">🔥 模試で落とした典型ミス</h3>
+    <ul class="mistake-list">
+      <li>相関サブクエリの実行順を逆に覚えた。<b class="correct">正：外側の各行ごとに内側が実行される</b> / <b class="wrong">誤：内側→外側の1回実行</b></li>
+      <li>UNION の ORDER BY は最後のSELECT にしか書けないと誤認。<b class="correct">正：ORDER BY は文末に1つのみ、列は最初のSELECTの列名 or 位置番号で指定</b></li>
+      <li>UNION ALL と UNION の違い：<b class="correct">UNION は重複削除＋ソート / UNION ALL は重複保持・ソートなし（高速）</b></li>
+      <li>「一度も取引のない商品」を取得するのに UNION / INTERSECT を選択。<b class="correct">正：MINUS（差集合）</b></li>
+      <li>EXISTS と IN の挙動差、NOT IN に NULL が混ざるときの罠を見落とす。</li>
+    </ul>
+
+    <h3 class="rules">📌 必修ルール</h3>
+    <ul class="rule-list">
+      <li><b>サブクエリの実行順：</b>通常（非相関）は内→外。<b>相関</b>は外の各行ごとに内を再実行。</li>
+      <li><b>単一行サブクエリ：</b>= / &lt; / &gt; を使用。2行以上返ると <code>ORA-01427</code>。</li>
+      <li><b>複数行サブクエリ：</b>IN / ANY / ALL を使用。<code>&gt; ANY</code>＝最小より大、<code>&gt; ALL</code>＝最大より大。</li>
+      <li><b>NOT IN と NULL：</b>サブクエリ結果に NULL が1つでもあると NOT IN は必ず空集合。EXISTS で書き換える。</li>
+      <li><b>EXISTS：</b>真偽のみ判定、サブクエリの SELECT リストの内容は評価しない（<code>SELECT 1</code> で十分）。</li>
+      <li><b>集合演算：</b>UNION＝和（重複削除）、UNION ALL＝和（重複保持）、INTERSECT＝積、MINUS＝差。列数と型の対応が必須。</li>
+      <li><b>集合演算のソート：</b>ORDER BY は最後に1回のみ。列名は最初の SELECT のもの、または位置指定（<code>ORDER BY 1</code>）。</li>
+      <li><b>UNION の暗黙ソート：</b>UNION / INTERSECT / MINUS は重複排除のため内部でソートする（UNION ALL はソートなし）。</li>
+    </ul>
+
+    <h3 class="check">✅ 構文・語彙チェックリスト</h3>
+    <table class="check-tbl">
+      <tr><th>用途</th><th>使う演算子</th></tr>
+      <tr><td>両方の表に存在する行を取る</td><td><code>INTERSECT</code></td></tr>
+      <tr><td>A にあって B にない行を取る</td><td><code>A MINUS B</code></td></tr>
+      <tr><td>両方を重複込みで連結</td><td><code>UNION ALL</code>（高速・ソートなし）</td></tr>
+      <tr><td>NULL を返す可能性のあるサブクエリで除外</td><td><code>NOT EXISTS</code>（NOT IN は NULL で罠）</td></tr>
+      <tr><td>副問合せの「存在確認のみ」</td><td><code>WHERE EXISTS (SELECT 1 FROM ...)</code></td></tr>
+    </table>
+
+    <h3 class="quiz">🎯 ミニ演習（3問）</h3>
+    <div class="quiz">
+      <div class="q">Q1. 「一度も注文のない顧客」を取る最も自然な書き方は？</div>
+      <div class="a">A. <b>customer MINUS ordered_customer</b>、または <code>NOT EXISTS (SELECT 1 FROM orders ...)</code>。NOT IN は NULL で罠。</div>
+    </div>
+    <div class="quiz">
+      <div class="q">Q2. <code class="inline">SELECT a FROM t1 UNION SELECT b FROM t2 ORDER BY a;</code> は正しいか？</div>
+      <div class="a">A. <b>正しい</b>。ORDER BY は最後の文末に1回だけ、列名は最初の SELECT のもの。</div>
+    </div>
+    <div class="quiz">
+      <div class="q">Q3. UNION ALL と UNION どちらが速いか？</div>
+      <div class="a">A. <b>UNION ALL</b>。重複排除のソート処理がないため。重複を気にしない場面では必ず ALL を選ぶ。</div>
+    </div>
+  </div>
+
+  <!-- D3 -->
+  <div class="domain-block" id="d3" style="border-top:5px solid #e67e22">
+    <h2 style="border-bottom-color:#e67e22"><span class="d-tag" style="background:#e67e22">D3</span>単一行関数<span class="priority-pill p-mid">優先</span></h2>
+
+    <h3 class="mistakes">🔥 模試で落とした典型ミス</h3>
+    <ul class="mistake-list">
+      <li>LIKE と文字列関数の組合せ：<code class="inline">UPPER(col) LIKE 'S%'</code> と <code class="inline">UPPER(col) LIKE 'T'</code>（%なし）を混同。</li>
+      <li>日付演算で「2年前」を <code class="inline">SYSDATE - 2*365</code> と書く。<b class="correct">正：ADD_MONTHS(SYSDATE, -24) または SYSDATE - INTERVAL '2' YEAR</b>（うるう年で誤差が出る）。</li>
+      <li>TO_NUMBER と TO_CHAR の入出力方向を逆に覚える。<b class="correct">TO_CHAR(数値, 書式) / TO_NUMBER(文字, 書式)</b></li>
+      <li>INSTR の開始位置に +1 をつけるか忘れて次単語を切り出せない。</li>
+      <li>NVL と NVL2 の引数順・戻り値を混同。</li>
+    </ul>
+
+    <h3 class="rules">📌 必修ルール</h3>
+    <ul class="rule-list">
+      <li><b>NVL(a, b)：</b>a が NULL なら b、そうでなければ a。<b>型は a に合わせる</b>（b が変換される）。</li>
+      <li><b>NVL2(a, b, c)：</b>a が NULL でなければ b、NULL なら c。第2・第3引数の型を揃える必要。</li>
+      <li><b>NULLIF(a, b)：</b>a=b のとき NULL、違えば a。a に数値リテラル、b に <code>NULL</code> 直書きは <code>ORA-00932</code>。</li>
+      <li><b>COALESCE(a, b, c, ...)：</b>最初の非 NULL を返す。少なくとも1引数が必須、全引数で型整合が必要。</li>
+      <li><b>CASE：</b>単純式＝<code>CASE col WHEN 'A' THEN ...</code>、検索式＝<code>CASE WHEN col IS NULL THEN ...</code>。DECODE は = 比較限定、範囲や IS NULL は検索 CASE で。</li>
+      <li><b>TO_DATE('2024-01-31','YYYY-MM-DD')：</b>書式を明示。環境依存の NLS_DATE_FORMAT に頼らない。</li>
+      <li><b>TO_CHAR(sysdate, 'YYYY-MM-DD HH24:MI:SS')：</b>大文字小文字・秒指定に注意。</li>
+      <li><b>MONTHS_BETWEEN / ADD_MONTHS / NEXT_DAY / LAST_DAY / EXTRACT：</b>それぞれ戻り値の型を覚える（数値 or DATE）。</li>
+      <li><b>ROUND / TRUNC（日付対応）：</b>第2引数で精度指定。<code>'MM'</code>＝月初めで丸め、<code>'YYYY'</code>＝年初。</li>
+      <li><b>暗黙変換：</b>文字→数値（WHERE 列＝'10' など）は動くが、索引が使えなくなる可能性あり、試験ではエラーになる書式ミスに注意。</li>
+    </ul>
+
+    <h3 class="check">✅ 構文・語彙チェックリスト</h3>
+    <table class="check-tbl">
+      <tr><th>やりたいこと</th><th>関数</th></tr>
+      <tr><td>NULL なら 0 にする</td><td><code>NVL(col, 0)</code></td></tr>
+      <tr><td>NULL でない値だけ '有' に置換</td><td><code>NVL2(col, '有', '無')</code></td></tr>
+      <tr><td>2つの値が同じなら NULL に</td><td><code>NULLIF(a, b)</code></td></tr>
+      <tr><td>最初の非NULL</td><td><code>COALESCE(a, b, c)</code></td></tr>
+      <tr><td>n か月後</td><td><code>ADD_MONTHS(d, n)</code></td></tr>
+      <tr><td>日数差</td><td><code>d1 - d2</code>（数値で返る）</td></tr>
+      <tr><td>月差</td><td><code>MONTHS_BETWEEN(d1, d2)</code></td></tr>
+      <tr><td>部分文字列の先頭位置</td><td><code>INSTR(str, 'x', 1, 1)</code></td></tr>
+    </table>
+
+    <h3 class="quiz">🎯 ミニ演習（3問）</h3>
+    <div class="quiz">
+      <div class="q">Q1. <code class="inline">NVL2(comm, sal+comm, sal)</code> の意味は？</div>
+      <div class="a">A. comm が NULL でなければ <b>sal+comm</b>、NULL なら <b>sal</b> を返す。</div>
+    </div>
+    <div class="quiz">
+      <div class="q">Q2. 今日から 2 年経過したかの判定に最適な関数は？</div>
+      <div class="a">A. <code class="inline">ADD_MONTHS(made_date, 24) &lt;= SYSDATE</code>。<code>+ 2*365</code> はうるう年で誤差。</div>
+    </div>
+    <div class="quiz">
+      <div class="q">Q3. 商品名「AAA BBB CCC」から 2 単語目を取り出す式は？</div>
+      <div class="a">A. <code class="inline">SUBSTR(name, INSTR(name,' ')+1, INSTR(name,' ',1,2)-INSTR(name,' ')-1)</code>。<b>+1 を忘れると空白が先頭に残る</b>。</div>
+    </div>
+  </div>
+
+  <!-- D7 -->
+  <div class="domain-block" id="d7" style="border-top:5px solid #e67e22">
+    <h2 style="border-bottom-color:#e67e22"><span class="d-tag" style="background:#e67e22">D7</span>DML・トランザクション<span class="priority-pill p-mid">優先</span></h2>
+
+    <h3 class="mistakes">🔥 模試で落とした典型ミス</h3>
+    <ul class="mistake-list">
+      <li>ROLLBACK TO SAVEPOINT がロックまで解除すると誤認。<b class="correct">正：SAVEPOINT 以降の変更を取り消すがロック解除はしない。SAVEPOINT 自体は残る。</b></li>
+      <li>UPDATE の SET リストで <code>AND</code> を区切り文字に使う選択肢を選ぶ。<b class="correct">正：カンマ区切り</b>。</li>
+      <li>INSERT ALL の WHEN 句に ELSE が使えないと誤認。<b class="correct">正：ELSE 句あり。1行を複数表に挿入可能（INSERT FIRST は最初に合致した WHEN のみ）</b>。</li>
+      <li>MERGE で UPDATE 側に WHERE 句が書けないと誤認。<b class="correct">WHEN MATCHED THEN UPDATE SET ... WHERE ... が可能。DELETE も WHERE 付で可。</b></li>
+    </ul>
+
+    <h3 class="rules">📌 必修ルール</h3>
+    <ul class="rule-list">
+      <li><b>COMMIT / ROLLBACK：</b>COMMIT で確定・全SAVEPOINT消去、ROLLBACK で現在のトランザクション全破棄・全SAVEPOINT消去。</li>
+      <li><b>ROLLBACK TO SAVEPOINT s1：</b>s1 以降の変更を破棄。s1 自体は残り、それより前の SAVEPOINT も残る。<b>行ロックは維持</b>される。</li>
+      <li><b>DDL の暗黙コミット：</b>CREATE / ALTER / DROP / TRUNCATE / GRANT / REVOKE は自動的に COMMIT される。ROLLBACK できない。</li>
+      <li><b>TRUNCATE vs DELETE：</b>TRUNCATE はDDL・高速・ログ小・ROLLBACK不可・トリガ起動しない・HWM リセット / DELETE はDML・行単位・ROLLBACK可・トリガ起動・HWMそのまま。</li>
+      <li><b>INSERT ALL（無条件）：</b>全 INTO に全行を挿入。</li>
+      <li><b>INSERT ALL（条件付）：</b>WHEN ～ THEN INTO、ELSE が使える。条件に合うすべての INTO に挿入。</li>
+      <li><b>INSERT FIRST：</b>最初に合致した WHEN のみ実行。以降の WHEN はスキップ。</li>
+      <li><b>MERGE：</b>USING 側は表・ビュー・サブクエリ。ON 条件で更新/挿入を分岐。MATCHED 側で UPDATE と DELETE を同時に記述可能。</li>
+      <li><b>SELECT FOR UPDATE：</b>行ロックを取得。COMMIT / ROLLBACK までロックが続く。</li>
+    </ul>
+
+    <h3 class="check">✅ 構文・語彙チェックリスト</h3>
+    <table class="check-tbl">
+      <tr><th>操作</th><th>COMMIT要否</th><th>ROLLBACK可否</th><th>トリガ</th></tr>
+      <tr><td>INSERT / UPDATE / DELETE / MERGE</td><td>明示必要</td><td>可</td><td>起動</td></tr>
+      <tr><td>TRUNCATE TABLE</td><td>自動（DDL）</td><td>不可</td><td>起動しない</td></tr>
+      <tr><td>DROP TABLE</td><td>自動（DDL）</td><td>不可</td><td>－</td></tr>
+    </table>
+
+    <h3 class="quiz">🎯 ミニ演習（3問）</h3>
+    <div class="quiz">
+      <div class="q">Q1. INSERT ALL と INSERT FIRST の違いは？</div>
+      <div class="a">A. <b>ALL は条件に合う全 WHEN に挿入、FIRST は最初にヒットした WHEN のみ</b>。</div>
+    </div>
+    <div class="quiz">
+      <div class="q">Q2. UPDATE 文で複数列を同時更新するときの区切りは？</div>
+      <div class="a">A. <b>カンマ</b>。<code class="inline">SET a=1, b=2</code>。AND は不可。</div>
+    </div>
+    <div class="quiz">
+      <div class="q">Q3. ROLLBACK TO SAVEPOINT の後、行ロックはどうなる？</div>
+      <div class="a">A. <b>維持される</b>（解除されない）。完全な ROLLBACK や COMMIT で初めて解放。</div>
+    </div>
+  </div>
+
+  <!-- D8 -->
+  <div class="domain-block" id="d8" style="border-top:5px solid #e67e22">
+    <h2 style="border-bottom-color:#e67e22"><span class="d-tag" style="background:#e67e22">D8</span>DDL・オブジェクト管理<span class="priority-pill p-mid">優先</span></h2>
+
+    <h3 class="mistakes">🔥 模試で落とした典型ミス</h3>
+    <ul class="mistake-list">
+      <li>DDL 一覧問題で「ROLLBACK できる」「データ追加できる（INSERT）」を DDL 機能と混同。<b class="correct">正：DDL は構造変更・自動COMMIT・ROLLBACK不可。データ操作は DML。</b></li>
+      <li>CHECK 制約に <code class="inline">SYSDATE</code> を使える選択肢を選ぶ。<b class="correct">正：CHECK 制約では SYSDATE / CURRVAL / NEXTVAL / USER など変動値は使用不可。</b></li>
+      <li>NOT NULL の定義位置：<b>列レベルのみ</b>。表レベルの制約として書くと構文エラー。</li>
+      <li>VIEW の更新可否の条件：<b>単純 VIEW（単一表、DISTINCT・GROUP BY・集合演算なし、式・擬似列なし）のみ更新可</b>。WITH READ ONLY 指定で明示的に読み取り専用化。</li>
+      <li>SEQUENCE の CURRVAL：<b>セッションで1度 NEXTVAL を呼んだ後でないと使えない</b>。</li>
+    </ul>
+
+    <h3 class="rules">📌 必修ルール</h3>
+    <ul class="rule-list">
+      <li><b>DDL は自動COMMIT：</b>CREATE / ALTER / DROP / TRUNCATE / RENAME。直前のDMLも確定される。</li>
+      <li><b>制約の5種類：</b>PRIMARY KEY / UNIQUE / NOT NULL / CHECK / FOREIGN KEY。PK は暗黙に NOT NULL + UNIQUE。UNIQUE 制約は NULL を複数許容。</li>
+      <li><b>NOT NULL は列レベルのみ。</b>他の制約は列レベル・表レベル両方定義可能。</li>
+      <li><b>FOREIGN KEY：</b>ON DELETE CASCADE（親削除で子も削除） / ON DELETE SET NULL（子の外部キーを NULL 化） / 指定なしなら親に子が残ると削除不可。</li>
+      <li><b>ALTER TABLE：</b>列追加／変更／削除／改名、制約追加・削除、列デフォルト変更。既存データを壊す変更（型狭化・NOT NULL化で NULL 存在時）は失敗。</li>
+      <li><b>VIEW：</b>CREATE [OR REPLACE] [FORCE] VIEW ... AS SELECT。<code>WITH READ ONLY</code>、<code>WITH CHECK OPTION</code>。</li>
+      <li><b>SEQUENCE：</b>NEXTVAL 初回呼出でセッションの CURRVAL が有効に。CACHE / NOCACHE、CYCLE / NOCYCLE。</li>
+      <li><b>INDEX：</b>UNIQUE 制約・PK 制約作成時に自動作成。明示 CREATE INDEX は B-Tree（既定）/ BITMAP。</li>
+      <li><b>SYNONYM：</b>PUBLIC / PRIVATE。オブジェクト名を隠蔽。</li>
+      <li><b>権限：</b>システム権限（CREATE SESSION 等）／オブジェクト権限（SELECT / INSERT ON table）。WITH GRANT OPTION で再付与可。ロールには WITH ADMIN OPTION。</li>
+      <li><b>辞書ビュー：</b>USER_*（自分所有）/ ALL_*（参照可能） / DBA_*（全体）。<code>USER_CONSTRAINTS</code>, <code>USER_TABLES</code>, <code>USER_TAB_COLUMNS</code>, <code>USER_VIEWS</code>, <code>USER_INDEXES</code>。</li>
+      <li><b>DATE vs TIMESTAMP：</b>DATE＝秒精度・TZなし。TIMESTAMP＝小数秒。TIMESTAMP WITH TIME ZONE／WITH LOCAL TIME ZONE。</li>
+      <li><b>INTERVAL：</b>YEAR TO MONTH / DAY TO SECOND。日付演算に使うと精度を落とさない。</li>
+    </ul>
+
+    <h3 class="check">✅ 構文・語彙チェックリスト</h3>
+    <table class="check-tbl">
+      <tr><th>制約</th><th>列レベル可</th><th>表レベル可</th><th>NULL許容</th></tr>
+      <tr><td>NOT NULL</td><td>○</td><td>×</td><td>×</td></tr>
+      <tr><td>UNIQUE</td><td>○</td><td>○</td><td>○（複数可）</td></tr>
+      <tr><td>PRIMARY KEY</td><td>○</td><td>○</td><td>×</td></tr>
+      <tr><td>FOREIGN KEY</td><td>○（REFERENCES）</td><td>○</td><td>○</td></tr>
+      <tr><td>CHECK</td><td>○</td><td>○</td><td>○（NULLは常に真）</td></tr>
+    </table>
+
+    <h3 class="quiz">🎯 ミニ演習（3問）</h3>
+    <div class="quiz">
+      <div class="q">Q1. 更新可能な VIEW の条件は？</div>
+      <div class="a">A. <b>単一表・DISTINCT/GROUP BY/集合演算/集計関数/擬似列/式なし・WITH READ ONLY なし</b>。</div>
+    </div>
+    <div class="quiz">
+      <div class="q">Q2. CHECK 制約で <code class="inline">CHECK (hire_date &lt;= SYSDATE)</code> は定義できるか？</div>
+      <div class="a">A. <b>できない</b>。CHECK は変動関数（SYSDATE, USER, 他列のシーケンス値）を使えない。</div>
+    </div>
+    <div class="quiz">
+      <div class="q">Q3. SEQUENCE の CURRVAL を使うための前提は？</div>
+      <div class="a">A. <b>そのセッションで少なくとも1回 NEXTVAL を発行済み</b>であること。</div>
+    </div>
+  </div>
+
+  <!-- D4 -->
+  <div class="domain-block" id="d4" style="border-top:5px solid #f1c40f">
+    <h2 style="border-bottom-color:#f1c40f"><span class="d-tag" style="background:#f1c40f;color:#4a3800">D4</span>グループ関数・集計<span class="priority-pill p-low">要復習</span></h2>
+
+    <h3 class="mistakes">🔥 模試で落とした典型ミス</h3>
+    <ul class="mistake-list">
+      <li>HAVING と WHERE を混同。<b class="correct">正：WHERE は行フィルタ・集計前 / HAVING は集計後・グループフィルタ</b>。</li>
+      <li>SELECT に集計関数以外の列を含めたのに GROUP BY に入れ忘れて <code>ORA-00979</code>。</li>
+      <li>COUNT(*) と COUNT(col) の差：<code>COUNT(*)</code> は NULL も数える、<code>COUNT(col)</code> は col が NULL の行を除外。</li>
+    </ul>
+
+    <h3 class="rules">📌 必修ルール</h3>
+    <ul class="rule-list">
+      <li><b>SELECT 列の規則：</b>集計関数以外のすべての列は GROUP BY に列挙が必須。</li>
+      <li><b>集計関数は NULL を無視。</b>ただし COUNT(*) だけは NULL 行も数える。</li>
+      <li><b>HAVING はグループ関数条件、WHERE は行条件。</b>HAVING は GROUP BY 省略時も書けるが、書けるのは集計関数条件のみ。</li>
+      <li><b>AVG(col) ≠ SUM(col)/COUNT(*) </b>（NULL の扱いが違う）。AVG(col) は NULL を分母にも含めない。</li>
+      <li><b>ROLLUP(a,b)：</b>(a,b)／(a)／() の小計行を追加。CUBE(a,b) は全組合せ。</li>
+    </ul>
+
+    <h3 class="check">✅ 構文・語彙チェックリスト</h3>
+    <table class="check-tbl">
+      <tr><th>句</th><th>対象</th><th>集計関数使用</th></tr>
+      <tr><td>WHERE</td><td>行</td><td>不可</td></tr>
+      <tr><td>GROUP BY</td><td>集計の単位</td><td>不可（式は可）</td></tr>
+      <tr><td>HAVING</td><td>グループ</td><td>可</td></tr>
+      <tr><td>ORDER BY</td><td>最終結果</td><td>可</td></tr>
+    </table>
+
+    <h3 class="quiz">🎯 ミニ演習（3問）</h3>
+    <div class="quiz">
+      <div class="q">Q1. <code class="inline">SELECT dept, AVG(sal) FROM emp GROUP BY dept HAVING AVG(sal) &gt; 5000;</code> を WHERE で書けるか？</div>
+      <div class="a">A. <b>書けない</b>。集計結果でのフィルタは HAVING のみ。</div>
+    </div>
+    <div class="quiz">
+      <div class="q">Q2. emp(10行、うち comm が NULL＝4行)、<code class="inline">AVG(comm)</code> の分母は？</div>
+      <div class="a">A. <b>6</b>（NULL は無視）。</div>
+    </div>
+    <div class="quiz">
+      <div class="q">Q3. GROUP BY なしで HAVING を付けると？</div>
+      <div class="a">A. <b>全行を1グループとみなす</b>。SUM(sal) &gt; 10000 のように書ける。</div>
+    </div>
+  </div>
+
+  <!-- D1 -->
+  <div class="domain-block" id="d1" style="border-top:5px solid #f1c40f">
+    <h2 style="border-bottom-color:#f1c40f"><span class="d-tag" style="background:#f1c40f;color:#4a3800">D1</span>SQLとRDBの基礎<span class="priority-pill p-low">要復習</span></h2>
+
+    <h3 class="mistakes">🔥 模試で落とした典型ミス</h3>
+    <ul class="mistake-list">
+      <li>DUAL 表の構造を誤認。<b class="correct">正：1列（DUMMY, VARCHAR2(1)）・1行のデータを持つ、SYS ユーザー所有。</b></li>
+      <li>主キー・外部キー・一意キーの NULL 許容を混同。<b class="correct">PK 不可・UK 可・FK 可</b>。</li>
+      <li>SQL の分類（DML/DDL/DCL/TCL）を混同。COMMIT は TCL、GRANT は DCL、TRUNCATE は DDL。</li>
+    </ul>
+
+    <h3 class="rules">📌 必修ルール</h3>
+    <ul class="rule-list">
+      <li><b>SQL分類：</b>DML (INSERT/UPDATE/DELETE/MERGE/SELECT※) / DDL (CREATE/ALTER/DROP/TRUNCATE/RENAME) / DCL (GRANT/REVOKE) / TCL (COMMIT/ROLLBACK/SAVEPOINT)。</li>
+      <li><b>キー：</b>主キー＝NOT NULL+UNIQUE。外部キー＝他表 PK/UK を参照、NULL 可。一意キー＝NULL 可（複数 NULL も可）。</li>
+      <li><b>DUAL 表：</b>1行1列、関数/式の検証用。<code>SELECT SYSDATE FROM DUAL;</code></li>
+      <li><b>正規化：</b>第1（繰返しなし）→第2（部分関数従属除去）→第3（推移従属除去）。</li>
+      <li><b>NULL：</b>値ではなく「未知」。NULL = NULL は UNKNOWN、<code>IS NULL</code>/<code>IS NOT NULL</code> で判定。</li>
+      <li><b>SELECT 論理処理順：</b>FROM → WHERE → GROUP BY → HAVING → SELECT → ORDER BY → FETCH / ROWNUM。</li>
+    </ul>
+
+    <h3 class="quiz">🎯 ミニ演習（2問）</h3>
+    <div class="quiz">
+      <div class="q">Q1. COMMIT はどの分類？</div>
+      <div class="a">A. <b>TCL</b>（トランザクション制御言語）。</div>
+    </div>
+    <div class="quiz">
+      <div class="q">Q2. 一意キーに NULL を複数入れられるか？</div>
+      <div class="a">A. <b>入れられる</b>。NULL は「値」ではないため、重複判定の対象外。</div>
+    </div>
+  </div>
+
+  <!-- D2 -->
+  <div class="domain-block" id="d2" style="border-top:5px solid #2ecc71">
+    <h2 style="border-bottom-color:#2ecc71"><span class="d-tag" style="background:#2ecc71">D2</span>データの絞り込みとソート<span class="priority-pill p-ok">維持</span></h2>
+
+    <h3 class="mistakes">🔥 模試で落とした典型ミス</h3>
+    <ul class="mistake-list">
+      <li>VERIFY コマンドの機能を「置換変数の値を作成」と誤認。<b class="correct">正：置換変数使用時に変更前／変更後の値を表示する（SQL*Plus 専用）。</b></li>
+      <li>AND と OR の優先順位：<b class="correct">AND が先に評価される</b>。括弧で優先順位を明示する。</li>
+      <li>ROWNUM と ORDER BY の組合せ：<code class="inline">WHERE ROWNUM &lt;= 3 ORDER BY ...</code> は<b>登録順の先頭3件</b>を取って後ソート。想定と違う結果になる。</li>
+    </ul>
+
+    <h3 class="rules">📌 必修ルール</h3>
+    <ul class="rule-list">
+      <li><b>LIKE：</b><code>%</code>＝0文字以上、<code>_</code>＝1文字。ESCAPE 指定で % や _ をリテラル扱い可。</li>
+      <li><b>BETWEEN a AND b：</b>a &lt;= x &lt;= b（両端含む）。</li>
+      <li><b>IN リスト：</b>NULL を含むと NOT IN は常に空集合になる罠。</li>
+      <li><b>ORDER BY：</b>既定 ASC、NULL は既定で ASC なら末尾・DESC なら先頭。<code>NULLS FIRST/LAST</code> で明示。</li>
+      <li><b>行制限：</b>12c以降は <code>OFFSET m ROWS FETCH NEXT n ROWS ONLY</code>。ROWNUM はソート前に評価されるため、Top-N には <code>(SELECT ... ORDER BY ...)</code> の外側で使う。</li>
+      <li><b>置換変数：</b><code>&</code>＝毎回プロンプト・SQL後破棄、<code>&&</code>＝1回入力で永続・SQL後も値保持。DEFINE/UNDEFINE で明示管理。</li>
+      <li><b>SQL*Plus コマンド：</b>DEFINE / SET VERIFY / SET DEFINE ON は SQL*Plus 専用（SQL Developer でも一部使える）。</li>
+    </ul>
+
+    <h3 class="quiz">🎯 ミニ演習（2問）</h3>
+    <div class="quiz">
+      <div class="q">Q1. Top-N を正しく取る書き方（安い順3件）は？</div>
+      <div class="a">A. <code class="inline">SELECT * FROM (SELECT ... ORDER BY price) WHERE ROWNUM &lt;= 3;</code> または <code class="inline">FETCH FIRST 3 ROWS ONLY</code>。</div>
+    </div>
+    <div class="quiz">
+      <div class="q">Q2. <code class="inline">&var</code> と <code class="inline">&&var</code> の違いは？</div>
+      <div class="a">A. <b>&</b>は実行ごとに入力を求める・実行後破棄、<b>&&</b>は1度入力すればセッション終了まで保持。</div>
+    </div>
+  </div>
+
+  <div style="text-align:center;color:#a0aec0;font-size:.8rem;margin-top:40px;padding-top:20px;border-top:1px solid #e2e8f0">
+    Phase 2 / 模擬試験 弱点強化教材 — 試験直前に読み返す想定で凝縮
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,662 @@
+{
+  "D1": [
+    {
+      "exam": 1,
+      "q": 6,
+      "text": "DUAL表について正しい記述はどれでしょうか。（3つ選択）\n(1)\t\tA.　'DUAL'という列を持ちます。\n(2)\t\tB.　1つの列と1行のデータを持ちます。\n(3)\t\tC.　関数動作を確認したい場合に使用します。\n(4)\t\tD.　SYSTEMユーザーが作成します。\n(5)\t\tE.　計算結果を確認したい場合に使用します。",
+      "ans": "B.C.E",
+      "self_ans": "A.B.E"
+    },
+    {
+      "exam": 1,
+      "q": 48,
+      "text": "データ型に関して正しいのはどれでしょうか。（3つ選択）\n(1)\t\tA.　LONG型の最大サイズは1GBです。\n(2)\t\tB.　TIMESTAMP型の列には、最小は秒の単位で値が格納されます。\n(3)\t\tC.　VARCHAR2型の列に指定できる最小サイズは1バイトまたは1文字です。\n(4)\t\tD.　CHAR型は固定長です。\n(5)\t\tE.　BLOB型の列は、OSのファイルにバイナリデータを格納するために使用されます。\n(6)\t\tF.　表ごとに使用できるLONG型は1つだけです。",
+      "ans": "C.D.F",
+      "self_ans": "B.C.D"
+    },
+    {
+      "exam": 1,
+      "q": 56,
+      "text": "GLOBAL TEMPORARY TABLESについて正しい記述はどれでしょうか。（3つ選択）\n(1)\t\tA.　GLOBAL TEMPORARY TABLEの行は、他のセッションから参照できます。\n(2)\t\tB.　GLOBAL TEMPORARY TABLEの表定義は、他のセッションから参照できます。\n(3)\t\tC.　GLOBAL TEMPORARY TABLEの一時セグメントの割り当ては、セッションの開始時に行われます。\n(4)\t\tD.　GLOBAL TEMPORARY TABLEの一時セグメントの割り当ては、セッションの終了時に解除されます。\n(5)\t\tE.　GLOBAL TEMPORARY TABLEのセッション終了時に存在する行はすべて削除されます。",
+      "ans": "B.D.E",
+      "self_ans": "A.B.E"
+    },
+    {
+      "exam": 1,
+      "q": 58,
+      "text": "ORACLE_DATAPUMPアクセス・ドライバを使用して実行できるものはどれでしょうか。（2つ選択）\n(1)\t\tA.　外部表へのDMLを実行できます。\n(2)\t\tB.　外部表へのソート問い合わせを実行できます。\n(3)\t\tC.　テキスト・ファイルからデータのロードができます。\n(4)\t\tD.　外部表を作成すると、同じまたは異なるデータベースの外部表で使用できるダンプファイルが作成されます。\n(5)\t\tE.　外部表を作成すると、同じデータベース内の外部表だけが使用できるダンプファイルが作成されます。",
+      "ans": "B.D",
+      "self_ans": "C.E"
+    },
+    {
+      "exam": 2,
+      "q": 19,
+      "text": "'21ST , May, Twenty Twenty-One'と表示するSQLはどれでしょうか。\n(1)\t\tA.　SELECT TO_CHAR (TO_DATE ('21-may-2021'), 'fmDDTH \",\" Month, Year') FROM DUAL\n(2)\t\tB.　SELECT TO_CHAR (TO_DATE ('21-may-2021'), 'fmDdth \",\" Month, Year') FROM DUAL\n(3)\t\tC.　SELECT TO_CHAR ('21-may-2021', 'fmDdth \",\" Month, Year') FROM DUAL\n(4)\t\tD.　SELECT TO_DATE (TO_CHAR ('21-may-2021'), 'fmDDTH \",\" Month, Year') FROM DUAL\n(5)\t\tE.　SELECT TO_DATE (TO_CHAR ('21-may-2021'), 'fmDdth \",\" Month, Year')) FROM DUAL",
+      "ans": "A",
+      "self_ans": "D"
+    },
+    {
+      "exam": 2,
+      "q": 20,
+      "text": "集計関数について正しい記述はどれでしょうか。\n(1)\t\tA.　SUM関数は、文字データ型の列で使用できます。\n(2)\t\tB.　集計関数は、最大2レベルまでネストできます。\n(3)\t\tC.　AVG関数は、文字データ型の列で使用できます。\n(4)\t\tD.　MAX関数は、NULL値は指定できません。\n(5)\t\tE.　MIN関数は、BINARYデータ型は指定できません。",
+      "ans": "B",
+      "self_ans": "D"
+    },
+    {
+      "exam": 2,
+      "q": 54,
+      "text": "TRUNCATEを実行した場合の正しい記述はどれですか。\n(1)\t\tA.　拡張されたエクステントを解放できます。\n(2)\t\tB.　表に作成されていたトリガーは削除されます。\n(3)\t\tC.　表のオブジェクト権限が無効化されます。\n(4)\t\tD.　WHERE句を指定することで、特定の行だけを切り捨てることができます。\n(5)\t\tE.　FLASHBACK TO BEFORE DROP文を実行するとデータを戻すことができます。",
+      "ans": "A",
+      "self_ans": "D"
+    },
+    {
+      "exam": 2,
+      "q": 58,
+      "text": "ORACLE_DATAPUMPアクセス・ドライバを使用して実行できるものはどれでしょうか。（3つ選択）\n(1)\t\tA.　外部ファイルからデータベースへのデータのロードができます。\n(2)\t\tB.　データベースからデータを読み取り、1つ以上の外部ファイルにデータを挿入します。\n(3)\t\tC.　外部表を作成する場合、別の外部表やデータベースの表からデータを選択できます。\n(4)\t\tD.　外部表を作成する場合、データベースの表からのみデータを選択できます。\n(5)\t\tE.　外部表を作成すると、自動的にディレクトリオブジェクトが作成されます。",
+      "ans": "ABC",
+      "self_ans": "BCE"
+    },
+    {
+      "exam": 2,
+      "q": 63,
+      "text": "索引について正しい記述はどれでしょうか。（2つ選択）\n(1)\t\tA.　SELECT文は、表にアクセスせずに索引にアクセスできます。\n(2)\t\tB.　表が削除されてRECYCLE BINに移動すると、その表に作成された索引は復旧できません。\n(3)\t\tC.　別のスキーマ内に存在する表に対して、索引を作成することができます。\n(4)\t\tD.　一意索引から非一意索引にすることができます。\n(5)\t\tE.　DMLが実行されると、必要に応じて対応する索引が自動的に更新されます。",
+      "ans": "CE",
+      "self_ans": "AE"
+    },
+    {
+      "exam": 2,
+      "q": 78,
+      "text": "この表構造でのデータの保存について正しい記述はどれでしょうか。（2つ選択）\n　\n(1)\t\tA.　FOOD_ID列では、負の整数を保持できます。\n(2)\t\tB.　MADE_DATE列では、dddd-mon-yyyy形式でのみ日付を保持できます。\n(3)\t\tC.　EXPIRATION_DATE列では、日、時間、分、および秒で、時間間隔を保持します。\n(4)\t\tD.　EXPIRATION_DATE列では、年、および月で、時間間隔を保持します。",
+      "ans": "AD",
+      "self_ans": "BD"
+    }
+  ],
+  "D2": [
+    {
+      "exam": 1,
+      "q": 8,
+      "text": "次の条件に合ったSQLを作成する必要があります。\n\n1. ITEM_NAMEと消費税（10%積算）を含めた価格を表示します。\n2. ITEM_PRICEがNULLではない商品が対象です。\n3. ITEM_NAMEがNULLの商品は対象外です。\n\n上記の条件に合ったSQLはどれでしょうか。\n　\n拡大する\n(1)\t\tA.　SELECT ITEM_NAME, ITEM_PRICE * 1.10 FROM ITEM WHERE ITEM_NAME AND ITEM_PRICE IS NOT NULL;\n(2)\t\tB.　SELECT ITEM_NAME, ITEM_PRICE * 1.10 FROM ITEM WHERE ITEM_NAME IS NOT NULL AND ITEM_TYPE IS NOT NULL;\n(3)\t\tC.　SELECT ITEM_NAME, ITEM_PRICE * 1.10 FROM ITEM WHERE ITEM_NAME, ITEM_PRICE IS NOT NULL;\n(4)\t\tD.　SELECT ITEM_NAME, ITEM_PRICE * 1.10 FR",
+      "ans": "D",
+      "self_ans": "C"
+    },
+    {
+      "exam": 1,
+      "q": 12,
+      "text": "VERIFYコマンドについて正しい記述はどれでしょうか。(2つ選択)\n(1)\t\tA.　置換変数の値を表示します。\n(2)\t\tB.　置換変数の値を作成します。\n(3)\t\tC.　SQL DeveloperおよびSQL*Plusで使用できます。\n(4)\t\tD.　SQL Developerでのみ使用できます。\n(5)\t\tE.　SQL*Plusでのみ使用できます。",
+      "ans": "A.C",
+      "self_ans": "B.C"
+    },
+    {
+      "exam": 1,
+      "q": 26,
+      "text": "非等価結合のパフォーマンスについて正しい記述はどれでしょうか。（2つ選択）\n(1)\t\tA.　BETWEEN条件は、等号・不等号条件よりもパフォーマンスが低下します。\n(2)\t\tB.　BETWEEN条件は、等号・不等号条件よりもパフォーマンスが優れています。\n(3)\t\tC.　ANSI結合構文とOracle結合構文では、パフォーマンスに違いはありません。\n(4)\t\tD.　ANSI結合構文よりもOracle結合構文の方がパフォーマンスは優れています。\n(5)\t\tE.　表に別名をつけて列を表別名で修飾すると、パフォーマンスが向上します。",
+      "ans": "C.E",
+      "self_ans": "B.C"
+    },
+    {
+      "exam": 2,
+      "q": 10,
+      "text": "以下のSQLを作成する必要があります。\n・SQL実行時に必ず列名を入力する\n・最初のSQL実行時に表名を入力し、次回以降のSQL実行時に表名の入力不要\n上記の条件を満たすSQLはどれでしょうか。\n(1)\t\tA.　SELECT &column FROM &table;\n(2)\t\tB.　SELECT &&column FROM &table;\n(3)\t\tC.　SELECT &column FROM &&table;\n(4)\t\tD.　SELECT &&column FROM &&table;\n\n\n以下のコマンドとSQLを実行するとします。\n\nDEFINE ITEMPRICE = '1000'\nDEFINE ITEMID = '1'\nSELECT * FROM ITEM WHERE ITEM_ID = '&ITEMID' AND ITEM_PRICE = &ITEMPRICE;\n\n実行結果として正しい記述はどれでしょうか。\n(1)\t\tA.　文字入力のプロンプトが表示されません。\n(2)\t\tB.　ITEMIDの文字入力プロンプトが表示されます。\n(3)\t\tC.　ITEMPRICEの文字入力プロン",
+      "ans": "A",
+      "self_ans": "E"
+    },
+    {
+      "exam": 2,
+      "q": 24,
+      "text": "ITEM_TYPE=FOODの商品を\";\"区切りで1行に表示するためのSQLはどれでしょうか。\nなお、ソートは製造年月日（MADE_DATE）の順とします。\n(1)\t\tA.　SELECT LISTAGG(ITEM_NAME) WITHIN GROUP (ORDER BY MADE_DATE) \"FoodList\" FROM ITEM WHERE ITEM_TYPE = 'FOOD';\n(2)\t\tB.　SELECT LISTAGG(ITEM_NAME, '; ') WITHIN GROUP (ORDER BY MADE_DATE) \"FoodList\" FROM ITEM WHERE ITEM_TYPE = 'FOOD';\n(3)\t\tC.　SELECT LISTAGG(ITEM_NAME, '; ') \"FoodList\" FROM ITEM WHERE ITEM_TYPE = 'FOOD'; WITHIN GROUP (ORDER BY MADE_DATE);\n(4)\t\tD.　SELECT LISTAGG(ITEM_NAME) WITHIN GROUP ORDER BY (MADE_D",
+      "ans": "B",
+      "self_ans": "C"
+    },
+    {
+      "exam": 2,
+      "q": 39,
+      "text": "以下の文を実行した場合、置換変数x とy はそれぞれ何回プロンプト（入力要求）されるでしょうか。最も適切なものを1つ選択してください。\n\nSET VERIFY ON\nDEFINE x = 100\nSELECT &x AS x_value, &&y AS y_value FROM dual;\nUNDEFINE x\nSELECT &x AS x_value, &&y AS y_value FROM dual;\n(1)\t\tA. x:0回、y:0回\n(2)\t\tB. x:0回、y:1回\n(3)\t\tC. x:1回、y:0回\n(4)\t\tD. x:1回、y:1回\n(5)\t\tE. x:2回、y:1回\n(6)\t\tF. x:2回、y:2回",
+      "ans": "D",
+      "self_ans": "A"
+    }
+  ],
+  "D3": [
+    {
+      "exam": 1,
+      "q": 13,
+      "text": "品名（ITEM_NAME）の先頭文字がS,sまたはT,tで始まるもので、かつ価格（ITEM_PRICE）が1500円未満の商品情報を取得する場合、以下のどのSQLを実行すればいいでしょうか。（2つ選択してください）\n拡大する\n(1)\t\tA.　SELECT ITEM_NAME , ITEM_PRICE FROM ITEM WHERE (INITCAP(ITEM_NAME) LIKE 'S%' OR INITCAP(ITEM_NAME) LIKE 'T%') AND ITEM_PRICE < 1500;\n(2)\t\tB.　SELECT ITEM_NAME , ITEM_PRICE FROM ITEM WHERE (UPPER(ITEM_NAME) LIKE 'S%' OR UPPER(ITEM_NAME) LIKE 'T') AND ROUND(ITEM_PRICE) < 1500;\n(3)\t\tC.　SELECT ITEM_NAME , ITEM_PRICE FROM ITEM WHERE UPPER(ITEM_NAME) BETWEEN UPPER('S%' AND 'T%') AND R",
+      "ans": "A.E",
+      "self_ans": "A.B"
+    },
+    {
+      "exam": 1,
+      "q": 14,
+      "text": "ITEM表には商品名と製造年月日（DATE型）が存在します。\n製造から2年以上経過した商品を抽出するSQLはどれでしょうか。\n(1)\t\tA.　SELECT ITEM_NAME,MADE_DATE FROM ITEM WHERE MADE_DATE + 2*365 = SYSDATE;\n(2)\t\tB.　SELECT ITEM_NAME,MADE_DATE FROM ITEM WHERE SYSDATE > MADE_DATE - 2*365;\n(3)\t\tC.　SELECT ITEM_NAME,MADE_DATE FROM ITEM WHERE SYSDATE - 2*365 >= MADE_DATE;\n(4)\t\tD.　SELECT ITEM_NAME,MADE_DATE FROM ITEM WHERE MADE_DATE >= SYSDATE - 2*365;",
+      "ans": "C",
+      "self_ans": "D"
+    },
+    {
+      "exam": 1,
+      "q": 20,
+      "text": "図のような表があります。\n\nこれらの商品について、30%割引価格を提供する予定です。\n割引額をSHOHIN_KAKAKUと同じ形式にして表示するSQLはどれですか。\n　\n拡大する\n(1)\t\tA.　SELECT TO_NUMBER(TO_NUMBER(SHOHIN_KAKAKU, '999,999.99') * .30, '999,999.00') FROM SHOHIN\n(2)\t\tB.　SELECT TO_CHAR (SHOHIN_KAKAKU * .30, '99,999.99') FROM SHOHIN\n(3)\t\tC.　SELECT TO_CHAR (SHOHIN_KAKAKU * .30) FROM SHOHIN\n(4)\t\tD.　SELECT TO_CHAR (TO_NUMBER(SHOHIN_KAKAKU) * .30, '99,999.00') FROM SHOHIN\n(5)\t\tE.　SELECT TO_CHAR (TO_NUMBER(SHOHIN_KAKAKU, '999,999.99') * .30, '999,999.00') FROM SHOHIN",
+      "ans": "E",
+      "self_ans": "D"
+    },
+    {
+      "exam": 2,
+      "q": 12,
+      "text": "半角スペースで区切られている商品名の2単語目が\"CU\"もしくは\"Cu\"で始まる値を表示する場合、以下のどのSELECT文を実行すればいいでしょうか。（2つ選択）\n　\n拡大する\n(1)\t\tA.　SELECT ITEM_NAME FROM ITEM WHERE LOWER (SUBSTR (ITEM_NAME, INSTR(ITEM_NAME, ' ')+1)) IN ('CU%', 'Cu)\n(2)\t\tB.　SELECT ITEM_NAME FROM ITEM WHERE UPPER (SUBSTR (ITEM_NAME, INSTR(ITEM_NAME, ' ')+1)) LIKE UPPER ('CU%')\n(3)\t\tC.　SELECT ITEM_NAME FROM ITEM WHERE SUBSTR(ITEM_NAME, INSTR (ITEM_NAME, ' ') +1) LIKE 'Cu%'\n(4)\t\tD.　SELECT ITEM_NAME FROM ITEM WHERE INITCAP (SUBSTR (ITEM_NAME, INSTR(ITEM_NAME, ' ')+1))",
+      "ans": "BD",
+      "self_ans": "BE"
+    },
+    {
+      "exam": 2,
+      "q": 13,
+      "text": "ITEM表には、ITEM_NAMEの値が\n'Japanese Beef Curry'\n'Japanese Pork Curry'\nの2行が存在しています。\n末尾の'Curry'を省いて、先頭の'Japanese'を'日本産'に置換して表示するSQLはどれでしょうか。\n(1)\t\tA.　SELECT REPLACE (TRIM(TRAILING 'Curry' FROM ITEM_NAME), 'Japanese', '日本産') FROM ITEM;\n(2)\t\tB.　SELECT INITCAP (REPLACE(TRIM('Curry' FROM ITEM_NAME), 'Japanese', '日本産')) FROM ITEM;\n(3)\t\tC.　SELECT REPLACE (SUBSTR(ITEM_NAME, -5), 'Japanese', '日本産') FROM ITEM;\n(4)\t\tD.　SELECT REPLACE (REPLACE(ITEM_NAME, 'Curry', ' '), 'Japanese', '日本産') FROM ITEM;",
+      "ans": "D",
+      "self_ans": "A"
+    },
+    {
+      "exam": 2,
+      "q": 14,
+      "text": "ITEM表には製造年月日（DATE型）が存在します。\n次のSQLでエラーになるものはどれでしょうか。\n(1)\t\tA.　SELECT MIN(SYSDATE - MADE_DATE) FROM ITEM\n(2)\t\tB.　SELECT MAX(MADE_DATE) FROM ITEM\n(3)\t\tC.　SELECT AVG(MADE_DATE) FROM ITEM\n(4)\t\tD.　SELECT TO_CHAR(SYSDATE - MADE_DATE) FROM ITEM",
+      "ans": "C",
+      "self_ans": "D"
+    },
+    {
+      "exam": 2,
+      "q": 15,
+      "text": "単一行関数について正しい記述はどれでしょうか。 (2つ選択)\n(1)\t\tA.　ROUND：最大の整数を返します。\n(2)\t\tB.　FLOOR：最小の整数を返します。\n(3)\t\tC.　ABS ：四捨五入した整数を返します。\n(4)\t\tD.　TRUNC：NUMBER および DATE 値で使用できます 。\n(5)\t\tE.　MOD ：除算演算の余りを返します。\n(6)\t\tF.　TRUNC：NUMBERのみで使用できます 。",
+      "ans": "DE",
+      "self_ans": "EF"
+    },
+    {
+      "exam": 2,
+      "q": 18,
+      "text": "NLS_DATE_FORMATはDD-MON-YYが設定されています。\n明示的なデータ型変換が必要なSQLは以下のどれですか。\n\n(1)\t\tA.　SELECT MADE_DATE FROM ITEM WHERE MADE_DATE > '01-06-2021';\n(2)\t\tB.　SELECT ITEM_ID || ' ' || ITEM_PRICE FROM ITEM;\n(3)\t\tC.　SELECT SUBSTR(MADE_DATE, 1, 2) FROM ITEM;\n(4)\t\tD.　SELECT ITEM_ID || ' ' || MADE_DATE FROM ITEM;\n(5)\t\tE.　SELECT MADE_DATE || ' ' || ITEM_PRICE FROM ITEM;",
+      "ans": "A",
+      "self_ans": "D"
+    },
+    {
+      "exam": 2,
+      "q": 37,
+      "text": "名前の3文字目が'o'となっているデータを取得したい場合、妥当なSQLはどれでしょうか。（2つ選択）\n(1)\t\tA.　SELECT * FROM employees WHERE name LIKE '__o%'\n(2)\t\tB.　SELECT * FROM employees WHERE name LIKE '%%o%'\n(3)\t\tC.　SELECT * FROM employees WHERE name LIKE '__o'\n(4)\t\tD.　SELECT * FROM employees WHERE name LIKE '%%o'\n(5)\t\tE.　SELECT * FROM employees WHERE SUBSTR(name,3,1) = 'o';\n(6)\t\tF.　SELECT * FROM employees WHERE INSTR(name,'o',3) = 1;",
+      "ans": "AE",
+      "self_ans": "BE"
+    },
+    {
+      "exam": 2,
+      "q": 41,
+      "text": "以下のうち、過去365日のSTART_DATEを抽出するSQL文はどれでしょうか。2つ選択してください。\n(1)\t\tA. SELECT START_DATE FROM EMP WHERE START_DATE > TRUNC(SYSDATE)-365;\n(2)\t\tB. SELECT START_DATE FROM EMP WHERE START_DATE > ROUND(SYSDATE)+365;\n(3)\t\tC. SELECT START_DATE FROM EMP WHERE START_DATE > ADD_MONTHS(SYSDATE,-12);\n(4)\t\tD. SELECT START_DATE FROM EMP WHERE START_DATE > (SELECT SYSDATE-365 FROM DUAL);\n(5)\t\tE. SELECT START_DATE FROM EMP WHERE MONTHS_BETWEEN(SYSDATE,START_DATE) < 12;",
+      "ans": "AD",
+      "self_ans": "BE"
+    },
+    {
+      "exam": 2,
+      "q": 51,
+      "text": "次のSQL文の「_____」に入れる値として、$付きで表示されるものを3つ選択してください。\n\nSELECT TO_CHAR(_____, '$9,999') FROM dual;\n(1)\t\tA. 123.4\n(2)\t\tB. 1.234\n(3)\t\tC. 12345\n(4)\t\tD. 1234.56\n(5)\t\tE. 9999.9",
+      "ans": "ABD",
+      "self_ans": "CDE"
+    },
+    {
+      "exam": 2,
+      "q": 55,
+      "text": "以下の文の実行結果と同じ結果になるものを2つ選択してください。\n\nSELECT COUNT(*) FROM employees;\n(1)\t\tA.　SELECT COUNT(NVL(salary, 0)) FROM employees;\n(2)\t\tB.　SELECT COUNT(salary) FROM employees WHERE salary IS NOT NULL;\n(3)\t\tC.　SELECT COUNT(NULLIF(salary, 0)) FROM employees;\n(4)\t\tD.　SELECT COUNT(COALESCE(salary, 0)) FROM employees;\n(5)\t\tE.　SELECT COUNT(NVL2(salary, 0, NULL)) FROM employees;",
+      "ans": "AD",
+      "self_ans": "BC"
+    }
+  ],
+  "D4": [
+    {
+      "exam": 1,
+      "q": 23,
+      "text": "図のような表があります。\n\n以下のSQLで正常に実行されるものはどれでしょうか。（2つ選択）\n　\n拡大する\n(1)\t\tA.　SELECT SUM(ITEM_TYPE1+ITEM_TYPE2) FROM ITEM WHERE ITEM_NAME LIKE 'R%';\n(2)\t\tB.　SELECT SUM(ITEM_TYPE1+ITEM_TYPE2),ITEM_NAME FROM ITEM WHERE ITEM_NAME LIKE 'R%';\n(3)\t\tC.　SELECT SUM(DISTINCT ITEM_TYPE1), MIN(ITEM_TYPE1) FROM ITEM WHERE ITEM_NAME LIKE 'R%';\n(4)\t\tD.　SELECT AVG(ITEM_PRICE) FROM ITEM WHERE AVG(ITEM_PRICE) >= 500 GROUP BY ITEM_ID;",
+      "ans": "A.C",
+      "self_ans": "A.B"
+    },
+    {
+      "exam": 2,
+      "q": 23,
+      "text": "以下のSQLで正常に実行されるものはどれでしょうか。（2つ選択）\n\n(1)\t\tA.　SELECT ITEM_ID,MADE_DATE,AVG(ITEM_PRICE) FROM ITEM GROUP BY ITEM_ID,MADE_DATE;\n(2)\t\tB.　SELECT ITEM_ID,MADE_DATE,SUM(ITEM_PRICE) FROM ITEM GROUP BY ITEM_ID;\n(3)\t\tC.　SELECT MIN(AVG(ITEM_PRICE)) FROM ITEM GROUP BY ITEM_ID;\n(4)\t\tD.　SELECT ITEM_ID,MAX(AVG(ITEM_PRICE)) FROM ITEM GROUP BY ITEM_ID;",
+      "ans": "AC",
+      "self_ans": "AB"
+    },
+    {
+      "exam": 2,
+      "q": 59,
+      "text": "次のSQL文のうち、正しく動作するものはどれでしょうか。3つ選んでください。\n(1)\t\tA. SELECT dept_id, COUNT(*) FROM employees GROUP BY dept_id;\n(2)\t\tB. SELECT dept_id, name, COUNT(*) FROM employees GROUP BY dept_id;\n(3)\t\tC. SELECT dept_id, MAX(SUM(salary)) FROM employees GROUP BY dept_id;\n(4)\t\tD. SELECT MAX(SUM(salary)) FROM employees GROUP BY dept_id;\n(5)\t\tE. SELECT MAX(salary),SUM(salary) FROM employees GROUP BY dept_id;\n(6)\t\tF. SELECT AVG(MAX(SUM(salary))) FROM employees;",
+      "ans": "ADE",
+      "self_ans": "ABC"
+    }
+  ],
+  "D5": [
+    {
+      "exam": 1,
+      "q": 24,
+      "text": "自己結合について正しい記述はどれでしょうか。（2つ選択）\n\n(1)\t\tA.　USING句を指定することができます。\n(2)\t\tB.　表別名が必要です。\n(3)\t\tC.　LEFT OUTER JOIN、もしくはRIGHT OUTER JOINにする必要があります。\n(4)\t\tD.　FULL OUTER JOINにする必要があります。\n(5)\t\tE.　INNER JOINにすることができます。",
+      "ans": "B.E",
+      "self_ans": "A.B"
+    },
+    {
+      "exam": 2,
+      "q": 57,
+      "text": "次のうち、FULL OUTER JOINの特徴として正しいものはどれでしょうか。（2つ選択）\n(1)\t\tA. 両方の表の全行を出力し、結合条件に一致しない行はNULLで埋める\n(2)\t\tB. 実行結果はデカルト積と同じになる\n(3)\t\tC. 結合条件に一致する行のみを返し、一致しない行は含まれない\n(4)\t\tD. Oracle独自結合構文ではサポートされていない\n(5)\t\tE. OUTER JOIN にFULLを付けた場合、INNER JOINと同義である",
+      "ans": "AD",
+      "self_ans": "AB"
+    }
+  ],
+  "D6": [
+    {
+      "exam": 1,
+      "q": 31,
+      "text": "相関副問合せの実行に関して正しいのはどれでしょうか。（2つ選択）\n(1)\t\tA.　内側の文が最初に実行され、次に外側の文が実行されます。\n(2)\t\tB.　内側の文は、外側の文が実行された後に実行されます。\n(3)\t\tC.　外側の文の1行ごとに、内側の文を実行します。\n(4)\t\tD.　内側の文の1行ごとに、外側の文を実行します。",
+      "ans": "B.C",
+      "self_ans": "A.D"
+    },
+    {
+      "exam": 1,
+      "q": 32,
+      "text": "SQLのUNION演算子でORDER BY句を使用する場合の説明で正しい記述はどれでしょうか。\n(1)\t\tA.　各SELECT文には、それぞれORDER BY句が必要です。\n(2)\t\tB.　ORDER BY句では、列名ではなく位置で指定する必要があります。\n(3)\t\tC.　ORDER BY句がない場合は、最初のSELECT文の最初の列名でソートされます。\n(4)\t\tD.　ORDER BY句には、最初のSELECT文の列名を指定します。",
+      "ans": "D",
+      "self_ans": "C"
+    },
+    {
+      "exam": 1,
+      "q": 34,
+      "text": "UNION演算子とUNION ALL演算子について、正しい記述はどれでしょうか。(3つ選択)\n(1)\t\tA.　それぞれのSELECT文で抽出された列の名前は同じである必要があります。\n(2)\t\tB.　それぞれのSELECT文で抽出された列の数は同数である必要があります。\n(3)\t\tC.　UNION演算子を使用すると、ソートされます。\n(4)\t\tD.　UNION演算子を使用すると、重複行は削除されます。\n(5)\t\tE.　UNION ALL演算子を使用すると、ソートされます。\n(6)\t\tF.　UNION ALL演算子を使用すると、重複行は削除されます。",
+      "ans": "B.C.D",
+      "self_ans": "B.D.E"
+    },
+    {
+      "exam": 1,
+      "q": 35,
+      "text": "商品情報マスター表と、商品取引履歴表が存在していて、\n商品の取引があると商品取引履歴表に取引情報を登録するとします。\n履歴は商品毎に1件のみ、商品情報マスター表と同じ形式のものを登録します。\n\n一度も取引が無い商品情報を取得するには、以下のどれを使用すべきでしょうか。\n(1)\t\tINTERSECT\n(2)\t\tMINUS\n(3)\t\tMINUS ALL\n(4)\t\tUNION\n(5)\t\tUNION ALL",
+      "ans": "2",
+      "self_ans": "5"
+    },
+    {
+      "exam": 2,
+      "q": 25,
+      "text": "異なるITEM_IDで同じ商品名（ITEM_NAME）が入力されているものをチェックする方法は下記のどれでしょうか。（2つ選択）\n(1)\t\tA.　自己結合\n(2)\t\tB.　副問合せ\n(3)\t\tC.　自己結合によるFULL OUTER JOIN\n(4)\t\tD.　自己結合によるRIGHT OUTER JOIN\n(5)\t\tE.　自己結合によるLEFT OUTER JOIN",
+      "ans": "AB",
+      "self_ans": "AC"
+    },
+    {
+      "exam": 2,
+      "q": 31,
+      "text": "相関副問合せのEXISTS演算子に関して正しい記述はどれでしょうか。（2つ選択）\n(1)\t\tA.　内部問合せ結果にNULL値以外の値が見つかると、外部問合せは内部問合せの実行を中断します。\n(2)\t\tB.　外部問合せは、副問合せのすべての結果の実行が完了するまで、内部問合せを実行し続けます。\n(3)\t\tC.　内部問合せによって取得された値が、外部問合せの結果に存在するかどうかを判定するために使用されます。\n(4)\t\tD.　外部問合せによって取得された値が、内部問合せの結果に存在するかどうかを判定するために使用されます。",
+      "ans": "AD",
+      "self_ans": "CD"
+    },
+    {
+      "exam": 2,
+      "q": 32,
+      "text": "次のSQLを確認してください。\n\nSELECT ITEM_ID, ITEM_NAME \"商品名\"\nFROM ITEM\nWHERE ITEM_TYPE = 'FOOD'\nUNION\nSELECT ITEM_ID ITEM_TYPE, ITEM_NAME\nFROM ITEM\nWHERE ITEM_TYPE = 'CASUAL'\n\nこのSQLにORDER BY句を記述するとした場合、正常に実行できるものはどれでしょうか。（3つ選択）\n(1)\t\tA.　ORDER BY \"商品名\"\n(2)\t\tB.　ORDER BY \"ITEM_TYPE\"\n(3)\t\tC.　ORDER BY 1\n(4)\t\tD.　ORDER BY ITEM_TYPE\n(5)\t\tE.　ORDER BY 2, ITEM_ID",
+      "ans": "ACE",
+      "self_ans": "CDE"
+    },
+    {
+      "exam": 2,
+      "q": 33,
+      "text": "以下のSQL文を実行するとします。\n\nSELECT ITEM_ID, MAKER_ID\nFROM ITEM\nWHERE MAKER_ID LIKE '1%' ORDER BY MAKER_ID\nUNION\nSELECT ITEM_ID, MAKER_ID\nFROM ITEM\nWHERE MAKER_ID=90\nUNION\nSELECT ITEM_ID, MAKER_ID\nFROM ITEM\nWHERE MAKER_ID LIKE '2%';\n\n実行結果はどうなるでしょうか。\n　\n\n(1)\t\tA.　正常に実行され、すべての行がMAKER_IDの昇順で表示されます。\n(2)\t\tB.　列名の代わりに位置番号（数値）をORDER BY句で使用する必要があるため、エラーとなります。\n(3)\t\tC.　ORDER BY句は最後のSELECT文に記述する必要があるため、エラーとなります。\n(4)\t\tD.　正常に実行されますが、ORDER BY句が無視され、ソートされません。",
+      "ans": "C",
+      "self_ans": "D"
+    },
+    {
+      "exam": 2,
+      "q": 34,
+      "text": "複合問合せで INTERSECT 演算子を使用した結果について正しいのはどれでしょうか。（2つ選択）\n(1)\t\tA.　複合問合せの各SELECT文の列数は異なる場合があります。\n(2)\t\tB.　複合問合せの各SELECT文の列名は異なる場合があります。\n(3)\t\tC.　複合問合せの各SELECT文のデータ型は異なる場合があります。\n(4)\t\tD.　INTERSECT演算子は、結果にNULLがあった場合、データを抽出します。\n(5)\t\tE.　INTERSECT演算子は、結果にNULLがあった場合、データを抽出しません。",
+      "ans": "BD",
+      "self_ans": "AD"
+    },
+    {
+      "exam": 2,
+      "q": 36,
+      "text": "図のような表があります。\n\n以下の従業員の詳細を表示する必要があります。\n\n・DEPT_ID '10101' の部署に所属\n・入社年数(START_DATE)が1年以下\n・月の定期代(PASS_PRICE)が5万円を超える\n\n必要な結果を取得するSQLはどれですか。（2つ選択）\n　\n拡大する\n(1)\t\tA.　SELECT NAME, PASS_PRICE, START_DATE FROM EMP WHERE START_DATE > SYSDATE-365 AND DEPT_ID = '10101' INTERSECT SELECT NAME, PASS_PRICE, START_DATE FROM EMP WHERE PASS_PRICE > 50000;\n(2)\t\tB.　SELECT NAME, PASS_PRICE, START_DATE FROM EMP WHERE PASS_PRICE > 50000 AND DEPT_ID = 10101 INTERSECT SELECT NAME, PASS_PRICE, START_DATE FROM EMP WHERE START_D",
+      "ans": "AB",
+      "self_ans": "AD"
+    },
+    {
+      "exam": 2,
+      "q": 49,
+      "text": "以下のSELECT文について、正しい記載を2つ選択してください。\n\nSELECT\n　product_id, price - cost AS profit\nFROM\n　Products\nWHERE\n　price - cost < ALL (\n　　SELECT\n　　　AVG(price - cost)\n　　FROM\n　　　Products\n　　GROUP BY\n　　dept_id\n　);\n(1)\t\tA. 製品ごとの利益が全ての部門平均利益より小さい製品を抽出する\n(2)\t\tB. 製品ごとの利益が全ての部門平均利益より大きい製品を抽出する\n(3)\t\tC. WHERE句で集合関数を使用しているためエラーになる\n(4)\t\tD. サブクエリのGROUP BYで指定した列名をサブクエリのSELECT句で使用していないためエラーになる\n(5)\t\tE. ALL内でグループ関数やGROUP BYを使用したサブクエリは使用できる",
+      "ans": "AE",
+      "self_ans": "CD"
+    },
+    {
+      "exam": 2,
+      "q": 53,
+      "text": "複合問合せ（UNION / INTERSECT / MINUS 等）において、次の記述のうち正しいものを2つ選択してください。\n(1)\t\tA. SELECT句の列数はすべて同一である必要がある\n(2)\t\tB. SELECT句の列名はすべて同一である必要がある\n(3)\t\tC. ORDER BY句は最初のSELECTの列を指定する\n(4)\t\tD. 結果セットの列名は、指定した最後のSELECTの列名が使用される\n(5)\t\tE. NULL値は無視される",
+      "ans": "AC",
+      "self_ans": "DE"
+    },
+    {
+      "exam": 2,
+      "q": 60,
+      "text": "INTERSECTの特徴として正しいものを2つ選択してください。\n(1)\t\tA. 列数やデータ型が異なるSELECT同士でも使用できる\n(2)\t\tB. 2つの結果の共通する行を選択する\n(3)\t\tC. 結果はソートされない\n(4)\t\tD. NULL値は除外される\n(5)\t\tE. SELECT文の順番を入れ替えても結果は変わらない",
+      "ans": "BE",
+      "self_ans": "BD"
+    },
+    {
+      "exam": 2,
+      "q": 62,
+      "text": "次のうち、サブクエリが必要なケースはどれでしょうか。最適なものを2つ選択してください。\n(1)\t\tA. 全商品の平均価格より高い価格の商品を表示する\n(2)\t\tB. 各カテゴリごとの平均価格を表示する\n(3)\t\tC. 注文テーブルから最も高額の注文を表示する\n(4)\t\tD. 各顧客ごとの注文数を表示する\n(5)\t\tE. 商品テーブルとカテゴリテーブルから商品名とカテゴリ名を表示する",
+      "ans": "AC",
+      "self_ans": "AB"
+    }
+  ],
+  "D7": [
+    {
+      "exam": 1,
+      "q": 39,
+      "text": "トランザクション制御言語について正しいのはどれでしょうか。（2つ選択）\n(1)\t\tCOMMITを発行しても、SAVEPOINTは消去しません。\n(2)\t\tROLLBACK TO SAVEPOINTは、指定したSAVEPOINT以降に取得された行および表のロックをすべて解除します。\n(3)\t\tROLLBACK TO SAVEPOINTは、指定したSAVEPOINT以降の変更を取り消しますが、SAVEPOINTは消去しません。\n(4)\t\tCOMMITは、変更を確定し、行および表のロックをすべて解除します。",
+      "ans": "2.4",
+      "self_ans": "3.4"
+    },
+    {
+      "exam": 1,
+      "q": 42,
+      "text": "この表の更新を行う場合、有効なSQLはどれでしょうか。（2つ選択）\n(1)\t\tA.　UPDATE ITEM SET MADE_DATE = '23-JUN-2021', ITEM_PRICE = NULL WHERE ITEM_ID = 2;\n(2)\t\tB.　UPDATE ITEM SET MADE_DATE = '23-JUN-2021', AND ITEM_PRICE = NULL WHERE ITEM_ID = 2;\n(3)\t\tC.　UPDATE ITEM SET MADE_DATE = '23-JUN-2021' AND SET ITEM_PRICE = NULL WHERE ITEM_ID = 2;\n(4)\t\tD.　UPDATE ITEM SET MADE_DATE = SYSDATE, ITEM_PRICE = NULL WHERE ITEM_ID = 2;\n(5)\t\tE.　UPDATE ITEM SET MADE_DATE = '23-JUN-2021', ITEM_PRICE = ZERO WHERE ITEM_ID = 2;",
+      "ans": "A.D",
+      "self_ans": "A.C"
+    },
+    {
+      "exam": 1,
+      "q": 44,
+      "text": "条件付きマルチテーブル・インサート（INSERT ALL）について正しい記述はどれでしょうか。（2つ選択）\n(1)\t\tA.　一つのマルチテーブル・インサートに指定できるWHEN句に上限はありません。\n(2)\t\tB.　ELSE句を使用できます。\n(3)\t\tC.　副問合せによって返される各行は、一つの表にのみ挿入できます。\n(4)\t\tD.　WHEN条件の各式は、副問合せのSELECT構文のリストによって戻される列を参照する必要があります。\n(5)\t\tE.　一つのWHEN条件には一つのINTO句を使用できます。",
+      "ans": "B.D",
+      "self_ans": "A.D"
+    },
+    {
+      "exam": 1,
+      "q": 46,
+      "text": "次の文を実行するとします。\n\nMERGE INTO ITEM_TARGET t\n　　USING ITEM i\n　　ON (i.ITEM_ID = t.ITEM_ID)\nWHEN MATCHED THEN\n　　UPDATE SET t.ITEM_ID = i.ITEM_ID, t.ITEM_NAME = i.ITEM_NAME, t.ITEM_TYPE = i.ITEM_TYPE\nWHEN NOT MATCHED THEN\n　　INSERT (t.ITEM_ID, t.ITEM_NAME, t.ITEM_PRICE)\n　　VALUES (i.ITEM_ID, i.ITEM_NAME, i.ITEM_PRICE)\n　　WHERE i.ITEM_PRICE > 1000;\n\nMERGE文を実行する際の正しい記述はどれでしょうか。\n(1)\t\tA.　INSERTでWHERE句は指定できません。\n(2)\t\tB.　ITEM_ID列は更新できません。\n(3)\t\tC.　ITEM_ID列は挿入できません。\n(4)\t\tD.　WHERE句の表指定は't'にする必要があります。",
+      "ans": "B",
+      "self_ans": "C"
+    },
+    {
+      "exam": 2,
+      "q": 38,
+      "text": "トランザクションが終了するのは以下のどの場合でしょうか。（3つ選択）\n(1)\t\tA.　COMMITが発行された後\n(2)\t\tB.　ROLLBACKが発行された後\n(3)\t\tC.　SAVEPOINTが発行された後\n(4)\t\tD.　DROPが発行された後\n(5)\t\tE.　INSERTが発行された後",
+      "ans": "ABD",
+      "self_ans": "ABE"
+    },
+    {
+      "exam": 2,
+      "q": 42,
+      "text": "DELETEコマンドに関して正しい記述はどれでしょうか。\n(1)\t\tA.　1つのDELETE文では、1つの表からのみ行を削除できます。\n(2)\t\tB.　1つのDELETE文では、複数の表から行を削除できます。\n(3)\t\tC.　DELETEを使用して、特定の列のデータを削除できます。\n(4)\t\tD.　DELETEを実行すると自動的にCOMMITされます。",
+      "ans": "A",
+      "self_ans": "C"
+    },
+    {
+      "exam": 2,
+      "q": 43,
+      "text": "マルチテーブル・インサートについて正しい記述を2つ選択してください。\n(1)\t\tA.　一つの副問合せで返される各行は、一つの表にのみインサートできます。\n(2)\t\tB.　無条件インサートでは、VALUES句が使用できます。\n(3)\t\tC.　無条件インサートでは、ELSE句が使用できます。\n(4)\t\tD.　条件付きインサートでは、条件が成立したものすべてのインサート処理が実行されます。\n(5)\t\tE.　条件付きインサートでは、WHEN条件の各式は、副問合せのSELECT構文のリストによって戻される列を参照します。",
+      "ans": "BE",
+      "self_ans": "DE"
+    },
+    {
+      "exam": 2,
+      "q": 45,
+      "text": "次のMERGE文について、正しい記述を1つ選択してください。\nMERGE INTO ITEM_TARGET t\n    USING ITEM i\n    ON (i.ITEM_ID = t.ITEM_ID)\nWHEN MATCHED THEN\n    INSERT (t.ITEM_ID, t.ITEM_NAME, t.ITEM_PRICE)\n    VALUES (i.ITEM_ID, i.ITEM_NAME, i.ITEM_PRICE);\nWHEN NOT MATCHED AND i.ITEM_PRICE > 1000 THEN\n    UPDATE\n    SET t.ITEM_NAME = i.ITEM_NAME,\n        t.ITEM_TYPE = i.ITEM_TYPE\n\n\nMERGE INTO ITEM_TARGET t\n    USING ITEM i\n    ON (i.ITEM_ID = t.ITEM_ID)\nWHEN MATCHED THEN\n    UPDATE\n    SET t.ITEM_ID = i.ITEM_ID,\n        t.ITEM_N",
+      "ans": "C",
+      "self_ans": "D"
+    },
+    {
+      "exam": 2,
+      "q": 46,
+      "text": "次の文を実行するとします。\n\nMERGE INTO ITEM_MERGE m\n　USING ITEM i\n　ON (i.ITEM_ID = m.ITEM_ID)\nWHEN MATCHED THEN\n　UPDATE SET m.ITEM_NAME = i.ITEM_NAME, m.ITEM_TYPE = i.ITEM_TYPE\nWHEN NOT MATCHED THEN\n　INSERT (m.ITEM_ID, m.ITEM_NAME, m.ITEM_TYPE, m.ITEM_PRICE)\n　VALUES (i.ITEM_ID, i.ITEM_NAME, i.ITEM_TYPE, i.ITEM_PRICE)\n　WHERE i.ITEM_PRICE > 1000;\n\nMERGE文の実行結果として正しい記述はどれでしょうか。\n　\n(1)\t\tA.　ITEM_MERGE表には、ORDER_ID 2,3,5,6,7が存在します。\n(2)\t\tB.　ITEM_MERGE表には、ORDER_ID 1,2,3,4,5,6,7が存在します。\n(3)\t\tC.　ITEM表には、ORDER_ID 1,2,3,4,6",
+      "ans": "A",
+      "self_ans": "B"
+    },
+    {
+      "exam": 2,
+      "q": 70,
+      "text": "以下のINSERT ALL文について、正しい記述を2つ選択してください。（Employees表には3行のデータが存在しています）\n\nINSERT ALL\n　INTO Employees_History(EMP_ID, NAME, DEPT_ID)\n　　VALUES(emp_id, name, dept_id)\n　INTO Employee_Salaries(EMP_ID, SALARY)\n　　VALUES(emp_id, salary)\n　INTO Employee_Bonuses(EMP_ID, BONUS)\n　　VALUES(emp_id, bonus)\nSELECT\n　emp_id,\n　name,\n　salary,\n　bonus,\n　dept_id\nFROM\n　Employees;\n(1)\t\tA.　INSERT ALLは同一テーブルにしか挿入できないためエラーとなる\n(2)\t\tB.　Employees_Historyには3行分のデータが追加される\n(3)\t\tC.　一つのINSERT ALL句に複数のINTO句を使用しているためエラーとなる\n(4)\t\tD.　INTO句にVALUES",
+      "ans": "BD",
+      "self_ans": "BE"
+    }
+  ],
+  "D8": [
+    {
+      "exam": 1,
+      "q": 41,
+      "text": "ITEM 表を作成します。\n\nCREATE TABLE ITEM\n(\n　　ITEM_ID VARCHAR(4) PRIMARY KEY,\n　　ITEM_NAME VARCHAR(20) NOT NULL,\n　　PRODUCTION_DATE DATE,\n　　RELEASE_DATE DATE DEFAULT SYSDATE,\n　　END_OF_SALE_DATE DATE\n);\n\nこの表にはデータが1件も存在しません。\nRELEASE_DATEのデフォルト値を使用して、表に行を正常に挿入するSQLはどれでしょうか。（2つ選択）\n(1)\t\tA.　INSERT INTO ITEM VALUES ('1001', 'ITEM1', '10-JUN-2021');\n(2)\t\tB.　INSERT INTO ITEM (ITEM_ID, ITEM_NAME, PRODUCTION_DATE,END_OF_SALE_DATE) VALUES ('1001', 'ITEM1','10-JUN-2021',NULL);\n(3)\t\tC.　INSERT INTO ITEM (ITEM_ID, ITEM_NA",
+      "ans": "B.D",
+      "self_ans": "A.D"
+    },
+    {
+      "exam": 1,
+      "q": 45,
+      "text": "MERGE文について正しい記述はどれでしょうか。（2つ選択）\n(1)\t\tA.　表からのみ行をマージできます。\n(2)\t\tB.　複数の表の行を条件付きで結合して、一つの表に挿入できます。\n(3)\t\tC.　削除することはできません。\n(4)\t\tD.　1つのMERGE文で複数の表を更新できます。\n(5)\t\tE.　ビューを使用して行をマージできます。",
+      "ans": "B.E",
+      "self_ans": "B.D"
+    },
+    {
+      "exam": 1,
+      "q": 47,
+      "text": "DDLの説明で正しいのはどれでしょうか。（3つ選択）\n(1)\t\tA.　データの追加を行うことができます。\n(2)\t\tB.　表名を変更することができます。\n(3)\t\tC.　データの回復（ロールバック）を行うことができます。\n(4)\t\tD.　表に対してデータ更新をさせないよう設定できます。\n(5)\t\tE.　データの更新を行うことができます。\n(6)\t\tF.　特定の条件に違反するデータが列に挿入されないように表設定を変更できます。",
+      "ans": "B.D.F",
+      "self_ans": "A.B.E"
+    },
+    {
+      "exam": 1,
+      "q": 50,
+      "text": "以下の文を実行するとエラーとなります。\n\nCREATE TABLE SHOHIN\n(\n　SHOHIN_ID NUMBER(3),\n　SHOHIN_NAME VARCHAR2(50) CHECK(SHOHIN_NAME IS NOT NULL),\n　STOCK NUMBER(3) CHECK(STOCK BETWEEN 0 AND 200),\n　INPUT_DATE DATE CHECK (INPUT_DATE > SYSDATE)\n);\n\nエラーとなる理由を以下から選択してください。\n(1)\t\tCHECKとBETWEENは同時に使用できません。\n(2)\t\tCHECKでNULLは使用できません。\n(3)\t\tCHECKでDATE型では使用できません。\n(4)\t\tCHECKとSYSDATEは同時に使用できません。",
+      "ans": "4",
+      "self_ans": "3"
+    },
+    {
+      "exam": 1,
+      "q": 51,
+      "text": "読み取り専用モードのEMP表に対して、正常に実行されるものはどれでしょうか。\n(1)\t\tA.　TRUNCATE TABLE EMP;\n(2)\t\tB.　DROP TABLE EMP;\n(3)\t\tC.　DELETE FROM EMP;\n(4)\t\tD.　ALTER TABLE EMP DROP COLUMN START_DATE;\n(5)\t\tE.　ALTER TABLE EMP SET UNUSED (START_DATE);",
+      "ans": "B",
+      "self_ans": "E"
+    },
+    {
+      "exam": 1,
+      "q": 52,
+      "text": "ALTER TABLE ITEM DROP COLUMN ITEM_NAME;\nを実行した場合の正しい記述はどれでしょうか。\n　\n(1)\t\tA.　他の列が1つでも表に残っている場合、ITEM_NAME列は削除されます。\n(2)\t\tB.　ITEM_NAME列は、データが含まれていない場合にのみ削除されます。\n(3)\t\tC.　ITEM_NAME列は、データにNULL値が含まれている場合は削除されません。\n(4)\t\tD.　ITEM_NAME列にSET UNUSEDが設定されている場合、データを元に戻せます。",
+      "ans": "D",
+      "self_ans": "A"
+    },
+    {
+      "exam": 1,
+      "q": 53,
+      "text": "DELETE文およびTRUNCATE文について正しい記述は以下のどれでしょうか。\n(1)\t\tA.　TRUNCATE文を使用して索引を削除できます。\n(2)\t\tB.　DELETE文を使用してデータを削除できますが、TRUNCATE文を使用してデータを削除することはできません。\n(3)\t\tC.　DELETE文およびTRUNCATE文では、データを表に復元するためにロールバックを行うことができます。\n(4)\t\tD.　DELETE文を使用して、表から行を選択して削除できます。\n(5)\t\tE.　TRUNCATE文を使用して、表から行を選択して削除できます。",
+      "ans": "D",
+      "self_ans": "A"
+    },
+    {
+      "exam": 1,
+      "q": 59,
+      "text": "ITEM表にはデータが含まれています。\nITEM_ID列に主キー制約を追加する文はどれでしょうか。\n　\n拡大する\n(1)\t\tA.　ALTER TABLE ITEM ADD ITEM_ID CONSTRAINT ITEM_PK PRIMARY KEY;\n(2)\t\tB.　ALTER TABLE ITEM MODIFY ITEM_ID CONSTRAINT ITEM_PK PRIMARY_KEY;\n(3)\t\tC.　ALTER TABLE ITEM ADD CONSTRAINT ITEM_PK PRIMARY KEY (ITEM_ID);\n(4)\t\tD.　ALTER TABLE ITEM MODIFY CONSTRAINT ITEM_PK PRIMARY KEY (ITEM_ID);",
+      "ans": "C",
+      "self_ans": "A"
+    },
+    {
+      "exam": 1,
+      "q": 60,
+      "text": "次の順でSQLを実行します。\n\n1. 表を作成します。\nCREATE TABLE ITEM\n(ITEM_NO NUMBER(4) CONSTRAINT ITEM_PK PRIMARY KEY,\n　ITEM_NAME VARCHAR2(30),\n　PARENT_ITEM_NO NUMBER(4) CONSTRAINT PARENT_FK REFERENCES ITEM(ITEM_NO)\n);\n\n2. CASCADEオプション付きで主キー制約を無効化します。\nALTER TABLE ITEM DISABLE CONSTRAINT ITEM_PK CASCADE;\n\n3. 主キー制約を有効化します。\nALTER TABLE ITEM ENABLE CONSTRAINT ITEM_PK;\n\nこの時点での、外部キー：PARENT_FKの状態について、正しい記述はどれでしょうか。\n(1)\t\tA.　無効のままです。外部キーの状態を有効にする手段はありません。\n(2)\t\tB.　無効のままです。外部キーの状態を有効にするためには、制約を削除して再作成します。\n(3)\t\tC.　無効のままです。外部キーの状",
+      "ans": "C",
+      "self_ans": "D"
+    },
+    {
+      "exam": 1,
+      "q": 61,
+      "text": "ビューに関して正しい記述はどれでしょうか。（3つ選択）\n(1)\t\tA.　ビューでDISTINCTを使用している場合、ビュー経由でデータを更新することはできません。\n(2)\t\tB.　存在しない表に対してビューを作成することはできません。\n(3)\t\tC.　ビューでGROUP BYを使用している場合、ビュー経由でデータを更新することができます。\n(4)\t\tD.　すべてのDMLを禁止する場合、WITH READ ONLY制約を使用します。\n(5)\t\tE.　OR REPLACEオプションは、すでにビューが存在する場合、ビューを削除せずに定義を変更します。",
+      "ans": "A.D.E",
+      "self_ans": "B.D.E"
+    },
+    {
+      "exam": 1,
+      "q": 63,
+      "text": "索引とその管理について正しい記述はどれでしょうか。（2つ選択）\n(1)\t\tA.　CREATE TABLE文の中で主キー制約および一意キー制約を定義すると、索引が暗黙的に作成されます。\n(2)\t\tB.　不可視索引は、DML実行中は維持されません。\n(3)\t\tC.　索引は一意にも非一意にも設定できます。\n(4)\t\tD.　索引作成時にOracle標準関数を使用することはできません。\n(5)\t\tE.　主キー制約や一意キー制約で暗黙的に作成された索引は、その索引のみを削除することができます。",
+      "ans": "A.C",
+      "self_ans": "C.E"
+    },
+    {
+      "exam": 1,
+      "q": 65,
+      "text": "シノニムについて正しい記述はどれでしょうか。\n(1)\t\tA.　シノニムの変更をする場合、いったん削除して再作成する必要があります。\n(2)\t\tB.　全ユーザーから使用できるシノニムを作成するためには、CREATE SYNONYMシステム権限が必要です。\n(3)\t\tC.　権限を持たないユーザーでも PUBLIC SYNONYMを作成できます。\n(4)\t\tD.　プライベート・シノニムは、データベース内で一意である必要があります。\n(5)\t\tE.　シノニムはシノニムを持つことができます。",
+      "ans": "E",
+      "self_ans": "D"
+    },
+    {
+      "exam": 1,
+      "q": 67,
+      "text": "シーケンスについて正しい記述はどれでしょうか。（3つ選択）\n(1)\t\tA.　シーケンスの初期値はMAXVALUEで指定します。\n(2)\t\tB.　シーケンス値はマイナス値の指定も可能です。\n(3)\t\tC.　シーケンスは、1つのセッションのみで使用できます。\n(4)\t\tD.　CURRVALは、シーケンスの現在の値を取得します。\n(5)\t\tE.　インスタンスに障害が発生した場合、キャッシュされていたシーケンス番号は再度利用可能となります。\n(6)\t\tF.　NEXTVALは、現在値に加増した値を取得します。\n(7)\t\tG.　MAXVALUE/MINVALUEの値の変更は、シーケンスを一度DROPして再作成する必要があります。",
+      "ans": "B.D.F",
+      "self_ans": "A.D.F"
+    },
+    {
+      "exam": 1,
+      "q": 68,
+      "text": "CREATE SEQUENCE ITEM_SEQ\n　MAXVALUE 9999\n　CYCLE\n　CACHE 1000;\n\nCREATE TABLE ITEM\n(\n　　ITEM_ID NUMBER(4) DEFAULT ITEM_SEQ.NEXTVAL CONSTRAINT ITEM_PK PRIMARY KEY,\n　　ITEM_NO NUMBER(3),\n　　ITEM_NAME VARCHAR2(20),\n　　ITEM_TYPE VARCHAR2(20),\n　　MADE_DATE DATE,\n　　ITEM_PRICE NUMBER(7)\n);\n\n表のITEM_IDにシーケンス：ITEM_SEQを適用するとします。\n表とシーケンスについて正しい記述はどれでしょうか。（2つ選択）\n(1)\t\tA.　他のユーザーのスキーマ内に順序を作成する場合は、CREATE SEQUENCEシステム権限が必要です。\n(2)\t\tB.　ITEM_SEQは、9999ごとに1に戻ります。\n(3)\t\tC.　ITEM_SEQのシーケンス値はITEM表のITEM_IDと同じ値になります。\n(4)\t\tD.　ITEM_SEQ",
+      "ans": "B.E",
+      "self_ans": "B.D"
+    },
+    {
+      "exam": 1,
+      "q": 70,
+      "text": "システム権限で実行できるものについての説明はどれでしょうか。（3つ選択）\n(1)\t\tA.　データベースに接続します。\n(2)\t\tB.　データベース内の任意の順序（シーケンス）にアクセスできます。\n(3)\t\tC.　OSのファイルにアクセスします。\n(4)\t\tD.　別のスキーマでファンクションを実行します。\n(5)\t\tE.　WITH GRANT OPTIONを使用します。\n(6)\t\tF.　WITH ADMIN OPTIONを使用します。",
+      "ans": "A.B.F",
+      "self_ans": "A.B.E"
+    },
+    {
+      "exam": 1,
+      "q": 71,
+      "text": "WITH GRANT OPTIONについて正しい記述はどれでしょうか。（2つ選択）\n(1)\t\tA.　システム権限の場合に使用します。\n(2)\t\tB.　GRANT文で使用します。\n(3)\t\tC.　REVOKE文で使用します。\n(4)\t\tD.　WITH GRANT OPTION付きで付与されたオブジェクト権限は、別のユーザーに付与できます。",
+      "ans": "B.D",
+      "self_ans": "A.D"
+    },
+    {
+      "exam": 1,
+      "q": 72,
+      "text": "次の文を実行します。\n\nGRANT ALL PRIVILEGES\nON ITEM,MAKER\nWITH GRANT OPTION;\n\nITEMとMAKER表の所有者とGRANT文の実行ユーザーは一般ユーザーですが、\n上記の文を実行するとエラーとなりました。\nエラーの原因について正しい記述はどれでしょうか。\n(1)\t\tA.　一般ユーザーでALL PRIVILEGESは指定できません。\n(2)\t\tB.　複数の表にGRANT文の一括実行はできません。\n(3)\t\tC.　一般ユーザーでWITH GRANT OPTIONは指定できません。\n(4)\t\tD.　WITH ADMIN OPTIONを追加する必要があります。",
+      "ans": "C",
+      "self_ans": "B"
+    },
+    {
+      "exam": 1,
+      "q": 74,
+      "text": "権限とロールについて正しい記述はどれでしょうか。（3つ選択）\n(1)\t\tA.　ロールは作成したユーザーによって所有されます。\n(2)\t\tB.　すべてのロールはSYSユーザーによって所有されます。\n(3)\t\tC.　ロールはいずれのスキーマにも含まれません。\n(4)\t\tD.　ロールには、システム権限、オブジェクト権限、他のロールを含めることができます。\n(5)\t\tE.　ロールにPUBLICに付与すると、すべてのユーザーがそのロールを使用できます。",
+      "ans": "C.D.E",
+      "self_ans": "A.D.E"
+    },
+    {
+      "exam": 1,
+      "q": 75,
+      "text": "データ・ディクショナリについての正しい記述を2つ選択してください。\n(1)\t\tA.　データ・ディクショナリは、DBAが手動で管理します。\n(2)\t\tB.　データ・ディクショナリ・ビューは、データベース管理用表とユーザー定義表の集合体です。\n(3)\t\tC.　ユーザー名、およびユーザーに付与された権限とロールは、データ・ディクショナリに保存されます。\n(4)\t\tD.　DBA、ALL、USER などのプレフィックスが異なっていて、その後の名前が同じビューは、権限と名前に応じた最適な情報を取得します。",
+      "ans": "C.D",
+      "self_ans": "B.C"
+    },
+    {
+      "exam": 1,
+      "q": 77,
+      "text": "セッションに、NLS_DATE_FORMAT DD-MON-YYYY HH24:MI:SS を設定している場合、日付/時刻関数について正しい記述はどれでしょうか。（3つ選択）\n(1)\t\tA.　SYSDATEは、セッション・タイムゾーンに従って現在の日付と時刻を返します。\n(2)\t\tB.　SYSDATEは、データベース・サーバーが存在するオペレーティング・システムの現在の日付と時刻のセットを返します。\n(3)\t\tC.　CURRENT_DATEは、セッション・タイムゾーンに従って現在の日付と時刻を返します。\n(4)\t\tD.　CURRENT_TIMESTAMPとSYSDATEは、同じ日付を返します。\n(5)\t\tE.　CURRENT_DATEとCURRENT_TIMESTAMPは、同じ日付を返します。",
+      "ans": "B.C.E",
+      "self_ans": "A.C"
+    },
+    {
+      "exam": 2,
+      "q": 27,
+      "text": "以下の文を実行して表を作成します。\n\nCREATE TABLE CARS\n(\n　　CAR_ID NUMBER PRIMARY KEY,\n　　CAR_NAME VARCHAR2(50),\n　　MAKER_ID NUMBER\n);\n\nCREATE TABLE MAKERS\n(\n　　MAKER_ID NUMBER PRIMARY KEY,\n　　MAKER_NAME VARCHAR2(50)\n);\n\n対応するメーカーがあるかどうかに関係なく、すべての車を表示するSQLはどれでしょうか。（2つ選択）\n(1)\t\tA.　SELECT C.CAR_ID, M.MAKER_ID FROM CARS C FULL OUTER JOIN MAKERS M ON (C.MAKER_ID=M.MAKER_ID)\n(2)\t\tB.　SELECT C.CAR_ID, M.MAKER_ID FROM CARS C RIGHT OUTER JOIN MAKERS M ON (C.MAKER_ID=M.MAKER_ID)\n(3)\t\tC.　SELECT C.CAR_ID, M.MAKER_ID FROM CARS C FUL",
+      "ans": "AC",
+      "self_ans": "BE"
+    },
+    {
+      "exam": 2,
+      "q": 47,
+      "text": "2つの列が次の仕様を持つ表を設計します。\n\n・ITEM_ID：6文字の固定長で、英数字を扱います。\n・MADE_DATE：年、月、日、時、分、秒（小数点以下の最大精度）を扱います。\n\nこれらの要件を最も効率的に処理するデータ型の記述はどれでしょうか。（2つ選択）\n(1)\t\tITEM_ID は ROWID型である必要があります。\n(2)\t\tITEM_ID 列は CHAR型である必要があります。\n(3)\t\tITEM_ID は BLOB型である必要があります。\n(4)\t\tMADE_DATE は DATE型である必要があります。\n(5)\t\tMADE_DATE は INTERVAL DAY TO SECOND型である必要があります。\n(6)\t\tMADE_DATE は TIMESTAMP型である必要があります。",
+      "ans": "2.6",
+      "self_ans": "3.6"
+    },
+    {
+      "exam": 2,
+      "q": 48,
+      "text": "ITEM表に在庫数（NUMBER_OF_STOCK）の列を追加します。\nITEM表に1行以上のデータが存在する場合、\n列にNULL値は含まないように設定するための文はどれでしょうか。\n(1)\t\t1.　ALTER TABLE ITEM ADD NUMBER_OF_STOCK NUMBER(5) DEFAULT NOT NULL;\n(2)\t\t2.　ALTER TABLE ITEM ADD NUMBER_OF_STOCK NUMBER(5) DEFAULT 0 NOT NULL;\n(3)\t\t3.　ALTER TABLE ITEM ADD NUMBER_OF_STOCK NUMBER(5) DEFAULT CONSTRAINT NOT NULL;\n(4)\t\t4.　ALTER TABLE ITEM ADD NUMBER_OF_STOCK NUMBER(5) DEFAULT CONSTRAINT MD_NN NOT NULL;",
+      "ans": "2",
+      "self_ans": "3"
+    },
+    {
+      "exam": 2,
+      "q": 50,
+      "text": "SHOHIN_ID列とSHOHIN_KAKAKU列の値の組み合わせが一意であり、どちらの列もNULLではない表を作成する場合（表名：SHOHIN）、以下のどの文を実行すればいいでしょうか。(2つ選択)\n(1)\t\tA.　CREATE TABLE SHOHIN (SHOHIN_ID NUMBER, SHOHIN_KAKAKU NUMBER, SHOHIN_NAME VARCHAR2(20), INPUT_DATE DATE, CONSTRAINT SHOHIN_ID_UQ UNIQUE (SHOHIN_ID, SHOHIN_KAKAKU) CONSTRAINT SHOHIN_ID_NN NOT NULL (SHOHIN_ID, SHOHIN_KAKAKU););\n(2)\t\tB.　CREATE TABLE SHOHIN (SHOHIN_ID NUMBER CONSTRAINT SHOHIN_ID_NOT_NULL NOT NULL, SHOHIN_KAKAKU NUMBER CONSTRAINT SHOHIN_KAKAKU_NOT_NULL NOT NULL, SHOHIN_NAME VAR",
+      "ans": "BC",
+      "self_ans": "AE"
+    },
+    {
+      "exam": 2,
+      "q": 52,
+      "text": "ALTER TABLE ～ DROP COLUMNについて正しい記述はどれでしょうか。（2つ選択）\n(1)\t\tA.　複数の列を一回のコマンドで削除することはできません。\n(2)\t\tB.　削除された列はロールバックで復元できます。\n(3)\t\tC.　データが含まれていない場合にのみ、列を削除できます。\n(4)\t\tD.　表に別の列が存在する場合にのみ、列を削除できます。\n(5)\t\tE.　PRIMARY KEYが設定された列でもオプション指定で削除できます。",
+      "ans": "DE",
+      "self_ans": "BC"
+    },
+    {
+      "exam": 2,
+      "q": 56,
+      "text": "GLOBAL TEMPORARY TABLESについて正しい記述はどれでしょうか。（2つ選択）\n(1)\t\tA.　UNDOが生成されます。\n(2)\t\tB.　REDOは生成されません。\n(3)\t\tC.　TRUNCATEコマンドにより、GLOBAL TEMPORARY TABLE内のすべての行が削除されます。\n(4)\t\tD.　GLOBAL TEMPORARY TABLEに対するDML文のロールバックはできません。",
+      "ans": "AC",
+      "self_ans": "CD"
+    },
+    {
+      "exam": 2,
+      "q": 61,
+      "text": "次の文で正常実行されるものはどれでしょうか。\n　\n(1)\t\tA.　CREATE OR REPLACE VIEW ITEM_VIEW1 AS SELECT I.ITEM_ID, I.ITEM_PRICE || \"Price\" FROM ITEM I JOIN MAKER M ON (I.MAKER_ID = M.MAKER_ID) GROUP BY I.ITEM_ID, I.ITEM_PRICE;\n(2)\t\tB.　CREATE OR REPLACE VIEW ITEM_VIEW1 AS SELECT I.ITEM_ID, I.ITEM_PRICE \"Price\" FROM ITEM I JOIN MAKER M ON (I.MAKER_ID = M.MAKER_ID) GROUP BY I.ITEM_ID, I.ITEM_PRICE;\n(3)\t\tC.　CREATE OR REPLACE VIEW ITEM_VIEW1 AS SELECT I.ITEM_ID, I.ITEM_PRICE \"Price\" FROM ITEM I JOIN MAKER M ON (I.MAKER_ID = M.",
+      "ans": "B",
+      "self_ans": "A"
+    },
+    {
+      "exam": 2,
+      "q": 64,
+      "text": "シーケンス変更について、正しいものを2つ選択してください。\n(1)\t\tA. 増分値は変更できる\n(2)\t\tB. 初期値は変更できる\n(3)\t\tC. CYCLEの変更で値の重複が有りうる\n(4)\t\tD. CACHEサイズを変更すると既存キャッシュがクリアされる\n(5)\t\tE. シーケンス変更を行うと初期値から再生成される",
+      "ans": "AC",
+      "self_ans": "CE"
+    },
+    {
+      "exam": 2,
+      "q": 67,
+      "text": "以下のシーケンスを作成します。\n\nCREATE SEQUENCE ITEM_SEQ\nSTART WITH 100\nINCREMENT BY 10\nMAXVALUE 1000\nCYCLE\nCACHE 10;\n\nシーケンスITEM_SEQを用いて最大値1000まで番号を生成したのち、このシーケンスが生成する値を使った1行を表にINSERTを実行します。\nINSERTした行をSELECTによって表示したとき、生成したシーケンス番号の値は何でしょうか。\n(1)\t\tA.　1\n(2)\t\tB.　10\n(3)\t\tC.　100\n(4)\t\tD.　1000\n(5)\t\tE.　エラー",
+      "ans": "A",
+      "self_ans": "D"
+    },
+    {
+      "exam": 2,
+      "q": 69,
+      "text": "システムとオブジェクトの権限について正しい記述はどれでしょうか。\n(1)\t\tA.　他スキーマの表へ問合せをするには、システム権限が必要です。\n(2)\t\tB.　他スキーマの表に外部キー制約を追加するには、オブジェクト権限が必要です。\n(3)\t\tC.　WITH GRANT OPTIONは、ユーザーとロールの両方にオブジェクト権限を付与するときに使用できます 。\n(4)\t\tD.　WITH ADMIN OPTIONで付与されたシステム権限を取り消すと、依存権限が取り消される場合があります。",
+      "ans": "B",
+      "self_ans": "D"
+    },
+    {
+      "exam": 2,
+      "q": 71,
+      "text": "ユーザー:USER01に次のことを許可します。\n\n1. ITEM表のITEM_NAME列とITEM_PRICE列に更新権限を付与\n2. 他のユーザーにその権限を許可\n\n上記を実行するための正しい文はどれでしょうか。\n(1)\t\tA. GRANT UPDATE ON ITEM.ITEM_NAME, ITEM.ITEM_PRICE TO USER01 WITH ADMIN OPTION;\n(2)\t\tB. GRANT UPDATE ON ITEM.ITEM_NAME, ITEM.ITEM_PRICE TO USER01 WITH GRANT OPTION;\n(3)\t\tC. GRANT UPDATE ITEM_NAME, ITEM_PRICE ON ITEM TO USER01;\n(4)\t\tD. GRANT UPDATE (ITEM_NAME, ITEM_PRICE) ON ITEM TO USER01;\n(5)\t\tE. GRANT UPDATE (ITEM_NAME, ITEM_PRICE) ON ITEM TO USER01 WITH GRANT OPTION;\n(6)\t\tF. GRANT ",
+      "ans": "E",
+      "self_ans": "A"
+    },
+    {
+      "exam": 2,
+      "q": 72,
+      "text": "TIMESTAMP WITH TIME ZONE型の特徴について、正しい記述を2つ選択してください。\n(1)\t\tA.　年・月・日・時・分・秒だけを格納し、小数秒は扱えない\n(2)\t\tB.　CURRENT_TIMESTAMP関数はTIMESTAMP WITH TIME ZONE型の値を返す\n(3)\t\tC.　値はデータベース・タイムゾーンで正規化して格納される\n(4)\t\tD.　値にタイムゾーン・リージョン名またはオフセット情報を含む\n(5)\t\tE.　タイムゾーン情報を無視して格納される",
+      "ans": "BD",
+      "self_ans": "AC"
+    },
+    {
+      "exam": 2,
+      "q": 73,
+      "text": "以下の文を実行します。\n\n1.　CREATE ROLE ITEM_ROLE;\n2.　GRANT CREATE VIEW, UPDATE\n　　ON USER01.ITEM\n　　TO ITEM_ROLE;\n3.　GRANT ITEM_ROLE, CREATE VIEW TO USER01;\n\n実行結果について正しい記述はどれでしょうか。\n(1)\t\tA.　1の文はエラーとなります。\n(2)\t\tB.　2の文はエラーとなります。\n(3)\t\tC.　3の文はエラーとなります。\n(4)\t\tD.　すべて正常に実行できます。",
+      "ans": "B",
+      "self_ans": "D"
+    },
+    {
+      "exam": 2,
+      "q": 75,
+      "text": "データ・ディクショナリについて、正しい記述はどれでしょうか。（2つ選択）\n(1)\t\tA.　接頭辞 ALL_、DBA_、および USER_ が付いたビューは、\"_\"の後の名称が一致しないものが存在します。\n(2)\t\tB.　接頭辞 ALL_ の付いたビューは、ユーザーが権限を持つオブジェクトのメタデータを表示します。\n(3)\t\tC.　接頭辞 USER_ の付いたビューは、ユーザーが権限を持つオブジェクトのメタデータを表示します。\n(4)\t\tD.　接頭辞 DBA_ の付いたビューは、SYS スキーマ内のオブジェクトのメタデータのみを表示します。",
+      "ans": "AB",
+      "self_ans": "CD"
+    },
+    {
+      "exam": 2,
+      "q": 76,
+      "text": "タイムゾーンについて正しい記述はどれでしょうか。（3つ選択）\n(1)\t\tA.　DBTIMEZONEは、協定世界時 (UTC) からのオフセットを返すことができます。\n(2)\t\tB.　SESSIONTIMEZONEは、協定世界時 (UTC) からのオフセットを返すことができます。\n(3)\t\tC.　DBTIMEZONEを変更した場合、データベースの再起動は不要です。\n(4)\t\tD.　CURRENT_DATEは、タイムゾーン情報のないデータを返します。\n(5)\t\tE.　CURRENT_TIMESTAMPは、タイムゾーン情報のないデータを返します。",
+      "ans": "ABD",
+      "self_ans": "BD"
+    }
+  ]
+}
