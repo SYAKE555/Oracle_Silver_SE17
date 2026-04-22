@@ -31,10 +31,16 @@ except ImportError:
     print("Error: Missing dependencies (flask, flask-cors, python-dotenv). Run pipeline/bootstrap.py first.")
     sys.exit(1)
 
+# Ensure local tool modules are importable when app.py is launched directly.
+TOOLS_DIR = os.path.join(os.path.dirname(__file__), 'pipeline', 'tools')
+if TOOLS_DIR not in sys.path:
+    sys.path.insert(0, TOOLS_DIR)
+
 # 中央化インポートマネージャーを使用
-from import_manager import import_network_config, get_project_root
-NetworkConfig = import_network_config()
-PROJECT_ROOT = get_project_root()
+from import_manager import import_network_config
+network_config_module = import_network_config()
+NetworkConfig = network_config_module.NetworkConfig
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 app = Flask(__name__)
 
@@ -60,6 +66,18 @@ CONFIG = {}
 if os.path.exists(CONFIG_PATH):
     with open(CONFIG_PATH, 'r', encoding='utf-8') as f:
         CONFIG = json.load(f)
+
+MOCK_EXAM_DATA_PATH = os.path.join(PROJECT_ROOT, 'dist', 'mock_exam_data.json')
+MOCK_DOMAIN_MAP = {
+    "D5": ("EX1", "複数表の結合"),
+    "D6": ("EX2", "サブクエリ・集合演算"),
+    "D3": ("EX3", "単一行関数"),
+    "D7": ("EX4", "DML・トランザクション"),
+    "D8": ("EX5", "DDL・オブジェクト管理"),
+    "D4": ("EX6", "グループ関数・集計"),
+    "D1": ("EX7", "SQLとRDBの基礎"),
+    "D2": ("EX8", "データの絞り込みとソート"),
+}
 
 # Logging
 log_dir = os.path.join(os.path.dirname(__file__), '..', 'pipeline', 'logs')
@@ -160,6 +178,77 @@ def validate_question_payload(data):
     return True, None
 
 
+def load_mock_exam_data():
+    if not os.path.exists(MOCK_EXAM_DATA_PATH):
+        return None
+    with open(MOCK_EXAM_DATA_PATH, 'r', encoding='utf-8') as f:
+        return json.load(f)
+
+
+def build_mock_exam_dashboard_payload():
+    data = load_mock_exam_data()
+    if not data:
+        return None
+
+    exams = sorted(data["exams"], key=lambda exam: exam["exam_id"])
+    combined = data["summary"]["combined"]
+    overall = data["summary"]["overall"]
+    total_wrong = max(overall["wrong_questions"], 1)
+
+    ranked = []
+    for domain, (ex_id, label) in MOCK_DOMAIN_MAP.items():
+        stats = combined[domain]
+        ranked.append(
+            {
+                "domain": domain,
+                "ex_id": ex_id,
+                "label": label,
+                "accuracy": round(float(stats["accuracy"]), 1),
+                "wrong_count": len(stats["wrong"]),
+                "correct_count": int(stats["correct"]),
+                "wrong_share": round(len(stats["wrong"]) / total_wrong * 100.0, 1),
+                "wrong_link": f"/study/{ex_id}_reinforce.html",
+                "correct_link": f"/study/{ex_id}_correct.html",
+            }
+        )
+
+    weakest = sorted(ranked, key=lambda item: (item["accuracy"], -item["wrong_count"], item["domain"]))[:3]
+    strongest = sorted(ranked, key=lambda item: (-item["accuracy"], item["domain"]))[:3]
+    average_score_ratio = sum(exam["score_ratio"] for exam in exams) / len(exams)
+    average_accuracy = sum(exam["accuracy"] for exam in exams) / len(exams)
+    latest_exam = exams[-1]
+
+    return {
+        "summary": {
+            "exam_count": overall["exam_count"],
+            "question_count": overall["question_count"],
+            "average_score_ratio": round(float(average_score_ratio), 1),
+            "average_accuracy": round(float(average_accuracy), 1),
+            "latest_exam": {
+                "title": latest_exam["title"],
+                "score_ratio": latest_exam["score_ratio"],
+                "accuracy": round(float(latest_exam["accuracy"]), 1),
+            },
+        },
+        "links": {
+            "dashboard": "/study/mock_exam_dashboard.html",
+            "report": "/study/mock_exam_report.html",
+            "wrong_hub": "/study/mock_exam_reinforce.html",
+            "correct_hub": "/study/mock_exam_correct.html",
+        },
+        "exams": [
+            {
+                "title": exam["title"],
+                "score_ratio": exam["score_ratio"],
+                "accuracy": round(float(exam["accuracy"]), 1),
+            }
+            for exam in exams
+        ],
+        "weakest_domains": weakest,
+        "strongest_domains": strongest,
+    }
+
+
 # --- Static File Serving ---
 
 @app.route('/', methods=['GET'])
@@ -178,6 +267,13 @@ def app_static(filename):
     return send_from_directory(app_dir, filename)
 
 
+@app.route('/study/<path:filename>', methods=['GET'])
+def study_static(filename):
+    """dist/ 配下の教材・模擬試験ページを配信する。"""
+    study_dir = os.path.join(PROJECT_ROOT, 'dist')
+    return send_from_directory(study_dir, filename)
+
+
 # --- Routes ---
 @app.route('/api/status', methods=['GET'])
 def status():
@@ -186,6 +282,14 @@ def status():
         "project": CONFIG.get('project_name'),
         "version": "7.0-synced"
     })
+
+
+@app.route('/api/mock-exam/dashboard', methods=['GET'])
+def mock_exam_dashboard():
+    payload = build_mock_exam_dashboard_payload()
+    if not payload:
+        return jsonify({"error": "Mock exam dataset not found"}), 404
+    return jsonify(payload)
 
 @app.route('/api/questions', methods=['GET'])
 @require_api_key

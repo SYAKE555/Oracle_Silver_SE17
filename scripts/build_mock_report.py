@@ -383,6 +383,7 @@ HTML = f"""<!DOCTYPE html>
   <div class="subtitle">3回分の模擬試験結果から、失点の集中領域と補強優先度を整理した進捗レポート</div>
 </div>
 <div class="container">
+  <a class="nav-back" href="mock_exam_dashboard.html">模擬試験ダッシュボード</a>
   <a class="nav-back" href="index.html">教科書トップへ戻る</a>
 
   <div class="section-heading">総合スコア</div>
@@ -432,7 +433,8 @@ HTML = f"""<!DOCTYPE html>
       {''.join(tab_buttons)}
     </div>
     {''.join(tab_contents)}
-    <a href="mock_exam_reinforce.html" class="action-link">Phase 2 の強化学習ページへ</a>
+    <a href="mock_exam_reinforce.html" class="action-link">誤答の徹底解説へ</a>
+    <a href="mock_exam_correct.html" class="action-link">正答の総点検へ</a>
   </div>
 
   <div class="section-heading">学習フェーズ方針</div>

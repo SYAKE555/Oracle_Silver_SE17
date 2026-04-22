@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EX1 複数表の結合 - 正答済み総点検</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans JP', 'Hiragino Sans', sans-serif; background: #eef2f7; color: #1f2937; line-height: 1.7; }
+  a { color: inherit; }
+  .page-header { background: linear-gradient(135deg,#10243f 0%,#1f3d63 55%,#e67e22 100%); color: white; padding: 42px 24px; text-align: center; }
+  .page-header h1 { font-size: 1.9rem; margin-bottom: 8px; }
+  .page-header .subtitle { opacity: 0.92; font-size: 0.95rem; }
+  .container { max-width: 1180px; margin: 0 auto; padding: 24px; }
+  .nav-back { display: inline-block; padding: 8px 16px; background: white; border-radius: 999px; text-decoration: none; color: #1f2937; box-shadow: 0 4px 14px rgba(15,23,42,.08); font-size: .9rem; margin: 0 8px 16px 0; }
+  .hero-card, .toc, .concept-section { background: white; border-radius: 18px; box-shadow: 0 10px 26px rgba(15,23,42,.08); }
+  .hero-card { padding: 20px 22px; margin-bottom: 18px; border-top: 6px solid #e67e22; }
+  .hero-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-top: 14px; }
+  .metric { background: #f8fafc; border-radius: 14px; padding: 14px; }
+  .metric .label { color: #64748b; font-size: .82rem; }
+  .metric .value { font-size: 1.35rem; font-weight: 900; color: #0f172a; margin-top: 4px; }
+  .toc { padding: 18px 22px; margin-bottom: 22px; }
+  .toc h2 { font-size: 1rem; color: #e67e22; margin-bottom: 10px; }
+  .toc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; }
+  .toc a { display: flex; justify-content: space-between; gap: 10px; align-items: center; text-decoration: none; padding: 10px 12px; border-radius: 12px; background: #f8fafc; border-left: 4px solid #e67e22; font-size: .88rem; }
+  .toc a:hover { background: #eef2f7; }
+  .concept-section { padding: 22px; margin-bottom: 24px; }
+  .concept-section h3 { display: flex; justify-content: space-between; gap: 12px; align-items: center; font-size: 1.15rem; margin-bottom: 8px; color: #0f172a; }
+  .concept-section h3 span { font-size: .82rem; padding: 5px 10px; border-radius: 999px; background: #e67e22; color: white; }
+  .concept-copy { color: #475569; font-size: .92rem; margin-bottom: 16px; }
+  .question-card { border: 1px solid #dbe4ef; border-radius: 16px; padding: 16px; margin-bottom: 14px; background: #fcfdff; }
+  .question-meta { font-size: .8rem; color: #64748b; margin-bottom: 10px; font-weight: 700; }
+  .block-title { font-size: .85rem; font-weight: 800; color: #e67e22; margin: 10px 0 6px; }
+  pre { white-space: pre-wrap; word-break: break-word; background: #0f172a; color: #e2e8f0; border-radius: 12px; padding: 14px; font-size: .84rem; overflow-x: auto; }
+  .analysis-block p { color: #334155; font-size: .9rem; margin-bottom: 8px; }
+  .rebuild-list { padding-left: 20px; color: #334155; font-size: .9rem; }
+  .rebuild-list li { margin-bottom: 5px; }
+  @media (max-width: 720px) {
+    .page-header h1 { font-size: 1.55rem; }
+    .container { padding: 18px; }
+    .concept-section h3 { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+<div class="page-header">
+  <h1>EX1 正答済み総点検</h1>
+  <div class="subtitle">複数表の結合 / 正答した設問をカテゴリ別に再確認し、得点源を維持するページ</div>
+</div>
+<div class="container">
+  <a class="nav-back" href="mock_exam_dashboard.html">模擬試験ダッシュボード</a>
+  <a class="nav-back" href="mock_exam_report.html">結果レポート</a>
+  <a class="nav-back" href="mock_exam_correct.html">模擬試験レビュー</a>
+  
+  <a class="nav-back" href="index.html">教科書トップ</a>
+
+  <div class="hero-card">
+    <div style="font-size:.9rem;color:#64748b;font-weight:700">D5 / 優先</div>
+    <div style="font-size:1.4rem;font-weight:900;margin-top:4px">複数表の結合</div>
+    <p style="margin-top:8px;color:#334155">このページは、正答できた設問をカテゴリ別に並べ、記録された問題全文を正本として、なぜ取れたのかと維持ポイントを再確認するための定着教材です。</p>
+    <div class="hero-grid">
+      <div class="metric"><div class="label">レビュー種別</div><div class="value">正答</div></div>
+      <div class="metric"><div class="label">進捗率</div><div class="value">37.5%</div></div>
+      <div class="metric"><div class="label">正答数</div><div class="value">3問</div></div>
+      <div class="metric"><div class="label">カテゴリ数</div><div class="value">1</div></div>
+    </div>
+  </div>
+
+  <div class="toc">
+    <h2>カテゴリ別目次</h2>
+    <div class="toc-grid">
+      <a href="#d5-1" class="mid">USING・ON・NATURAL の構文差 <span>3問</span></a>
+    </div>
+  </div>
+
+  
+            <section class="concept-section" id="d5-1">
+              <h3>USING・ON・NATURAL の構文差<span>3問</span></h3>
+              <p class="concept-copy">USING は同名列だけ、ON は任意条件、NATURAL は同名列自動判定で使う。相互に併用できない組合せがある。</p>
+              
+                <article class="question-card">
+                  <div class="question-meta">第1回 模擬試験 / 問25 / 正答 B / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>結合におけるINNER JOINについて、正しい記述はどれでしょうか。
+(1)		A.　結合されている両方の表から、結合条件に含まれる行で他方の側にない行も返します。
+(2)		B.　内部結合の結果を返します。
+(3)		C.　(+)を使用して値を返します。
+(4)		D.　すべての行の組合せ（直積）結果を返します。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「USING・ON・NATURAL の構文差」です。USING は同名列だけ、ON は任意条件、NATURAL は同名列自動判定で使う。相互に併用できない組合せがある。 この設問では正答 B「内部結合の結果を返します。」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>USING と ON は排他、NATURAL も別系統として覚える。</li><li>USING 列は SELECT で表別名を付けられない点を確認する。</li><li>JOIN 種類と結合条件の書き方を分けて読む。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第1回 模擬試験 / 問28 / 正答 C / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>以下のSQLを実行するとします。
+
+SELECT 4 FROM DUAL DU1 CROSS JOIN DUAL DU2 CROSS JOIN DUAL DU3 CROSS JOIN DUAL DU4;
+
+実行結果について正しい記述はどれでしょうか。
+(1)		A.　エラーとなります。
+(2)		B.　データがヒットしません。
+(3)		C.　1行返されます。
+(4)		D.　2行返されます。
+(5)		E.　4行返されます。
+(6)		F.　16行返されます。
+(7)		G.　256行返されます。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「USING・ON・NATURAL の構文差」です。USING は同名列だけ、ON は任意条件、NATURAL は同名列自動判定で使う。相互に併用できない組合せがある。 この設問では正答 C「1行返されます。」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>USING と ON は排他、NATURAL も別系統として覚える。</li><li>USING 列は SELECT で表別名を付けられない点を確認する。</li><li>JOIN 種類と結合条件の書き方を分けて読む。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第3回 模擬試験 / 問71 / 正答 AD / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>エンティティ・リレーションシップ・ダイアグラム（ERD）に基づいて2つのテーブルから関連する行を選択する際に、正しいものを2つ選んでください。
+(1)		A. 同じテーブル内のデータを関連付ける場合、SELF JOIN を使用する。
+(2)		B. 無関係なテーブルの行を結合することはできない。
+(3)		C. 2つのテーブル間のすべてのリレーションシップは JOIN 条件として実装する必要がある。
+(4)		D. 2つのテーブル間のリレーションシップを実装するには、追加のテーブルを結合する必要がある場合がある。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「USING・ON・NATURAL の構文差」です。USING は同名列だけ、ON は任意条件、NATURAL は同名列自動判定で使う。相互に併用できない組合せがある。 この設問では正答 A「同じテーブル内のデータを関連付ける場合、SELF JOIN を使用する。」 / D「2つのテーブル間のリレーションシップを実装するには、追加のテーブルを結合する必要がある場合がある。」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>USING と ON は排他、NATURAL も別系統として覚える。</li><li>USING 列は SELECT で表別名を付けられない点を確認する。</li><li>JOIN 種類と結合条件の書き方を分けて読む。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+            </section>
+            
+</div>
+</body>
+</html>

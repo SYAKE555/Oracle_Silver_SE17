@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EX7 SQLとRDBの基礎 - 正答済み総点検</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans JP', 'Hiragino Sans', sans-serif; background: #eef2f7; color: #1f2937; line-height: 1.7; }
+  a { color: inherit; }
+  .page-header { background: linear-gradient(135deg,#10243f 0%,#1f3d63 55%,#f1c40f 100%); color: white; padding: 42px 24px; text-align: center; }
+  .page-header h1 { font-size: 1.9rem; margin-bottom: 8px; }
+  .page-header .subtitle { opacity: 0.92; font-size: 0.95rem; }
+  .container { max-width: 1180px; margin: 0 auto; padding: 24px; }
+  .nav-back { display: inline-block; padding: 8px 16px; background: white; border-radius: 999px; text-decoration: none; color: #1f2937; box-shadow: 0 4px 14px rgba(15,23,42,.08); font-size: .9rem; margin: 0 8px 16px 0; }
+  .hero-card, .toc, .concept-section { background: white; border-radius: 18px; box-shadow: 0 10px 26px rgba(15,23,42,.08); }
+  .hero-card { padding: 20px 22px; margin-bottom: 18px; border-top: 6px solid #f1c40f; }
+  .hero-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-top: 14px; }
+  .metric { background: #f8fafc; border-radius: 14px; padding: 14px; }
+  .metric .label { color: #64748b; font-size: .82rem; }
+  .metric .value { font-size: 1.35rem; font-weight: 900; color: #0f172a; margin-top: 4px; }
+  .toc { padding: 18px 22px; margin-bottom: 22px; }
+  .toc h2 { font-size: 1rem; color: #f1c40f; margin-bottom: 10px; }
+  .toc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; }
+  .toc a { display: flex; justify-content: space-between; gap: 10px; align-items: center; text-decoration: none; padding: 10px 12px; border-radius: 12px; background: #f8fafc; border-left: 4px solid #f1c40f; font-size: .88rem; }
+  .toc a:hover { background: #eef2f7; }
+  .concept-section { padding: 22px; margin-bottom: 24px; }
+  .concept-section h3 { display: flex; justify-content: space-between; gap: 12px; align-items: center; font-size: 1.15rem; margin-bottom: 8px; color: #0f172a; }
+  .concept-section h3 span { font-size: .82rem; padding: 5px 10px; border-radius: 999px; background: #f1c40f; color: white; }
+  .concept-copy { color: #475569; font-size: .92rem; margin-bottom: 16px; }
+  .question-card { border: 1px solid #dbe4ef; border-radius: 16px; padding: 16px; margin-bottom: 14px; background: #fcfdff; }
+  .question-meta { font-size: .8rem; color: #64748b; margin-bottom: 10px; font-weight: 700; }
+  .block-title { font-size: .85rem; font-weight: 800; color: #f1c40f; margin: 10px 0 6px; }
+  pre { white-space: pre-wrap; word-break: break-word; background: #0f172a; color: #e2e8f0; border-radius: 12px; padding: 14px; font-size: .84rem; overflow-x: auto; }
+  .analysis-block p { color: #334155; font-size: .9rem; margin-bottom: 8px; }
+  .rebuild-list { padding-left: 20px; color: #334155; font-size: .9rem; }
+  .rebuild-list li { margin-bottom: 5px; }
+  @media (max-width: 720px) {
+    .page-header h1 { font-size: 1.55rem; }
+    .container { padding: 18px; }
+    .concept-section h3 { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+<div class="page-header">
+  <h1>EX7 正答済み総点検</h1>
+  <div class="subtitle">SQLとRDBの基礎 / 正答した設問をカテゴリ別に再確認し、得点源を維持するページ</div>
+</div>
+<div class="container">
+  <a class="nav-back" href="mock_exam_dashboard.html">模擬試験ダッシュボード</a>
+  <a class="nav-back" href="mock_exam_report.html">結果レポート</a>
+  <a class="nav-back" href="mock_exam_correct.html">模擬試験レビュー</a>
+  
+  <a class="nav-back" href="index.html">教科書トップ</a>
+
+  <div class="hero-card">
+    <div style="font-size:.9rem;color:#64748b;font-weight:700">D1 / 要復習</div>
+    <div style="font-size:1.4rem;font-weight:900;margin-top:4px">SQLとRDBの基礎</div>
+    <p style="margin-top:8px;color:#334155">このページは、正答できた設問をカテゴリ別に並べ、記録された問題全文を正本として、なぜ取れたのかと維持ポイントを再確認するための定着教材です。</p>
+    <div class="hero-grid">
+      <div class="metric"><div class="label">レビュー種別</div><div class="value">正答</div></div>
+      <div class="metric"><div class="label">進捗率</div><div class="value">50.0%</div></div>
+      <div class="metric"><div class="label">正答数</div><div class="value">16問</div></div>
+      <div class="metric"><div class="label">カテゴリ数</div><div class="value">3</div></div>
+    </div>
+  </div>
+
+  <div class="toc">
+    <h2>カテゴリ別目次</h2>
+    <div class="toc-grid">
+      <a href="#d1-1" class="low">SQL 分類の基礎 <span>11問</span></a><a href="#d1-2" class="low">主キー・外部キー・一意キーと NULL <span>4問</span></a><a href="#d1-3" class="low">DUAL と Oracle 基礎 <span>1問</span></a>
+    </div>
+  </div>
+
+  
+            <section class="concept-section" id="d1-1">
+              <h3>SQL 分類の基礎<span>11問</span></h3>
+              <p class="concept-copy">DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。各文をどこへ分類するかが基礎力になる。</p>
+              
+                <article class="question-card">
+                  <div class="question-meta">第1回 模擬試験 / 問3 / 正答 A.B.C / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>SQL（構造化問合せ言語）について、正しい記述はどれでしょうか。（3つ選択）
+(1)		A.　データ操作言語をDMLと言います。
+(2)		B.　リレーショナル・データベース管理システムに含まれるデータを取得します。
+(3)		C.　一貫性を保証します。
+(4)		D.　オブジェクト型データベース管理システムに含まれるデータを取得します。
+(5)		E.　カプセル化を定義するために使用されます。
+(6)		F.　ポリモーフィズムを定義するために使用されます。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「SQL 分類の基礎」です。DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。各文をどこへ分類するかが基礎力になる。 この設問では正答 A「データ操作言語をDMLと言います。」 / B「リレーショナル・データベース管理システムに含まれるデータを取得します。」 / C「一貫性を保証します。」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>CREATE/ALTER/DROP/TRUNCATE は DDL。</li><li>INSERT/UPDATE/DELETE/MERGE は DML。</li><li>COMMIT/ROLLBACK/SAVEPOINT は TCL、GRANT/REVOKE は DCL。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第1回 模擬試験 / 問4 / 正答 C.E / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>S_NAMEの列名を日本語で表示したいとします。
+どのSQL文を実行すればいいでしょうか。(2つ選択)
+　
+拡大する
+(1)		A.　SELECT S_NAME AS &#x27;スポーツ&#x27; FROM SPORTS;
+(2)		B.　SELECT S_NAME IS &#x27;スポーツ&#x27; FROM SPORTS;
+(3)		C.　SELECT S_NAME AS スポーツ FROM SPORTS;
+(4)		D.　SELECT S_NAME IS スポーツ FROM SPORTS;
+(5)		E.　SELECT S_NAME スポーツ FROM SPORTS;</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「SQL 分類の基礎」です。DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。各文をどこへ分類するかが基礎力になる。 この設問では正答 C「SELECT S_NAME AS スポーツ FROM SPORTS;」 / E「SELECT S_NAME スポーツ FROM SPORTS;」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>CREATE/ALTER/DROP/TRUNCATE は DDL。</li><li>INSERT/UPDATE/DELETE/MERGE は DML。</li><li>COMMIT/ROLLBACK/SAVEPOINT は TCL、GRANT/REVOKE は DCL。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第1回 模擬試験 / 問7 / 正答 A / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>ITEM表を使用して、各ITEM_TYPEの各価格の20%OFFを表示する必要があります。
+また表示からITEM_TYPEの重複行を取り除く必要があります。
+上記条件に当てはまる結果を表示するSQLはどれでしょうか。
+
+(1)		A.　SELECT DISTINCT ITEM_TYPE || &#x27; &#x27; || ITEM_PRICE * 0.80 AS &quot;20% OFF&quot; FROM ITEM
+(2)		B.　SELECT ITEM_TYPE, DISTINCT ITEM_PRICE * 0.80 AS &quot;20% OFF&quot; FROM ITEM
+(3)		C.　SELECT DISTINCT ITEM_TYPE, DISTINCT ITEM_PRICE * 0.80 AS &quot;20% OFF&quot; FROM ITEM
+(4)		D.　SELECT ITEM_TYPE || &#x27; &#x27; || ITEM_PRICE * 0.80 AS &quot;20% OFF&quot; DISTINCT FROM ITEM</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「SQL 分類の基礎」です。DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。各文をどこへ分類するかが基礎力になる。 この設問では正答 A「SELECT DISTINCT ITEM_TYPE || &#x27; &#x27; || ITEM_PRICE * 0.80 A…」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>CREATE/ALTER/DROP/TRUNCATE は DDL。</li><li>INSERT/UPDATE/DELETE/MERGE は DML。</li><li>COMMIT/ROLLBACK/SAVEPOINT は TCL、GRANT/REVOKE は DCL。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第1回 模擬試験 / 問57 / 正答 B.D / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>外部表に関して正しい記述はどれでしょうか。（2つ選択）
+(1)		A.　索引を使用することができます。
+(2)		B.　外部表からデータベース内の表にデータをアップロードできます。
+(3)		C.　外部表で使用するORACLE_LOADERとORACLE_DATAPUMPは、全く同じ機能となります。
+(4)		D.　外部表のデータは、データベースの外部に保存されます。
+(5)		E.　外部表のメタデータは、データベースの外部に保存されます。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「SQL 分類の基礎」です。DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。各文をどこへ分類するかが基礎力になる。 この設問では正答 B「外部表からデータベース内の表にデータをアップロードできます。」 / D「外部表のデータは、データベースの外部に保存されます。」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>CREATE/ALTER/DROP/TRUNCATE は DDL。</li><li>INSERT/UPDATE/DELETE/MERGE は DML。</li><li>COMMIT/ROLLBACK/SAVEPOINT は TCL、GRANT/REVOKE は DCL。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第2回 模擬試験 / 問2 / 正答 D / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>従業員の給与が10000円昇給させる場合のレポートを作成する必要があります。
+出力では、
+従業員の名前の見出しに Name、
+昇給後の見出しに New Salary
+という列見出しが表示される必要があります。
+列見出しには、各単語の最初の文字のみを大文字にする必要があります。
+この要件を達成するSQLはどれでしょうか。
+(1)		A.　SELECT NAME AS Name, SALARY + 10000 AS New Salary FROM EMP;
+(2)		B.　SELECT NAME AS &quot;NAME&quot;, SALARY + 10000 &quot;New Salary&quot; FROM EMP;
+(3)		C.　SELECT NAME AS &quot;Name&quot;, SALARY + 10000 AS &quot;NEW SALARY&quot; FROM EMP;
+(4)		D.　SELECT NAME AS &quot;Name&quot;, SALARY + 10000 AS &quot;New Salary&quot; FROM EMP;</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「SQL 分類の基礎」です。DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。各文をどこへ分類するかが基礎力になる。 この設問では正答 D「SELECT NAME AS &quot;Name&quot;, SALARY + 10000 AS &quot;New Salary&quot; F…」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>CREATE/ALTER/DROP/TRUNCATE は DDL。</li><li>INSERT/UPDATE/DELETE/MERGE は DML。</li><li>COMMIT/ROLLBACK/SAVEPOINT は TCL、GRANT/REVOKE は DCL。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第2回 模擬試験 / 問8 / 正答 CE / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>演算子の優先順位について正しい記載はどれでしょうか。（2つ選択）
+(1)		A.　比較演算子は、算術演算子より先に評価されます。
+(2)		B.　+演算子は、-演算子より先に評価されます。
+(3)		C.　カッコを使用して、式内の演算子の優先順位を制御できます 。
+(4)		D.　連結演算子 || は、乗算より先に評価されます。
+(5)		E.　優先順位の等しい算術演算子は、式内の左から右の順に評価されます。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「SQL 分類の基礎」です。DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。各文をどこへ分類するかが基礎力になる。 この設問では正答 C「カッコを使用して、式内の演算子の優先順位を制御できます 。」 / E「優先順位の等しい算術演算子は、式内の左から右の順に評価されます。」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>CREATE/ALTER/DROP/TRUNCATE は DDL。</li><li>INSERT/UPDATE/DELETE/MERGE は DML。</li><li>COMMIT/ROLLBACK/SAVEPOINT は TCL、GRANT/REVOKE は DCL。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第2回 模擬試験 / 問26 / 正答 CF / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>Oracle結合構文・ANSI結合構文について正しい記述はどれでしょうか。（2つ選択）
+(1)		A.　Oracle結合構文は、ANSI結合構文よりもパフォーマンスが低くなります。
+(2)		B.　Oracle結合構文は、ANSI結合構文よりもパフォーマンスは優れています。
+(3)		C.　ANSI結合構文は、自然結合に対応しています
+(4)		D.　Oracle結合構文は、右外部結合のみに対応しています。
+(5)		E.　Oracle結合構文は、左外部結合のみに対応しています。
+(6)		F.　ANSI結合構文は、クロス結合に対応しています。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「SQL 分類の基礎」です。DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。各文をどこへ分類するかが基礎力になる。 この設問では正答 C「ANSI結合構文は、自然結合に対応しています」 / F「ANSI結合構文は、クロス結合に対応しています。」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>CREATE/ALTER/DROP/TRUNCATE は DDL。</li><li>INSERT/UPDATE/DELETE/MERGE は DML。</li><li>COMMIT/ROLLBACK/SAVEPOINT は TCL、GRANT/REVOKE は DCL。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第3回 模擬試験 / 問15 / 正答 BCE / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>以下のうち、有効なSQLの式を含むクエリ を 3つ 選んでください。
+(1)		A. SELECT emp_id, salary, &#x27; Adjusted&#x27;, salary + bonus - tax FROM employees;
+(2)		B. SELECT emp_id, (salary * 0.15 / (4.75 + 552.25)) FROM employees;
+(3)		C. SELECT emp_id, birth_date - hire_date + 2 FROM employees;
+(4)		D. SELECT emp_id, salary || &#x27; Adjusted&#x27;, salary + bonus - tax FROM employees;
+(5)		E. SELECT emp_id, salary + bonus FROM employees;</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「SQL 分類の基礎」です。DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。各文をどこへ分類するかが基礎力になる。 この設問では正答 B「SELECT emp_id, (salary * 0.15 / (4.75 + 552.25)) FROM e…」 / C「SELECT emp_id, birth_date - hire_date + 2 FROM employee…」 / E「SELECT emp_id, salary + bonus FROM employees;」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>CREATE/ALTER/DROP/TRUNCATE は DDL。</li><li>INSERT/UPDATE/DELETE/MERGE は DML。</li><li>COMMIT/ROLLBACK/SAVEPOINT は TCL、GRANT/REVOKE は DCL。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第3回 模擬試験 / 問16 / 正答 CD / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>Oracleのパフォーマンス について正しいものを 2つ 選んでください。
+(1)		A. 結合条件に関係のない列をSELECT句に含めた場合でも、パフォーマンスに影響はない。
+(2)		B. Oracleの結合構文は、SQL:1999準拠のANSI結合構文よりもパフォーマンスが優れている。
+(3)		C. 使用する結合構文の違いは、パフォーマンスには影響しない。
+(4)		D. 結合対象の列にインデックスがあると、パフォーマンスが向上する可能性がある。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「SQL 分類の基礎」です。DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。各文をどこへ分類するかが基礎力になる。 この設問では正答 C「使用する結合構文の違いは、パフォーマンスには影響しない。」 / D「結合対象の列にインデックスがあると、パフォーマンスが向上する可能性がある。」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>CREATE/ALTER/DROP/TRUNCATE は DDL。</li><li>INSERT/UPDATE/DELETE/MERGE は DML。</li><li>COMMIT/ROLLBACK/SAVEPOINT は TCL、GRANT/REVOKE は DCL。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第3回 模擬試験 / 問28 / 正答 ABC / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>SQLに関する正しい説明を3つ選んでください。
+(1)		A. リレーショナルデータベースに最も適している。
+(2)		B. ACID（Atomicity, Consistency, Isolation, Durability）特性を保証する。
+(3)		C. 物理ストレージから独立し、論理データ構造の操作を可能にする。
+(4)		D. オブジェクト指向データベースの両方で使用できる唯一の言語である。
+(5)		E. 関係データベースで多態性（ポリモーフィズム）を定義および実装するために使用される。
+(6)		F. 階層型データストレージを必要とする。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「SQL 分類の基礎」です。DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。各文をどこへ分類するかが基礎力になる。 この設問では正答 A「リレーショナルデータベースに最も適している。」 / B「ACID（Atomicity, Consistency, Isolation, Durability）特性を保…」 / C「物理ストレージから独立し、論理データ構造の操作を可能にする。」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>CREATE/ALTER/DROP/TRUNCATE は DDL。</li><li>INSERT/UPDATE/DELETE/MERGE は DML。</li><li>COMMIT/ROLLBACK/SAVEPOINT は TCL、GRANT/REVOKE は DCL。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第3回 模擬試験 / 問35 / 正答 AC / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>演算子と条件の優先順位について、正しいものを2つ選んでください。
+(1)		A. NOT 演算子は、AND や OR よりも優先順位が高い。
+(2)		B. +（加算）演算子は *（乗算）演算子よりも優先順位が高い。
+(3)		C. || 演算子は *（乗算）演算子よりも優先順位が低い。
+(4)		D. AND と OR は、条件内で同じ優先順位を持つ。
+(5)		E. 演算子は条件よりも先に評価される。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「SQL 分類の基礎」です。DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。各文をどこへ分類するかが基礎力になる。 この設問では正答 A「NOT 演算子は、AND や OR よりも優先順位が高い。」 / C「|| 演算子は *（乗算）演算子よりも優先順位が低い。」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>CREATE/ALTER/DROP/TRUNCATE は DDL。</li><li>INSERT/UPDATE/DELETE/MERGE は DML。</li><li>COMMIT/ROLLBACK/SAVEPOINT は TCL、GRANT/REVOKE は DCL。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+            </section>
+            
+            <section class="concept-section" id="d1-2">
+              <h3>主キー・外部キー・一意キーと NULL<span>4問</span></h3>
+              <p class="concept-copy">主キーは NOT NULL かつ一意、外部キーは NULL 可、一意キーも NULL を許せる。キー制約ごとの NULL 許容差が基本である。</p>
+              
+                <article class="question-card">
+                  <div class="question-meta">第1回 模擬試験 / 問1 / 正答 B.C.E / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>リレーショナル・データベースの表間の関係の定義について正しいのはどれでしょうか。（3つ選択）
+(1)		A.　主キーにはNULL値を持たせることができます。
+(2)		B.　主キーにはNULL値を持たせることができません。
+(3)		C.　外部キーにはNULL値を持たせることができます。
+(4)		D.　外部キーにはNULL値を持たせることができません。
+(5)		E.　一意キーにはNULL値を持たせることはできます。
+(6)		F.　一意キーにはNULL値を持たせることはできません。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「主キー・外部キー・一意キーと NULL」です。主キーは NOT NULL かつ一意、外部キーは NULL 可、一意キーも NULL を許せる。キー制約ごとの NULL 許容差が基本である。 この設問では正答 B「主キーにはNULL値を持たせることができません。」 / C「外部キーにはNULL値を持たせることができます。」 / E「一意キーにはNULL値を持たせることはできます。」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>PK は NULL 不可、UK と FK は NULL 可で分ける。</li><li>NULL は『未定』であって参照違反ではないことを理解する。</li><li>キー問題では制約の目的を日本語で言い換える。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第1回 模擬試験 / 問2 / 正答 A / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>以下の条件でERDを設計するとします。
+・各技術者は複数のチームに所属することができる
+・各チームには複数の技術者を所属させることができる
+
+この条件において以下の表示をするとします。
+
+ENGINEER_ID ENGINEER_NAME TEAM_ID TEAM_NAME
+
+最適なERDを設計にする場合、正しい記述はどれでしょうか。
+
+(1)		A.　ENGINEERSエンティティとTEAMSエンティティはN:Nの関係となっており、1:Nの関係にする必要があります。
+(2)		B.　ENGINEERSエンティティとTEAMSエンティティは1:Nの関係となっています。
+(3)		C.　TEAM_NAMEは、TEAMSエンティティの主キーであり、ENGINEERSエンティティの外部キーである必要があります。
+(4)		D.　ENGINEER_NAMEは、ENGINEERSエンティティの主キーであり、TEAMSエンティティの外部キーである必要があります。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「主キー・外部キー・一意キーと NULL」です。主キーは NOT NULL かつ一意、外部キーは NULL 可、一意キーも NULL を許せる。キー制約ごとの NULL 許容差が基本である。 この設問では正答 A「ENGINEERSエンティティとTEAMSエンティティはN:Nの関係となっており、1:Nの関係にする必要があり…」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>PK は NULL 不可、UK と FK は NULL 可で分ける。</li><li>NULL は『未定』であって参照違反ではないことを理解する。</li><li>キー問題では制約の目的を日本語で言い換える。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第2回 模擬試験 / 問1 / 正答 AC / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>制約に関しての記述として以下正しいのはどれでしょうか。 (2つ選択)
+(1)		A.　外部キーにはNULL値を持たせることができます。
+(2)		B.　主キーにはNULL値を持たせることができます。
+(3)		C.　一意キーにはNULL値を持たせることができます。
+(4)		D.　制約は、UPDATE文の操作でのみ設定されます。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「主キー・外部キー・一意キーと NULL」です。主キーは NOT NULL かつ一意、外部キーは NULL 可、一意キーも NULL を許せる。キー制約ごとの NULL 許容差が基本である。 この設問では正答 A「外部キーにはNULL値を持たせることができます。」 / C「一意キーにはNULL値を持たせることができます。」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>PK は NULL 不可、UK と FK は NULL 可で分ける。</li><li>NULL は『未定』であって参照違反ではないことを理解する。</li><li>キー問題では制約の目的を日本語で言い換える。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第3回 模擬試験 / 問50 / 正答 AD / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>Oracle データベースについて、正しいものを2つ選んでください。
+(1)		A. DATE 型のカラムは、NULL 値を持つことができる。
+(2)		B. 1つのテーブルに複数のプライマリキーを持つことができる。
+(3)		C. カラム定義に複数のデータ型を指定できる。
+(4)		D. テーブルに複数の外部キーを持たせることができる。
+(5)		E. NUMBER 型のカラムは、ゼロ値を持つことができない。
+(6)		F. テーブルには、NOT NULL 制約を複数のカラムに指定できない。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「主キー・外部キー・一意キーと NULL」です。主キーは NOT NULL かつ一意、外部キーは NULL 可、一意キーも NULL を許せる。キー制約ごとの NULL 許容差が基本である。 この設問では正答 A「DATE 型のカラムは、NULL 値を持つことができる。」 / D「テーブルに複数の外部キーを持たせることができる。」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>PK は NULL 不可、UK と FK は NULL 可で分ける。</li><li>NULL は『未定』であって参照違反ではないことを理解する。</li><li>キー問題では制約の目的を日本語で言い換える。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+            </section>
+            
+            <section class="concept-section" id="d1-3">
+              <h3>DUAL と Oracle 基礎<span>1問</span></h3>
+              <p class="concept-copy">DUAL は 1 行 1 列の疑似表で、式や関数の確認に使う。所有者や構造を含め、Oracle 固有の基礎知識として出題される。</p>
+              
+                <article class="question-card">
+                  <div class="question-meta">第3回 模擬試験 / 問1 / 正答 DF / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>次のうち、Oracle SQLとして正しい構文を2つ選択してください。
+(1)		A. SELECT q&#x27;(I&#x27;m Student.&#x27;) FROM DUAL;
+(2)		B. SELECT &#x27;I\&#x27;m Student.&#x27; FROM DUAL;
+(3)		C. SELECT &#x27;I&#x27;m Student.&#x27; FROM DUAL;
+(4)		D. SELECT q&#x27;[I&#x27;m Student.]&#x27; FROM DUAL;
+(5)		E. SELECT q”[I&#x27;m Student.]” FROM DUAL;
+(6)		F. SELECT q&#x27;(I&#x27;m Student.)&#x27; FROM DUAL;</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「DUAL と Oracle 基礎」です。DUAL は 1 行 1 列の疑似表で、式や関数の確認に使う。所有者や構造を含め、Oracle 固有の基礎知識として出題される。 この設問では正答 D「SELECT q&#x27;[I&#x27;m Student.]&#x27; FROM DUAL;」 / F「SELECT q&#x27;(I&#x27;m Student.)&#x27; FROM DUAL;」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>DUAL は 1 行 1 列で関数確認用と覚える。</li><li>DUMMY 列を持つこと、SYS 所有であることを確認する。</li><li>式だけ返す SELECT のときは DUAL を思い出す。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+            </section>
+            
+</div>
+</body>
+</html>

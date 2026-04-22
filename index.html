@@ -88,6 +88,104 @@
         }
         .term-highlight:hover { background: rgba(56, 189, 248, 0.1); }
 
+        .mock-dashboard-panel {
+            margin: 0 0 32px;
+            padding: 22px 24px;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            border-radius: 20px;
+            background: linear-gradient(135deg, rgba(8, 47, 73, 0.78), rgba(15, 23, 42, 0.9));
+            box-shadow: 0 18px 48px rgba(15, 23, 42, 0.35);
+        }
+        .mock-dashboard-head {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            align-items: flex-start;
+            margin-bottom: 18px;
+        }
+        .mock-dashboard-kicker {
+            font-size: 0.75rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: #7dd3fc;
+            font-weight: 700;
+        }
+        .mock-dashboard-title {
+            font-size: 1.45rem;
+            font-weight: 800;
+            color: #f8fafc;
+            margin-top: 6px;
+        }
+        .mock-dashboard-copy {
+            margin-top: 8px;
+            color: #cbd5e1;
+            font-size: 0.95rem;
+            max-width: 720px;
+        }
+        .mock-dashboard-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            border-radius: 999px;
+            text-decoration: none;
+            background: #38bdf8;
+            color: #082f49;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+        .mock-dashboard-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        .mock-stat {
+            padding: 14px 16px;
+            border-radius: 14px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+        .mock-stat-label {
+            font-size: 0.78rem;
+            color: #94a3b8;
+        }
+        .mock-stat-value {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: #f8fafc;
+            margin-top: 6px;
+        }
+        .mock-dashboard-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 10px;
+        }
+        .mock-link {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            align-items: center;
+            padding: 12px 14px;
+            border-radius: 14px;
+            text-decoration: none;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.07);
+            color: #e2e8f0;
+        }
+        .mock-link b {
+            color: #38bdf8;
+            font-size: 0.92rem;
+        }
+        .mock-link span {
+            color: #94a3b8;
+            font-size: 0.8rem;
+        }
+        .mock-dashboard-state {
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
         /* === Basetract Responsive Mobile Layout (Architecture Standard) === */
         @media (max-width: 860px) {
             /* 1. Stack vertical */
@@ -136,6 +234,10 @@
             <div id="view-read" class="reader-view">
                 <h1>{{ TEMPLATE_TITLE }}</h1>
                 <p style="color: #94a3b8; margin-bottom: 60px;">Basetract Unified Learning Ecosystem</p>
+
+                <section class="mock-dashboard-panel" id="mock-exam-dashboard-panel">
+                    <div class="mock-dashboard-state">模擬試験ダッシュボードを読み込み中...</div>
+                </section>
                 
                 <div id="template-content-injection">
                     <!-- INFRASTRUCTURE: Pure dynamic payload injection. Zero hardcoded contextual data. -->
@@ -173,6 +275,101 @@
         window.basetractLoader.ingestAll(['initial_state']).catch(e => {
             console.error('[Basetract] Initial data load failed:', e);
         });
+
+        async function loadMockExamDashboard() {
+            const mount = document.getElementById('mock-exam-dashboard-panel');
+            if (!mount) return;
+
+            try {
+                const res = await fetch('/api/mock-exam/dashboard');
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                const data = await res.json();
+
+                const weakest = (data.weakest_domains || []).slice(0, 2).map(item => `
+                    <a class="mock-link" href="${item.wrong_link}">
+                        <div>
+                            <b>${item.ex_id} ${item.label}</b>
+                            <div>誤答補強 / 進捗 ${item.accuracy}%</div>
+                        </div>
+                        <span>${item.domain}</span>
+                    </a>
+                `).join('');
+
+                const strongest = (data.strongest_domains || []).slice(0, 1).map(item => `
+                    <a class="mock-link" href="${item.correct_link}">
+                        <div>
+                            <b>${item.ex_id} ${item.label}</b>
+                            <div>正答維持 / 進捗 ${item.accuracy}%</div>
+                        </div>
+                        <span>${item.domain}</span>
+                    </a>
+                `).join('');
+
+                mount.innerHTML = `
+                    <div class="mock-dashboard-head">
+                        <div>
+                            <div class="mock-dashboard-kicker">Mock Exam Dashboard</div>
+                            <div class="mock-dashboard-title">模擬試験の入口をここに統合</div>
+                            <p class="mock-dashboard-copy">結果分析は 1 回遷移した先にまとめ、ここでは誤答補強と正答維持の入口だけを compact に整理しています。</p>
+                        </div>
+                        <a class="mock-dashboard-cta" href="${data.links.dashboard}">開く</a>
+                    </div>
+                    <div class="mock-dashboard-stats">
+                        <div class="mock-stat">
+                            <div class="mock-stat-label">受験回数</div>
+                            <div class="mock-stat-value">${data.summary.exam_count}回</div>
+                        </div>
+                        <div class="mock-stat">
+                            <div class="mock-stat-label">平均得点比率</div>
+                            <div class="mock-stat-value">${data.summary.average_score_ratio}%</div>
+                        </div>
+                        <div class="mock-stat">
+                            <div class="mock-stat-label">直近結果</div>
+                            <div class="mock-stat-value">${data.summary.latest_exam.score_ratio}%</div>
+                        </div>
+                        <div class="mock-stat">
+                            <div class="mock-stat-label">平均正答率</div>
+                            <div class="mock-stat-value">${data.summary.average_accuracy}%</div>
+                        </div>
+                    </div>
+                    <div class="mock-dashboard-links">
+                        <a class="mock-link" href="${data.links.report}">
+                            <div>
+                                <b>結果分析</b>
+                                <div>失点比率、進捗、試験別詳細</div>
+                            </div>
+                            <span>Report</span>
+                        </a>
+                        <a class="mock-link" href="${data.links.wrong_hub}">
+                            <div>
+                                <b>誤答の徹底解説</b>
+                                <div>カテゴリ別に落とした問題を再構築</div>
+                            </div>
+                            <span>Wrong</span>
+                        </a>
+                        <a class="mock-link" href="${data.links.correct_hub}">
+                            <div>
+                                <b>正答の総点検</b>
+                                <div>取れている論点を維持する</div>
+                            </div>
+                            <span>Correct</span>
+                        </a>
+                        ${weakest}
+                        ${strongest}
+                    </div>
+                `;
+            } catch (error) {
+                mount.innerHTML = `
+                    <div class="mock-dashboard-state">
+                        模擬試験ダッシュボードの読込に失敗しました。<br>
+                        API: <code>/api/mock-exam/dashboard</code>
+                    </div>
+                `;
+                console.error('[MockExam] dashboard load failed:', error);
+            }
+        }
+
+        loadMockExamDashboard();
     </script>
 </body>
 </html>

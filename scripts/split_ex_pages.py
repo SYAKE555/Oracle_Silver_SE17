@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build phased EX reinforce pages from mock exam wrong answers."""
+"""Build mock exam review pages from recorded exam results."""
 from __future__ import annotations
 
 import html
@@ -852,6 +852,55 @@ def build_question_commentary(question: dict, parsed: dict, concept_id: str) -> 
     return explain, mistake, meta["rebuild"]
 
 
+def build_correct_question_commentary(question: dict, parsed: dict, concept_id: str) -> tuple[str, str, list[str]]:
+    meta = CONCEPT_META[concept_id]
+    correct_keys = split_answer(question["ans"])
+    self_keys = split_answer(question.get("self_ans"))
+    correct_ref = render_option_refs(parsed, correct_keys) if correct_keys else html.escape(question["ans"] or "正答未記録")
+
+    explain = (
+        f"この問題の論点は「{meta['title']}」です。{meta['why']} "
+        f"この設問では正答 {correct_ref} を選べており、論点自体は取れています。"
+    )
+
+    if self_keys:
+        maintain = (
+            f"自己回答は {render_option_refs(parsed, self_keys)} で、正答と一致しています。"
+            f"本番で取り切れた理由は、条件の向き・句の置き場所・オブジェクトの性質を正しく読めていた点にあります。"
+        )
+    else:
+        maintain = "自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。"
+
+    return explain, maintain, meta["rebuild"]
+
+
+def review_filename(ex_id: str, review_mode: str) -> str:
+    if review_mode == "wrong":
+        return f"{ex_id}_reinforce.html"
+    return f"{ex_id}_correct.html"
+
+
+def review_hub_filename(review_mode: str) -> str:
+    return "mock_exam_reinforce.html" if review_mode == "wrong" else "mock_exam_correct.html"
+
+
+def collect_domain_questions(domain: str, review_mode: str) -> list[dict]:
+    want_correct = review_mode == "correct"
+    items = []
+    for exam in DATA["exams"]:
+        for question in exam["questions"]:
+            if question["domain"] != domain or question["correct"] != want_correct:
+                continue
+            parsed = parse_question_block(question["text"])
+            concept_id = detect_concept(domain, question["text"])
+            question_copy = dict(question)
+            question_copy["exam_title"] = exam["title"]
+            question_copy["parsed"] = parsed
+            question_copy["concept_id"] = concept_id
+            items.append(question_copy)
+    return items
+
+
 def priority_data() -> list[dict]:
     domains = sorted(
         PAGE_MAP,
@@ -891,28 +940,18 @@ def assign_phases(ranked: list[dict]) -> list[dict]:
     return phase_defs
 
 
-def build_domain_page(domain_info: dict) -> str:
+def build_domain_page(domain_info: dict, review_mode: str = "wrong") -> str:
     domain = domain_info["domain"]
     ex_id = domain_info["ex_id"]
     label = domain_info["label"]
-    priority = domain_info["priority"]
-    phase_no = domain_info["phase"]
-    color = PRIORITY_COLOR[priority]
+    priority = domain_info.get("priority", "ok")
+    phase_no = domain_info.get("phase")
+    color = PRIORITY_COLOR.get(priority, "#2ecc71")
 
-    wrong_questions = []
-    for exam in DATA["exams"]:
-        for question in exam["questions"]:
-            if question["domain"] == domain and not question["correct"]:
-                parsed = parse_question_block(question["text"])
-                concept_id = detect_concept(domain, question["text"])
-                question_copy = dict(question)
-                question_copy["exam_title"] = exam["title"]
-                question_copy["parsed"] = parsed
-                question_copy["concept_id"] = concept_id
-                wrong_questions.append(question_copy)
+    review_questions = collect_domain_questions(domain, review_mode)
 
     grouped: dict[str, list[dict]] = defaultdict(list)
-    for question in wrong_questions:
+    for question in review_questions:
         grouped[question["concept_id"]].append(question)
 
     sorted_concepts = sorted(
@@ -929,7 +968,12 @@ def build_domain_page(domain_info: dict) -> str:
         for question in sorted(grouped[concept_id], key=lambda item: (item["exam"], item["q"])):
             correct_keys = split_answer(question["ans"])
             self_keys = split_answer(question.get("self_ans"))
-            explain, mistake, rebuild = build_question_commentary(question, question["parsed"], concept_id)
+            if review_mode == "wrong":
+                explain, secondary_copy, rebuild = build_question_commentary(question, question["parsed"], concept_id)
+                secondary_title = "今回の誤り"
+            else:
+                explain, secondary_copy, rebuild = build_correct_question_commentary(question, question["parsed"], concept_id)
+                secondary_title = "維持ポイント"
             questions_html.append(
                 f"""
                 <article class="question-card">
@@ -939,8 +983,8 @@ def build_domain_page(domain_info: dict) -> str:
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>{explain}</p>
-                    <div class="block-title">今回の誤り</div>
-                    <p>{mistake}</p>
+                    <div class="block-title">{secondary_title}</div>
+                    <p>{secondary_copy}</p>
                     <div class="block-title">叩き直しポイント</div>
                     <ul class="rebuild-list">
                       {''.join(f'<li>{html.escape(item)}</li>' for item in rebuild)}
@@ -963,12 +1007,25 @@ def build_domain_page(domain_info: dict) -> str:
             """
         )
 
+    page_title = "全誤答徹底解説" if review_mode == "wrong" else "正答済み総点検"
+    subtitle = (
+        f"{label} / {PHASE_LABELS[phase_no]} / 演習を省き、失点した設問だけを叩き直すページ"
+        if review_mode == "wrong"
+        else f"{label} / 正答した設問をカテゴリ別に再確認し、得点源を維持するページ"
+    )
+    summary_copy = (
+        "このページは、実際に間違えた設問をカテゴリ別に並べ、記録された問題全文を正本として、正答理由・誤答理由・叩き直しポイントまで一気に確認するための再構築教材です。"
+        if review_mode == "wrong"
+        else "このページは、正答できた設問をカテゴリ別に並べ、記録された問題全文を正本として、なぜ取れたのかと維持ポイントを再確認するための定着教材です。"
+    )
+    hub_href = review_hub_filename(review_mode)
+
     return f"""<!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{ex_id} {label} - 全誤答徹底解説</title>
+<title>{ex_id} {label} - {page_title}</title>
 <style>
   * {{ box-sizing: border-box; margin: 0; padding: 0; }}
   body {{ font-family: 'Noto Sans JP', 'Hiragino Sans', sans-serif; background: #eef2f7; color: #1f2937; line-height: 1.7; }}
@@ -1009,23 +1066,24 @@ def build_domain_page(domain_info: dict) -> str:
 </head>
 <body>
 <div class="page-header">
-  <h1>{ex_id} 全誤答徹底解説</h1>
-  <div class="subtitle">{label} / {PHASE_LABELS[phase_no]} / 演習を省き、失点した設問だけを叩き直すページ</div>
+  <h1>{ex_id} {page_title}</h1>
+  <div class="subtitle">{subtitle}</div>
 </div>
 <div class="container">
+  <a class="nav-back" href="mock_exam_dashboard.html">模擬試験ダッシュボード</a>
   <a class="nav-back" href="mock_exam_report.html">結果レポート</a>
-  <a class="nav-back" href="mock_exam_reinforce.html">EX ハブ</a>
-  <a class="nav-back" href="phase{phase_no}_reinforce.html">このフェーズへ戻る</a>
+  <a class="nav-back" href="{hub_href}">模擬試験レビュー</a>
+  {'<a class="nav-back" href="phase' + str(phase_no) + '_reinforce.html">このフェーズへ戻る</a>' if review_mode == "wrong" and phase_no else ''}
   <a class="nav-back" href="index.html">教科書トップ</a>
 
   <div class="hero-card">
     <div style="font-size:.9rem;color:#64748b;font-weight:700">{domain} / {PRIORITY_LABEL[priority]}</div>
     <div style="font-size:1.4rem;font-weight:900;margin-top:4px">{label}</div>
-    <p style="margin-top:8px;color:#334155">このページは、実際に間違えた設問をカテゴリ別に並べ、記録された問題全文を正本として、正答理由・誤答理由・叩き直しポイントまで一気に確認するための再構築教材です。</p>
+    <p style="margin-top:8px;color:#334155">{summary_copy}</p>
     <div class="hero-grid">
-      <div class="metric"><div class="label">フェーズ</div><div class="value">Phase {phase_no}</div></div>
+      <div class="metric"><div class="label">レビュー種別</div><div class="value">{'誤答' if review_mode == 'wrong' else '正答'}</div></div>
       <div class="metric"><div class="label">進捗率</div><div class="value">{domain_info['accuracy']:.1f}%</div></div>
-      <div class="metric"><div class="label">誤答数</div><div class="value">{domain_info['wrong_count']}問</div></div>
+      <div class="metric"><div class="label">{'誤答数' if review_mode == 'wrong' else '正答数'}</div><div class="value">{len(review_questions)}問</div></div>
       <div class="metric"><div class="label">カテゴリ数</div><div class="value">{len(sorted_concepts)}</div></div>
     </div>
   </div>
@@ -1038,6 +1096,175 @@ def build_domain_page(domain_info: dict) -> str:
   </div>
 
   {''.join(sections)}
+</div>
+</body>
+</html>
+"""
+
+
+def build_correct_hub_page(items: list[dict]) -> str:
+    cards = []
+    for item in sorted(items, key=lambda row: (-row["accuracy"], row["domain"])):
+        correct_count = DATA["summary"]["combined"][item["domain"]]["correct"]
+        color = PRIORITY_COLOR["ok"] if item["accuracy"] >= 75 else ("#f1c40f" if item["accuracy"] >= 50 else "#e67e22")
+        cards.append(
+            f"""
+            <a class="phase-card" href="{review_filename(item['ex_id'], 'correct')}" style="border-left:6px solid {color}">
+              <div class="phase-tag" style="background:{color}">{item['ex_id']}</div>
+              <div class="phase-body">
+                <div class="phase-title">{item['label']}</div>
+                <div class="phase-meta">元ドメイン {item['domain']} / 進捗 {item['accuracy']:.1f}% / 正答 {correct_count}問 / 取れている論点の維持確認</div>
+              </div>
+            </a>
+            """
+        )
+
+    return f"""<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>正答済み総点検ハブ - Oracle Silver SQL</title>
+<style>
+  * {{ box-sizing: border-box; margin: 0; padding: 0; }}
+  body {{ font-family: 'Noto Sans JP', 'Hiragino Sans', sans-serif; background: #eef2f7; color: #1f2937; line-height: 1.7; }}
+  .page-header {{ background: linear-gradient(135deg,#0f766e 0%,#115e59 55%,#16a34a 100%); color: white; padding: 42px 24px; text-align: center; }}
+  .page-header h1 {{ font-size: 1.9rem; margin-bottom: 8px; }}
+  .container {{ max-width: 1080px; margin: 0 auto; padding: 24px; }}
+  .nav-back {{ display: inline-block; padding: 8px 16px; background: white; border-radius: 999px; text-decoration: none; color: #1f2937; box-shadow: 0 4px 14px rgba(15,23,42,.08); font-size: .9rem; margin: 0 8px 16px 0; }}
+  .intro, .phase-card {{ background: white; border-radius: 18px; box-shadow: 0 10px 26px rgba(15,23,42,.08); }}
+  .intro {{ padding: 20px 22px; margin-bottom: 18px; border-top: 6px solid #16a34a; }}
+  .phase-grid {{ display: grid; gap: 14px; }}
+  .phase-card {{ display: grid; grid-template-columns: 84px 1fr; gap: 14px; align-items: center; padding: 16px 18px; text-decoration: none; color: inherit; }}
+  .phase-tag {{ color: white; font-weight: 900; text-align: center; padding: 10px 0; border-radius: 12px; font-size: 1rem; }}
+  .phase-title {{ font-size: 1rem; font-weight: 800; }}
+  .phase-meta {{ font-size: .86rem; color: #475569; margin-top: 4px; }}
+</style>
+</head>
+<body>
+<div class="page-header">
+  <h1>正答済み総点検ハブ</h1>
+  <div>本番で取れた問題をカテゴリ別に再確認し、得点源を維持するための導線ページ</div>
+</div>
+<div class="container">
+  <a class="nav-back" href="mock_exam_dashboard.html">模擬試験ダッシュボード</a>
+  <a class="nav-back" href="mock_exam_report.html">結果レポート</a>
+  <a class="nav-back" href="index.html">教科書トップ</a>
+  <div class="intro">
+    <div style="font-size:.95rem;color:#64748b;font-weight:700">方針</div>
+    <div style="font-size:1.35rem;font-weight:900;margin-top:4px">正答した論点も、落とさない形で再固定する</div>
+    <p style="margin-top:8px;color:#334155">弱点補強だけだと、たまたま取れた領域が次回で崩れます。ここでは正答済みの設問をカテゴリ別に並べ、なぜ取れたのかと維持ポイントを確認します。</p>
+  </div>
+  <div class="phase-grid">
+    {''.join(cards)}
+  </div>
+</div>
+</body>
+</html>
+"""
+
+
+def build_center_page(ranked: list[dict]) -> str:
+    weakest = sorted(ranked, key=lambda item: (item["accuracy"], -item["wrong_count"], item["domain"]))[:3]
+    strongest = sorted(ranked, key=lambda item: (-item["accuracy"], item["domain"]))[:3]
+    exam_cards = []
+    for exam in DATA["exams"]:
+        exam_cards.append(
+            f"""
+            <div class="stat-card">
+              <div class="stat-label">{html.escape(exam['title'])}</div>
+              <div class="stat-value">{exam['final_score']}%</div>
+              <div class="stat-copy">設問正答率 {exam['accuracy']:.0f}%</div>
+            </div>
+            """
+        )
+
+    weak_links = "".join(
+        f'<a class="mini-link weak" href="{review_filename(item["ex_id"], "wrong")}">{item["ex_id"]} {item["label"]} <span>{item["accuracy"]:.0f}%</span></a>'
+        for item in weakest
+    )
+    strong_links = "".join(
+        f'<a class="mini-link strong" href="{review_filename(item["ex_id"], "correct")}">{item["ex_id"]} {item["label"]} <span>{item["accuracy"]:.0f}%</span></a>'
+        for item in strongest
+    )
+
+    return f"""<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>模擬試験ダッシュボード</title>
+<style>
+  * {{ box-sizing: border-box; margin: 0; padding: 0; }}
+  body {{ font-family: 'Noto Sans JP', 'Hiragino Sans', sans-serif; background: #eef2f7; color: #1f2937; line-height: 1.7; }}
+  a {{ color: inherit; }}
+  .page-header {{ background: linear-gradient(135deg,#10243f 0%,#1f3d63 55%,#c0392b 100%); color: white; padding: 42px 24px; text-align: center; }}
+  .page-header h1 {{ font-size: 1.95rem; margin-bottom: 8px; }}
+  .container {{ max-width: 1120px; margin: 0 auto; padding: 24px; }}
+  .nav-back {{ display: inline-block; padding: 8px 16px; background: white; border-radius: 999px; text-decoration: none; color: #1f2937; box-shadow: 0 4px 14px rgba(15,23,42,.08); font-size: .9rem; margin: 0 8px 16px 0; }}
+  .hero, .panel, .entry-card {{ background: white; border-radius: 18px; box-shadow: 0 10px 26px rgba(15,23,42,.08); }}
+  .hero {{ padding: 22px 24px; margin-bottom: 18px; border-top: 6px solid #c0392b; }}
+  .stats {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-top: 16px; }}
+  .stat-card {{ background: #f8fafc; border-radius: 14px; padding: 14px; }}
+  .stat-label {{ color: #64748b; font-size: .82rem; }}
+  .stat-value {{ font-size: 1.35rem; font-weight: 900; color: #0f172a; margin-top: 4px; }}
+  .stat-copy {{ font-size: .84rem; color: #475569; margin-top: 4px; }}
+  .entry-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-bottom: 18px; }}
+  .entry-card {{ padding: 18px 20px; text-decoration: none; border-top: 6px solid #1f3d63; }}
+  .entry-card.review {{ border-top-color: #2c3e50; }}
+  .entry-card.wrong {{ border-top-color: #c0392b; }}
+  .entry-card.correct {{ border-top-color: #16a34a; }}
+  .entry-title {{ font-size: 1rem; font-weight: 900; color: #0f172a; }}
+  .entry-copy {{ margin-top: 8px; color: #475569; font-size: .9rem; }}
+  .panel {{ padding: 20px 22px; margin-bottom: 18px; }}
+  .panel h2 {{ font-size: 1rem; color: #10243f; margin-bottom: 12px; }}
+  .link-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 10px; }}
+  .mini-link {{ display: flex; justify-content: space-between; gap: 12px; align-items: center; text-decoration: none; padding: 12px 14px; border-radius: 12px; background: #f8fafc; }}
+  .mini-link.weak {{ border-left: 4px solid #c0392b; }}
+  .mini-link.strong {{ border-left: 4px solid #16a34a; }}
+  .mini-link span {{ font-weight: 800; color: #334155; }}
+</style>
+</head>
+<body>
+<div class="page-header">
+  <h1>模擬試験ダッシュボード</h1>
+  <div>結果分析は次の画面へ寄せ、ここでは模擬試験関連の入口だけを compact にまとめる</div>
+</div>
+<div class="container">
+  <a class="nav-back" href="index.html">教科書トップ</a>
+  <div class="hero">
+    <div style="font-size:.95rem;color:#64748b;font-weight:700">Overview</div>
+    <div style="font-size:1.45rem;font-weight:900;margin-top:4px">結果分析、誤答補強、正答維持をここで統合</div>
+    <p style="margin-top:8px;color:#334155">模擬試験の詳細分析はこの先のレポートにまとめ、トップ導線は 1 箇所に集約しています。まずは誤答か正答かで入り口を分け、必要なら結果分析へ進みます。</p>
+    <div class="stats">
+      {''.join(exam_cards)}
+    </div>
+  </div>
+
+  <div class="entry-grid">
+    <a class="entry-card review" href="mock_exam_report.html">
+      <div class="entry-title">結果分析へ進む</div>
+      <div class="entry-copy">総合スコア、失点比率、項目別進捗、試験別詳細を確認するページ。</div>
+    </a>
+    <a class="entry-card wrong" href="mock_exam_reinforce.html">
+      <div class="entry-title">誤答の徹底解説</div>
+      <div class="entry-copy">落とした問題だけをカテゴリ別にまとめた補強導線。弱点回収を優先する。</div>
+    </a>
+    <a class="entry-card correct" href="mock_exam_correct.html">
+      <div class="entry-title">正答の総点検</div>
+      <div class="entry-copy">正答できた問題もカテゴリ別に再確認し、得点源を維持する導線。</div>
+    </a>
+  </div>
+
+  <div class="panel">
+    <h2>弱点から入る</h2>
+    <div class="link-grid">{weak_links}</div>
+  </div>
+
+  <div class="panel">
+    <h2>得点源を維持する</h2>
+    <div class="link-grid">{strong_links}</div>
+  </div>
 </div>
 </body>
 </html>
@@ -1094,6 +1321,7 @@ def build_phase_page(phase_info: dict) -> str:
   <div>このフェーズで扱う EX を先に潰し、次のフェーズへ進むための導線ページ</div>
 </div>
 <div class="container">
+  <a class="nav-back" href="mock_exam_dashboard.html">模擬試験ダッシュボード</a>
   <a class="nav-back" href="mock_exam_reinforce.html">EX ハブ</a>
   <a class="nav-back" href="mock_exam_report.html">結果レポート</a>
   <a class="nav-back" href="index.html">教科書トップ</a>
@@ -1165,6 +1393,7 @@ def build_hub_page(phases: list[dict]) -> str:
   <div>演習ではなく、模擬試験で落とした全設問をカテゴリ別に叩き直すための再構築ハブ</div>
 </div>
 <div class="container">
+  <a class="nav-back" href="mock_exam_dashboard.html">模擬試験ダッシュボード</a>
   <a class="nav-back" href="mock_exam_report.html">結果レポート</a>
   <a class="nav-back" href="index.html">教科書トップ</a>
   <div class="intro">
@@ -1184,16 +1413,35 @@ def main() -> None:
     phases = assign_phases(ranked)
 
     for item in ranked:
-        html_text = build_domain_page(item)
+        html_text = build_domain_page(item, review_mode="wrong")
         for outdir in ["dist", "textbooks"]:
-            out = ROOT / outdir / f"{item['ex_id']}_reinforce.html"
+            out = ROOT / outdir / review_filename(item["ex_id"], "wrong")
+            out.write_text(html_text, encoding="utf-8")
+            print(f"wrote {out}")
+
+    for item in ranked:
+        html_text = build_domain_page(item, review_mode="correct")
+        for outdir in ["dist", "textbooks"]:
+            out = ROOT / outdir / review_filename(item["ex_id"], "correct")
             out.write_text(html_text, encoding="utf-8")
             print(f"wrote {out}")
 
     hub = build_hub_page(phases)
     for outdir in ["dist", "textbooks"]:
-        out = ROOT / outdir / "mock_exam_reinforce.html"
+        out = ROOT / outdir / review_hub_filename("wrong")
         out.write_text(hub, encoding="utf-8")
+        print(f"wrote {out}")
+
+    correct_hub = build_correct_hub_page(ranked)
+    for outdir in ["dist", "textbooks"]:
+        out = ROOT / outdir / review_hub_filename("correct")
+        out.write_text(correct_hub, encoding="utf-8")
+        print(f"wrote {out}")
+
+    center = build_center_page(ranked)
+    for outdir in ["dist", "textbooks"]:
+        out = ROOT / outdir / "mock_exam_dashboard.html"
+        out.write_text(center, encoding="utf-8")
         print(f"wrote {out}")
 
     for phase in phases:

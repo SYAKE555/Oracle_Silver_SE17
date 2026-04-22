@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EX4 DML・トランザクション - 正答済み総点検</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans JP', 'Hiragino Sans', sans-serif; background: #eef2f7; color: #1f2937; line-height: 1.7; }
+  a { color: inherit; }
+  .page-header { background: linear-gradient(135deg,#10243f 0%,#1f3d63 55%,#f1c40f 100%); color: white; padding: 42px 24px; text-align: center; }
+  .page-header h1 { font-size: 1.9rem; margin-bottom: 8px; }
+  .page-header .subtitle { opacity: 0.92; font-size: 0.95rem; }
+  .container { max-width: 1180px; margin: 0 auto; padding: 24px; }
+  .nav-back { display: inline-block; padding: 8px 16px; background: white; border-radius: 999px; text-decoration: none; color: #1f2937; box-shadow: 0 4px 14px rgba(15,23,42,.08); font-size: .9rem; margin: 0 8px 16px 0; }
+  .hero-card, .toc, .concept-section { background: white; border-radius: 18px; box-shadow: 0 10px 26px rgba(15,23,42,.08); }
+  .hero-card { padding: 20px 22px; margin-bottom: 18px; border-top: 6px solid #f1c40f; }
+  .hero-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-top: 14px; }
+  .metric { background: #f8fafc; border-radius: 14px; padding: 14px; }
+  .metric .label { color: #64748b; font-size: .82rem; }
+  .metric .value { font-size: 1.35rem; font-weight: 900; color: #0f172a; margin-top: 4px; }
+  .toc { padding: 18px 22px; margin-bottom: 22px; }
+  .toc h2 { font-size: 1rem; color: #f1c40f; margin-bottom: 10px; }
+  .toc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; }
+  .toc a { display: flex; justify-content: space-between; gap: 10px; align-items: center; text-decoration: none; padding: 10px 12px; border-radius: 12px; background: #f8fafc; border-left: 4px solid #f1c40f; font-size: .88rem; }
+  .toc a:hover { background: #eef2f7; }
+  .concept-section { padding: 22px; margin-bottom: 24px; }
+  .concept-section h3 { display: flex; justify-content: space-between; gap: 12px; align-items: center; font-size: 1.15rem; margin-bottom: 8px; color: #0f172a; }
+  .concept-section h3 span { font-size: .82rem; padding: 5px 10px; border-radius: 999px; background: #f1c40f; color: white; }
+  .concept-copy { color: #475569; font-size: .92rem; margin-bottom: 16px; }
+  .question-card { border: 1px solid #dbe4ef; border-radius: 16px; padding: 16px; margin-bottom: 14px; background: #fcfdff; }
+  .question-meta { font-size: .8rem; color: #64748b; margin-bottom: 10px; font-weight: 700; }
+  .block-title { font-size: .85rem; font-weight: 800; color: #f1c40f; margin: 10px 0 6px; }
+  pre { white-space: pre-wrap; word-break: break-word; background: #0f172a; color: #e2e8f0; border-radius: 12px; padding: 14px; font-size: .84rem; overflow-x: auto; }
+  .analysis-block p { color: #334155; font-size: .9rem; margin-bottom: 8px; }
+  .rebuild-list { padding-left: 20px; color: #334155; font-size: .9rem; }
+  .rebuild-list li { margin-bottom: 5px; }
+  @media (max-width: 720px) {
+    .page-header h1 { font-size: 1.55rem; }
+    .container { padding: 18px; }
+    .concept-section h3 { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+<div class="page-header">
+  <h1>EX4 正答済み総点検</h1>
+  <div class="subtitle">DML・トランザクション / 正答した設問をカテゴリ別に再確認し、得点源を維持するページ</div>
+</div>
+<div class="container">
+  <a class="nav-back" href="mock_exam_dashboard.html">模擬試験ダッシュボード</a>
+  <a class="nav-back" href="mock_exam_report.html">結果レポート</a>
+  <a class="nav-back" href="mock_exam_correct.html">模擬試験レビュー</a>
+  
+  <a class="nav-back" href="index.html">教科書トップ</a>
+
+  <div class="hero-card">
+    <div style="font-size:.9rem;color:#64748b;font-weight:700">D7 / 要復習</div>
+    <div style="font-size:1.4rem;font-weight:900;margin-top:4px">DML・トランザクション</div>
+    <p style="margin-top:8px;color:#334155">このページは、正答できた設問をカテゴリ別に並べ、記録された問題全文を正本として、なぜ取れたのかと維持ポイントを再確認するための定着教材です。</p>
+    <div class="hero-grid">
+      <div class="metric"><div class="label">レビュー種別</div><div class="value">正答</div></div>
+      <div class="metric"><div class="label">進捗率</div><div class="value">46.2%</div></div>
+      <div class="metric"><div class="label">正答数</div><div class="value">12問</div></div>
+      <div class="metric"><div class="label">カテゴリ数</div><div class="value">5</div></div>
+    </div>
+  </div>
+
+  <div class="toc">
+    <h2>カテゴリ別目次</h2>
+    <div class="toc-grid">
+      <a href="#d7-1" class="low">COMMIT・ROLLBACK・SAVEPOINT <span>6問</span></a><a href="#d7-2" class="low">DML 総合 <span>2問</span></a><a href="#d7-3" class="low">INSERT ALL / FIRST <span>2問</span></a><a href="#d7-4" class="low">DML としての MERGE <span>1問</span></a><a href="#d7-5" class="low">UPDATE とサブクエリ <span>1問</span></a>
+    </div>
+  </div>
+
+  
+            <section class="concept-section" id="d7-1">
+              <h3>COMMIT・ROLLBACK・SAVEPOINT<span>6問</span></h3>
+              <p class="concept-copy">COMMIT は変更確定とロック解放、ROLLBACK TO SAVEPOINT は指定地点以降の変更だけを戻す。SAVEPOINT 自体や以前の SAVEPOINT は残るが、COMMIT 後は全て消える。</p>
+              
+                <article class="question-card">
+                  <div class="question-meta">第1回 模擬試験 / 問36 / 正答 B / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>トランザクションについて正しい記述はどれでしょうか。
+(1)		A.　トランザクションを終了する場合は必ずCOMMITを行う必要があります。
+(2)		B.　データ定義言語（DDL）を実行した場合、トランザクションとして実行されます。
+(3)		C.　トランザクションはBEGIN句で開始します。
+(4)		D.　明示的にCOMMITしないでSQL*PlusをQUITで切断した場合、そのトランザクションはROLLBACKされます。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「COMMIT・ROLLBACK・SAVEPOINT」です。COMMIT は変更確定とロック解放、ROLLBACK TO SAVEPOINT は指定地点以降の変更だけを戻す。SAVEPOINT 自体や以前の SAVEPOINT は残るが、COMMIT 後は全て消える。 この設問では正答 B「データ定義言語（DDL）を実行した場合、トランザクションとして実行されます。」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>COMMIT=確定+ロック解放+SAVEPOINT消去。</li><li>ROLLBACK TO SAVEPOINT=変更だけ戻す、SAVEPOINTは残る。</li><li>完全な ROLLBACK と TO SAVEPOINT を別物として覚える。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第1回 模擬試験 / 問37 / 正答 B.C.E / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>トランザクションが終了するのは以下のどの場合でしょうか。（3つ選択）
+(1)		A.　UPDATEが実行されたとき
+(2)		B.　COMMITが実行されたとき
+(3)		C.　ALTERが実行されたとき
+(4)		D.　DELETEが実行されたとき
+(5)		E.　SQL*PlusでEXITが実行されたとき</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「COMMIT・ROLLBACK・SAVEPOINT」です。COMMIT は変更確定とロック解放、ROLLBACK TO SAVEPOINT は指定地点以降の変更だけを戻す。SAVEPOINT 自体や以前の SAVEPOINT は残るが、COMMIT 後は全て消える。 この設問では正答 B「COMMITが実行されたとき」 / C「ALTERが実行されたとき」 / E「SQL*PlusでEXITが実行されたとき」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>COMMIT=確定+ロック解放+SAVEPOINT消去。</li><li>ROLLBACK TO SAVEPOINT=変更だけ戻す、SAVEPOINTは残る。</li><li>完全な ROLLBACK と TO SAVEPOINT を別物として覚える。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第1回 模擬試験 / 問40 / 正答 2.3 / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>以下の文を実行します。
+
+INSERT INTO ITEM VALUES (&#x27;1&#x27;,&#x27;CURRY&#x27;,&#x27;FOOD&#x27;,1000);
+SAVEPOINT SP1;
+UPDATE ITEM SET ITEM_NAME = &#x27;SUSHI&#x27; WHERE ITEM_ID = &#x27;1&#x27;;
+SAVEPOINT SP2;
+DELETE FROM ITEM;
+ROLLBACK TO SAVEPOINT SP1;
+ROLLBACK;
+
+実行結果について、正しい記述はどれでしょうか。（2つ選択）
+　
+(1)		最初のROLLBACKは、DELETE文のみを取り消します。
+(2)		最初のROLLBACKは、DELETE文とUPDATE文を取り消します。
+(3)		後のROLLBACKは、すべての更新を取り消します。
+(4)		後のROLLBACKは、DELETE文とUPDATE文を取り消します。
+(5)		後のROLLBACKは、更新の取り消しはしません。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「COMMIT・ROLLBACK・SAVEPOINT」です。COMMIT は変更確定とロック解放、ROLLBACK TO SAVEPOINT は指定地点以降の変更だけを戻す。SAVEPOINT 自体や以前の SAVEPOINT は残るが、COMMIT 後は全て消える。 この設問では正答 2「最初のROLLBACKは、DELETE文とUPDATE文を取り消します。」 / 3「後のROLLBACKは、すべての更新を取り消します。」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>COMMIT=確定+ロック解放+SAVEPOINT消去。</li><li>ROLLBACK TO SAVEPOINT=変更だけ戻す、SAVEPOINTは残る。</li><li>完全な ROLLBACK と TO SAVEPOINT を別物として覚える。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第3回 模擬試験 / 問22 / 正答 BC / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>TRUNCATE と DELETE に関して、正しいものを2つ選んでください。
+(1)		A. TRUNCATE は WHERE 句を使用して削除する行を指定できる。
+(2)		B. DELETE は WHERE 句を使用して削除する行を指定できる。
+(3)		C. DELETE の結果は ROLLBACK によって取り消すことができる。
+(4)		D. TRUNCATE の結果は ROLLBACK によって取り消すことができる。
+(5)		E. TRUNCATE を実行すると、テーブルのインデックスが UNUSABLE な状態になる。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「COMMIT・ROLLBACK・SAVEPOINT」です。COMMIT は変更確定とロック解放、ROLLBACK TO SAVEPOINT は指定地点以降の変更だけを戻す。SAVEPOINT 自体や以前の SAVEPOINT は残るが、COMMIT 後は全て消える。 この設問では正答 B「DELETE は WHERE 句を使用して削除する行を指定できる。」 / C「DELETE の結果は ROLLBACK によって取り消すことができる。」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>COMMIT=確定+ロック解放+SAVEPOINT消去。</li><li>ROLLBACK TO SAVEPOINT=変更だけ戻す、SAVEPOINTは残る。</li><li>完全な ROLLBACK と TO SAVEPOINT を別物として覚える。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第3回 模擬試験 / 問49 / 正答 ACD / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>以下のSQLの実行結果を考えてください。
+
+INSERT INTO employees VALUES (&#x27;E101&#x27;, &#x27;Taro Yamada&#x27;, NULL, NULL);
+SAVEPOINT a;
+DELETE FROM employees;
+ROLLBACK TO SAVEPOINT a;
+INSERT INTO employees VALUES (&#x27;E102&#x27;, &#x27;Hanako Sato&#x27;, NULL, NULL);
+COMMIT;
+INSERT INTO employees VALUES (&#x27;E103&#x27;, &#x27;Jiro Suzuki&#x27;, NULL, NULL);
+ROLLBACK;
+
+正しい説明を3つ選んでください。
+(1)		A. 最後の ROLLBACK により、E103 の挿入は取り消される。
+(2)		B. 最後の ROLLBACK により、E102 の挿入も取り消される。
+(3)		C. COMMIT によって、E102 のデータは確定しているため、ROLLBACK では取り消されない。
+(4)		D. SAVEPOINT の後の DELETE 操作は、 ROLLBACK TO により取り消される。
+(5)		E. 最初の INSERT 文で挿入された E101 のデータは、ROLLBACK TO によって削除される。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「COMMIT・ROLLBACK・SAVEPOINT」です。COMMIT は変更確定とロック解放、ROLLBACK TO SAVEPOINT は指定地点以降の変更だけを戻す。SAVEPOINT 自体や以前の SAVEPOINT は残るが、COMMIT 後は全て消える。 この設問では正答 A「最後の ROLLBACK により、E103 の挿入は取り消される。」 / C「COMMIT によって、E102 のデータは確定しているため、ROLLBACK では取り消されない。」 / D「SAVEPOINT の後の DELETE 操作は、 ROLLBACK TO により取り消される。」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>COMMIT=確定+ロック解放+SAVEPOINT消去。</li><li>ROLLBACK TO SAVEPOINT=変更だけ戻す、SAVEPOINTは残る。</li><li>完全な ROLLBACK と TO SAVEPOINT を別物として覚える。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第3回 模擬試験 / 問53 / 正答 ADE / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>トランザクション制御言語（TCL）について、正しいものを3つ選んでください。
+(1)		A. ROLLBACK を 実行すると、トランザクションのすべての変更が取り消され、ロックが解除され、すべての SAVEPOINT が削除される。
+(2)		B. COMMIT は、すべての SAVEPOINT を保持し、変更を確定する。
+(3)		C. ROLLBACK を SAVEPOINT なしで実行すると、変更は取り消されるが、ロックは解除されない。
+(4)		D. ROLLBACK TO SAVEPOINT は、指定された SAVEPOINT 以降の変更のみを元に戻し、トランザクションは終了しない。
+(5)		E. COMMIT は、すべての変更を確定し、トランザクションを終了する。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「COMMIT・ROLLBACK・SAVEPOINT」です。COMMIT は変更確定とロック解放、ROLLBACK TO SAVEPOINT は指定地点以降の変更だけを戻す。SAVEPOINT 自体や以前の SAVEPOINT は残るが、COMMIT 後は全て消える。 この設問では正答 A「ROLLBACK を 実行すると、トランザクションのすべての変更が取り消され、ロックが解除され、すべての SA…」 / D「ROLLBACK TO SAVEPOINT は、指定された SAVEPOINT 以降の変更のみを元に戻し、トラ…」 / E「COMMIT は、すべての変更を確定し、トランザクションを終了する。」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>COMMIT=確定+ロック解放+SAVEPOINT消去。</li><li>ROLLBACK TO SAVEPOINT=変更だけ戻す、SAVEPOINTは残る。</li><li>完全な ROLLBACK と TO SAVEPOINT を別物として覚える。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+            </section>
+            
+            <section class="concept-section" id="d7-2">
+              <h3>DML 総合<span>2問</span></h3>
+              <p class="concept-copy">DML 問題では、対象行の決まり方、更新タイミング、トランザクション制御を順番に読む必要がある。1文の中で何が確定し、何が取り消せるかが核心になる。</p>
+              
+                <article class="question-card">
+                  <div class="question-meta">第1回 模擬試験 / 問38 / 正答 1.3.5 / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>SQLの機能はどれでしょうか。（3つ選択）
+(1)		トランザクション機能がある
+(2)		GUIを提供する
+(3)		データの問い合わせを行う
+(4)		表計算ソフトのファイルと整合性を保つ
+(5)		データの更新を行う</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「DML 総合」です。DML 問題では、対象行の決まり方、更新タイミング、トランザクション制御を順番に読む必要がある。1文の中で何が確定し、何が取り消せるかが核心になる。 この設問では正答 1「トランザクション機能がある」 / 3「データの問い合わせを行う」 / 5「データの更新を行う」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>対象行、変更内容、確定/取消の可否を3段階で確認する。</li><li>DDL と混ざっていないかを見る。</li><li>副問合せがある場合は相関性と返却行数を先に確認する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第3回 模擬試験 / 問31 / 正答 BD / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>Oracleデータベースにおけるトランザクションについて、正しいものを2つ選んでください。
+(1)		A. DML ステートメントは常に新しいトランザクションを開始する。
+(2)		B. DDL ステートメントは、実行時にデータディクショナリの更新を自動的にコミットする。
+(3)		C. 同じユーザーが別のセッションで未コミットの更新を表示できる。
+(4)		D. DDL ステートメントは、未コミットのトランザクションがある場合、そのトランザクションを自動的にコミットする。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「DML 総合」です。DML 問題では、対象行の決まり方、更新タイミング、トランザクション制御を順番に読む必要がある。1文の中で何が確定し、何が取り消せるかが核心になる。 この設問では正答 B「DDL ステートメントは、実行時にデータディクショナリの更新を自動的にコミットする。」 / D「DDL ステートメントは、未コミットのトランザクションがある場合、そのトランザクションを自動的にコミットする。」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>対象行、変更内容、確定/取消の可否を3段階で確認する。</li><li>DDL と混ざっていないかを見る。</li><li>副問合せがある場合は相関性と返却行数を先に確認する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+            </section>
+            
+            <section class="concept-section" id="d7-3">
+              <h3>INSERT ALL / FIRST<span>2問</span></h3>
+              <p class="concept-copy">INSERT ALL は条件に合う全ての INTO に挿入し、INSERT FIRST は最初に一致した INTO だけに挿入する。ELSE 句や条件付き挿入の位置も重要である。</p>
+              
+                <article class="question-card">
+                  <div class="question-meta">第2回 模擬試験 / 問44 / 正答 C / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>次の文を実行するとします。
+
+INSERT ALL
+WHEN ITEM_PRICE &lt; 1500 THEN
+INTO ITEM1
+WHEN ITEM_PRICE &gt; 1500 AND ITEM_PRICE &lt; 2500 THEN
+INTO ITEM2
+WHEN ITEM_PRICE &gt; 2500 AND ITEM_PRICE &lt; 4000 THEN
+INTO ITEM3
+SELECT ITEM_ID, ITEM_NAME, ITEM_PRICE FROM ITEM;
+
+正しい記述はどれでしょうか。
+(1)		A.　条件に合った最初のWHEN句のINTOのみ実行されます。
+(2)		B.　ELSE句が無いためエラーとなります。
+(3)		C.　すべてのWHEN句のINTOが条件に応じて実行されます。
+(4)		D.　すべてのWHEN句の条件を満たさないものはエラーとなります。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「INSERT ALL / FIRST」です。INSERT ALL は条件に合う全ての INTO に挿入し、INSERT FIRST は最初に一致した INTO だけに挿入する。ELSE 句や条件付き挿入の位置も重要である。 この設問では正答 C「すべてのWHEN句のINTOが条件に応じて実行されます。」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>ALL=全部、FIRST=最初だけ、と1語で覚える。</li><li>WHEN 条件と INTO の対応を上から順に追う。</li><li>マルチテーブル挿入も DML なので COMMIT が必要。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第3回 模擬試験 / 問41 / 正答 AC / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>条件付き INSERT ALL について、正しいものを2つ選んでください。
+(1)		A. INSERT ALL では、複数の INTO 句を指定できる。
+(2)		B. INSERT ALL には ELSE 句が必須である。
+(3)		C. 各行に対して WHEN 条件が評価される。
+(4)		D. INSERT ALL で返された各行は、単一の表にのみ挿入できる。
+(5)		E. 挿入される総行数は、サブクエリによって返される行数と常に等しくなる。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「INSERT ALL / FIRST」です。INSERT ALL は条件に合う全ての INTO に挿入し、INSERT FIRST は最初に一致した INTO だけに挿入する。ELSE 句や条件付き挿入の位置も重要である。 この設問では正答 A「INSERT ALL では、複数の INTO 句を指定できる。」 / C「各行に対して WHEN 条件が評価される。」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>ALL=全部、FIRST=最初だけ、と1語で覚える。</li><li>WHEN 条件と INTO の対応を上から順に追う。</li><li>マルチテーブル挿入も DML なので COMMIT が必要。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+            </section>
+            
+            <section class="concept-section" id="d7-4">
+              <h3>DML としての MERGE<span>1問</span></h3>
+              <p class="concept-copy">MERGE は DML であり、対象表1つに対して一致/非一致の分岐を行う。UPDATE 対象列、INSERT 条件、DELETE 条件の位置を正しく読む必要がある。</p>
+              
+                <article class="question-card">
+                  <div class="question-meta">第3回 模擬試験 / 問62 / 正答 C / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>以下の要件を満たすSQLを作成します。
+
+・STAFFテーブル内の既存の職員データを、NEW_STAFFテーブルのデータで更新する。
+・NEW_STAFFテーブルの新しい職員データを、STAFFテーブルに追加する。
+
+つぎのどの SQL 文が適切ですか。1つ選択してください。
+
+A.
+MERGE INTO staff s
+USING new_staff ns
+WHERE s.staff_id = ns.staff_id
+WHEN MATCHED THEN UPDATE SET s.full_name = ns.full_name,
+s.role_id = ns.role_id, s.salary = ns.salary
+WHEN NOT MATCHED THEN INSERT VALUES (ns.staff_id, ns.full_name,
+ns.role_id, ns.salary);
+
+B.
+UPDATE staff s
+SET (full_name, role_id, salary) = (
+  SELECT ns.full_name, ns.role_id, ns.salary
+  FROM new_staff ns
+  WHERE s.staff_id = ns.staff_id
+)
+WHERE EXISTS (
+  SELECT 1 FROM new_staff ns WHERE s.staff_id = ns.staff_id
+);
+
+C.
+MERGE INTO staff s
+USING new_staff ns
+ON (s.staff_id = ns.staff_id)
+WHEN MATCHED THEN
+UPDATE SET s.full_name = ns.full_name, s.role_id = ns.role_id, s.salary = ns.salary
+WHEN NOT MATCHED THEN
+INSERT (staff_id, full_name, role_id, salary)
+VALUES (ns.staff_id, ns.full_name, ns.role_id, ns.salary);
+
+D.
+UPDATE staff
+SET full_name = (SELECT full_name FROM new_staff WHERE staff.staff_id = new_staff.staff_id),
+    role_id = (SELECT role_id FROM new_staff WHERE staff.staff_id = new_staff.staff_id),
+    salary = (SELECT salary FROM new_staff WHERE staff.staff_id = new_staff.staff_id)
+WHERE staff_id IN (SELECT staff_id FROM new_staff);
+
+(1)		A
+(2)		B
+(3)		C
+(4)		D</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「DML としての MERGE」です。MERGE は DML であり、対象表1つに対して一致/非一致の分岐を行う。UPDATE 対象列、INSERT 条件、DELETE 条件の位置を正しく読む必要がある。 この設問では正答 C「MERGE INTO staff s USING new_staff ns ON (s.staff_id = …」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>MERGE INTO 対象表 / USING 比較元の構文を固定する。</li><li>一致時と非一致時で何が許されるかを整理する。</li><li>UPDATE 対象に主キー列を書けるかなど、細部の制約を確認する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+            </section>
+            
+            <section class="concept-section" id="d7-5">
+              <h3>UPDATE とサブクエリ<span>1問</span></h3>
+              <p class="concept-copy">UPDATE の SET 句で相関サブクエリを使うと、更新対象行ごとにサブクエリが評価される。サブクエリが複数行を返せばエラーになる。</p>
+              
+                <article class="question-card">
+                  <div class="question-meta">第2回 模擬試験 / 問30 / 正答 B / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>日本とアメリカにある工場で生産している製品を、タイ工場に移管します。
+このため、ITEM表を次のように更新する必要があります。
+
+1. 日本またはアメリカのメーカーの所在地（国名）をタイに設定します。
+2. 1に当てはまる商品の価格を、一律、日本・アメリカの全商品の平均価格の0.7倍に設定します。
+
+これに応じて次のSQLを実行します。
+
+UPDATE ITEM
+SET MAKER_ID =
+(SELECT MAKER_ID FROM MAKER WHERE COUNTRY = &#x27;THAILAND&#x27;)
+,
+ITEM_PRICE =
+(SELECT 0.7*AVG(ITEM_PRICE) FROM ITEM,MAKER
+WHERE MAKER.COUNTRY = &#x27;JAPAN&#x27; OR MAKER.COUNTRY = &#x27;U.S.A&#x27;
+)
+WHERE MAKER_ID IN (SELECT MAKER_ID FROM MAKER WHERE COUNTRY = &#x27;JAPAN&#x27; OR COUNTRY = &#x27;U.S.A&#x27;);
+
+SQLの実行結果はどうなるでしょうか。
+
+(1)		A.　正常に実行され、必要な更新が行われます。
+(2)		B.　正常に実行されますが、必要な更新が行われません。
+(3)		C.　UPDATEのSET句で副問合せは実行できないため、エラーとなります。
+(4)		D.　副問合せはUPDATEで結合条件を持つことができないため、エラーとなります。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「UPDATE とサブクエリ」です。UPDATE の SET 句で相関サブクエリを使うと、更新対象行ごとにサブクエリが評価される。サブクエリが複数行を返せばエラーになる。 この設問では正答 B「正常に実行されますが、必要な更新が行われません。」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>SET 句内で外側表の列を参照していたら相関サブクエリ。</li><li>1行ごとに評価されることを前提に読む。</li><li>単一行が保証できないなら結合 UPDATE など別案を考える。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+            </section>
+            
+</div>
+</body>
+</html>
