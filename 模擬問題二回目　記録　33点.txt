@@ -1,0 +1,1267 @@
+模擬問題二回目　記録　33点
+
+問題1 第1問目 / 全78問
+制約に関しての記述として以下正しいのはどれでしょうか。 (2つ選択)
+(1)		A.　外部キーにはNULL値を持たせることができます。
+(2)		B.　主キーにはNULL値を持たせることができます。
+(3)		C.　一意キーにはNULL値を持たせることができます。
+(4)		D.　制約は、UPDATE文の操作でのみ設定されます。
+Ans.AC
+○
+
+
+問題2 第2問目 / 全78問
+従業員の給与が10000円昇給させる場合のレポートを作成する必要があります。
+出力では、
+従業員の名前の見出しに Name、
+昇給後の見出しに New Salary
+という列見出しが表示される必要があります。
+列見出しには、各単語の最初の文字のみを大文字にする必要があります。
+この要件を達成するSQLはどれでしょうか。
+(1)		A.　SELECT NAME AS Name, SALARY + 10000 AS New Salary FROM EMP;
+(2)		B.　SELECT NAME AS "NAME", SALARY + 10000 "New Salary" FROM EMP;
+(3)		C.　SELECT NAME AS "Name", SALARY + 10000 AS "NEW SALARY" FROM EMP;
+(4)		D.　SELECT NAME AS "Name", SALARY + 10000 AS "New Salary" FROM EMP;
+
+Ans.D
+○
+
+問題3 第3問目 / 全78問
+
+DEPT_IDが10101,10102に所属する社員の名前と給与を表示するSQLはどれでしょうか。(2つ選択)
+　
+(1)		A.　SELECT NAME, SALARY FROM EMP WHERE DEPT_ID = 10101 OR DEPT_ID = 10102;
+(2)		B.　SELECT NAME, SALARY FROM EMP WHERE DEPT_ID = 10101 AND DEPT_ID = 10102;
+(3)		C.　SELECT NAME, SALARY FROM EMP WHERE DEPT_ID LIKE '1%';
+(4)		D.　SELECT NAME, SALARY FROM EMP WHERE DEPT_ID IN (10101, 10102);
+
+Ans.AD
+○
+
+
+問題4 第4問目 / 全78問
+実行結果が以下の文と同じになる文を1つ選択してください。
+
+SELECT empno,name FROM employees;
+(1)		A.　SELECT empno,name FROM employees WHERE 1 = 1;
+(2)		B.　SELECT empno,name FROM employees WHERE 1 <> 1;
+(3)		C.　SELECT empno,name FROM employees WHERE 1 == 1;
+(4)		D.　SELECT empno,name FROM employees WHERE 1 IS NOT 1;
+Ans.A
+○
+
+問題5 第5問目 / 全78問
+次のSQLを実行するとエラーが発生します。
+
+SELECT ITEM_NAME || ' It's FOODS!!'
+FROM ITEM
+WHERE ITEM_TYPE = 'FOOD';
+
+エラーを発生させないで指定のリテラル文字列を表示するには、どうすればいいでしょうか。
+(1)		A.　文字リテラル文字列内の一重引用符をエスケープします
+(2)		B.　文字リテラル文字列内の一重引用符を削除します
+(3)		C.　文字リテラル文字列を二重引用符ではさみます
+(4)		D.　文字リテラル文字列内の一重引用符を一重引用符ではさみます
+Ans.A
+○
+
+
+問題6 第6問目 / 全78問
+
+ITEM_PRICEがNULLのものをカウントするSQLはどれでしょうか。
+　
+拡大する
+(1)		A.　SELECT COUNT(*) FROM ITEM WHERE ITEM_PRICE = NULL;
+(2)		B.　SELECT COUNT ITEM_PRICE FROM ITEM WHERE ITEM_PRICE IS NULL;
+(3)		C.　SELECT COUNT(*) FROM ITEM WHERE ITEM_PRICE IS NULL;
+(4)		D.　SELECT ITEM_PRICE FROM ITEM WHERE ITEM_PRICE IS NULL;
+
+Ans.C
+○
+
+
+問題7 第7問目 / 全78問
+以下のSQLを実行するとします。
+
+SELECT ITEM_TYPE,ITEM_PRICE,ITEM_NAME INAME FROM ITEM ORDER BY 1, INAME ASC;
+
+実行結果について正しい記述はどれでしょうか。
+(1)		A.　すべてのITEM_TYPEが昇順で表示され、さらにITEM_NAMEが昇順でソートされます。
+(2)		B.　すべてのITEM_TYPEが降順で表示され、さらにITEM_NAMEが降順でソートされます。
+(3)		C.　ORDER BY句で列別名を使用できないため、失敗します。
+(4)		D.　ORDER BY句で列番号と列別名を一緒に使用できないため、失敗します。
+
+Ans.A
+○
+
+
+問題8 第8問目 / 全78問
+演算子の優先順位について正しい記載はどれでしょうか。（2つ選択）
+(1)		A.　比較演算子は、算術演算子より先に評価されます。
+(2)		B.　+演算子は、-演算子より先に評価されます。
+(3)		C.　カッコを使用して、式内の演算子の優先順位を制御できます 。
+(4)		D.　連結演算子 || は、乗算より先に評価されます。
+(5)		E.　優先順位の等しい算術演算子は、式内の左から右の順に評価されます。
+
+Ans.CE
+○
+
+問題9 第9問目 / 全78問
+ITEM表から、価格（ITEM_PRICE）が最も安い順に並べて、全行の25%の件数の行を表示するとします。
+かつ、行の25%を超える場合でも同じ価格の行は含めたいとします。
+以下のどのSQLを実行すればいいでしょうか。
+(1)		A.　SELECT * FROM ITEM ORDER BY ITEM_PRICE FETCH FIRST 25 PERCENT ROWS;
+(2)		B.　SELECT * FROM ITEM ORDER BY ITEM_PRICE FETCH FIRST 25 PERCENT ROWS WITH TIES;
+(3)		C.　SELECT * FROM ITEM ORDER BY ITEM_PRICE FETCH FIRST 25 PERCENT ROWS WITH ONLY;
+(4)		D.　SELECT * FROM ITEM ORDER BY ITEM_PRICE FETCH FIRST 25 PERCENT ROWS ONLY WITH TIES;
+
+Ans.B
+○
+
+
+問題10 第10問目 / 全78問
+以下のSQLを作成する必要があります。
+・SQL実行時に必ず列名を入力する
+・最初のSQL実行時に表名を入力し、次回以降のSQL実行時に表名の入力不要
+上記の条件を満たすSQLはどれでしょうか。
+(1)		A.　SELECT &column FROM &table;
+(2)		B.　SELECT &&column FROM &table;
+(3)		C.　SELECT &column FROM &&table;
+(4)		D.　SELECT &&column FROM &&table;
+Ans.C
+○
+
+
+以下のコマンドとSQLを実行するとします。
+
+DEFINE ITEMPRICE = '1000'
+DEFINE ITEMID = '1'
+SELECT * FROM ITEM WHERE ITEM_ID = '&ITEMID' AND ITEM_PRICE = &ITEMPRICE;
+
+実行結果として正しい記述はどれでしょうか。
+(1)		A.　文字入力のプロンプトが表示されません。
+(2)		B.　ITEMIDの文字入力プロンプトが表示されます。
+(3)		C.　ITEMPRICEの文字入力プロンプトが表示されます。
+(4)		D.　ITEMPRICEとITEMIDの両方の文字入力プロンプトが表示されます。
+(5)		E.　エラーとなります。
+Ans.A
+×
+SelfAns.E
+
+問題12 第12問目 / 全78問
+半角スペースで区切られている商品名の2単語目が"CU"もしくは"Cu"で始まる値を表示する場合、以下のどのSELECT文を実行すればいいでしょうか。（2つ選択）
+　
+拡大する
+(1)		A.　SELECT ITEM_NAME FROM ITEM WHERE LOWER (SUBSTR (ITEM_NAME, INSTR(ITEM_NAME, ' ')+1)) IN ('CU%', 'Cu)
+(2)		B.　SELECT ITEM_NAME FROM ITEM WHERE UPPER (SUBSTR (ITEM_NAME, INSTR(ITEM_NAME, ' ')+1)) LIKE UPPER ('CU%')
+(3)		C.　SELECT ITEM_NAME FROM ITEM WHERE SUBSTR(ITEM_NAME, INSTR (ITEM_NAME, ' ') +1) LIKE 'Cu%'
+(4)		D.　SELECT ITEM_NAME FROM ITEM WHERE INITCAP (SUBSTR (ITEM_NAME, INSTR(ITEM_NAME, ' ')+1)) LIKE 'Cu%'
+(5)		E.　SELECT ITEM_NAME FROM ITEM WHERE LOWER (SUBSTR (ITEM_NAME, INSTR(ITEM_NAME, ' ')+1)) LIKE UPPER ('CU%')
+
+Ans.BD
+×
+SelfAns.BE
+
+
+問題13 第13問目 / 全78問
+ITEM表には、ITEM_NAMEの値が
+'Japanese Beef Curry'
+'Japanese Pork Curry'
+の2行が存在しています。
+末尾の'Curry'を省いて、先頭の'Japanese'を'日本産'に置換して表示するSQLはどれでしょうか。
+(1)		A.　SELECT REPLACE (TRIM(TRAILING 'Curry' FROM ITEM_NAME), 'Japanese', '日本産') FROM ITEM;
+(2)		B.　SELECT INITCAP (REPLACE(TRIM('Curry' FROM ITEM_NAME), 'Japanese', '日本産')) FROM ITEM;
+(3)		C.　SELECT REPLACE (SUBSTR(ITEM_NAME, -5), 'Japanese', '日本産') FROM ITEM;
+(4)		D.　SELECT REPLACE (REPLACE(ITEM_NAME, 'Curry', ' '), 'Japanese', '日本産') FROM ITEM;
+
+Ans.D
+×
+SelfAns.A
+
+
+問題14 第14問目 / 全78問
+ITEM表には製造年月日（DATE型）が存在します。
+次のSQLでエラーになるものはどれでしょうか。
+(1)		A.　SELECT MIN(SYSDATE - MADE_DATE) FROM ITEM
+(2)		B.　SELECT MAX(MADE_DATE) FROM ITEM
+(3)		C.　SELECT AVG(MADE_DATE) FROM ITEM
+(4)		D.　SELECT TO_CHAR(SYSDATE - MADE_DATE) FROM ITEM
+
+Ans.C
+×
+SelfAns.D
+
+
+問題15 第15問目 / 全78問
+単一行関数について正しい記述はどれでしょうか。 (2つ選択)
+(1)		A.　ROUND：最大の整数を返します。
+(2)		B.　FLOOR：最小の整数を返します。
+(3)		C.　ABS ：四捨五入した整数を返します。
+(4)		D.　TRUNC：NUMBER および DATE 値で使用できます 。
+(5)		E.　MOD ：除算演算の余りを返します。
+(6)		F.　TRUNC：NUMBERのみで使用できます 。
+Ans.DE
+×
+SelfAns.EF
+
+
+
+問題16 第16問目 / 全78問
+
+ITEM_NAME、MADE_DATE、ITEM_PRICEを表示する必要があります。
+製造年月日（MADE_DATE）が2018年1月1日以降から24か月以内のデータを表示するためには、以下のどのSQLを実行する必要があるでしょうか。（2つ選択）
+
+(1)		A.　SELECT ITEM_NAME, MADE_DATE, ITEM_PRICE FROM ITEM WHERE MONTHS_BETWEEN(MADE_DATE,'01-JAN-2018') <=24;
+(2)		B.　SELECT ITEM_NAME, MADE_DATE, ITEM_PRICE FROM ITEM WHERE MONTHS_BETWEEN(MADE_DATE,TO_DATE('01-JAN-2018','DD-MON-RRRR')) <=24;
+(3)		C.　SELECT ITEM_NAME, MADE_DATE, ITEM_PRICE FROM ITEM WHERE TO_NUMBER(MADE_DATE-TO_DATE('01-JAN-2018','DD-MON-RRRR')) <=24;
+(4)		D.　SELECT ITEM_NAME, MADE_DATE, ITEM_PRICE FROM ITEM WHERE TO_NUMBER(MADE_DATE,SYSDATE) <=24;
+
+
+Ans.AB
+○
+
+
+問題17 第17問目 / 全78問
+
+以下のSQLでエラーとならないものはどれでしょうか。
+　
+(1)		A.　SELECT NVL(START_DATE, SYSDATE) FROM EMP;
+(2)		B.　SELECT NVL(NAME) FROM EMP;
+(3)		C.　SELECT NVL(TO_DATE(START_DATE, END_DATE),'SYSDATE') FROM EMP;
+(4)		D.　SELECT NVL(DEPT_ID) FROM EMP;
+
+Ans.A
+○
+
+
+
+問題18 第18問目 / 全78問
+
+NLS_DATE_FORMATはDD-MON-YYが設定されています。
+明示的なデータ型変換が必要なSQLは以下のどれですか。
+
+(1)		A.　SELECT MADE_DATE FROM ITEM WHERE MADE_DATE > '01-06-2021';
+(2)		B.　SELECT ITEM_ID || ' ' || ITEM_PRICE FROM ITEM;
+(3)		C.　SELECT SUBSTR(MADE_DATE, 1, 2) FROM ITEM;
+(4)		D.　SELECT ITEM_ID || ' ' || MADE_DATE FROM ITEM;
+(5)		E.　SELECT MADE_DATE || ' ' || ITEM_PRICE FROM ITEM;
+
+Ans.A
+×
+SelfAns.D
+
+問題19 第19問目 / 全78問
+'21ST , May, Twenty Twenty-One'と表示するSQLはどれでしょうか。
+(1)		A.　SELECT TO_CHAR (TO_DATE ('21-may-2021'), 'fmDDTH "," Month, Year') FROM DUAL
+(2)		B.　SELECT TO_CHAR (TO_DATE ('21-may-2021'), 'fmDdth "," Month, Year') FROM DUAL
+(3)		C.　SELECT TO_CHAR ('21-may-2021', 'fmDdth "," Month, Year') FROM DUAL
+(4)		D.　SELECT TO_DATE (TO_CHAR ('21-may-2021'), 'fmDDTH "," Month, Year') FROM DUAL
+(5)		E.　SELECT TO_DATE (TO_CHAR ('21-may-2021'), 'fmDdth "," Month, Year')) FROM DUAL
+
+Ans.A
+×
+SelfAns.D
+
+
+問題20 第20問目 / 全78問
+集計関数について正しい記述はどれでしょうか。
+(1)		A.　SUM関数は、文字データ型の列で使用できます。
+(2)		B.　集計関数は、最大2レベルまでネストできます。
+(3)		C.　AVG関数は、文字データ型の列で使用できます。
+(4)		D.　MAX関数は、NULL値は指定できません。
+(5)		E.　MIN関数は、BINARYデータ型は指定できません。
+
+Ans.B
+×
+SelfAns.D
+
+問題21 第21問目 / 全78問
+以下のSQLを実行するとします。
+
+SELECT ITEM_TYPE,COUNT(ITEM_TYPE)
+FROM ITEM
+WHERE ITEM_PRICE >= 2000
+GROUP BY ITEM_TYPE
+HAVING MAX(ITEM_PRICE) BETWEEN 1500 and 3000;
+
+実行結果について正しい記述はどれでしょうか。
+(1)		A.　HAVING句ではMAX演算子を使用できないため、エラーとなります。
+(2)		B.　HAVING句ではBETWEEN演算子を使用できないため、エラーとなります。
+(3)		C.　正常に実行されます。
+(4)		D.　WHERE句とHAVING句を同じSELECTで使用できないため、エラーとなります。
+
+Ans.C
+○
+
+
+問題22 第22問目 / 全78問
+以下のSQLを実行するとします。
+
+SELECT TO_CHAR(MADE_DATE,'RR'), AVG(ITEM_PRICE) FROM ITEM
+GROUP BY TO_CHAR(MADE_DATE, 'YYYY');
+
+実行結果について、正しい記述はどれでしょうか。
+(1)		A.　AVGとGROUP BYは同時に使用できません。
+(2)		B.　2つのTO_CHAR関数のパラメータが合っていないため、エラーとなります。
+(3)		C.　AVGとTO_CHARは同時に使用できません。
+(4)		D.　正常に実行されます。
+
+Ans.B
+○
+
+
+問題23 第23問目 / 全78問
+
+以下のSQLで正常に実行されるものはどれでしょうか。（2つ選択）
+
+(1)		A.　SELECT ITEM_ID,MADE_DATE,AVG(ITEM_PRICE) FROM ITEM GROUP BY ITEM_ID,MADE_DATE;
+(2)		B.　SELECT ITEM_ID,MADE_DATE,SUM(ITEM_PRICE) FROM ITEM GROUP BY ITEM_ID;
+(3)		C.　SELECT MIN(AVG(ITEM_PRICE)) FROM ITEM GROUP BY ITEM_ID;
+(4)		D.　SELECT ITEM_ID,MAX(AVG(ITEM_PRICE)) FROM ITEM GROUP BY ITEM_ID;
+
+Ans.AC
+×
+SelfAns.AB
+
+問題24 第24問目 / 全78問
+ITEM_TYPE=FOODの商品を";"区切りで1行に表示するためのSQLはどれでしょうか。
+なお、ソートは製造年月日（MADE_DATE）の順とします。
+(1)		A.　SELECT LISTAGG(ITEM_NAME) WITHIN GROUP (ORDER BY MADE_DATE) "FoodList" FROM ITEM WHERE ITEM_TYPE = 'FOOD';
+(2)		B.　SELECT LISTAGG(ITEM_NAME, '; ') WITHIN GROUP (ORDER BY MADE_DATE) "FoodList" FROM ITEM WHERE ITEM_TYPE = 'FOOD';
+(3)		C.　SELECT LISTAGG(ITEM_NAME, '; ') "FoodList" FROM ITEM WHERE ITEM_TYPE = 'FOOD'; WITHIN GROUP (ORDER BY MADE_DATE);
+(4)		D.　SELECT LISTAGG(ITEM_NAME) WITHIN GROUP ORDER BY (MADE_DATE) "FoodList" FROM ITEM WHERE ITEM_TYPE = 'FOOD';
+
+Ans.B
+×
+SelfAns.C
+
+
+問題25 第25問目 / 全78問
+異なるITEM_IDで同じ商品名（ITEM_NAME）が入力されているものをチェックする方法は下記のどれでしょうか。（2つ選択）
+(1)		A.　自己結合
+(2)		B.　副問合せ
+(3)		C.　自己結合によるFULL OUTER JOIN
+(4)		D.　自己結合によるRIGHT OUTER JOIN
+(5)		E.　自己結合によるLEFT OUTER JOIN
+Ans.AB
+×
+SelfAns.AC
+
+問題26 第26問目 / 全78問
+Oracle結合構文・ANSI結合構文について正しい記述はどれでしょうか。（2つ選択）
+(1)		A.　Oracle結合構文は、ANSI結合構文よりもパフォーマンスが低くなります。
+(2)		B.　Oracle結合構文は、ANSI結合構文よりもパフォーマンスは優れています。
+(3)		C.　ANSI結合構文は、自然結合に対応しています
+(4)		D.　Oracle結合構文は、右外部結合のみに対応しています。
+(5)		E.　Oracle結合構文は、左外部結合のみに対応しています。
+(6)		F.　ANSI結合構文は、クロス結合に対応しています。
+
+Ans.CF
+○
+
+
+問題27 第27問目 / 全78問
+以下の文を実行して表を作成します。
+
+CREATE TABLE CARS
+(
+　　CAR_ID NUMBER PRIMARY KEY,
+　　CAR_NAME VARCHAR2(50),
+　　MAKER_ID NUMBER
+);
+
+CREATE TABLE MAKERS
+(
+　　MAKER_ID NUMBER PRIMARY KEY,
+　　MAKER_NAME VARCHAR2(50)
+);
+
+対応するメーカーがあるかどうかに関係なく、すべての車を表示するSQLはどれでしょうか。（2つ選択）
+(1)		A.　SELECT C.CAR_ID, M.MAKER_ID FROM CARS C FULL OUTER JOIN MAKERS M ON (C.MAKER_ID=M.MAKER_ID)
+(2)		B.　SELECT C.CAR_ID, M.MAKER_ID FROM CARS C RIGHT OUTER JOIN MAKERS M ON (C.MAKER_ID=M.MAKER_ID)
+(3)		C.　SELECT C.CAR_ID, M.MAKER_ID FROM CARS C FULL OUTER JOIN MAKERS M ON (C.MAKER_ID<>M.MAKER_ID)
+(4)		D.　SELECT CAR_ID, MAKER_ID, FROM MAKERS M RIGHT OUTER JOIN CARS C USING (MAKER_ID)
+(5)		E.　SELECT C.CAR_ID, M.MAKER_ID FROM MAKERS M LEFT OUTER JOIN CARS C ON (C.MAKER_ID=M.MAKER_ID)
+
+Ans.AC
+×
+SelfAns.BE
+
+問題28 第28問目 / 全78問
+副問合せに関して正しいのはどれでしょうか。（2つ選択）
+(1)		A.　副問合せを使用して、1つ以上の表からデータにアクセスできます。
+(2)		B.　副問合せを使用して、ビューからデータにアクセスすることはできません。
+(3)		C.　副問合せが0行を返す場合、サブクエリ式によって返される値はNULLです。
+(4)		D.　1つのSQL文で記載できる副問合せは2つだけです。
+(5)		E.　SELECTのWHERE句の副問合せは、最大4レベルまでネストできます。
+
+Ans.AC
+○
+
+問題29 第29問目 / 全78問
+ITEM_TYPEが'FOOD'であるITEMの全ての製造年月日（MADE_DATE）と比較して、
+製造年月日が新しいITEMの情報を表示するSQLはどれでしょうか。
+(1)		A.　SELECT ITEM_NAME, MADE_DATE FROM ITEM WHERE MADE_DATE > SELECT MAX (MADE_DATE) FROM ITEM WHERE ITEM_TYPE= 'FOOD';
+(2)		B.　SELECT ITEM_NAME, MADE_DATE FROM ITEM WHERE MADE_DATE > ALL (SELECT MADE_DATE FROM ITEM WHERE ITEM_TYPE = 'FOOD');
+(3)		C.　SELECT ITEM_NAME, MADE_DATE FROM ITEM WHERE MADE_DATE > ANY (SELECT MADE_DATE FROM ITEM WHERE ITEM_TYPE= 'FOOD');
+(4)		D.　SELECT ITEM_NAME, MADE_DATE FROM ITEM WHERE MADE_DATE IN (SELECT MADE_DATE FROM ITEM WHERE ITEM_TYPE= 'FOOD');
+
+Ans.B
+○
+
+
+問題30 第30問目 / 全78問
+
+日本とアメリカにある工場で生産している製品を、タイ工場に移管します。
+このため、ITEM表を次のように更新する必要があります。
+
+1. 日本またはアメリカのメーカーの所在地（国名）をタイに設定します。
+2. 1に当てはまる商品の価格を、一律、日本・アメリカの全商品の平均価格の0.7倍に設定します。
+
+これに応じて次のSQLを実行します。
+
+UPDATE ITEM
+SET MAKER_ID =
+(SELECT MAKER_ID FROM MAKER WHERE COUNTRY = 'THAILAND')
+,
+ITEM_PRICE =
+(SELECT 0.7*AVG(ITEM_PRICE) FROM ITEM,MAKER
+WHERE MAKER.COUNTRY = 'JAPAN' OR MAKER.COUNTRY = 'U.S.A'
+)
+WHERE MAKER_ID IN (SELECT MAKER_ID FROM MAKER WHERE COUNTRY = 'JAPAN' OR COUNTRY = 'U.S.A');
+
+SQLの実行結果はどうなるでしょうか。
+
+(1)		A.　正常に実行され、必要な更新が行われます。
+(2)		B.　正常に実行されますが、必要な更新が行われません。
+(3)		C.　UPDATEのSET句で副問合せは実行できないため、エラーとなります。
+(4)		D.　副問合せはUPDATEで結合条件を持つことができないため、エラーとなります。
+
+Ans.B
+○
+
+
+問題31 第31問目 / 全78問
+相関副問合せのEXISTS演算子に関して正しい記述はどれでしょうか。（2つ選択）
+(1)		A.　内部問合せ結果にNULL値以外の値が見つかると、外部問合せは内部問合せの実行を中断します。
+(2)		B.　外部問合せは、副問合せのすべての結果の実行が完了するまで、内部問合せを実行し続けます。
+(3)		C.　内部問合せによって取得された値が、外部問合せの結果に存在するかどうかを判定するために使用されます。
+(4)		D.　外部問合せによって取得された値が、内部問合せの結果に存在するかどうかを判定するために使用されます。
+
+Ans.AD
+×
+SelfAns.CD
+
+
+問題32 第32問目 / 全78問
+次のSQLを確認してください。
+
+SELECT ITEM_ID, ITEM_NAME "商品名"
+FROM ITEM
+WHERE ITEM_TYPE = 'FOOD'
+UNION
+SELECT ITEM_ID ITEM_TYPE, ITEM_NAME
+FROM ITEM
+WHERE ITEM_TYPE = 'CASUAL'
+
+このSQLにORDER BY句を記述するとした場合、正常に実行できるものはどれでしょうか。（3つ選択）
+(1)		A.　ORDER BY "商品名"
+(2)		B.　ORDER BY "ITEM_TYPE"
+(3)		C.　ORDER BY 1
+(4)		D.　ORDER BY ITEM_TYPE
+(5)		E.　ORDER BY 2, ITEM_ID
+
+Ans.ACE
+×
+SelfAns.CDE
+
+
+
+問題33 第33問目 / 全78問
+
+以下のSQL文を実行するとします。
+
+SELECT ITEM_ID, MAKER_ID
+FROM ITEM
+WHERE MAKER_ID LIKE '1%' ORDER BY MAKER_ID
+UNION
+SELECT ITEM_ID, MAKER_ID
+FROM ITEM
+WHERE MAKER_ID=90
+UNION
+SELECT ITEM_ID, MAKER_ID
+FROM ITEM
+WHERE MAKER_ID LIKE '2%';
+
+実行結果はどうなるでしょうか。
+　
+
+(1)		A.　正常に実行され、すべての行がMAKER_IDの昇順で表示されます。
+(2)		B.　列名の代わりに位置番号（数値）をORDER BY句で使用する必要があるため、エラーとなります。
+(3)		C.　ORDER BY句は最後のSELECT文に記述する必要があるため、エラーとなります。
+(4)		D.　正常に実行されますが、ORDER BY句が無視され、ソートされません。
+
+Ans.C
+×
+SelfAns.D
+
+問題34 第34問目 / 全78問
+複合問合せで INTERSECT 演算子を使用した結果について正しいのはどれでしょうか。（2つ選択）
+(1)		A.　複合問合せの各SELECT文の列数は異なる場合があります。
+(2)		B.　複合問合せの各SELECT文の列名は異なる場合があります。
+(3)		C.　複合問合せの各SELECT文のデータ型は異なる場合があります。
+(4)		D.　INTERSECT演算子は、結果にNULLがあった場合、データを抽出します。
+(5)		E.　INTERSECT演算子は、結果にNULLがあった場合、データを抽出しません。
+Ans.BD
+×
+SelfAns.AD
+
+
+
+問題35 第35問目 / 全78問
+地方新聞社の顧客表が地域毎に同じ形式で存在しています。
+
+一部の顧客データが両方の表で重複しているとします。
+
+顧客表1に存在しない顧客表2の行を表示したいとします。
+
+必要な出力を生成する集合演算子はどれでしょうか。
+
+(1)		A.　MINUS
+(2)		B.　PLUS
+(3)		C.　SUBTRACT
+(4)		D.　UNION
+(5)		E.　UNION ALL
+
+Ans.A
+○
+
+
+問題36 第36問目 / 全78問
+図のような表があります。
+
+以下の従業員の詳細を表示する必要があります。
+
+・DEPT_ID '10101' の部署に所属
+・入社年数(START_DATE)が1年以下
+・月の定期代(PASS_PRICE)が5万円を超える
+
+必要な結果を取得するSQLはどれですか。（2つ選択）
+　
+拡大する
+(1)		A.　SELECT NAME, PASS_PRICE, START_DATE FROM EMP WHERE START_DATE > SYSDATE-365 AND DEPT_ID = '10101' INTERSECT SELECT NAME, PASS_PRICE, START_DATE FROM EMP WHERE PASS_PRICE > 50000;
+(2)		B.　SELECT NAME, PASS_PRICE, START_DATE FROM EMP WHERE PASS_PRICE > 50000 AND DEPT_ID = 10101 INTERSECT SELECT NAME, PASS_PRICE, START_DATE FROM EMP WHERE START_DATE > SYSDATE-365;
+(3)		C.　SELECT NAME, PASS_PRICE, START_DATE FROM EMP WHERE START_DATE > SYSDATE-365 AND DEPT_ID = '10101' UNION ALL SELECT NAME, PASS_PRICE, START_DATE FROM EMP WHERE PASS_PRICE > 50000;
+(4)		D.　SELECT NAME, PASS_PRICE, START_DATE FROM EMP WHERE START_DATE > SYSDATE-365 AND DEPT_ID = '10101' UNION SELECT NAME, PASS_PRICE, START_DATE FROM EMP WHERE PASS_PRICE > 50000;
+
+Ans.AB
+×
+SelfAns.AD
+
+
+問題37 第37問目 / 全78問
+名前の3文字目が'o'となっているデータを取得したい場合、妥当なSQLはどれでしょうか。（2つ選択）
+(1)		A.　SELECT * FROM employees WHERE name LIKE '__o%'
+(2)		B.　SELECT * FROM employees WHERE name LIKE '%%o%'
+(3)		C.　SELECT * FROM employees WHERE name LIKE '__o'
+(4)		D.　SELECT * FROM employees WHERE name LIKE '%%o'
+(5)		E.　SELECT * FROM employees WHERE SUBSTR(name,3,1) = 'o';
+(6)		F.　SELECT * FROM employees WHERE INSTR(name,'o',3) = 1;
+
+Ans.AE
+×
+SelfAns.BE
+
+
+問題38 第38問目 / 全78問
+トランザクションが終了するのは以下のどの場合でしょうか。（3つ選択）
+(1)		A.　COMMITが発行された後
+(2)		B.　ROLLBACKが発行された後
+(3)		C.　SAVEPOINTが発行された後
+(4)		D.　DROPが発行された後
+(5)		E.　INSERTが発行された後
+
+Ans.ABD
+×
+SelfAns.ABE
+
+
+
+
+問題39 第39問目 / 全78問
+以下の文を実行した場合、置換変数x とy はそれぞれ何回プロンプト（入力要求）されるでしょうか。最も適切なものを1つ選択してください。
+
+SET VERIFY ON
+DEFINE x = 100
+SELECT &x AS x_value, &&y AS y_value FROM dual;
+UNDEFINE x
+SELECT &x AS x_value, &&y AS y_value FROM dual;
+(1)		A. x:0回、y:0回
+(2)		B. x:0回、y:1回
+(3)		C. x:1回、y:0回
+(4)		D. x:1回、y:1回
+(5)		E. x:2回、y:1回
+(6)		F. x:2回、y:2回
+
+Ans.D
+×
+SelfAns.A
+
+
+問題40 第40問目 / 全78問
+以下の文を実行します。
+
+INSERT INTO ITEM VALUES ('1','CURRY','FOOD',1000);
+SAVEPOINT SP1;
+UPDATE ITEM SET ITEM_NAME = 'SUSHI' WHERE ITEM_ID = '1';
+SAVEPOINT SP2;
+DELETE FROM ITEM;
+COMMIT;
+ROLLBACK TO SAVEPOINT SP1;
+
+実行結果について、正しい記述はどれでしょうか。（2つ選択）
+　(1)		A.　トランザクションはロールバックされません。
+(2)		B.　DELETEとUPDATEの両方がロールバックされます。
+(3)		C.　DELETEのみがロールバックされます。
+(4)		D.　ROLLBACK TO SAVEPOINTはエラーとなります。
+
+Ans.AD
+○
+
+問題41 第41問目 / 全78問
+以下のうち、過去365日のSTART_DATEを抽出するSQL文はどれでしょうか。2つ選択してください。
+(1)		A. SELECT START_DATE FROM EMP WHERE START_DATE > TRUNC(SYSDATE)-365;
+(2)		B. SELECT START_DATE FROM EMP WHERE START_DATE > ROUND(SYSDATE)+365;
+(3)		C. SELECT START_DATE FROM EMP WHERE START_DATE > ADD_MONTHS(SYSDATE,-12);
+(4)		D. SELECT START_DATE FROM EMP WHERE START_DATE > (SELECT SYSDATE-365 FROM DUAL);
+(5)		E. SELECT START_DATE FROM EMP WHERE MONTHS_BETWEEN(SYSDATE,START_DATE) < 12;
+
+Ans.AD
+×
+SelfAns.BE
+
+
+問題42 第42問目 / 全78問
+DELETEコマンドに関して正しい記述はどれでしょうか。
+(1)		A.　1つのDELETE文では、1つの表からのみ行を削除できます。
+(2)		B.　1つのDELETE文では、複数の表から行を削除できます。
+(3)		C.　DELETEを使用して、特定の列のデータを削除できます。
+(4)		D.　DELETEを実行すると自動的にCOMMITされます。
+
+Ans.A
+×
+SelfAns.C
+
+
+問題43 第43問目 / 全78問
+マルチテーブル・インサートについて正しい記述を2つ選択してください。
+(1)		A.　一つの副問合せで返される各行は、一つの表にのみインサートできます。
+(2)		B.　無条件インサートでは、VALUES句が使用できます。
+(3)		C.　無条件インサートでは、ELSE句が使用できます。
+(4)		D.　条件付きインサートでは、条件が成立したものすべてのインサート処理が実行されます。
+(5)		E.　条件付きインサートでは、WHEN条件の各式は、副問合せのSELECT構文のリストによって戻される列を参照します。
+
+Ans.BE
+×
+SelfAns.DE
+
+
+問題44 第44問目 / 全78問
+次の文を実行するとします。
+
+INSERT ALL
+WHEN ITEM_PRICE < 1500 THEN
+INTO ITEM1
+WHEN ITEM_PRICE > 1500 AND ITEM_PRICE < 2500 THEN
+INTO ITEM2
+WHEN ITEM_PRICE > 2500 AND ITEM_PRICE < 4000 THEN
+INTO ITEM3
+SELECT ITEM_ID, ITEM_NAME, ITEM_PRICE FROM ITEM;
+
+正しい記述はどれでしょうか。
+(1)		A.　条件に合った最初のWHEN句のINTOのみ実行されます。
+(2)		B.　ELSE句が無いためエラーとなります。
+(3)		C.　すべてのWHEN句のINTOが条件に応じて実行されます。
+(4)		D.　すべてのWHEN句の条件を満たさないものはエラーとなります。
+
+Ans.C
+○
+
+
+問題45 第45問目 / 全78問
+次のMERGE文について、正しい記述を1つ選択してください。
+MERGE INTO ITEM_TARGET t
+    USING ITEM i
+    ON (i.ITEM_ID = t.ITEM_ID)
+WHEN MATCHED THEN
+    INSERT (t.ITEM_ID, t.ITEM_NAME, t.ITEM_PRICE)
+    VALUES (i.ITEM_ID, i.ITEM_NAME, i.ITEM_PRICE);
+WHEN NOT MATCHED AND i.ITEM_PRICE > 1000 THEN
+    UPDATE
+    SET t.ITEM_NAME = i.ITEM_NAME,
+        t.ITEM_TYPE = i.ITEM_TYPE
+
+
+MERGE INTO ITEM_TARGET t
+    USING ITEM i
+    ON (i.ITEM_ID = t.ITEM_ID)
+WHEN MATCHED THEN
+    UPDATE
+    SET t.ITEM_ID = i.ITEM_ID,
+        t.ITEM_NAME = i.ITEM_NAME,
+        t.ITEM_TYPE = i.ITEM_TYPE
+WHEN NOT MATCHED THEN
+    INSERT (t.ITEM_ID, t.ITEM_NAME, t.ITEM_PRICE)
+    VALUES (i.ITEM_ID, i.ITEM_NAME, i.ITEM_PRICE);
+
+
+MERGE INTO ITEM_TARGET t
+    USING ITEM i
+    ON (i.ITEM_ID = t.ITEM_ID)
+WHEN MATCHED THEN
+    UPDATE
+    SET t.ITEM_NAME = i.ITEM_NAME,
+        t.ITEM_TYPE = i.ITEM_TYPE
+WHEN NOT MATCHED AND i.ITEM_PRICE > 1000 THEN
+    INSERT (t.ITEM_ID, t.ITEM_NAME, t.ITEM_PRICE)
+    VALUES (i.ITEM_ID, i.ITEM_NAME, i.ITEM_PRICE);
+
+
+
+MERGE INTO ITEM_TARGET t
+    USING ITEM i
+    ON (i.ITEM_ID = t.ITEM_ID)
+WHEN MATCHED THEN
+    DELETE WHERE i.ITEM_ID IS NULL
+WHEN NOT MATCHED THEN
+    INSERT (t.ITEM_ID, t.ITEM_NAME, t.ITEM_PRICE)
+    VALUES (i.ITEM_ID, i.ITEM_NAME, i.ITEM_PRICE);
+
+(1)		A
+(2)		B
+(3)		C
+(4)		D
+
+Ans.C
+×
+SelfAns.D
+
+
+問題46 第46問目 / 全78問
+次の文を実行するとします。
+
+MERGE INTO ITEM_MERGE m
+　USING ITEM i
+　ON (i.ITEM_ID = m.ITEM_ID)
+WHEN MATCHED THEN
+　UPDATE SET m.ITEM_NAME = i.ITEM_NAME, m.ITEM_TYPE = i.ITEM_TYPE
+WHEN NOT MATCHED THEN
+　INSERT (m.ITEM_ID, m.ITEM_NAME, m.ITEM_TYPE, m.ITEM_PRICE)
+　VALUES (i.ITEM_ID, i.ITEM_NAME, i.ITEM_TYPE, i.ITEM_PRICE)
+　WHERE i.ITEM_PRICE > 1000;
+
+MERGE文の実行結果として正しい記述はどれでしょうか。
+　
+(1)		A.　ITEM_MERGE表には、ORDER_ID 2,3,5,6,7が存在します。
+(2)		B.　ITEM_MERGE表には、ORDER_ID 1,2,3,4,5,6,7が存在します。
+(3)		C.　ITEM表には、ORDER_ID 1,2,3,4,6,7が存在します。
+(4)		D.　ITEM表には、ORDER_ID 1,2,3,4,5,6,7が存在します。
+
+Ans.A
+×
+SelfAns.B
+
+
+問題47 第47問目 / 全78問
+2つの列が次の仕様を持つ表を設計します。
+
+・ITEM_ID：6文字の固定長で、英数字を扱います。
+・MADE_DATE：年、月、日、時、分、秒（小数点以下の最大精度）を扱います。
+
+これらの要件を最も効率的に処理するデータ型の記述はどれでしょうか。（2つ選択）
+(1)		ITEM_ID は ROWID型である必要があります。
+(2)		ITEM_ID 列は CHAR型である必要があります。
+(3)		ITEM_ID は BLOB型である必要があります。
+(4)		MADE_DATE は DATE型である必要があります。
+(5)		MADE_DATE は INTERVAL DAY TO SECOND型である必要があります。
+(6)		MADE_DATE は TIMESTAMP型である必要があります。
+
+Ans.2.6
+×
+SelfAns.3.6
+
+
+問題48 第48問目 / 全78問
+ITEM表に在庫数（NUMBER_OF_STOCK）の列を追加します。
+ITEM表に1行以上のデータが存在する場合、
+列にNULL値は含まないように設定するための文はどれでしょうか。
+(1)		1.　ALTER TABLE ITEM ADD NUMBER_OF_STOCK NUMBER(5) DEFAULT NOT NULL;
+(2)		2.　ALTER TABLE ITEM ADD NUMBER_OF_STOCK NUMBER(5) DEFAULT 0 NOT NULL;
+(3)		3.　ALTER TABLE ITEM ADD NUMBER_OF_STOCK NUMBER(5) DEFAULT CONSTRAINT NOT NULL;
+(4)		4.　ALTER TABLE ITEM ADD NUMBER_OF_STOCK NUMBER(5) DEFAULT CONSTRAINT MD_NN NOT NULL;
+
+Ans.2
+×
+SelfAns.3
+
+問題49 第49問目 / 全78問
+以下のSELECT文について、正しい記載を2つ選択してください。
+
+SELECT
+　product_id, price - cost AS profit
+FROM
+　Products
+WHERE
+　price - cost < ALL (
+　　SELECT
+　　　AVG(price - cost)
+　　FROM
+　　　Products
+　　GROUP BY
+　　dept_id
+　);
+(1)		A. 製品ごとの利益が全ての部門平均利益より小さい製品を抽出する
+(2)		B. 製品ごとの利益が全ての部門平均利益より大きい製品を抽出する
+(3)		C. WHERE句で集合関数を使用しているためエラーになる
+(4)		D. サブクエリのGROUP BYで指定した列名をサブクエリのSELECT句で使用していないためエラーになる
+(5)		E. ALL内でグループ関数やGROUP BYを使用したサブクエリは使用できる
+
+Ans.AE
+×
+SelfAns.CD
+
+
+問題50 第50問目 / 全78問
+SHOHIN_ID列とSHOHIN_KAKAKU列の値の組み合わせが一意であり、どちらの列もNULLではない表を作成する場合（表名：SHOHIN）、以下のどの文を実行すればいいでしょうか。(2つ選択)
+(1)		A.　CREATE TABLE SHOHIN (SHOHIN_ID NUMBER, SHOHIN_KAKAKU NUMBER, SHOHIN_NAME VARCHAR2(20), INPUT_DATE DATE, CONSTRAINT SHOHIN_ID_UQ UNIQUE (SHOHIN_ID, SHOHIN_KAKAKU) CONSTRAINT SHOHIN_ID_NN NOT NULL (SHOHIN_ID, SHOHIN_KAKAKU););
+(2)		B.　CREATE TABLE SHOHIN (SHOHIN_ID NUMBER CONSTRAINT SHOHIN_ID_NOT_NULL NOT NULL, SHOHIN_KAKAKU NUMBER CONSTRAINT SHOHIN_KAKAKU_NOT_NULL NOT NULL, SHOHIN_NAME VARCHAR2(20), INPUT_DATE DATE, CONSTRAINT SHOHIN_ID_UQ UNIQUE (SHOHIN_ID, SHOHIN_KAKAKU));
+(3)		C.　CREATE TABLE SHOHIN (SHOHIN_ID NUMBER, SHOHIN_KAKAKU NUMBER, SHOHIN_NAME VARCHAR2(20), INPUT_DATE DATE, CONSTRAINT SHOHIN_PK PRIMARY KEY (SHOHIN_ID, SHOHIN_KAKAKU));
+(4)		D.　CREATE TABLE SHOHIN (SHOHIN_ID NUMBER CONSTRAINT SHOHIN_PK PRIMARY KEY, SHOHIN_KAKAKU NUMBER UNIQUE, SHOHIN_NAME VARCHAR2(20), INPUT_DATE DATE);
+(5)		E.　CREATE TABLE SHOHIN (SHOHIN_ID NUMBER, SHOHIN_KAKAKU NUMBER, SHOHIN_NAME VARCHAR2(20), INPUT_DATE DATE, CONSTRAINT SHOHIN_ID_UQ UNIQUE (SHOHIN_ID, SHOHIN_KAKAKU));
+
+Ans.BC
+×
+SelfAns.AE
+
+
+問題51 第51問目 / 全78問
+次のSQL文の「_____」に入れる値として、$付きで表示されるものを3つ選択してください。
+
+SELECT TO_CHAR(_____, '$9,999') FROM dual;
+(1)		A. 123.4
+(2)		B. 1.234
+(3)		C. 12345
+(4)		D. 1234.56
+(5)		E. 9999.9
+
+Ans.ABD
+×
+SelfAns.CDE
+
+
+問題52 第52問目 / 全78問
+ALTER TABLE ～ DROP COLUMNについて正しい記述はどれでしょうか。（2つ選択）
+(1)		A.　複数の列を一回のコマンドで削除することはできません。
+(2)		B.　削除された列はロールバックで復元できます。
+(3)		C.　データが含まれていない場合にのみ、列を削除できます。
+(4)		D.　表に別の列が存在する場合にのみ、列を削除できます。
+(5)		E.　PRIMARY KEYが設定された列でもオプション指定で削除できます。
+
+Ans.DE
+×
+SelfAns.BC
+
+
+
+問題53 第53問目 / 全78問
+複合問合せ（UNION / INTERSECT / MINUS 等）において、次の記述のうち正しいものを2つ選択してください。
+(1)		A. SELECT句の列数はすべて同一である必要がある
+(2)		B. SELECT句の列名はすべて同一である必要がある
+(3)		C. ORDER BY句は最初のSELECTの列を指定する
+(4)		D. 結果セットの列名は、指定した最後のSELECTの列名が使用される
+(5)		E. NULL値は無視される
+
+Ans.AC
+×
+SelfAns.DE
+
+
+問題54 第54問目 / 全78問
+TRUNCATEを実行した場合の正しい記述はどれですか。
+(1)		A.　拡張されたエクステントを解放できます。
+(2)		B.　表に作成されていたトリガーは削除されます。
+(3)		C.　表のオブジェクト権限が無効化されます。
+(4)		D.　WHERE句を指定することで、特定の行だけを切り捨てることができます。
+(5)		E.　FLASHBACK TO BEFORE DROP文を実行するとデータを戻すことができます。
+
+Ans.A
+×
+SelfAns.D
+
+
+問題55 第55問目 / 全78問
+以下の文の実行結果と同じ結果になるものを2つ選択してください。
+
+SELECT COUNT(*) FROM employees;
+(1)		A.　SELECT COUNT(NVL(salary, 0)) FROM employees;
+(2)		B.　SELECT COUNT(salary) FROM employees WHERE salary IS NOT NULL;
+(3)		C.　SELECT COUNT(NULLIF(salary, 0)) FROM employees;
+(4)		D.　SELECT COUNT(COALESCE(salary, 0)) FROM employees;
+(5)		E.　SELECT COUNT(NVL2(salary, 0, NULL)) FROM employees;
+
+Ans.AD
+×
+SelfAns.BC
+
+
+
+問題56 第56問目 / 全78問
+GLOBAL TEMPORARY TABLESについて正しい記述はどれでしょうか。（2つ選択）
+(1)		A.　UNDOが生成されます。
+(2)		B.　REDOは生成されません。
+(3)		C.　TRUNCATEコマンドにより、GLOBAL TEMPORARY TABLE内のすべての行が削除されます。
+(4)		D.　GLOBAL TEMPORARY TABLEに対するDML文のロールバックはできません。
+
+Ans.AC
+×
+SelfAns.CD
+
+問題57 第57問目 / 全78問
+次のうち、FULL OUTER JOINの特徴として正しいものはどれでしょうか。（2つ選択）
+(1)		A. 両方の表の全行を出力し、結合条件に一致しない行はNULLで埋める
+(2)		B. 実行結果はデカルト積と同じになる
+(3)		C. 結合条件に一致する行のみを返し、一致しない行は含まれない
+(4)		D. Oracle独自結合構文ではサポートされていない
+(5)		E. OUTER JOIN にFULLを付けた場合、INNER JOINと同義である
+
+Ans.AD
+×
+SelfAns.AB
+
+
+
+問題58 第58問目 / 全78問
+ORACLE_DATAPUMPアクセス・ドライバを使用して実行できるものはどれでしょうか。（3つ選択）
+(1)		A.　外部ファイルからデータベースへのデータのロードができます。
+(2)		B.　データベースからデータを読み取り、1つ以上の外部ファイルにデータを挿入します。
+(3)		C.　外部表を作成する場合、別の外部表やデータベースの表からデータを選択できます。
+(4)		D.　外部表を作成する場合、データベースの表からのみデータを選択できます。
+(5)		E.　外部表を作成すると、自動的にディレクトリオブジェクトが作成されます。
+
+Ans.ABC
+×
+SelfAns.BCE
+
+
+問題59 第59問目 / 全78問
+次のSQL文のうち、正しく動作するものはどれでしょうか。3つ選んでください。
+(1)		A. SELECT dept_id, COUNT(*) FROM employees GROUP BY dept_id;
+(2)		B. SELECT dept_id, name, COUNT(*) FROM employees GROUP BY dept_id;
+(3)		C. SELECT dept_id, MAX(SUM(salary)) FROM employees GROUP BY dept_id;
+(4)		D. SELECT MAX(SUM(salary)) FROM employees GROUP BY dept_id;
+(5)		E. SELECT MAX(salary),SUM(salary) FROM employees GROUP BY dept_id;
+(6)		F. SELECT AVG(MAX(SUM(salary))) FROM employees;
+
+Ans.ADE
+×
+SelfAns.ABC
+
+
+問題60 第60問目 / 全78問
+INTERSECTの特徴として正しいものを2つ選択してください。
+(1)		A. 列数やデータ型が異なるSELECT同士でも使用できる
+(2)		B. 2つの結果の共通する行を選択する
+(3)		C. 結果はソートされない
+(4)		D. NULL値は除外される
+(5)		E. SELECT文の順番を入れ替えても結果は変わらない
+
+Ans.BE
+×
+SelfAns.BD
+
+
+問題61 第61問目 / 全78問
+次の文で正常実行されるものはどれでしょうか。
+　
+(1)		A.　CREATE OR REPLACE VIEW ITEM_VIEW1 AS SELECT I.ITEM_ID, I.ITEM_PRICE || "Price" FROM ITEM I JOIN MAKER M ON (I.MAKER_ID = M.MAKER_ID) GROUP BY I.ITEM_ID, I.ITEM_PRICE;
+(2)		B.　CREATE OR REPLACE VIEW ITEM_VIEW1 AS SELECT I.ITEM_ID, I.ITEM_PRICE "Price" FROM ITEM I JOIN MAKER M ON (I.MAKER_ID = M.MAKER_ID) GROUP BY I.ITEM_ID, I.ITEM_PRICE;
+(3)		C.　CREATE OR REPLACE VIEW ITEM_VIEW1 AS SELECT I.ITEM_ID, I.ITEM_PRICE "Price" FROM ITEM I JOIN MAKER M ON (I.MAKER_ID = M.MAKER_ID) GROUP BY I.ITEM_ID, I.ITEM_PRICE WITH READ OPTION;
+(4)		D.　CREATE OR REPLACE VIEW ITEM_VIEW1 AS SELECT I.ITEM_ID, I.ITEM_PRICE FROM ITEM I JOIN MAKER M ON (I.MAKER_ID = M.MAKER_ID) GROUP BY I.ITEM_ID, I.ITEM_PRICE WITH CHECK OPTION CONSTRAINT;
+
+Ans.B
+×
+SelfAns.A
+
+
+問題62 第62問目 / 全78問
+次のうち、サブクエリが必要なケースはどれでしょうか。最適なものを2つ選択してください。
+(1)		A. 全商品の平均価格より高い価格の商品を表示する
+(2)		B. 各カテゴリごとの平均価格を表示する
+(3)		C. 注文テーブルから最も高額の注文を表示する
+(4)		D. 各顧客ごとの注文数を表示する
+(5)		E. 商品テーブルとカテゴリテーブルから商品名とカテゴリ名を表示する
+
+Ans.AC
+×
+SelfAns.AB
+
+問題63 第63問目 / 全78問
+索引について正しい記述はどれでしょうか。（2つ選択）
+(1)		A.　SELECT文は、表にアクセスせずに索引にアクセスできます。
+(2)		B.　表が削除されてRECYCLE BINに移動すると、その表に作成された索引は復旧できません。
+(3)		C.　別のスキーマ内に存在する表に対して、索引を作成することができます。
+(4)		D.　一意索引から非一意索引にすることができます。
+(5)		E.　DMLが実行されると、必要に応じて対応する索引が自動的に更新されます。
+
+Ans.CE
+×
+SelfAns.AE
+
+
+問題64 第64問目 / 全78問
+シーケンス変更について、正しいものを2つ選択してください。
+(1)		A. 増分値は変更できる
+(2)		B. 初期値は変更できる
+(3)		C. CYCLEの変更で値の重複が有りうる
+(4)		D. CACHEサイズを変更すると既存キャッシュがクリアされる
+(5)		E. シーケンス変更を行うと初期値から再生成される
+
+Ans.AC
+×
+SelfAns.CE
+
+
+問題65 第65問目 / 全78問
+シノニムについて正しい記述はどれでしょうか。
+(1)		A.　表を削除した場合、表のシノニムも削除されます。
+(2)		B.　表の列を削除した場合、その表のシノニムを再作成する必要があります。
+(3)		C.　表を削除した場合、表のシノニムは無効になります。
+(4)		D.　パブリック・シノニムを削除するには、DROP PUBLIC SYNONYMシステム権限が必要です。
+
+Ans.D
+○
+
+
+問題66 第66問目 / 全78問
+次の順序でSQL文を実行した時の説明として、正しいものを2つ選択してください。
+
+・USER1ユーザーで以下を実行
+GRANT SELECT ON Employees TO USER2 WITH GRANT OPTION;
+・USER2ユーザーで以下を実行
+GRANT SELECT ON USER1.Employees TO USER3 WITH GRANT OPTION;
+・USER1ユーザーで以下を実行
+REVOKE SELECT ON Employees FROM USER2;
+(1)		A. USER3は他のユーザにSELECT権限を付与できない
+(2)		B. USER2のSELECT権限が取り消される
+(3)		C. USER3のSELECT権限が取り消される
+(4)		D. 2つ目のWITH GRANT OPTIONは指定できないためエラーとなる
+(5)		E. REVOKEがエラーとなる
+
+Ans.BC
+○
+
+
+問題67 第67問目 / 全78問
+以下のシーケンスを作成します。
+
+CREATE SEQUENCE ITEM_SEQ
+START WITH 100
+INCREMENT BY 10
+MAXVALUE 1000
+CYCLE
+CACHE 10;
+
+シーケンスITEM_SEQを用いて最大値1000まで番号を生成したのち、このシーケンスが生成する値を使った1行を表にINSERTを実行します。
+INSERTした行をSELECTによって表示したとき、生成したシーケンス番号の値は何でしょうか。
+(1)		A.　1
+(2)		B.　10
+(3)		C.　100
+(4)		D.　1000
+(5)		E.　エラー
+
+Ans.A
+×
+SelfAns.D
+
+
+問題68 第68問目 / 全78問
+次のうち、ロールに関して正しい記載を2つ選択してください。
+(1)		A. ロールはPUBLICに付与できる
+(2)		B. ロール付与でWITH GRANT OPTIONを指定できる
+(3)		C. ロール付与でWITH ADMIN OPTIONを指定できる
+(4)		D. ロールは他のロールに付与できない
+(5)		E. ロールはシステム権限とオブジェクト権限を同時に付与することができる
+(6)		F. ロールを循環的に使用することができる
+
+Ans.AC
+○
+
+問題69 第69問目 / 全78問
+システムとオブジェクトの権限について正しい記述はどれでしょうか。
+(1)		A.　他スキーマの表へ問合せをするには、システム権限が必要です。
+(2)		B.　他スキーマの表に外部キー制約を追加するには、オブジェクト権限が必要です。
+(3)		C.　WITH GRANT OPTIONは、ユーザーとロールの両方にオブジェクト権限を付与するときに使用できます 。
+(4)		D.　WITH ADMIN OPTIONで付与されたシステム権限を取り消すと、依存権限が取り消される場合があります。
+
+Ans.B
+×
+SelfAns.D
+
+問題70 第70問目 / 全78問
+以下のINSERT ALL文について、正しい記述を2つ選択してください。（Employees表には3行のデータが存在しています）
+
+INSERT ALL
+　INTO Employees_History(EMP_ID, NAME, DEPT_ID)
+　　VALUES(emp_id, name, dept_id)
+　INTO Employee_Salaries(EMP_ID, SALARY)
+　　VALUES(emp_id, salary)
+　INTO Employee_Bonuses(EMP_ID, BONUS)
+　　VALUES(emp_id, bonus)
+SELECT
+　emp_id,
+　name,
+　salary,
+　bonus,
+　dept_id
+FROM
+　Employees;
+(1)		A.　INSERT ALLは同一テーブルにしか挿入できないためエラーとなる
+(2)		B.　Employees_Historyには3行分のデータが追加される
+(3)		C.　一つのINSERT ALL句に複数のINTO句を使用しているためエラーとなる
+(4)		D.　INTO句にVALUES句が指定できる
+(5)		E.　INSERT ALL実行後、自動的にコミットが行われる
+
+Ans.BD
+×
+SelfAns.BE
+
+
+問題71 第71問目 / 全78問
+ユーザー:USER01に次のことを許可します。
+
+1. ITEM表のITEM_NAME列とITEM_PRICE列に更新権限を付与
+2. 他のユーザーにその権限を許可
+
+上記を実行するための正しい文はどれでしょうか。
+(1)		A. GRANT UPDATE ON ITEM.ITEM_NAME, ITEM.ITEM_PRICE TO USER01 WITH ADMIN OPTION;
+(2)		B. GRANT UPDATE ON ITEM.ITEM_NAME, ITEM.ITEM_PRICE TO USER01 WITH GRANT OPTION;
+(3)		C. GRANT UPDATE ITEM_NAME, ITEM_PRICE ON ITEM TO USER01;
+(4)		D. GRANT UPDATE (ITEM_NAME, ITEM_PRICE) ON ITEM TO USER01;
+(5)		E. GRANT UPDATE (ITEM_NAME, ITEM_PRICE) ON ITEM TO USER01 WITH GRANT OPTION;
+(6)		F. GRANT UPDATE (ITEM_NAME, ITEM_PRICE) ON ITEM TO USER01 WITH ADMIN OPTION;
+
+Ans.E
+×
+SelfAns.A
+
+問題72 第72問目 / 全78問
+TIMESTAMP WITH TIME ZONE型の特徴について、正しい記述を2つ選択してください。
+(1)		A.　年・月・日・時・分・秒だけを格納し、小数秒は扱えない
+(2)		B.　CURRENT_TIMESTAMP関数はTIMESTAMP WITH TIME ZONE型の値を返す
+(3)		C.　値はデータベース・タイムゾーンで正規化して格納される
+(4)		D.　値にタイムゾーン・リージョン名またはオフセット情報を含む
+(5)		E.　タイムゾーン情報を無視して格納される
+
+Ans.BD
+×
+SelfAns.AC
+
+
+問題73 第73問目 / 全78問
+以下の文を実行します。
+
+1.　CREATE ROLE ITEM_ROLE;
+2.　GRANT CREATE VIEW, UPDATE
+　　ON USER01.ITEM
+　　TO ITEM_ROLE;
+3.　GRANT ITEM_ROLE, CREATE VIEW TO USER01;
+
+実行結果について正しい記述はどれでしょうか。
+(1)		A.　1の文はエラーとなります。
+(2)		B.　2の文はエラーとなります。
+(3)		C.　3の文はエラーとなります。
+(4)		D.　すべて正常に実行できます。
+
+Ans.B
+×
+SelfAns.D
+
+問題74 第74問目 / 全78問
+ロールバックが実行されるケースは以下のうちどれでしょうか。2つ選択してください。
+(1)		A.　DDLが実行されたとき
+(2)		B.　SAVEPOINTが実行されたとき
+(3)		C.　システム障害が発生したとき
+(4)		D.　DMLが実行されたとき
+(5)		E.　shutdown immediateが実行されたとき
+
+Ans.CE
+○
+
+問題75 第75問目 / 全78問
+データ・ディクショナリについて、正しい記述はどれでしょうか。（2つ選択）
+(1)		A.　接頭辞 ALL_、DBA_、および USER_ が付いたビューは、"_"の後の名称が一致しないものが存在します。
+(2)		B.　接頭辞 ALL_ の付いたビューは、ユーザーが権限を持つオブジェクトのメタデータを表示します。
+(3)		C.　接頭辞 USER_ の付いたビューは、ユーザーが権限を持つオブジェクトのメタデータを表示します。
+(4)		D.　接頭辞 DBA_ の付いたビューは、SYS スキーマ内のオブジェクトのメタデータのみを表示します。
+
+Ans.AB
+×
+SelfAns.CD
+
+問題76 第76問目 / 全78問
+タイムゾーンについて正しい記述はどれでしょうか。（3つ選択）
+(1)		A.　DBTIMEZONEは、協定世界時 (UTC) からのオフセットを返すことができます。
+(2)		B.　SESSIONTIMEZONEは、協定世界時 (UTC) からのオフセットを返すことができます。
+(3)		C.　DBTIMEZONEを変更した場合、データベースの再起動は不要です。
+(4)		D.　CURRENT_DATEは、タイムゾーン情報のないデータを返します。
+(5)		E.　CURRENT_TIMESTAMPは、タイムゾーン情報のないデータを返します。
+
+Ans.ABD
+×
+SelfAns.BD
+
+
+問題77 第77問目 / 全78問
+図書館アプリケーションを設計するとします。
+表に以下の要件の列を作成する必要があります。
+
+1.貸出期間を格納する
+2.貸出期間の上限は14日
+
+どのデータ型を使用すればいいでしょうか。
+(1)		A.　INTERVAL DAY TO SECOND
+(2)		B.　INTERVAL YEAR TO MONTH
+(3)		C.　DATE
+(4)		D.　TIMESTAMP
+
+Ans.A
+○
+
+
+問題78 第78問目 / 全78問
+
+この表構造でのデータの保存について正しい記述はどれでしょうか。（2つ選択）
+　
+(1)		A.　FOOD_ID列では、負の整数を保持できます。
+(2)		B.　MADE_DATE列では、dddd-mon-yyyy形式でのみ日付を保持できます。
+(3)		C.　EXPIRATION_DATE列では、日、時間、分、および秒で、時間間隔を保持します。
+(4)		D.　EXPIRATION_DATE列では、年、および月で、時間間隔を保持します。
+
+Ans.AD
+×
+SelfAns.BD
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

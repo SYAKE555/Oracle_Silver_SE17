@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>模擬試験 結果分析 - Oracle Silver SQL</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', 'Hiragino Sans', Arial, sans-serif; background: #f5f7fa; color: #2d3748; line-height: 1.6; }
+  .page-header { background: linear-gradient(135deg, #2c3e50 0%, #34495e 60%, #c0392b 100%); color: white; padding: 40px 24px; text-align: center; }
+  .page-header h1 { font-size: 1.8rem; margin-bottom: 6px; }
+  .page-header .subtitle { opacity: 0.9; font-size: 0.95rem; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 24px; }
+  .nav-back { display: inline-block; padding: 8px 16px; background: white; border-radius: 6px; text-decoration: none; color: #2d3748; box-shadow: 0 2px 4px rgba(0,0,0,.08); font-size: .9rem; margin-bottom: 16px; }
+  .nav-back:hover { background: #edf2f7; }
+
+  .summary-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-bottom: 24px; }
+  .exam-card { background: white; border-radius: 12px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,.08); text-align: center; }
+  .exam-title { font-size: 1rem; color: #4a5568; font-weight: 600; margin-bottom: 12px; }
+  .exam-score-big { font-size: 3.5rem; font-weight: 900; line-height: 1; }
+  .exam-score-big .unit { font-size: 1.2rem; font-weight: 500; margin-left: 4px; color: #718096; }
+  .exam-sub { margin-top: 8px; color: #718096; font-size: .9rem; }
+
+  .section-heading { font-size: 1.15rem; font-weight: 700; margin: 28px 0 14px; padding: 10px 14px; background: white; border-radius: 8px; border-left: 5px solid #c0392b; box-shadow: 0 2px 6px rgba(0,0,0,.06); }
+  .card { background: white; border-radius: 12px; padding: 20px 22px; box-shadow: 0 2px 8px rgba(0,0,0,.08); margin-bottom: 16px; }
+
+  .domain-row { margin-bottom: 14px; }
+  .domain-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px; font-size: .95rem; }
+  .domain-name { color: #2d3748; text-decoration: none; }
+  .domain-name:hover { color: #c0392b; text-decoration: underline; }
+  .domain-score { color: #4a5568; font-size: .9rem; }
+  .bar-bg { background: #edf2f7; height: 14px; border-radius: 7px; overflow: hidden; }
+  .bar-fg { height: 100%; border-radius: 7px; transition: width .4s; }
+  .wrong-list { margin-top: 6px; }
+  .q-tag { display: inline-block; background: #fee; color: #c0392b; padding: 2px 8px; border-radius: 10px; font-size: .75rem; margin: 2px 3px 0 0; }
+
+  .exam-section { margin-bottom: 26px; }
+  .exam-section h3 { font-size: 1rem; color: #4a5568; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 2px solid #e2e8f0; }
+
+  .weakness-grid { display: grid; gap: 10px; }
+  .weakness-item { display: grid; grid-template-columns: 50px 1fr auto; gap: 14px; align-items: center; padding: 12px 16px; border-radius: 8px; background: white; border-left: 4px solid #cbd5e0; }
+  .weakness-item.p-high { border-left-color: #c0392b; background: #fef5f5; }
+  .weakness-item.p-mid { border-left-color: #e67e22; background: #fef8f0; }
+  .weakness-item.p-low { border-left-color: #f1c40f; background: #fffbe8; }
+  .weakness-item.p-ok { border-left-color: #2ecc71; background: #f0fdf4; }
+  .rank { font-size: 1.3rem; font-weight: 900; color: #718096; }
+  .wk-main a { color: #2d3748; text-decoration: none; }
+  .wk-main a:hover { color: #c0392b; }
+  .wk-sub { font-size: .8rem; color: #718096; margin-top: 2px; }
+  .priority { font-weight: 700; font-size: .85rem; padding: 4px 10px; border-radius: 10px; background: #fff; color: #4a5568; white-space: nowrap; }
+  .p-high .priority { background: #c0392b; color: white; }
+  .p-mid .priority { background: #e67e22; color: white; }
+  .p-low .priority { background: #f1c40f; color: white; }
+  .p-ok .priority { background: #2ecc71; color: white; }
+
+  .memo-box { background: #fff8e1; border-left: 4px solid #f1c40f; padding: 14px 18px; border-radius: 8px; margin: 16px 0; }
+  .memo-box h4 { font-size: .95rem; color: #7c5a00; margin-bottom: 6px; }
+  .memo-box ul { list-style: none; font-size: .9rem; color: #5c4400; }
+  .memo-box li { padding: 2px 0; }
+
+  .tab-bar { display: flex; gap: 4px; margin-bottom: 14px; border-bottom: 2px solid #e2e8f0; }
+  .tab { padding: 10px 16px; background: transparent; border: none; cursor: pointer; font-weight: 600; color: #718096; border-bottom: 3px solid transparent; margin-bottom: -2px; }
+  .tab.active { color: #c0392b; border-bottom-color: #c0392b; }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .action-link { display: inline-block; margin-top: 14px; padding: 10px 18px; background: #c0392b; color: white; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: .9rem; }
+  .action-link:hover { background: #a52f22; }
+
+  @media (max-width: 640px) {
+    .page-header h1 { font-size: 1.4rem; }
+    .exam-score-big { font-size: 2.8rem; }
+    .weakness-item { grid-template-columns: 40px 1fr auto; padding: 10px 12px; }
+  }
+</style>
+</head>
+<body>
+<div class="page-header">
+  <h1>模擬試験 結果分析レポート</h1>
+  <div class="subtitle">Oracle Master Silver SQL (1Z0-071) - 失点分析と強化ポイント</div>
+</div>
+<div class="container">
+  <a class="nav-back" href="index.html">← 教科書トップへ戻る</a>
+
+  <div class="section-heading">📊 総合スコア</div>
+  <div class="summary-row">
+    
+    <div class="exam-card">
+      <div class="exam-title">第1回 模擬試験</div>
+      <div class="exam-score-big" style="color:#e67e22">48<span class="unit">点</span></div>
+      <div class="exam-sub">正答数 38 / 78（正答率 49%）</div>
+    </div>
+    
+    <div class="exam-card">
+      <div class="exam-title">第2回 模擬試験</div>
+      <div class="exam-score-big" style="color:#c0392b">33<span class="unit">点</span></div>
+      <div class="exam-sub">正答数 25 / 77（正答率 32%）</div>
+    </div>
+    
+    <div class="exam-card">
+      <div class="exam-title">合計正答率の推移</div>
+      <div style="font-size:1.8rem;font-weight:700;margin-top:12px">49% → 32%</div>
+      <div class="exam-sub">第1回 → 第2回</div>
+      <div style="margin-top:10px;font-size:.85rem;color:#c0392b;font-weight:600">
+        ⚠ 下降傾向 — 復習優先度を上げる
+      </div>
+    </div>
+  </div>
+
+  <div class="memo-box"><h4>⚠ 本人メモ「わかっていない問題」</h4><ul><li>第1回：問20, 問23, 問41, 問42, 問46, 問59</li></ul></div>
+
+  <div class="section-heading">🎯 弱点ランキング（2回合計ベース）</div>
+  <div class="card">
+    <p style="font-size:.85rem;color:#4a5568;margin-bottom:12px">正答率の低い順にドメインをランキング。<b>最優先</b>と<b>優先</b>の4領域を重点的に復習する。</p>
+    <div class="weakness-grid">
+      
+    <div class="weakness-item p-high">
+      <div class="rank">#1</div>
+      <div class="wk-main">
+        <a href="D6_textbook.html"><strong>D6</strong> サブクエリ・集合演算</a>
+        <div class="wk-sub">合計正答率 26%（5/19）</div>
+      </div>
+      <div class="priority">最優先</div>
+    </div>
+    
+    <div class="weakness-item p-high">
+      <div class="rank">#2</div>
+      <div class="wk-main">
+        <a href="D8_textbook.html"><strong>D8</strong> DDL・オブジェクト管理</a>
+        <div class="wk-sub">合計正答率 35%（19/54）</div>
+      </div>
+      <div class="priority">最優先</div>
+    </div>
+    
+    <div class="weakness-item p-mid">
+      <div class="rank">#3</div>
+      <div class="wk-main">
+        <a href="D3_textbook.html"><strong>D3</strong> 単一行関数</a>
+        <div class="wk-sub">合計正答率 37%（7/19）</div>
+      </div>
+      <div class="priority">優先</div>
+    </div>
+    
+    <div class="weakness-item p-mid">
+      <div class="rank">#4</div>
+      <div class="wk-main">
+        <a href="D7_textbook.html"><strong>D7</strong> DML・トランザクション</a>
+        <div class="wk-sub">合計正答率 38%（6/16）</div>
+      </div>
+      <div class="priority">優先</div>
+    </div>
+    
+    <div class="weakness-item p-low">
+      <div class="rank">#5</div>
+      <div class="wk-main">
+        <a href="D1_textbook.html"><strong>D1</strong> SQLとRDBの基礎</a>
+        <div class="wk-sub">合計正答率 50%（10/20）</div>
+      </div>
+      <div class="priority">要復習</div>
+    </div>
+    
+    <div class="weakness-item p-low">
+      <div class="rank">#6</div>
+      <div class="wk-main">
+        <a href="D5_textbook.html"><strong>D5</strong> 複数表の結合</a>
+        <div class="wk-sub">合計正答率 50%（2/4）</div>
+      </div>
+      <div class="priority">要復習</div>
+    </div>
+    
+    <div class="weakness-item p-low">
+      <div class="rank">#7</div>
+      <div class="wk-main">
+        <a href="D4_textbook.html"><strong>D4</strong> グループ関数と集計</a>
+        <div class="wk-sub">合計正答率 57%（4/7）</div>
+      </div>
+      <div class="priority">要復習</div>
+    </div>
+    
+    <div class="weakness-item p-low">
+      <div class="rank">#8</div>
+      <div class="wk-main">
+        <a href="D2_textbook.html"><strong>D2</strong> データの絞り込みとソート</a>
+        <div class="wk-sub">合計正答率 62%（10/16）</div>
+      </div>
+      <div class="priority">要復習</div>
+    </div>
+    
+    </div>
+    <a href="mock_exam_reinforce.html" class="action-link">📚 弱点強化学習ページへ（Phase 2）</a>
+  </div>
+
+  <div class="section-heading">📈 ドメイン別・詳細分析</div>
+  <div class="card">
+    <div class="tab-bar">
+      <button class="tab active" onclick="showTab('combined')">合計</button>
+      <button class="tab" onclick="showTab('exam1')">第1回</button>
+      <button class="tab" onclick="showTab('exam2')">第2回</button>
+    </div>
+    <div id="tab-combined" class="tab-content active">
+      
+    <div class="domain-row">
+      <div class="domain-head">
+        <a href="D1_textbook.html" class="domain-name"><strong>D1</strong> SQLとRDBの基礎</a>
+        <span class="domain-score">10/20 <b>(50%)</b></span>
+      </div>
+      <div class="bar-bg"><div class="bar-fg" style="width:50.0%;background:#e67e22"></div></div>
+      <div class="wrong-list"><span class="q-tag">第1回 問6</span><span class="q-tag">第1回 問48</span><span class="q-tag">第1回 問56</span><span class="q-tag">第1回 問58</span><span class="q-tag">第2回 問19</span><span class="q-tag">第2回 問20</span><span class="q-tag">第2回 問54</span><span class="q-tag">第2回 問58</span><span class="q-tag">第2回 問63</span><span class="q-tag">第2回 問78</span></div>
+    </div>
+    
+    <div class="domain-row">
+      <div class="domain-head">
+        <a href="D2_textbook.html" class="domain-name"><strong>D2</strong> データの絞り込みとソート</a>
+        <span class="domain-score">10/16 <b>(62%)</b></span>
+      </div>
+      <div class="bar-bg"><div class="bar-fg" style="width:62.5%;background:#f1c40f"></div></div>
+      <div class="wrong-list"><span class="q-tag">第1回 問8</span><span class="q-tag">第1回 問12</span><span class="q-tag">第1回 問26</span><span class="q-tag">第2回 問10</span><span class="q-tag">第2回 問24</span><span class="q-tag">第2回 問39</span></div>
+    </div>
+    
+    <div class="domain-row">
+      <div class="domain-head">
+        <a href="D3_textbook.html" class="domain-name"><strong>D3</strong> 単一行関数</a>
+        <span class="domain-score">7/19 <b>(37%)</b></span>
+      </div>
+      <div class="bar-bg"><div class="bar-fg" style="width:36.8%;background:#c0392b"></div></div>
+      <div class="wrong-list"><span class="q-tag">第1回 問13</span><span class="q-tag">第1回 問14</span><span class="q-tag">第1回 問20</span><span class="q-tag">第2回 問12</span><span class="q-tag">第2回 問13</span><span class="q-tag">第2回 問14</span><span class="q-tag">第2回 問15</span><span class="q-tag">第2回 問18</span><span class="q-tag">第2回 問37</span><span class="q-tag">第2回 問41</span><span class="q-tag">第2回 問51</span><span class="q-tag">第2回 問55</span></div>
+    </div>
+    
+    <div class="domain-row">
+      <div class="domain-head">
+        <a href="D4_textbook.html" class="domain-name"><strong>D4</strong> グループ関数と集計</a>
+        <span class="domain-score">4/7 <b>(57%)</b></span>
+      </div>
+      <div class="bar-bg"><div class="bar-fg" style="width:57.1%;background:#e67e22"></div></div>
+      <div class="wrong-list"><span class="q-tag">第1回 問23</span><span class="q-tag">第2回 問23</span><span class="q-tag">第2回 問59</span></div>
+    </div>
+    
+    <div class="domain-row">
+      <div class="domain-head">
+        <a href="D5_textbook.html" class="domain-name"><strong>D5</strong> 複数表の結合</a>
+        <span class="domain-score">2/4 <b>(50%)</b></span>
+      </div>
+      <div class="bar-bg"><div class="bar-fg" style="width:50.0%;background:#e67e22"></div></div>
+      <div class="wrong-list"><span class="q-tag">第1回 問24</span><span class="q-tag">第2回 問57</span></div>
+    </div>
+    
+    <div class="domain-row">
+      <div class="domain-head">
+        <a href="D6_textbook.html" class="domain-name"><strong>D6</strong> サブクエリ・集合演算</a>
+        <span class="domain-score">5/19 <b>(26%)</b></span>
+      </div>
+      <div class="bar-bg"><div class="bar-fg" style="width:26.3%;background:#c0392b"></div></div>
+      <div class="wrong-list"><span class="q-tag">第1回 問31</span><span class="q-tag">第1回 問32</span><span class="q-tag">第1回 問34</span><span class="q-tag">第1回 問35</span><span class="q-tag">第2回 問25</span><span class="q-tag">第2回 問31</span><span class="q-tag">第2回 問32</span><span class="q-tag">第2回 問33</span><span class="q-tag">第2回 問34</span><span class="q-tag">第2回 問36</span><span class="q-tag">第2回 問49</span><span class="q-tag">第2回 問53</span><span class="q-tag">第2回 問60</span><span class="q-tag">第2回 問62</span></div>
+    </div>
+    
+    <div class="domain-row">
+      <div class="domain-head">
+        <a href="D7_textbook.html" class="domain-name"><strong>D7</strong> DML・トランザクション</a>
+        <span class="domain-score">6/16 <b>(38%)</b></span>
+      </div>
+      <div class="bar-bg"><div class="bar-fg" style="width:37.5%;background:#c0392b"></div></div>
+      <div class="wrong-list"><span class="q-tag">第1回 問39</span><span class="q-tag">第1回 問42</span><span class="q-tag">第1回 問44</span><span class="q-tag">第1回 問46</span><span class="q-tag">第2回 問38</span><span class="q-tag">第2回 問42</span><span class="q-tag">第2回 問43</span><span class="q-tag">第2回 問45</span><span class="q-tag">第2回 問46</span><span class="q-tag">第2回 問70</span></div>
+    </div>
+    
+    <div class="domain-row">
+      <div class="domain-head">
+        <a href="D8_textbook.html" class="domain-name"><strong>D8</strong> DDL・オブジェクト管理</a>
+        <span class="domain-score">19/54 <b>(35%)</b></span>
+      </div>
+      <div class="bar-bg"><div class="bar-fg" style="width:35.2%;background:#c0392b"></div></div>
+      <div class="wrong-list"><span class="q-tag">第1回 問41</span><span class="q-tag">第1回 問45</span><span class="q-tag">第1回 問47</span><span class="q-tag">第1回 問50</span><span class="q-tag">第1回 問51</span><span class="q-tag">第1回 問52</span><span class="q-tag">第1回 問53</span><span class="q-tag">第1回 問59</span><span class="q-tag">第1回 問60</span><span class="q-tag">第1回 問61</span><span class="q-tag">第1回 問63</span><span class="q-tag">第1回 問65</span><span class="q-tag">第1回 問67</span><span class="q-tag">第1回 問68</span><span class="q-tag">第1回 問70</span><span class="q-tag">第1回 問71</span><span class="q-tag">第1回 問72</span><span class="q-tag">第1回 問74</span><span class="q-tag">第1回 問75</span><span class="q-tag">第1回 問77</span><span class="q-tag">第2回 問27</span><span class="q-tag">第2回 問47</span><span class="q-tag">第2回 問48</span><span class="q-tag">第2回 問50</span><span class="q-tag">第2回 問52</span><span class="q-tag">第2回 問56</span><span class="q-tag">第2回 問61</span><span class="q-tag">第2回 問64</span><span class="q-tag">第2回 問67</span><span class="q-tag">第2回 問69</span><span class="q-tag">第2回 問71</span><span class="q-tag">第2回 問72</span><span class="q-tag">第2回 問73</span><span class="q-tag">第2回 問75</span><span class="q-tag">第2回 問76</span></div>
+    </div>
+    
+    </div>
+    <div id="tab-exam1" class="tab-content">
+      
+    <div class="domain-row">
+      <div class="domain-head">
+        <a href="D1_textbook.html" class="domain-name"><strong>D1</strong> SQLとRDBの基礎</a>
+        <span class="domain-score">6/10 <b>(60%)</b></span>
+      </div>
+      <div class="bar-bg"><div class="bar-fg" style="width:60.0%;background:#f1c40f"></div></div>
+      <div class="wrong-list"><span class="q-tag">問6</span><span class="q-tag">問48</span><span class="q-tag">問56</span><span class="q-tag">問58</span></div>
+    </div>
+    
+    <div class="domain-row">
+      <div class="domain-head">
+        <a href="D2_textbook.html" class="domain-name"><strong>D2</strong> データの絞り込みとソート</a>
+        <span class="domain-score">4/7 <b>(57%)</b></span>
+      </div>
+      <div class="bar-bg"><div class="bar-fg" style="width:57.1%;background:#e67e22"></div></div>
+      <div class="wrong-list"><span class="q-tag">問8</span><span class="q-tag">問12</span><span class="q-tag">問26</span></div>
+    </div>
+    
+    <div class="domain-row">
+      <div class="domain-head">
+        <a href="D3_textbook.html" class="domain-name"><strong>D3</strong> 単一行関数</a>
+        <span class="domain-score">5/8 <b>(62%)</b></span>
+      </div>
+      <div class="bar-bg"><div class="bar-fg" style="width:62.5%;background:#f1c40f"></div></div>
+      <div class="wrong-list"><span class="q-tag">問13</span><span class="q-tag">問14</span><span class="q-tag">問20</span></div>
+    </div>
+    
+    <div class="domain-row">
+      <div class="domain-head">
+        <a href="D4_textbook.html" class="domain-name"><strong>D4</strong> グループ関数と集計</a>
+        <span class="domain-score">2/3 <b>(67%)</b></span>
+      </div>
+      <div class="bar-bg"><div class="bar-fg" style="width:66.7%;background:#f1c40f"></div></div>
+      <div class="wrong-list"><span class="q-tag">問23</span></div>
+    </div>
+    
+    <div class="domain-row">
+      <div class="domain-head">
+        <a href="D5_textbook.html" class="domain-name"><strong>D5</strong> 複数表の結合</a>
+        <span class="domain-score">2/3 <b>(67%)</b></span>
+      </div>
+      <div class="bar-bg"><div class="bar-fg" style="width:66.7%;background:#f1c40f"></div></div>
+      <div class="wrong-list"><span class="q-tag">問24</span></div>
+    </div>
+    
+    <div class="domain-row">
+      <div class="domain-head">
+        <a href="D6_textbook.html" class="domain-name"><strong>D6</strong> サブクエリ・集合演算</a>
+        <span class="domain-score">3/7 <b>(43%)</b></span>
+      </div>
+      <div class="bar-bg"><div class="bar-fg" style="width:42.9%;background:#e67e22"></div></div>
+      <div class="wrong-list"><span class="q-tag">問31</span><span class="q-tag">問32</span><span class="q-tag">問34</span><span class="q-tag">問35</span></div>
+    </div>
+    
+    <div class="domain-row">
+      <div class="domain-head">
+        <a href="D7_textbook.html" class="domain-name"><strong>D7</strong> DML・トランザクション</a>
+        <span class="domain-score">4/8 <b>(50%)</b></span>
+      </div>
+      <div class="bar-bg"><div class="bar-fg" style="width:50.0%;background:#e67e22"></div></div>
+      <div class="wrong-list"><span class="q-tag">問39</span><span class="q-tag">問42</span><span class="q-tag">問44</span><span class="q-tag">問46</span></div>
+    </div>
+    
+    <div class="domain-row">
+      <div class="domain-head">
+        <a href="D8_textbook.html" class="domain-name"><strong>D8</strong> DDL・オブジェクト管理</a>
+        <span class="domain-score">12/32 <b>(38%)</b></span>
+      </div>
+      <div class="bar-bg"><div class="bar-fg" style="width:37.5%;background:#c0392b"></div></div>
+      <div class="wrong-list"><span class="q-tag">問41</span><span class="q-tag">問45</span><span class="q-tag">問47</span><span class="q-tag">問50</span><span class="q-tag">問51</span><span class="q-tag">問52</span><span class="q-tag">問53</span><span class="q-tag">問59</span><span class="q-tag">問60</span><span class="q-tag">問61</span><span class="q-tag">問63</span><span class="q-tag">問65</span><span class="q-tag">問67</span><span class="q-tag">問68</span><span class="q-tag">問70</span><span class="q-tag">問71</span><span class="q-tag">問72</span><span class="q-tag">問74</span><span class="q-tag">問75</span><span class="q-tag">問77</span></div>
+    </div>
+    
+    </div>
+    <div id="tab-exam2" class="tab-content">
+      
+    <div class="domain-row">
+      <div class="domain-head">
+        <a href="D1_textbook.html" class="domain-name"><strong>D1</strong> SQLとRDBの基礎</a>
+        <span class="domain-score">4/10 <b>(40%)</b></span>
+      </div>
+      <div class="bar-bg"><div class="bar-fg" style="width:40.0%;background:#e67e22"></div></div>
+      <div class="wrong-list"><span class="q-tag">問19</span><span class="q-tag">問20</span><span class="q-tag">問54</span><span class="q-tag">問58</span><span class="q-tag">問63</span><span class="q-tag">問78</span></div>
+    </div>
+    
+    <div class="domain-row">
+      <div class="domain-head">
+        <a href="D2_textbook.html" class="domain-name"><strong>D2</strong> データの絞り込みとソート</a>
+        <span class="domain-score">6/9 <b>(67%)</b></span>
+      </div>
+      <div class="bar-bg"><div class="bar-fg" style="width:66.7%;background:#f1c40f"></div></div>
+      <div class="wrong-list"><span class="q-tag">問10</span><span class="q-tag">問24</span><span class="q-tag">問39</span></div>
+    </div>
+    
+    <div class="domain-row">
+      <div class="domain-head">
+        <a href="D3_textbook.html" class="domain-name"><strong>D3</strong> 単一行関数</a>
+        <span class="domain-score">2/11 <b>(18%)</b></span>
+      </div>
+      <div class="bar-bg"><div class="bar-fg" style="width:18.2%;background:#c0392b"></div></div>
+      <div class="wrong-list"><span class="q-tag">問12</span><span class="q-tag">問13</span><span class="q-tag">問14</span><span class="q-tag">問15</span><span class="q-tag">問18</span><span class="q-tag">問37</span><span class="q-tag">問41</span><span class="q-tag">問51</span><span class="q-tag">問55</span></div>
+    </div>
+    
+    <div class="domain-row">
+      <div class="domain-head">
+        <a href="D4_textbook.html" class="domain-name"><strong>D4</strong> グループ関数と集計</a>
+        <span class="domain-score">2/4 <b>(50%)</b></span>
+      </div>
+      <div class="bar-bg"><div class="bar-fg" style="width:50.0%;background:#e67e22"></div></div>
+      <div class="wrong-list"><span class="q-tag">問23</span><span class="q-tag">問59</span></div>
+    </div>
+    
+    <div class="domain-row">
+      <div class="domain-head">
+        <a href="D5_textbook.html" class="domain-name"><strong>D5</strong> 複数表の結合</a>
+        <span class="domain-score">0/1 <b>(0%)</b></span>
+      </div>
+      <div class="bar-bg"><div class="bar-fg" style="width:0.0%;background:#c0392b"></div></div>
+      <div class="wrong-list"><span class="q-tag">問57</span></div>
+    </div>
+    
+    <div class="domain-row">
+      <div class="domain-head">
+        <a href="D6_textbook.html" class="domain-name"><strong>D6</strong> サブクエリ・集合演算</a>
+        <span class="domain-score">2/12 <b>(17%)</b></span>
+      </div>
+      <div class="bar-bg"><div class="bar-fg" style="width:16.7%;background:#c0392b"></div></div>
+      <div class="wrong-list"><span class="q-tag">問25</span><span class="q-tag">問31</span><span class="q-tag">問32</span><span class="q-tag">問33</span><span class="q-tag">問34</span><span class="q-tag">問36</span><span class="q-tag">問49</span><span class="q-tag">問53</span><span class="q-tag">問60</span><span class="q-tag">問62</span></div>
+    </div>
+    
+    <div class="domain-row">
+      <div class="domain-head">
+        <a href="D7_textbook.html" class="domain-name"><strong>D7</strong> DML・トランザクション</a>
+        <span class="domain-score">2/8 <b>(25%)</b></span>
+      </div>
+      <div class="bar-bg"><div class="bar-fg" style="width:25.0%;background:#c0392b"></div></div>
+      <div class="wrong-list"><span class="q-tag">問38</span><span class="q-tag">問42</span><span class="q-tag">問43</span><span class="q-tag">問45</span><span class="q-tag">問46</span><span class="q-tag">問70</span></div>
+    </div>
+    
+    <div class="domain-row">
+      <div class="domain-head">
+        <a href="D8_textbook.html" class="domain-name"><strong>D8</strong> DDL・オブジェクト管理</a>
+        <span class="domain-score">7/22 <b>(32%)</b></span>
+      </div>
+      <div class="bar-bg"><div class="bar-fg" style="width:31.8%;background:#c0392b"></div></div>
+      <div class="wrong-list"><span class="q-tag">問27</span><span class="q-tag">問47</span><span class="q-tag">問48</span><span class="q-tag">問50</span><span class="q-tag">問52</span><span class="q-tag">問56</span><span class="q-tag">問61</span><span class="q-tag">問64</span><span class="q-tag">問67</span><span class="q-tag">問69</span><span class="q-tag">問71</span><span class="q-tag">問72</span><span class="q-tag">問73</span><span class="q-tag">問75</span><span class="q-tag">問76</span></div>
+    </div>
+    
+    </div>
+  </div>
+
+  <div class="section-heading">📝 所感と次アクション</div>
+  <div class="card">
+    <ul style="padding-left: 20px; font-size: .92rem; color: #2d3748;">
+      <li style="margin-bottom:8px"><b>最優先復習領域：</b>正答率40%未満のドメインは、教科書D章 + 関連DBA章を読み直した上で、該当問題を改めて解く。</li>
+      <li style="margin-bottom:8px"><b>設問タイプの弱点：</b>複数選択問題（「2つ選択」「3つ選択」）での取りこぼしが多い場合、すべての選択肢を個別に○×判定する癖をつける。</li>
+      <li style="margin-bottom:8px"><b>構文の細部：</b>エイリアスの引用符、LIKE のワイルドカード位置、NULL 比較演算子（= NULL は使えない）など、細部を機械的に暗記する領域を洗い出す。</li>
+      <li><b>Phase 2：</b>弱点強化ページで各ドメインの典型ミスパターンと必修構文を集中特訓する。</li>
+    </ul>
+  </div>
+
+  <div style="text-align:center;color:#a0aec0;font-size:.8rem;margin-top:40px;padding-top:20px;border-top:1px solid #e2e8f0">
+    自動生成: scripts/build_mock_report.py（データ: dist/mock_exam_data.json）
+  </div>
+</div>
+
+<script>
+function showTab(name) {
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('tab-'+name).classList.add('active');
+}
+</script>
+</body>
+</html>

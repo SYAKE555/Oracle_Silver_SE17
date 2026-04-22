@@ -1,0 +1,1101 @@
+模擬問題一回目　記録　48点
+
+※ちょっとわかってないメモ
+・問20
+・問23
+・問41
+・問42
+・問46
+・問59
+
+
+問題1 第1問目 / 全78問
+リレーショナル・データベースの表間の関係の定義について正しいのはどれでしょうか。（3つ選択）
+(1)		A.　主キーにはNULL値を持たせることができます。
+(2)		B.　主キーにはNULL値を持たせることができません。
+(3)		C.　外部キーにはNULL値を持たせることができます。
+(4)		D.　外部キーにはNULL値を持たせることができません。
+(5)		E.　一意キーにはNULL値を持たせることはできます。
+(6)		F.　一意キーにはNULL値を持たせることはできません。
+
+Ans.B.C.E
+○
+
+問題2 第2問目 / 全78問
+以下の条件でERDを設計するとします。
+・各技術者は複数のチームに所属することができる
+・各チームには複数の技術者を所属させることができる
+
+この条件において以下の表示をするとします。
+
+ENGINEER_ID ENGINEER_NAME TEAM_ID TEAM_NAME
+
+最適なERDを設計にする場合、正しい記述はどれでしょうか。
+
+(1)		A.　ENGINEERSエンティティとTEAMSエンティティはN:Nの関係となっており、1:Nの関係にする必要があります。
+(2)		B.　ENGINEERSエンティティとTEAMSエンティティは1:Nの関係となっています。
+(3)		C.　TEAM_NAMEは、TEAMSエンティティの主キーであり、ENGINEERSエンティティの外部キーである必要があります。
+(4)		D.　ENGINEER_NAMEは、ENGINEERSエンティティの主キーであり、TEAMSエンティティの外部キーである必要があります。
+
+Ans.A
+○
+
+
+問題3 第3問目 / 全78問
+SQL（構造化問合せ言語）について、正しい記述はどれでしょうか。（3つ選択）
+(1)		A.　データ操作言語をDMLと言います。
+(2)		B.　リレーショナル・データベース管理システムに含まれるデータを取得します。
+(3)		C.　一貫性を保証します。
+(4)		D.　オブジェクト型データベース管理システムに含まれるデータを取得します。
+(5)		E.　カプセル化を定義するために使用されます。
+(6)		F.　ポリモーフィズムを定義するために使用されます。
+
+Ans.A.B.C
+○
+
+問題4 第4問目 / 全78問
+
+S_NAMEの列名を日本語で表示したいとします。
+どのSQL文を実行すればいいでしょうか。(2つ選択)
+　
+拡大する
+(1)		A.　SELECT S_NAME AS 'スポーツ' FROM SPORTS;
+(2)		B.　SELECT S_NAME IS 'スポーツ' FROM SPORTS;
+(3)		C.　SELECT S_NAME AS スポーツ FROM SPORTS;
+(4)		D.　SELECT S_NAME IS スポーツ FROM SPORTS;
+(5)		E.　SELECT S_NAME スポーツ FROM SPORTS;
+
+Ans.C.E
+○
+
+
+問題5 第5問目 / 全78問
+
+ITEM_NAME列の値がTで始まる行のみが表示されるSQLを1つ選択してください。
+
+(1)		A.　SELECT * FROM ITEM WHERE ITEM_NAME LIKE 'T';
+(2)		B.　SELECT * FROM ITEM WHERE ITEM_NAME LIKE '%T%';
+(3)		C.　SELECT * FROM ITEM WHERE ITEM_NAME LIKE '%T';
+(4)		D.　SELECT * FROM ITEM WHERE ITEM_NAME LIKE 'T%';
+(5)		E.　SELECT * FROM ITEM WHERE ITEM_NAME = 'T%';
+
+Ans.D
+○
+
+
+問題6 第6問目 / 全78問
+DUAL表について正しい記述はどれでしょうか。（3つ選択）
+(1)		A.　'DUAL'という列を持ちます。
+(2)		B.　1つの列と1行のデータを持ちます。
+(3)		C.　関数動作を確認したい場合に使用します。
+(4)		D.　SYSTEMユーザーが作成します。
+(5)		E.　計算結果を確認したい場合に使用します。
+
+Ans.B.C.E
+×
+SelfAns.A.B.E
+
+問題7 第7問目 / 全78問
+ITEM表を使用して、各ITEM_TYPEの各価格の20%OFFを表示する必要があります。
+また表示からITEM_TYPEの重複行を取り除く必要があります。
+上記条件に当てはまる結果を表示するSQLはどれでしょうか。
+
+(1)		A.　SELECT DISTINCT ITEM_TYPE || ' ' || ITEM_PRICE * 0.80 AS "20% OFF" FROM ITEM
+(2)		B.　SELECT ITEM_TYPE, DISTINCT ITEM_PRICE * 0.80 AS "20% OFF" FROM ITEM
+(3)		C.　SELECT DISTINCT ITEM_TYPE, DISTINCT ITEM_PRICE * 0.80 AS "20% OFF" FROM ITEM
+(4)		D.　SELECT ITEM_TYPE || ' ' || ITEM_PRICE * 0.80 AS "20% OFF" DISTINCT FROM ITEM
+
+Ans.A
+○
+
+
+問題8 第8問目 / 全78問
+次の条件に合ったSQLを作成する必要があります。
+
+1. ITEM_NAMEと消費税（10%積算）を含めた価格を表示します。
+2. ITEM_PRICEがNULLではない商品が対象です。
+3. ITEM_NAMEがNULLの商品は対象外です。
+
+上記の条件に合ったSQLはどれでしょうか。
+　
+拡大する
+(1)		A.　SELECT ITEM_NAME, ITEM_PRICE * 1.10 FROM ITEM WHERE ITEM_NAME AND ITEM_PRICE IS NOT NULL;
+(2)		B.　SELECT ITEM_NAME, ITEM_PRICE * 1.10 FROM ITEM WHERE ITEM_NAME IS NOT NULL AND ITEM_TYPE IS NOT NULL;
+(3)		C.　SELECT ITEM_NAME, ITEM_PRICE * 1.10 FROM ITEM WHERE ITEM_NAME, ITEM_PRICE IS NOT NULL;
+(4)		D.　SELECT ITEM_NAME, ITEM_PRICE * 1.10 FROM ITEM WHERE ITEM_NAME IS NOT NULL AND ITEM_PRICE IS NOT NULL;
+
+
+Ans.D
+×
+SelfAns.C
+
+
+問題9 第9問目 / 全78問
+次のSQL文を実行するとします。
+
+SELECT * FROM ITEM
+WHERE ITEM_TYPE = 'GOODS' OR ITEM_TYPE = 'CASUAL' AND ITEM_PRICE >= 2000;
+
+実行結果として正しいものはどれでしょうか。
+(1)		A.　ITEM_TYPE列がGOODSかCASUALである商品と、ITEM_PRICE列が2000以上の商品が表示されます。
+(2)		B.　ITEM_TYPE列がGOODSかCASUALである商品のうち、ITEM_PRICE列が2000以上の商品が表示されます。
+(3)		C.　ITEM_TYPE列がGOODSでかつITEM_PRICE列が2000以上の商品と、ITEM_TYPE列がCASUALでかつITEM_PRICE列が2000以上の商品が表示されます。
+(4)		D.　ITEM_TYPE列がGOODSである商品と、ITEM_TYPE列がCASUALでかつITEM_PRICE列が2000以上の商品が表示されます。
+
+Ans.D
+○
+
+問題10 第10問目 / 全78問
+以下のSQLを実行するとします。
+
+SELECT * FROM ITEM WHERE ROWNUM <= 3 ORDER BY ITEM_PRICE;
+
+実行結果について正しい記述はどれでしょうか。
+(1)		A.　ROWNUMとORDER BYを同時に使用できないため、エラーになります。
+(2)		B.　ITEM表の中で、登録順最初の3件以下の行が、価格の安いもの順に表示されます。
+(3)		C.　ITEM表の中で、価格の高いものから3件以下の行が表示されます。
+(4)		D.　ITEM表の中で、価格の安いものから3件以下の行が表示されます。
+
+Ans.B
+○
+
+
+問題11 第11問目 / 全78問
+以下の置換変数についての記述で正しいのはどれでしょうか。
+(1)		A.　置換変数は、SQL*Plusコマンドのみで使用できます。
+(2)		B.　&で始まる置換変数は、SQL実行後に破棄されます。
+(3)		C.　&&で始まる置換変数は、SQL実行後に破棄されます。
+(4)		D.　プロンプトで入力する置換変数は、単一引用符で囲む必要があります。
+(5)		E.　プロンプトで入力する置換変数は、二重引用符で囲む必要があります。
+
+Ans.B
+○
+
+問題12 第12問目 / 全78問
+VERIFYコマンドについて正しい記述はどれでしょうか。(2つ選択)
+(1)		A.　置換変数の値を表示します。
+(2)		B.　置換変数の値を作成します。
+(3)		C.　SQL DeveloperおよびSQL*Plusで使用できます。
+(4)		D.　SQL Developerでのみ使用できます。
+(5)		E.　SQL*Plusでのみ使用できます。
+
+Ans.A.C
+×
+SelfAns.B.C
+
+
+問題13 第13問目 / 全78問
+
+品名（ITEM_NAME）の先頭文字がS,sまたはT,tで始まるもので、かつ価格（ITEM_PRICE）が1500円未満の商品情報を取得する場合、以下のどのSQLを実行すればいいでしょうか。（2つ選択してください）
+拡大する
+(1)		A.　SELECT ITEM_NAME , ITEM_PRICE FROM ITEM WHERE (INITCAP(ITEM_NAME) LIKE 'S%' OR INITCAP(ITEM_NAME) LIKE 'T%') AND ITEM_PRICE < 1500;
+(2)		B.　SELECT ITEM_NAME , ITEM_PRICE FROM ITEM WHERE (UPPER(ITEM_NAME) LIKE 'S%' OR UPPER(ITEM_NAME) LIKE 'T') AND ROUND(ITEM_PRICE) < 1500;
+(3)		C.　SELECT ITEM_NAME , ITEM_PRICE FROM ITEM WHERE UPPER(ITEM_NAME) BETWEEN UPPER('S%' AND 'T%') AND ROUND(ITEM_PRICE) < 1500;
+(4)		D.　SELECT ITEM_NAME , ITEM_PRICE FROM ITEM WHERE (UPPER(ITEM_NAME) LIKE INITCAP('S') OR UPPER(ITEM_NAME) LIKE INITCAP('T')) AND ROUND(ITEM_PRICE) < ROUND(1500);
+(5)		E.　SELECT ITEM_NAME , ITEM_PRICE FROM ITEM WHERE (UPPER(ITEM_NAME) LIKE 'S%' OR UPPER(ITEM_NAME) LIKE 'T%') AND TRUNC(ITEM_PRICE) < 1500;
+
+Ans.A.E
+×
+SelfAns.A.B
+
+
+問題14 第14問目 / 全78問
+ITEM表には商品名と製造年月日（DATE型）が存在します。
+製造から2年以上経過した商品を抽出するSQLはどれでしょうか。
+(1)		A.　SELECT ITEM_NAME,MADE_DATE FROM ITEM WHERE MADE_DATE + 2*365 = SYSDATE;
+(2)		B.　SELECT ITEM_NAME,MADE_DATE FROM ITEM WHERE SYSDATE > MADE_DATE - 2*365;
+(3)		C.　SELECT ITEM_NAME,MADE_DATE FROM ITEM WHERE SYSDATE - 2*365 >= MADE_DATE;
+(4)		D.　SELECT ITEM_NAME,MADE_DATE FROM ITEM WHERE MADE_DATE >= SYSDATE - 2*365;
+
+Ans.C
+×
+SelfAns.D
+
+問題15 第15問目 / 全78問
+以下のSQLを実行すると結果はどうなるでしょうか。
+
+SELECT ROUND(TRUNC(345.16, 1), 0) FROM DUAL;
+(1)		34
+(2)		35
+(3)		345
+(4)		350
+(5)		345.1
+(6)		345.2
+
+Ans.3
+○
+
+
+問題16 第16問目 / 全78問
+NUMBER型のITEM_IDと、DATE型のMADE_DATE（製造年月日）を含むITEM表があります。
+製造年月日から2か月後の月末の日付を表示したい場合、実行するSQLを選択してください。
+(1)		A.　SELECT ITEM_ID, LAST_DAY(ADD_MONTHS(MADE_DATE, 2),1) FROM ITEM;
+(2)		B.　SELECT ITEM_ID, NEXT_DAY(ADD_MONTHS(MADE_DATE, 2),1) FROM ITEM;
+(3)		C.　SELECT ITEM_ID, LAST_DAY(ADD_MONTHS(MADE_DATE, 2)) FROM ITEM;
+(4)		D.　SELECT ITEM_ID, LAST_DAY (MONTHS_BETWEEN (MADE_DATE, SYSDATE)) FROM ITEM;
+
+
+Ans.C
+○
+
+
+問題17 第17問目 / 全78問
+以下のSQLでエラーとならないものはどれでしょうか。（3つ選択）
+
+(1)		A.　SELECT COALESCE(100, NULL) FROM DUAL;
+(2)		B.　SELECT COALESCE(NULL, '100', '100') FROM DUAL;
+(3)		C.　SELECT COALESCE(NULL, '100') FROM DUAL;
+(4)		D.　SELECT COALESCE(SYSDATE, '100') FROM DUAL;
+(5)		E.　SELECT COALESCE('10', 100) FROM (SELECT NULL AS "TODAY" FROM DUAL);
+
+Ans.A.B.C
+○
+
+
+問題18 第18問目 / 全78問
+EMP表には、データ型 NUMBER型のDEPT_ID列とDATE型のSTART_DATE列があります。
+NLS_DATE_FORMATはDD-MON-RRに設定されます。
+SQLでこれらの列を含むデータ型変換について正しい記述はどれでしょうか。（2つ選択）
+(1)		A.　DEPT_ID < '10102' : 明示的な変換が必要です
+(2)		B.　START_DATE > '07-06-2019' : 暗黙的な変換を使用します
+(3)		C.　START_DATE > '07-JUN-19' : 暗黙的な変換を使用します
+(4)		D.　DEPT_ID BETWEEN '10101' AND '10102' : 暗黙的な変換を使用します
+
+Ans.C.D
+○
+
+
+問題19 第19問目 / 全78問
+SHOHIN 表では、PRODUCTION_DATE列はDATE型で、デフォルト日付形式はDD-MON-RRです。
+SQL文についてエラーとならないものはどれですか。（2つ選択）
+(1)		A.　SELECT TO_CHAR(PRODUCTION_DATE,'YYYY-MM-DD') FROM SHOHIN
+(2)		B.　SELECT TO_DATE(TO_CHAR(PRODUCTION_DATE,'RR-MM-DD'),'RR-MM-DD') FROM SHOHIN
+(3)		C.　SELECT TO_NUMBER(PRODUCTION_DATE) * 3 FROM SHOHIN
+(4)		D.　SELECT TO_DATE(PRODUCTION_DATE * 5) FROM SHOHIN
+(5)		E.　SELECT TO_NUMBER(PRODUCTION_DATE) FROM SHOHIN
+
+Ans.A.B
+○
+
+
+
+問題20 第20問目 / 全78問
+図のような表があります。
+
+これらの商品について、30%割引価格を提供する予定です。
+割引額をSHOHIN_KAKAKUと同じ形式にして表示するSQLはどれですか。
+　
+拡大する
+(1)		A.　SELECT TO_NUMBER(TO_NUMBER(SHOHIN_KAKAKU, '999,999.99') * .30, '999,999.00') FROM SHOHIN
+(2)		B.　SELECT TO_CHAR (SHOHIN_KAKAKU * .30, '99,999.99') FROM SHOHIN
+(3)		C.　SELECT TO_CHAR (SHOHIN_KAKAKU * .30) FROM SHOHIN
+(4)		D.　SELECT TO_CHAR (TO_NUMBER(SHOHIN_KAKAKU) * .30, '99,999.00') FROM SHOHIN
+(5)		E.　SELECT TO_CHAR (TO_NUMBER(SHOHIN_KAKAKU, '999,999.99') * .30, '999,999.00') FROM SHOHIN
+Ans.E
+×
+SelfAns.D
+
+
+問題21 第21問目 / 全78問
+SQLのHAVING句とWHERE句について正しい記述はどれでしょうか。（3つ選択）
+(1)		A.　HAVINGの条件に、MAX関数を含めることはできません。
+(2)		B.　HAVINGの条件に、COUNT関数を含めることはできます。
+(3)		C.　WHEREとHAVINGを同時に使用することはできません。
+(4)		D.　WHEREとHAVINGを同時に使用することは可能です。
+(5)		E.　WHEREとHAVINGを同時に使用した場合、WHEREはHAVINGの前に実行されます。
+(6)		F.　HAVINGの条件に、列別名を使用できます。
+
+Ans.B.D.E
+○
+
+
+問題22 第22問目 / 全78問
+GROUP BYの説明で正しい記述はどれでしょうか。
+(1)		A.　GROUP BYとWHEREは併用できます。
+(2)		B.　GROUP BYの後にWHEREを使用すると、グループの作成後に行が除外されます。
+(3)		C.　GROUP BYで列別名を使用できます。
+(4)		D.　SELECTで集計関数を使用している場合、GROUP BYは使用できません。
+(5)		E.　SELECTで集計関数を使用している場合、GROUP BYを使用する必要があります。
+Ans.A
+○
+
+
+問題23 第23問目 / 全78問
+図のような表があります。
+
+以下のSQLで正常に実行されるものはどれでしょうか。（2つ選択）
+　
+拡大する
+(1)		A.　SELECT SUM(ITEM_TYPE1+ITEM_TYPE2) FROM ITEM WHERE ITEM_NAME LIKE 'R%';
+(2)		B.　SELECT SUM(ITEM_TYPE1+ITEM_TYPE2),ITEM_NAME FROM ITEM WHERE ITEM_NAME LIKE 'R%';
+(3)		C.　SELECT SUM(DISTINCT ITEM_TYPE1), MIN(ITEM_TYPE1) FROM ITEM WHERE ITEM_NAME LIKE 'R%';
+(4)		D.　SELECT AVG(ITEM_PRICE) FROM ITEM WHERE AVG(ITEM_PRICE) >= 500 GROUP BY ITEM_ID;
+Ans.A.C
+×
+SelfAns.A.B
+
+
+問題24 第24問目 / 全78問
+自己結合について正しい記述はどれでしょうか。（2つ選択）
+
+(1)		A.　USING句を指定することができます。
+(2)		B.　表別名が必要です。
+(3)		C.　LEFT OUTER JOIN、もしくはRIGHT OUTER JOINにする必要があります。
+(4)		D.　FULL OUTER JOINにする必要があります。
+(5)		E.　INNER JOINにすることができます。
+
+Ans.B.E
+×
+SelfAns.A.B
+
+
+問題25 第25問目 / 全78問
+結合におけるINNER JOINについて、正しい記述はどれでしょうか。
+(1)		A.　結合されている両方の表から、結合条件に含まれる行で他方の側にない行も返します。
+(2)		B.　内部結合の結果を返します。
+(3)		C.　(+)を使用して値を返します。
+(4)		D.　すべての行の組合せ（直積）結果を返します。
+Ans.B
+○
+
+
+問題26 第26問目 / 全78問
+非等価結合のパフォーマンスについて正しい記述はどれでしょうか。（2つ選択）
+(1)		A.　BETWEEN条件は、等号・不等号条件よりもパフォーマンスが低下します。
+(2)		B.　BETWEEN条件は、等号・不等号条件よりもパフォーマンスが優れています。
+(3)		C.　ANSI結合構文とOracle結合構文では、パフォーマンスに違いはありません。
+(4)		D.　ANSI結合構文よりもOracle結合構文の方がパフォーマンスは優れています。
+(5)		E.　表に別名をつけて列を表別名で修飾すると、パフォーマンスが向上します。
+
+Ans.C.E
+×
+SelfAns.B.C
+
+問題27 第27問目 / 全78問
+以下の文を実行して表を作成します。
+
+CREATE TABLE CARS
+(
+　　CAR_ID NUMBER PRIMARY KEY,
+　　CAR_NAME VARCHAR2(50),
+　　MAKER_ID NUMBER
+);
+
+CREATE TABLE MAKERS
+(
+　　MAKER_ID NUMBER PRIMARY KEY,
+　　MAKER_NAME VARCHAR2(50)
+);
+
+すべてのメーカーのIDと、それらに割り当てられている車のIDリストを取得するためのSQLは、どれでしょうか。（2つ選択）
+(1)		A.　SELECT M.MAKER_ID, C.CAR_ID FROM MAKERS M RIGHT OUTER JOIN CARS C ON (M.MAKER_ID=C.MAKER_ID);
+(2)		B.　SELECT M.MAKER_ID, C.CAR_ID FROM MAKERS M RIGHT OUTER JOIN CARS C ON
+(3)		C.　SELECT M.MAKER_ID, C.CAR_ID FROM MAKERS M LEFT OUTER JOIN CARS C ON (M.MAKER_ID=C.MAKER_ID);
+(4)		D.　SELECT M.MAKER_ID, C.CAR_ID FROM CARS C RIGHT OUTER JOIN MAKERS M ON (M.MAKER_ID=C.MAKER_ID);
+(5)		E.　SELECT M.MAKER_ID, C.CAR_ID FROM CARS C LEFT OUTER JOIN MAKERS M ON (C.MAKER_ID=M.MAKER_ID);
+
+Ans.C.D
+○
+
+
+問題28 第28問目 / 全78問
+以下のSQLを実行するとします。
+
+SELECT 4 FROM DUAL DU1 CROSS JOIN DUAL DU2 CROSS JOIN DUAL DU3 CROSS JOIN DUAL DU4;
+
+実行結果について正しい記述はどれでしょうか。
+(1)		A.　エラーとなります。
+(2)		B.　データがヒットしません。
+(3)		C.　1行返されます。
+(4)		D.　2行返されます。
+(5)		E.　4行返されます。
+(6)		F.　16行返されます。
+(7)		G.　256行返されます。
+
+Ans.C
+○
+
+問題29 第29問目 / 全78問
+単一行副問合せの記述はどれでしょうか。
+(1)		A.　内側の問合せは外側の問合せに1つの値を返します。
+(2)		B.　内側の問合せは外側の問合せに1つ以上の値を返します。
+(3)		C.　列には、使用する表の名前またはエイリアスを付与する必要があります。
+(4)		D.　内側の問合せは1つ以上の値を返し、外側の問合せは1つの値を返します。
+(5)		E.　内側の問合せは2つ以上の値を返し、外側の問合せは1つの値を返します。
+Ans.A
+○
+
+
+
+問題30 第30問目 / 全78問
+複数行の副問合せについて正しい記述はどれでしょうか。（3つ選択）
+(1)		A.　複数の列と行を返すことができます。
+(2)		B.　1列のみの複数行を返すことができます。
+(3)		C.　副問合せ内に副問合せを含めることができます。
+(4)		D.　副問合せ内に副問合せを含めることはできません。
+(5)		E.　GROUP BY句とORDER BY句を含めることができます。
+(6)		F.　GROUP BY句とORDER BY句を含めることはできません。
+Ans.B.C.E
+○
+
+
+問題31 第31問目 / 全78問
+相関副問合せの実行に関して正しいのはどれでしょうか。（2つ選択）
+(1)		A.　内側の文が最初に実行され、次に外側の文が実行されます。
+(2)		B.　内側の文は、外側の文が実行された後に実行されます。
+(3)		C.　外側の文の1行ごとに、内側の文を実行します。
+(4)		D.　内側の文の1行ごとに、外側の文を実行します。
+Ans.B.C
+×
+SelfAns.A.D
+
+
+
+問題32 第32問目 / 全78問
+SQLのUNION演算子でORDER BY句を使用する場合の説明で正しい記述はどれでしょうか。
+(1)		A.　各SELECT文には、それぞれORDER BY句が必要です。
+(2)		B.　ORDER BY句では、列名ではなく位置で指定する必要があります。
+(3)		C.　ORDER BY句がない場合は、最初のSELECT文の最初の列名でソートされます。
+(4)		D.　ORDER BY句には、最初のSELECT文の列名を指定します。
+Ans.D
+×
+SelfAns.C
+
+
+
+問題33 第33問目 / 全78問
+複合問合せで使用されるINTERSECT演算子について正しい記述はどれでしょうか。
+(1)		A.　複合問合せに含まれる各SELECT文の順番を入れ替えても結果は同じです。
+(2)		B.　NULLは無視して処理されます。
+(3)		C.　INTERSECT演算子は、UNIONよりも優先順位が高くなります。
+(4)		D.　複数のINTERSECT演算子を使用することはできません。
+(5)		E.　重複データは重複状態のまま処理されます。
+Ans.A
+○
+
+
+
+問題34 第34問目 / 全78問
+UNION演算子とUNION ALL演算子について、正しい記述はどれでしょうか。(3つ選択)
+(1)		A.　それぞれのSELECT文で抽出された列の名前は同じである必要があります。
+(2)		B.　それぞれのSELECT文で抽出された列の数は同数である必要があります。
+(3)		C.　UNION演算子を使用すると、ソートされます。
+(4)		D.　UNION演算子を使用すると、重複行は削除されます。
+(5)		E.　UNION ALL演算子を使用すると、ソートされます。
+(6)		F.　UNION ALL演算子を使用すると、重複行は削除されます。
+Ans.B.C.D
+×
+SelfAns.B.D.E
+
+
+問題35 第35問目 / 全78問
+商品情報マスター表と、商品取引履歴表が存在していて、
+商品の取引があると商品取引履歴表に取引情報を登録するとします。
+履歴は商品毎に1件のみ、商品情報マスター表と同じ形式のものを登録します。
+
+一度も取引が無い商品情報を取得するには、以下のどれを使用すべきでしょうか。
+(1)		INTERSECT
+(2)		MINUS
+(3)		MINUS ALL
+(4)		UNION
+(5)		UNION ALL
+Ans.2
+×
+SelfAns.5
+
+
+問題36 第36問目 / 全78問
+トランザクションについて正しい記述はどれでしょうか。
+(1)		A.　トランザクションを終了する場合は必ずCOMMITを行う必要があります。
+(2)		B.　データ定義言語（DDL）を実行した場合、トランザクションとして実行されます。
+(3)		C.　トランザクションはBEGIN句で開始します。
+(4)		D.　明示的にCOMMITしないでSQL*PlusをQUITで切断した場合、そのトランザクションはROLLBACKされます。
+Ans.B
+○
+
+問題37 第37問目 / 全78問
+トランザクションが終了するのは以下のどの場合でしょうか。（3つ選択）
+(1)		A.　UPDATEが実行されたとき
+(2)		B.　COMMITが実行されたとき
+(3)		C.　ALTERが実行されたとき
+(4)		D.　DELETEが実行されたとき
+(5)		E.　SQL*PlusでEXITが実行されたとき
+Ans.B.C.E
+○
+
+
+問題38 第38問目 / 全78問
+SQLの機能はどれでしょうか。（3つ選択）
+(1)		トランザクション機能がある
+(2)		GUIを提供する
+(3)		データの問い合わせを行う
+(4)		表計算ソフトのファイルと整合性を保つ
+(5)		データの更新を行う
+Ans.1.3.5
+○
+
+
+問題39 第39問目 / 全78問
+トランザクション制御言語について正しいのはどれでしょうか。（2つ選択）
+(1)		COMMITを発行しても、SAVEPOINTは消去しません。
+(2)		ROLLBACK TO SAVEPOINTは、指定したSAVEPOINT以降に取得された行および表のロックをすべて解除します。
+(3)		ROLLBACK TO SAVEPOINTは、指定したSAVEPOINT以降の変更を取り消しますが、SAVEPOINTは消去しません。
+(4)		COMMITは、変更を確定し、行および表のロックをすべて解除します。
+Ans.2.4
+×
+SelfAns.3.4
+
+
+問題40 第40問目 / 全78問
+
+以下の文を実行します。
+
+INSERT INTO ITEM VALUES ('1','CURRY','FOOD',1000);
+SAVEPOINT SP1;
+UPDATE ITEM SET ITEM_NAME = 'SUSHI' WHERE ITEM_ID = '1';
+SAVEPOINT SP2;
+DELETE FROM ITEM;
+ROLLBACK TO SAVEPOINT SP1;
+ROLLBACK;
+
+実行結果について、正しい記述はどれでしょうか。（2つ選択）
+　
+(1)		最初のROLLBACKは、DELETE文のみを取り消します。
+(2)		最初のROLLBACKは、DELETE文とUPDATE文を取り消します。
+(3)		後のROLLBACKは、すべての更新を取り消します。
+(4)		後のROLLBACKは、DELETE文とUPDATE文を取り消します。
+(5)		後のROLLBACKは、更新の取り消しはしません。
+Ans.2.3
+○
+
+
+
+問題41 第41問目 / 全78問
+ITEM 表を作成します。
+
+CREATE TABLE ITEM
+(
+　　ITEM_ID VARCHAR(4) PRIMARY KEY,
+　　ITEM_NAME VARCHAR(20) NOT NULL,
+　　PRODUCTION_DATE DATE,
+　　RELEASE_DATE DATE DEFAULT SYSDATE,
+　　END_OF_SALE_DATE DATE
+);
+
+この表にはデータが1件も存在しません。
+RELEASE_DATEのデフォルト値を使用して、表に行を正常に挿入するSQLはどれでしょうか。（2つ選択）
+(1)		A.　INSERT INTO ITEM VALUES ('1001', 'ITEM1', '10-JUN-2021');
+(2)		B.　INSERT INTO ITEM (ITEM_ID, ITEM_NAME, PRODUCTION_DATE,END_OF_SALE_DATE) VALUES ('1001', 'ITEM1','10-JUN-2021',NULL);
+(3)		C.　INSERT INTO ITEM (ITEM_ID, ITEM_NAME, PRODUCTION_DATE, RELEASE_DATE) VALUES ('1001', 'ITEM1', '10-JUN-2021');
+(4)		D.　INSERT INTO ITEM VALUES ('1001', 'ITEM1', '10-DEC-2021', DEFAULT, '10-JUN-2022');
+(5)		E.　INSERT INTO ITEM (ITEM_ID, PRODUCTION_DATE, END_OF_SALE_DATE) VALUES ('1001', '10-JUN-2022', NULL);
+Ans.B.D
+×
+SelfAns.A.D
+
+
+問題42 第42問目 / 全78問
+
+この表の更新を行う場合、有効なSQLはどれでしょうか。（2つ選択）
+(1)		A.　UPDATE ITEM SET MADE_DATE = '23-JUN-2021', ITEM_PRICE = NULL WHERE ITEM_ID = 2;
+(2)		B.　UPDATE ITEM SET MADE_DATE = '23-JUN-2021', AND ITEM_PRICE = NULL WHERE ITEM_ID = 2;
+(3)		C.　UPDATE ITEM SET MADE_DATE = '23-JUN-2021' AND SET ITEM_PRICE = NULL WHERE ITEM_ID = 2;
+(4)		D.　UPDATE ITEM SET MADE_DATE = SYSDATE, ITEM_PRICE = NULL WHERE ITEM_ID = 2;
+(5)		E.　UPDATE ITEM SET MADE_DATE = '23-JUN-2021', ITEM_PRICE = ZERO WHERE ITEM_ID = 2;
+
+Ans.A.D
+×
+SelfAns.A.C
+
+
+問題43 第43問目 / 全78問
+マルチテーブル・インサートについて正しい記述はどれでしょうか。
+(1)		A.　副問合せを使用することができます。
+(2)		B.　リモート表で実行できます。
+(3)		C.　表のコレクションを指定することができます。
+(4)		D.　順序を指定することができます。
+(5)		E.　ビューを使用することができます。
+Ans.A
+○
+
+
+問題44 第44問目 / 全78問
+条件付きマルチテーブル・インサート（INSERT ALL）について正しい記述はどれでしょうか。（2つ選択）
+(1)		A.　一つのマルチテーブル・インサートに指定できるWHEN句に上限はありません。
+(2)		B.　ELSE句を使用できます。
+(3)		C.　副問合せによって返される各行は、一つの表にのみ挿入できます。
+(4)		D.　WHEN条件の各式は、副問合せのSELECT構文のリストによって戻される列を参照する必要があります。
+(5)		E.　一つのWHEN条件には一つのINTO句を使用できます。
+Ans.B.D
+×
+SelfAns.A.D
+
+
+問題45 第45問目 / 全78問
+MERGE文について正しい記述はどれでしょうか。（2つ選択）
+(1)		A.　表からのみ行をマージできます。
+(2)		B.　複数の表の行を条件付きで結合して、一つの表に挿入できます。
+(3)		C.　削除することはできません。
+(4)		D.　1つのMERGE文で複数の表を更新できます。
+(5)		E.　ビューを使用して行をマージできます。
+Ans.B.E
+×
+SelfAns.B.D
+
+
+問題46 第46問目 / 全78問
+次の文を実行するとします。
+
+MERGE INTO ITEM_TARGET t
+　　USING ITEM i
+　　ON (i.ITEM_ID = t.ITEM_ID)
+WHEN MATCHED THEN
+　　UPDATE SET t.ITEM_ID = i.ITEM_ID, t.ITEM_NAME = i.ITEM_NAME, t.ITEM_TYPE = i.ITEM_TYPE
+WHEN NOT MATCHED THEN
+　　INSERT (t.ITEM_ID, t.ITEM_NAME, t.ITEM_PRICE)
+　　VALUES (i.ITEM_ID, i.ITEM_NAME, i.ITEM_PRICE)
+　　WHERE i.ITEM_PRICE > 1000;
+
+MERGE文を実行する際の正しい記述はどれでしょうか。
+(1)		A.　INSERTでWHERE句は指定できません。
+(2)		B.　ITEM_ID列は更新できません。
+(3)		C.　ITEM_ID列は挿入できません。
+(4)		D.　WHERE句の表指定は't'にする必要があります。
+Ans.B
+×
+SelfAns.C
+
+
+問題47 第47問目 / 全78問
+DDLの説明で正しいのはどれでしょうか。（3つ選択）
+(1)		A.　データの追加を行うことができます。
+(2)		B.　表名を変更することができます。
+(3)		C.　データの回復（ロールバック）を行うことができます。
+(4)		D.　表に対してデータ更新をさせないよう設定できます。
+(5)		E.　データの更新を行うことができます。
+(6)		F.　特定の条件に違反するデータが列に挿入されないように表設定を変更できます。
+Ans.B.D.F
+×
+SelfAns.A.B.E
+
+
+問題48 第48問目 / 全78問
+データ型に関して正しいのはどれでしょうか。（3つ選択）
+(1)		A.　LONG型の最大サイズは1GBです。
+(2)		B.　TIMESTAMP型の列には、最小は秒の単位で値が格納されます。
+(3)		C.　VARCHAR2型の列に指定できる最小サイズは1バイトまたは1文字です。
+(4)		D.　CHAR型は固定長です。
+(5)		E.　BLOB型の列は、OSのファイルにバイナリデータを格納するために使用されます。
+(6)		F.　表ごとに使用できるLONG型は1つだけです。
+
+Ans.C.D.F
+×
+SelfAns.B.C.D
+
+
+問題49 第49問目 / 全78問
+表を作成する最適な文はどれでしょうか。
+　
+(1)		A.　CREATE TABLE SHOHIN( SHOHIN_ID NUMBER(3), SHOHIN_NAME VARCHAR2(20), SHOHIN_KAKAKU NUMBER(10), STOCK NUMBER DEFAULT 1, INPUT_DATE DATE DEFAULT SYSDATE, REMARK VARCHAR2(50) DEFAULT '　');
+(2)		B.　CREATE TABLE SHOHIN( SHOHIN_ID NUMBER(3), SHOHIN_NAME VARCHAR2(20), SHOHIN_KAKAKU NUMBER(10), STOCK NUMBER DEFAULT 1, INPUT_DATE DATE DEFAULT SYSDATE, REMARK VARCHAR2(50) DEFAULT "　");
+(3)		C.　CREATE TABLE SHOHIN( SHOHIN_ID NUMBER(3), SHOHIN_NAME VARCHAR2(20), SHOHIN_KAKAKU NUMBER(10), STOCK NUMBER DEFAULT 1, INPUT_DATE DATE DEFAULT 'SYSDATE', REMARK VARCHAR2(50) DEFAULT '　');
+(4)		D.　CREATE TABLE SHOHIN( SHOHIN_ID NUMBER(3), SHOHIN_NAME VARCHAR2(20), SHOHIN_KAKAKU NUMBER(10), STOCK NUMBER DEFAULT = 1, INPUT_DATE DATE DEFAULT SYSDATE, REMARK VARCHAR2(50) DEFAULT = '　');
+
+Ans.A
+○
+
+
+
+問題50 第50問目 / 全78問
+以下の文を実行するとエラーとなります。
+
+CREATE TABLE SHOHIN
+(
+　SHOHIN_ID NUMBER(3),
+　SHOHIN_NAME VARCHAR2(50) CHECK(SHOHIN_NAME IS NOT NULL),
+　STOCK NUMBER(3) CHECK(STOCK BETWEEN 0 AND 200),
+　INPUT_DATE DATE CHECK (INPUT_DATE > SYSDATE)
+);
+
+エラーとなる理由を以下から選択してください。
+(1)		CHECKとBETWEENは同時に使用できません。
+(2)		CHECKでNULLは使用できません。
+(3)		CHECKでDATE型では使用できません。
+(4)		CHECKとSYSDATEは同時に使用できません。
+
+Ans.4
+×
+SelfAns.3
+
+問題51 第51問目 / 全78問
+読み取り専用モードのEMP表に対して、正常に実行されるものはどれでしょうか。
+(1)		A.　TRUNCATE TABLE EMP;
+(2)		B.　DROP TABLE EMP;
+(3)		C.　DELETE FROM EMP;
+(4)		D.　ALTER TABLE EMP DROP COLUMN START_DATE;
+(5)		E.　ALTER TABLE EMP SET UNUSED (START_DATE);
+Ans.B
+×
+SelfAns.E
+
+問題52 第52問目 / 全78問
+ALTER TABLE ITEM DROP COLUMN ITEM_NAME;
+を実行した場合の正しい記述はどれでしょうか。
+　
+(1)		A.　他の列が1つでも表に残っている場合、ITEM_NAME列は削除されます。
+(2)		B.　ITEM_NAME列は、データが含まれていない場合にのみ削除されます。
+(3)		C.　ITEM_NAME列は、データにNULL値が含まれている場合は削除されません。
+(4)		D.　ITEM_NAME列にSET UNUSEDが設定されている場合、データを元に戻せます。
+Ans.D
+×
+SelfAns.A
+
+
+問題53 第53問目 / 全78問
+DELETE文およびTRUNCATE文について正しい記述は以下のどれでしょうか。
+(1)		A.　TRUNCATE文を使用して索引を削除できます。
+(2)		B.　DELETE文を使用してデータを削除できますが、TRUNCATE文を使用してデータを削除することはできません。
+(3)		C.　DELETE文およびTRUNCATE文では、データを表に復元するためにロールバックを行うことができます。
+(4)		D.　DELETE文を使用して、表から行を選択して削除できます。
+(5)		E.　TRUNCATE文を使用して、表から行を選択して削除できます。
+Ans.D
+×
+SelfAns.A
+
+
+
+問題54 第54問目 / 全78問
+TRUNCATEとDELETEについて正しい記述はどれでしょうか。
+(1)		A.　外部キー制約に違反する場合、表をTRUNCATEすることはできません。
+(2)		B.　TRUNCATEを実行すると、索引や制約などの依存オブジェクトも削除されます。
+(3)		C.　TRUNCATEはDELETEと同じくロールバックが可能です。
+(4)		D.　データ量が大きな表のデータ削除を行う場合、TRUNCATEはDELETEよりも高速です。
+Ans.D
+○
+
+
+
+問題55 第55問目 / 全78問
+GLOBAL TEMPORARY TABLESについて正しい記述はどれでしょうか。（3つ選択）
+(1)		A.　複数の索引を作成することができます。
+(2)		B.　PUBLIC SYNONYMを作成することはできません。
+(3)		C.　SYNONYMを作成することができます。
+(4)		D.　トリガーを作成することができます。
+(5)		E.　ビューを使用した参照はできません。
+Ans.A.C.D
+○
+
+
+問題56 第56問目 / 全78問
+GLOBAL TEMPORARY TABLESについて正しい記述はどれでしょうか。（3つ選択）
+(1)		A.　GLOBAL TEMPORARY TABLEの行は、他のセッションから参照できます。
+(2)		B.　GLOBAL TEMPORARY TABLEの表定義は、他のセッションから参照できます。
+(3)		C.　GLOBAL TEMPORARY TABLEの一時セグメントの割り当ては、セッションの開始時に行われます。
+(4)		D.　GLOBAL TEMPORARY TABLEの一時セグメントの割り当ては、セッションの終了時に解除されます。
+(5)		E.　GLOBAL TEMPORARY TABLEのセッション終了時に存在する行はすべて削除されます。
+Ans.B.D.E
+×
+SelfAns.A.B.E
+
+問題57 第57問目 / 全78問
+外部表に関して正しい記述はどれでしょうか。（2つ選択）
+(1)		A.　索引を使用することができます。
+(2)		B.　外部表からデータベース内の表にデータをアップロードできます。
+(3)		C.　外部表で使用するORACLE_LOADERとORACLE_DATAPUMPは、全く同じ機能となります。
+(4)		D.　外部表のデータは、データベースの外部に保存されます。
+(5)		E.　外部表のメタデータは、データベースの外部に保存されます。
+Ans.B.D
+○
+
+
+問題58 第58問目 / 全78問
+ORACLE_DATAPUMPアクセス・ドライバを使用して実行できるものはどれでしょうか。（2つ選択）
+(1)		A.　外部表へのDMLを実行できます。
+(2)		B.　外部表へのソート問い合わせを実行できます。
+(3)		C.　テキスト・ファイルからデータのロードができます。
+(4)		D.　外部表を作成すると、同じまたは異なるデータベースの外部表で使用できるダンプファイルが作成されます。
+(5)		E.　外部表を作成すると、同じデータベース内の外部表だけが使用できるダンプファイルが作成されます。
+Ans.B.D
+×
+SelfAns.C.E
+
+
+問題59 第59問目 / 全78問
+ITEM表にはデータが含まれています。
+ITEM_ID列に主キー制約を追加する文はどれでしょうか。
+　
+拡大する
+(1)		A.　ALTER TABLE ITEM ADD ITEM_ID CONSTRAINT ITEM_PK PRIMARY KEY;
+(2)		B.　ALTER TABLE ITEM MODIFY ITEM_ID CONSTRAINT ITEM_PK PRIMARY_KEY;
+(3)		C.　ALTER TABLE ITEM ADD CONSTRAINT ITEM_PK PRIMARY KEY (ITEM_ID);
+(4)		D.　ALTER TABLE ITEM MODIFY CONSTRAINT ITEM_PK PRIMARY KEY (ITEM_ID);
+
+Ans.C
+×
+SelfAns.A
+
+
+
+問題60 第60問目 / 全78問
+次の順でSQLを実行します。
+
+1. 表を作成します。
+CREATE TABLE ITEM
+(ITEM_NO NUMBER(4) CONSTRAINT ITEM_PK PRIMARY KEY,
+　ITEM_NAME VARCHAR2(30),
+　PARENT_ITEM_NO NUMBER(4) CONSTRAINT PARENT_FK REFERENCES ITEM(ITEM_NO)
+);
+
+2. CASCADEオプション付きで主キー制約を無効化します。
+ALTER TABLE ITEM DISABLE CONSTRAINT ITEM_PK CASCADE;
+
+3. 主キー制約を有効化します。
+ALTER TABLE ITEM ENABLE CONSTRAINT ITEM_PK;
+
+この時点での、外部キー：PARENT_FKの状態について、正しい記述はどれでしょうか。
+(1)		A.　無効のままです。外部キーの状態を有効にする手段はありません。
+(2)		B.　無効のままです。外部キーの状態を有効にするためには、制約を削除して再作成します。
+(3)		C.　無効のままです。外部キーの状態を有効にするためには、手動でALTER TABLEコマンドを実行します。
+(4)		D.　外部キーの状態は自動的に有効になります。
+Ans.C
+×
+SelfAns.D
+
+
+問題61 第61問目 / 全78問
+ビューに関して正しい記述はどれでしょうか。（3つ選択）
+(1)		A.　ビューでDISTINCTを使用している場合、ビュー経由でデータを更新することはできません。
+(2)		B.　存在しない表に対してビューを作成することはできません。
+(3)		C.　ビューでGROUP BYを使用している場合、ビュー経由でデータを更新することができます。
+(4)		D.　すべてのDMLを禁止する場合、WITH READ ONLY制約を使用します。
+(5)		E.　OR REPLACEオプションは、すでにビューが存在する場合、ビューを削除せずに定義を変更します。
+Ans.A.D.E
+×
+SelfAns.B.D.E
+
+
+問題62 第62問目 / 全78問
+ビューの削除について正しい記述はどれでしょうか。（2つ選択）
+(1)		A.　CASCADE CONSTRAINTSを指定すると、削除するビュー内の主キーおよび一意キーを参照するすべての参照整合性制約を削除します。
+(2)		B.　ビューが参照している表の列は、ビューが削除されると、参照している表から削除されます。
+(3)		C.　自スキーマにあるビューを削除するためには、DROP ANY VIEW 権限が付与されている必要があります。
+(4)		D.　ビューを削除すると、ロールおよびユーザーに付与された対応するオブジェクト権限はすべて取り消されます。
+(5)		E.　ビュー経由で追加した行は、ビューが削除されると表から自動的に削除されます。
+Ans.A.D
+○
+
+
+問題63 第63問目 / 全78問
+索引とその管理について正しい記述はどれでしょうか。（2つ選択）
+(1)		A.　CREATE TABLE文の中で主キー制約および一意キー制約を定義すると、索引が暗黙的に作成されます。
+(2)		B.　不可視索引は、DML実行中は維持されません。
+(3)		C.　索引は一意にも非一意にも設定できます。
+(4)		D.　索引作成時にOracle標準関数を使用することはできません。
+(5)		E.　主キー制約や一意キー制約で暗黙的に作成された索引は、その索引のみを削除することができます。
+Ans.A.C
+×
+SelfAns.C.E
+
+問題64 第64問目 / 全78問
+ITEM表に索引が作成された状態で、
+DROP TABLE ITEM;
+を実行して、表と索引がRECYCLEBINに存在するとします。
+次に以下の文を実行します。
+
+FLASHBACK TABLE ITEM TO BEFORE DROP;
+
+実行結果として正しい記述はどれでしょうか。
+(1)		A.　表構造、データ、索引を回復することはできません。
+(2)		B.　表構造を回復しますが、データ、索引は回復しません。
+(3)		C.　表構造、データを回復しますが、索引は回復しません。
+(4)		D.　表構造、データ、索引を回復します。
+(5)		E.　索引のみを回復します。
+Ans.D
+○
+
+問題65 第65問目 / 全78問
+シノニムについて正しい記述はどれでしょうか。
+(1)		A.　シノニムの変更をする場合、いったん削除して再作成する必要があります。
+(2)		B.　全ユーザーから使用できるシノニムを作成するためには、CREATE SYNONYMシステム権限が必要です。
+(3)		C.　権限を持たないユーザーでも PUBLIC SYNONYMを作成できます。
+(4)		D.　プライベート・シノニムは、データベース内で一意である必要があります。
+(5)		E.　シノニムはシノニムを持つことができます。
+Ans.E
+×
+SelfAns.D
+
+
+問題66 第66問目 / 全78問
+実行ユーザーにはシノニムを作成する権限があります。
+USER1ユーザーのITEM表に、すべてのユーザーがアクセスできるITEM_SYNというシノニムを作成する文はどれでしょうか。
+(1)		A.　CREATE OR REPLACE SYNONYM ITEM_SYN FOR USER1.ITEM;
+(2)		B.　CREATE OR REPLACE SYNONYM PUBLIC ITEM_SYN FOR USER1.ITEM;
+(3)		C.　CREATE OR REPLACE SYNONYM (PUBLIC ITEM_SYN) FOR USER1.ITEM;
+(4)		D.　CREATE OR REPLACE SYNONYM ITEM_SYN FOR USER1.ITEM PUBLIC;
+(5)		E.　CREATE OR REPLACE PUBLIC SYNONYM ITEM_SYN FOR USER1.ITEM;
+Ans.E
+○
+
+
+問題67 第67問目 / 全78問
+シーケンスについて正しい記述はどれでしょうか。（3つ選択）
+(1)		A.　シーケンスの初期値はMAXVALUEで指定します。
+(2)		B.　シーケンス値はマイナス値の指定も可能です。
+(3)		C.　シーケンスは、1つのセッションのみで使用できます。
+(4)		D.　CURRVALは、シーケンスの現在の値を取得します。
+(5)		E.　インスタンスに障害が発生した場合、キャッシュされていたシーケンス番号は再度利用可能となります。
+(6)		F.　NEXTVALは、現在値に加増した値を取得します。
+(7)		G.　MAXVALUE/MINVALUEの値の変更は、シーケンスを一度DROPして再作成する必要があります。
+Ans.B.D.F
+×
+SelfAns.A.D.F
+
+
+問題68 第68問目 / 全78問
+CREATE SEQUENCE ITEM_SEQ
+　MAXVALUE 9999
+　CYCLE
+　CACHE 1000;
+
+CREATE TABLE ITEM
+(
+　　ITEM_ID NUMBER(4) DEFAULT ITEM_SEQ.NEXTVAL CONSTRAINT ITEM_PK PRIMARY KEY,
+　　ITEM_NO NUMBER(3),
+　　ITEM_NAME VARCHAR2(20),
+　　ITEM_TYPE VARCHAR2(20),
+　　MADE_DATE DATE,
+　　ITEM_PRICE NUMBER(7)
+);
+
+表のITEM_IDにシーケンス：ITEM_SEQを適用するとします。
+表とシーケンスについて正しい記述はどれでしょうか。（2つ選択）
+(1)		A.　他のユーザーのスキーマ内に順序を作成する場合は、CREATE SEQUENCEシステム権限が必要です。
+(2)		B.　ITEM_SEQは、9999ごとに1に戻ります。
+(3)		C.　ITEM_SEQのシーケンス値はITEM表のITEM_IDと同じ値になります。
+(4)		D.　ITEM_SEQが削除された場合、ITEM に挿入された行の列 ITEM_ID のデフォルト値は NULL になります。
+(5)		E.　ITEM表にINSERT文が実行された場合、かつITEM_ID列の値がDEFAULT指定の場合、ITEM_ID列シーケンスITEM_SEQから次の番号を取得します。
+Ans.B.E
+×
+SelfAns.B.D
+
+問題69 第69問目 / 全78問
+システム権限を付与する文はどれでしょうか。
+(1)		A.　GRANT DELETE
+(2)		B.　GRANT ALTER TABLE TO PUBLIC;
+(3)		C.　GRANT CREATE MATERIALIZE VIEW TO USR01;
+(4)		D.　GRANT CREATE TABLE TO USR01, USR02;
+Ans.D
+○
+
+
+問題70 第70問目 / 全78問
+システム権限で実行できるものについての説明はどれでしょうか。（3つ選択）
+(1)		A.　データベースに接続します。
+(2)		B.　データベース内の任意の順序（シーケンス）にアクセスできます。
+(3)		C.　OSのファイルにアクセスします。
+(4)		D.　別のスキーマでファンクションを実行します。
+(5)		E.　WITH GRANT OPTIONを使用します。
+(6)		F.　WITH ADMIN OPTIONを使用します。
+Ans.A.B.F
+×
+SelfAns.A.B.E
+
+
+
+問題71 第71問目 / 全78問
+WITH GRANT OPTIONについて正しい記述はどれでしょうか。（2つ選択）
+(1)		A.　システム権限の場合に使用します。
+(2)		B.　GRANT文で使用します。
+(3)		C.　REVOKE文で使用します。
+(4)		D.　WITH GRANT OPTION付きで付与されたオブジェクト権限は、別のユーザーに付与できます。
+Ans.B.D
+×
+SelfAns.A.D
+
+
+問題72 第72問目 / 全78問
+次の文を実行します。
+
+GRANT ALL PRIVILEGES
+ON ITEM,MAKER
+WITH GRANT OPTION;
+
+ITEMとMAKER表の所有者とGRANT文の実行ユーザーは一般ユーザーですが、
+上記の文を実行するとエラーとなりました。
+エラーの原因について正しい記述はどれでしょうか。
+(1)		A.　一般ユーザーでALL PRIVILEGESは指定できません。
+(2)		B.　複数の表にGRANT文の一括実行はできません。
+(3)		C.　一般ユーザーでWITH GRANT OPTIONは指定できません。
+(4)		D.　WITH ADMIN OPTIONを追加する必要があります。
+
+Ans.C
+×
+SelfAns.B
+
+問題73 第73問目 / 全78問
+ロールについて正しい記載はどれでしょうか。（2つ選択）
+(1)		A.　ロールは、ユーザーまたは他のロールに付与できる権限の集合です。
+(2)		B.　ロールは自分自身のロールに付与できます。
+(3)		C.　ロールはPUBLICに付与できます。
+(4)		D.　ユーザーは、1つのロールのみを付与できます。
+(5)		E.　ロールは循環的に付与できます。
+Ans.A.C
+○
+
+
+
+問題74 第74問目 / 全78問
+権限とロールについて正しい記述はどれでしょうか。（3つ選択）
+(1)		A.　ロールは作成したユーザーによって所有されます。
+(2)		B.　すべてのロールはSYSユーザーによって所有されます。
+(3)		C.　ロールはいずれのスキーマにも含まれません。
+(4)		D.　ロールには、システム権限、オブジェクト権限、他のロールを含めることができます。
+(5)		E.　ロールにPUBLICに付与すると、すべてのユーザーがそのロールを使用できます。
+Ans.C.D.E
+×
+SelfAns.A.D.E
+
+
+問題75 第75問目 / 全78問
+データ・ディクショナリについての正しい記述を2つ選択してください。
+(1)		A.　データ・ディクショナリは、DBAが手動で管理します。
+(2)		B.　データ・ディクショナリ・ビューは、データベース管理用表とユーザー定義表の集合体です。
+(3)		C.　ユーザー名、およびユーザーに付与された権限とロールは、データ・ディクショナリに保存されます。
+(4)		D.　DBA、ALL、USER などのプレフィックスが異なっていて、その後の名前が同じビューは、権限と名前に応じた最適な情報を取得します。
+
+Ans.C.D
+×
+SelfAns.B.C
+
+問題76 第76問目 / 全78問
+データ・ディクショナリについて正しい記述はどれでしょうか。（2つ選択）
+(1)		A.　データ・ディクショナリは、DDLが発行されるたびに常に更新されます。
+(2)		B.　SYSユーザーは、データ・ディクショナリ内のすべてのベース表とユーザーがアクセスできるビューを所有します。
+(3)		C.　すべてのユーザーは、データ・ディクショナリ内の全情報にアクセスすることができます。
+(4)		D.　データ・ディクショナリの表には接頭辞ALL_が付きます。
+(5)		E.　すべてのユーザー操作がデータ・ディクショナリに記録されます。
+Ans.A.B
+○
+
+
+問題77 第77問目 / 全78問
+セッションに、NLS_DATE_FORMAT DD-MON-YYYY HH24:MI:SS を設定している場合、日付/時刻関数について正しい記述はどれでしょうか。（3つ選択）
+(1)		A.　SYSDATEは、セッション・タイムゾーンに従って現在の日付と時刻を返します。
+(2)		B.　SYSDATEは、データベース・サーバーが存在するオペレーティング・システムの現在の日付と時刻のセットを返します。
+(3)		C.　CURRENT_DATEは、セッション・タイムゾーンに従って現在の日付と時刻を返します。
+(4)		D.　CURRENT_TIMESTAMPとSYSDATEは、同じ日付を返します。
+(5)		E.　CURRENT_DATEとCURRENT_TIMESTAMPは、同じ日付を返します。
+Ans.B.C.E
+×
+SelfAns.A.C
+
+
+問題78 第78問目 / 全78問
+INTERVALデータ型について正しい記述はどれでしょうか。
+(1)		A.　INTERVAL YEAR TO MONTHは、負の値は使用できません。
+(2)		B.　INTERVAL YEAR TO MONTHは、年ごとの間隔をサポートします。
+(3)		C.　INTERVAL DAY TO SECONDは、小数秒は使用できません。
+(4)		D.　INTERVAL DAY TO SECONDは、年ごとの間隔をサポートします。
+
+Ans.B
+○
