@@ -60,7 +60,85 @@
 </div>
 <div class="container">
 
-  <div class="section-heading" style="border-left-color:#2c3e50">模擬試験 結果分析</div> <p class="section-desc">受験済みの模擬試験（第1回 48点 / 第2回 33点）のドメイン別失点分析と弱点強化リンク。</p> <div class="index-grid" style="grid-template-columns:repeat(auto-fill,minmax(320px,1fr))"> <div class="index-card" style="border-top:4px solid #c0392b"> <a href="mock_exam_report.html"> <div class="card-domain" style="color:#2c3e50">REPORT</div> <div class="card-title">模擬試験 結果レポート</div> <div class="card-sections">総合スコア / ドメイン別正答率 / 弱点ランキング / 間違えた設問一覧</div> </a> </div> <div class="index-card" style="border-top:4px solid #4a00e0"> <a href="mock_exam_reinforce.html"> <div class="card-domain" style="color:#4a00e0">EX 索引</div> <div class="card-title">弱点強化ユニット 一覧</div> <div class="card-sections">EX1〜EX8 の独立ユニットを優先度順で索引</div> </a> </div> </div> <div class="section-heading" style="border-left-color:#4a00e0">EX 弱点強化ユニット（独立）</div> <p class="section-desc">D1〜D8 教科書とは別系統の独立ユニット。模擬試験の失点データに基づき優先度順に並ぶ。</p> <div class="index-grid" style="grid-template-columns:repeat(auto-fill,minmax(240px,1fr))"> <div class="index-card" style="border-top:4px solid #c0392b"> <a href="EX1_reinforce.html"><div class="card-domain" style="color:#c0392b">EX1</div><div class="card-title">複数表の結合</div><div class="card-sections">最優先 / USING・ON・NATURAL / 自己結合 / FULL OUTER</div></a> </div> <div class="index-card" style="border-top:4px solid #c0392b"> <a href="EX2_reinforce.html"><div class="card-domain" style="color:#c0392b">EX2</div><div class="card-title">サブクエリ・集合演算</div><div class="card-sections">最優先 / 相関サブクエリ / UNION vs UNION ALL / MINUS / EXISTS</div></a> </div> <div class="index-card" style="border-top:4px solid #e67e22"> <a href="EX3_reinforce.html"><div class="card-domain" style="color:#e67e22">EX3</div><div class="card-title">単一行関数</div><div class="card-sections">優先 / NVL系 / CASE / TO_CHAR / 日付演算</div></a> </div> <div class="index-card" style="border-top:4px solid #e67e22"> <a href="EX4_reinforce.html"><div class="card-domain" style="color:#e67e22">EX4</div><div class="card-title">DML・トランザクション</div><div class="card-sections">優先 / SAVEPOINT / INSERT ALL/FIRST / MERGE / TRUNCATE</div></a> </div> <div class="index-card" style="border-top:4px solid #e67e22"> <a href="EX5_reinforce.html"><div class="card-domain" style="color:#e67e22">EX5</div><div class="card-title">DDL・オブジェクト管理</div><div class="card-sections">優先 / 制約 / VIEW更新可否 / SEQUENCE / GRANT / 辞書</div></a> </div> <div class="index-card" style="border-top:4px solid #f1c40f"> <a href="EX6_reinforce.html"><div class="card-domain" style="color:#c89400">EX6</div><div class="card-title">グループ関数・集計</div><div class="card-sections">要復習 / GROUP BY / HAVING / COUNT(*) vs COUNT(col)</div></a> </div> <div class="index-card" style="border-top:4px solid #f1c40f"> <a href="EX7_reinforce.html"><div class="card-domain" style="color:#c89400">EX7</div><div class="card-title">SQLとRDBの基礎</div><div class="card-sections">要復習 / SQL分類 / キーとNULL / DUAL / 正規化</div></a> </div> <div class="index-card" style="border-top:4px solid #2ecc71"> <a href="EX8_reinforce.html"><div class="card-domain" style="color:#2ecc71">EX8</div><div class="card-title">データの絞り込みとソート</div><div class="card-sections">維持 / LIKE / ROWNUM / 置換変数 / VERIFY</div></a> </div> </div> <div class="section-heading">SQL Silver 試験対策（1Z0-071）</div>
+  <div class="section-heading" style="border-left-color:#2c3e50">模擬試験 結果分析</div>
+  <p class="section-desc">受験済みの模擬試験 3 回分を集計し、得点比率と失点傾向を可視化しています。平均得点比率 38.3%、重点補強領域は D6・D3・D8 です。</p>
+  <div class="index-grid" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr));margin-bottom:20px">
+    <div class="index-card" style="border-top:4px solid #e67e22">
+      <a href="mock_exam_report.html">
+        <div class="card-domain" style="color:#e67e22">48%</div>
+        <div class="card-title">第1回 模擬試験</div>
+        <div class="card-sections">得点比率 48% / 設問正答率 49%</div>
+      </a>
+    </div>
+    <div class="index-card" style="border-top:4px solid #c0392b">
+      <a href="mock_exam_report.html">
+        <div class="card-domain" style="color:#c0392b">33%</div>
+        <div class="card-title">第2回 模擬試験</div>
+        <div class="card-sections">得点比率 33% / 設問正答率 32%</div>
+      </a>
+    </div>
+    <div class="index-card" style="border-top:4px solid #c0392b">
+      <a href="mock_exam_report.html">
+        <div class="card-domain" style="color:#c0392b">34%</div>
+        <div class="card-title">第3回 模擬試験</div>
+        <div class="card-sections">得点比率 34% / 設問正答率 35%</div>
+      </a>
+    </div>
+    <div class="index-card" style="border-top:4px solid #1d3557">
+      <a href="mock_exam_report.html">
+        <div class="card-domain" style="color:#1d3557">D6</div>
+        <div class="card-title">最大の失点集中領域</div>
+        <div class="card-sections">サブクエリ・集合演算 / 進捗 24% / まずはここから補強</div>
+      </a>
+    </div>
+  </div>
+  <div class="index-grid" style="grid-template-columns:repeat(auto-fill,minmax(320px,1fr))">
+    <div class="index-card" style="border-top:4px solid #2c3e50">
+      <a href="mock_exam_report.html">
+        <div class="card-domain" style="color:#2c3e50">REPORT</div>
+        <div class="card-title">模擬試験 結果レポート</div>
+        <div class="card-sections">総合スコア / 項目別進捗率 / 失点比率 / 弱点ランキング / 試験別詳細</div>
+      </a>
+    </div>
+    <div class="index-card" style="border-top:4px solid #4a00e0">
+      <a href="mock_exam_reinforce.html">
+        <div class="card-domain" style="color:#4a00e0">EX 索引</div>
+        <div class="card-title">弱点強化ユニット 一覧</div>
+        <div class="card-sections">模擬試験の最新結果に合わせて、優先度順に強化ユニットへ移動</div>
+      </a>
+    </div>
+  </div>
+
+  <div class="section-heading" style="border-left-color:#4a00e0">EX 弱点強化ユニット（独立）</div>
+  <p class="section-desc">D1〜D8 教科書とは別系統の独立ユニットです。EX 番号は教材 ID、学習順は模擬試験データに基づく優先度順で判断してください。</p>
+  <div class="index-grid" style="grid-template-columns:repeat(auto-fill,minmax(240px,1fr))">
+    <div class="index-card" style="border-top:4px solid #c0392b">
+      <a href="EX2_reinforce.html"><div class="card-domain" style="color:#c0392b">EX2</div><div class="card-title">サブクエリ・集合演算</div><div class="card-sections">最優先 / 進捗 24% / 相関サブクエリ / UNION 系 / EXISTS</div></a>
+    </div>
+    <div class="index-card" style="border-top:4px solid #c0392b">
+      <a href="EX3_reinforce.html"><div class="card-domain" style="color:#c0392b">EX3</div><div class="card-title">単一行関数</div><div class="card-sections">最優先 / 進捗 30% / NVL 系 / CASE / TO_CHAR / 日付演算</div></a>
+    </div>
+    <div class="index-card" style="border-top:4px solid #e67e22">
+      <a href="EX5_reinforce.html"><div class="card-domain" style="color:#e67e22">EX5</div><div class="card-title">DDL・オブジェクト管理</div><div class="card-sections">優先 / 進捗 32% / 制約 / VIEW / SEQUENCE / GRANT / 辞書</div></a>
+    </div>
+    <div class="index-card" style="border-top:4px solid #e67e22">
+      <a href="EX1_reinforce.html"><div class="card-domain" style="color:#e67e22">EX1</div><div class="card-title">複数表の結合</div><div class="card-sections">優先 / 進捗 38% / USING・ON・NATURAL / 自己結合 / FULL OUTER</div></a>
+    </div>
+    <div class="index-card" style="border-top:4px solid #e67e22">
+      <a href="EX6_reinforce.html"><div class="card-domain" style="color:#e67e22">EX6</div><div class="card-title">グループ関数・集計</div><div class="card-sections">優先 / 進捗 40% / GROUP BY / HAVING / COUNT(*) vs COUNT(col)</div></a>
+    </div>
+    <div class="index-card" style="border-top:4px solid #f1c40f">
+      <a href="EX4_reinforce.html"><div class="card-domain" style="color:#c89400">EX4</div><div class="card-title">DML・トランザクション</div><div class="card-sections">要復習 / 進捗 46% / SAVEPOINT / INSERT ALL/FIRST / MERGE / TRUNCATE</div></a>
+    </div>
+    <div class="index-card" style="border-top:4px solid #f1c40f">
+      <a href="EX7_reinforce.html"><div class="card-domain" style="color:#c89400">EX7</div><div class="card-title">SQLとRDBの基礎</div><div class="card-sections">要復習 / 進捗 50% / SQL分類 / キーとNULL / DUAL / 正規化</div></a>
+    </div>
+    <div class="index-card" style="border-top:4px solid #f1c40f">
+      <a href="EX8_reinforce.html"><div class="card-domain" style="color:#c89400">EX8</div><div class="card-title">データの絞り込みとソート</div><div class="card-sections">要復習 / 進捗 60% / LIKE / ROWNUM / 置換変数 / VERIFY</div></a>
+    </div>
+  </div>
+
+  <div class="section-heading">SQL Silver 試験対策（1Z0-071）</div>
   <p class="section-desc">試験出題ドメイン（D1〜D8）に対応した学習教材です。各ドメインを順に学ぶことで試験範囲を体系的に網羅できます。</p>
   <div class="index-grid">
     <div class="index-card">

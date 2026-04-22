@@ -1,14 +1,12 @@
 #!/usr/bin/env python3
-"""Split mock_exam_reinforce.html into independent EX1..EX8 pages.
-
-Priority order (weakest domain first) maps to EX number:
-  EX1=D5, EX2=D6, EX3=D3, EX4=D7, EX5=D8, EX6=D4, EX7=D1, EX8=D2
-"""
+"""Split mock_exam_reinforce.html into independent EX1..EX8 pages."""
+import json
 import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 SRC = (ROOT / "dist" / "mock_exam_reinforce.html").read_text(encoding="utf-8")
+DATA = json.loads((ROOT / "dist" / "mock_exam_data.json").read_text(encoding="utf-8"))
 
 # Extract <style>...</style>
 style_match = re.search(r"<style>.*?</style>", SRC, re.DOTALL)
@@ -31,16 +29,44 @@ for m in BLOCK_RE.finditer(SRC):
     )
     blocks[dom] = full_match.group(0) if full_match else None
 
-# Priority order EX N -> (domain, label, priority class)
+PAGE_MAP = {
+    "D5": ("EX1", "複数表の結合"),
+    "D6": ("EX2", "サブクエリ・集合演算"),
+    "D3": ("EX3", "単一行関数"),
+    "D7": ("EX4", "DML・トランザクション"),
+    "D8": ("EX5", "DDL・オブジェクト管理"),
+    "D4": ("EX6", "グループ関数・集計"),
+    "D1": ("EX7", "SQLとRDBの基礎"),
+    "D2": ("EX8", "データの絞り込みとソート"),
+}
+
+
+def priority_code(rank: int, accuracy: float) -> str:
+    if rank < 2:
+        return "high"
+    if rank < 5:
+        return "mid"
+    if accuracy < 75:
+        return "low"
+    return "ok"
+
+
+domain_order = sorted(
+    PAGE_MAP,
+    key=lambda dom: (
+        DATA["summary"]["combined"][dom]["accuracy"],
+        -len(DATA["summary"]["combined"][dom]["wrong"]),
+        dom,
+    ),
+)
 EX_ORDER = [
-    ("EX1", "D5", "複数表の結合", "high"),
-    ("EX2", "D6", "サブクエリ・集合演算", "high"),
-    ("EX3", "D3", "単一行関数", "mid"),
-    ("EX4", "D7", "DML・トランザクション", "mid"),
-    ("EX5", "D8", "DDL・オブジェクト管理", "mid"),
-    ("EX6", "D4", "グループ関数・集計", "low"),
-    ("EX7", "D1", "SQLとRDBの基礎", "low"),
-    ("EX8", "D2", "データの絞り込みとソート", "ok"),
+    (
+        PAGE_MAP[dom][0],
+        dom,
+        PAGE_MAP[dom][1],
+        priority_code(idx, DATA["summary"]["combined"][dom]["accuracy"]),
+    )
+    for idx, dom in enumerate(domain_order)
 ]
 
 PRIORITY_COLOR = {"high": "#c0392b", "mid": "#e67e22", "low": "#f1c40f", "ok": "#2ecc71"}
@@ -96,12 +122,13 @@ def make_ex_index() -> str:
     cards = ""
     for ex_id, dom, label, prio in EX_ORDER:
         color = PRIORITY_COLOR[prio]
+        accuracy = DATA["summary"]["combined"][dom]["accuracy"]
         cards += f"""
     <a class="ex-card" href="{ex_id}_reinforce.html" style="border-left:6px solid {color}">
       <div class="ex-tag" style="background:{color}">{ex_id}</div>
       <div class="ex-body">
         <div class="ex-title">{label}</div>
-        <div class="ex-meta">優先度 <b style="color:{color}">{PRIORITY_LABEL[prio]}</b> ／ 元ドメイン {dom}</div>
+        <div class="ex-meta">優先度 <b style="color:{color}">{PRIORITY_LABEL[prio]}</b> ／ 元ドメイン {dom} ／ 進捗 {accuracy:.0f}%</div>
       </div>
       <div class="ex-arrow"></div>
     </a>"""
@@ -144,7 +171,7 @@ def make_ex_index() -> str:
 
   <div class="intro">
     <h2> このページについて</h2>
-    各 <b>EX ユニット</b> は、模擬試験の弱点領域に対する独立した強化教材。D1〜D8 教科書とは別系統で、失点の多い順に EX1〜EX8 として並ぶ。優先度「最優先」の EX1／EX2 から着手し、試験直前は全ユニットを通読する想定。
+    各 <b>EX ユニット</b> は、模擬試験の弱点領域に対する独立した強化教材。D1〜D8 教科書とは別系統で、カードの表示順は最新の模擬試験結果に基づく優先度順です。EX番号は教材IDとして固定し、優先度「最優先」のユニットから着手する想定です。
   </div>
 
   <div class="ex-grid">{cards}
@@ -159,12 +186,12 @@ def make_ex_index() -> str:
 """
 
 
-# Write files
-for ex_id, dom, label, prio in EX_ORDER:
+# Write files only when the source still contains domain blocks.
+for dom, (ex_id, label) in PAGE_MAP.items():
     block = blocks.get(dom)
     if block is None:
-        print(f"WARN: missing block for {dom}")
         continue
+    prio = next(order[3] for order in EX_ORDER if order[1] == dom)
     html = make_page(ex_id, dom, label, prio, block)
     for outdir in ["dist", "textbooks"]:
         out = ROOT / outdir / f"{ex_id}_reinforce.html"
