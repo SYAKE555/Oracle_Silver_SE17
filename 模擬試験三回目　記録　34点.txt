@@ -1,0 +1,1488 @@
+模擬試験三回目　34点
+
+問題1 第1問目 / 全78問
+次のうち、Oracle SQLとして正しい構文を2つ選択してください。
+(1)		A. SELECT q'(I'm Student.') FROM DUAL;
+(2)		B. SELECT 'I\'m Student.' FROM DUAL;
+(3)		C. SELECT 'I'm Student.' FROM DUAL;
+(4)		D. SELECT q'[I'm Student.]' FROM DUAL;
+(5)		E. SELECT q”[I'm Student.]” FROM DUAL;
+(6)		F. SELECT q'(I'm Student.)' FROM DUAL;
+Ans.DF
+○
+
+問題2 第2問目 / 全78問
+TIMESTAMP WITH LOCAL TIME ZONE型が保持する情報として正しいものを1つ選択してください。
+(1)		A. TIMESTAMP型保持情報＋タイムゾーンオフセット
+(2)		B. TIMESTAMP型保持情報＋タイムゾーンオフセットまたはタイムゾーンリージョン
+(3)		C. TIMESTAMP型保持情報＋ローカルタイムゾーンで入力された日時をデータベースのタイムゾーンに変換した値
+(4)		D. TIMESTAMP型保持情報＋固定のタイムゾーンリージョン
+
+Ans.C
+○
+
+問題3 第3問目 / 全78問
+次のInventory表を対象とするSQLを実行した結果として正しいものはどれですか。1つ選択してください。
+
+---- 実行するSQL ----
+SELECT item_id FROM Inventory
+WHERE NOT (tax > 80 OR quantity < 2)
+ORDER BY (selling_price + tax) ASC, (discount * quantity) DESC;
+
+| item_id | selling_price | tax | discount | quantity |
+|---------|----------------|-----|----------|----------|
+| 101     | 1000           | 80  | 50       | 2        |
+| 102     | 900            | 100 | 30       | 3        |
+| 103     | 950            | 50  | 70       | 1        |
+| 104     | 950            | 50  | 40       | 4        |
+
+
+(1)		A. 104, 101
+(2)		B. 101, 104
+(3)		C. 103, 104
+(4)		D. 104, 102
+
+Ans.A
+×
+SA.D
+
+
+
+問題4 第4問目 / 全78問
+
+次のSQLの実行結果は次のうちどれですか。1つ選択してください。
+
+---- 実行するSQL ----
+SELECT product_id,
+DECODE(TRIM(category),
+'FOOD', 'F-' || TO_CHAR(product_id),
+'CLOTHING', 'C-' || TO_CHAR(product_id),
+'X-' || TO_CHAR(product_id)) AS 管理コード
+FROM Products
+WHERE LENGTH(product_name) >= 5 AND NVL(status, '0') = '1';
+
+(1)		A. DECODE関数では戻り値に関数や演算子を使うことはできないため、このSQLはエラーになる。
+(2)		B. 構文エラーはないため正常に実行される。
+(3)		C. DECODE関数はNULLの比較ができないため、WHERE句でNVLを使うとエラーとなる。
+(4)		D. TO_CHAR関数は文字列型以外では使えないため、このSQLは構文エラーになる。
+
+Ans.B
+×
+SA.A
+
+問題5 第5問目 / 全78問
+ビューの記載について正しいものを1つ選択してください。
+(1)		A. MERGE文でビューを使用することはできない。
+(2)		B. ビューは非スキーマオブジェクトである。
+(3)		C. ビューが参照している表をDROP TABLE文を実行してもビューは有効状態で残る。
+(4)		D. グローバル一時表ではビューが使用できる。
+Ans.D
+○
+
+問題6 第6問目 / 全78問
+次のSQLのうち、Employees表から給与の高い順に並べたうえで、先頭から5件を抽出する処理として正しいものはどれですか。2つ選択してください。
+(1)		A. SELECT * FROM Employees ORDER BY salary DESC OFFSET 0 ROWS FETCH FIRST 5 ROWS ONLY;
+(2)		B. SELECT * FROM Employees FETCH FIRST 5 ROWS ONLY OFFSET 0 ROWS ORDER BY salary DESC;
+(3)		C. SELECT * FROM Employees WHERE ROWNUM <= 5 ORDER BY salary DESC;
+(4)		D. SELECT * FROM (SELECT * FROM Employees ORDER BY salary DESC) WHERE ROWNUM <= 5;
+
+Ans.AD
+×
+SA.BC
+
+
+問題7 第7問目 / 全78問
+次のSQLのうち、Products表から在庫数が0のカテゴリと同じカテゴリに属する商品をすべて削除する処理として正しいものはどれですか。2つ選択してください。
+(1)		A. DELETE FROM Products p WHERE EXISTS (SELECT 1 FROM Products sub WHERE sub.stock = 0 AND sub.category = p.category );
+(2)		B. DELETE FROM Products WHERE EXISTS (SELECT stock FROM Products WHERE stock = 0 AND Products.category = category);
+(3)		C. DELETE FROM Products WHERE category IN (SELECT category FROM Products WHERE stock = 0);
+(4)		D. DELETE FROM Products WHERE category = (SELECT category FROM Products WHERE stock = 0);
+
+Ans.AC
+×
+SA.BC
+
+
+問題8 第8問目 / 全78問
+次のうち、索引にINVISIBLEを指定した場合の動作について正しい説明はどれでしょうか。1つ選択してください。
+(1)		A. 通常のINDEX相当の性能が期待できる。
+(2)		B. DML実行時に索引情報の更新が抑止される。
+(3)		C. 索引の有効性を確認できる。
+(4)		D. 一度不可視にすると索引を可視化することはできない。
+Ans.C
+×
+SA.B
+
+
+問題9 第9問目 / 全78問
+次のSQLを実行したとき、取得できる情報として正しいものはどれですか。1つ選択してください。
+
+SELECT CURRENT_TIMESTAMP, SYSTIMESTAMP FROM DUAL;
+(1)		A. どちらもセッションのタイムゾーンに基づく現在時刻を返す
+(2)		B. CURRENT_TIMESTAMPはサーバのローカル時刻、SYSTIMESTAMPはセッションのシステム時刻を返す
+(3)		C. CURRENT_TIMESTAMPはセッションのタイムゾーンに基づく現在時刻、SYSTIMESTAMPはサーバのローカル時刻を返す
+(4)		D. どちらもUTCに変換された時刻を返す
+
+Ans.C
+×
+SA.A
+
+問題10 第10問目 / 全78問
+次のSQLを実行したとき、employee_nameが「a」または「A」で始まる行を抽出し、名前の長さが短い順に並べるSQLはどれですか。1つ選択してください。
+
+
+A. SELECT employee_name FROM Employees
+   WHERE LPAD(employee_name) LIKE 'A%'
+   ORDER BY LENGTH(employee_name) ASC;
+
+B. SELECT employee_name FROM Employees
+   WHERE UPPER(employee_name) LIKE 'A%'
+   ORDER BY LENGTH(employee_name) ASC;
+
+C. SELECT employee_name FROM Employees
+   WHERE LOWER(employee_name) LIKE 'a%'
+   ORDER BY LENGTH(employee_name) DESC;
+
+D. SELECT employee_name FROM Employees
+   WHERE TRIM(employee_name) LIKE 'a%'
+   ORDER BY LENGTH(employee_name);
+
+
+(1)		A
+(2)		B
+(3)		C
+(4)		D
+
+Ans.B
+○
+
+
+問題11 第11問目 / 全78問
+以下のSQL文を実行したときの結果として正しいものを1つ選びなさい。
+
+---- 実行するSQL ----
+SELECT
+　name,
+　CASE
+　　WHEN TO_NUMBER(REPLACE(price, ',', '')) > 10000 THEN
+　　　NVL2(description, '記載あり', '記載なし')
+　　ELSE
+　　　DECODE(NULLIF(kind, 'くだもの'), NULL, '分類なし', '分類あり')
+　END AS 判定
+FROM Products;
+
+前提：
+・Products表には以下の列が存在する
+name（VARCHAR2型）、price（VARCHAR2型）、description（VARCHAR2型）、kind（VARCHAR2型）
+・priceはすべてカンマ区切りの数値文字列（例：'12,000'）
+・descriptionにはNULLが含まれる可能性がある
+・kind列には'くだもの'を含むさまざまな分類が設定されている
+(1)		A. TO_NUMBER関数の引数は数値にする必要があるのに、REPLACE関数という文字変換関数を使用しているため構文エラーになる。
+(2)		B. DECODE関数ではNULLIF関数を指定できないため構文エラーになる。
+(3)		C. NVL2関数の第2引数と第3引数が連続して評価されるため構文エラーになる。
+(4)		D. SQLは正常に実行される。
+
+Ans.D
+×
+SA.A
+
+問題12 第12問目 / 全78問
+図のSQL文でエラーにならないものを1つ選びなさい。
+A. SELECT name FROM employees WHERE dept_id =
+   (SELECT dept_id FROM departments WHERE location_id = 100 ORDER BY dept_name);
+
+B. SELECT name FROM employees WHERE dept_id =
+   (SELECT dept_id FROM departments WHERE location_id = 200);
+
+C. SELECT name FROM employees e WHERE EXISTS
+   (SELECT 1 FROM departments d WHERE d.deptid = e.dept_id AND d.dept_name LIKE 'SALES%');
+
+D. SELECT name FROM employees WHERE dept_id IN
+   (SELECT deptid, dept_name FROM departments);
+
+(1)		A
+(2)		B
+(3)		C
+(4)		D
+
+Ans.C
+×
+SA.D
+
+
+
+問題13 第13問目 / 全78問
+ビューの記載について正しいものを1つ選択してください。
+(1)		A. 外部表にはビューを作成することはできない。
+(2)		B. ビューに対する更新処理を行う場合は、WITH CHECK OPTIONが必要である。
+(3)		C. ビューを作成すると、基となる表の索引も同時に複製される。
+(4)		D. ビューを作成する際に、別スキーマの表を参照することができる。
+
+Ans.D
+○
+
+
+問題14 第14問目 / 全78問
+
+部門ごとに異なる給与額を調査したいため、部門ごとのユニークなSALARY（給与）を表示したいとします。
+使用できるクエリを1つ選んでください。
+(1)		A. SELECT DISTINCT salary || ' in ' || DISTINCT dept_id FROM employees ORDER BY 1;
+(2)		B. SELECT DISTINCT dept_id, salary FROM employees ORDER BY 1;
+(3)		C. SELECT dept_id, DISTINCT salary, FROM employees ORDER BY 2;
+(4)		D. SELECT salary, dept_id FROM employees ORDER BY 1;
+
+Ans.B
+○
+
+
+問題15 第15問目 / 全78問
+
+以下のうち、有効なSQLの式を含むクエリ を 3つ 選んでください。
+(1)		A. SELECT emp_id, salary, ' Adjusted', salary + bonus - tax FROM employees;
+(2)		B. SELECT emp_id, (salary * 0.15 / (4.75 + 552.25)) FROM employees;
+(3)		C. SELECT emp_id, birth_date - hire_date + 2 FROM employees;
+(4)		D. SELECT emp_id, salary || ' Adjusted', salary + bonus - tax FROM employees;
+(5)		E. SELECT emp_id, salary + bonus FROM employees;
+
+Ans.BCE
+○
+
+
+問題16 第16問目 / 全78問
+Oracleのパフォーマンス について正しいものを 2つ 選んでください。
+(1)		A. 結合条件に関係のない列をSELECT句に含めた場合でも、パフォーマンスに影響はない。
+(2)		B. Oracleの結合構文は、SQL:1999準拠のANSI結合構文よりもパフォーマンスが優れている。
+(3)		C. 使用する結合構文の違いは、パフォーマンスには影響しない。
+(4)		D. 結合対象の列にインデックスがあると、パフォーマンスが向上する可能性がある。
+Ans.CD
+○
+
+
+問題17 第17問目 / 全78問
+以下のうち、正しいものを2つ選んでください。
+(1)		A. ADD_MONTHS は、日付にカレンダーベースの月数を追加する。
+(2)		B. MONTHS_BETWEEN は、2つの日付の間の月数を計算する。
+(3)		C. CEIL は、指定された数値以下の最大の整数を返す。
+(4)		D. LAST_DAY は、現在の月の最終日の日付のみを返す。
+Ans.AB
+○
+
+
+問題18 第18問目 / 全78問
+シノニム に関する正しい記述を 3つ 選んでください。
+(1)		A. PL/SQLプロシージャのシノニムを作成することはできない。
+(2)		B. パブリックシノニムは、どのユーザーでも削除できる。
+(3)		C. シーケンスにもシノニムを設定できる。
+(4)		D. シノニムは、すべてのユーザーが利用可能にできる。
+(5)		E. あるユーザーが作成したシノニムは、別のユーザーのオブジェクトを参照できる。
+Ans.CDE
+×
+SA.CD
+
+
+問題19 第19問目 / 全78問
+次のうち、正しいものを2つ選んでください。
+(1)		A. INSTR は、文字列内でのオフセット（位置）を検索し、0からの位置を返す。
+(2)		B. CONCAT は2つの文字列を結合する。
+(3)		C. FLOOR は、指定された数値以下の最大の整数を返す。
+(4)		D. INSTR は、単一の文字だけに対してオフセット（位置）を検索する。
+(5)		E. CONCAT は2つ以上の文字列を結合することができる。
+(6)		F. FLOOR は、指定された数値以下の最小の整数を返す。
+
+Ans.BC
+×
+SA.BD
+
+
+問題20 第20問目 / 全78問
+以下のSQLステートメントを確認してください。
+
+CREATE TABLE Employees
+(emp_no NUMBER(2) CONSTRAINT pk_emp PRIMARY KEY,
+ename VARCHAR2(15),
+salary NUMBER(8,2),
+mgr_no NUMBER(2));
+
+ALTER TABLE Employees ADD CONSTRAINT fk_mgr
+FOREIGN KEY (mgr_no)
+REFERENCES Employees(emp_no)
+ON DELETE SET NULL;
+
+ALTER TABLE Employees
+DISABLE CONSTRAINT pk_emp
+CASCADE;
+
+ALTER TABLE Employees
+ENABLE CONSTRAINT pk_emp;
+
+次のうち、実行後に正しいものを2つ選んでください。
+(1)		A. 主キー制約は有効化され、IMMEDIATE となる。
+(2)		B. 外部キー制約は有効化され、DEFERRED となる。
+(3)		C. 主キー制約は無効化され、DEFERRED となる。
+(4)		D. 外部キー制約は無効化される。
+(5)		E. 外部キー制約は有効化され、IMMEDIATE となる。
+
+Ans.AD
+×
+SA.AE
+
+
+問題21 第21問目 / 全78問
+以下のSQLステートメントを確認してください。
+
+UPDATE invoices i
+SET client_name =
+(SELECT last_name
+FROM clients
+WHERE client_id = i.client_id);
+
+次のうち、正しいものを2つ選んでください。
+(1)		A. INVOICES テーブル内のすべての行が更新される。
+(2)		B. UPDATE ステートメントが実行される前に、サブクエリが実行される。
+(3)		C. サブクエリは相関サブクエリではない。
+(4)		D. サブクエリは INVOICES テーブルの更新されるすべての行に対して実行される。
+(5)		E. サブクエリが複数行を返した場合でも、UPDATE ステートメントはエラーなく実行される。
+
+Ans.AD
+×
+SA.BD
+
+
+問題22 第22問目 / 全78問
+TRUNCATE と DELETE に関して、正しいものを2つ選んでください。
+(1)		A. TRUNCATE は WHERE 句を使用して削除する行を指定できる。
+(2)		B. DELETE は WHERE 句を使用して削除する行を指定できる。
+(3)		C. DELETE の結果は ROLLBACK によって取り消すことができる。
+(4)		D. TRUNCATE の結果は ROLLBACK によって取り消すことができる。
+(5)		E. TRUNCATE を実行すると、テーブルのインデックスが UNUSABLE な状態になる。
+
+Ans.BC
+○
+
+問題23 第23問目 / 全78問
+SHOPS テーブルには、データ型 DATE の START_DATE 列があり、行が挿入された日付を格納しています。
+START_DATE が過去16か月以内の行のみを表示したいとします。
+使用できる WHERE 句はどれですか？1つ選択してください。
+(1)		A. WHERE MONTHS_BETWEEN(start_date, SYSDATE) <= 16
+(2)		B. WHERE TO_NUMBER(start_date - SYSDATE) <= 16
+(3)		C. WHERE MONTHS_BETWEEN(SYSDATE, start_date) <= 16
+(4)		D. WHERE ADD_MONTHS(start_date, 16) <= SYSDATE
+
+Ans.C
+×
+SA.D
+
+問題24 第24問目 / 全78問
+スカラサブクエリについて、正しいものを2つ選んでください。
+(1)		A. GROUP BY 句では使用できない。
+(2)		B. ゼロ行を返すスカラサブクエリの結果は 0 になる。
+(3)		C. INSERT 文の VALUES 句では使用できない。
+(4)		D. スカラサブクエリは CREATE TABLE 文のデフォルト値として使用できる。
+(5)		E. スカラサブクエリはネスト（入れ子）できる。
+
+Ans.DE
+×
+SA.BD
+
+問題25 第25問目 / 全78問
+以下のクエリを確認してください。
+
+SELECT product_id, product_name, price FROM products WHERE release_date > '&1';
+
+このクエリを実行する際に、release_date の入力を求められないようにする方法を 2つ 選んでください。
+(1)		A. クエリをスクリプトに保存し、スクリプト実行時に &1 の値を渡す。
+(2)		B. クエリ内の &1 を '&1' に置き換える。
+(3)		C. クエリを実行する前に DEFINE コマンドを使用する。
+(4)		D. クエリを実行する前に UNDEFINE コマンドを使用する。
+(5)		E. クエリを実行する前に SET VERIFY ON コマンドを実行する。
+
+Ans.AC
+○
+
+
+問題26 第26問目 / 全78問
+ユーザー LISAに以下の権限を与えたい。
+
+・ORDERSテーブルの STATUSおよび DELIVERY_DATE列を更新可能とする
+・その権限を他のユーザーにも付与できるようにする。
+
+この操作を行う正しいSQL文はどれですか？1つ選択してください。
+(1)		A. GRANT UPDATE ON orders.status, orders.delivery_date TO lisa WITH GRANT OPTION;
+(2)		B. GRANT UPDATE (status, delivery_date) ON orders TO lisa WITH ADMIN OPTION;
+(3)		C. GRANT UPDATE (status, delivery_date) ON orders TO lisa;
+(4)		D. GRANT UPDATE ON orders.status, orders.delivery_date TO lisa WITH ADMIN OPTION;
+(5)		E. GRANT UPDATE (status, delivery_date) ON orders TO lisa WITH GRANT OPTION;
+
+Ans.E
+×
+SA.D
+
+
+問題27 第27問目 / 全78問
+EMPLOYEES表は、シノニム、インデックス、ビューにより参照されています。
+次の DROP TABLE コマンドを実行した場合、どのような影響があるでしょうか。
+
+DROP TABLE employees PURGE;
+
+正しい説明を3つ選んでください。
+(1)		A. EMPLOYEES テーブルのすべての行が削除されるが、テーブルの構造は保持される。
+(2)		B. EMPLOYEES テーブルに関連するすべてのシノニムが削除される。
+(3)		C. DROP TABLE で削除したテーブルは ROLLBACK によって元に戻せる。
+(4)		D. EMPLOYEES テーブルはデータベースから完全に削除される。
+(5)		E. EMPLOYEES テーブル上のすべてのインデックスが削除される。
+(6)		F. EMPLOYEES テーブルを基にしたすべてのビューが無効化される。
+
+Ans.DEF
+○
+
+
+問題28 第28問目 / 全78問
+SQLに関する正しい説明を3つ選んでください。
+(1)		A. リレーショナルデータベースに最も適している。
+(2)		B. ACID（Atomicity, Consistency, Isolation, Durability）特性を保証する。
+(3)		C. 物理ストレージから独立し、論理データ構造の操作を可能にする。
+(4)		D. オブジェクト指向データベースの両方で使用できる唯一の言語である。
+(5)		E. 関係データベースで多態性（ポリモーフィズム）を定義および実装するために使用される。
+(6)		F. 階層型データストレージを必要とする。
+
+Ans.ABC
+○
+
+問題29 第29問目 / 全78問
+Oracleのシノニムについて、正しいものを2つ選んでください。
+(1)		A. シノニムに対して別のシノニムを作成できる。
+(2)		B. シノニムは参照先のオブジェクトが削除されても自動的に削除される。
+(3)		C. すべてのユーザーが PUBLIC SYNONYM を作成できる。
+(4)		D. PACKAGE 内のオブジェクトにはシノニムを作成できる。
+(5)		E. データベース内のすべてのプライベートシノニム名は一意でなければならない。
+
+Ans.AD
+×
+SA.AC
+
+問題30 第30問目 / 全78問
+MOD、ROUND、TRUNC 関数の動作に関して、正しいものを1つ選んでください。
+(1)		A. TRUNC(MOD(12.7,-2)) は無効である。
+(2)		B. ROUND(MOD(12.7,-2)) は無効である。
+(3)		C. ROUND(MOD(12.7,-2)) と TRUNC(MOD(12.7,-2)) はどちらも使用でき、同じ結果を返す。
+(4)		D. ROUND(MOD(12.7,-2)) と TRUNC(MOD(12.7,-2)) はどちらも使用できるが、異なる結果を返す。
+
+Ans.D
+×
+SA.A
+
+
+問題31 第31問目 / 全78問
+Oracleデータベースにおけるトランザクションについて、正しいものを2つ選んでください。
+(1)		A. DML ステートメントは常に新しいトランザクションを開始する。
+(2)		B. DDL ステートメントは、実行時にデータディクショナリの更新を自動的にコミットする。
+(3)		C. 同じユーザーが別のセッションで未コミットの更新を表示できる。
+(4)		D. DDL ステートメントは、未コミットのトランザクションがある場合、そのトランザクションを自動的にコミットする。
+Ans.BD
+○
+
+問題32 第32問目 / 全78問
+
+以下のSQLの部分を確認してください。
+SELECT location, last_name AS lname FROM employees 「」;
+
+TOK を含む場所名のみを昇順で表示し、同じ場所の中では last_name を降順にソートしたい場合、 「」内に追加すべき句を2つ選んでください。
+(1)		A. ORDER BY 1, lname DESC
+(2)		B. WHERE location LIKE '%TOK%'
+(3)		C. ORDER BY 1, 2
+(4)		D. WHERE location IN ('%TOK%')
+(5)		E. WHERE location = '%TOK%'
+(6)		F. ORDER BY last_name DESC, location ASC
+
+Ans.AB
+○
+
+
+問題33 第33問目 / 全78問
+以下の CREATE TABLE コマンドを確認してください。
+
+CREATE TABLE cust (
+　cust_id NUMBER(2),
+　credit_limit NUMBER(10)
+)
+ORGANIZATION EXTERNAL;
+
+このコマンドを正常に実行するために必ず指定する句を2つ選んでください。
+(1)		A. REJECT LIMIT 句
+(2)		B. TYPE 句（ドライバ種別）
+(3)		C. DEFAULT DIRECTORY 句
+(4)		D. LOCATION 句
+(5)		E. ACCESS PARAMETERS 句
+
+Ans.CD
+×
+SA.AD
+
+
+問題34 第34問目 / 全78問
+未使用のカラム（unused columns）について、正しいものを3つ選んでください。
+(1)		A. DESCRIBE コマンドは未使用のカラムを表示する。
+(2)		B. 未使用のカラムは、DROP UNUSED COLUMNSが実行されるまでデータを保持する。
+(3)		C. 一度カラムが未使用として設定されると、同じ名前の新しいカラムをテーブルに追加できる。
+(4)		D. クエリは未使用のカラムからデータを取得できるが、そのカラムに対する DML は実行できない。
+(5)		E. プライマリキー制約が存在するカラムは、制約を削除しない限り未使用として設定できない
+
+Ans.BCE
+×
+SA.AB
+
+
+問題35 第35問目 / 全78問
+演算子と条件の優先順位について、正しいものを2つ選んでください。
+(1)		A. NOT 演算子は、AND や OR よりも優先順位が高い。
+(2)		B. +（加算）演算子は *（乗算）演算子よりも優先順位が高い。
+(3)		C. || 演算子は *（乗算）演算子よりも優先順位が低い。
+(4)		D. AND と OR は、条件内で同じ優先順位を持つ。
+(5)		E. 演算子は条件よりも先に評価される。
+
+Ans.AC
+○
+
+問題36 第36問目 / 全78問
+現在のセッションで NLS_DATE_FORMAT は DD-MM-YYYY に設定されています。
+86400秒が1日です。
+以下の日付結果を得るためには、どのSQLが正しいですか。1つ選択してください。
+
+日付 = 03-JAN-2025
+
+(1)		A. SELECT TO_CHAR(TO_DATE('30-OCT-2024') + INTERVAL '2' MONTH + INTERVAL '4' DAY - INTERVAL '120' SECOND, 'DD-MON-YYYY') AS "date" FROM DUAL;
+(2)		B. SELECT TO_CHAR(TO_DATE('30-OCT-2024') + INTERVAL '2' MONTH + INTERVAL '4' DAY + INTERVAL '120' SECOND, 'DD-MON-YYYY') AS "date" FROM DUAL;
+(3)		C. SELECT TO_CHAR(TO_DATE('30-OCT-2024') + INTERVAL '2' MONTH + INTERVAL '6' DAY - INTERVAL '120' SECOND, 'DD-MON-YYYY') AS "date" FROM DUAL;
+(4)		D. SELECT TO_CHAR(TO_DATE('30-OCT-2024') + INTERVAL '3' MONTH + INTERVAL '7' DAY - INTERVAL '360' SECOND, 'DD-MON-YYYY') AS "date" FROM DUAL;
+
+Ans.B
+×
+SA.D
+
+
+
+問題37 第37問目 / 全78問
+A.
+SELECT dept_id FROM departments
+MINUS
+SELECT dept_id FROM employees;
+
+B.
+SELECT dept_id FROM departments
+INTERSECT
+SELECT dept_id FROM employees;
+
+C.
+SELECT * FROM departments d
+WHERE EXISTS (
+  SELECT 1 FROM employees e WHERE e.dept_id = d.dept_id
+);
+
+D.
+SELECT * FROM departments
+MINUS
+SELECT * FROM employees;
+
+Employees テーブルにはまだ所属者がいない部門（Departments テーブルにのみ存在する部門）を取得したいとします。これを実現するSQLはどれですか。1つ選択してください。
+
+(1)		A
+(2)		B
+(3)		C
+(4)		D
+
+
+Ans.A
+○
+
+
+問題38 第38問目 / 全78問
+EMPLOYEES テーブルには、NUMBER型の DEPT_ID 列と SALARY 列があります。 次のうち、正常に実行できるクエリを2つ選んでください。
+(1)		A. SELECT dept_id, COUNT(dept_id) FROM employees WHERE salary > 215000 GROUP BY dept_id HAVING COUNT(*) > 5;
+(2)		B. SELECT dept_id FROM employees WHERE salary > 215000 GROUP BY dept_id HAVING COUNT(*) > 5;
+(3)		C. SELECT COUNT(dept_id) FROM employees GROUP BY dept_id WHERE salary > 215000;
+(4)		D. SELECT dept_id FROM employees WHERE salary > 215000 AND COUNT(*) > 5 GROUP BY COUNT(*);
+
+Ans.AB
+×
+SA.BC
+
+
+問題39 第39問目 / 全78問
+シングル行関数（単一行関数）について、正しいものを3つ選んでください。
+(1)		A. 引数は1つしか受け取ることができない。
+(2)		B. ネスト（入れ子）できる。
+(3)		C. SELECT句でのみ使用できる。
+(4)		D. 各テーブルで1行だけを返す。
+(5)		E. 引数には、カラム名、変数、リテラル、または式を指定できる。
+(6)		F. 戻り値のデータ型は、引数のデータ型とは異なる場合がある。
+Ans.BEF
+×
+SA.ADE
+
+問題40 第40問目 / 全78問
+データ・ディクショナリ・ビューの、「*_TABLES ビュー」について、正しいものを2つ選んでください。
+(1)		A. DBA_TABLES は、すべてのユーザーが参照できる。
+(2)		B. USER_TABLES は、現在ログインしているユーザーが所有するすべてのテーブルを表示する。
+(3)		C. USER_TABLES を表示するには、ANY TABLE システム権限、またはテーブルへのオブジェクト権限が必要である。
+(4)		D. ALL_TABLES は、現在のユーザーが所有するすべてのテーブルを表示する。
+(5)		E. ALL_TABLES を表示するには、ANY TABLE システム権限、またはテーブルへのオブジェクト権限が必要である。
+(6)		F. DBA_TABLES を表示するには、ANY TABLE システム権限、またはテーブルへのオブジェクト権限が必要である。
+
+Ans.BF
+×
+SA.DF
+
+
+問題41 第41問目 / 全78問
+条件付き INSERT ALL について、正しいものを2つ選んでください。
+(1)		A. INSERT ALL では、複数の INTO 句を指定できる。
+(2)		B. INSERT ALL には ELSE 句が必須である。
+(3)		C. 各行に対して WHEN 条件が評価される。
+(4)		D. INSERT ALL で返された各行は、単一の表にのみ挿入できる。
+(5)		E. 挿入される総行数は、サブクエリによって返される行数と常に等しくなる。
+
+Ans.AC
+○
+
+問題42 第42問目 / 全78問
+COUNT 関数について、正しいものを2つ選んでください。
+(1)		A. COUNT(DISTINCT name) は、重複を排除し、NAME 列に NULL がある場合はカウントしない。
+(2)		B. DISTINCT を使用した COUNT 関数は、WHERE 句を指定できない。
+(3)		C. COUNT(*) は、重複を含む行、および NULL を含む列のある行もカウントする。
+(4)		D. COUNT関数は NUMBER型とDATE型のデータに対してのみ使用できる。
+(5)		E. COUNT(name) は、NAME 列に NULL がある場合でもカウントする。
+Ans.AC
+×
+SA.AB
+
+
+問題43 第43問目 / 全78問
+従業員の入社1か月後の最初の月曜日の日付を取得するクエリを選んでください。
+なお、STAFF テーブルには、NUMBER型 の STAFF_ID 列と、DATE型 の START_DATE 列が存在しています。
+(1)		A. SELECT staff_id, NEXT_DAY(ADD_MONTHS(start_date, 1), 1) FROM staff;
+(2)		B. SELECT staff_id, NEXT_DAY(ADD_MONTHS(start_date, 1), 'MONDAY') FROM staff;
+(3)		C. SELECT staff_id, NEXT_DAY(MONTHS_BETWEEN(start_date, SYSDATE), 6) FROM staff;
+(4)		D. SELECT staff_id, ADD_MONTHS(start_date, 1), NEXT_DAY('MONDAY') FROM staff;
+
+Ans.B
+×
+SA.A
+
+
+問題44 第44問目 / 全78問
+グローバル一時テーブル（GLOBAL TEMPORARY TABLES）について、正しいものを4つ選んでください。
+(1)		A. グローバル一時テーブルの領域は、セッション開始時に確保される。
+(2)		B. あるセッションで挿入された行は、他のセッションから参照できない。
+(3)		C. TRUNCATE コマンドを実行すると、そのセッションのグローバル一時テーブルのすべての行が削除される。
+(4)		D. セッションが終了すると、グローバル一時テーブルのデータは削除される。
+(5)		E. DELETE コマンドはグローバル一時テーブル上で ROLLBACK できない。
+(6)		F. グローバル一時テーブルの定義は、複数のセッションで利用できる。
+
+Ans.BCDF
+×
+SA.ACDF
+
+
+問題45 第45問目 / 全78問
+SET VERIFY ON コマンドについて、正しいものを2つ選んでください。
+(1)		A. WHERE 句で使用される変数の値のみを表示する。
+(2)		B. DEFINE コマンドで作成された変数の値を表示する。
+(3)		C. SQL*Plus で使用できる。
+(4)		D. && で始まる変数の値を表示する。
+Ans.CD
+×
+SA.BD
+
+問題46 第46問目 / 全78問
+以下の条件を満たす シーケンスを作成する必要があります。
+
+・名前：PRO_SEQ
+・最初の値は 1
+・重複は許可されない
+・値の欠落を減らす
+
+次のうち、要件を満たすものを1つ選んでください。
+(1)		A. CREATE SEQUENCE pro_seq START WITH 1 CACHE;
+(2)		B. CREATE SEQUENCE pro_seq START WITH 1 INCREMENT BY 1;
+(3)		C. CREATE SEQUENCE pro_seq START WITH 1 INCREMENT BY 1 CACHE;
+(4)		D. CREATE SEQUENCE pro_seq START WITH 1 INCREMENT BY 1 CYCLE;
+(5)		E. CREATE SEQUENCE pro_seq START WITH 1 INCREMENT BY 1 NOCACHE;
+
+Ans.E
+×
+SA.C
+
+問題47 第47問目 / 全78問
+次のうち、正常に実行できるSQL文を3つ選んでください。
+(1)		A. SELECT (SYSDATE - DATE '2025-03-01') / 1 FROM DUAL;
+(2)		B. SELECT SYSDATE - 1 - DATE '2025-03-01' FROM DUAL;
+(3)		C. SELECT 1 - SYSDATE - DATE '2025-03-01' FROM DUAL;
+(4)		D. SELECT 1 / SYSDATE - DATE '2025-03-01' FROM DUAL;
+(5)		E. SELECT SYSDATE - DATE '2025-03-01' - 1 FROM DUAL;
+(6)		F. SELECT SYSDATE / DATE '2025-03-01' FROM DUAL;
+
+Ans.ABE
+○
+
+問題48 第48問目 / 全78問
+オブジェクト権限に関して、正しいものを2つ選んでください。
+(1)		A. INDEX権限は、ビューに付与できる。
+(2)		B. INSERT 権限は、テーブルとシーケンスのみに付与できる。
+(3)		C. SELECT 権限は、テーブル、ビュー、シーケンスに付与できる。
+(4)		D. DELETE 権限は、テーブル、ビュー、シーケンスに付与できる。
+(5)		E. REFERENCES 権限は、テーブル、ビューに付与できる。
+
+Ans.CE
+×
+SA.CD
+
+
+問題49 第49問目 / 全78問
+
+以下のSQLの実行結果を考えてください。
+
+INSERT INTO employees VALUES ('E101', 'Taro Yamada', NULL, NULL);
+SAVEPOINT a;
+DELETE FROM employees;
+ROLLBACK TO SAVEPOINT a;
+INSERT INTO employees VALUES ('E102', 'Hanako Sato', NULL, NULL);
+COMMIT;
+INSERT INTO employees VALUES ('E103', 'Jiro Suzuki', NULL, NULL);
+ROLLBACK;
+
+正しい説明を3つ選んでください。
+(1)		A. 最後の ROLLBACK により、E103 の挿入は取り消される。
+(2)		B. 最後の ROLLBACK により、E102 の挿入も取り消される。
+(3)		C. COMMIT によって、E102 のデータは確定しているため、ROLLBACK では取り消されない。
+(4)		D. SAVEPOINT の後の DELETE 操作は、 ROLLBACK TO により取り消される。
+(5)		E. 最初の INSERT 文で挿入された E101 のデータは、ROLLBACK TO によって削除される。
+
+Ans.ACD
+○
+
+問題50 第50問目 / 全78問
+Oracle データベースについて、正しいものを2つ選んでください。
+(1)		A. DATE 型のカラムは、NULL 値を持つことができる。
+(2)		B. 1つのテーブルに複数のプライマリキーを持つことができる。
+(3)		C. カラム定義に複数のデータ型を指定できる。
+(4)		D. テーブルに複数の外部キーを持たせることができる。
+(5)		E. NUMBER 型のカラムは、ゼロ値を持つことができない。
+(6)		F. テーブルには、NOT NULL 制約を複数のカラムに指定できない。
+
+Ans.AD
+○
+
+
+問題51 第51問目 / 全78問
+
+次のSQLはエラーが発生します。その理由を1つ選択してください。
+
+SELECT dept_id AS "Department", AVG(salary) AS AvgSal, MAX(salary) AS "MaxSal"
+FROM employees
+WHERE salary > 23000
+GROUP BY "Department"
+ORDER BY AvgSal;
+
+(1)		A. 別名は常に二重引用符で指定しなければならない。
+(2)		B. 別名は GROUP BY 句で使用できない。
+(3)		C. 別名は ORDER BY 句で使用できない。
+(4)		D. 別名（alias）はスペースを含めてはならない。
+
+Ans.B
+×
+SA.C
+
+
+問題52 第52問目 / 全78問
+システム権限で実行できる操作を3つ選んでください。
+(1)		A. 自分以外のスキーマの表を検索する。
+(2)		B. 自分のスキーマの表を削除する。
+(3)		C. 自分以外のスキーマのプロシージャを実行する。
+(4)		D. 自分以外のスキーマにビューを作成する。
+(5)		E. 自分のスキーマの表を検索する。
+
+Ans.ACD
+×
+SA.ABE
+
+問題53 第53問目 / 全78問
+トランザクション制御言語（TCL）について、正しいものを3つ選んでください。
+(1)		A. ROLLBACK を 実行すると、トランザクションのすべての変更が取り消され、ロックが解除され、すべての SAVEPOINT が削除される。
+(2)		B. COMMIT は、すべての SAVEPOINT を保持し、変更を確定する。
+(3)		C. ROLLBACK を SAVEPOINT なしで実行すると、変更は取り消されるが、ロックは解除されない。
+(4)		D. ROLLBACK TO SAVEPOINT は、指定された SAVEPOINT 以降の変更のみを元に戻し、トランザクションは終了しない。
+(5)		E. COMMIT は、すべての変更を確定し、トランザクションを終了する。
+
+Ans.ADE
+○
+
+問題54 第54問目 / 全78問
+自己結合の説明として、正しいものはどれですか。3つ選択してください。
+(1)		A. INNER JOINにすることができます。
+(2)		B. ON句を指定することができます。
+(3)		C. 特定列を指定した絞り込みはできません。
+(4)		D. 等価結合にする必要があります。
+(5)		E. 表別名が必要です。
+
+Ans.ABE
+×
+SA.ADE
+
+問題55 第55問目 / 全78問
+テーブルのカラム削除に関して、正しいものを3つ選んでください。
+
+(1)		A. カラムを削除すると、そのカラムのデータは削除されるが、カラム定義は残る。
+(2)		B. カラムの削除を実行すると暗黙的にコミットが発生する。
+(3)		C. カラムは、テーブルから削除する前に未使用としてマークする必要がある。
+(4)		D. プライマリキーのカラムは削除できない。
+(5)		E. 他のテーブルのカラムに参照されているカラムは削除できない。
+(6)		F. ALTER TABLE コマンドを使用して、複数のカラムを同時に削除できる。
+
+Ans.BEF
+×
+SA.ADE
+
+
+問題56 第56問目 / 全78問
+ビュー（View）に関する正しい説明を3つ選んでください。
+(1)		A. ビューは、存在しないテーブルを参照する形で作成できる。
+(2)		B. ビューにはオブジェクト番号が存在しない。
+(3)		C. ビューにはセグメントが存在しない。
+(4)		D. SELECT 文で定義されたビューをクエリする際、WHERE 句を含むことができない。
+(5)		E. ビューを削除しても、基となるテーブルのデータは保持される。
+(6)		F. ビューは、同じスキーマに属するテーブルのみを結合できる。
+
+Ans.ACE
+×
+SA.AEF
+
+
+問題57 第57問目 / 全78問
+次のSQLコマンドを実行したときの動作を確認してください。
+
+CREATE GLOBAL TEMPORARY TABLE emp_gtt (
+　emp_id NUMBER(6),
+　salary NUMBER(10)
+) ON COMMIT PRESERVE ROWS;
+
+INSERT INTO emp_gtt VALUES (101, 5000);
+
+COMMIT;
+
+次のうち、正しいものを2つ選んでください。
+
+(1)		A. 他のセッションからコミット済みの行を参照できる。
+(2)		B. セッションが終了すると、このテーブルの行は削除される。
+(3)		C. このセッションで ALTER TABLE を使用して外部キーを追加できる。
+(4)		D. このセッションで ALTER TABLE を使用してカラムを追加できる。
+(5)		E. このテーブルを削除するには、まず TRUNCATE しなければならない。
+(6)		F. このテーブルを削除するには、まず制約をすべて削除しなければならない。
+
+Ans.BD
+×
+SA.BC
+
+
+問題58 第58問目 / 全78問
+次のSQLを実行したときのソート順を確認してください。
+
+ 
+
+SELECT product_name
+
+FROM products
+
+ORDER BY
+
+CASE WHEN price = (SELECT MAX(price) FROM products)
+
+THEN 'A'
+
+ELSE product_name
+
+END, product_name DESC;
+
+ 
+
+※商品名（product_name）はすべてアルファベットで構成されているものとします。また、’A’という商品名は存在しません。
+
+ 
+
+正しい説明を1つ選んでください。
+
+(1)		A. 最高価格の商品は、先頭に表示される。
+(2)		B. 最高価格以外の商品は、商品名の降順で表示される。
+(3)		C. 最高価格の商品が複数ある場合、商品名の昇順で表示される。
+(4)		D. ORDER BY 句の CASE 式の中で複数の式を組み合わせているため、構文エラーとなる。
+
+Ans.A
+×
+SA.D
+
+
+
+問題59 第59問目 / 全78問
+ORACLE_DATAPUMP アクセスドライバを使用する外部テーブルに関して、正しいものを2つ選んでください。
+(1)		A. 外部テーブルの作成時に生成したダンプファイルには、制約情報が格納されている。
+(2)		B. 外部テーブルを作成する際、データはデータベース内に保存されているテーブルからのみ選択できる。
+(3)		C. 外部テーブルを作成すると、ディレクトリオブジェクトが必要になる。
+(4)		D. 外部テーブルを作成すると、同じデータベース内の他の外部テーブルまたはデータベースブロックに保存されているテーブルからデータを選択できる。
+(5)		E. 外部テーブルの作成時に生成したダンプファイルは、異なるデータベース内の外部テーブルで使用できる。
+
+Ans.CE
+×
+SA.AC
+
+
+問題60 第60問目 / 全78問
+A.
+SELECT dept_id, COUNT(*) FROM employees
+GROUP BY dept_id
+HAVING COUNT(*) >= 4
+ORDER BY dept_id;
+
+B.
+SELECT dept_id, COUNT(*) FROM employees
+WHERE dept_id <> 100 AND COUNT(*) >= 4
+GROUP BY dept_id;
+
+C.
+SELECT dept_id, COUNT(*) FROM employees
+WHERE dept_id <> 100
+GROUP BY dept_id
+HAVING COUNT(*) >= 4;
+
+D.
+SELECT dept_id, COUNT(*) FROM employees
+GROUP BY dept_id
+HAVING COUNT(*) >= 4;
+
+Employees表に対して以下のクエリを実行する場合、エラーとなるものはどれですか。1つ選択してください。
+
+(1)		A
+(2)		B
+(3)		C
+(4)		D
+
+Ans.B
+×
+SA.D
+
+
+
+
+問題61 第61問目 / 全78問
+EMPLOYEES表について、部門 10 の従業員の以下の情報を表示する必要があります。
+・従業員の姓
+・雇用されてからの週間数
+
+| Name       | Null?     | Type         |
+|------------|-----------|--------------|
+| EMP_NO     | NOT NULL  | NUMBER(6)    |
+| LAST_NAME  |           | VARCHAR2(10) |
+| START_DATE |           | DATE         |
+| SALARY     |           | NUMBER(8)    |
+| DEPT_ID    |           | NUMBER(6)    |
+
+A.
+SELECT last_name, TRUNC((SYSDATE - start_date) / 7) AS weeks_employed
+FROM employees
+WHERE dept_id = 10
+ORDER BY weeks_employed DESC;
+
+B.
+SELECT last_name, TRUNC((SYSDATE - start_date) / 7) AS weeks_employed
+FROM employees
+WHERE dept_id = 10
+ORDER BY weeks_employed;
+
+C.
+SELECT last_name, ROUND((SYSDATE - start_date) / 7) AS weeks_employed
+FROM employees
+WHERE dept_id = 10
+ORDER BY weeks_employed;
+
+D.
+SELECT last_name, ROUND((SYSDATE - start_date) / 7) AS weeks_employed
+FROM employees
+WHERE dept_id = 10
+ORDER BY weeks_employed DESC;
+
+
+結果は、週間数の多い順にソートする必要があります。どの SQL 文が適切ですか。1つ選択してください。
+拡大する
+(1)		A
+(2)		B
+(3)		C
+(4)		D
+
+
+Ans.A
+×
+SA.D
+
+
+問題62 第62問目 / 全78問
+以下の要件を満たすSQLを作成します。
+
+・STAFFテーブル内の既存の職員データを、NEW_STAFFテーブルのデータで更新する。
+・NEW_STAFFテーブルの新しい職員データを、STAFFテーブルに追加する。
+
+つぎのどの SQL 文が適切ですか。1つ選択してください。
+
+A.
+MERGE INTO staff s
+USING new_staff ns
+WHERE s.staff_id = ns.staff_id
+WHEN MATCHED THEN UPDATE SET s.full_name = ns.full_name,
+s.role_id = ns.role_id, s.salary = ns.salary
+WHEN NOT MATCHED THEN INSERT VALUES (ns.staff_id, ns.full_name,
+ns.role_id, ns.salary);
+
+B.
+UPDATE staff s
+SET (full_name, role_id, salary) = (
+  SELECT ns.full_name, ns.role_id, ns.salary
+  FROM new_staff ns
+  WHERE s.staff_id = ns.staff_id
+)
+WHERE EXISTS (
+  SELECT 1 FROM new_staff ns WHERE s.staff_id = ns.staff_id
+);
+
+C.
+MERGE INTO staff s
+USING new_staff ns
+ON (s.staff_id = ns.staff_id)
+WHEN MATCHED THEN
+UPDATE SET s.full_name = ns.full_name, s.role_id = ns.role_id, s.salary = ns.salary
+WHEN NOT MATCHED THEN
+INSERT (staff_id, full_name, role_id, salary)
+VALUES (ns.staff_id, ns.full_name, ns.role_id, ns.salary);
+
+D.
+UPDATE staff
+SET full_name = (SELECT full_name FROM new_staff WHERE staff.staff_id = new_staff.staff_id),
+    role_id = (SELECT role_id FROM new_staff WHERE staff.staff_id = new_staff.staff_id),
+    salary = (SELECT salary FROM new_staff WHERE staff.staff_id = new_staff.staff_id)
+WHERE staff_id IN (SELECT staff_id FROM new_staff);
+
+(1)		A
+(2)		B
+(3)		C
+(4)		D
+
+Ans.C
+○
+
+
+問題63 第63問目 / 全78問
+次のクエリを実行して検索される行数は何行でしょうか。1つ選択してください。
+
+SELECT dummy "DUMMY1" FROM DUAL
+INTERSECT
+SELECT dummy FROM DUAL
+INTERSECT
+SELECT dummy "DUMMY3" FROM DUAL
+(1)		A. 0
+(2)		B. 1
+(3)		C. 3
+(4)		D. エラーになる
+
+Ans.B
+×
+SA.D
+
+問題64 第64問目 / 全78問
+次のクエリのうち、エラーとなるものを3つ選んでください。
+
+(1)		A. SELECT last_name, 12 * salary AS yearly_pay FROM employees WHERE 12 * salary > 100000 ORDER BY 12 * salary;
+(2)		B. SELECT first_name, last_name FROM employees;
+(3)		C. SELECT last_name, 12 * salary AS yearly_pay FROM employees WHERE yearly_pay > 100000 ORDER BY 12 * salary;
+(4)		D. SELECT first_name last_name FROM employees WHERE yearly_pay > 100000 ORDER BY 12 * salary;
+(5)		E. SELECT last_nme, 12 * salary AS yearly_pay FROM employees WHERE yearly_pay > 100000 ORDER BY yearly_pay;
+
+Ans.CDE
+○
+
+
+問題65 第65問目 / 全78問
+テーブル名を 310 としてテーブルを作成しました。次の SQL 文のうち、正常に実行されるものはどれですか。1つ選択してください。
+(1)		A. SELECT * FROM 310;
+(2)		B. SELECT * FROM (310);
+(3)		C. SELECT * FROM "310";
+(4)		D. SELECT * FROM '310';
+(5)		E. SELECT * FROM `310`;
+
+Ans.C
+×
+SA.A
+
+問題66 第66問目 / 全78問
+インデックスについて、正しいものを1つ選んでください。
+(1)		A. インデックスの作成には、DBAロールが必要である。
+(2)		B. UNIQUE インデックスは、非一意インデックスに変更できる。
+(3)		C. テーブルを削除し、それが RECYCLE BIN に移動すると、テーブル上のすべてのインデックスは永久に削除される。
+(4)		D. あるユーザーが所有するテーブルには、他のユーザーが所有するインデックスを作成することはできない。
+(5)		E. テーブルを更新すると、すべてのインデックスに更新が反映される場合がある。
+
+Ans.E
+○
+
+
+問題67 第67問目 / 全78問
+つぎの集合演算子(UNION, UNION ALL, INTERSECT, MINUS) の説明について、正しいものを2つ選んでください。
+(1)		A. それぞれの SELECT 文に ORDER BY 句を指定できる。
+(2)		B. CLOB 型の列には、集合演算子を使用できない。
+(3)		C. FOR UPDATE 句を指定できる。
+(4)		D. 最初の SELECT リストの各列の名前は、後続の SELECT リストの対応する列と一致していなければならない。
+(5)		E. SELECT リストの列数は、すべての SELECT 文で同じでなければならない。
+
+Ans.BE
+×
+SA.AC
+
+問題68 第68問目 / 全78問
+シーケンス名：USER_SEQが存在している環境で、次の CREATE TABLE コマンドのうち、有効なものを2つ選んでください。
+A.
+CREATE TABLE reservations (
+    rs_id NUMBER(6) DEFAULT user_seq.CURRVAL,
+    created_at DATE,
+    expires_at DATE DEFAULT created_at
+);
+
+B.
+CREATE TABLE reservations (
+    rs_id NUMBER(6),
+    created_at DATE DEFAULT SYSDATE,
+    expires_at DATE DEFAULT (expires_at >= created_at)
+);
+
+C.
+CREATE TABLE reservations (
+    rs_id NUMBER(6) DEFAULT user_seq.NEXTVAL PRIMARY KEY,
+    created_at DATE DEFAULT SYSDATE,
+    expires_at DATE DEFAULT SYSDATE NOT NULL
+);
+
+D.
+CREATE TABLE reservations (
+    rs_id NUMBER(6) NOT NULL PRIMARY KEY,
+    created_at DATE NOT NULL,
+    expires_at DATE DEFAULT SYSDATE
+);
+
+E.
+CREATE TABLE reservations (
+    rs_id NUMBER(6) NOT NULL DEFAULT user_seq.CURRVAL,
+    created_at DATE,
+    expires_at DATE DEFAULT SYSDATE
+);
+
+
+(1)		A
+(2)		B
+(3)		C
+(4)		D
+(5)		E
+
+Ans.CD
+×
+SA.AC
+
+問題69 第69問目 / 全78問
+複数行の副問合せについて、正しいものを3つ選んでください
+(1)		A. HAVING 句を含めることができる。
+(2)		B. WHERE句は使えない。
+(3)		C. GROUP BY 句を含めることができる。
+(4)		D. 複数の列を返すことができる。
+(5)		E. 副問合せ内で IN を使用できない。
+(6)		F. 副問合せから常に2つ以上の値が返される。
+
+Ans.ACD
+×
+SA.ABC
+
+問題70 第70問目 / 全78問
+既にデータが存在する表に対して実行できるものを、次の中から2つ選んでください。
+(1)		A. NOT NULL 制約を持つカラムを DEFAULT 値付きで追加するには、既存の行をすべて削除する必要がある。
+(2)		B. テーブルの先頭に新しいカラムを追加する。
+(3)		C. DATE 型のカラムを NUMBER 型に変更する。
+(4)		D. 数値カラムの幅を拡張する。
+(5)		E. 文字列値カラムの幅を拡張する。
+(6)		F. カラムのデフォルト値を変更するには、一度カラムを削除して再作成する必要がある。
+
+Ans.DE
+×
+SA.AF
+
+
+問題71 第71問目 / 全78問
+エンティティ・リレーションシップ・ダイアグラム（ERD）に基づいて2つのテーブルから関連する行を選択する際に、正しいものを2つ選んでください。
+(1)		A. 同じテーブル内のデータを関連付ける場合、SELF JOIN を使用する。
+(2)		B. 無関係なテーブルの行を結合することはできない。
+(3)		C. 2つのテーブル間のすべてのリレーションシップは JOIN 条件として実装する必要がある。
+(4)		D. 2つのテーブル間のリレーションシップを実装するには、追加のテーブルを結合する必要がある場合がある。
+
+Ans.AD
+○
+
+問題72 第72問目 / 全78問
+ロール について、正しい記載を3つ選んでください。
+(1)		A. ロールは、特定のユーザーにのみ割り当てることができる、権限のグループである。
+(2)		B. 1つのロールを複数のユーザーに割り当てることができる。
+(3)		C. ALTER USER 文を使用してユーザーにロールを割り当てる。
+(4)		D. 1つのユーザーに複数のロールを割り当てることができる。
+(5)		E. GRANT 文を使用してロールに権限を割り当てる。
+
+Ans.BDE
+○
+
+問題73 第73問目 / 全78問
+Employees表には、START_DATE列（データ型: DATE）とSALARY列（データ型: NUMBER）が存在します。
+次の記載で正しいものを2つ選んでください。
+なお、NLS_DATE_FORMATはDD-MON-RRに設定されています。
+(1)		A. start_date = '15-JUL-2025'　：左式は暗黙的な変換を使用
+(2)		B. CONCAT(salary, start_date)　 ：左式は明示的な変換を使用
+(3)		C. salary BETWEEN '101000' AND '110000'　：左式は暗黙的な変換を使用
+(4)		D. start_date = '05-04-2025'　：左式は暗黙的な変換を使用
+(5)		E. salary = 0150000　 ：左式は明示的な変換を使用
+
+Ans.AC
+×
+SA.CD
+
+問題74 第74問目 / 全78問
+内部結合と外部結合 についての次の記載のうち、正しいものを2つ選んでください。
+(1)		A. Oracle独自構文ではFULL OUTER JOIN と同等機能をサポートしている。
+(2)		B. FULL OUTER JOIN は、一致する行と一致しない行の両方を返す。
+(3)		C. RIGHT OUTER JOIN は、一致しない行のみを返す。
+(4)		D. INNER JOIN は、2つのテーブル間で複数の結合条件を指定する場合に使用できる。
+(5)		E. OUTER JOIN は、クエリごとに2つのテーブル間のみで使用できる。
+
+Ans.BD
+×
+SA.AB
+
+問題75 第75問目 / 全78問
+次の SQL 文のうち、正常に実行されるものはどれですか？（2つ選択）
+A.
+SELECT 1, 2 FROM DUAL
+UNION
+SELECT 3, 4 FROM DUAL
+ORDER BY 2;
+
+B.
+SELECT 1, 2 FROM DUAL
+UNION
+SELECT 3, 4 FROM DUAL
+ORDER BY 3, 4;
+
+C.
+SELECT 1, 2 FROM DUAL
+UNION
+SELECT 3, 4 FROM DUAL
+ORDER BY 1, 2;
+
+D.
+SELECT 1 FROM DUAL
+UNION
+SELECT 2 FROM DUAL
+ORDER BY 1, 2;
+
+E.
+SELECT 2 FROM DUAL
+UNION
+SELECT 2, 3 FROM DUAL
+ORDER BY 2;
+
+F.
+SELECT 1, 2 FROM DUAL
+ORDER BY 1;
+UNION
+SELECT 3, 4 FROM DUAL
+ORDER BY 2;
+
+(1)		A
+(2)		B
+(3)		C
+(4)		D
+(5)		E
+(6)		F
+
+Ans.AC
+×
+SA.BE
+
+問題76 第76問目 / 全78問
+EMPLOYEES テーブルの構造を確認し、各部門の平均給与よりも高い給与を得ている従業員の行を返すクエリを2つ選んでください。
+| Name    | Null?     | Type         |
+|---------|-----------|--------------|
+| EMP_ID  | NOT NULL  | NUMBER(6)    |
+| NAME    | NOT NULL  | VARCHAR2(20) |
+| SALARY  | NOT NULL  | NUMBER       |
+| DEPT_ID | NOT NULL  | NUMBER(6)    |
+
+A.
+SELECT * FROM employees e1
+WHERE salary > (
+  SELECT AVG(salary) FROM employees e2
+  WHERE e1.dept_id = e2.dept_id
+);
+
+B.
+SELECT e1.* FROM employees e1
+JOIN (
+  SELECT dept_id, AVG(salary) AS avg_sal FROM employees
+  GROUP BY dept_id
+) e2 ON e1.dept_id = e2.dept_id
+WHERE e1.salary > e2.avg_sal;
+
+C.
+SELECT * FROM employees
+WHERE salary > ANY (
+  SELECT AVG(salary) FROM employees
+  GROUP BY dept_id
+);
+
+D.
+SELECT * FROM employees
+WHERE salary > (
+  SELECT AVG(salary) FROM employees
+  GROUP BY dept_id
+);
+
+
+(1)		A
+(2)		B
+(3)		C
+(4)		D
+
+
+Ans.AB
+×
+SA.BC
+
+
+問題77 第77問目 / 全78問
+ANSI JOIN 構文と比較した場合のOracle独自JOIN 構文の記載について、正しいものを1つ選んでください。
+(1)		A. Oracle 独自の JOIN 構文とANSI JOIN 構文では、性能に大きな差はない。
+(2)		B. Oracle 独自の JOIN 構文では 、自然結合をサポートしている。
+(3)		C. Oracle 独自の JOIN 構文では、 FULL OUTER JOIN 機能をサポートしている。
+(4)		D. Oracle独自 の JOIN 構文は、右外部結合のみをサポートしている。
+
+Ans.A
+×
+SA.C
+
+
+問題78 第78問目 / 全78問
+NVL、NVL2、COALESCE 関数について、正しいものを2つ選んでください。
+(1)		A. COALESCE 関数の引数は、すべて同じデータ型（相互互換可能な型含む）でなければならない。
+(2)		B. COALESCE 関数は、最初にNULL 値を見つけた時点で処理を終了する。
+(3)		C. NVL 関数の引数は、すべて同じデータ型（相互互換可能な型含む）でなければならない。
+(4)		D. NVL 関数の引数リストには、任意の数の引数を含めることができる。
+(5)		E. NVL2 関数の引数は、すべて同じデータ型（相互互換可能な型含む）でなければならない。
+(6)		F. NVL2 関数の引数リストには、任意の数の引数を含めることができる。
+
+Ans.AC
+×
+SA.DF
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

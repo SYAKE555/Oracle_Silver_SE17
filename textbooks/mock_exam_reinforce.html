@@ -4,32 +4,111 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>EX 弱点強化ユニット一覧 - Oracle Silver SQL</title>
-<style>* { box-sizing: border-box; margin: 0; padding: 0; }
- body { font-family: 'Segoe UI', 'Hiragino Sans', Arial, sans-serif; background: #f5f7fa; color: #2d3748; line-height: 1.7; }
- .page-header { background: linear-gradient(135deg, #8e2de2 0%, #4a00e0 50%, #c0392b 100%); color: white; padding: 36px 24px; text-align: center; }
- .page-header h1 { font-size: 1.7rem; margin-bottom: 6px; }
- .page-header .subtitle { opacity: .9; font-size: .92rem; }
- .container { max-width: 900px; margin: 0 auto; padding: 24px; }
- .nav-back { display: inline-block; padding: 8px 16px; background: white; border-radius: 6px; text-decoration: none; color: #2d3748; box-shadow: 0 2px 4px rgba(0,0,0,.08); font-size: .88rem; margin-bottom: 20px; }
- .intro { background: white; border-radius: 12px; padding: 18px 22px; box-shadow: 0 2px 6px rgba(0,0,0,.06); margin-bottom: 22px; font-size: .92rem; color: #4a5568; }
- .intro h2 { font-size: 1rem; color: #4a00e0; margin-bottom: 8px; }
- 
- .ex-grid { display: grid; gap: 12px; }
- .ex-card { display: grid; grid-template-columns: 70px 1fr 30px; gap: 14px; align-items: center; padding: 14px 18px; background: white; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,.06); text-decoration: none; color: #2d3748; transition: transform .15s, box-shadow .15s; }
- .ex-card:hover { transform: translateY(-2px); box-shadow: 0 4px 14px rgba(0,0,0,.1); }
- .ex-tag { color: white; font-weight: 900; text-align: center; padding: 8px 0; border-radius: 8px; font-size: 1rem; letter-spacing: .05em; }
- .ex-title { font-weight: 700; font-size: 1rem; }
- .ex-meta { font-size: .82rem; color: #718096; margin-top: 3px; }
- .ex-arrow { font-size: 1.4rem; color: #a0aec0; text-align: center; }
- 
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', 'Hiragino Sans', Arial, sans-serif; background: #f5f7fa; color: #2d3748; line-height: 1.7; }
+  .page-header { background: linear-gradient(135deg, #8e2de2 0%, #4a00e0 50%, #c0392b 100%); color: white; padding: 36px 24px; text-align: center; }
+  .page-header h1 { font-size: 1.7rem; margin-bottom: 6px; }
+  .page-header .subtitle { opacity: .9; font-size: .92rem; }
+  .container { max-width: 900px; margin: 0 auto; padding: 24px; }
+  .nav-back { display: inline-block; padding: 8px 16px; background: white; border-radius: 6px; text-decoration: none; color: #2d3748; box-shadow: 0 2px 4px rgba(0,0,0,.08); font-size: .88rem; margin-bottom: 20px; }
+  .intro { background: white; border-radius: 12px; padding: 18px 22px; box-shadow: 0 2px 6px rgba(0,0,0,.06); margin-bottom: 22px; font-size: .92rem; color: #4a5568; }
+  .intro h2 { font-size: 1rem; color: #4a00e0; margin-bottom: 8px; }
+  
+    .ex-grid { display: grid; gap: 12px; }
+    .ex-card { display: grid; grid-template-columns: 70px 1fr 30px; gap: 14px; align-items: center; padding: 14px 18px; background: white; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,.06); text-decoration: none; color: #2d3748; transition: transform .15s, box-shadow .15s; }
+    .ex-card:hover { transform: translateY(-2px); box-shadow: 0 4px 14px rgba(0,0,0,.1); }
+    .ex-tag { color: white; font-weight: 900; text-align: center; padding: 8px 0; border-radius: 8px; font-size: 1rem; letter-spacing: .05em; }
+    .ex-title { font-weight: 700; font-size: 1rem; }
+    .ex-meta { font-size: .82rem; color: #718096; margin-top: 3px; }
+    .ex-arrow { font-size: 1.4rem; color: #a0aec0; text-align: center; }
+    
 </style>
 </head>
 <body>
-<div class="page-header"> <h1>EX 弱点強化ユニット</h1> <div class="subtitle">模擬試験の失点を挽回するための独立学習ユニット</div>
+<div class="page-header">
+  <h1>EX 弱点強化ユニット</h1>
+  <div class="subtitle">模擬試験の失点を挽回するための独立学習ユニット</div>
 </div>
-<div class="container"> <a class="nav-back" href="mock_exam_report.html">← 結果レポート</a> <a class="nav-back" href="index.html" style="margin-left:8px">教科書トップ</a> <div class="intro"> <h2>このページについて</h2>各 <b>EX ユニット</b>は、模擬試験の弱点領域に対する独立した強化教材。D1〜D8 教科書とは別系統で、失点の多い順に EX1〜EX8 として並ぶ。優先度「最優先」の EX1／EX2 から着手し、試験直前は全ユニットを通読する想定。
- </div> <div class="ex-grid"> <a class="ex-card" href="EX1_reinforce.html" style="border-left:6px solid #c0392b"> <div class="ex-tag" style="background:#c0392b">EX1</div> <div class="ex-body"> <div class="ex-title">複数表の結合</div> <div class="ex-meta">優先度 <b style="color:#c0392b">最優先</b>／ 元ドメイン D5</div> </div> <div class="ex-arrow"></div> </a> <a class="ex-card" href="EX2_reinforce.html" style="border-left:6px solid #c0392b"> <div class="ex-tag" style="background:#c0392b">EX2</div> <div class="ex-body"> <div class="ex-title">サブクエリ・集合演算</div> <div class="ex-meta">優先度 <b style="color:#c0392b">最優先</b>／ 元ドメイン D6</div> </div> <div class="ex-arrow"></div> </a> <a class="ex-card" href="EX3_reinforce.html" style="border-left:6px solid #e67e22"> <div class="ex-tag" style="background:#e67e22">EX3</div> <div class="ex-body"> <div class="ex-title">単一行関数</div> <div class="ex-meta">優先度 <b style="color:#e67e22">優先</b>／ 元ドメイン D3</div> </div> <div class="ex-arrow"></div> </a> <a class="ex-card" href="EX4_reinforce.html" style="border-left:6px solid #e67e22"> <div class="ex-tag" style="background:#e67e22">EX4</div> <div class="ex-body"> <div class="ex-title">DML・トランザクション</div> <div class="ex-meta">優先度 <b style="color:#e67e22">優先</b>／ 元ドメイン D7</div> </div> <div class="ex-arrow"></div> </a> <a class="ex-card" href="EX5_reinforce.html" style="border-left:6px solid #e67e22"> <div class="ex-tag" style="background:#e67e22">EX5</div> <div class="ex-body"> <div class="ex-title">DDL・オブジェクト管理</div> <div class="ex-meta">優先度 <b style="color:#e67e22">優先</b>／ 元ドメイン D8</div> </div> <div class="ex-arrow"></div> </a> <a class="ex-card" href="EX6_reinforce.html" style="border-left:6px solid #f1c40f"> <div class="ex-tag" style="background:#f1c40f">EX6</div> <div class="ex-body"> <div class="ex-title">グループ関数・集計</div> <div class="ex-meta">優先度 <b style="color:#f1c40f">要復習</b>／ 元ドメイン D4</div> </div> <div class="ex-arrow"></div> </a> <a class="ex-card" href="EX7_reinforce.html" style="border-left:6px solid #f1c40f"> <div class="ex-tag" style="background:#f1c40f">EX7</div> <div class="ex-body"> <div class="ex-title">SQLとRDBの基礎</div> <div class="ex-meta">優先度 <b style="color:#f1c40f">要復習</b>／ 元ドメイン D1</div> </div> <div class="ex-arrow"></div> </a> <a class="ex-card" href="EX8_reinforce.html" style="border-left:6px solid #2ecc71"> <div class="ex-tag" style="background:#2ecc71">EX8</div> <div class="ex-body"> <div class="ex-title">データの絞り込みとソート</div> <div class="ex-meta">優先度 <b style="color:#2ecc71">維持</b>／ 元ドメイン D2</div> </div> <div class="ex-arrow"></div> </a> </div> <div style="text-align:center;color:#a0aec0;font-size:.78rem;margin-top:30px;padding-top:16px;border-top:1px solid #e2e8f0">Phase 2 / 弱点強化ユニット索引
- </div>
+<div class="container">
+  <a class="nav-back" href="mock_exam_report.html">← 結果レポート</a>
+  <a class="nav-back" href="index.html" style="margin-left:8px"> 教科書トップ</a>
+
+  <div class="intro">
+    <h2> このページについて</h2>
+    各 <b>EX ユニット</b> は、模擬試験の弱点領域に対する独立した強化教材。D1〜D8 教科書とは別系統で、カードの表示順は最新の模擬試験結果に基づく優先度順です。EX番号は教材IDとして固定し、優先度「最優先」のユニットから着手する想定です。
+  </div>
+
+  <div class="ex-grid">
+    <a class="ex-card" href="EX2_reinforce.html" style="border-left:6px solid #c0392b">
+      <div class="ex-tag" style="background:#c0392b">EX2</div>
+      <div class="ex-body">
+        <div class="ex-title">サブクエリ・集合演算</div>
+        <div class="ex-meta">優先度 <b style="color:#c0392b">最優先</b> ／ 元ドメイン D6 ／ 進捗 24%</div>
+      </div>
+      <div class="ex-arrow"></div>
+    </a>
+    <a class="ex-card" href="EX3_reinforce.html" style="border-left:6px solid #c0392b">
+      <div class="ex-tag" style="background:#c0392b">EX3</div>
+      <div class="ex-body">
+        <div class="ex-title">単一行関数</div>
+        <div class="ex-meta">優先度 <b style="color:#c0392b">最優先</b> ／ 元ドメイン D3 ／ 進捗 30%</div>
+      </div>
+      <div class="ex-arrow"></div>
+    </a>
+    <a class="ex-card" href="EX5_reinforce.html" style="border-left:6px solid #e67e22">
+      <div class="ex-tag" style="background:#e67e22">EX5</div>
+      <div class="ex-body">
+        <div class="ex-title">DDL・オブジェクト管理</div>
+        <div class="ex-meta">優先度 <b style="color:#e67e22">優先</b> ／ 元ドメイン D8 ／ 進捗 32%</div>
+      </div>
+      <div class="ex-arrow"></div>
+    </a>
+    <a class="ex-card" href="EX1_reinforce.html" style="border-left:6px solid #e67e22">
+      <div class="ex-tag" style="background:#e67e22">EX1</div>
+      <div class="ex-body">
+        <div class="ex-title">複数表の結合</div>
+        <div class="ex-meta">優先度 <b style="color:#e67e22">優先</b> ／ 元ドメイン D5 ／ 進捗 38%</div>
+      </div>
+      <div class="ex-arrow"></div>
+    </a>
+    <a class="ex-card" href="EX6_reinforce.html" style="border-left:6px solid #e67e22">
+      <div class="ex-tag" style="background:#e67e22">EX6</div>
+      <div class="ex-body">
+        <div class="ex-title">グループ関数・集計</div>
+        <div class="ex-meta">優先度 <b style="color:#e67e22">優先</b> ／ 元ドメイン D4 ／ 進捗 40%</div>
+      </div>
+      <div class="ex-arrow"></div>
+    </a>
+    <a class="ex-card" href="EX4_reinforce.html" style="border-left:6px solid #f1c40f">
+      <div class="ex-tag" style="background:#f1c40f">EX4</div>
+      <div class="ex-body">
+        <div class="ex-title">DML・トランザクション</div>
+        <div class="ex-meta">優先度 <b style="color:#f1c40f">要復習</b> ／ 元ドメイン D7 ／ 進捗 46%</div>
+      </div>
+      <div class="ex-arrow"></div>
+    </a>
+    <a class="ex-card" href="EX7_reinforce.html" style="border-left:6px solid #f1c40f">
+      <div class="ex-tag" style="background:#f1c40f">EX7</div>
+      <div class="ex-body">
+        <div class="ex-title">SQLとRDBの基礎</div>
+        <div class="ex-meta">優先度 <b style="color:#f1c40f">要復習</b> ／ 元ドメイン D1 ／ 進捗 50%</div>
+      </div>
+      <div class="ex-arrow"></div>
+    </a>
+    <a class="ex-card" href="EX8_reinforce.html" style="border-left:6px solid #f1c40f">
+      <div class="ex-tag" style="background:#f1c40f">EX8</div>
+      <div class="ex-body">
+        <div class="ex-title">データの絞り込みとソート</div>
+        <div class="ex-meta">優先度 <b style="color:#f1c40f">要復習</b> ／ 元ドメイン D2 ／ 進捗 60%</div>
+      </div>
+      <div class="ex-arrow"></div>
+    </a>
+  </div>
+
+  <div style="text-align:center;color:#a0aec0;font-size:.78rem;margin-top:30px;padding-top:16px;border-top:1px solid #e2e8f0">
+    Phase 2 / 弱点強化ユニット索引
+  </div>
 </div>
 </body>
 </html>
