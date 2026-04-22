@@ -1,0 +1,1340 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EX8 データの絞り込みとソート - 正答済み総点検</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans JP', 'Hiragino Sans', sans-serif; background: #eef2f7; color: #1f2937; line-height: 1.7; }
+  a { color: inherit; }
+  .page-header { background: linear-gradient(135deg,#10243f 0%,#1f3d63 55%,#f1c40f 100%); color: white; padding: 42px 24px; text-align: center; }
+  .page-header h1 { font-size: 1.9rem; margin-bottom: 8px; }
+  .page-header .subtitle { opacity: 0.92; font-size: 0.95rem; }
+  .container { max-width: 1180px; margin: 0 auto; padding: 24px; }
+  .nav-back { display: inline-block; padding: 8px 16px; background: white; border-radius: 999px; text-decoration: none; color: #1f2937; box-shadow: 0 4px 14px rgba(15,23,42,.08); font-size: .9rem; margin: 0 8px 16px 0; }
+  .hero-card, .toc, .concept-section { background: white; border-radius: 18px; box-shadow: 0 10px 26px rgba(15,23,42,.08); }
+  .hero-card { padding: 20px 22px; margin-bottom: 18px; border-top: 6px solid #f1c40f; }
+  .hero-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-top: 14px; }
+  .metric { background: #f8fafc; border-radius: 14px; padding: 14px; }
+  .metric .label { color: #64748b; font-size: .82rem; }
+  .metric .value { font-size: 1.35rem; font-weight: 900; color: #0f172a; margin-top: 4px; }
+  .toc { padding: 18px 22px; margin-bottom: 22px; }
+  .toc h2 { font-size: 1rem; color: #f1c40f; margin-bottom: 10px; }
+  .toc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; }
+  .toc a { display: flex; justify-content: space-between; gap: 10px; align-items: center; text-decoration: none; padding: 10px 12px; border-radius: 12px; background: #f8fafc; border-left: 4px solid #f1c40f; font-size: .88rem; }
+  .toc a:hover { background: #eef2f7; }
+  .concept-section { padding: 22px; margin-bottom: 24px; }
+  .concept-section h3 { display: flex; justify-content: space-between; gap: 12px; align-items: center; font-size: 1.15rem; margin-bottom: 8px; color: #0f172a; }
+  .concept-section h3 span { font-size: .82rem; padding: 5px 10px; border-radius: 999px; background: #f1c40f; color: white; }
+  .concept-copy { color: #475569; font-size: .92rem; margin-bottom: 16px; }
+  .concept-guide { border-top: 5px solid #f1c40f; background: #f8fafc; border-radius: 16px; padding: 16px; margin-bottom: 18px; }
+  .guide-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+  .guide-block { margin-bottom: 12px; }
+  .guide-title { font-size: .82rem; font-weight: 900; color: #f1c40f; margin-bottom: 6px; }
+  .guide-block p { color: #334155; font-size: .9rem; }
+  .guide-list { padding-left: 20px; color: #334155; font-size: .9rem; }
+  .guide-list li { margin-bottom: 5px; }
+  .guide-note { background: #fff7ed; border-left: 4px solid #f1c40f; border-radius: 10px; padding: 10px 12px; color: #7c2d12; font-size: .88rem; margin-top: 6px; }
+  .question-card { border: 1px solid #dbe4ef; border-radius: 16px; padding: 16px; margin-bottom: 14px; background: #fcfdff; }
+  .question-meta { font-size: .8rem; color: #64748b; margin-bottom: 10px; font-weight: 700; }
+  .block-title { font-size: .85rem; font-weight: 800; color: #f1c40f; margin: 10px 0 6px; }
+  pre { white-space: pre-wrap; word-break: break-word; background: #0f172a; color: #e2e8f0; border-radius: 12px; padding: 14px; font-size: .84rem; overflow-x: auto; }
+  .analysis-block p { color: #334155; font-size: .9rem; margin-bottom: 8px; }
+  .option-review-grid { display: flex; flex-direction: column; gap: 12px; margin-bottom: 8px; }
+  .option-review { border-radius: 14px; padding: 16px 18px; border: 1px solid #dbe4ef; background: white; }
+  .option-review.correct { border-left: 6px solid #16a34a; background: #f6fdf8; }
+  .option-review.wrong { border-left: 6px solid #c0392b; background: #fffafa; }
+  .option-review-head { display: flex; justify-content: flex-start; gap: 12px; align-items: center; margin-bottom: 10px; }
+  .option-review-key { font-size: 1.05rem; font-weight: 900; color: #0f172a; min-width: 1.8em; }
+  .option-review-badges span { display: inline-block; background: #eef2f7; color: #334155; font-size: .74rem; font-weight: 800; border-radius: 999px; padding: 3px 10px; margin-left: 4px; }
+  .option-review-text { color: #1f2937; font-size: .98rem; line-height: 1.65; margin-bottom: 10px; font-weight: 600; }
+  .option-review-reason { color: #334155; font-size: .92rem; line-height: 1.75; }
+  .clause-order { background: #0f172a; color: #e2e8f0; border-radius: 12px; padding: 14px 16px; font-family: 'SFMono-Regular', Menlo, Consolas, monospace; font-size: .86rem; line-height: 1.8; white-space: pre; overflow-x: auto; }
+  .clause-order .kw { color: #fbbf24; font-weight: 800; }
+  .clause-order .desc { color: #93c5fd; }
+  .clause-order .note { color: #86efac; font-style: italic; }
+  .study-step-list { padding-left: 20px; color: #334155; font-size: .9rem; }
+  .study-step-list li { margin-bottom: 5px; }
+  @media (max-width: 720px) {
+    .page-header h1 { font-size: 1.55rem; }
+    .container { padding: 18px; }
+    .concept-section h3 { flex-direction: column; align-items: flex-start; }
+    .option-review-head { flex-direction: column; align-items: flex-start; }
+  }
+
+
+  /* sql-highlight-v3 */
+  /* default (light bg): warm tone */
+  .sql-kw  { color: #92400e; font-weight: 700; }
+  .sql-fn  { color: #1e40af; font-weight: 600; }
+  .sql-str { color: #065f46; }
+  .sql-num { color: #991b1b; }
+  .sql-cmt { color: #64748b; font-style: italic; }
+  /* dark bg override (pre / code) */
+  pre .sql-kw  { color: #fbbf24; }
+  pre .sql-fn  { color: #60a5fa; }
+  pre .sql-str { color: #86efac; }
+  pre .sql-num { color: #fca5a5; }
+  pre .sql-cmt { color: #94a3b8; }
+  code .sql-kw  { color: #fbbf24; }
+  code .sql-fn  { color: #60a5fa; }
+  code .sql-str { color: #86efac; }
+  code .sql-num { color: #fca5a5; }
+  code .sql-cmt { color: #94a3b8; }
+  /* clause-order div uses its own kw/fn/desc/note classes — no override needed */
+</style>
+</head>
+<body>
+<div class="page-header">
+  <h1>EX8 正答済み総点検</h1>
+  <div class="subtitle">データの絞り込みとソート / 正答した設問をカテゴリ別に再確認し、得点源を維持するページ</div>
+</div>
+<div class="container">
+  <a class="nav-back" href="mock_exam_dashboard.html">模擬試験ダッシュボード</a>
+  <a class="nav-back" href="mock_exam_report.html">結果レポート</a>
+  <a class="nav-back" href="mock_exam_correct.html">模擬試験レビュー</a>
+  
+  <a class="nav-back" href="index.html">教科書トップ</a>
+
+  <div class="hero-card">
+    <div style="font-size:.9rem;color:#64748b;font-weight:700">D2 / 要復習</div>
+    <div style="font-size:1.4rem;font-weight:900;margin-top:4px">データの絞り込みとソート</div>
+    <p style="margin-top:8px;color:#334155">このページは、正答できた設問をカテゴリ別に並べ、記録された問題全文を正本として、なぜ取れたのかと維持ポイントを再確認するための定着教材です。</p>
+    <div class="hero-grid">
+      <div class="metric"><div class="label">レビュー種別</div><div class="value">正答</div></div>
+      <div class="metric"><div class="label">進捗率</div><div class="value"><span class="sql-num">60.0</span>%</div></div>
+      <div class="metric"><div class="label">正答数</div><div class="value">15問</div></div>
+      <div class="metric"><div class="label">カテゴリ数</div><div class="value"><span class="sql-num">6</span></div></div>
+    </div>
+  </div>
+
+  <div class="toc">
+    <h2>カテゴリ別目次</h2>
+    <div class="toc-grid">
+      <a href="#d2-1" class="low"><span class="sql-kw">ORDER BY</span>・ROWNUM・<span class="sql-kw">FETCH</span> <span>6問</span></a><a href="#d2-2" class="low">演算子優先順位 <span>3問</span></a><a href="#d2-3" class="low">検索条件総合 <span>2問</span></a><a href="#d2-4" class="low">置換変数と VERIFY <span>2問</span></a><a href="#d2-5" class="low"><span class="sql-kw">LIKE</span> とワイルドカード <span>1問</span></a><a href="#d2-6" class="low"><span class="sql-kw">NULL</span> 判定と <span class="sql-kw">WHERE</span> 条件 <span>1問</span></a>
+    </div>
+  </div>
+
+  
+            <section class="concept-section" id="d2-1">
+              <h3><span class="sql-kw">ORDER BY</span>・ROWNUM・<span class="sql-kw">FETCH</span><span>6問</span></h3>
+              <p class="concept-copy">ROWNUM は <span class="sql-kw">ORDER BY</span> より前に振られるため、並べ替えてから上位 n 件を取りたいなら副問合せや <span class="sql-kw">FETCH FIRST</span> を使う。<br><span class="sql-kw">ORDER BY</span> の列別名や位置番号も正しく使う必要がある。</p>
+              
+    <div class="concept-guide" style="border-top-color:#f1c40f">
+      <div class="guide-block">
+        <div class="guide-title">論点の定義</div>
+        <p>検索条件問題では、<span class="sql-kw">LIKE</span>、<span class="sql-kw">NULL</span> 判定、<span class="sql-kw">AND</span>/<span class="sql-kw">OR</span> の優先順位、<span class="sql-kw">ORDER BY</span>、行制限の評価順をそれぞれ分けて読む必要がある。</p>
+      </div>
+      <div class="guide-block"><div class="guide-title">句の並び順（Oracle 正式構文）</div><div class="clause-order"><span class="kw">SELECT</span>    列リスト / 式 / DISTINCT <span class="desc">-- 出力する列</span>
+<span class="kw">FROM</span>      表 [別名]                <span class="desc">-- 取得元</span>
+<span class="kw">WHERE</span>     行フィルタ条件            <span class="desc">-- 行を絞り込み（集約前）</span>
+<span class="kw">ORDER BY</span>  列 / 位置 / 式 [ASC|DESC] <span class="desc">-- 並べ替え</span>
+<span class="kw">FETCH FIRST</span> n <span class="kw">ROWS ONLY</span>   <span class="desc">-- 行制限（12c 以降）</span>
+<span class="note">-- NULL 判定は = NULL ではなく IS [NOT] NULL。AND は OR より優先。</span>
+<span class="note">-- ROWNUM は ORDER BY より先に振られるため、並び替え後の上位取得は副問合せか FETCH。</span></div></div>
+      <div class="guide-block">
+        <div class="guide-title">この論点の基本形</div>
+        <pre><span class="sql-kw">SELECT</span> item_name, item_price
+<span class="sql-kw">FROM</span>   item
+<span class="sql-kw">WHERE</span>  item_name <span class="sql-kw">IS NOT NULL</span>
+<span class="sql-kw">AND</span>    item_price <span class="sql-kw">IS NOT NULL</span>
+<span class="sql-kw">AND</span>    item_name <span class="sql-kw">LIKE</span> &#x27;T%&#x27;
+ORDER  <span class="sql-kw">BY</span> item_price
+<span class="sql-kw">FETCH FIRST</span> <span class="sql-num">10</span> <span class="sql-kw">ROWS ONLY</span>;</pre>
+      </div>
+      <div class="guide-grid">
+        <div class="guide-block">
+          <div class="guide-title">成立条件</div>
+          <ul class="guide-list"><li><span class="sql-kw">LIKE</span> &#x27;T%&#x27; は T で始まる文字列、<span class="sql-kw">IS NULL</span> / <span class="sql-kw">IS NOT NULL</span> は <span class="sql-kw">NULL</span> 判定専用である。</li><li><span class="sql-kw">AND</span> は <span class="sql-kw">OR</span> より先に評価されるため、必要なら括弧で意味を固定する。</li><li>ROWNUM は <span class="sql-kw">ORDER BY</span> より前、<span class="sql-kw">FETCH FIRST</span> は <span class="sql-kw">ORDER BY</span> 後に書く。</li></ul>
+        </div>
+        <div class="guide-block">
+          <div class="guide-title">判定手順</div>
+          <ol class="guide-list ordered"><li>問題文を行条件へ分解して、各条件を SQL 断片へ置き換える。</li><li><span class="sql-kw">NULL</span> 条件は各列ごとに明示し、通常比較と混在させない。</li><li>行制限がある場合は <span class="sql-kw">ORDER BY</span> との評価順まで確認する。</li></ol>
+        </div>
+      </div>
+      <div class="guide-note">失点しやすい点: ROWNUM と <span class="sql-kw">ORDER BY</span> の評価順を逆に読んだり、<span class="sql-kw">FETCH</span>/<span class="sql-kw">ORDER BY</span> の構文順を崩しやすい。</div>
+    </div>
+    
+              
+                <article class="question-card">
+                  <div class="question-meta">第1回 模擬試験 / 問10 / 正答 B / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>以下のSQLを実行するとします。
+
+<span class="sql-kw">SELECT</span> * <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> ROWNUM &lt;= <span class="sql-num">3</span> <span class="sql-kw">ORDER BY</span> ITEM_PRICE;
+
+実行結果について正しい記述はどれでしょうか。
+(<span class="sql-num">1</span>)		A.　ROWNUMとORDER BYを同時に使用できないため、エラーになります。
+(<span class="sql-num">2</span>)		B.　ITEM表の中で、登録順最初の3件以下の行が、価格の安いもの順に表示されます。
+(<span class="sql-num">3</span>)		C.　ITEM表の中で、価格の高いものから3件以下の行が表示されます。
+(<span class="sql-num">4</span>)		D.　ITEM表の中で、価格の安いものから3件以下の行が表示されます。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「<span class="sql-kw">ORDER BY</span>・ROWNUM・<span class="sql-kw">FETCH</span>」です。<br>問題文は「以下のSQLを実行するとします。 <span class="sql-kw">SELECT</span> * <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> ROWNUM <= 3 ORDER BY ITEM_PRICE; 実行結果について正しい記述はどれでしょうか。」という条件を満たす説明または SQL を求めています。ROWNUM は ORDER BY より前に振られるため、並べ替えてから上位 n 件を取りたいなら副問合せや FETCH FIRST を使う。ORDER BY の列別名や位置番号も正しく使う必要がある。 この設問では正答 B「ITEM表の中で、登録順最初の3件以下の行が、価格の安いもの順に表示されます。」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">ROWNUMとORDER BYを同時に使用できないため、エラーになります。</div>
+              <div class="option-review-reason">誤り。 ROWNUM は <span class="sql-kw">ORDER BY</span> より前に振られるため、並べ替え後の上位抽出には副問合せや <span class="sql-kw">FETCH FIRST</span> が必要です。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">ITEM表の中で、登録順最初の3件以下の行が、価格の安いもの順に表示されます。</div>
+              <div class="option-review-reason">正しい。 検索条件問題では、<span class="sql-kw">NULL</span> 判定、ワイルドカード、優先順位、行制限の評価順が成立条件です。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">ITEM表の中で、価格の高いものから3件以下の行が表示されます。</div>
+              <div class="option-review-reason">誤り。 検索条件問題では、<span class="sql-kw">NULL</span> 判定、ワイルドカード、優先順位、行制限の評価順が成立条件です。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">ITEM表の中で、価格の安いものから3件以下の行が表示されます。</div>
+              <div class="option-review-reason">誤り。 検索条件問題では、<span class="sql-kw">NULL</span> 判定、ワイルドカード、優先順位、行制限の評価順が成立条件です。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>問題文を行条件へ分解して、各条件を SQL 断片へ置き換える。</li><li><span class="sql-kw">NULL</span> 条件は各列ごとに明示し、通常比較と混在させない。</li><li>行制限がある場合は <span class="sql-kw">ORDER BY</span> との評価順まで確認する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第2回 模擬試験 / 問7 / 正答 A / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>以下のSQLを実行するとします。
+
+<span class="sql-kw">SELECT</span> ITEM_TYPE,ITEM_PRICE,ITEM_NAME INAME <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">ORDER BY</span> <span class="sql-num">1</span>, INAME <span class="sql-kw">ASC</span>;
+
+実行結果について正しい記述はどれでしょうか。
+(<span class="sql-num">1</span>)		A.　すべてのITEM_TYPEが昇順で表示され、さらにITEM_NAMEが昇順でソートされます。
+(<span class="sql-num">2</span>)		B.　すべてのITEM_TYPEが降順で表示され、さらにITEM_NAMEが降順でソートされます。
+(<span class="sql-num">3</span>)		C.　ORDER BY句で列別名を使用できないため、失敗します。
+(<span class="sql-num">4</span>)		D.　ORDER BY句で列番号と列別名を一緒に使用できないため、失敗します。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「<span class="sql-kw">ORDER BY</span>・ROWNUM・<span class="sql-kw">FETCH</span>」です。<br>問題文は「以下のSQLを実行するとします。 <span class="sql-kw">SELECT</span> ITEM_TYPE,ITEM_PRICE,ITEM_NAME INAME <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">ORDER BY</span> <span class="sql-num">1</span>, INAME <span class="sql-kw">ASC</span>; 実行結果について正しい記述はどれでしょうか。<br>」という条件を満たす説明または SQL を求めています。<br>ROWNUM は <span class="sql-kw">ORDER BY</span> より前に振られるため、並べ替えてから上位 n 件を取りたいなら副問合せや <span class="sql-kw">FETCH FIRST</span> を使う。<br><span class="sql-kw">ORDER BY</span> の列別名や位置番号も正しく使う必要がある。 この設問では正答 A「すべてのITEM_TYPEが昇順で表示され、さらにITEM_NAMEが昇順でソートされます。<br>」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">すべてのITEM_TYPEが昇順で表示され、さらにITEM_NAMEが昇順でソートされます。</div>
+              <div class="option-review-reason">正しい。 検索条件問題では、<span class="sql-kw">NULL</span> 判定、ワイルドカード、優先順位、行制限の評価順が成立条件です。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">すべてのITEM_TYPEが降順で表示され、さらにITEM_NAMEが降順でソートされます。</div>
+              <div class="option-review-reason">誤り。 検索条件問題では、<span class="sql-kw">NULL</span> 判定、ワイルドカード、優先順位、行制限の評価順が成立条件です。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">ORDER BY句で列別名を使用できないため、失敗します。</div>
+              <div class="option-review-reason">誤り。 検索条件問題では、<span class="sql-kw">NULL</span> 判定、ワイルドカード、優先順位、行制限の評価順が成立条件です。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">ORDER BY句で列番号と列別名を一緒に使用できないため、失敗します。</div>
+              <div class="option-review-reason">誤り。 検索条件問題では、<span class="sql-kw">NULL</span> 判定、ワイルドカード、優先順位、行制限の評価順が成立条件です。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>問題文を行条件へ分解して、各条件を SQL 断片へ置き換える。</li><li><span class="sql-kw">NULL</span> 条件は各列ごとに明示し、通常比較と混在させない。</li><li>行制限がある場合は <span class="sql-kw">ORDER BY</span> との評価順まで確認する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第2回 模擬試験 / 問9 / 正答 B / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>ITEM表から、価格（ITEM_PRICE）が最も安い順に並べて、全行の25%の件数の行を表示するとします。
+かつ、行の25%を超える場合でも同じ価格の行は含めたいとします。
+以下のどのSQLを実行すればいいでしょうか。
+(<span class="sql-num">1</span>)		A.　<span class="sql-kw">SELECT</span> * <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">ORDER BY</span> ITEM_PRICE <span class="sql-kw">FETCH FIRST</span> <span class="sql-num">25</span> PERCENT <span class="sql-kw">ROWS</span>;
+(<span class="sql-num">2</span>)		B.　<span class="sql-kw">SELECT</span> * <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">ORDER BY</span> ITEM_PRICE <span class="sql-kw">FETCH FIRST</span> <span class="sql-num">25</span> PERCENT <span class="sql-kw">ROWS</span> <span class="sql-kw">WITH</span> TIES;
+(<span class="sql-num">3</span>)		C.　<span class="sql-kw">SELECT</span> * <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">ORDER BY</span> ITEM_PRICE <span class="sql-kw">FETCH FIRST</span> <span class="sql-num">25</span> PERCENT <span class="sql-kw">ROWS</span> <span class="sql-kw">WITH</span> <span class="sql-kw">ONLY</span>;
+(<span class="sql-num">4</span>)		D.　<span class="sql-kw">SELECT</span> * <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">ORDER BY</span> ITEM_PRICE <span class="sql-kw">FETCH FIRST</span> <span class="sql-num">25</span> PERCENT <span class="sql-kw">ROWS ONLY</span> <span class="sql-kw">WITH</span> TIES;</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「<span class="sql-kw">ORDER BY</span>・ROWNUM・<span class="sql-kw">FETCH</span>」です。<br>問題文は「ITEM表から、価格（ITEM_PRICE）が最も安い順に並べて、全行の25%の件数の行を表示するとします。 かつ、行の25%を超える場合でも同じ価格の行は含めたいとします。 以下のどのSQLを実行すればいいでしょうか。<br>」という条件を満たす説明または SQL を求めています。<br>ROWNUM は <span class="sql-kw">ORDER BY</span> より前に振られるため、並べ替えてから上位 n 件を取りたいなら副問合せや <span class="sql-kw">FETCH FIRST</span> を使う。<br><span class="sql-kw">ORDER BY</span> の列別名や位置番号も正しく使う必要がある。 この設問では正答 B「<span class="sql-kw">SELECT</span> * <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">ORDER BY</span> ITEM_PRICE <span class="sql-kw">FETCH FIRST</span> <span class="sql-num">25</span> P…」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> * <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">ORDER BY</span> ITEM_PRICE <span class="sql-kw">FETCH FIRST</span> <span class="sql-num">25</span> PERCENT <span class="sql-kw">ROWS</span>;</div>
+              <div class="option-review-reason">誤り。 <span class="sql-kw">FETCH</span> / <span class="sql-kw">OFFSET</span> は <span class="sql-kw">ORDER BY</span> の後に続く行制限構文です。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> * <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">ORDER BY</span> ITEM_PRICE <span class="sql-kw">FETCH FIRST</span> <span class="sql-num">25</span> PERCENT <span class="sql-kw">ROWS</span> <span class="sql-kw">WITH</span> TIES;</div>
+              <div class="option-review-reason">正しい。 <span class="sql-kw">FETCH</span> / <span class="sql-kw">OFFSET</span> は <span class="sql-kw">ORDER BY</span> の後に続く行制限構文です。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> * <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">ORDER BY</span> ITEM_PRICE <span class="sql-kw">FETCH FIRST</span> <span class="sql-num">25</span> PERCENT <span class="sql-kw">ROWS</span> <span class="sql-kw">WITH</span> <span class="sql-kw">ONLY</span>;</div>
+              <div class="option-review-reason">誤り。 <span class="sql-kw">FETCH</span> / <span class="sql-kw">OFFSET</span> は <span class="sql-kw">ORDER BY</span> の後に続く行制限構文です。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> * <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">ORDER BY</span> ITEM_PRICE <span class="sql-kw">FETCH FIRST</span> <span class="sql-num">25</span> PERCENT <span class="sql-kw">ROWS ONLY</span> <span class="sql-kw">WITH</span> TIES;</div>
+              <div class="option-review-reason">誤り。 <span class="sql-kw">FETCH</span> / <span class="sql-kw">OFFSET</span> は <span class="sql-kw">ORDER BY</span> の後に続く行制限構文です。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>問題文を行条件へ分解して、各条件を SQL 断片へ置き換える。</li><li><span class="sql-kw">NULL</span> 条件は各列ごとに明示し、通常比較と混在させない。</li><li>行制限がある場合は <span class="sql-kw">ORDER BY</span> との評価順まで確認する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第3回 模擬試験 / 問14 / 正答 B / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>部門ごとに異なる給与額を調査したいため、部門ごとのユニークなSALARY（給与）を表示したいとします。
+使用できるクエリを1つ選んでください。
+(<span class="sql-num">1</span>)		A. <span class="sql-kw">SELECT</span> <span class="sql-kw">DISTINCT</span> salary || &#x27; in &#x27; || <span class="sql-kw">DISTINCT</span> dept_id <span class="sql-kw">FROM</span> employees <span class="sql-kw">ORDER BY</span> <span class="sql-num">1</span>;
+(<span class="sql-num">2</span>)		B. <span class="sql-kw">SELECT</span> <span class="sql-kw">DISTINCT</span> dept_id, salary <span class="sql-kw">FROM</span> employees <span class="sql-kw">ORDER BY</span> <span class="sql-num">1</span>;
+(<span class="sql-num">3</span>)		C. <span class="sql-kw">SELECT</span> dept_id, <span class="sql-kw">DISTINCT</span> salary, <span class="sql-kw">FROM</span> employees <span class="sql-kw">ORDER BY</span> <span class="sql-num">2</span>;
+(<span class="sql-num">4</span>)		D. <span class="sql-kw">SELECT</span> salary, dept_id <span class="sql-kw">FROM</span> employees <span class="sql-kw">ORDER BY</span> <span class="sql-num">1</span>;</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「<span class="sql-kw">ORDER BY</span>・ROWNUM・<span class="sql-kw">FETCH</span>」です。<br>問題文は「部門ごとに異なる給与額を調査したいため、部門ごとのユニークなSALARY（給与）を表示したいとします。 使用できるクエリを1つ選んでください。<br>」という条件を満たす説明または SQL を求めています。<br>ROWNUM は <span class="sql-kw">ORDER BY</span> より前に振られるため、並べ替えてから上位 n 件を取りたいなら副問合せや <span class="sql-kw">FETCH FIRST</span> を使う。<br><span class="sql-kw">ORDER BY</span> の列別名や位置番号も正しく使う必要がある。 この設問では正答 B「<span class="sql-kw">SELECT</span> <span class="sql-kw">DISTINCT</span> dept_id, salary <span class="sql-kw">FROM</span> employees <span class="sql-kw">ORDER BY</span>…」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> <span class="sql-kw">DISTINCT</span> salary || &#x27; in &#x27; || <span class="sql-kw">DISTINCT</span> dept_id <span class="sql-kw">FROM</span> employees <span class="sql-kw">ORDER BY</span> <span class="sql-num">1</span>;</div>
+              <div class="option-review-reason">誤り。 検索条件問題では、<span class="sql-kw">NULL</span> 判定、ワイルドカード、優先順位、行制限の評価順が成立条件です。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> <span class="sql-kw">DISTINCT</span> dept_id, salary <span class="sql-kw">FROM</span> employees <span class="sql-kw">ORDER BY</span> <span class="sql-num">1</span>;</div>
+              <div class="option-review-reason">正しい。 検索条件問題では、<span class="sql-kw">NULL</span> 判定、ワイルドカード、優先順位、行制限の評価順が成立条件です。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> dept_id, <span class="sql-kw">DISTINCT</span> salary, <span class="sql-kw">FROM</span> employees <span class="sql-kw">ORDER BY</span> <span class="sql-num">2</span>;</div>
+              <div class="option-review-reason">誤り。 検索条件問題では、<span class="sql-kw">NULL</span> 判定、ワイルドカード、優先順位、行制限の評価順が成立条件です。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> salary, dept_id <span class="sql-kw">FROM</span> employees <span class="sql-kw">ORDER BY</span> <span class="sql-num">1</span>;</div>
+              <div class="option-review-reason">誤り。 検索条件問題では、<span class="sql-kw">NULL</span> 判定、ワイルドカード、優先順位、行制限の評価順が成立条件です。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>問題文を行条件へ分解して、各条件を SQL 断片へ置き換える。</li><li><span class="sql-kw">NULL</span> 条件は各列ごとに明示し、通常比較と混在させない。</li><li>行制限がある場合は <span class="sql-kw">ORDER BY</span> との評価順まで確認する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第3回 模擬試験 / 問32 / 正答 AB / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>以下のSQLの部分を確認してください。
+<span class="sql-kw">SELECT</span> location, last_name <span class="sql-kw">AS</span> lname <span class="sql-kw">FROM</span> employees 「」;
+
+TOK を含む場所名のみを昇順で表示し、同じ場所の中では last_name を降順にソートしたい場合、 「」内に追加すべき句を2つ選んでください。
+(<span class="sql-num">1</span>)		A. <span class="sql-kw">ORDER BY</span> <span class="sql-num">1</span>, lname <span class="sql-kw">DESC</span>
+(<span class="sql-num">2</span>)		B. <span class="sql-kw">WHERE</span> location <span class="sql-kw">LIKE</span> &#x27;%TOK%&#x27;
+(<span class="sql-num">3</span>)		C. <span class="sql-kw">ORDER BY</span> <span class="sql-num">1</span>, <span class="sql-num">2</span>
+(<span class="sql-num">4</span>)		D. <span class="sql-kw">WHERE</span> location <span class="sql-kw">IN</span> (&#x27;%TOK%&#x27;)
+(<span class="sql-num">5</span>)		E. <span class="sql-kw">WHERE</span> location = &#x27;%TOK%&#x27;
+(<span class="sql-num">6</span>)		F. <span class="sql-kw">ORDER BY</span> last_name <span class="sql-kw">DESC</span>, location <span class="sql-kw">ASC</span></pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「<span class="sql-kw">ORDER BY</span>・ROWNUM・<span class="sql-kw">FETCH</span>」です。<br>問題文は「以下のSQLの部分を確認してください。 <span class="sql-kw">SELECT</span> location, last_name <span class="sql-kw">AS</span> lname <span class="sql-kw">FROM</span> employees 「」; TOK を含む場所名のみを昇順で表示し、同じ場所の中では last_name を降順にソ…」という条件を満たす説明または SQL を求めています。<br>ROWNUM は <span class="sql-kw">ORDER BY</span> より前に振られるため、並べ替えてから上位 n 件を取りたいなら副問合せや <span class="sql-kw">FETCH FIRST</span> を使う。<br><span class="sql-kw">ORDER BY</span> の列別名や位置番号も正しく使う必要がある。 この設問では正答 A「<span class="sql-kw">ORDER BY</span> <span class="sql-num">1</span>, lname <span class="sql-kw">DESC</span>」 / B「<span class="sql-kw">WHERE</span> location <span class="sql-kw">LIKE</span> &#x27;%TOK%&#x27;」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">ORDER BY</span> <span class="sql-num">1</span>, lname <span class="sql-kw">DESC</span></div>
+              <div class="option-review-reason">正しい。 検索条件問題では、<span class="sql-kw">NULL</span> 判定、ワイルドカード、優先順位、行制限の評価順が成立条件です。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">WHERE</span> location <span class="sql-kw">LIKE</span> &#x27;%TOK%&#x27;</div>
+              <div class="option-review-reason">正しい。 検索条件問題では、<span class="sql-kw">NULL</span> 判定、ワイルドカード、優先順位、行制限の評価順が成立条件です。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">ORDER BY</span> <span class="sql-num">1</span>, <span class="sql-num">2</span></div>
+              <div class="option-review-reason">誤り。 検索条件問題では、<span class="sql-kw">NULL</span> 判定、ワイルドカード、優先順位、行制限の評価順が成立条件です。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">WHERE</span> location <span class="sql-kw">IN</span> (&#x27;%TOK%&#x27;)</div>
+              <div class="option-review-reason">誤り。 検索条件問題では、<span class="sql-kw">NULL</span> 判定、ワイルドカード、優先順位、行制限の評価順が成立条件です。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">E</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">WHERE</span> location = &#x27;%TOK%&#x27;</div>
+              <div class="option-review-reason">誤り。 検索条件問題では、<span class="sql-kw">NULL</span> 判定、ワイルドカード、優先順位、行制限の評価順が成立条件です。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">F</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">ORDER BY</span> last_name <span class="sql-kw">DESC</span>, location <span class="sql-kw">ASC</span></div>
+              <div class="option-review-reason">誤り。 検索条件問題では、<span class="sql-kw">NULL</span> 判定、ワイルドカード、優先順位、行制限の評価順が成立条件です。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>問題文を行条件へ分解して、各条件を SQL 断片へ置き換える。</li><li><span class="sql-kw">NULL</span> 条件は各列ごとに明示し、通常比較と混在させない。</li><li>行制限がある場合は <span class="sql-kw">ORDER BY</span> との評価順まで確認する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第3回 模擬試験 / 問64 / 正答 CDE / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>次のクエリのうち、エラーとなるものを3つ選んでください。
+
+(<span class="sql-num">1</span>)		A. <span class="sql-kw">SELECT</span> last_name, <span class="sql-num">12</span> * salary <span class="sql-kw">AS</span> yearly_pay <span class="sql-kw">FROM</span> employees <span class="sql-kw">WHERE</span> <span class="sql-num">12</span> * salary &gt; <span class="sql-num">100000</span> <span class="sql-kw">ORDER BY</span> <span class="sql-num">12</span> * salary;
+(<span class="sql-num">2</span>)		B. <span class="sql-kw">SELECT</span> first_name, last_name <span class="sql-kw">FROM</span> employees;
+(<span class="sql-num">3</span>)		C. <span class="sql-kw">SELECT</span> last_name, <span class="sql-num">12</span> * salary <span class="sql-kw">AS</span> yearly_pay <span class="sql-kw">FROM</span> employees <span class="sql-kw">WHERE</span> yearly_pay &gt; <span class="sql-num">100000</span> <span class="sql-kw">ORDER BY</span> <span class="sql-num">12</span> * salary;
+(<span class="sql-num">4</span>)		D. <span class="sql-kw">SELECT</span> first_name last_name <span class="sql-kw">FROM</span> employees <span class="sql-kw">WHERE</span> yearly_pay &gt; <span class="sql-num">100000</span> <span class="sql-kw">ORDER BY</span> <span class="sql-num">12</span> * salary;
+(<span class="sql-num">5</span>)		E. <span class="sql-kw">SELECT</span> last_nme, <span class="sql-num">12</span> * salary <span class="sql-kw">AS</span> yearly_pay <span class="sql-kw">FROM</span> employees <span class="sql-kw">WHERE</span> yearly_pay &gt; <span class="sql-num">100000</span> <span class="sql-kw">ORDER BY</span> yearly_pay;</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「<span class="sql-kw">ORDER BY</span>・ROWNUM・<span class="sql-kw">FETCH</span>」です。<br>問題文は「次のクエリのうち、エラーとなるものを3つ選んでください。<br>」という条件を満たす説明または SQL を求めています。<br>ROWNUM は <span class="sql-kw">ORDER BY</span> より前に振られるため、並べ替えてから上位 n 件を取りたいなら副問合せや <span class="sql-kw">FETCH FIRST</span> を使う。<br><span class="sql-kw">ORDER BY</span> の列別名や位置番号も正しく使う必要がある。 この設問では正答 C「<span class="sql-kw">SELECT</span> last_name, <span class="sql-num">12</span> * salary <span class="sql-kw">AS</span> yearly_pay <span class="sql-kw">FROM</span> employ…」 / D「<span class="sql-kw">SELECT</span> first_name last_name <span class="sql-kw">FROM</span> employees <span class="sql-kw">WHERE</span> yearly…」 / E「<span class="sql-kw">SELECT</span> last_nme, <span class="sql-num">12</span> * salary <span class="sql-kw">AS</span> yearly_pay <span class="sql-kw">FROM</span> employe…」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> last_name, <span class="sql-num">12</span> * salary <span class="sql-kw">AS</span> yearly_pay <span class="sql-kw">FROM</span> employees <span class="sql-kw">WHERE</span> <span class="sql-num">12</span> * salary &gt; <span class="sql-num">100000</span> <span class="sql-kw">ORDER BY</span> <span class="sql-num">12</span> * salary;</div>
+              <div class="option-review-reason">誤り。 検索条件問題では、<span class="sql-kw">NULL</span> 判定、ワイルドカード、優先順位、行制限の評価順が成立条件です。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> first_name, last_name <span class="sql-kw">FROM</span> employees;</div>
+              <div class="option-review-reason">誤り。 検索条件問題では、<span class="sql-kw">NULL</span> 判定、ワイルドカード、優先順位、行制限の評価順が成立条件です。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> last_name, <span class="sql-num">12</span> * salary <span class="sql-kw">AS</span> yearly_pay <span class="sql-kw">FROM</span> employees <span class="sql-kw">WHERE</span> yearly_pay &gt; <span class="sql-num">100000</span> <span class="sql-kw">ORDER BY</span> <span class="sql-num">12</span> * salary;</div>
+              <div class="option-review-reason">正しい。 検索条件問題では、<span class="sql-kw">NULL</span> 判定、ワイルドカード、優先順位、行制限の評価順が成立条件です。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> first_name last_name <span class="sql-kw">FROM</span> employees <span class="sql-kw">WHERE</span> yearly_pay &gt; <span class="sql-num">100000</span> <span class="sql-kw">ORDER BY</span> <span class="sql-num">12</span> * salary;</div>
+              <div class="option-review-reason">正しい。 検索条件問題では、<span class="sql-kw">NULL</span> 判定、ワイルドカード、優先順位、行制限の評価順が成立条件です。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">E</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> last_nme, <span class="sql-num">12</span> * salary <span class="sql-kw">AS</span> yearly_pay <span class="sql-kw">FROM</span> employees <span class="sql-kw">WHERE</span> yearly_pay &gt; <span class="sql-num">100000</span> <span class="sql-kw">ORDER BY</span> yearly_pay;</div>
+              <div class="option-review-reason">正しい。 検索条件問題では、<span class="sql-kw">NULL</span> 判定、ワイルドカード、優先順位、行制限の評価順が成立条件です。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>問題文を行条件へ分解して、各条件を SQL 断片へ置き換える。</li><li><span class="sql-kw">NULL</span> 条件は各列ごとに明示し、通常比較と混在させない。</li><li>行制限がある場合は <span class="sql-kw">ORDER BY</span> との評価順まで確認する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+            </section>
+            
+            <section class="concept-section" id="d2-2">
+              <h3>演算子優先順位<span>3問</span></h3>
+              <p class="concept-copy"><span class="sql-kw">AND</span> は <span class="sql-kw">OR</span> より先、算術演算は比較より先など、優先順位を知らないと <span class="sql-kw">WHERE</span> 条件の意味が変わる。<br>必要なら括弧で明示する。</p>
+              
+    <div class="concept-guide" style="border-top-color:#f1c40f">
+      <div class="guide-block">
+        <div class="guide-title">論点の定義</div>
+        <p>検索条件問題では、<span class="sql-kw">LIKE</span>、<span class="sql-kw">NULL</span> 判定、<span class="sql-kw">AND</span>/<span class="sql-kw">OR</span> の優先順位、<span class="sql-kw">ORDER BY</span>、行制限の評価順をそれぞれ分けて読む必要がある。</p>
+      </div>
+      <div class="guide-block"><div class="guide-title">句の並び順（Oracle 正式構文）</div><div class="clause-order"><span class="kw">SELECT</span>    列リスト / 式 / DISTINCT <span class="desc">-- 出力する列</span>
+<span class="kw">FROM</span>      表 [別名]                <span class="desc">-- 取得元</span>
+<span class="kw">WHERE</span>     行フィルタ条件            <span class="desc">-- 行を絞り込み（集約前）</span>
+<span class="kw">ORDER BY</span>  列 / 位置 / 式 [ASC|DESC] <span class="desc">-- 並べ替え</span>
+<span class="kw">FETCH FIRST</span> n <span class="kw">ROWS ONLY</span>   <span class="desc">-- 行制限（12c 以降）</span>
+<span class="note">-- NULL 判定は = NULL ではなく IS [NOT] NULL。AND は OR より優先。</span>
+<span class="note">-- ROWNUM は ORDER BY より先に振られるため、並び替え後の上位取得は副問合せか FETCH。</span></div></div>
+      <div class="guide-block">
+        <div class="guide-title">この論点の基本形</div>
+        <pre><span class="sql-kw">SELECT</span> item_name, item_price
+<span class="sql-kw">FROM</span>   item
+<span class="sql-kw">WHERE</span>  item_name <span class="sql-kw">IS NOT NULL</span>
+<span class="sql-kw">AND</span>    item_price <span class="sql-kw">IS NOT NULL</span>
+<span class="sql-kw">AND</span>    item_name <span class="sql-kw">LIKE</span> &#x27;T%&#x27;
+ORDER  <span class="sql-kw">BY</span> item_price
+<span class="sql-kw">FETCH FIRST</span> <span class="sql-num">10</span> <span class="sql-kw">ROWS ONLY</span>;</pre>
+      </div>
+      <div class="guide-grid">
+        <div class="guide-block">
+          <div class="guide-title">成立条件</div>
+          <ul class="guide-list"><li><span class="sql-kw">LIKE</span> &#x27;T%&#x27; は T で始まる文字列、<span class="sql-kw">IS NULL</span> / <span class="sql-kw">IS NOT NULL</span> は <span class="sql-kw">NULL</span> 判定専用である。</li><li><span class="sql-kw">AND</span> は <span class="sql-kw">OR</span> より先に評価されるため、必要なら括弧で意味を固定する。</li><li>ROWNUM は <span class="sql-kw">ORDER BY</span> より前、<span class="sql-kw">FETCH FIRST</span> は <span class="sql-kw">ORDER BY</span> 後に書く。</li></ul>
+        </div>
+        <div class="guide-block">
+          <div class="guide-title">判定手順</div>
+          <ol class="guide-list ordered"><li>問題文を行条件へ分解して、各条件を SQL 断片へ置き換える。</li><li><span class="sql-kw">NULL</span> 条件は各列ごとに明示し、通常比較と混在させない。</li><li>行制限がある場合は <span class="sql-kw">ORDER BY</span> との評価順まで確認する。</li></ol>
+        </div>
+      </div>
+      <div class="guide-note">失点しやすい点: 自然言語の読み順で解釈してしまい、SQL の実際の評価順とずれやすい。</div>
+    </div>
+    
+              
+                <article class="question-card">
+                  <div class="question-meta">第1回 模擬試験 / 問9 / 正答 D / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>次のSQL文を実行するとします。
+
+<span class="sql-kw">SELECT</span> * <span class="sql-kw">FROM</span> ITEM
+<span class="sql-kw">WHERE</span> ITEM_TYPE = &#x27;GOODS&#x27; <span class="sql-kw">OR</span> ITEM_TYPE = &#x27;CASUAL&#x27; <span class="sql-kw">AND</span> ITEM_PRICE &gt;= <span class="sql-num">2000</span>;
+
+実行結果として正しいものはどれでしょうか。
+(<span class="sql-num">1</span>)		A.　ITEM_TYPE列がGOODSかCASUALである商品と、ITEM_PRICE列が2000以上の商品が表示されます。
+(<span class="sql-num">2</span>)		B.　ITEM_TYPE列がGOODSかCASUALである商品のうち、ITEM_PRICE列が2000以上の商品が表示されます。
+(<span class="sql-num">3</span>)		C.　ITEM_TYPE列がGOODSでかつITEM_PRICE列が2000以上の商品と、ITEM_TYPE列がCASUALでかつITEM_PRICE列が2000以上の商品が表示されます。
+(<span class="sql-num">4</span>)		D.　ITEM_TYPE列がGOODSである商品と、ITEM_TYPE列がCASUALでかつITEM_PRICE列が2000以上の商品が表示されます。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「演算子優先順位」です。<br>問題文は「次のSQL文を実行するとします。 <span class="sql-kw">SELECT</span> * <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> ITEM_TYPE = <span class="sql-str">'GOODS'</span> <span class="sql-kw">OR</span> ITEM_TYPE = <span class="sql-str">'CASUAL'</span> <span class="sql-kw">AND</span> ITEM_PRICE >= <span class="sql-num">2000</span>; 実行結果として正し…」という条件を満たす説明または SQL を求めています。<br><span class="sql-kw">AND</span> は <span class="sql-kw">OR</span> より先、算術演算は比較より先など、優先順位を知らないと <span class="sql-kw">WHERE</span> 条件の意味が変わる。<br>必要なら括弧で明示する。 この設問では正答 D「ITEM_TYPE列がGOODSである商品と、ITEM_TYPE列がCASUALでかつITEM_PRICE列が…」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">ITEM_TYPE列がGOODSかCASUALである商品と、ITEM_PRICE列が2000以上の商品が表示されます。</div>
+              <div class="option-review-reason">誤り。 検索条件問題では、<span class="sql-kw">NULL</span> 判定、ワイルドカード、優先順位、行制限の評価順が成立条件です。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">ITEM_TYPE列がGOODSかCASUALである商品のうち、ITEM_PRICE列が2000以上の商品が表示されます。</div>
+              <div class="option-review-reason">誤り。 検索条件問題では、<span class="sql-kw">NULL</span> 判定、ワイルドカード、優先順位、行制限の評価順が成立条件です。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">ITEM_TYPE列がGOODSでかつITEM_PRICE列が2000以上の商品と、ITEM_TYPE列がCASUALでかつITEM_PRICE列が2000以上の商品が表示されます。</div>
+              <div class="option-review-reason">誤り。 検索条件問題では、<span class="sql-kw">NULL</span> 判定、ワイルドカード、優先順位、行制限の評価順が成立条件です。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">ITEM_TYPE列がGOODSである商品と、ITEM_TYPE列がCASUALでかつITEM_PRICE列が2000以上の商品が表示されます。</div>
+              <div class="option-review-reason">正しい。 検索条件問題では、<span class="sql-kw">NULL</span> 判定、ワイルドカード、優先順位、行制限の評価順が成立条件です。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>問題文を行条件へ分解して、各条件を SQL 断片へ置き換える。</li><li><span class="sql-kw">NULL</span> 条件は各列ごとに明示し、通常比較と混在させない。</li><li>行制限がある場合は <span class="sql-kw">ORDER BY</span> との評価順まで確認する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第2回 模擬試験 / 問3 / 正答 AD / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>DEPT_IDが10101,10102に所属する社員の名前と給与を表示するSQLはどれでしょうか。(2つ選択)
+　
+(<span class="sql-num">1</span>)		A.　<span class="sql-kw">SELECT</span> NAME, SALARY <span class="sql-kw">FROM</span> EMP <span class="sql-kw">WHERE</span> DEPT_ID = <span class="sql-num">10101</span> <span class="sql-kw">OR</span> DEPT_ID = <span class="sql-num">10102</span>;
+(<span class="sql-num">2</span>)		B.　<span class="sql-kw">SELECT</span> NAME, SALARY <span class="sql-kw">FROM</span> EMP <span class="sql-kw">WHERE</span> DEPT_ID = <span class="sql-num">10101</span> <span class="sql-kw">AND</span> DEPT_ID = <span class="sql-num">10102</span>;
+(<span class="sql-num">3</span>)		C.　<span class="sql-kw">SELECT</span> NAME, SALARY <span class="sql-kw">FROM</span> EMP <span class="sql-kw">WHERE</span> DEPT_ID <span class="sql-kw">LIKE</span> &#x27;<span class="sql-num">1</span>%&#x27;;
+(<span class="sql-num">4</span>)		D.　<span class="sql-kw">SELECT</span> NAME, SALARY <span class="sql-kw">FROM</span> EMP <span class="sql-kw">WHERE</span> DEPT_ID <span class="sql-kw">IN</span> (<span class="sql-num">10101</span>, <span class="sql-num">10102</span>);</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「演算子優先順位」です。<br>問題文は「DEPT_IDが10101,10102に所属する社員の名前と給与を表示するSQLはどれでしょうか。<br>(2つ選択)」という条件を満たす説明または SQL を求めています。<br><span class="sql-kw">AND</span> は <span class="sql-kw">OR</span> より先、算術演算は比較より先など、優先順位を知らないと <span class="sql-kw">WHERE</span> 条件の意味が変わる。<br>必要なら括弧で明示する。 この設問では正答 A「<span class="sql-kw">SELECT</span> NAME, SALARY <span class="sql-kw">FROM</span> EMP <span class="sql-kw">WHERE</span> DEPT_ID = <span class="sql-num">10101</span> <span class="sql-kw">OR</span> D…」 / D「<span class="sql-kw">SELECT</span> NAME, SALARY <span class="sql-kw">FROM</span> EMP <span class="sql-kw">WHERE</span> DEPT_ID <span class="sql-kw">IN</span> (<span class="sql-num">10101</span>, <span class="sql-num">1</span>…」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> NAME, SALARY <span class="sql-kw">FROM</span> EMP <span class="sql-kw">WHERE</span> DEPT_ID = <span class="sql-num">10101</span> <span class="sql-kw">OR</span> DEPT_ID = <span class="sql-num">10102</span>;</div>
+              <div class="option-review-reason">正しい。 検索条件問題では、<span class="sql-kw">NULL</span> 判定、ワイルドカード、優先順位、行制限の評価順が成立条件です。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> NAME, SALARY <span class="sql-kw">FROM</span> EMP <span class="sql-kw">WHERE</span> DEPT_ID = <span class="sql-num">10101</span> <span class="sql-kw">AND</span> DEPT_ID = <span class="sql-num">10102</span>;</div>
+              <div class="option-review-reason">誤り。 検索条件問題では、<span class="sql-kw">NULL</span> 判定、ワイルドカード、優先順位、行制限の評価順が成立条件です。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> NAME, SALARY <span class="sql-kw">FROM</span> EMP <span class="sql-kw">WHERE</span> DEPT_ID <span class="sql-kw">LIKE</span> &#x27;<span class="sql-num">1</span>%&#x27;;</div>
+              <div class="option-review-reason">誤り。 検索条件問題では、<span class="sql-kw">NULL</span> 判定、ワイルドカード、優先順位、行制限の評価順が成立条件です。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> NAME, SALARY <span class="sql-kw">FROM</span> EMP <span class="sql-kw">WHERE</span> DEPT_ID <span class="sql-kw">IN</span> (<span class="sql-num">10101</span>, <span class="sql-num">10102</span>);</div>
+              <div class="option-review-reason">正しい。 検索条件問題では、<span class="sql-kw">NULL</span> 判定、ワイルドカード、優先順位、行制限の評価順が成立条件です。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>問題文を行条件へ分解して、各条件を SQL 断片へ置き換える。</li><li><span class="sql-kw">NULL</span> 条件は各列ごとに明示し、通常比較と混在させない。</li><li>行制限がある場合は <span class="sql-kw">ORDER BY</span> との評価順まで確認する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第3回 模擬試験 / 問17 / 正答 AB / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>以下のうち、正しいものを2つ選んでください。
+(<span class="sql-num"><span class="sql-num">1</span></span>)		A. ADD_MONTHS は、日付にカレンダーベースの月数を追加する。
+(<span class="sql-num"><span class="sql-num">2</span></span>)		B. MONTHS_BETWEEN は、2つの日付の間の月数を計算する。
+(<span class="sql-num"><span class="sql-num">3</span></span>)		C. CEIL は、指定された数値以下の最大の整数を返す。
+(<span class="sql-num"><span class="sql-num">4</span></span>)		D. LAST_DAY は、現在の月の最終日の日付のみを返す。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「演算子優先順位」です。<br>問題文は「以下のうち、正しいものを2つ選んでください。<br>」という条件を満たす説明または SQL を求めています。<br><span class="sql-kw">AND</span> は <span class="sql-kw">OR</span> より先、算術演算は比較より先など、優先順位を知らないと <span class="sql-kw">WHERE</span> 条件の意味が変わる。<br>必要なら括弧で明示する。 この設問では正答 A「ADD_MONTHS は、日付にカレンダーベースの月数を追加する。<br>」 / B「MONTHS_BETWEEN は、2つの日付の間の月数を計算する。<br>」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">ADD_MONTHS は、日付にカレンダーベースの月数を追加する。</div>
+              <div class="option-review-reason">正しい。 検索条件問題では、<span class="sql-kw">NULL</span> 判定、ワイルドカード、優先順位、行制限の評価順が成立条件です。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">MONTHS_BETWEEN は、2つの日付の間の月数を計算する。</div>
+              <div class="option-review-reason">正しい。 検索条件問題では、<span class="sql-kw">NULL</span> 判定、ワイルドカード、優先順位、行制限の評価順が成立条件です。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">CEIL は、指定された数値以下の最大の整数を返す。</div>
+              <div class="option-review-reason">誤り。 検索条件問題では、<span class="sql-kw">NULL</span> 判定、ワイルドカード、優先順位、行制限の評価順が成立条件です。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">LAST_DAY は、現在の月の最終日の日付のみを返す。</div>
+              <div class="option-review-reason">誤り。 検索条件問題では、<span class="sql-kw">NULL</span> 判定、ワイルドカード、優先順位、行制限の評価順が成立条件です。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>問題文を行条件へ分解して、各条件を SQL 断片へ置き換える。</li><li><span class="sql-kw">NULL</span> 条件は各列ごとに明示し、通常比較と混在させない。</li><li>行制限がある場合は <span class="sql-kw">ORDER BY</span> との評価順まで確認する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+            </section>
+            
+            <section class="concept-section" id="d2-3">
+              <h3>検索条件総合<span>2問</span></h3>
+              <p class="concept-copy"><span class="sql-kw">WHERE</span> 条件問題では、<span class="sql-kw">NULL</span>、ワイルドカード、優先順位、行制限など論点が混ざる。<br>条件を日本語へ戻してから式へ落とすのが最も安全である。</p>
+              
+    <div class="concept-guide" style="border-top-color:#f1c40f">
+      <div class="guide-block">
+        <div class="guide-title">論点の定義</div>
+        <p>検索条件問題では、<span class="sql-kw">LIKE</span>、<span class="sql-kw">NULL</span> 判定、<span class="sql-kw">AND</span>/<span class="sql-kw">OR</span> の優先順位、<span class="sql-kw">ORDER BY</span>、行制限の評価順をそれぞれ分けて読む必要がある。</p>
+      </div>
+      <div class="guide-block"><div class="guide-title">句の並び順（Oracle 正式構文）</div><div class="clause-order"><span class="kw">SELECT</span>    列リスト / 式 / DISTINCT <span class="desc">-- 出力する列</span>
+<span class="kw">FROM</span>      表 [別名]                <span class="desc">-- 取得元</span>
+<span class="kw">WHERE</span>     行フィルタ条件            <span class="desc">-- 行を絞り込み（集約前）</span>
+<span class="kw">ORDER BY</span>  列 / 位置 / 式 [ASC|DESC] <span class="desc">-- 並べ替え</span>
+<span class="kw">FETCH FIRST</span> n <span class="kw">ROWS ONLY</span>   <span class="desc">-- 行制限（12c 以降）</span>
+<span class="note">-- NULL 判定は = NULL ではなく IS [NOT] NULL。AND は OR より優先。</span>
+<span class="note">-- ROWNUM は ORDER BY より先に振られるため、並び替え後の上位取得は副問合せか FETCH。</span></div></div>
+      <div class="guide-block">
+        <div class="guide-title">この論点の基本形</div>
+        <pre><span class="sql-kw">SELECT</span> item_name, item_price
+<span class="sql-kw">FROM</span>   item
+<span class="sql-kw">WHERE</span>  item_name <span class="sql-kw">IS NOT NULL</span>
+<span class="sql-kw">AND</span>    item_price <span class="sql-kw">IS NOT NULL</span>
+<span class="sql-kw">AND</span>    item_name <span class="sql-kw">LIKE</span> &#x27;T%&#x27;
+ORDER  <span class="sql-kw">BY</span> item_price
+<span class="sql-kw">FETCH FIRST</span> <span class="sql-num">10</span> <span class="sql-kw">ROWS ONLY</span>;</pre>
+      </div>
+      <div class="guide-grid">
+        <div class="guide-block">
+          <div class="guide-title">成立条件</div>
+          <ul class="guide-list"><li><span class="sql-kw">LIKE</span> &#x27;T%&#x27; は T で始まる文字列、<span class="sql-kw">IS NULL</span> / <span class="sql-kw">IS NOT NULL</span> は <span class="sql-kw">NULL</span> 判定専用である。</li><li><span class="sql-kw">AND</span> は <span class="sql-kw">OR</span> より先に評価されるため、必要なら括弧で意味を固定する。</li><li>ROWNUM は <span class="sql-kw">ORDER BY</span> より前、<span class="sql-kw">FETCH FIRST</span> は <span class="sql-kw">ORDER BY</span> 後に書く。</li></ul>
+        </div>
+        <div class="guide-block">
+          <div class="guide-title">判定手順</div>
+          <ol class="guide-list ordered"><li>問題文を行条件へ分解して、各条件を SQL 断片へ置き換える。</li><li><span class="sql-kw">NULL</span> 条件は各列ごとに明示し、通常比較と混在させない。</li><li>行制限がある場合は <span class="sql-kw">ORDER BY</span> との評価順まで確認する。</li></ol>
+        </div>
+      </div>
+      <div class="guide-note">失点しやすい点: SQL 断片の雰囲気で選び、日本語条件との対応を確認しないまま誤答しやすい。</div>
+    </div>
+    
+              
+                <article class="question-card">
+                  <div class="question-meta">第2回 模擬試験 / 問4 / 正答 A / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>実行結果が以下の文と同じになる文を1つ選択してください。
+
+<span class="sql-kw">SELECT</span> empno,name <span class="sql-kw">FROM</span> employees;
+(<span class="sql-num">1</span>)		A.　<span class="sql-kw">SELECT</span> empno,name <span class="sql-kw">FROM</span> employees <span class="sql-kw">WHERE</span> <span class="sql-num">1</span> = <span class="sql-num">1</span>;
+(<span class="sql-num">2</span>)		B.　<span class="sql-kw">SELECT</span> empno,name <span class="sql-kw">FROM</span> employees <span class="sql-kw">WHERE</span> <span class="sql-num">1</span> &lt;&gt; <span class="sql-num">1</span>;
+(<span class="sql-num">3</span>)		C.　<span class="sql-kw">SELECT</span> empno,name <span class="sql-kw">FROM</span> employees <span class="sql-kw">WHERE</span> <span class="sql-num">1</span> == <span class="sql-num">1</span>;
+(<span class="sql-num">4</span>)		D.　<span class="sql-kw">SELECT</span> empno,name <span class="sql-kw">FROM</span> employees <span class="sql-kw">WHERE</span> <span class="sql-num">1</span> <span class="sql-kw">IS</span> <span class="sql-kw">NOT</span> <span class="sql-num">1</span>;</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「検索条件総合」です。<br>問題文は「実行結果が以下の文と同じになる文を1つ選択してください。 <span class="sql-kw">SELECT</span> empno,name <span class="sql-kw">FROM</span> employees;」という条件を満たす説明または SQL を求めています。<br><span class="sql-kw">WHERE</span> 条件問題では、<span class="sql-kw">NULL</span>、ワイルドカード、優先順位、行制限など論点が混ざる。<br>条件を日本語へ戻してから式へ落とすのが最も安全である。 この設問では正答 A「<span class="sql-kw">SELECT</span> empno,name <span class="sql-kw">FROM</span> employees <span class="sql-kw">WHERE</span> <span class="sql-num">1</span> = <span class="sql-num">1</span>;」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> empno,name <span class="sql-kw">FROM</span> employees <span class="sql-kw">WHERE</span> <span class="sql-num">1</span> = <span class="sql-num">1</span>;</div>
+              <div class="option-review-reason">正しい。 検索条件問題では、<span class="sql-kw">NULL</span> 判定、ワイルドカード、優先順位、行制限の評価順が成立条件です。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> empno,name <span class="sql-kw">FROM</span> employees <span class="sql-kw">WHERE</span> <span class="sql-num">1</span> &lt;&gt; <span class="sql-num">1</span>;</div>
+              <div class="option-review-reason">誤り。 検索条件問題では、<span class="sql-kw">NULL</span> 判定、ワイルドカード、優先順位、行制限の評価順が成立条件です。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> empno,name <span class="sql-kw">FROM</span> employees <span class="sql-kw">WHERE</span> <span class="sql-num">1</span> == <span class="sql-num">1</span>;</div>
+              <div class="option-review-reason">誤り。 検索条件問題では、<span class="sql-kw">NULL</span> 判定、ワイルドカード、優先順位、行制限の評価順が成立条件です。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> empno,name <span class="sql-kw">FROM</span> employees <span class="sql-kw">WHERE</span> <span class="sql-num">1</span> <span class="sql-kw">IS</span> <span class="sql-kw">NOT</span> <span class="sql-num">1</span>;</div>
+              <div class="option-review-reason">誤り。 検索条件問題では、<span class="sql-kw">NULL</span> 判定、ワイルドカード、優先順位、行制限の評価順が成立条件です。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>問題文を行条件へ分解して、各条件を SQL 断片へ置き換える。</li><li><span class="sql-kw">NULL</span> 条件は各列ごとに明示し、通常比較と混在させない。</li><li>行制限がある場合は <span class="sql-kw">ORDER BY</span> との評価順まで確認する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第2回 模擬試験 / 問5 / 正答 A / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>次のSQLを実行するとエラーが発生します。
+
+<span class="sql-kw">SELECT</span> ITEM_NAME || &#x27; It&#x27;s FOODS!!&#x27;
+<span class="sql-kw">FROM</span> ITEM
+<span class="sql-kw">WHERE</span> ITEM_TYPE = &#x27;FOOD&#x27;;
+
+エラーを発生させないで指定のリテラル文字列を表示するには、どうすればいいでしょうか。
+(<span class="sql-num">1</span>)		A.　文字リテラル文字列内の一重引用符をエスケープします
+(<span class="sql-num">2</span>)		B.　文字リテラル文字列内の一重引用符を削除します
+(<span class="sql-num">3</span>)		C.　文字リテラル文字列を二重引用符ではさみます
+(<span class="sql-num">4</span>)		D.　文字リテラル文字列内の一重引用符を一重引用符ではさみます</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「検索条件総合」です。<br>問題文は「次のSQLを実行するとエラーが発生します。 <span class="sql-kw">SELECT</span> ITEM_NAME || <span class="sql-str">' It'</span>s FOODS!!<span class="sql-str">' FROM ITEM WHERE ITEM_TYPE = '</span>FOOD'; エラーを発生させないで指定のリテラル文字列を表示す…」という条件を満たす説明または SQL を求めています。<br><span class="sql-kw">WHERE</span> 条件問題では、<span class="sql-kw">NULL</span>、ワイルドカード、優先順位、行制限など論点が混ざる。<br>条件を日本語へ戻してから式へ落とすのが最も安全である。 この設問では正答 A「文字リテラル文字列内の一重引用符をエスケープします」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">文字リテラル文字列内の一重引用符をエスケープします</div>
+              <div class="option-review-reason">正しい。 検索条件問題では、<span class="sql-kw">NULL</span> 判定、ワイルドカード、優先順位、行制限の評価順が成立条件です。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">文字リテラル文字列内の一重引用符を削除します</div>
+              <div class="option-review-reason">誤り。 検索条件問題では、<span class="sql-kw">NULL</span> 判定、ワイルドカード、優先順位、行制限の評価順が成立条件です。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">文字リテラル文字列を二重引用符ではさみます</div>
+              <div class="option-review-reason">誤り。 検索条件問題では、<span class="sql-kw">NULL</span> 判定、ワイルドカード、優先順位、行制限の評価順が成立条件です。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">文字リテラル文字列内の一重引用符を一重引用符ではさみます</div>
+              <div class="option-review-reason">誤り。 検索条件問題では、<span class="sql-kw">NULL</span> 判定、ワイルドカード、優先順位、行制限の評価順が成立条件です。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>問題文を行条件へ分解して、各条件を SQL 断片へ置き換える。</li><li><span class="sql-kw">NULL</span> 条件は各列ごとに明示し、通常比較と混在させない。</li><li>行制限がある場合は <span class="sql-kw">ORDER BY</span> との評価順まで確認する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+            </section>
+            
+            <section class="concept-section" id="d2-4">
+              <h3>置換変数と VERIFY<span>2問</span></h3>
+              <p class="concept-copy">SQL*Plus 系の置換変数では &amp; は毎回入力、&amp;&amp; は再利用される。<br>DEFINE 済みかどうか、VERIFY の役割も含めて読む必要がある。</p>
+              
+    <div class="concept-guide" style="border-top-color:#f1c40f">
+      <div class="guide-block">
+        <div class="guide-title">論点の定義</div>
+        <p>検索条件問題では、<span class="sql-kw">LIKE</span>、<span class="sql-kw">NULL</span> 判定、<span class="sql-kw">AND</span>/<span class="sql-kw">OR</span> の優先順位、<span class="sql-kw">ORDER BY</span>、行制限の評価順をそれぞれ分けて読む必要がある。</p>
+      </div>
+      <div class="guide-block"><div class="guide-title">句の並び順（Oracle 正式構文）</div><div class="clause-order"><span class="kw">SELECT</span>    列リスト / 式 / DISTINCT <span class="desc">-- 出力する列</span>
+<span class="kw">FROM</span>      表 [別名]                <span class="desc">-- 取得元</span>
+<span class="kw">WHERE</span>     行フィルタ条件            <span class="desc">-- 行を絞り込み（集約前）</span>
+<span class="kw">ORDER BY</span>  列 / 位置 / 式 [ASC|DESC] <span class="desc">-- 並べ替え</span>
+<span class="kw">FETCH FIRST</span> n <span class="kw">ROWS ONLY</span>   <span class="desc">-- 行制限（12c 以降）</span>
+<span class="note">-- NULL 判定は = NULL ではなく IS [NOT] NULL。AND は OR より優先。</span>
+<span class="note">-- ROWNUM は ORDER BY より先に振られるため、並び替え後の上位取得は副問合せか FETCH。</span></div></div>
+      <div class="guide-block">
+        <div class="guide-title">この論点の基本形</div>
+        <pre><span class="sql-kw">SELECT</span> item_name, item_price
+<span class="sql-kw">FROM</span>   item
+<span class="sql-kw">WHERE</span>  item_name <span class="sql-kw">IS NOT NULL</span>
+<span class="sql-kw">AND</span>    item_price <span class="sql-kw">IS NOT NULL</span>
+<span class="sql-kw">AND</span>    item_name <span class="sql-kw">LIKE</span> &#x27;T%&#x27;
+ORDER  <span class="sql-kw">BY</span> item_price
+<span class="sql-kw">FETCH FIRST</span> <span class="sql-num">10</span> <span class="sql-kw">ROWS ONLY</span>;</pre>
+      </div>
+      <div class="guide-grid">
+        <div class="guide-block">
+          <div class="guide-title">成立条件</div>
+          <ul class="guide-list"><li><span class="sql-kw">LIKE</span> &#x27;T%&#x27; は T で始まる文字列、<span class="sql-kw">IS NULL</span> / <span class="sql-kw">IS NOT NULL</span> は <span class="sql-kw">NULL</span> 判定専用である。</li><li><span class="sql-kw">AND</span> は <span class="sql-kw">OR</span> より先に評価されるため、必要なら括弧で意味を固定する。</li><li>ROWNUM は <span class="sql-kw">ORDER BY</span> より前、<span class="sql-kw">FETCH FIRST</span> は <span class="sql-kw">ORDER BY</span> 後に書く。</li></ul>
+        </div>
+        <div class="guide-block">
+          <div class="guide-title">判定手順</div>
+          <ol class="guide-list ordered"><li>問題文を行条件へ分解して、各条件を SQL 断片へ置き換える。</li><li><span class="sql-kw">NULL</span> 条件は各列ごとに明示し、通常比較と混在させない。</li><li>行制限がある場合は <span class="sql-kw">ORDER BY</span> との評価順まで確認する。</li></ol>
+        </div>
+      </div>
+      <div class="guide-note">失点しやすい点: DEFINE の有無を見ずにプロンプト発生を判断したり、VERIFY を変数定義と混同しやすい。</div>
+    </div>
+    
+              
+                <article class="question-card">
+                  <div class="question-meta">第1回 模擬試験 / 問11 / 正答 B / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>以下の置換変数についての記述で正しいのはどれでしょうか。
+(<span class="sql-num"><span class="sql-num">1</span></span>)		A.　置換変数は、SQL*Plusコマンドのみで使用できます。
+(<span class="sql-num"><span class="sql-num">2</span></span>)		B.　&amp;で始まる置換変数は、SQL実行後に破棄されます。
+(<span class="sql-num"><span class="sql-num">3</span></span>)		C.　&amp;&amp;で始まる置換変数は、SQL実行後に破棄されます。
+(<span class="sql-num"><span class="sql-num">4</span></span>)		D.　プロンプトで入力する置換変数は、単一引用符で囲む必要があります。
+(<span class="sql-num"><span class="sql-num">5</span></span>)		E.　プロンプトで入力する置換変数は、二重引用符で囲む必要があります。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「置換変数と VERIFY」です。<br>問題文は「以下の置換変数についての記述で正しいのはどれでしょうか。<br>」という条件を満たす説明または SQL を求めています。<br>SQL*Plus 系の置換変数では & は毎回入力、&& は再利用される。<br>DEFINE 済みかどうか、VERIFY の役割も含めて読む必要がある。 この設問では正答 B「&amp;で始まる置換変数は、SQL実行後に破棄されます。<br>」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">置換変数は、SQL*Plusコマンドのみで使用できます。</div>
+              <div class="option-review-reason">誤り。 検索条件問題では、<span class="sql-kw">NULL</span> 判定、ワイルドカード、優先順位、行制限の評価順が成立条件です。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">&amp;で始まる置換変数は、SQL実行後に破棄されます。</div>
+              <div class="option-review-reason">正しい。 検索条件問題では、<span class="sql-kw">NULL</span> 判定、ワイルドカード、優先順位、行制限の評価順が成立条件です。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">&amp;&amp;で始まる置換変数は、SQL実行後に破棄されます。</div>
+              <div class="option-review-reason">誤り。 検索条件問題では、<span class="sql-kw">NULL</span> 判定、ワイルドカード、優先順位、行制限の評価順が成立条件です。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">プロンプトで入力する置換変数は、単一引用符で囲む必要があります。</div>
+              <div class="option-review-reason">誤り。 検索条件問題では、<span class="sql-kw">NULL</span> 判定、ワイルドカード、優先順位、行制限の評価順が成立条件です。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">E</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">プロンプトで入力する置換変数は、二重引用符で囲む必要があります。</div>
+              <div class="option-review-reason">誤り。 検索条件問題では、<span class="sql-kw">NULL</span> 判定、ワイルドカード、優先順位、行制限の評価順が成立条件です。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>問題文を行条件へ分解して、各条件を SQL 断片へ置き換える。</li><li><span class="sql-kw">NULL</span> 条件は各列ごとに明示し、通常比較と混在させない。</li><li>行制限がある場合は <span class="sql-kw">ORDER BY</span> との評価順まで確認する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第3回 模擬試験 / 問25 / 正答 AC / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>以下のクエリを確認してください。
+
+<span class="sql-kw">SELECT</span> product_id, product_name, price <span class="sql-kw">FROM</span> products <span class="sql-kw">WHERE</span> release_date &gt; &#x27;&amp;<span class="sql-num">1</span>&#x27;;
+
+このクエリを実行する際に、release_date の入力を求められないようにする方法を 2つ 選んでください。
+(<span class="sql-num">1</span>)		A. クエリをスクリプトに保存し、スクリプト実行時に &amp;<span class="sql-num">1</span> の値を渡す。
+(<span class="sql-num">2</span>)		B. クエリ内の &amp;<span class="sql-num">1</span> を &#x27;&amp;<span class="sql-num">1</span>&#x27; に置き換える。
+(<span class="sql-num">3</span>)		C. クエリを実行する前に DEFINE コマンドを使用する。
+(<span class="sql-num">4</span>)		D. クエリを実行する前に UNDEFINE コマンドを使用する。
+(<span class="sql-num">5</span>)		E. クエリを実行する前に <span class="sql-kw">SET</span> VERIFY <span class="sql-kw">ON</span> コマンドを実行する。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「置換変数と VERIFY」です。<br>問題文は「以下のクエリを確認してください。 <span class="sql-kw">SELECT</span> product_id, product_name, price <span class="sql-kw">FROM</span> products <span class="sql-kw">WHERE</span> release_date > <span class="sql-str">'&1'</span>; このクエリを実行する際に、release_d…」という条件を満たす説明または SQL を求めています。<br>SQL*Plus 系の置換変数では & は毎回入力、&& は再利用される。<br>DEFINE 済みかどうか、VERIFY の役割も含めて読む必要がある。 この設問では正答 A「クエリをスクリプトに保存し、スクリプト実行時に &amp;<span class="sql-num">1</span> の値を渡す。<br>」 / C「クエリを実行する前に DEFINE コマンドを使用する。<br>」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">クエリをスクリプトに保存し、スクリプト実行時に &amp;<span class="sql-num">1</span> の値を渡す。</div>
+              <div class="option-review-reason">正しい。 検索条件問題では、<span class="sql-kw">NULL</span> 判定、ワイルドカード、優先順位、行制限の評価順が成立条件です。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">クエリ内の &amp;<span class="sql-num">1</span> を &#x27;&amp;<span class="sql-num">1</span>&#x27; に置き換える。</div>
+              <div class="option-review-reason">誤り。 検索条件問題では、<span class="sql-kw">NULL</span> 判定、ワイルドカード、優先順位、行制限の評価順が成立条件です。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">クエリを実行する前に DEFINE コマンドを使用する。</div>
+              <div class="option-review-reason">正しい。 検索条件問題では、<span class="sql-kw">NULL</span> 判定、ワイルドカード、優先順位、行制限の評価順が成立条件です。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">クエリを実行する前に UNDEFINE コマンドを使用する。</div>
+              <div class="option-review-reason">誤り。 検索条件問題では、<span class="sql-kw">NULL</span> 判定、ワイルドカード、優先順位、行制限の評価順が成立条件です。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">E</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">クエリを実行する前に <span class="sql-kw">SET</span> VERIFY <span class="sql-kw">ON</span> コマンドを実行する。</div>
+              <div class="option-review-reason">誤り。 検索条件問題では、<span class="sql-kw">NULL</span> 判定、ワイルドカード、優先順位、行制限の評価順が成立条件です。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>問題文を行条件へ分解して、各条件を SQL 断片へ置き換える。</li><li><span class="sql-kw">NULL</span> 条件は各列ごとに明示し、通常比較と混在させない。</li><li>行制限がある場合は <span class="sql-kw">ORDER BY</span> との評価順まで確認する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+            </section>
+            
+            <section class="concept-section" id="d2-5">
+              <h3><span class="sql-kw">LIKE</span> とワイルドカード<span>1問</span></h3>
+              <p class="concept-copy">_ は1文字、% は0文字以上を表す。<br>先頭一致・末尾一致・部分一致のパターンを正確に書き分けるのが基本である。</p>
+              
+    <div class="concept-guide" style="border-top-color:#f1c40f">
+      <div class="guide-block">
+        <div class="guide-title">論点の定義</div>
+        <p>検索条件問題では、<span class="sql-kw">LIKE</span>、<span class="sql-kw">NULL</span> 判定、<span class="sql-kw">AND</span>/<span class="sql-kw">OR</span> の優先順位、<span class="sql-kw">ORDER BY</span>、行制限の評価順をそれぞれ分けて読む必要がある。</p>
+      </div>
+      <div class="guide-block"><div class="guide-title">句の並び順（Oracle 正式構文）</div><div class="clause-order"><span class="kw">SELECT</span>    列リスト / 式 / DISTINCT <span class="desc">-- 出力する列</span>
+<span class="kw">FROM</span>      表 [別名]                <span class="desc">-- 取得元</span>
+<span class="kw">WHERE</span>     行フィルタ条件            <span class="desc">-- 行を絞り込み（集約前）</span>
+<span class="kw">ORDER BY</span>  列 / 位置 / 式 [ASC|DESC] <span class="desc">-- 並べ替え</span>
+<span class="kw">FETCH FIRST</span> n <span class="kw">ROWS ONLY</span>   <span class="desc">-- 行制限（12c 以降）</span>
+<span class="note">-- NULL 判定は = NULL ではなく IS [NOT] NULL。AND は OR より優先。</span>
+<span class="note">-- ROWNUM は ORDER BY より先に振られるため、並び替え後の上位取得は副問合せか FETCH。</span></div></div>
+      <div class="guide-block">
+        <div class="guide-title">この論点の基本形</div>
+        <pre><span class="sql-kw">SELECT</span> item_name, item_price
+<span class="sql-kw">FROM</span>   item
+<span class="sql-kw">WHERE</span>  item_name <span class="sql-kw">IS NOT NULL</span>
+<span class="sql-kw">AND</span>    item_price <span class="sql-kw">IS NOT NULL</span>
+<span class="sql-kw">AND</span>    item_name <span class="sql-kw">LIKE</span> &#x27;T%&#x27;
+ORDER  <span class="sql-kw">BY</span> item_price
+<span class="sql-kw">FETCH FIRST</span> <span class="sql-num">10</span> <span class="sql-kw">ROWS ONLY</span>;</pre>
+      </div>
+      <div class="guide-grid">
+        <div class="guide-block">
+          <div class="guide-title">成立条件</div>
+          <ul class="guide-list"><li><span class="sql-kw">LIKE</span> &#x27;T%&#x27; は T で始まる文字列、<span class="sql-kw">IS NULL</span> / <span class="sql-kw">IS NOT NULL</span> は <span class="sql-kw">NULL</span> 判定専用である。</li><li><span class="sql-kw">AND</span> は <span class="sql-kw">OR</span> より先に評価されるため、必要なら括弧で意味を固定する。</li><li>ROWNUM は <span class="sql-kw">ORDER BY</span> より前、<span class="sql-kw">FETCH FIRST</span> は <span class="sql-kw">ORDER BY</span> 後に書く。</li></ul>
+        </div>
+        <div class="guide-block">
+          <div class="guide-title">判定手順</div>
+          <ol class="guide-list ordered"><li>問題文を行条件へ分解して、各条件を SQL 断片へ置き換える。</li><li><span class="sql-kw">NULL</span> 条件は各列ごとに明示し、通常比較と混在させない。</li><li>行制限がある場合は <span class="sql-kw">ORDER BY</span> との評価順まで確認する。</li></ol>
+        </div>
+      </div>
+      <div class="guide-note">失点しやすい点: _ と % の意味を逆に覚えたり、前方一致と部分一致を混同しやすい。</div>
+    </div>
+    
+              
+                <article class="question-card">
+                  <div class="question-meta">第1回 模擬試験 / 問5 / 正答 D / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>ITEM_NAME列の値がTで始まる行のみが表示されるSQLを1つ選択してください。
+
+(<span class="sql-num">1</span>)		A.　<span class="sql-kw">SELECT</span> * <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> ITEM_NAME <span class="sql-kw">LIKE</span> &#x27;T&#x27;;
+(<span class="sql-num">2</span>)		B.　<span class="sql-kw">SELECT</span> * <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> ITEM_NAME <span class="sql-kw">LIKE</span> &#x27;%T%&#x27;;
+(<span class="sql-num">3</span>)		C.　<span class="sql-kw">SELECT</span> * <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> ITEM_NAME <span class="sql-kw">LIKE</span> &#x27;%T&#x27;;
+(<span class="sql-num">4</span>)		D.　<span class="sql-kw">SELECT</span> * <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> ITEM_NAME <span class="sql-kw">LIKE</span> &#x27;T%&#x27;;
+(<span class="sql-num">5</span>)		E.　<span class="sql-kw">SELECT</span> * <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> ITEM_NAME = &#x27;T%&#x27;;</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「<span class="sql-kw">LIKE</span> とワイルドカード」です。<br>問題文は「ITEM_NAME列の値がTで始まる行のみが表示されるSQLを1つ選択してください。<br>」という条件を満たす説明または SQL を求めています。<br>_ は1文字、% は0文字以上を表す。<br>先頭一致・末尾一致・部分一致のパターンを正確に書き分けるのが基本である。 この設問では正答 D「<span class="sql-kw">SELECT</span> * <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> ITEM_NAME <span class="sql-kw">LIKE</span> &#x27;T%&#x27;;」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> * <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> ITEM_NAME <span class="sql-kw">LIKE</span> &#x27;T&#x27;;</div>
+              <div class="option-review-reason">誤り。 `<span class="sql-kw">LIKE</span> &#x27;T&#x27;` は T 一文字との一致であり、T で始まる文字列全体は対象にできません。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> * <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> ITEM_NAME <span class="sql-kw">LIKE</span> &#x27;%T%&#x27;;</div>
+              <div class="option-review-reason">誤り。 `<span class="sql-kw">LIKE</span> &#x27;%T%&#x27;` は前方一致ではなく、途中または末尾に T を含む行まで対象にします。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> * <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> ITEM_NAME <span class="sql-kw">LIKE</span> &#x27;%T&#x27;;</div>
+              <div class="option-review-reason">誤り。 `<span class="sql-kw">LIKE</span> &#x27;%T&#x27;` は末尾が T の文字列を対象にします。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> * <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> ITEM_NAME <span class="sql-kw">LIKE</span> &#x27;T%&#x27;;</div>
+              <div class="option-review-reason">正しい。 検索条件問題では、<span class="sql-kw">NULL</span> 判定、ワイルドカード、優先順位、行制限の評価順が成立条件です。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">E</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> * <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> ITEM_NAME = &#x27;T%&#x27;;</div>
+              <div class="option-review-reason">誤り。 `= &#x27;T%&#x27;` はワイルドカード解釈ではなく、文字列 `T%` そのものとの比較です。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>問題文を行条件へ分解して、各条件を SQL 断片へ置き換える。</li><li><span class="sql-kw">NULL</span> 条件は各列ごとに明示し、通常比較と混在させない。</li><li>行制限がある場合は <span class="sql-kw">ORDER BY</span> との評価順まで確認する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+            </section>
+            
+            <section class="concept-section" id="d2-6">
+              <h3><span class="sql-kw">NULL</span> 判定と <span class="sql-kw">WHERE</span> 条件<span>1問</span></h3>
+              <p class="concept-copy"><span class="sql-kw">NULL</span> 判定は = <span class="sql-kw">NULL</span> ではなく <span class="sql-kw">IS NULL</span> / <span class="sql-kw">IS NOT NULL</span> を使う。<br>複数列の <span class="sql-kw">NULL</span> 条件は列ごとに明示する必要がある。</p>
+              
+    <div class="concept-guide" style="border-top-color:#f1c40f">
+      <div class="guide-block">
+        <div class="guide-title">論点の定義</div>
+        <p>検索条件問題では、<span class="sql-kw">LIKE</span>、<span class="sql-kw">NULL</span> 判定、<span class="sql-kw">AND</span>/<span class="sql-kw">OR</span> の優先順位、<span class="sql-kw">ORDER BY</span>、行制限の評価順をそれぞれ分けて読む必要がある。</p>
+      </div>
+      <div class="guide-block"><div class="guide-title">句の並び順（Oracle 正式構文）</div><div class="clause-order"><span class="kw">SELECT</span>    列リスト / 式 / DISTINCT <span class="desc">-- 出力する列</span>
+<span class="kw">FROM</span>      表 [別名]                <span class="desc">-- 取得元</span>
+<span class="kw">WHERE</span>     行フィルタ条件            <span class="desc">-- 行を絞り込み（集約前）</span>
+<span class="kw">ORDER BY</span>  列 / 位置 / 式 [ASC|DESC] <span class="desc">-- 並べ替え</span>
+<span class="kw">FETCH FIRST</span> n <span class="kw">ROWS ONLY</span>   <span class="desc">-- 行制限（12c 以降）</span>
+<span class="note">-- NULL 判定は = NULL ではなく IS [NOT] NULL。AND は OR より優先。</span>
+<span class="note">-- ROWNUM は ORDER BY より先に振られるため、並び替え後の上位取得は副問合せか FETCH。</span></div></div>
+      <div class="guide-block">
+        <div class="guide-title">この論点の基本形</div>
+        <pre><span class="sql-kw">SELECT</span> item_name, item_price
+<span class="sql-kw">FROM</span>   item
+<span class="sql-kw">WHERE</span>  item_name <span class="sql-kw">IS NOT NULL</span>
+<span class="sql-kw">AND</span>    item_price <span class="sql-kw">IS NOT NULL</span>
+<span class="sql-kw">AND</span>    item_name <span class="sql-kw">LIKE</span> &#x27;T%&#x27;
+ORDER  <span class="sql-kw">BY</span> item_price
+<span class="sql-kw">FETCH FIRST</span> <span class="sql-num">10</span> <span class="sql-kw">ROWS ONLY</span>;</pre>
+      </div>
+      <div class="guide-grid">
+        <div class="guide-block">
+          <div class="guide-title">成立条件</div>
+          <ul class="guide-list"><li><span class="sql-kw">LIKE</span> &#x27;T%&#x27; は T で始まる文字列、<span class="sql-kw">IS NULL</span> / <span class="sql-kw">IS NOT NULL</span> は <span class="sql-kw">NULL</span> 判定専用である。</li><li><span class="sql-kw">AND</span> は <span class="sql-kw">OR</span> より先に評価されるため、必要なら括弧で意味を固定する。</li><li>ROWNUM は <span class="sql-kw">ORDER BY</span> より前、<span class="sql-kw">FETCH FIRST</span> は <span class="sql-kw">ORDER BY</span> 後に書く。</li></ul>
+        </div>
+        <div class="guide-block">
+          <div class="guide-title">判定手順</div>
+          <ol class="guide-list ordered"><li>問題文を行条件へ分解して、各条件を SQL 断片へ置き換える。</li><li><span class="sql-kw">NULL</span> 条件は各列ごとに明示し、通常比較と混在させない。</li><li>行制限がある場合は <span class="sql-kw">ORDER BY</span> との評価順まで確認する。</li></ol>
+        </div>
+      </div>
+      <div class="guide-note">失点しやすい点: <span class="sql-kw">NULL</span> を通常の値のように比較したり、複数列をまとめて <span class="sql-kw">IS NOT NULL</span> にできると誤認しやすい。</div>
+    </div>
+    
+              
+                <article class="question-card">
+                  <div class="question-meta">第2回 模擬試験 / 問6 / 正答 C / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>ITEM_PRICEがNULLのものをカウントするSQLはどれでしょうか。
+　
+拡大する
+(<span class="sql-num">1</span>)		A.　<span class="sql-kw">SELECT</span> <span class="sql-fn">COUNT</span>(*) <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> ITEM_PRICE = <span class="sql-kw">NULL</span>;
+(<span class="sql-num">2</span>)		B.　<span class="sql-kw">SELECT</span> COUNT ITEM_PRICE <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> ITEM_PRICE <span class="sql-kw">IS NULL</span>;
+(<span class="sql-num">3</span>)		C.　<span class="sql-kw">SELECT</span> <span class="sql-fn">COUNT</span>(*) <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> ITEM_PRICE <span class="sql-kw">IS NULL</span>;
+(<span class="sql-num">4</span>)		D.　<span class="sql-kw">SELECT</span> ITEM_PRICE <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> ITEM_PRICE <span class="sql-kw">IS NULL</span>;</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「<span class="sql-kw">NULL</span> 判定と <span class="sql-kw">WHERE</span> 条件」です。<br>問題文は「ITEM_PRICEがNULLのものをカウントするSQLはどれでしょうか。<br>」という条件を満たす説明または SQL を求めています。<br><span class="sql-kw">NULL</span> 判定は = <span class="sql-kw">NULL</span> ではなく <span class="sql-kw">IS NULL</span> / <span class="sql-kw">IS NOT NULL</span> を使う。<br>複数列の <span class="sql-kw">NULL</span> 条件は列ごとに明示する必要がある。 この設問では正答 C「<span class="sql-kw">SELECT</span> <span class="sql-fn">COUNT</span>(*) <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> ITEM_PRICE <span class="sql-kw">IS NULL</span>;」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> <span class="sql-fn">COUNT</span>(*) <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> ITEM_PRICE = <span class="sql-kw">NULL</span>;</div>
+              <div class="option-review-reason">誤り。 <span class="sql-fn">COUNT</span>(*) は <span class="sql-kw">NULL</span> の有無に関係なく行数全体を数えます。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> COUNT ITEM_PRICE <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> ITEM_PRICE <span class="sql-kw">IS NULL</span>;</div>
+              <div class="option-review-reason">誤り。 <span class="sql-kw">NULL</span> 判定は `= <span class="sql-kw">NULL</span>` ではなく `<span class="sql-kw">IS NULL</span>` / `<span class="sql-kw">IS NOT NULL</span>` を使います。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> <span class="sql-fn">COUNT</span>(*) <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> ITEM_PRICE <span class="sql-kw">IS NULL</span>;</div>
+              <div class="option-review-reason">正しい。 <span class="sql-fn">COUNT</span>(*) は <span class="sql-kw">NULL</span> の有無に関係なく行数全体を数えます。 <span class="sql-kw">NULL</span> 判定は `= <span class="sql-kw">NULL</span>` ではなく `<span class="sql-kw">IS NULL</span>` / `<span class="sql-kw">IS NOT NULL</span>` を使います。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> ITEM_PRICE <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> ITEM_PRICE <span class="sql-kw">IS NULL</span>;</div>
+              <div class="option-review-reason">誤り。 <span class="sql-kw">NULL</span> 判定は `= <span class="sql-kw">NULL</span>` ではなく `<span class="sql-kw">IS NULL</span>` / `<span class="sql-kw">IS NOT NULL</span>` を使います。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>問題文を行条件へ分解して、各条件を SQL 断片へ置き換える。</li><li><span class="sql-kw">NULL</span> 条件は各列ごとに明示し、通常比較と混在させない。</li><li>行制限がある場合は <span class="sql-kw">ORDER BY</span> との評価順まで確認する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+            </section>
+            
+</div>
+</body>
+</html>

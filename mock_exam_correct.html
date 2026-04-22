@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>正答済み総点検ハブ - Oracle Silver SQL</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans JP', 'Hiragino Sans', sans-serif; background: #eef2f7; color: #1f2937; line-height: 1.7; }
+  .page-header { background: linear-gradient(135deg,#0f766e 0%,#115e59 55%,#16a34a 100%); color: white; padding: 42px 24px; text-align: center; }
+  .page-header h1 { font-size: 1.9rem; margin-bottom: 8px; }
+  .container { max-width: 1080px; margin: 0 auto; padding: 24px; }
+  .nav-back { display: inline-block; padding: 8px 16px; background: white; border-radius: 999px; text-decoration: none; color: #1f2937; box-shadow: 0 4px 14px rgba(15,23,42,.08); font-size: .9rem; margin: 0 8px 16px 0; }
+  .intro, .phase-card { background: white; border-radius: 18px; box-shadow: 0 10px 26px rgba(15,23,42,.08); }
+  .intro { padding: 20px 22px; margin-bottom: 18px; border-top: 6px solid #16a34a; }
+  .phase-grid { display: grid; gap: 14px; }
+  .phase-card { display: grid; grid-template-columns: 84px 1fr; gap: 14px; align-items: center; padding: 16px 18px; text-decoration: none; color: inherit; }
+  .phase-tag { color: white; font-weight: 900; text-align: center; padding: 10px 0; border-radius: 12px; font-size: 1rem; }
+  .phase-title { font-size: 1rem; font-weight: 800; }
+  .phase-meta { font-size: .86rem; color: #475569; margin-top: 4px; }
+
+
+  /* sql-highlight-v3 */
+  /* default (light bg): warm tone */
+  .sql-kw  { color: #92400e; font-weight: 700; }
+  .sql-fn  { color: #1e40af; font-weight: 600; }
+  .sql-str { color: #065f46; }
+  .sql-num { color: #991b1b; }
+  .sql-cmt { color: #64748b; font-style: italic; }
+  /* dark bg override (pre / code) */
+  pre .sql-kw  { color: #fbbf24; }
+  pre .sql-fn  { color: #60a5fa; }
+  pre .sql-str { color: #86efac; }
+  pre .sql-num { color: #fca5a5; }
+  pre .sql-cmt { color: #94a3b8; }
+  code .sql-kw  { color: #fbbf24; }
+  code .sql-fn  { color: #60a5fa; }
+  code .sql-str { color: #86efac; }
+  code .sql-num { color: #fca5a5; }
+  code .sql-cmt { color: #94a3b8; }
+  /* clause-order div uses its own kw/fn/desc/note classes — no override needed */
+</style>
+</head>
+<body>
+<div class="page-header">
+  <h1>正答済み総点検ハブ</h1>
+  <div>本番で取れた問題をカテゴリ別に再確認し、得点源を維持するための導線ページ</div>
+</div>
+<div class="container">
+  <a class="nav-back" href="mock_exam_dashboard.html">模擬試験ダッシュボード</a>
+  <a class="nav-back" href="mock_exam_report.html">結果レポート</a>
+  <a class="nav-back" href="index.html">教科書トップ</a>
+  <div class="intro">
+    <div style="font-size:.95rem;color:#64748b;font-weight:700">方針</div>
+    <div style="font-size:1.35rem;font-weight:900;margin-top:4px">正答した論点も、落とさない形で再固定する</div>
+    <p style="margin-top:8px;color:#334155">弱点補強だけだと、たまたま取れた領域が次回で崩れます。<br>ここでは正答済みの設問をカテゴリ別に並べ、なぜ取れたのかと維持ポイントを確認します。</p>
+  </div>
+  <div class="phase-grid">
+    
+            <a class="phase-card" href="EX8_correct.html" style="border-left:6px solid #f1c40f">
+              <div class="phase-tag" style="background:#f1c40f">EX8</div>
+              <div class="phase-body">
+                <div class="phase-title">データの絞り込みとソート</div>
+                <div class="phase-meta">元ドメイン D2 / 進捗 <span class="sql-num">60.0</span>% / 正答 15問 / 取れている論点の維持確認</div>
+              </div>
+            </a>
+            
+            <a class="phase-card" href="EX7_correct.html" style="border-left:6px solid #f1c40f">
+              <div class="phase-tag" style="background:#f1c40f">EX7</div>
+              <div class="phase-body">
+                <div class="phase-title">SQLとRDBの基礎</div>
+                <div class="phase-meta">元ドメイン D1 / 進捗 <span class="sql-num">50.0</span>% / 正答 16問 / 取れている論点の維持確認</div>
+              </div>
+            </a>
+            
+            <a class="phase-card" href="EX4_correct.html" style="border-left:6px solid #e67e22">
+              <div class="phase-tag" style="background:#e67e22">EX4</div>
+              <div class="phase-body">
+                <div class="phase-title">DML・トランザクション</div>
+                <div class="phase-meta">元ドメイン D7 / 進捗 <span class="sql-num">46.2</span>% / 正答 12問 / 取れている論点の維持確認</div>
+              </div>
+            </a>
+            
+            <a class="phase-card" href="EX6_correct.html" style="border-left:6px solid #e67e22">
+              <div class="phase-tag" style="background:#e67e22">EX6</div>
+              <div class="phase-body">
+                <div class="phase-title">グループ関数・集計</div>
+                <div class="phase-meta">元ドメイン D4 / 進捗 <span class="sql-num">40.0</span>% / 正答 4問 / 取れている論点の維持確認</div>
+              </div>
+            </a>
+            
+            <a class="phase-card" href="EX1_correct.html" style="border-left:6px solid #e67e22">
+              <div class="phase-tag" style="background:#e67e22">EX1</div>
+              <div class="phase-body">
+                <div class="phase-title">複数表の結合</div>
+                <div class="phase-meta">元ドメイン D5 / 進捗 <span class="sql-num">37.5</span>% / 正答 3問 / 取れている論点の維持確認</div>
+              </div>
+            </a>
+            
+            <a class="phase-card" href="EX5_correct.html" style="border-left:6px solid #e67e22">
+              <div class="phase-tag" style="background:#e67e22">EX5</div>
+              <div class="phase-body">
+                <div class="phase-title">DDL・オブジェクト管理</div>
+                <div class="phase-meta">元ドメイン D8 / 進捗 <span class="sql-num">32.5</span>% / 正答 25問 / 取れている論点の維持確認</div>
+              </div>
+            </a>
+            
+            <a class="phase-card" href="EX3_correct.html" style="border-left:6px solid #e67e22">
+              <div class="phase-tag" style="background:#e67e22">EX3</div>
+              <div class="phase-body">
+                <div class="phase-title">単一行関数</div>
+                <div class="phase-meta">元ドメイン D3 / 進捗 <span class="sql-num">30.0</span>% / 正答 9問 / 取れている論点の維持確認</div>
+              </div>
+            </a>
+            
+            <a class="phase-card" href="EX2_correct.html" style="border-left:6px solid #e67e22">
+              <div class="phase-tag" style="background:#e67e22">EX2</div>
+              <div class="phase-body">
+                <div class="phase-title">サブクエリ・集合演算</div>
+                <div class="phase-meta">元ドメイン D6 / 進捗 <span class="sql-num">24.0</span>% / 正答 6問 / 取れている論点の維持確認</div>
+              </div>
+            </a>
+            
+  </div>
+</div>
+</body>
+</html>

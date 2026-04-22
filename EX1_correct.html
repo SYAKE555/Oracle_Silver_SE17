@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EX1 複数表の結合 - 正答済み総点検</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans JP', 'Hiragino Sans', sans-serif; background: #eef2f7; color: #1f2937; line-height: 1.7; }
+  a { color: inherit; }
+  .page-header { background: linear-gradient(135deg,#10243f 0%,#1f3d63 55%,#e67e22 100%); color: white; padding: 42px 24px; text-align: center; }
+  .page-header h1 { font-size: 1.9rem; margin-bottom: 8px; }
+  .page-header .subtitle { opacity: 0.92; font-size: 0.95rem; }
+  .container { max-width: 1180px; margin: 0 auto; padding: 24px; }
+  .nav-back { display: inline-block; padding: 8px 16px; background: white; border-radius: 999px; text-decoration: none; color: #1f2937; box-shadow: 0 4px 14px rgba(15,23,42,.08); font-size: .9rem; margin: 0 8px 16px 0; }
+  .hero-card, .toc, .concept-section { background: white; border-radius: 18px; box-shadow: 0 10px 26px rgba(15,23,42,.08); }
+  .hero-card { padding: 20px 22px; margin-bottom: 18px; border-top: 6px solid #e67e22; }
+  .hero-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-top: 14px; }
+  .metric { background: #f8fafc; border-radius: 14px; padding: 14px; }
+  .metric .label { color: #64748b; font-size: .82rem; }
+  .metric .value { font-size: 1.35rem; font-weight: 900; color: #0f172a; margin-top: 4px; }
+  .toc { padding: 18px 22px; margin-bottom: 22px; }
+  .toc h2 { font-size: 1rem; color: #e67e22; margin-bottom: 10px; }
+  .toc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; }
+  .toc a { display: flex; justify-content: space-between; gap: 10px; align-items: center; text-decoration: none; padding: 10px 12px; border-radius: 12px; background: #f8fafc; border-left: 4px solid #e67e22; font-size: .88rem; }
+  .toc a:hover { background: #eef2f7; }
+  .concept-section { padding: 22px; margin-bottom: 24px; }
+  .concept-section h3 { display: flex; justify-content: space-between; gap: 12px; align-items: center; font-size: 1.15rem; margin-bottom: 8px; color: #0f172a; }
+  .concept-section h3 span { font-size: .82rem; padding: 5px 10px; border-radius: 999px; background: #e67e22; color: white; }
+  .concept-copy { color: #475569; font-size: .92rem; margin-bottom: 16px; }
+  .concept-guide { border-top: 5px solid #e67e22; background: #f8fafc; border-radius: 16px; padding: 16px; margin-bottom: 18px; }
+  .guide-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+  .guide-block { margin-bottom: 12px; }
+  .guide-title { font-size: .82rem; font-weight: 900; color: #e67e22; margin-bottom: 6px; }
+  .guide-block p { color: #334155; font-size: .9rem; }
+  .guide-list { padding-left: 20px; color: #334155; font-size: .9rem; }
+  .guide-list li { margin-bottom: 5px; }
+  .guide-note { background: #fff7ed; border-left: 4px solid #e67e22; border-radius: 10px; padding: 10px 12px; color: #7c2d12; font-size: .88rem; margin-top: 6px; }
+  .question-card { border: 1px solid #dbe4ef; border-radius: 16px; padding: 16px; margin-bottom: 14px; background: #fcfdff; }
+  .question-meta { font-size: .8rem; color: #64748b; margin-bottom: 10px; font-weight: 700; }
+  .block-title { font-size: .85rem; font-weight: 800; color: #e67e22; margin: 10px 0 6px; }
+  pre { white-space: pre-wrap; word-break: break-word; background: #0f172a; color: #e2e8f0; border-radius: 12px; padding: 14px; font-size: .84rem; overflow-x: auto; }
+  .analysis-block p { color: #334155; font-size: .9rem; margin-bottom: 8px; }
+  .option-review-grid { display: flex; flex-direction: column; gap: 12px; margin-bottom: 8px; }
+  .option-review { border-radius: 14px; padding: 16px 18px; border: 1px solid #dbe4ef; background: white; }
+  .option-review.correct { border-left: 6px solid #16a34a; background: #f6fdf8; }
+  .option-review.wrong { border-left: 6px solid #c0392b; background: #fffafa; }
+  .option-review-head { display: flex; justify-content: flex-start; gap: 12px; align-items: center; margin-bottom: 10px; }
+  .option-review-key { font-size: 1.05rem; font-weight: 900; color: #0f172a; min-width: 1.8em; }
+  .option-review-badges span { display: inline-block; background: #eef2f7; color: #334155; font-size: .74rem; font-weight: 800; border-radius: 999px; padding: 3px 10px; margin-left: 4px; }
+  .option-review-text { color: #1f2937; font-size: .98rem; line-height: 1.65; margin-bottom: 10px; font-weight: 600; }
+  .option-review-reason { color: #334155; font-size: .92rem; line-height: 1.75; }
+  .clause-order { background: #0f172a; color: #e2e8f0; border-radius: 12px; padding: 14px 16px; font-family: 'SFMono-Regular', Menlo, Consolas, monospace; font-size: .86rem; line-height: 1.8; white-space: pre; overflow-x: auto; }
+  .clause-order .kw { color: #fbbf24; font-weight: 800; }
+  .clause-order .desc { color: #93c5fd; }
+  .clause-order .note { color: #86efac; font-style: italic; }
+  .study-step-list { padding-left: 20px; color: #334155; font-size: .9rem; }
+  .study-step-list li { margin-bottom: 5px; }
+  @media (max-width: 720px) {
+    .page-header h1 { font-size: 1.55rem; }
+    .container { padding: 18px; }
+    .concept-section h3 { flex-direction: column; align-items: flex-start; }
+    .option-review-head { flex-direction: column; align-items: flex-start; }
+  }
+
+
+  /* sql-highlight-v3 */
+  /* default (light bg): warm tone */
+  .sql-kw  { color: #92400e; font-weight: 700; }
+  .sql-fn  { color: #1e40af; font-weight: 600; }
+  .sql-str { color: #065f46; }
+  .sql-num { color: #991b1b; }
+  .sql-cmt { color: #64748b; font-style: italic; }
+  /* dark bg override (pre / code) */
+  pre .sql-kw  { color: #fbbf24; }
+  pre .sql-fn  { color: #60a5fa; }
+  pre .sql-str { color: #86efac; }
+  pre .sql-num { color: #fca5a5; }
+  pre .sql-cmt { color: #94a3b8; }
+  code .sql-kw  { color: #fbbf24; }
+  code .sql-fn  { color: #60a5fa; }
+  code .sql-str { color: #86efac; }
+  code .sql-num { color: #fca5a5; }
+  code .sql-cmt { color: #94a3b8; }
+  /* clause-order div uses its own kw/fn/desc/note classes — no override needed */
+</style>
+</head>
+<body>
+<div class="page-header">
+  <h1>EX1 正答済み総点検</h1>
+  <div class="subtitle">複数表の結合 / 正答した設問をカテゴリ別に再確認し、得点源を維持するページ</div>
+</div>
+<div class="container">
+  <a class="nav-back" href="mock_exam_dashboard.html">模擬試験ダッシュボード</a>
+  <a class="nav-back" href="mock_exam_report.html">結果レポート</a>
+  <a class="nav-back" href="mock_exam_correct.html">模擬試験レビュー</a>
+  
+  <a class="nav-back" href="index.html">教科書トップ</a>
+
+  <div class="hero-card">
+    <div style="font-size:.9rem;color:#64748b;font-weight:700">D5 / 優先</div>
+    <div style="font-size:1.4rem;font-weight:900;margin-top:4px">複数表の結合</div>
+    <p style="margin-top:8px;color:#334155">このページは、正答できた設問をカテゴリ別に並べ、記録された問題全文を正本として、なぜ取れたのかと維持ポイントを再確認するための定着教材です。</p>
+    <div class="hero-grid">
+      <div class="metric"><div class="label">レビュー種別</div><div class="value">正答</div></div>
+      <div class="metric"><div class="label">進捗率</div><div class="value"><span class="sql-num">37.5</span>%</div></div>
+      <div class="metric"><div class="label">正答数</div><div class="value">3問</div></div>
+      <div class="metric"><div class="label">カテゴリ数</div><div class="value"><span class="sql-num">1</span></div></div>
+    </div>
+  </div>
+
+  <div class="toc">
+    <h2>カテゴリ別目次</h2>
+    <div class="toc-grid">
+      <a href="#d5-1" class="mid"><span class="sql-kw">USING</span>・<span class="sql-kw">ON</span>・<span class="sql-kw">NATURAL</span> の構文差 <span>3問</span></a>
+    </div>
+  </div>
+
+  
+            <section class="concept-section" id="d5-1">
+              <h3><span class="sql-kw">USING</span>・<span class="sql-kw">ON</span>・<span class="sql-kw">NATURAL</span> の構文差<span>3問</span></h3>
+              <p class="concept-copy"><span class="sql-kw">USING</span> は同名列だけ、<span class="sql-kw">ON</span> は任意条件、<span class="sql-kw">NATURAL</span> は同名列自動判定で使う。<br>相互に併用できない組合せがある。</p>
+              
+    <div class="concept-guide" style="border-top-color:#e67e22">
+      <div class="guide-block">
+        <div class="guide-title">論点の定義</div>
+        <p>結合問題では、どの表の行を残すか、同名列をどう結び付けるか、自己結合か外部結合かを区別して読む必要がある。</p>
+      </div>
+      <div class="guide-block"><div class="guide-title">句の並び順（Oracle 正式構文）</div><div class="clause-order"><span class="kw">SELECT</span> e.col, d.col
+<span class="kw">FROM</span>   employees e
+<span class="kw">[INNER | LEFT | RIGHT | FULL] OUTER JOIN</span> departments d
+<span class="kw">ON</span>     e.dept_id = d.dept_id     <span class="desc">-- ON は任意の結合条件</span>
+   -- または --
+<span class="kw">JOIN</span>   departments <span class="kw">USING</span> (dept_id) <span class="desc">-- USING は同名列限定、別名不可</span>
+<span class="kw">NATURAL JOIN</span> departments             <span class="desc">-- 同名列を自動結合（ON/USING 不可）</span>
+<span class="kw">WHERE</span>  … <span class="kw">ORDER BY</span> …;
+<span class="note">-- 自己結合は同じ表を別名 2 回で FROM に書く。JOIN 種類は INNER でも外部でも可。</span>
+<span class="note">-- Oracle 独自 (+) は FULL OUTER JOIN と NATURAL JOIN をサポートしない。</span></div></div>
+      <div class="guide-block">
+        <div class="guide-title">この論点の基本形</div>
+        <pre><span class="sql-kw">SELECT</span> e.employee_id, m.employee_id <span class="sql-kw">AS</span> manager_id
+<span class="sql-kw">FROM</span>   employees e
+<span class="sql-kw">JOIN</span>   employees m
+<span class="sql-kw">ON</span>     e.manager_id = m.employee_id;</pre>
+      </div>
+      <div class="guide-grid">
+        <div class="guide-block">
+          <div class="guide-title">成立条件</div>
+          <ul class="guide-list"><li><span class="sql-kw">INNER JOIN</span> は一致行のみ、<span class="sql-kw">LEFT</span>/<span class="sql-kw">RIGHT OUTER JOIN</span> は片側全件、<span class="sql-kw">FULL OUTER JOIN</span> は両側全件を返す。</li><li>自己結合では同じ表を別名で複数回参照するため、表別名が必須である。</li><li><span class="sql-kw">USING</span> は同名列だけ、<span class="sql-kw">ON</span> は任意条件、<span class="sql-kw">NATURAL</span> は同名列自動判定である。</li></ul>
+        </div>
+        <div class="guide-block">
+          <div class="guide-title">判定手順</div>
+          <ol class="guide-list ordered"><li>どの表の行を必ず残したいかを先に判断する。</li><li>同一表の比較なら自己結合として表別名の有無を確認する。</li><li><span class="sql-kw">JOIN</span> 種類と条件記述方式 <span class="sql-kw">USING</span>/<span class="sql-kw">ON</span>/<span class="sql-kw">NATURAL</span> を分けて判定する。</li></ol>
+        </div>
+      </div>
+      <div class="guide-note">失点しやすい点: <span class="sql-kw">USING</span> で表別名付き列を参照したり、<span class="sql-kw">NATURAL JOIN</span> に <span class="sql-kw">ON</span> を足せると誤認しやすい。</div>
+    </div>
+    
+              
+                <article class="question-card">
+                  <div class="question-meta">第1回 模擬試験 / 問25 / 正答 B / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>結合におけるINNER JOINについて、正しい記述はどれでしょうか。
+(<span class="sql-num"><span class="sql-num">1</span></span>)		A.　結合されている両方の表から、結合条件に含まれる行で他方の側にない行も返します。
+(<span class="sql-num"><span class="sql-num">2</span></span>)		B.　内部結合の結果を返します。
+(<span class="sql-num"><span class="sql-num">3</span></span>)		C.　(+)を使用して値を返します。
+(<span class="sql-num"><span class="sql-num">4</span></span>)		D.　すべての行の組合せ（直積）結果を返します。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「<span class="sql-kw">USING</span>・<span class="sql-kw">ON</span>・<span class="sql-kw">NATURAL</span> の構文差」です。<br>問題文は「結合におけるINNER JOINについて、正しい記述はどれでしょうか。<br>」という条件を満たす説明または SQL を求めています。<br><span class="sql-kw">USING</span> は同名列だけ、<span class="sql-kw">ON</span> は任意条件、<span class="sql-kw">NATURAL</span> は同名列自動判定で使う。<br>相互に併用できない組合せがある。 この設問では正答 B「内部結合の結果を返します。<br>」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">結合されている両方の表から、結合条件に含まれる行で他方の側にない行も返します。</div>
+              <div class="option-review-reason">誤り。 結合問題では、保持側の表と結合条件の書き方が要件と一致しているかが判定基準になります。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">内部結合の結果を返します。</div>
+              <div class="option-review-reason">正しい。 結合問題では、保持側の表と結合条件の書き方が要件と一致しているかが判定基準になります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">(+)を使用して値を返します。</div>
+              <div class="option-review-reason">誤り。 結合問題では、保持側の表と結合条件の書き方が要件と一致しているかが判定基準になります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">すべての行の組合せ（直積）結果を返します。</div>
+              <div class="option-review-reason">誤り。 結合問題では、保持側の表と結合条件の書き方が要件と一致しているかが判定基準になります。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>どの表の行を必ず残したいかを先に判断する。</li><li>同一表の比較なら自己結合として表別名の有無を確認する。</li><li><span class="sql-kw">JOIN</span> 種類と条件記述方式 <span class="sql-kw">USING</span>/<span class="sql-kw">ON</span>/<span class="sql-kw">NATURAL</span> を分けて判定する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第1回 模擬試験 / 問28 / 正答 C / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>以下のSQLを実行するとします。
+
+<span class="sql-kw">SELECT</span> <span class="sql-num">4</span> <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span> DU1 <span class="sql-kw">CROSS JOIN</span> <span class="sql-kw">DUAL</span> DU2 <span class="sql-kw">CROSS JOIN</span> <span class="sql-kw">DUAL</span> DU3 <span class="sql-kw">CROSS JOIN</span> <span class="sql-kw">DUAL</span> DU4;
+
+実行結果について正しい記述はどれでしょうか。
+(<span class="sql-num">1</span>)		A.　エラーとなります。
+(<span class="sql-num">2</span>)		B.　データがヒットしません。
+(<span class="sql-num">3</span>)		C.　1行返されます。
+(<span class="sql-num">4</span>)		D.　2行返されます。
+(<span class="sql-num">5</span>)		E.　4行返されます。
+(<span class="sql-num">6</span>)		F.　16行返されます。
+(<span class="sql-num">7</span>)		G.　256行返されます。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「<span class="sql-kw">USING</span>・<span class="sql-kw">ON</span>・<span class="sql-kw">NATURAL</span> の構文差」です。<br>問題文は「以下のSQLを実行するとします。 <span class="sql-kw">SELECT</span> <span class="sql-num">4</span> <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span> DU1 <span class="sql-kw">CROSS JOIN</span> <span class="sql-kw">DUAL</span> DU2 <span class="sql-kw">CROSS JOIN</span> <span class="sql-kw">DUAL</span> DU3 <span class="sql-kw">CROSS JOIN</span> <span class="sql-kw">DUAL</span> DU4; 実行結果について正しい記述はどれでし…」という条件を満たす説明または SQL を求めています。<br><span class="sql-kw">USING</span> は同名列だけ、<span class="sql-kw">ON</span> は任意条件、<span class="sql-kw">NATURAL</span> は同名列自動判定で使う。<br>相互に併用できない組合せがある。 この設問では正答 C「1行返されます。<br>」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">エラーとなります。</div>
+              <div class="option-review-reason">誤り。 結合問題では、保持側の表と結合条件の書き方が要件と一致しているかが判定基準になります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">データがヒットしません。</div>
+              <div class="option-review-reason">誤り。 結合問題では、保持側の表と結合条件の書き方が要件と一致しているかが判定基準になります。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">1行返されます。</div>
+              <div class="option-review-reason">正しい。 結合問題では、保持側の表と結合条件の書き方が要件と一致しているかが判定基準になります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">2行返されます。</div>
+              <div class="option-review-reason">誤り。 結合問題では、保持側の表と結合条件の書き方が要件と一致しているかが判定基準になります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">E</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">4行返されます。</div>
+              <div class="option-review-reason">誤り。 結合問題では、保持側の表と結合条件の書き方が要件と一致しているかが判定基準になります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">F</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">16行返されます。</div>
+              <div class="option-review-reason">誤り。 結合問題では、保持側の表と結合条件の書き方が要件と一致しているかが判定基準になります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">G</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">256行返されます。</div>
+              <div class="option-review-reason">誤り。 結合問題では、保持側の表と結合条件の書き方が要件と一致しているかが判定基準になります。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>どの表の行を必ず残したいかを先に判断する。</li><li>同一表の比較なら自己結合として表別名の有無を確認する。</li><li><span class="sql-kw">JOIN</span> 種類と条件記述方式 <span class="sql-kw">USING</span>/<span class="sql-kw">ON</span>/<span class="sql-kw">NATURAL</span> を分けて判定する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第3回 模擬試験 / 問71 / 正答 AD / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>エンティティ・リレーションシップ・ダイアグラム（ERD）に基づいて2つのテーブルから関連する行を選択する際に、正しいものを2つ選んでください。
+(<span class="sql-num">1</span>)		A. 同じテーブル内のデータを関連付ける場合、SELF <span class="sql-kw">JOIN</span> を使用する。
+(<span class="sql-num">2</span>)		B. 無関係なテーブルの行を結合することはできない。
+(<span class="sql-num">3</span>)		C. 2つのテーブル間のすべてのリレーションシップは <span class="sql-kw">JOIN</span> 条件として実装する必要がある。
+(<span class="sql-num">4</span>)		D. 2つのテーブル間のリレーションシップを実装するには、追加のテーブルを結合する必要がある場合がある。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「<span class="sql-kw">USING</span>・<span class="sql-kw">ON</span>・<span class="sql-kw">NATURAL</span> の構文差」です。<br>問題文は「エンティティ・リレーションシップ・ダイアグラム（ERD）に基づいて2つのテーブルから関連する行を選択する際に、正しいものを2つ選んでください。<br>」という条件を満たす説明または SQL を求めています。<br><span class="sql-kw">USING</span> は同名列だけ、<span class="sql-kw">ON</span> は任意条件、<span class="sql-kw">NATURAL</span> は同名列自動判定で使う。<br>相互に併用できない組合せがある。 この設問では正答 A「同じテーブル内のデータを関連付ける場合、SELF <span class="sql-kw">JOIN</span> を使用する。<br>」 / D「2つのテーブル間のリレーションシップを実装するには、追加のテーブルを結合する必要がある場合がある。<br>」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">同じテーブル内のデータを関連付ける場合、SELF <span class="sql-kw">JOIN</span> を使用する。</div>
+              <div class="option-review-reason">正しい。 結合問題では、保持側の表と結合条件の書き方が要件と一致しているかが判定基準になります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">無関係なテーブルの行を結合することはできない。</div>
+              <div class="option-review-reason">誤り。 結合問題では、保持側の表と結合条件の書き方が要件と一致しているかが判定基準になります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">2つのテーブル間のすべてのリレーションシップは <span class="sql-kw">JOIN</span> 条件として実装する必要がある。</div>
+              <div class="option-review-reason">誤り。 結合問題では、保持側の表と結合条件の書き方が要件と一致しているかが判定基準になります。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">2つのテーブル間のリレーションシップを実装するには、追加のテーブルを結合する必要がある場合がある。</div>
+              <div class="option-review-reason">正しい。 結合問題では、保持側の表と結合条件の書き方が要件と一致しているかが判定基準になります。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>どの表の行を必ず残したいかを先に判断する。</li><li>同一表の比較なら自己結合として表別名の有無を確認する。</li><li><span class="sql-kw">JOIN</span> 種類と条件記述方式 <span class="sql-kw">USING</span>/<span class="sql-kw">ON</span>/<span class="sql-kw">NATURAL</span> を分けて判定する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+            </section>
+            
+</div>
+</body>
+</html>

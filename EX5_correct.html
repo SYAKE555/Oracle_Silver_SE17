@@ -1,0 +1,2104 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EX5 DDL・オブジェクト管理 - 正答済み総点検</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans JP', 'Hiragino Sans', sans-serif; background: #eef2f7; color: #1f2937; line-height: 1.7; }
+  a { color: inherit; }
+  .page-header { background: linear-gradient(135deg,#10243f 0%,#1f3d63 55%,#e67e22 100%); color: white; padding: 42px 24px; text-align: center; }
+  .page-header h1 { font-size: 1.9rem; margin-bottom: 8px; }
+  .page-header .subtitle { opacity: 0.92; font-size: 0.95rem; }
+  .container { max-width: 1180px; margin: 0 auto; padding: 24px; }
+  .nav-back { display: inline-block; padding: 8px 16px; background: white; border-radius: 999px; text-decoration: none; color: #1f2937; box-shadow: 0 4px 14px rgba(15,23,42,.08); font-size: .9rem; margin: 0 8px 16px 0; }
+  .hero-card, .toc, .concept-section { background: white; border-radius: 18px; box-shadow: 0 10px 26px rgba(15,23,42,.08); }
+  .hero-card { padding: 20px 22px; margin-bottom: 18px; border-top: 6px solid #e67e22; }
+  .hero-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-top: 14px; }
+  .metric { background: #f8fafc; border-radius: 14px; padding: 14px; }
+  .metric .label { color: #64748b; font-size: .82rem; }
+  .metric .value { font-size: 1.35rem; font-weight: 900; color: #0f172a; margin-top: 4px; }
+  .toc { padding: 18px 22px; margin-bottom: 22px; }
+  .toc h2 { font-size: 1rem; color: #e67e22; margin-bottom: 10px; }
+  .toc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; }
+  .toc a { display: flex; justify-content: space-between; gap: 10px; align-items: center; text-decoration: none; padding: 10px 12px; border-radius: 12px; background: #f8fafc; border-left: 4px solid #e67e22; font-size: .88rem; }
+  .toc a:hover { background: #eef2f7; }
+  .concept-section { padding: 22px; margin-bottom: 24px; }
+  .concept-section h3 { display: flex; justify-content: space-between; gap: 12px; align-items: center; font-size: 1.15rem; margin-bottom: 8px; color: #0f172a; }
+  .concept-section h3 span { font-size: .82rem; padding: 5px 10px; border-radius: 999px; background: #e67e22; color: white; }
+  .concept-copy { color: #475569; font-size: .92rem; margin-bottom: 16px; }
+  .concept-guide { border-top: 5px solid #e67e22; background: #f8fafc; border-radius: 16px; padding: 16px; margin-bottom: 18px; }
+  .guide-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+  .guide-block { margin-bottom: 12px; }
+  .guide-title { font-size: .82rem; font-weight: 900; color: #e67e22; margin-bottom: 6px; }
+  .guide-block p { color: #334155; font-size: .9rem; }
+  .guide-list { padding-left: 20px; color: #334155; font-size: .9rem; }
+  .guide-list li { margin-bottom: 5px; }
+  .guide-note { background: #fff7ed; border-left: 4px solid #e67e22; border-radius: 10px; padding: 10px 12px; color: #7c2d12; font-size: .88rem; margin-top: 6px; }
+  .question-card { border: 1px solid #dbe4ef; border-radius: 16px; padding: 16px; margin-bottom: 14px; background: #fcfdff; }
+  .question-meta { font-size: .8rem; color: #64748b; margin-bottom: 10px; font-weight: 700; }
+  .block-title { font-size: .85rem; font-weight: 800; color: #e67e22; margin: 10px 0 6px; }
+  pre { white-space: pre-wrap; word-break: break-word; background: #0f172a; color: #e2e8f0; border-radius: 12px; padding: 14px; font-size: .84rem; overflow-x: auto; }
+  .analysis-block p { color: #334155; font-size: .9rem; margin-bottom: 8px; }
+  .option-review-grid { display: flex; flex-direction: column; gap: 12px; margin-bottom: 8px; }
+  .option-review { border-radius: 14px; padding: 16px 18px; border: 1px solid #dbe4ef; background: white; }
+  .option-review.correct { border-left: 6px solid #16a34a; background: #f6fdf8; }
+  .option-review.wrong { border-left: 6px solid #c0392b; background: #fffafa; }
+  .option-review-head { display: flex; justify-content: flex-start; gap: 12px; align-items: center; margin-bottom: 10px; }
+  .option-review-key { font-size: 1.05rem; font-weight: 900; color: #0f172a; min-width: 1.8em; }
+  .option-review-badges span { display: inline-block; background: #eef2f7; color: #334155; font-size: .74rem; font-weight: 800; border-radius: 999px; padding: 3px 10px; margin-left: 4px; }
+  .option-review-text { color: #1f2937; font-size: .98rem; line-height: 1.65; margin-bottom: 10px; font-weight: 600; }
+  .option-review-reason { color: #334155; font-size: .92rem; line-height: 1.75; }
+  .clause-order { background: #0f172a; color: #e2e8f0; border-radius: 12px; padding: 14px 16px; font-family: 'SFMono-Regular', Menlo, Consolas, monospace; font-size: .86rem; line-height: 1.8; white-space: pre; overflow-x: auto; }
+  .clause-order .kw { color: #fbbf24; font-weight: 800; }
+  .clause-order .desc { color: #93c5fd; }
+  .clause-order .note { color: #86efac; font-style: italic; }
+  .study-step-list { padding-left: 20px; color: #334155; font-size: .9rem; }
+  .study-step-list li { margin-bottom: 5px; }
+  @media (max-width: 720px) {
+    .page-header h1 { font-size: 1.55rem; }
+    .container { padding: 18px; }
+    .concept-section h3 { flex-direction: column; align-items: flex-start; }
+    .option-review-head { flex-direction: column; align-items: flex-start; }
+  }
+
+
+  /* sql-highlight-v3 */
+  /* default (light bg): warm tone */
+  .sql-kw  { color: #92400e; font-weight: 700; }
+  .sql-fn  { color: #1e40af; font-weight: 600; }
+  .sql-str { color: #065f46; }
+  .sql-num { color: #991b1b; }
+  .sql-cmt { color: #64748b; font-style: italic; }
+  /* dark bg override (pre / code) */
+  pre .sql-kw  { color: #fbbf24; }
+  pre .sql-fn  { color: #60a5fa; }
+  pre .sql-str { color: #86efac; }
+  pre .sql-num { color: #fca5a5; }
+  pre .sql-cmt { color: #94a3b8; }
+  code .sql-kw  { color: #fbbf24; }
+  code .sql-fn  { color: #60a5fa; }
+  code .sql-str { color: #86efac; }
+  code .sql-num { color: #fca5a5; }
+  code .sql-cmt { color: #94a3b8; }
+  /* clause-order div uses its own kw/fn/desc/note classes — no override needed */
+</style>
+</head>
+<body>
+<div class="page-header">
+  <h1>EX5 正答済み総点検</h1>
+  <div class="subtitle">DDL・オブジェクト管理 / 正答した設問をカテゴリ別に再確認し、得点源を維持するページ</div>
+</div>
+<div class="container">
+  <a class="nav-back" href="mock_exam_dashboard.html">模擬試験ダッシュボード</a>
+  <a class="nav-back" href="mock_exam_report.html">結果レポート</a>
+  <a class="nav-back" href="mock_exam_correct.html">模擬試験レビュー</a>
+  
+  <a class="nav-back" href="index.html">教科書トップ</a>
+
+  <div class="hero-card">
+    <div style="font-size:.9rem;color:#64748b;font-weight:700">D8 / 優先</div>
+    <div style="font-size:1.4rem;font-weight:900;margin-top:4px">DDL・オブジェクト管理</div>
+    <p style="margin-top:8px;color:#334155">このページは、正答できた設問をカテゴリ別に並べ、記録された問題全文を正本として、なぜ取れたのかと維持ポイントを再確認するための定着教材です。</p>
+    <div class="hero-grid">
+      <div class="metric"><div class="label">レビュー種別</div><div class="value">正答</div></div>
+      <div class="metric"><div class="label">進捗率</div><div class="value"><span class="sql-num">32.5</span>%</div></div>
+      <div class="metric"><div class="label">正答数</div><div class="value">25問</div></div>
+      <div class="metric"><div class="label">カテゴリ数</div><div class="value"><span class="sql-num">7</span></div></div>
+    </div>
+  </div>
+
+  <div class="toc">
+    <h2>カテゴリ別目次</h2>
+    <div class="toc-grid">
+      <a href="#d8-1" class="mid">ビューの性質と更新可否 <span>8問</span></a><a href="#d8-2" class="mid">権限付与とロール <span>7問</span></a><a href="#d8-3" class="mid">シーケンス・シノニム・索引 <span>4問</span></a><a href="#d8-4" class="mid">DATE・TIMESTAMP・TIME ZONE <span>3問</span></a><a href="#d8-5" class="mid"><span class="sql-kw">DEFAULT</span> と列追加・挿入 <span>1問</span></a><a href="#d8-6" class="mid"><span class="sql-kw">MERGE</span> の文法と使える対象 <span>1問</span></a><a href="#d8-7" class="mid">制約定義と有効化・無効化 <span>1問</span></a>
+    </div>
+  </div>
+
+  
+            <section class="concept-section" id="d8-1">
+              <h3>ビューの性質と更新可否<span>8問</span></h3>
+              <p class="concept-copy">ビューはスキーマオブジェクトであり、基表に依存している。<br>更新可否や <span class="sql-kw">WITH CHECK OPTION</span>、READ <span class="sql-kw">ONLY</span>、別スキーマ参照可否などが典型論点になる。</p>
+              
+    <div class="concept-guide" style="border-top-color:#e67e22">
+      <div class="guide-block">
+        <div class="guide-title">論点の定義</div>
+        <p>Oracle のオブジェクト管理問題では、ビュー、索引、シーケンス、シノニム、権限、日時型のそれぞれに固有の成立条件がある。</p>
+      </div>
+      <div class="guide-block"><div class="guide-title">句の並び順（Oracle 正式構文）</div><div class="clause-order"><span class="kw">CREATE TABLE</span> 表 (
+  列 型 [<span class="kw">DEFAULT</span> 値] [<span class="kw">NOT NULL</span>] [<span class="kw">CONSTRAINT</span> 名 <span class="kw">PRIMARY KEY</span> | …]
+);
+<span class="kw">ALTER TABLE</span> 表 <span class="kw">ADD</span>      (列 型 [DEFAULT …] [NOT NULL]);  <span class="desc">-- 既存行ありでNOT NULLなら DEFAULT 必須</span>
+<span class="kw">ALTER TABLE</span> 表 <span class="kw">MODIFY</span>   (列 型 | DEFAULT | NOT NULL);
+<span class="kw">ALTER TABLE</span> 表 <span class="kw">DROP COLUMN</span> 列;
+<span class="kw">CREATE VIEW</span> v <span class="kw">AS SELECT</span> …;              <span class="desc">-- 定義保持。基表複製ではない</span>
+<span class="kw">CREATE SEQUENCE</span> s <span class="kw">START WITH</span> 1 <span class="kw">INCREMENT BY</span> 1;  <span class="desc">-- CURRVAL は NEXTVAL 実行後のみ有効</span>
+<span class="kw">CREATE INDEX</span> idx <span class="kw">ON</span> 表(列);
+<span class="kw">GRANT</span> 権限 <span class="kw">ON</span> 表 <span class="kw">TO</span> ユーザ [<span class="kw">WITH GRANT OPTION</span>];
+<span class="note">-- DDL はすべて暗黙 COMMIT を伴う。DEFAULT は値省略時 / VALUES(DEFAULT) で補完。</span></div></div>
+      <div class="guide-block">
+        <div class="guide-title">この論点の基本形</div>
+        <pre><span class="sql-kw">CREATE VIEW</span> v_item <span class="sql-kw">AS</span>
+<span class="sql-kw">SELECT</span> item_id, item_name <span class="sql-kw">FROM</span> item;
+
+<span class="sql-kw">CREATE SEQUENCE</span> seq_item <span class="sql-kw">START WITH</span> <span class="sql-num">1</span>;
+<span class="sql-kw">GRANT</span> <span class="sql-kw">SELECT</span> <span class="sql-kw">ON</span> item <span class="sql-kw">TO</span> user_name;</pre>
+      </div>
+      <div class="guide-grid">
+        <div class="guide-block">
+          <div class="guide-title">成立条件</div>
+          <ul class="guide-list"><li>ビューは定義を保持するオブジェクトであり、基表そのものを複製するわけではない。</li><li>シーケンスの <span class="sql-kw">CURRVAL</span> は同一セッションで <span class="sql-kw">NEXTVAL</span> 実行後にのみ参照できる。</li><li>オブジェクト権限とシステム権限では付与オプションが異なる。</li></ul>
+        </div>
+        <div class="guide-block">
+          <div class="guide-title">判定手順</div>
+          <ol class="guide-list ordered"><li>何のオブジェクトを操作している文かを最初に確定する。</li><li>そのオブジェクト固有の使用条件や制約を確認する。</li><li>権限・時刻・索引のような副作用の有無を最後に判定する。</li></ol>
+        </div>
+      </div>
+      <div class="guide-note">失点しやすい点: ビュー作成時に索引も複製される、基表が消えても常に有効、<span class="sql-kw">CHECK</span> OPTION が常時必須、といった誤解が起きやすい。</div>
+    </div>
+    
+              
+                <article class="question-card">
+                  <div class="question-meta">第1回 模擬試験 / 問43 / 正答 A / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>マルチテーブル・インサートについて正しい記述はどれでしょうか。
+(<span class="sql-num"><span class="sql-num">1</span></span>)		A.　副問合せを使用することができます。
+(<span class="sql-num"><span class="sql-num">2</span></span>)		B.　リモート表で実行できます。
+(<span class="sql-num"><span class="sql-num">3</span></span>)		C.　表のコレクションを指定することができます。
+(<span class="sql-num"><span class="sql-num">4</span></span>)		D.　順序を指定することができます。
+(<span class="sql-num"><span class="sql-num">5</span></span>)		E.　ビューを使用することができます。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「ビューの性質と更新可否」です。<br>問題文は「マルチテーブル・インサートについて正しい記述はどれでしょうか。<br>」という条件を満たす説明または SQL を求めています。<br>ビューはスキーマオブジェクトであり、基表に依存している。<br>更新可否や <span class="sql-kw">WITH CHECK OPTION</span>、READ <span class="sql-kw">ONLY</span>、別スキーマ参照可否などが典型論点になる。 この設問では正答 A「副問合せを使用することができます。<br>」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">副問合せを使用することができます。</div>
+              <div class="option-review-reason">正しい。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">リモート表で実行できます。</div>
+              <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">表のコレクションを指定することができます。</div>
+              <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">順序を指定することができます。</div>
+              <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">E</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">ビューを使用することができます。</div>
+              <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>何のオブジェクトを操作している文かを最初に確定する。</li><li>そのオブジェクト固有の使用条件や制約を確認する。</li><li>権限・時刻・索引のような副作用の有無を最後に判定する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第1回 模擬試験 / 問55 / 正答 A.C.D / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>GLOBAL TEMPORARY TABLESについて正しい記述はどれでしょうか。（3つ選択）
+(<span class="sql-num">1</span>)		A.　複数の索引を作成することができます。
+(<span class="sql-num">2</span>)		B.　<span class="sql-kw">PUBLIC</span> SYNONYMを作成することはできません。
+(<span class="sql-num">3</span>)		C.　SYNONYMを作成することができます。
+(<span class="sql-num">4</span>)		D.　トリガーを作成することができます。
+(<span class="sql-num">5</span>)		E.　ビューを使用した参照はできません。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「ビューの性質と更新可否」です。<br>問題文は「GLOBAL TEMPORARY TABLESについて正しい記述はどれでしょうか。<br>（3つ選択）」という条件を満たす説明または SQL を求めています。<br>ビューはスキーマオブジェクトであり、基表に依存している。<br>更新可否や <span class="sql-kw">WITH CHECK OPTION</span>、READ <span class="sql-kw">ONLY</span>、別スキーマ参照可否などが典型論点になる。 この設問では正答 A「複数の索引を作成することができます。<br>」 / C「SYNONYMを作成することができます。<br>」 / D「トリガーを作成することができます。<br>」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">複数の索引を作成することができます。</div>
+              <div class="option-review-reason">正しい。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">PUBLIC</span> SYNONYMを作成することはできません。</div>
+              <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">SYNONYMを作成することができます。</div>
+              <div class="option-review-reason">正しい。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">トリガーを作成することができます。</div>
+              <div class="option-review-reason">正しい。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">E</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">ビューを使用した参照はできません。</div>
+              <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>何のオブジェクトを操作している文かを最初に確定する。</li><li>そのオブジェクト固有の使用条件や制約を確認する。</li><li>権限・時刻・索引のような副作用の有無を最後に判定する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第1回 模擬試験 / 問62 / 正答 A.D / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>ビューの削除について正しい記述はどれでしょうか。（2つ選択）
+(<span class="sql-num">1</span>)		A.　<span class="sql-kw">CASCADE</span> CONSTRAINTSを指定すると、削除するビュー内の主キーおよび一意キーを参照するすべての参照整合性制約を削除します。
+(<span class="sql-num">2</span>)		B.　ビューが参照している表の列は、ビューが削除されると、参照している表から削除されます。
+(<span class="sql-num">3</span>)		C.　自スキーマにあるビューを削除するためには、<span class="sql-kw">DROP</span> <span class="sql-kw">ANY</span> <span class="sql-kw">VIEW</span> 権限が付与されている必要があります。
+(<span class="sql-num">4</span>)		D.　ビューを削除すると、ロールおよびユーザーに付与された対応するオブジェクト権限はすべて取り消されます。
+(<span class="sql-num">5</span>)		E.　ビュー経由で追加した行は、ビューが削除されると表から自動的に削除されます。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「ビューの性質と更新可否」です。<br>問題文は「ビューの削除について正しい記述はどれでしょうか。<br>（2つ選択）」という条件を満たす説明または SQL を求めています。<br>ビューはスキーマオブジェクトであり、基表に依存している。<br>更新可否や <span class="sql-kw">WITH CHECK OPTION</span>、READ <span class="sql-kw">ONLY</span>、別スキーマ参照可否などが典型論点になる。 この設問では正答 A「<span class="sql-kw">CASCADE</span> CONSTRAINTSを指定すると、削除するビュー内の主キーおよび一意キーを参照するすべての参…」 / D「ビューを削除すると、ロールおよびユーザーに付与された対応するオブジェクト権限はすべて取り消されます。<br>」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">CASCADE</span> CONSTRAINTSを指定すると、削除するビュー内の主キーおよび一意キーを参照するすべての参照整合性制約を削除します。</div>
+              <div class="option-review-reason">正しい。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">ビューが参照している表の列は、ビューが削除されると、参照している表から削除されます。</div>
+              <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">自スキーマにあるビューを削除するためには、<span class="sql-kw">DROP</span> <span class="sql-kw">ANY</span> <span class="sql-kw">VIEW</span> 権限が付与されている必要があります。</div>
+              <div class="option-review-reason">誤り。 DDL は定義変更であり、Oracle では暗黙 <span class="sql-kw">COMMIT</span> を伴います。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">ビューを削除すると、ロールおよびユーザーに付与された対応するオブジェクト権限はすべて取り消されます。</div>
+              <div class="option-review-reason">正しい。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">E</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">ビュー経由で追加した行は、ビューが削除されると表から自動的に削除されます。</div>
+              <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>何のオブジェクトを操作している文かを最初に確定する。</li><li>そのオブジェクト固有の使用条件や制約を確認する。</li><li>権限・時刻・索引のような副作用の有無を最後に判定する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第1回 模擬試験 / 問69 / 正答 D / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>システム権限を付与する文はどれでしょうか。
+(<span class="sql-num">1</span>)		A.　<span class="sql-kw">GRANT</span> <span class="sql-kw">DELETE</span>
+(<span class="sql-num">2</span>)		B.　<span class="sql-kw">GRANT</span> <span class="sql-kw">ALTER TABLE</span> <span class="sql-kw">TO</span> <span class="sql-kw">PUBLIC</span>;
+(<span class="sql-num">3</span>)		C.　<span class="sql-kw">GRANT</span> <span class="sql-kw">CREATE</span> MATERIALIZE <span class="sql-kw">VIEW</span> <span class="sql-kw">TO</span> USR01;
+(<span class="sql-num">4</span>)		D.　<span class="sql-kw">GRANT</span> <span class="sql-kw">CREATE TABLE</span> <span class="sql-kw">TO</span> USR01, USR02;</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「ビューの性質と更新可否」です。<br>問題文は「システム権限を付与する文はどれでしょうか。<br>」という条件を満たす説明または SQL を求めています。<br>ビューはスキーマオブジェクトであり、基表に依存している。<br>更新可否や <span class="sql-kw">WITH CHECK OPTION</span>、READ <span class="sql-kw">ONLY</span>、別スキーマ参照可否などが典型論点になる。 この設問では正答 D「<span class="sql-kw">GRANT</span> <span class="sql-kw">CREATE TABLE</span> <span class="sql-kw">TO</span> USR01, USR02;」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">GRANT</span> <span class="sql-kw">DELETE</span></div>
+              <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">GRANT</span> <span class="sql-kw">ALTER TABLE</span> <span class="sql-kw">TO</span> <span class="sql-kw">PUBLIC</span>;</div>
+              <div class="option-review-reason">誤り。 DDL は定義変更であり、Oracle では暗黙 <span class="sql-kw">COMMIT</span> を伴います。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">GRANT</span> <span class="sql-kw">CREATE</span> MATERIALIZE <span class="sql-kw">VIEW</span> <span class="sql-kw">TO</span> USR01;</div>
+              <div class="option-review-reason">誤り。 DDL は定義変更であり、Oracle では暗黙 <span class="sql-kw">COMMIT</span> を伴います。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">GRANT</span> <span class="sql-kw">CREATE TABLE</span> <span class="sql-kw">TO</span> USR01, USR02;</div>
+              <div class="option-review-reason">正しい。 DDL は定義変更であり、Oracle では暗黙 <span class="sql-kw">COMMIT</span> を伴います。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>何のオブジェクトを操作している文かを最初に確定する。</li><li>そのオブジェクト固有の使用条件や制約を確認する。</li><li>権限・時刻・索引のような副作用の有無を最後に判定する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第1回 模擬試験 / 問76 / 正答 A.B / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>データ・ディクショナリについて正しい記述はどれでしょうか。（2つ選択）
+(<span class="sql-num"><span class="sql-num">1</span></span>)		A.　データ・ディクショナリは、DDLが発行されるたびに常に更新されます。
+(<span class="sql-num"><span class="sql-num">2</span></span>)		B.　SYSユーザーは、データ・ディクショナリ内のすべてのベース表とユーザーがアクセスできるビューを所有します。
+(<span class="sql-num"><span class="sql-num">3</span></span>)		C.　すべてのユーザーは、データ・ディクショナリ内の全情報にアクセスすることができます。
+(<span class="sql-num"><span class="sql-num">4</span></span>)		D.　データ・ディクショナリの表には接頭辞ALL_が付きます。
+(<span class="sql-num"><span class="sql-num">5</span></span>)		E.　すべてのユーザー操作がデータ・ディクショナリに記録されます。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「ビューの性質と更新可否」です。<br>問題文は「データ・ディクショナリについて正しい記述はどれでしょうか。<br>（2つ選択）」という条件を満たす説明または SQL を求めています。<br>ビューはスキーマオブジェクトであり、基表に依存している。<br>更新可否や <span class="sql-kw">WITH CHECK OPTION</span>、READ <span class="sql-kw">ONLY</span>、別スキーマ参照可否などが典型論点になる。 この設問では正答 A「データ・ディクショナリは、DDLが発行されるたびに常に更新されます。<br>」 / B「SYSユーザーは、データ・ディクショナリ内のすべてのベース表とユーザーがアクセスできるビューを所有します。<br>」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">データ・ディクショナリは、DDLが発行されるたびに常に更新されます。</div>
+              <div class="option-review-reason">正しい。 DDL は定義変更であり、Oracle では暗黙 <span class="sql-kw">COMMIT</span> を伴います。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">SYSユーザーは、データ・ディクショナリ内のすべてのベース表とユーザーがアクセスできるビューを所有します。</div>
+              <div class="option-review-reason">正しい。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">すべてのユーザーは、データ・ディクショナリ内の全情報にアクセスすることができます。</div>
+              <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">データ・ディクショナリの表には接頭辞ALL_が付きます。</div>
+              <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">E</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">すべてのユーザー操作がデータ・ディクショナリに記録されます。</div>
+              <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>何のオブジェクトを操作している文かを最初に確定する。</li><li>そのオブジェクト固有の使用条件や制約を確認する。</li><li>権限・時刻・索引のような副作用の有無を最後に判定する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第2回 模擬試験 / 問28 / 正答 AC / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>副問合せに関して正しいのはどれでしょうか。（2つ選択）
+(<span class="sql-num"><span class="sql-num">1</span></span>)		A.　副問合せを使用して、1つ以上の表からデータにアクセスできます。
+(<span class="sql-num"><span class="sql-num">2</span></span>)		B.　副問合せを使用して、ビューからデータにアクセスすることはできません。
+(<span class="sql-num"><span class="sql-num">3</span></span>)		C.　副問合せが0行を返す場合、サブクエリ式によって返される値はNULLです。
+(<span class="sql-num"><span class="sql-num">4</span></span>)		D.　1つのSQL文で記載できる副問合せは2つだけです。
+(<span class="sql-num"><span class="sql-num">5</span></span>)		E.　SELECTのWHERE句の副問合せは、最大4レベルまでネストできます。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「ビューの性質と更新可否」です。<br>問題文は「副問合せに関して正しいのはどれでしょうか。<br>（2つ選択）」という条件を満たす説明または SQL を求めています。<br>ビューはスキーマオブジェクトであり、基表に依存している。<br>更新可否や <span class="sql-kw">WITH CHECK OPTION</span>、READ <span class="sql-kw">ONLY</span>、別スキーマ参照可否などが典型論点になる。 この設問では正答 A「副問合せを使用して、1つ以上の表からデータにアクセスできます。<br>」 / C「副問合せが0行を返す場合、サブクエリ式によって返される値はNULLです。<br>」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">副問合せを使用して、1つ以上の表からデータにアクセスできます。</div>
+              <div class="option-review-reason">正しい。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">副問合せを使用して、ビューからデータにアクセスすることはできません。</div>
+              <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">副問合せが0行を返す場合、サブクエリ式によって返される値はNULLです。</div>
+              <div class="option-review-reason">正しい。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">1つのSQL文で記載できる副問合せは2つだけです。</div>
+              <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">E</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECTのWHERE句の副問合せは、最大4レベルまでネストできます。</div>
+              <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>何のオブジェクトを操作している文かを最初に確定する。</li><li>そのオブジェクト固有の使用条件や制約を確認する。</li><li>権限・時刻・索引のような副作用の有無を最後に判定する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第3回 模擬試験 / 問13 / 正答 D / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>ビューの記載について正しいものを1つ選択してください。
+(<span class="sql-num">1</span>)		A. 外部表にはビューを作成することはできない。
+(<span class="sql-num">2</span>)		B. ビューに対する更新処理を行う場合は、<span class="sql-kw">WITH</span> <span class="sql-kw">CHECK</span> OPTIONが必要である。
+(<span class="sql-num">3</span>)		C. ビューを作成すると、基となる表の索引も同時に複製される。
+(<span class="sql-num">4</span>)		D. ビューを作成する際に、別スキーマの表を参照することができる。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「ビューの性質と更新可否」です。<br>問題文は「ビューの記載について正しいものを1つ選択してください。<br>」という条件を満たす説明または SQL を求めています。<br>ビューはスキーマオブジェクトであり、基表に依存している。<br>更新可否や <span class="sql-kw">WITH CHECK OPTION</span>、READ <span class="sql-kw">ONLY</span>、別スキーマ参照可否などが典型論点になる。 この設問では正答 D「ビューを作成する際に、別スキーマの表を参照することができる。<br>」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">外部表にはビューを作成することはできない。</div>
+              <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">ビューに対する更新処理を行う場合は、<span class="sql-kw">WITH</span> <span class="sql-kw">CHECK</span> OPTIONが必要である。</div>
+              <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">ビューを作成すると、基となる表の索引も同時に複製される。</div>
+              <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">ビューを作成する際に、別スキーマの表を参照することができる。</div>
+              <div class="option-review-reason">正しい。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>何のオブジェクトを操作している文かを最初に確定する。</li><li>そのオブジェクト固有の使用条件や制約を確認する。</li><li>権限・時刻・索引のような副作用の有無を最後に判定する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第3回 模擬試験 / 問27 / 正答 DEF / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>EMPLOYEES表は、シノニム、インデックス、ビューにより参照されています。
+次の <span class="sql-kw">DROP TABLE</span> コマンドを実行した場合、どのような影響があるでしょうか。
+
+<span class="sql-kw">DROP TABLE</span> employees PURGE;
+
+正しい説明を3つ選んでください。
+(<span class="sql-num">1</span>)		A. EMPLOYEES テーブルのすべての行が削除されるが、テーブルの構造は保持される。
+(<span class="sql-num">2</span>)		B. EMPLOYEES テーブルに関連するすべてのシノニムが削除される。
+(<span class="sql-num">3</span>)		C. <span class="sql-kw">DROP TABLE</span> で削除したテーブルは <span class="sql-kw">ROLLBACK</span> によって元に戻せる。
+(<span class="sql-num">4</span>)		D. EMPLOYEES テーブルはデータベースから完全に削除される。
+(<span class="sql-num">5</span>)		E. EMPLOYEES テーブル上のすべてのインデックスが削除される。
+(<span class="sql-num">6</span>)		F. EMPLOYEES テーブルを基にしたすべてのビューが無効化される。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「ビューの性質と更新可否」です。<br>問題文は「EMPLOYEES表は、シノニム、インデックス、ビューにより参照されています。 次の <span class="sql-kw">DROP TABLE</span> コマンドを実行した場合、どのような影響があるでしょうか。 <span class="sql-kw">DROP TABLE</span> employees PURGE; 正しい説明を3つ…」という条件を満たす説明または SQL を求めています。<br>ビューはスキーマオブジェクトであり、基表に依存している。<br>更新可否や <span class="sql-kw">WITH CHECK OPTION</span>、READ <span class="sql-kw">ONLY</span>、別スキーマ参照可否などが典型論点になる。 この設問では正答 D「EMPLOYEES テーブルはデータベースから完全に削除される。<br>」 / E「EMPLOYEES テーブル上のすべてのインデックスが削除される。<br>」 / F「EMPLOYEES テーブルを基にしたすべてのビューが無効化される。<br>」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">EMPLOYEES テーブルのすべての行が削除されるが、テーブルの構造は保持される。</div>
+              <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">EMPLOYEES テーブルに関連するすべてのシノニムが削除される。</div>
+              <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">DROP TABLE</span> で削除したテーブルは <span class="sql-kw">ROLLBACK</span> によって元に戻せる。</div>
+              <div class="option-review-reason">誤り。 <span class="sql-kw">ROLLBACK</span> は未確定変更を取り消します。<br><span class="sql-kw">SAVEPOINT</span> 指定ならその地点以降だけを戻します。 DDL は定義変更であり、Oracle では暗黙 <span class="sql-kw">COMMIT</span> を伴います。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">EMPLOYEES テーブルはデータベースから完全に削除される。</div>
+              <div class="option-review-reason">正しい。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">E</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">EMPLOYEES テーブル上のすべてのインデックスが削除される。</div>
+              <div class="option-review-reason">正しい。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">F</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">EMPLOYEES テーブルを基にしたすべてのビューが無効化される。</div>
+              <div class="option-review-reason">正しい。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>何のオブジェクトを操作している文かを最初に確定する。</li><li>そのオブジェクト固有の使用条件や制約を確認する。</li><li>権限・時刻・索引のような副作用の有無を最後に判定する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+            </section>
+            
+            <section class="concept-section" id="d8-2">
+              <h3>権限付与とロール<span>7問</span></h3>
+              <p class="concept-copy">オブジェクト権限は <span class="sql-kw">WITH GRANT OPTION</span>、システム権限は <span class="sql-kw">WITH</span> ADMIN OPTION と付与方法が異なる。<br>列単位 <span class="sql-kw">UPDATE</span> やロールの扱いも頻出である。</p>
+              
+    <div class="concept-guide" style="border-top-color:#e67e22">
+      <div class="guide-block">
+        <div class="guide-title">論点の定義</div>
+        <p>Oracle のオブジェクト管理問題では、ビュー、索引、シーケンス、シノニム、権限、日時型のそれぞれに固有の成立条件がある。</p>
+      </div>
+      <div class="guide-block"><div class="guide-title">句の並び順（Oracle 正式構文）</div><div class="clause-order"><span class="kw">CREATE TABLE</span> 表 (
+  列 型 [<span class="kw">DEFAULT</span> 値] [<span class="kw">NOT NULL</span>] [<span class="kw">CONSTRAINT</span> 名 <span class="kw">PRIMARY KEY</span> | …]
+);
+<span class="kw">ALTER TABLE</span> 表 <span class="kw">ADD</span>      (列 型 [DEFAULT …] [NOT NULL]);  <span class="desc">-- 既存行ありでNOT NULLなら DEFAULT 必須</span>
+<span class="kw">ALTER TABLE</span> 表 <span class="kw">MODIFY</span>   (列 型 | DEFAULT | NOT NULL);
+<span class="kw">ALTER TABLE</span> 表 <span class="kw">DROP COLUMN</span> 列;
+<span class="kw">CREATE VIEW</span> v <span class="kw">AS SELECT</span> …;              <span class="desc">-- 定義保持。基表複製ではない</span>
+<span class="kw">CREATE SEQUENCE</span> s <span class="kw">START WITH</span> 1 <span class="kw">INCREMENT BY</span> 1;  <span class="desc">-- CURRVAL は NEXTVAL 実行後のみ有効</span>
+<span class="kw">CREATE INDEX</span> idx <span class="kw">ON</span> 表(列);
+<span class="kw">GRANT</span> 権限 <span class="kw">ON</span> 表 <span class="kw">TO</span> ユーザ [<span class="kw">WITH GRANT OPTION</span>];
+<span class="note">-- DDL はすべて暗黙 COMMIT を伴う。DEFAULT は値省略時 / VALUES(DEFAULT) で補完。</span></div></div>
+      <div class="guide-block">
+        <div class="guide-title">この論点の基本形</div>
+        <pre><span class="sql-kw">CREATE VIEW</span> v_item <span class="sql-kw">AS</span>
+<span class="sql-kw">SELECT</span> item_id, item_name <span class="sql-kw">FROM</span> item;
+
+<span class="sql-kw">CREATE SEQUENCE</span> seq_item <span class="sql-kw">START WITH</span> <span class="sql-num">1</span>;
+<span class="sql-kw">GRANT</span> <span class="sql-kw">SELECT</span> <span class="sql-kw">ON</span> item <span class="sql-kw">TO</span> user_name;</pre>
+      </div>
+      <div class="guide-grid">
+        <div class="guide-block">
+          <div class="guide-title">成立条件</div>
+          <ul class="guide-list"><li>ビューは定義を保持するオブジェクトであり、基表そのものを複製するわけではない。</li><li>シーケンスの <span class="sql-kw">CURRVAL</span> は同一セッションで <span class="sql-kw">NEXTVAL</span> 実行後にのみ参照できる。</li><li>オブジェクト権限とシステム権限では付与オプションが異なる。</li></ul>
+        </div>
+        <div class="guide-block">
+          <div class="guide-title">判定手順</div>
+          <ol class="guide-list ordered"><li>何のオブジェクトを操作している文かを最初に確定する。</li><li>そのオブジェクト固有の使用条件や制約を確認する。</li><li>権限・時刻・索引のような副作用の有無を最後に判定する。</li></ol>
+        </div>
+      </div>
+      <div class="guide-note">失点しやすい点: <span class="sql-kw">GRANT</span> OPTION と ADMIN OPTION を混同し、列単位権限の構文を取り違えやすい。</div>
+    </div>
+    
+              
+                <article class="question-card">
+                  <div class="question-meta">第1回 模擬試験 / 問73 / 正答 A.C / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>ロールについて正しい記載はどれでしょうか。（2つ選択）
+(<span class="sql-num"><span class="sql-num">1</span></span>)		A.　ロールは、ユーザーまたは他のロールに付与できる権限の集合です。
+(<span class="sql-num"><span class="sql-num">2</span></span>)		B.　ロールは自分自身のロールに付与できます。
+(<span class="sql-num"><span class="sql-num">3</span></span>)		C.　ロールはPUBLICに付与できます。
+(<span class="sql-num"><span class="sql-num">4</span></span>)		D.　ユーザーは、1つのロールのみを付与できます。
+(<span class="sql-num"><span class="sql-num">5</span></span>)		E.　ロールは循環的に付与できます。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「権限付与とロール」です。<br>問題文は「ロールについて正しい記載はどれでしょうか。<br>（2つ選択）」という条件を満たす説明または SQL を求めています。<br>オブジェクト権限は <span class="sql-kw">WITH GRANT OPTION</span>、システム権限は <span class="sql-kw">WITH</span> ADMIN OPTION と付与方法が異なる。<br>列単位 <span class="sql-kw">UPDATE</span> やロールの扱いも頻出である。 この設問では正答 A「ロールは、ユーザーまたは他のロールに付与できる権限の集合です。<br>」 / C「ロールはPUBLICに付与できます。<br>」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">ロールは、ユーザーまたは他のロールに付与できる権限の集合です。</div>
+              <div class="option-review-reason">正しい。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">ロールは自分自身のロールに付与できます。</div>
+              <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">ロールはPUBLICに付与できます。</div>
+              <div class="option-review-reason">正しい。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">ユーザーは、1つのロールのみを付与できます。</div>
+              <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">E</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">ロールは循環的に付与できます。</div>
+              <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>何のオブジェクトを操作している文かを最初に確定する。</li><li>そのオブジェクト固有の使用条件や制約を確認する。</li><li>権限・時刻・索引のような副作用の有無を最後に判定する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第2回 模擬試験 / 問40 / 正答 AD / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>以下の文を実行します。
+
+<span class="sql-kw">INSERT INTO</span> ITEM <span class="sql-kw">VALUES</span> (&#x27;<span class="sql-num">1</span>&#x27;,&#x27;CURRY&#x27;,&#x27;FOOD&#x27;,<span class="sql-num">1000</span>);
+<span class="sql-kw">SAVEPOINT</span> SP1;
+<span class="sql-kw">UPDATE</span> ITEM <span class="sql-kw">SET</span> ITEM_NAME = &#x27;SUSHI&#x27; <span class="sql-kw">WHERE</span> ITEM_ID = &#x27;<span class="sql-num">1</span>&#x27;;
+<span class="sql-kw">SAVEPOINT</span> SP2;
+<span class="sql-kw">DELETE FROM</span> ITEM;
+<span class="sql-kw">COMMIT</span>;
+<span class="sql-kw">ROLLBACK TO</span> <span class="sql-kw">SAVEPOINT</span> SP1;
+
+実行結果について、正しい記述はどれでしょうか。（2つ選択）
+　(<span class="sql-num">1</span>)		A.　トランザクションはロールバックされません。
+(<span class="sql-num">2</span>)		B.　DELETEとUPDATEの両方がロールバックされます。
+(<span class="sql-num">3</span>)		C.　DELETEのみがロールバックされます。
+(<span class="sql-num">4</span>)		D.　<span class="sql-kw">ROLLBACK TO</span> SAVEPOINTはエラーとなります。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「権限付与とロール」です。<br>問題文は「以下の文を実行します。 <span class="sql-kw">INSERT INTO</span> ITEM <span class="sql-kw">VALUES</span> (<span class="sql-str">'1'</span>,<span class="sql-str">'CURRY'</span>,<span class="sql-str">'FOOD'</span>,<span class="sql-num">1000</span>); <span class="sql-kw">SAVEPOINT</span> SP1; <span class="sql-kw">UPDATE</span> ITEM <span class="sql-kw">SET</span> ITEM_NAME = <span class="sql-str">'SUSHI'</span> <span class="sql-kw">WHERE</span>…」という条件を満たす説明または SQL を求めています。<br>オブジェクト権限は <span class="sql-kw">WITH GRANT OPTION</span>、システム権限は <span class="sql-kw">WITH</span> ADMIN OPTION と付与方法が異なる。<br>列単位 <span class="sql-kw">UPDATE</span> やロールの扱いも頻出である。 この設問では正答 A「トランザクションはロールバックされません。<br>」 / D「<span class="sql-kw">ROLLBACK TO</span> SAVEPOINTはエラーとなります。<br>」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">トランザクションはロールバックされません。</div>
+              <div class="option-review-reason">正しい。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">DELETEとUPDATEの両方がロールバックされます。</div>
+              <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">DELETEのみがロールバックされます。</div>
+              <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">ROLLBACK TO</span> SAVEPOINTはエラーとなります。</div>
+              <div class="option-review-reason">正しい。 <span class="sql-kw">SAVEPOINT</span> はロールバック復帰点であり、<span class="sql-kw">COMMIT</span> すると消去されます。 <span class="sql-kw">ROLLBACK</span> は未確定変更を取り消します。<br><span class="sql-kw">SAVEPOINT</span> 指定ならその地点以降だけを戻します。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>何のオブジェクトを操作している文かを最初に確定する。</li><li>そのオブジェクト固有の使用条件や制約を確認する。</li><li>権限・時刻・索引のような副作用の有無を最後に判定する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第2回 模擬試験 / 問66 / 正答 BC / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>次の順序でSQL文を実行した時の説明として、正しいものを2つ選択してください。
+
+・USER1ユーザーで以下を実行
+<span class="sql-kw">GRANT</span> <span class="sql-kw">SELECT</span> <span class="sql-kw">ON</span> Employees <span class="sql-kw">TO</span> USER2 <span class="sql-kw">WITH GRANT OPTION</span>;
+・USER2ユーザーで以下を実行
+<span class="sql-kw">GRANT</span> <span class="sql-kw">SELECT</span> <span class="sql-kw">ON</span> USER1.Employees <span class="sql-kw">TO</span> USER3 <span class="sql-kw">WITH GRANT OPTION</span>;
+・USER1ユーザーで以下を実行
+<span class="sql-kw">REVOKE</span> <span class="sql-kw">SELECT</span> <span class="sql-kw">ON</span> Employees <span class="sql-kw">FROM</span> USER2;
+(<span class="sql-num">1</span>)		A. USER3は他のユーザにSELECT権限を付与できない
+(<span class="sql-num">2</span>)		B. USER2のSELECT権限が取り消される
+(<span class="sql-num">3</span>)		C. USER3のSELECT権限が取り消される
+(<span class="sql-num">4</span>)		D. 2つ目のWITH <span class="sql-kw">GRANT</span> OPTIONは指定できないためエラーとなる
+(<span class="sql-num">5</span>)		E. REVOKEがエラーとなる</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「権限付与とロール」です。<br>問題文は「次の順序でSQL文を実行した時の説明として、正しいものを2つ選択してください。 ・USER1ユーザーで以下を実行 <span class="sql-kw">GRANT</span> <span class="sql-kw">SELECT</span> <span class="sql-kw">ON</span> Employees <span class="sql-kw">TO</span> USER2 <span class="sql-kw">WITH GRANT OPTION</span>; ・USER2ユー…」という条件を満たす説明または SQL を求めています。<br>オブジェクト権限は <span class="sql-kw">WITH GRANT OPTION</span>、システム権限は <span class="sql-kw">WITH</span> ADMIN OPTION と付与方法が異なる。<br>列単位 <span class="sql-kw">UPDATE</span> やロールの扱いも頻出である。 この設問では正答 B「USER2のSELECT権限が取り消される」 / C「USER3のSELECT権限が取り消される」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">USER3は他のユーザにSELECT権限を付与できない</div>
+              <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">USER2のSELECT権限が取り消される</div>
+              <div class="option-review-reason">正しい。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">USER3のSELECT権限が取り消される</div>
+              <div class="option-review-reason">正しい。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">2つ目のWITH <span class="sql-kw">GRANT</span> OPTIONは指定できないためエラーとなる</div>
+              <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">E</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">REVOKEがエラーとなる</div>
+              <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>何のオブジェクトを操作している文かを最初に確定する。</li><li>そのオブジェクト固有の使用条件や制約を確認する。</li><li>権限・時刻・索引のような副作用の有無を最後に判定する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第2回 模擬試験 / 問68 / 正答 AC / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>次のうち、ロールに関して正しい記載を2つ選択してください。
+(<span class="sql-num">1</span>)		A. ロールはPUBLICに付与できる
+(<span class="sql-num">2</span>)		B. ロール付与でWITH <span class="sql-kw">GRANT</span> OPTIONを指定できる
+(<span class="sql-num">3</span>)		C. ロール付与でWITH ADMIN OPTIONを指定できる
+(<span class="sql-num">4</span>)		D. ロールは他のロールに付与できない
+(<span class="sql-num">5</span>)		E. ロールはシステム権限とオブジェクト権限を同時に付与することができる
+(<span class="sql-num">6</span>)		F. ロールを循環的に使用することができる</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「権限付与とロール」です。<br>問題文は「次のうち、ロールに関して正しい記載を2つ選択してください。<br>」という条件を満たす説明または SQL を求めています。<br>オブジェクト権限は <span class="sql-kw">WITH GRANT OPTION</span>、システム権限は <span class="sql-kw">WITH</span> ADMIN OPTION と付与方法が異なる。<br>列単位 <span class="sql-kw">UPDATE</span> やロールの扱いも頻出である。 この設問では正答 A「ロールはPUBLICに付与できる」 / C「ロール付与でWITH ADMIN OPTIONを指定できる」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">ロールはPUBLICに付与できる</div>
+              <div class="option-review-reason">正しい。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">ロール付与でWITH <span class="sql-kw">GRANT</span> OPTIONを指定できる</div>
+              <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">ロール付与でWITH ADMIN OPTIONを指定できる</div>
+              <div class="option-review-reason">正しい。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">ロールは他のロールに付与できない</div>
+              <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">E</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">ロールはシステム権限とオブジェクト権限を同時に付与することができる</div>
+              <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">F</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">ロールを循環的に使用することができる</div>
+              <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>何のオブジェクトを操作している文かを最初に確定する。</li><li>そのオブジェクト固有の使用条件や制約を確認する。</li><li>権限・時刻・索引のような副作用の有無を最後に判定する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第2回 模擬試験 / 問74 / 正答 CE / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>ロールバックが実行されるケースは以下のうちどれでしょうか。2つ選択してください。
+(<span class="sql-num"><span class="sql-num">1</span></span>)		A.　DDLが実行されたとき
+(<span class="sql-num"><span class="sql-num">2</span></span>)		B.　SAVEPOINTが実行されたとき
+(<span class="sql-num"><span class="sql-num">3</span></span>)		C.　システム障害が発生したとき
+(<span class="sql-num"><span class="sql-num">4</span></span>)		D.　DMLが実行されたとき
+(<span class="sql-num"><span class="sql-num">5</span></span>)		E.　shutdown immediateが実行されたとき</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「権限付与とロール」です。<br>問題文は「ロールバックが実行されるケースは以下のうちどれでしょうか。<br>2つ選択してください。<br>」という条件を満たす説明または SQL を求めています。<br>オブジェクト権限は <span class="sql-kw">WITH GRANT OPTION</span>、システム権限は <span class="sql-kw">WITH</span> ADMIN OPTION と付与方法が異なる。<br>列単位 <span class="sql-kw">UPDATE</span> やロールの扱いも頻出である。 この設問では正答 C「システム障害が発生したとき」 / E「shutdown immediateが実行されたとき」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">DDLが実行されたとき</div>
+              <div class="option-review-reason">誤り。 DDL は定義変更であり、Oracle では暗黙 <span class="sql-kw">COMMIT</span> を伴います。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">SAVEPOINTが実行されたとき</div>
+              <div class="option-review-reason">誤り。 <span class="sql-kw">SAVEPOINT</span> はロールバック復帰点であり、<span class="sql-kw">COMMIT</span> すると消去されます。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">システム障害が発生したとき</div>
+              <div class="option-review-reason">正しい。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">DMLが実行されたとき</div>
+              <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">E</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">shutdown immediateが実行されたとき</div>
+              <div class="option-review-reason">正しい。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>何のオブジェクトを操作している文かを最初に確定する。</li><li>そのオブジェクト固有の使用条件や制約を確認する。</li><li>権限・時刻・索引のような副作用の有無を最後に判定する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第3回 模擬試験 / 問66 / 正答 E / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>インデックスについて、正しいものを1つ選んでください。
+(<span class="sql-num">1</span>)		A. インデックスの作成には、DBAロールが必要である。
+(<span class="sql-num">2</span>)		B. <span class="sql-kw">UNIQUE</span> インデックスは、非一意インデックスに変更できる。
+(<span class="sql-num">3</span>)		C. テーブルを削除し、それが RECYCLE BIN に移動すると、テーブル上のすべてのインデックスは永久に削除される。
+(<span class="sql-num">4</span>)		D. あるユーザーが所有するテーブルには、他のユーザーが所有するインデックスを作成することはできない。
+(<span class="sql-num">5</span>)		E. テーブルを更新すると、すべてのインデックスに更新が反映される場合がある。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「権限付与とロール」です。<br>問題文は「インデックスについて、正しいものを1つ選んでください。<br>」という条件を満たす説明または SQL を求めています。<br>オブジェクト権限は <span class="sql-kw">WITH GRANT OPTION</span>、システム権限は <span class="sql-kw">WITH</span> ADMIN OPTION と付与方法が異なる。<br>列単位 <span class="sql-kw">UPDATE</span> やロールの扱いも頻出である。 この設問では正答 E「テーブルを更新すると、すべてのインデックスに更新が反映される場合がある。<br>」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">インデックスの作成には、DBAロールが必要である。</div>
+              <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">UNIQUE</span> インデックスは、非一意インデックスに変更できる。</div>
+              <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">テーブルを削除し、それが RECYCLE BIN に移動すると、テーブル上のすべてのインデックスは永久に削除される。</div>
+              <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">あるユーザーが所有するテーブルには、他のユーザーが所有するインデックスを作成することはできない。</div>
+              <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">E</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">テーブルを更新すると、すべてのインデックスに更新が反映される場合がある。</div>
+              <div class="option-review-reason">正しい。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>何のオブジェクトを操作している文かを最初に確定する。</li><li>そのオブジェクト固有の使用条件や制約を確認する。</li><li>権限・時刻・索引のような副作用の有無を最後に判定する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第3回 模擬試験 / 問72 / 正答 BDE / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>ロール について、正しい記載を3つ選んでください。
+(<span class="sql-num">1</span>)		A. ロールは、特定のユーザーにのみ割り当てることができる、権限のグループである。
+(<span class="sql-num">2</span>)		B. 1つのロールを複数のユーザーに割り当てることができる。
+(<span class="sql-num">3</span>)		C. <span class="sql-kw">ALTER</span> USER 文を使用してユーザーにロールを割り当てる。
+(<span class="sql-num">4</span>)		D. 1つのユーザーに複数のロールを割り当てることができる。
+(<span class="sql-num">5</span>)		E. <span class="sql-kw">GRANT</span> 文を使用してロールに権限を割り当てる。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「権限付与とロール」です。<br>問題文は「ロール について、正しい記載を3つ選んでください。<br>」という条件を満たす説明または SQL を求めています。<br>オブジェクト権限は <span class="sql-kw">WITH GRANT OPTION</span>、システム権限は <span class="sql-kw">WITH</span> ADMIN OPTION と付与方法が異なる。<br>列単位 <span class="sql-kw">UPDATE</span> やロールの扱いも頻出である。 この設問では正答 B「1つのロールを複数のユーザーに割り当てることができる。<br>」 / D「1つのユーザーに複数のロールを割り当てることができる。<br>」 / E「<span class="sql-kw">GRANT</span> 文を使用してロールに権限を割り当てる。<br>」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">ロールは、特定のユーザーにのみ割り当てることができる、権限のグループである。</div>
+              <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">1つのロールを複数のユーザーに割り当てることができる。</div>
+              <div class="option-review-reason">正しい。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">ALTER</span> USER 文を使用してユーザーにロールを割り当てる。</div>
+              <div class="option-review-reason">誤り。 DDL は定義変更であり、Oracle では暗黙 <span class="sql-kw">COMMIT</span> を伴います。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">1つのユーザーに複数のロールを割り当てることができる。</div>
+              <div class="option-review-reason">正しい。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">E</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">GRANT</span> 文を使用してロールに権限を割り当てる。</div>
+              <div class="option-review-reason">正しい。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>何のオブジェクトを操作している文かを最初に確定する。</li><li>そのオブジェクト固有の使用条件や制約を確認する。</li><li>権限・時刻・索引のような副作用の有無を最後に判定する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+            </section>
+            
+            <section class="concept-section" id="d8-3">
+              <h3>シーケンス・シノニム・索引<span>4問</span></h3>
+              <p class="concept-copy">シーケンスは連番供給、シノニムは別名、索引は検索高速化のためのオブジェクトである。<br>INVISIBLE <span class="sql-kw">INDEX</span>、<span class="sql-kw">NEXTVAL</span>/<span class="sql-kw">CURRVAL</span>、<span class="sql-kw">PUBLIC</span> <span class="sql-kw">SYNONYM</span> など固有ルールが問われる。</p>
+              
+    <div class="concept-guide" style="border-top-color:#e67e22">
+      <div class="guide-block">
+        <div class="guide-title">論点の定義</div>
+        <p>Oracle のオブジェクト管理問題では、ビュー、索引、シーケンス、シノニム、権限、日時型のそれぞれに固有の成立条件がある。</p>
+      </div>
+      <div class="guide-block"><div class="guide-title">句の並び順（Oracle 正式構文）</div><div class="clause-order"><span class="kw">CREATE TABLE</span> 表 (
+  列 型 [<span class="kw">DEFAULT</span> 値] [<span class="kw">NOT NULL</span>] [<span class="kw">CONSTRAINT</span> 名 <span class="kw">PRIMARY KEY</span> | …]
+);
+<span class="kw">ALTER TABLE</span> 表 <span class="kw">ADD</span>      (列 型 [DEFAULT …] [NOT NULL]);  <span class="desc">-- 既存行ありでNOT NULLなら DEFAULT 必須</span>
+<span class="kw">ALTER TABLE</span> 表 <span class="kw">MODIFY</span>   (列 型 | DEFAULT | NOT NULL);
+<span class="kw">ALTER TABLE</span> 表 <span class="kw">DROP COLUMN</span> 列;
+<span class="kw">CREATE VIEW</span> v <span class="kw">AS SELECT</span> …;              <span class="desc">-- 定義保持。基表複製ではない</span>
+<span class="kw">CREATE SEQUENCE</span> s <span class="kw">START WITH</span> 1 <span class="kw">INCREMENT BY</span> 1;  <span class="desc">-- CURRVAL は NEXTVAL 実行後のみ有効</span>
+<span class="kw">CREATE INDEX</span> idx <span class="kw">ON</span> 表(列);
+<span class="kw">GRANT</span> 権限 <span class="kw">ON</span> 表 <span class="kw">TO</span> ユーザ [<span class="kw">WITH GRANT OPTION</span>];
+<span class="note">-- DDL はすべて暗黙 COMMIT を伴う。DEFAULT は値省略時 / VALUES(DEFAULT) で補完。</span></div></div>
+      <div class="guide-block">
+        <div class="guide-title">この論点の基本形</div>
+        <pre><span class="sql-kw">CREATE VIEW</span> v_item <span class="sql-kw">AS</span>
+<span class="sql-kw">SELECT</span> item_id, item_name <span class="sql-kw">FROM</span> item;
+
+<span class="sql-kw">CREATE SEQUENCE</span> seq_item <span class="sql-kw">START WITH</span> <span class="sql-num">1</span>;
+<span class="sql-kw">GRANT</span> <span class="sql-kw">SELECT</span> <span class="sql-kw">ON</span> item <span class="sql-kw">TO</span> user_name;</pre>
+      </div>
+      <div class="guide-grid">
+        <div class="guide-block">
+          <div class="guide-title">成立条件</div>
+          <ul class="guide-list"><li>ビューは定義を保持するオブジェクトであり、基表そのものを複製するわけではない。</li><li>シーケンスの <span class="sql-kw">CURRVAL</span> は同一セッションで <span class="sql-kw">NEXTVAL</span> 実行後にのみ参照できる。</li><li>オブジェクト権限とシステム権限では付与オプションが異なる。</li></ul>
+        </div>
+        <div class="guide-block">
+          <div class="guide-title">判定手順</div>
+          <ol class="guide-list ordered"><li>何のオブジェクトを操作している文かを最初に確定する。</li><li>そのオブジェクト固有の使用条件や制約を確認する。</li><li>権限・時刻・索引のような副作用の有無を最後に判定する。</li></ol>
+        </div>
+      </div>
+      <div class="guide-note">失点しやすい点: <span class="sql-kw">CURRVAL</span> の利用条件、INVISIBLE <span class="sql-kw">INDEX</span> の更新有無、シノニムの対象範囲を曖昧にしやすい。</div>
+    </div>
+    
+              
+                <article class="question-card">
+                  <div class="question-meta">第1回 模擬試験 / 問54 / 正答 D / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>TRUNCATEとDELETEについて正しい記述はどれでしょうか。
+(<span class="sql-num"><span class="sql-num">1</span></span>)		A.　外部キー制約に違反する場合、表をTRUNCATEすることはできません。
+(<span class="sql-num"><span class="sql-num">2</span></span>)		B.　TRUNCATEを実行すると、索引や制約などの依存オブジェクトも削除されます。
+(<span class="sql-num"><span class="sql-num">3</span></span>)		C.　TRUNCATEはDELETEと同じくロールバックが可能です。
+(<span class="sql-num"><span class="sql-num">4</span></span>)		D.　データ量が大きな表のデータ削除を行う場合、TRUNCATEはDELETEよりも高速です。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「シーケンス・シノニム・索引」です。<br>問題文は「TRUNCATEとDELETEについて正しい記述はどれでしょうか。<br>」という条件を満たす説明または SQL を求めています。<br>シーケンスは連番供給、シノニムは別名、索引は検索高速化のためのオブジェクトである。<br>INVISIBLE <span class="sql-kw">INDEX</span>、<span class="sql-kw">NEXTVAL</span>/<span class="sql-kw">CURRVAL</span>、<span class="sql-kw">PUBLIC</span> <span class="sql-kw">SYNONYM</span> など固有ルールが問われる。 この設問では正答 D「データ量が大きな表のデータ削除を行う場合、TRUNCATEはDELETEよりも高速です。<br>」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">外部キー制約に違反する場合、表をTRUNCATEすることはできません。</div>
+              <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">TRUNCATEを実行すると、索引や制約などの依存オブジェクトも削除されます。</div>
+              <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">TRUNCATEはDELETEと同じくロールバックが可能です。</div>
+              <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">データ量が大きな表のデータ削除を行う場合、TRUNCATEはDELETEよりも高速です。</div>
+              <div class="option-review-reason">正しい。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>何のオブジェクトを操作している文かを最初に確定する。</li><li>そのオブジェクト固有の使用条件や制約を確認する。</li><li>権限・時刻・索引のような副作用の有無を最後に判定する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第1回 模擬試験 / 問64 / 正答 D / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>ITEM表に索引が作成された状態で、
+<span class="sql-kw">DROP TABLE</span> ITEM;
+を実行して、表と索引がRECYCLEBINに存在するとします。
+次に以下の文を実行します。
+
+FLASHBACK <span class="sql-kw">TABLE</span> ITEM <span class="sql-kw">TO</span> BEFORE <span class="sql-kw">DROP</span>;
+
+実行結果として正しい記述はどれでしょうか。
+(<span class="sql-num">1</span>)		A.　表構造、データ、索引を回復することはできません。
+(<span class="sql-num">2</span>)		B.　表構造を回復しますが、データ、索引は回復しません。
+(<span class="sql-num">3</span>)		C.　表構造、データを回復しますが、索引は回復しません。
+(<span class="sql-num">4</span>)		D.　表構造、データ、索引を回復します。
+(<span class="sql-num">5</span>)		E.　索引のみを回復します。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「シーケンス・シノニム・索引」です。<br>問題文は「ITEM表に索引が作成された状態で、 <span class="sql-kw">DROP TABLE</span> ITEM; を実行して、表と索引がRECYCLEBINに存在するとします。 次に以下の文を実行します。 FLASHBACK <span class="sql-kw">TABLE</span> ITEM <span class="sql-kw">TO</span> BEFORE <span class="sql-kw">DROP</span>; …」という条件を満たす説明または SQL を求めています。<br>シーケンスは連番供給、シノニムは別名、索引は検索高速化のためのオブジェクトである。<br>INVISIBLE <span class="sql-kw">INDEX</span>、<span class="sql-kw">NEXTVAL</span>/<span class="sql-kw">CURRVAL</span>、<span class="sql-kw">PUBLIC</span> <span class="sql-kw">SYNONYM</span> など固有ルールが問われる。 この設問では正答 D「表構造、データ、索引を回復します。<br>」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">表構造、データ、索引を回復することはできません。</div>
+              <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">表構造を回復しますが、データ、索引は回復しません。</div>
+              <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">表構造、データを回復しますが、索引は回復しません。</div>
+              <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">表構造、データ、索引を回復します。</div>
+              <div class="option-review-reason">正しい。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">E</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">索引のみを回復します。</div>
+              <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>何のオブジェクトを操作している文かを最初に確定する。</li><li>そのオブジェクト固有の使用条件や制約を確認する。</li><li>権限・時刻・索引のような副作用の有無を最後に判定する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第1回 模擬試験 / 問66 / 正答 E / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>実行ユーザーにはシノニムを作成する権限があります。
+USER1ユーザーのITEM表に、すべてのユーザーがアクセスできるITEM_SYNというシノニムを作成する文はどれでしょうか。
+(<span class="sql-num">1</span>)		A.　<span class="sql-kw">CREATE OR REPLACE</span> <span class="sql-kw">SYNONYM</span> ITEM_SYN <span class="sql-kw">FOR</span> USER1.ITEM;
+(<span class="sql-num">2</span>)		B.　<span class="sql-kw">CREATE OR REPLACE</span> <span class="sql-kw">SYNONYM</span> <span class="sql-kw">PUBLIC</span> ITEM_SYN <span class="sql-kw">FOR</span> USER1.ITEM;
+(<span class="sql-num">3</span>)		C.　<span class="sql-kw">CREATE OR REPLACE</span> <span class="sql-kw">SYNONYM</span> (<span class="sql-kw">PUBLIC</span> ITEM_SYN) <span class="sql-kw">FOR</span> USER1.ITEM;
+(<span class="sql-num">4</span>)		D.　<span class="sql-kw">CREATE OR REPLACE</span> <span class="sql-kw">SYNONYM</span> ITEM_SYN <span class="sql-kw">FOR</span> USER1.ITEM <span class="sql-kw">PUBLIC</span>;
+(<span class="sql-num">5</span>)		E.　<span class="sql-kw">CREATE OR REPLACE</span> <span class="sql-kw">PUBLIC</span> <span class="sql-kw">SYNONYM</span> ITEM_SYN <span class="sql-kw">FOR</span> USER1.ITEM;</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「シーケンス・シノニム・索引」です。<br>問題文は「実行ユーザーにはシノニムを作成する権限があります。 USER1ユーザーのITEM表に、すべてのユーザーがアクセスできるITEM_SYNというシノニムを作成する文はどれでしょうか。<br>」という条件を満たす説明または SQL を求めています。<br>シーケンスは連番供給、シノニムは別名、索引は検索高速化のためのオブジェクトである。<br>INVISIBLE <span class="sql-kw">INDEX</span>、<span class="sql-kw">NEXTVAL</span>/<span class="sql-kw">CURRVAL</span>、<span class="sql-kw">PUBLIC</span> <span class="sql-kw">SYNONYM</span> など固有ルールが問われる。 この設問では正答 E「<span class="sql-kw">CREATE OR REPLACE</span> <span class="sql-kw">PUBLIC</span> <span class="sql-kw">SYNONYM</span> ITEM_SYN FOR USER1.ITE…」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">CREATE OR REPLACE</span> <span class="sql-kw">SYNONYM</span> ITEM_SYN FOR USER1.ITEM;</div>
+              <div class="option-review-reason">誤り。 DDL は定義変更であり、Oracle では暗黙 <span class="sql-kw">COMMIT</span> を伴います。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">CREATE OR REPLACE</span> <span class="sql-kw">SYNONYM</span> <span class="sql-kw">PUBLIC</span> ITEM_SYN FOR USER1.ITEM;</div>
+              <div class="option-review-reason">誤り。 DDL は定義変更であり、Oracle では暗黙 <span class="sql-kw">COMMIT</span> を伴います。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">CREATE OR REPLACE</span> <span class="sql-kw">SYNONYM</span> (<span class="sql-kw">PUBLIC</span> ITEM_SYN) FOR USER1.ITEM;</div>
+              <div class="option-review-reason">誤り。 DDL は定義変更であり、Oracle では暗黙 <span class="sql-kw">COMMIT</span> を伴います。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">CREATE OR REPLACE</span> <span class="sql-kw">SYNONYM</span> ITEM_SYN FOR USER1.ITEM <span class="sql-kw">PUBLIC</span>;</div>
+              <div class="option-review-reason">誤り。 DDL は定義変更であり、Oracle では暗黙 <span class="sql-kw">COMMIT</span> を伴います。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">E</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">CREATE OR REPLACE</span> <span class="sql-kw">PUBLIC</span> <span class="sql-kw">SYNONYM</span> ITEM_SYN FOR USER1.ITEM;</div>
+              <div class="option-review-reason">正しい。 DDL は定義変更であり、Oracle では暗黙 <span class="sql-kw">COMMIT</span> を伴います。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>何のオブジェクトを操作している文かを最初に確定する。</li><li>そのオブジェクト固有の使用条件や制約を確認する。</li><li>権限・時刻・索引のような副作用の有無を最後に判定する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第2回 模擬試験 / 問65 / 正答 D / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>シノニムについて正しい記述はどれでしょうか。
+(<span class="sql-num">1</span>)		A.　表を削除した場合、表のシノニムも削除されます。
+(<span class="sql-num">2</span>)		B.　表の列を削除した場合、その表のシノニムを再作成する必要があります。
+(<span class="sql-num">3</span>)		C.　表を削除した場合、表のシノニムは無効になります。
+(<span class="sql-num">4</span>)		D.　パブリック・シノニムを削除するには、<span class="sql-kw">DROP</span> <span class="sql-kw">PUBLIC</span> SYNONYMシステム権限が必要です。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「シーケンス・シノニム・索引」です。<br>問題文は「シノニムについて正しい記述はどれでしょうか。<br>」という条件を満たす説明または SQL を求めています。<br>シーケンスは連番供給、シノニムは別名、索引は検索高速化のためのオブジェクトである。<br>INVISIBLE <span class="sql-kw">INDEX</span>、<span class="sql-kw">NEXTVAL</span>/<span class="sql-kw">CURRVAL</span>、<span class="sql-kw">PUBLIC</span> <span class="sql-kw">SYNONYM</span> など固有ルールが問われる。 この設問では正答 D「パブリック・シノニムを削除するには、<span class="sql-kw">DROP</span> <span class="sql-kw">PUBLIC</span> SYNONYMシステム権限が必要です。<br>」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">表を削除した場合、表のシノニムも削除されます。</div>
+              <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">表の列を削除した場合、その表のシノニムを再作成する必要があります。</div>
+              <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">表を削除した場合、表のシノニムは無効になります。</div>
+              <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">パブリック・シノニムを削除するには、<span class="sql-kw">DROP</span> <span class="sql-kw">PUBLIC</span> SYNONYMシステム権限が必要です。</div>
+              <div class="option-review-reason">正しい。 DDL は定義変更であり、Oracle では暗黙 <span class="sql-kw">COMMIT</span> を伴います。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>何のオブジェクトを操作している文かを最初に確定する。</li><li>そのオブジェクト固有の使用条件や制約を確認する。</li><li>権限・時刻・索引のような副作用の有無を最後に判定する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+            </section>
+            
+            <section class="concept-section" id="d8-4">
+              <h3>DATE・TIMESTAMP・TIME ZONE<span>3問</span></h3>
+              <p class="concept-copy">DATE は秒まで、TIMESTAMP は小数秒まで、TIMESTAMP <span class="sql-kw">WITH</span> TIME ZONE はタイムゾーン情報付き、LOCAL TIME ZONE は DB タイムゾーンで正規化される。<br>CURRENT_TIMESTAMP と SYSTIMESTAMP も基準が異なる。</p>
+              
+    <div class="concept-guide" style="border-top-color:#e67e22">
+      <div class="guide-block">
+        <div class="guide-title">論点の定義</div>
+        <p>Oracle のオブジェクト管理問題では、ビュー、索引、シーケンス、シノニム、権限、日時型のそれぞれに固有の成立条件がある。</p>
+      </div>
+      <div class="guide-block"><div class="guide-title">句の並び順（Oracle 正式構文）</div><div class="clause-order"><span class="kw">CREATE TABLE</span> 表 (
+  列 型 [<span class="kw">DEFAULT</span> 値] [<span class="kw">NOT NULL</span>] [<span class="kw">CONSTRAINT</span> 名 <span class="kw">PRIMARY KEY</span> | …]
+);
+<span class="kw">ALTER TABLE</span> 表 <span class="kw">ADD</span>      (列 型 [DEFAULT …] [NOT NULL]);  <span class="desc">-- 既存行ありでNOT NULLなら DEFAULT 必須</span>
+<span class="kw">ALTER TABLE</span> 表 <span class="kw">MODIFY</span>   (列 型 | DEFAULT | NOT NULL);
+<span class="kw">ALTER TABLE</span> 表 <span class="kw">DROP COLUMN</span> 列;
+<span class="kw">CREATE VIEW</span> v <span class="kw">AS SELECT</span> …;              <span class="desc">-- 定義保持。基表複製ではない</span>
+<span class="kw">CREATE SEQUENCE</span> s <span class="kw">START WITH</span> 1 <span class="kw">INCREMENT BY</span> 1;  <span class="desc">-- CURRVAL は NEXTVAL 実行後のみ有効</span>
+<span class="kw">CREATE INDEX</span> idx <span class="kw">ON</span> 表(列);
+<span class="kw">GRANT</span> 権限 <span class="kw">ON</span> 表 <span class="kw">TO</span> ユーザ [<span class="kw">WITH GRANT OPTION</span>];
+<span class="note">-- DDL はすべて暗黙 COMMIT を伴う。DEFAULT は値省略時 / VALUES(DEFAULT) で補完。</span></div></div>
+      <div class="guide-block">
+        <div class="guide-title">この論点の基本形</div>
+        <pre><span class="sql-kw">CREATE VIEW</span> v_item <span class="sql-kw">AS</span>
+<span class="sql-kw">SELECT</span> item_id, item_name <span class="sql-kw">FROM</span> item;
+
+<span class="sql-kw">CREATE SEQUENCE</span> seq_item <span class="sql-kw">START WITH</span> <span class="sql-num">1</span>;
+<span class="sql-kw">GRANT</span> <span class="sql-kw">SELECT</span> <span class="sql-kw">ON</span> item <span class="sql-kw">TO</span> user_name;</pre>
+      </div>
+      <div class="guide-grid">
+        <div class="guide-block">
+          <div class="guide-title">成立条件</div>
+          <ul class="guide-list"><li>ビューは定義を保持するオブジェクトであり、基表そのものを複製するわけではない。</li><li>シーケンスの <span class="sql-kw">CURRVAL</span> は同一セッションで <span class="sql-kw">NEXTVAL</span> 実行後にのみ参照できる。</li><li>オブジェクト権限とシステム権限では付与オプションが異なる。</li></ul>
+        </div>
+        <div class="guide-block">
+          <div class="guide-title">判定手順</div>
+          <ol class="guide-list ordered"><li>何のオブジェクトを操作している文かを最初に確定する。</li><li>そのオブジェクト固有の使用条件や制約を確認する。</li><li>権限・時刻・索引のような副作用の有無を最後に判定する。</li></ol>
+        </div>
+      </div>
+      <div class="guide-note">失点しやすい点: DATE が小数秒まで持つと勘違いしたり、CURRENT_TIMESTAMP と SYSTIMESTAMP の基準を混同しやすい。</div>
+    </div>
+    
+              
+                <article class="question-card">
+                  <div class="question-meta">第1回 模擬試験 / 問78 / 正答 B / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>INTERVALデータ型について正しい記述はどれでしょうか。
+(<span class="sql-num">1</span>)		A.　INTERVAL YEAR <span class="sql-kw">TO</span> MONTHは、負の値は使用できません。
+(<span class="sql-num">2</span>)		B.　INTERVAL YEAR <span class="sql-kw">TO</span> MONTHは、年ごとの間隔をサポートします。
+(<span class="sql-num">3</span>)		C.　INTERVAL DAY <span class="sql-kw">TO</span> SECONDは、小数秒は使用できません。
+(<span class="sql-num">4</span>)		D.　INTERVAL DAY <span class="sql-kw">TO</span> SECONDは、年ごとの間隔をサポートします。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「DATE・TIMESTAMP・TIME ZONE」です。<br>問題文は「INTERVALデータ型について正しい記述はどれでしょうか。<br>」という条件を満たす説明または SQL を求めています。<br>DATE は秒まで、TIMESTAMP は小数秒まで、TIMESTAMP <span class="sql-kw">WITH</span> TIME ZONE はタイムゾーン情報付き、LOCAL TIME ZONE は DB タイムゾーンで正規化される。<br>CURRENT_TIMESTAMP と SYSTIMESTAMP も基準が異なる。 この設問では正答 B「INTERVAL YEAR <span class="sql-kw">TO</span> MONTHは、年ごとの間隔をサポートします。<br>」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">INTERVAL YEAR <span class="sql-kw">TO</span> MONTHは、負の値は使用できません。</div>
+              <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">INTERVAL YEAR <span class="sql-kw">TO</span> MONTHは、年ごとの間隔をサポートします。</div>
+              <div class="option-review-reason">正しい。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">INTERVAL DAY <span class="sql-kw">TO</span> SECONDは、小数秒は使用できません。</div>
+              <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">INTERVAL DAY <span class="sql-kw">TO</span> SECONDは、年ごとの間隔をサポートします。</div>
+              <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>何のオブジェクトを操作している文かを最初に確定する。</li><li>そのオブジェクト固有の使用条件や制約を確認する。</li><li>権限・時刻・索引のような副作用の有無を最後に判定する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第2回 模擬試験 / 問77 / 正答 A / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>図書館アプリケーションを設計するとします。
+表に以下の要件の列を作成する必要があります。
+
+<span class="sql-num">1</span>.貸出期間を格納する
+<span class="sql-num">2</span>.貸出期間の上限は14日
+
+どのデータ型を使用すればいいでしょうか。
+(<span class="sql-num">1</span>)		A.　INTERVAL DAY <span class="sql-kw">TO</span> SECOND
+(<span class="sql-num">2</span>)		B.　INTERVAL YEAR <span class="sql-kw">TO</span> MONTH
+(<span class="sql-num">3</span>)		C.　DATE
+(<span class="sql-num">4</span>)		D.　TIMESTAMP</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「DATE・TIMESTAMP・TIME ZONE」です。<br>問題文は「図書館アプリケーションを設計するとします。 表に以下の要件の列を作成する必要があります。 <span class="sql-num">1</span>.貸出期間を格納する <span class="sql-num">2</span>.貸出期間の上限は14日 どのデータ型を使用すればいいでしょうか。<br>」という条件を満たす説明または SQL を求めています。<br>DATE は秒まで、TIMESTAMP は小数秒まで、TIMESTAMP <span class="sql-kw">WITH</span> TIME ZONE はタイムゾーン情報付き、LOCAL TIME ZONE は DB タイムゾーンで正規化される。<br>CURRENT_TIMESTAMP と SYSTIMESTAMP も基準が異なる。 この設問では正答 A「INTERVAL DAY <span class="sql-kw">TO</span> SECOND」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">INTERVAL DAY <span class="sql-kw">TO</span> SECOND</div>
+              <div class="option-review-reason">正しい。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">INTERVAL YEAR <span class="sql-kw">TO</span> MONTH</div>
+              <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">DATE</div>
+              <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">TIMESTAMP</div>
+              <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>何のオブジェクトを操作している文かを最初に確定する。</li><li>そのオブジェクト固有の使用条件や制約を確認する。</li><li>権限・時刻・索引のような副作用の有無を最後に判定する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第3回 模擬試験 / 問2 / 正答 C / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>TIMESTAMP <span class="sql-kw">WITH</span> LOCAL TIME ZONE型が保持する情報として正しいものを1つ選択してください。
+(<span class="sql-num">1</span>)		A. TIMESTAMP型保持情報＋タイムゾーンオフセット
+(<span class="sql-num">2</span>)		B. TIMESTAMP型保持情報＋タイムゾーンオフセットまたはタイムゾーンリージョン
+(<span class="sql-num">3</span>)		C. TIMESTAMP型保持情報＋ローカルタイムゾーンで入力された日時をデータベースのタイムゾーンに変換した値
+(<span class="sql-num">4</span>)		D. TIMESTAMP型保持情報＋固定のタイムゾーンリージョン</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「DATE・TIMESTAMP・TIME ZONE」です。<br>問題文は「TIMESTAMP <span class="sql-kw">WITH</span> LOCAL TIME ZONE型が保持する情報として正しいものを1つ選択してください。<br>」という条件を満たす説明または SQL を求めています。<br>DATE は秒まで、TIMESTAMP は小数秒まで、TIMESTAMP <span class="sql-kw">WITH</span> TIME ZONE はタイムゾーン情報付き、LOCAL TIME ZONE は DB タイムゾーンで正規化される。<br>CURRENT_TIMESTAMP と SYSTIMESTAMP も基準が異なる。 この設問では正答 C「TIMESTAMP型保持情報＋ローカルタイムゾーンで入力された日時をデータベースのタイムゾーンに変換した値」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">TIMESTAMP型保持情報＋タイムゾーンオフセット</div>
+              <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">TIMESTAMP型保持情報＋タイムゾーンオフセットまたはタイムゾーンリージョン</div>
+              <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">TIMESTAMP型保持情報＋ローカルタイムゾーンで入力された日時をデータベースのタイムゾーンに変換した値</div>
+              <div class="option-review-reason">正しい。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">TIMESTAMP型保持情報＋固定のタイムゾーンリージョン</div>
+              <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>何のオブジェクトを操作している文かを最初に確定する。</li><li>そのオブジェクト固有の使用条件や制約を確認する。</li><li>権限・時刻・索引のような副作用の有無を最後に判定する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+            </section>
+            
+            <section class="concept-section" id="d8-5">
+              <h3><span class="sql-kw">DEFAULT</span> と列追加・挿入<span>1問</span></h3>
+              <p class="concept-copy"><span class="sql-kw">DEFAULT</span> は値を省略したときに補われる。<br>既存行がある表へ <span class="sql-kw">NOT NULL</span> 列を追加するなら、<span class="sql-kw">DEFAULT</span> と <span class="sql-kw">NOT NULL</span> をセットで与えないと既存行を満たせない。</p>
+              
+    <div class="concept-guide" style="border-top-color:#e67e22">
+      <div class="guide-block">
+        <div class="guide-title">論点の定義</div>
+        <p>DDL は表定義や制約を変更する文であり、列定義・制約定義・既存データへの影響を同時に読む必要がある。<br><span class="sql-kw">DEFAULT</span> は値省略時に補完されるが、列指定や <span class="sql-kw">VALUES</span> 個数との対応は別に守られる。</p>
+      </div>
+      <div class="guide-block"><div class="guide-title">句の並び順（Oracle 正式構文）</div><div class="clause-order"><span class="kw">CREATE TABLE</span> 表 (
+  列 型 [<span class="kw">DEFAULT</span> 値] [<span class="kw">NOT NULL</span>] [<span class="kw">CONSTRAINT</span> 名 <span class="kw">PRIMARY KEY</span> | …]
+);
+<span class="kw">ALTER TABLE</span> 表 <span class="kw">ADD</span>      (列 型 [DEFAULT …] [NOT NULL]);  <span class="desc">-- 既存行ありでNOT NULLなら DEFAULT 必須</span>
+<span class="kw">ALTER TABLE</span> 表 <span class="kw">MODIFY</span>   (列 型 | DEFAULT | NOT NULL);
+<span class="kw">ALTER TABLE</span> 表 <span class="kw">DROP COLUMN</span> 列;
+<span class="kw">CREATE VIEW</span> v <span class="kw">AS SELECT</span> …;              <span class="desc">-- 定義保持。基表複製ではない</span>
+<span class="kw">CREATE SEQUENCE</span> s <span class="kw">START WITH</span> 1 <span class="kw">INCREMENT BY</span> 1;  <span class="desc">-- CURRVAL は NEXTVAL 実行後のみ有効</span>
+<span class="kw">CREATE INDEX</span> idx <span class="kw">ON</span> 表(列);
+<span class="kw">GRANT</span> 権限 <span class="kw">ON</span> 表 <span class="kw">TO</span> ユーザ [<span class="kw">WITH GRANT OPTION</span>];
+<span class="note">-- DDL はすべて暗黙 COMMIT を伴う。DEFAULT は値省略時 / VALUES(DEFAULT) で補完。</span></div></div>
+      <div class="guide-block">
+        <div class="guide-title">この論点の基本形</div>
+        <pre><span class="sql-kw">ALTER TABLE</span> item
+<span class="sql-kw">ADD</span> status VARCHAR2(<span class="sql-num">10</span>) <span class="sql-kw">DEFAULT</span> &#x27;NEW&#x27; <span class="sql-kw">NOT NULL</span>;
+
+<span class="sql-kw">INSERT INTO</span> item (item_id, item_name)
+<span class="sql-kw">VALUES</span> (&#x27;<span class="sql-num">1001</span>&#x27;, &#x27;ITEM1&#x27;);</pre>
+      </div>
+      <div class="guide-grid">
+        <div class="guide-block">
+          <div class="guide-title">成立条件</div>
+          <ul class="guide-list"><li>既存行がある表へ <span class="sql-kw">NOT NULL</span> 列を追加する場合、<span class="sql-kw">DEFAULT</span> を伴わないと成立しない。</li><li><span class="sql-kw">INSERT</span> 文で <span class="sql-kw">DEFAULT</span> を使うなら、列リストと <span class="sql-kw">VALUES</span> の対応を厳密に守る。</li><li>DDL は暗黙 <span class="sql-kw">COMMIT</span> を伴うため、DML や TCL と切り分けて理解する。</li></ul>
+        </div>
+        <div class="guide-block">
+          <div class="guide-title">判定手順</div>
+          <ol class="guide-list ordered"><li>対象が表定義変更かデータ操作かを最初に分類する。</li><li>次に既存行の有無、<span class="sql-kw">NULL</span> 許容、<span class="sql-kw">DEFAULT</span> 補完の関係を確認する。</li><li>最後に列数・列順・制約条件が SQL 文法どおりかを確認する。</li></ol>
+        </div>
+      </div>
+      <div class="guide-note">失点しやすい点: <span class="sql-kw">DEFAULT</span> 句だけで <span class="sql-kw">NOT NULL</span> まで満たせると考えたり、列指定と <span class="sql-kw">VALUES</span> 個数の対応を外しやすい。</div>
+    </div>
+    
+              
+                <article class="question-card">
+                  <div class="question-meta">第1回 模擬試験 / 問49 / 正答 A / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>表を作成する最適な文はどれでしょうか。
+　
+(<span class="sql-num">1</span>)		A.　<span class="sql-kw">CREATE TABLE</span> SHOHIN( SHOHIN_ID NUMBER(<span class="sql-num">3</span>), SHOHIN_NAME VARCHAR2(<span class="sql-num">20</span>), SHOHIN_KAKAKU NUMBER(<span class="sql-num">10</span>), STOCK NUMBER <span class="sql-kw">DEFAULT</span> <span class="sql-num">1</span>, INPUT_DATE DATE <span class="sql-kw">DEFAULT</span> SYSDATE, REMARK VARCHAR2(<span class="sql-num">50</span>) <span class="sql-kw">DEFAULT</span> &#x27;　&#x27;);
+(<span class="sql-num">2</span>)		B.　<span class="sql-kw">CREATE TABLE</span> SHOHIN( SHOHIN_ID NUMBER(<span class="sql-num">3</span>), SHOHIN_NAME VARCHAR2(<span class="sql-num">20</span>), SHOHIN_KAKAKU NUMBER(<span class="sql-num">10</span>), STOCK NUMBER <span class="sql-kw">DEFAULT</span> <span class="sql-num">1</span>, INPUT_DATE DATE <span class="sql-kw">DEFAULT</span> SYSDATE, REMARK VARCHAR2(<span class="sql-num">50</span>) <span class="sql-kw">DEFAULT</span> &quot;　&quot;);
+(<span class="sql-num">3</span>)		C.　<span class="sql-kw">CREATE TABLE</span> SHOHIN( SHOHIN_ID NUMBER(<span class="sql-num">3</span>), SHOHIN_NAME VARCHAR2(<span class="sql-num">20</span>), SHOHIN_KAKAKU NUMBER(<span class="sql-num">10</span>), STOCK NUMBER <span class="sql-kw">DEFAULT</span> <span class="sql-num">1</span>, INPUT_DATE DATE <span class="sql-kw">DEFAULT</span> &#x27;SYSDATE&#x27;, REMARK VARCHAR2(<span class="sql-num">50</span>) <span class="sql-kw">DEFAULT</span> &#x27;　&#x27;);
+(<span class="sql-num">4</span>)		D.　<span class="sql-kw">CREATE TABLE</span> SHOHIN( SHOHIN_ID NUMBER(<span class="sql-num">3</span>), SHOHIN_NAME VARCHAR2(<span class="sql-num">20</span>), SHOHIN_KAKAKU NUMBER(<span class="sql-num">10</span>), STOCK NUMBER <span class="sql-kw">DEFAULT</span> = <span class="sql-num">1</span>, INPUT_DATE DATE <span class="sql-kw">DEFAULT</span> SYSDATE, REMARK VARCHAR2(<span class="sql-num">50</span>) <span class="sql-kw">DEFAULT</span> = &#x27;　&#x27;);</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「<span class="sql-kw">DEFAULT</span> と列追加・挿入」です。<br>問題文は「表を作成する最適な文はどれでしょうか。<br>」という条件を満たす説明または SQL を求めています。<br><span class="sql-kw">DEFAULT</span> は値を省略したときに補われる。<br>既存行がある表へ <span class="sql-kw">NOT NULL</span> 列を追加するなら、<span class="sql-kw">DEFAULT</span> と <span class="sql-kw">NOT NULL</span> をセットで与えないと既存行を満たせない。 この設問では正答 A「<span class="sql-kw">CREATE TABLE</span> SHOHIN( SHOHIN_ID NUMBER(<span class="sql-num">3</span>), SHOHIN_NAME V…」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">CREATE TABLE</span> SHOHIN( SHOHIN_ID NUMBER(<span class="sql-num">3</span>), SHOHIN_NAME VARCHAR2(<span class="sql-num">20</span>), SHOHIN_KAKAKU NUMBER(<span class="sql-num">10</span>), STOCK NUMBER <span class="sql-kw">DEFAULT</span> <span class="sql-num">1</span>, INPUT_DATE DATE <span class="sql-kw">DEFAULT</span> SYSDATE, REMARK VARCHAR2(<span class="sql-num">50</span>) <span class="sql-kw">DEFAULT</span> &#x27; &#x27;);</div>
+              <div class="option-review-reason">正しい。 <span class="sql-kw">DEFAULT</span> は列値を省略したとき、または <span class="sql-kw">VALUES</span> 句で <span class="sql-kw">DEFAULT</span> を明示したときに補完されます。 DDL は定義変更であり、Oracle では暗黙 <span class="sql-kw">COMMIT</span> を伴います。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">CREATE TABLE</span> SHOHIN( SHOHIN_ID NUMBER(<span class="sql-num">3</span>), SHOHIN_NAME VARCHAR2(<span class="sql-num">20</span>), SHOHIN_KAKAKU NUMBER(<span class="sql-num">10</span>), STOCK NUMBER <span class="sql-kw">DEFAULT</span> <span class="sql-num">1</span>, INPUT_DATE DATE <span class="sql-kw">DEFAULT</span> SYSDATE, REMARK VARCHAR2(<span class="sql-num">50</span>) <span class="sql-kw">DEFAULT</span> &quot; &quot;);</div>
+              <div class="option-review-reason">誤り。 <span class="sql-kw">DEFAULT</span> は列値を省略したとき、または <span class="sql-kw">VALUES</span> 句で <span class="sql-kw">DEFAULT</span> を明示したときに補完されます。 DDL は定義変更であり、Oracle では暗黙 <span class="sql-kw">COMMIT</span> を伴います。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">CREATE TABLE</span> SHOHIN( SHOHIN_ID NUMBER(<span class="sql-num">3</span>), SHOHIN_NAME VARCHAR2(<span class="sql-num">20</span>), SHOHIN_KAKAKU NUMBER(<span class="sql-num">10</span>), STOCK NUMBER <span class="sql-kw">DEFAULT</span> <span class="sql-num">1</span>, INPUT_DATE DATE <span class="sql-kw">DEFAULT</span> &#x27;SYSDATE&#x27;, REMARK VARCHAR2(<span class="sql-num">50</span>) <span class="sql-kw">DEFAULT</span> &#x27; &#x27;);</div>
+              <div class="option-review-reason">誤り。 <span class="sql-kw">DEFAULT</span> は列値を省略したとき、または <span class="sql-kw">VALUES</span> 句で <span class="sql-kw">DEFAULT</span> を明示したときに補完されます。 DDL は定義変更であり、Oracle では暗黙 <span class="sql-kw">COMMIT</span> を伴います。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">CREATE TABLE</span> SHOHIN( SHOHIN_ID NUMBER(<span class="sql-num">3</span>), SHOHIN_NAME VARCHAR2(<span class="sql-num">20</span>), SHOHIN_KAKAKU NUMBER(<span class="sql-num">10</span>), STOCK NUMBER <span class="sql-kw">DEFAULT</span> = <span class="sql-num">1</span>, INPUT_DATE DATE <span class="sql-kw">DEFAULT</span> SYSDATE, REMARK VARCHAR2(<span class="sql-num">50</span>) <span class="sql-kw">DEFAULT</span> = &#x27; &#x27;);</div>
+              <div class="option-review-reason">誤り。 <span class="sql-kw">DEFAULT</span> は列値を省略したとき、または <span class="sql-kw">VALUES</span> 句で <span class="sql-kw">DEFAULT</span> を明示したときに補完されます。 DDL は定義変更であり、Oracle では暗黙 <span class="sql-kw">COMMIT</span> を伴います。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>対象が表定義変更かデータ操作かを最初に分類する。</li><li>次に既存行の有無、<span class="sql-kw">NULL</span> 許容、<span class="sql-kw">DEFAULT</span> 補完の関係を確認する。</li><li>最後に列数・列順・制約条件が SQL 文法どおりかを確認する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+            </section>
+            
+            <section class="concept-section" id="d8-6">
+              <h3><span class="sql-kw">MERGE</span> の文法と使える対象<span>1問</span></h3>
+              <p class="concept-copy"><span class="sql-kw">MERGE</span> は <span class="sql-num">1</span> つの対象表に対し、<span class="sql-kw">ON</span> 条件で一致時は <span class="sql-kw">UPDATE</span>、非一致時は <span class="sql-kw">INSERT</span> を行う。<br><span class="sql-kw">USING</span> には表、ビュー、サブクエリを使える。</p>
+              
+    <div class="concept-guide" style="border-top-color:#e67e22">
+      <div class="guide-block">
+        <div class="guide-title">論点の定義</div>
+        <p><span class="sql-kw">MERGE</span> は一致時 <span class="sql-kw">UPDATE</span>、非一致時 <span class="sql-kw">INSERT</span> を <span class="sql-num">1</span> 文で行う DML である。<br>更新対象は <span class="sql-num">1</span> 表だけで、<span class="sql-kw">USING</span> には比較元の表や副問合せを置く。</p>
+      </div>
+      <div class="guide-block"><div class="guide-title">句の並び順（Oracle 正式構文）</div><div class="clause-order"><span class="kw">CREATE TABLE</span> 表 (
+  列 型 [<span class="kw">DEFAULT</span> 値] [<span class="kw">NOT NULL</span>] [<span class="kw">CONSTRAINT</span> 名 <span class="kw">PRIMARY KEY</span> | …]
+);
+<span class="kw">ALTER TABLE</span> 表 <span class="kw">ADD</span>      (列 型 [DEFAULT …] [NOT NULL]);  <span class="desc">-- 既存行ありでNOT NULLなら DEFAULT 必須</span>
+<span class="kw">ALTER TABLE</span> 表 <span class="kw">MODIFY</span>   (列 型 | DEFAULT | NOT NULL);
+<span class="kw">ALTER TABLE</span> 表 <span class="kw">DROP COLUMN</span> 列;
+<span class="kw">CREATE VIEW</span> v <span class="kw">AS SELECT</span> …;              <span class="desc">-- 定義保持。基表複製ではない</span>
+<span class="kw">CREATE SEQUENCE</span> s <span class="kw">START WITH</span> 1 <span class="kw">INCREMENT BY</span> 1;  <span class="desc">-- CURRVAL は NEXTVAL 実行後のみ有効</span>
+<span class="kw">CREATE INDEX</span> idx <span class="kw">ON</span> 表(列);
+<span class="kw">GRANT</span> 権限 <span class="kw">ON</span> 表 <span class="kw">TO</span> ユーザ [<span class="kw">WITH GRANT OPTION</span>];
+<span class="note">-- DDL はすべて暗黙 COMMIT を伴う。DEFAULT は値省略時 / VALUES(DEFAULT) で補完。</span></div></div>
+      <div class="guide-block">
+        <div class="guide-title">この論点の基本形</div>
+        <pre><span class="sql-kw">MERGE INTO</span> target t
+<span class="sql-kw">USING</span> source s
+<span class="sql-kw">ON</span> (t.id = s.id)
+<span class="sql-kw">WHEN MATCHED</span> <span class="sql-kw">THEN</span>
+  <span class="sql-kw">UPDATE</span> <span class="sql-kw">SET</span> t.name = s.name
+<span class="sql-kw">WHEN NOT MATCHED</span> <span class="sql-kw">THEN</span>
+  <span class="sql-kw">INSERT</span> (id, name) <span class="sql-kw">VALUES</span> (s.id, s.name);</pre>
+      </div>
+      <div class="guide-grid">
+        <div class="guide-block">
+          <div class="guide-title">成立条件</div>
+          <ul class="guide-list"><li><span class="sql-kw">MATCHED</span> 側は <span class="sql-kw">UPDATE</span>、<span class="sql-kw">NOT</span> <span class="sql-kw">MATCHED</span> 側は <span class="sql-kw">INSERT</span> が基本形である。</li><li>比較条件は <span class="sql-kw">ON</span> 句で指定し、更新対象表は <span class="sql-kw">MERGE INTO</span> 側に <span class="sql-num">1</span> つだけ書く。</li><li><span class="sql-kw">USING</span> には表、ビュー、副問合せを置ける。</li></ul>
+        </div>
+        <div class="guide-block">
+          <div class="guide-title">判定手順</div>
+          <ol class="guide-list ordered"><li>対象表と比較元の役割を切り分ける。</li><li><span class="sql-kw">ON</span> 句で一致条件を読んだ後、<span class="sql-kw">MATCHED</span>/<span class="sql-kw">NOT</span> <span class="sql-kw">MATCHED</span> の処理内容を確認する。</li><li>複数表更新のように見える選択肢は <span class="sql-kw">MERGE</span> の文法外として除外する。</li></ol>
+        </div>
+      </div>
+      <div class="guide-note">失点しやすい点: <span class="sql-kw">WHEN MATCHED</span> で <span class="sql-kw">INSERT</span>、<span class="sql-kw">WHEN NOT MATCHED</span> で <span class="sql-kw">UPDATE</span> のように逆向きに書いてしまいがちで、複数表更新もできると誤認しやすい。</div>
+    </div>
+    
+              
+                <article class="question-card">
+                  <div class="question-meta">第3回 模擬試験 / 問5 / 正答 D / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>ビューの記載について正しいものを1つ選択してください。
+(<span class="sql-num"><span class="sql-num">1</span></span>)		A. MERGE文でビューを使用することはできない。
+(<span class="sql-num"><span class="sql-num">2</span></span>)		B. ビューは非スキーマオブジェクトである。
+(<span class="sql-num"><span class="sql-num">3</span></span>)		C. ビューが参照している表をDROP TABLE文を実行してもビューは有効状態で残る。
+(<span class="sql-num"><span class="sql-num">4</span></span>)		D. グローバル一時表ではビューが使用できる。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「<span class="sql-kw">MERGE</span> の文法と使える対象」です。<br>問題文は「ビューの記載について正しいものを1つ選択してください。<br>」という条件を満たす説明または SQL を求めています。<br><span class="sql-kw">MERGE</span> は <span class="sql-num">1</span> つの対象表に対し、<span class="sql-kw">ON</span> 条件で一致時は <span class="sql-kw">UPDATE</span>、非一致時は <span class="sql-kw">INSERT</span> を行う。<br><span class="sql-kw">USING</span> には表、ビュー、サブクエリを使える。 この設問では正答 D「グローバル一時表ではビューが使用できる。<br>」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">MERGE文でビューを使用することはできない。</div>
+              <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">ビューは非スキーマオブジェクトである。</div>
+              <div class="option-review-reason">誤り。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">ビューが参照している表をDROP TABLE文を実行してもビューは有効状態で残る。</div>
+              <div class="option-review-reason">誤り。 DDL は定義変更であり、Oracle では暗黙 <span class="sql-kw">COMMIT</span> を伴います。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">グローバル一時表ではビューが使用できる。</div>
+              <div class="option-review-reason">正しい。 オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>対象表と比較元の役割を切り分ける。</li><li><span class="sql-kw">ON</span> 句で一致条件を読んだ後、<span class="sql-kw">MATCHED</span>/<span class="sql-kw">NOT</span> <span class="sql-kw">MATCHED</span> の処理内容を確認する。</li><li>複数表更新のように見える選択肢は <span class="sql-kw">MERGE</span> の文法外として除外する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+            </section>
+            
+            <section class="concept-section" id="d8-7">
+              <h3>制約定義と有効化・無効化<span>1問</span></h3>
+              <p class="concept-copy">主キー、外部キー、<span class="sql-kw">CHECK</span>、<span class="sql-kw">NOT NULL</span> などの制約は、型や参照整合性を守るための定義である。<br>ENABLE/DISABLE、<span class="sql-kw">CASCADE</span>、SYSDATE 使用可否など細部の制約規則が問われる。</p>
+              
+    <div class="concept-guide" style="border-top-color:#e67e22">
+      <div class="guide-block">
+        <div class="guide-title">論点の定義</div>
+        <p>DDL は表定義や制約を変更する文であり、列定義・制約定義・既存データへの影響を同時に読む必要がある。<br><span class="sql-kw">DEFAULT</span> は値省略時に補完されるが、列指定や <span class="sql-kw">VALUES</span> 個数との対応は別に守られる。</p>
+      </div>
+      <div class="guide-block"><div class="guide-title">句の並び順（Oracle 正式構文）</div><div class="clause-order"><span class="kw">CREATE TABLE</span> 表 (
+  列 型 [<span class="kw">DEFAULT</span> 値] [<span class="kw">NOT NULL</span>] [<span class="kw">CONSTRAINT</span> 名 <span class="kw">PRIMARY KEY</span> | …]
+);
+<span class="kw">ALTER TABLE</span> 表 <span class="kw">ADD</span>      (列 型 [DEFAULT …] [NOT NULL]);  <span class="desc">-- 既存行ありでNOT NULLなら DEFAULT 必須</span>
+<span class="kw">ALTER TABLE</span> 表 <span class="kw">MODIFY</span>   (列 型 | DEFAULT | NOT NULL);
+<span class="kw">ALTER TABLE</span> 表 <span class="kw">DROP COLUMN</span> 列;
+<span class="kw">CREATE VIEW</span> v <span class="kw">AS SELECT</span> …;              <span class="desc">-- 定義保持。基表複製ではない</span>
+<span class="kw">CREATE SEQUENCE</span> s <span class="kw">START WITH</span> 1 <span class="kw">INCREMENT BY</span> 1;  <span class="desc">-- CURRVAL は NEXTVAL 実行後のみ有効</span>
+<span class="kw">CREATE INDEX</span> idx <span class="kw">ON</span> 表(列);
+<span class="kw">GRANT</span> 権限 <span class="kw">ON</span> 表 <span class="kw">TO</span> ユーザ [<span class="kw">WITH GRANT OPTION</span>];
+<span class="note">-- DDL はすべて暗黙 COMMIT を伴う。DEFAULT は値省略時 / VALUES(DEFAULT) で補完。</span></div></div>
+      <div class="guide-block">
+        <div class="guide-title">この論点の基本形</div>
+        <pre><span class="sql-kw">ALTER TABLE</span> item
+<span class="sql-kw">ADD</span> status VARCHAR2(<span class="sql-num">10</span>) <span class="sql-kw">DEFAULT</span> &#x27;NEW&#x27; <span class="sql-kw">NOT NULL</span>;
+
+<span class="sql-kw">INSERT INTO</span> item (item_id, item_name)
+<span class="sql-kw">VALUES</span> (&#x27;<span class="sql-num">1001</span>&#x27;, &#x27;ITEM1&#x27;);</pre>
+      </div>
+      <div class="guide-grid">
+        <div class="guide-block">
+          <div class="guide-title">成立条件</div>
+          <ul class="guide-list"><li>既存行がある表へ <span class="sql-kw">NOT NULL</span> 列を追加する場合、<span class="sql-kw">DEFAULT</span> を伴わないと成立しない。</li><li><span class="sql-kw">INSERT</span> 文で <span class="sql-kw">DEFAULT</span> を使うなら、列リストと <span class="sql-kw">VALUES</span> の対応を厳密に守る。</li><li>DDL は暗黙 <span class="sql-kw">COMMIT</span> を伴うため、DML や TCL と切り分けて理解する。</li></ul>
+        </div>
+        <div class="guide-block">
+          <div class="guide-title">判定手順</div>
+          <ol class="guide-list ordered"><li>対象が表定義変更かデータ操作かを最初に分類する。</li><li>次に既存行の有無、<span class="sql-kw">NULL</span> 許容、<span class="sql-kw">DEFAULT</span> 補完の関係を確認する。</li><li>最後に列数・列順・制約条件が SQL 文法どおりかを確認する。</li></ol>
+        </div>
+      </div>
+      <div class="guide-note">失点しやすい点: <span class="sql-kw">CHECK</span> 制約で使える式、主キー無効化時の外部キーへの影響、<span class="sql-kw">NULL</span> 許容の違いを曖昧にしやすい。</div>
+    </div>
+    
+              
+                <article class="question-card">
+                  <div class="question-meta">第1回 模擬試験 / 問27 / 正答 C.D / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>以下の文を実行して表を作成します。
+
+<span class="sql-kw">CREATE TABLE</span> CARS
+(
+　　CAR_ID NUMBER <span class="sql-kw">PRIMARY KEY</span>,
+　　CAR_NAME VARCHAR2(<span class="sql-num">50</span>),
+　　MAKER_ID NUMBER
+);
+
+<span class="sql-kw">CREATE TABLE</span> MAKERS
+(
+　　MAKER_ID NUMBER <span class="sql-kw">PRIMARY KEY</span>,
+　　MAKER_NAME VARCHAR2(<span class="sql-num">50</span>)
+);
+
+すべてのメーカーのIDと、それらに割り当てられている車のIDリストを取得するためのSQLは、どれでしょうか。（2つ選択）
+(<span class="sql-num">1</span>)		A.　<span class="sql-kw">SELECT</span> M.MAKER_ID, C.CAR_ID <span class="sql-kw">FROM</span> MAKERS M <span class="sql-kw">RIGHT OUTER JOIN</span> CARS C <span class="sql-kw">ON</span> (M.MAKER_ID=C.MAKER_ID);
+(<span class="sql-num">2</span>)		B.　<span class="sql-kw">SELECT</span> M.MAKER_ID, C.CAR_ID <span class="sql-kw">FROM</span> MAKERS M <span class="sql-kw">RIGHT OUTER JOIN</span> CARS C <span class="sql-kw">ON</span>
+(<span class="sql-num">3</span>)		C.　<span class="sql-kw">SELECT</span> M.MAKER_ID, C.CAR_ID <span class="sql-kw">FROM</span> MAKERS M <span class="sql-kw">LEFT OUTER JOIN</span> CARS C <span class="sql-kw">ON</span> (M.MAKER_ID=C.MAKER_ID);
+(<span class="sql-num">4</span>)		D.　<span class="sql-kw">SELECT</span> M.MAKER_ID, C.CAR_ID <span class="sql-kw">FROM</span> CARS C <span class="sql-kw">RIGHT OUTER JOIN</span> MAKERS M <span class="sql-kw">ON</span> (M.MAKER_ID=C.MAKER_ID);
+(<span class="sql-num">5</span>)		E.　<span class="sql-kw">SELECT</span> M.MAKER_ID, C.CAR_ID <span class="sql-kw">FROM</span> CARS C <span class="sql-kw">LEFT OUTER JOIN</span> MAKERS M <span class="sql-kw">ON</span> (C.MAKER_ID=M.MAKER_ID);</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「制約定義と有効化・無効化」です。<br>問題文は「以下の文を実行して表を作成します。 <span class="sql-kw">CREATE TABLE</span> CARS ( CAR_ID NUMBER <span class="sql-kw">PRIMARY KEY</span>, CAR_NAME VARCHAR2(<span class="sql-num">50</span>), MAKER_ID NUMBER ); <span class="sql-kw">CREATE TABLE</span>…」という条件を満たす説明または SQL を求めています。<br>主キー、外部キー、<span class="sql-kw">CHECK</span>、<span class="sql-kw">NOT NULL</span> などの制約は、型や参照整合性を守るための定義である。<br>ENABLE/DISABLE、<span class="sql-kw">CASCADE</span>、SYSDATE 使用可否など細部の制約規則が問われる。 この設問では正答 C「<span class="sql-kw">SELECT</span> M.MAKER_ID, C.CAR_ID <span class="sql-kw">FROM</span> MAKERS M <span class="sql-kw">LEFT</span> <span class="sql-kw">OUTER</span> JO…」 / D「<span class="sql-kw">SELECT</span> M.MAKER_ID, C.CAR_ID <span class="sql-kw">FROM</span> CARS C <span class="sql-kw">RIGHT</span> <span class="sql-kw">OUTER</span> JOI…」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> M.MAKER_ID, C.CAR_ID <span class="sql-kw">FROM</span> MAKERS M <span class="sql-kw">RIGHT OUTER JOIN</span> CARS C <span class="sql-kw">ON</span> (M.MAKER_ID=C.MAKER_ID);</div>
+              <div class="option-review-reason">誤り。 <span class="sql-kw">RIGHT OUTER JOIN</span> は右側表の全行を保持します。<br>表の並びと保持側を取り違えると要件から外れます。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> M.MAKER_ID, C.CAR_ID <span class="sql-kw">FROM</span> MAKERS M <span class="sql-kw">RIGHT OUTER JOIN</span> CARS C <span class="sql-kw">ON</span></div>
+              <div class="option-review-reason">誤り。 <span class="sql-kw">RIGHT OUTER JOIN</span> は右側表の全行を保持します。<br>表の並びと保持側を取り違えると要件から外れます。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> M.MAKER_ID, C.CAR_ID <span class="sql-kw">FROM</span> MAKERS M <span class="sql-kw">LEFT OUTER JOIN</span> CARS C <span class="sql-kw">ON</span> (M.MAKER_ID=C.MAKER_ID);</div>
+              <div class="option-review-reason">正しい。 <span class="sql-kw">LEFT OUTER JOIN</span> は左側表の全行を保持し、右側に一致しない行は <span class="sql-kw">NULL</span> で埋めます。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> M.MAKER_ID, C.CAR_ID <span class="sql-kw">FROM</span> CARS C <span class="sql-kw">RIGHT OUTER JOIN</span> MAKERS M <span class="sql-kw">ON</span> (M.MAKER_ID=C.MAKER_ID);</div>
+              <div class="option-review-reason">正しい。 <span class="sql-kw">RIGHT OUTER JOIN</span> は右側表の全行を保持します。<br>表の並びと保持側を取り違えると要件から外れます。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">E</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> M.MAKER_ID, C.CAR_ID <span class="sql-kw">FROM</span> CARS C <span class="sql-kw">LEFT OUTER JOIN</span> MAKERS M <span class="sql-kw">ON</span> (C.MAKER_ID=M.MAKER_ID);</div>
+              <div class="option-review-reason">誤り。 <span class="sql-kw">LEFT OUTER JOIN</span> は左側表の全行を保持し、右側に一致しない行は <span class="sql-kw">NULL</span> で埋めます。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>対象が表定義変更かデータ操作かを最初に分類する。</li><li>次に既存行の有無、<span class="sql-kw">NULL</span> 許容、<span class="sql-kw">DEFAULT</span> 補完の関係を確認する。</li><li>最後に列数・列順・制約条件が SQL 文法どおりかを確認する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+            </section>
+            
+</div>
+</body>
+</html>

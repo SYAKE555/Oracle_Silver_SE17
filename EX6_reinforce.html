@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EX6 グループ関数・集計 - 全誤答徹底解説</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans JP', 'Hiragino Sans', sans-serif; background: #eef2f7; color: #1f2937; line-height: 1.7; }
+  a { color: inherit; }
+  .page-header { background: linear-gradient(135deg,#10243f 0%,#1f3d63 55%,#e67e22 100%); color: white; padding: 42px 24px; text-align: center; }
+  .page-header h1 { font-size: 1.9rem; margin-bottom: 8px; }
+  .page-header .subtitle { opacity: 0.92; font-size: 0.95rem; }
+  .container { max-width: 1180px; margin: 0 auto; padding: 24px; }
+  .nav-back { display: inline-block; padding: 8px 16px; background: white; border-radius: 999px; text-decoration: none; color: #1f2937; box-shadow: 0 4px 14px rgba(15,23,42,.08); font-size: .9rem; margin: 0 8px 16px 0; }
+  .hero-card, .toc, .concept-section { background: white; border-radius: 18px; box-shadow: 0 10px 26px rgba(15,23,42,.08); }
+  .hero-card { padding: 20px 22px; margin-bottom: 18px; border-top: 6px solid #e67e22; }
+  .hero-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-top: 14px; }
+  .metric { background: #f8fafc; border-radius: 14px; padding: 14px; }
+  .metric .label { color: #64748b; font-size: .82rem; }
+  .metric .value { font-size: 1.35rem; font-weight: 900; color: #0f172a; margin-top: 4px; }
+  .toc { padding: 18px 22px; margin-bottom: 22px; }
+  .toc h2 { font-size: 1rem; color: #e67e22; margin-bottom: 10px; }
+  .toc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; }
+  .toc a { display: flex; justify-content: space-between; gap: 10px; align-items: center; text-decoration: none; padding: 10px 12px; border-radius: 12px; background: #f8fafc; border-left: 4px solid #e67e22; font-size: .88rem; }
+  .toc a:hover { background: #eef2f7; }
+  .concept-section { padding: 22px; margin-bottom: 24px; }
+  .concept-section h3 { display: flex; justify-content: space-between; gap: 12px; align-items: center; font-size: 1.15rem; margin-bottom: 8px; color: #0f172a; }
+  .concept-section h3 span { font-size: .82rem; padding: 5px 10px; border-radius: 999px; background: #e67e22; color: white; }
+  .concept-copy { color: #475569; font-size: .92rem; margin-bottom: 16px; }
+  .concept-guide { border-top: 5px solid #e67e22; background: #f8fafc; border-radius: 16px; padding: 16px; margin-bottom: 18px; }
+  .guide-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+  .guide-block { margin-bottom: 12px; }
+  .guide-title { font-size: .82rem; font-weight: 900; color: #e67e22; margin-bottom: 6px; }
+  .guide-block p { color: #334155; font-size: .9rem; }
+  .guide-list { padding-left: 20px; color: #334155; font-size: .9rem; }
+  .guide-list li { margin-bottom: 5px; }
+  .guide-note { background: #fff7ed; border-left: 4px solid #e67e22; border-radius: 10px; padding: 10px 12px; color: #7c2d12; font-size: .88rem; margin-top: 6px; }
+  .question-card { border: 1px solid #dbe4ef; border-radius: 16px; padding: 16px; margin-bottom: 14px; background: #fcfdff; }
+  .question-meta { font-size: .8rem; color: #64748b; margin-bottom: 10px; font-weight: 700; }
+  .block-title { font-size: .85rem; font-weight: 800; color: #e67e22; margin: 10px 0 6px; }
+  pre { white-space: pre-wrap; word-break: break-word; background: #0f172a; color: #e2e8f0; border-radius: 12px; padding: 14px; font-size: .84rem; overflow-x: auto; }
+  .analysis-block p { color: #334155; font-size: .9rem; margin-bottom: 8px; }
+  .option-review-grid { display: flex; flex-direction: column; gap: 12px; margin-bottom: 8px; }
+  .option-review { border-radius: 14px; padding: 16px 18px; border: 1px solid #dbe4ef; background: white; }
+  .option-review.correct { border-left: 6px solid #16a34a; background: #f6fdf8; }
+  .option-review.wrong { border-left: 6px solid #c0392b; background: #fffafa; }
+  .option-review-head { display: flex; justify-content: flex-start; gap: 12px; align-items: center; margin-bottom: 10px; }
+  .option-review-key { font-size: 1.05rem; font-weight: 900; color: #0f172a; min-width: 1.8em; }
+  .option-review-badges span { display: inline-block; background: #eef2f7; color: #334155; font-size: .74rem; font-weight: 800; border-radius: 999px; padding: 3px 10px; margin-left: 4px; }
+  .option-review-text { color: #1f2937; font-size: .98rem; line-height: 1.65; margin-bottom: 10px; font-weight: 600; }
+  .option-review-reason { color: #334155; font-size: .92rem; line-height: 1.75; }
+  .clause-order { background: #0f172a; color: #e2e8f0; border-radius: 12px; padding: 14px 16px; font-family: 'SFMono-Regular', Menlo, Consolas, monospace; font-size: .86rem; line-height: 1.8; white-space: pre; overflow-x: auto; }
+  .clause-order .kw { color: #fbbf24; font-weight: 800; }
+  .clause-order .desc { color: #93c5fd; }
+  .clause-order .note { color: #86efac; font-style: italic; }
+  .study-step-list { padding-left: 20px; color: #334155; font-size: .9rem; }
+  .study-step-list li { margin-bottom: 5px; }
+  @media (max-width: 720px) {
+    .page-header h1 { font-size: 1.55rem; }
+    .container { padding: 18px; }
+    .concept-section h3 { flex-direction: column; align-items: flex-start; }
+    .option-review-head { flex-direction: column; align-items: flex-start; }
+  }
+
+
+  /* sql-highlight-v3 */
+  /* default (light bg): warm tone */
+  .sql-kw  { color: #92400e; font-weight: 700; }
+  .sql-fn  { color: #1e40af; font-weight: 600; }
+  .sql-str { color: #065f46; }
+  .sql-num { color: #991b1b; }
+  .sql-cmt { color: #64748b; font-style: italic; }
+  /* dark bg override (pre / code) */
+  pre .sql-kw  { color: #fbbf24; }
+  pre .sql-fn  { color: #60a5fa; }
+  pre .sql-str { color: #86efac; }
+  pre .sql-num { color: #fca5a5; }
+  pre .sql-cmt { color: #94a3b8; }
+  code .sql-kw  { color: #fbbf24; }
+  code .sql-fn  { color: #60a5fa; }
+  code .sql-str { color: #86efac; }
+  code .sql-num { color: #fca5a5; }
+  code .sql-cmt { color: #94a3b8; }
+  /* clause-order div uses its own kw/fn/desc/note classes — no override needed */
+</style>
+</head>
+<body>
+<div class="page-header">
+  <h1>EX6 全誤答徹底解説</h1>
+  <div class="subtitle">グループ関数・集計 / Phase <span class="sql-num">2</span> 中位弱点の補修 / 演習を省き、失点した設問だけを叩き直すページ</div>
+</div>
+<div class="container">
+  <a class="nav-back" href="mock_exam_dashboard.html">模擬試験ダッシュボード</a>
+  <a class="nav-back" href="mock_exam_report.html">結果レポート</a>
+  <a class="nav-back" href="mock_exam_reinforce.html">模擬試験レビュー</a>
+  <a class="nav-back" href="phase2_reinforce.html">このフェーズへ戻る</a>
+  <a class="nav-back" href="index.html">教科書トップ</a>
+
+  <div class="hero-card">
+    <div style="font-size:.9rem;color:#64748b;font-weight:700">D4 / 優先</div>
+    <div style="font-size:1.4rem;font-weight:900;margin-top:4px">グループ関数・集計</div>
+    <p style="margin-top:8px;color:#334155">このページは、実際に間違えた設問をカテゴリ別に並べ、記録された問題全文を正本として、正答理由・誤答理由・叩き直しポイントまで一気に確認するための再構築教材です。</p>
+    <div class="hero-grid">
+      <div class="metric"><div class="label">レビュー種別</div><div class="value">誤答</div></div>
+      <div class="metric"><div class="label">進捗率</div><div class="value"><span class="sql-num">40.0</span>%</div></div>
+      <div class="metric"><div class="label">誤答数</div><div class="value">6問</div></div>
+      <div class="metric"><div class="label">カテゴリ数</div><div class="value"><span class="sql-num">2</span></div></div>
+    </div>
+  </div>
+
+  <div class="toc">
+    <h2>カテゴリ別目次</h2>
+    <div class="toc-grid">
+      <a href="#d4-1" class="mid"><span class="sql-kw">WHERE</span> と <span class="sql-kw">HAVING</span> <span>4問</span></a><a href="#d4-2" class="mid">COUNT・AVG と <span class="sql-kw">NULL</span> <span>2問</span></a>
+    </div>
+  </div>
+
+  
+            <section class="concept-section" id="d4-1">
+              <h3><span class="sql-kw">WHERE</span> と <span class="sql-kw">HAVING</span><span>4問</span></h3>
+              <p class="concept-copy"><span class="sql-kw">WHERE</span> は集計前の行条件、<span class="sql-kw">HAVING</span> は集計後のグループ条件である。<br>集計関数を <span class="sql-kw">WHERE</span> に直接書くとエラーになる。</p>
+              
+    <div class="concept-guide" style="border-top-color:#e67e22">
+      <div class="guide-block">
+        <div class="guide-title">論点の定義</div>
+        <p>集計問題では、行条件は <span class="sql-kw">WHERE</span>、グループ条件は <span class="sql-kw">HAVING</span>、集計関数以外の列は <span class="sql-kw">GROUP BY</span> に含める、という基本規則を守る必要がある。</p>
+      </div>
+      <div class="guide-block"><div class="guide-title">句の並び順（Oracle 正式構文）</div><div class="clause-order"><span class="kw">SELECT</span>   グループ列, 集計関数(列) <span class="desc">-- 集計結果</span>
+<span class="kw">FROM</span>     表
+<span class="kw">WHERE</span>    行条件                 <span class="desc">-- ← 集計“前”。集計関数は書けない</span>
+<span class="kw">GROUP BY</span> グループ化列          <span class="desc">-- SELECT の非集計列はすべてここに含める</span>
+<span class="kw">HAVING</span>   集計条件               <span class="desc">-- ← 集計“後”。COUNT(*) 等はここに書く</span>
+<span class="kw">ORDER BY</span> 集計列 / 位置番号
+<span class="note">-- COUNT(*) は全行、COUNT(列) は NULL を除く。SUM/AVG/MIN/MAX は NULL を無視。</span></div></div>
+      <div class="guide-block">
+        <div class="guide-title">この論点の基本形</div>
+        <pre><span class="sql-kw">SELECT</span> department_id, <span class="sql-fn">COUNT</span>(*)
+<span class="sql-kw">FROM</span>   employees
+<span class="sql-kw">WHERE</span>  salary <span class="sql-kw">IS NOT NULL</span>
+GROUP  <span class="sql-kw">BY</span> department_id
+<span class="sql-kw">HAVING</span> <span class="sql-fn">COUNT</span>(*) &gt;= <span class="sql-num">2</span>;</pre>
+      </div>
+      <div class="guide-grid">
+        <div class="guide-block">
+          <div class="guide-title">成立条件</div>
+          <ul class="guide-list"><li><span class="sql-kw">WHERE</span> は集計前、<span class="sql-kw">HAVING</span> は集計後に適用される。</li><li><span class="sql-fn">COUNT</span>(*) は全行、<span class="sql-fn">COUNT</span>(col) は <span class="sql-kw">NULL</span> を除く行数を返す。</li><li><span class="sql-kw">SELECT</span> に出す非集計列は <span class="sql-kw">GROUP BY</span> にすべて含める。</li></ul>
+        </div>
+        <div class="guide-block">
+          <div class="guide-title">判定手順</div>
+          <ol class="guide-list ordered"><li>条件が行単位かグループ単位かを最初に判定する。</li><li>次に <span class="sql-kw">SELECT</span> 列と <span class="sql-kw">GROUP BY</span> 列の整合を確認する。</li><li><span class="sql-kw">NULL</span> を含む列では <span class="sql-fn">COUNT</span>(*) と <span class="sql-fn">COUNT</span>(col) の違いを明示的に追う。</li></ol>
+        </div>
+      </div>
+      <div class="guide-note">失点しやすい点: COUNT や AVG 条件を <span class="sql-kw">WHERE</span> に置いてしまい、<span class="sql-kw">GROUP BY</span> 後の条件だと気付けないことが多い。</div>
+    </div>
+    
+              
+                <article class="question-card">
+                  <div class="question-meta">第1回 模擬試験 / 問23 / 正答 A.C / 自己回答 A.B</div>
+                  <div class="block-title">問題文</div>
+                  <pre>図のような表があります。
+
+以下のSQLで正常に実行されるものはどれでしょうか。（2つ選択）
+　
+拡大する
+(<span class="sql-num">1</span>)		A.　<span class="sql-kw">SELECT</span> <span class="sql-fn">SUM</span>(ITEM_TYPE1+ITEM_TYPE2) <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> ITEM_NAME <span class="sql-kw">LIKE</span> &#x27;R%&#x27;;
+(<span class="sql-num">2</span>)		B.　<span class="sql-kw">SELECT</span> <span class="sql-fn">SUM</span>(ITEM_TYPE1+ITEM_TYPE2),ITEM_NAME <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> ITEM_NAME <span class="sql-kw">LIKE</span> &#x27;R%&#x27;;
+(<span class="sql-num">3</span>)		C.　<span class="sql-kw">SELECT</span> <span class="sql-fn">SUM</span>(<span class="sql-kw">DISTINCT</span> ITEM_TYPE1), <span class="sql-fn">MIN</span>(ITEM_TYPE1) <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> ITEM_NAME <span class="sql-kw">LIKE</span> &#x27;R%&#x27;;
+(<span class="sql-num">4</span>)		D.　<span class="sql-kw">SELECT</span> <span class="sql-fn">AVG</span>(ITEM_PRICE) <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> <span class="sql-fn">AVG</span>(ITEM_PRICE) &gt;= <span class="sql-num">500</span> <span class="sql-kw">GROUP BY</span> ITEM_ID;</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問で確定させる論点は「<span class="sql-kw">WHERE</span> と <span class="sql-kw">HAVING</span>」です。<br>問題文は「図のような表があります。 以下のSQLで正常に実行されるものはどれでしょうか。<br>（2つ選択）」を満たす記述または SQL を求めています。<br><span class="sql-kw">WHERE</span> は集計前の行条件、<span class="sql-kw">HAVING</span> は集計後のグループ条件である。<br>集計関数を <span class="sql-kw">WHERE</span> に直接書くとエラーになる。 そのため、成立条件を満たす正答は A「<span class="sql-kw">SELECT</span> <span class="sql-fn">SUM</span>(ITEM_TYPE1+ITEM_TYPE2) <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> ITEM_…」 / C「<span class="sql-kw">SELECT</span> <span class="sql-fn">SUM</span>(<span class="sql-kw">DISTINCT</span> ITEM_TYPE1), <span class="sql-fn">MIN</span>(ITEM_TYPE1) <span class="sql-kw">FROM</span> I…」 です。</p>
+                    <div class="block-title">今回の失点要因</div>
+                    <p>自己回答は A「<span class="sql-kw">SELECT</span> <span class="sql-fn">SUM</span>(ITEM_TYPE1+ITEM_TYPE2) <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> ITEM_…」 / B「<span class="sql-kw">SELECT</span> <span class="sql-fn">SUM</span>(ITEM_TYPE1+ITEM_TYPE2),ITEM_NAME <span class="sql-kw">FROM</span> ITEM W…」 でした。<br>一部は論点を捉えていますが、B「<span class="sql-kw">SELECT</span> <span class="sql-fn">SUM</span>(ITEM_TYPE1+ITEM_TYPE2),ITEM_NAME <span class="sql-kw">FROM</span> ITEM W…」 を混在させたことで正答条件を外しています。<br>失点要因は COUNT や AVG 条件を <span class="sql-kw">WHERE</span> に置いてしまい、<span class="sql-kw">GROUP BY</span> 後の条件だと気付けないことが多い。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>正答肢</span><span>自己回答</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> <span class="sql-fn">SUM</span>(ITEM_TYPE1+ITEM_TYPE2) <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> ITEM_NAME <span class="sql-kw">LIKE</span> &#x27;R%&#x27;;</div>
+              <div class="option-review-reason">正しい。 集計問題では、<span class="sql-kw">WHERE</span>・<span class="sql-kw">GROUP BY</span>・<span class="sql-kw">HAVING</span> の役割分担を崩していないかが判定基準です。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span><span>自己回答</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> <span class="sql-fn">SUM</span>(ITEM_TYPE1+ITEM_TYPE2),ITEM_NAME <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> ITEM_NAME <span class="sql-kw">LIKE</span> &#x27;R%&#x27;;</div>
+              <div class="option-review-reason">誤り。 集計問題では、<span class="sql-kw">WHERE</span>・<span class="sql-kw">GROUP BY</span>・<span class="sql-kw">HAVING</span> の役割分担を崩していないかが判定基準です。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> <span class="sql-fn">SUM</span>(<span class="sql-kw">DISTINCT</span> ITEM_TYPE1), <span class="sql-fn">MIN</span>(ITEM_TYPE1) <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> ITEM_NAME <span class="sql-kw">LIKE</span> &#x27;R%&#x27;;</div>
+              <div class="option-review-reason">正しい。 集計問題では、<span class="sql-kw">WHERE</span>・<span class="sql-kw">GROUP BY</span>・<span class="sql-kw">HAVING</span> の役割分担を崩していないかが判定基準です。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> <span class="sql-fn">AVG</span>(ITEM_PRICE) <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> <span class="sql-fn">AVG</span>(ITEM_PRICE) &gt;= <span class="sql-num">500</span> <span class="sql-kw">GROUP BY</span> ITEM_ID;</div>
+              <div class="option-review-reason">誤り。 集計問題では、<span class="sql-kw">WHERE</span>・<span class="sql-kw">GROUP BY</span>・<span class="sql-kw">HAVING</span> の役割分担を崩していないかが判定基準です。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>条件が行単位かグループ単位かを最初に判定する。</li><li>次に <span class="sql-kw">SELECT</span> 列と <span class="sql-kw">GROUP BY</span> 列の整合を確認する。</li><li><span class="sql-kw">NULL</span> を含む列では <span class="sql-fn">COUNT</span>(*) と <span class="sql-fn">COUNT</span>(col) の違いを明示的に追う。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第3回 模擬試験 / 問38 / 正答 AB / 自己回答 BC</div>
+                  <div class="block-title">問題文</div>
+                  <pre>EMPLOYEES テーブルには、NUMBER型の DEPT_ID 列と SALARY 列があります。 次のうち、正常に実行できるクエリを2つ選んでください。
+(<span class="sql-num">1</span>)		A. <span class="sql-kw">SELECT</span> dept_id, <span class="sql-fn">COUNT</span>(dept_id) <span class="sql-kw">FROM</span> employees <span class="sql-kw">WHERE</span> salary &gt; <span class="sql-num">215000</span> <span class="sql-kw">GROUP BY</span> dept_id <span class="sql-kw">HAVING</span> <span class="sql-fn">COUNT</span>(*) &gt; <span class="sql-num">5</span>;
+(<span class="sql-num">2</span>)		B. <span class="sql-kw">SELECT</span> dept_id <span class="sql-kw">FROM</span> employees <span class="sql-kw">WHERE</span> salary &gt; <span class="sql-num">215000</span> <span class="sql-kw">GROUP BY</span> dept_id <span class="sql-kw">HAVING</span> <span class="sql-fn">COUNT</span>(*) &gt; <span class="sql-num">5</span>;
+(<span class="sql-num">3</span>)		C. <span class="sql-kw">SELECT</span> <span class="sql-fn">COUNT</span>(dept_id) <span class="sql-kw">FROM</span> employees <span class="sql-kw">GROUP BY</span> dept_id <span class="sql-kw">WHERE</span> salary &gt; <span class="sql-num">215000</span>;
+(<span class="sql-num">4</span>)		D. <span class="sql-kw">SELECT</span> dept_id <span class="sql-kw">FROM</span> employees <span class="sql-kw">WHERE</span> salary &gt; <span class="sql-num">215000</span> <span class="sql-kw">AND</span> <span class="sql-fn">COUNT</span>(*) &gt; <span class="sql-num">5</span> <span class="sql-kw">GROUP BY</span> <span class="sql-fn">COUNT</span>(*);</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問で確定させる論点は「<span class="sql-kw">WHERE</span> と <span class="sql-kw">HAVING</span>」です。<br>問題文は「EMPLOYEES テーブルには、NUMBER型の DEPT_ID 列と SALARY 列があります。 次のうち、正常に実行できるクエリを2つ選んでください。<br>」を満たす記述または SQL を求めています。<br><span class="sql-kw">WHERE</span> は集計前の行条件、<span class="sql-kw">HAVING</span> は集計後のグループ条件である。<br>集計関数を <span class="sql-kw">WHERE</span> に直接書くとエラーになる。 そのため、成立条件を満たす正答は A「<span class="sql-kw">SELECT</span> dept_id, <span class="sql-fn">COUNT</span>(dept_id) <span class="sql-kw">FROM</span> employees <span class="sql-kw">WHERE</span> sal…」 / B「<span class="sql-kw">SELECT</span> dept_id <span class="sql-kw">FROM</span> employees <span class="sql-kw">WHERE</span> salary &gt; <span class="sql-num">215000</span> GRO…」 です。</p>
+                    <div class="block-title">今回の失点要因</div>
+                    <p>自己回答は B「<span class="sql-kw">SELECT</span> dept_id <span class="sql-kw">FROM</span> employees <span class="sql-kw">WHERE</span> salary &gt; <span class="sql-num">215000</span> GRO…」 / C「<span class="sql-kw">SELECT</span> <span class="sql-fn">COUNT</span>(dept_id) <span class="sql-kw">FROM</span> employees <span class="sql-kw">GROUP BY</span> dept_id W…」 でした。<br>一部は論点を捉えていますが、C「<span class="sql-kw">SELECT</span> <span class="sql-fn">COUNT</span>(dept_id) <span class="sql-kw">FROM</span> employees <span class="sql-kw">GROUP BY</span> dept_id W…」 を混在させたことで正答条件を外しています。<br>失点要因は COUNT や AVG 条件を <span class="sql-kw">WHERE</span> に置いてしまい、<span class="sql-kw">GROUP BY</span> 後の条件だと気付けないことが多い。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> dept_id, <span class="sql-fn">COUNT</span>(dept_id) <span class="sql-kw">FROM</span> employees <span class="sql-kw">WHERE</span> salary &gt; <span class="sql-num">215000</span> <span class="sql-kw">GROUP BY</span> dept_id <span class="sql-kw">HAVING</span> <span class="sql-fn">COUNT</span>(*) &gt; <span class="sql-num">5</span>;</div>
+              <div class="option-review-reason">正しい。 <span class="sql-kw">HAVING</span> は集計後のグループに対して条件を適用します。 集計関数を <span class="sql-kw">WHERE</span> に直接書くことはできず、集計後条件なら <span class="sql-kw">HAVING</span> が必要です。 <span class="sql-fn">COUNT</span>(*) は <span class="sql-kw">NULL</span> の有無に関係なく行数全体を数えます。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>正答肢</span><span>自己回答</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> dept_id <span class="sql-kw">FROM</span> employees <span class="sql-kw">WHERE</span> salary &gt; <span class="sql-num">215000</span> <span class="sql-kw">GROUP BY</span> dept_id <span class="sql-kw">HAVING</span> <span class="sql-fn">COUNT</span>(*) &gt; <span class="sql-num">5</span>;</div>
+              <div class="option-review-reason">正しい。 <span class="sql-kw">HAVING</span> は集計後のグループに対して条件を適用します。 集計関数を <span class="sql-kw">WHERE</span> に直接書くことはできず、集計後条件なら <span class="sql-kw">HAVING</span> が必要です。 <span class="sql-fn">COUNT</span>(*) は <span class="sql-kw">NULL</span> の有無に関係なく行数全体を数えます。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span><span>自己回答</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> <span class="sql-fn">COUNT</span>(dept_id) <span class="sql-kw">FROM</span> employees <span class="sql-kw">GROUP BY</span> dept_id <span class="sql-kw">WHERE</span> salary &gt; <span class="sql-num">215000</span>;</div>
+              <div class="option-review-reason">誤り。 <span class="sql-fn">COUNT</span>(列) はその列が <span class="sql-kw">NULL</span> の行を数えません。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> dept_id <span class="sql-kw">FROM</span> employees <span class="sql-kw">WHERE</span> salary &gt; <span class="sql-num">215000</span> <span class="sql-kw">AND</span> <span class="sql-fn">COUNT</span>(*) &gt; <span class="sql-num">5</span> <span class="sql-kw">GROUP BY</span> <span class="sql-fn">COUNT</span>(*);</div>
+              <div class="option-review-reason">誤り。 集計関数を <span class="sql-kw">WHERE</span> に直接書くことはできず、集計後条件なら <span class="sql-kw">HAVING</span> が必要です。 <span class="sql-fn">COUNT</span>(*) は <span class="sql-kw">NULL</span> の有無に関係なく行数全体を数えます。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>条件が行単位かグループ単位かを最初に判定する。</li><li>次に <span class="sql-kw">SELECT</span> 列と <span class="sql-kw">GROUP BY</span> 列の整合を確認する。</li><li><span class="sql-kw">NULL</span> を含む列では <span class="sql-fn">COUNT</span>(*) と <span class="sql-fn">COUNT</span>(col) の違いを明示的に追う。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第3回 模擬試験 / 問51 / 正答 B / 自己回答 C</div>
+                  <div class="block-title">問題文</div>
+                  <pre>次のSQLはエラーが発生します。その理由を1つ選択してください。
+
+<span class="sql-kw">SELECT</span> dept_id <span class="sql-kw">AS</span> &quot;Department&quot;, <span class="sql-fn">AVG</span>(salary) <span class="sql-kw">AS</span> AvgSal, <span class="sql-fn">MAX</span>(salary) <span class="sql-kw">AS</span> &quot;MaxSal&quot;
+<span class="sql-kw">FROM</span> employees
+<span class="sql-kw">WHERE</span> salary &gt; <span class="sql-num">23000</span>
+<span class="sql-kw">GROUP BY</span> &quot;Department&quot;
+<span class="sql-kw">ORDER BY</span> AvgSal;
+
+(<span class="sql-num">1</span>)		A. 別名は常に二重引用符で指定しなければならない。
+(<span class="sql-num">2</span>)		B. 別名は <span class="sql-kw">GROUP BY</span> 句で使用できない。
+(<span class="sql-num">3</span>)		C. 別名は <span class="sql-kw">ORDER BY</span> 句で使用できない。
+(<span class="sql-num">4</span>)		D. 別名（alias）はスペースを含めてはならない。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問で確定させる論点は「<span class="sql-kw">WHERE</span> と <span class="sql-kw">HAVING</span>」です。<br>問題文は「次のSQLはエラーが発生します。<br>その理由を1つ選択してください。 <span class="sql-kw">SELECT</span> dept_id <span class="sql-kw">AS</span> "Department", <span class="sql-fn">AVG</span>(salary) <span class="sql-kw">AS</span> AvgSal, <span class="sql-fn">MAX</span>(salary) <span class="sql-kw">AS</span> "MaxSal" <span class="sql-kw">FROM</span> em…」を満たす記述または SQL を求めています。<br><span class="sql-kw">WHERE</span> は集計前の行条件、<span class="sql-kw">HAVING</span> は集計後のグループ条件である。<br>集計関数を <span class="sql-kw">WHERE</span> に直接書くとエラーになる。 そのため、成立条件を満たす正答は B「別名は <span class="sql-kw">GROUP BY</span> 句で使用できない。<br>」 です。</p>
+                    <div class="block-title">今回の失点要因</div>
+                    <p>自己回答は C「別名は <span class="sql-kw">ORDER BY</span> 句で使用できない。<br>」 でした。<br>失点要因は COUNT や AVG 条件を <span class="sql-kw">WHERE</span> に置いてしまい、<span class="sql-kw">GROUP BY</span> 後の条件だと気付けないことが多い。 正答との差は、条件の向き、句の位置、返却行数、またはオブジェクトの性質を正式定義のレベルで確認し切れていない点にあります。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">別名は常に二重引用符で指定しなければならない。</div>
+              <div class="option-review-reason">誤り。 集計問題では、<span class="sql-kw">WHERE</span>・<span class="sql-kw">GROUP BY</span>・<span class="sql-kw">HAVING</span> の役割分担を崩していないかが判定基準です。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">別名は <span class="sql-kw">GROUP BY</span> 句で使用できない。</div>
+              <div class="option-review-reason">正しい。 集計問題では、<span class="sql-kw">WHERE</span>・<span class="sql-kw">GROUP BY</span>・<span class="sql-kw">HAVING</span> の役割分担を崩していないかが判定基準です。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span><span>自己回答</span></div>
+              </div>
+              <div class="option-review-text">別名は <span class="sql-kw">ORDER BY</span> 句で使用できない。</div>
+              <div class="option-review-reason">誤り。 集計問題では、<span class="sql-kw">WHERE</span>・<span class="sql-kw">GROUP BY</span>・<span class="sql-kw">HAVING</span> の役割分担を崩していないかが判定基準です。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">別名（alias）はスペースを含めてはならない。</div>
+              <div class="option-review-reason">誤り。 集計問題では、<span class="sql-kw">WHERE</span>・<span class="sql-kw">GROUP BY</span>・<span class="sql-kw">HAVING</span> の役割分担を崩していないかが判定基準です。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>条件が行単位かグループ単位かを最初に判定する。</li><li>次に <span class="sql-kw">SELECT</span> 列と <span class="sql-kw">GROUP BY</span> 列の整合を確認する。</li><li><span class="sql-kw">NULL</span> を含む列では <span class="sql-fn">COUNT</span>(*) と <span class="sql-fn">COUNT</span>(col) の違いを明示的に追う。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第3回 模擬試験 / 問60 / 正答 B / 自己回答 D</div>
+                  <div class="block-title">問題文</div>
+                  <pre>A.
+<span class="sql-kw">SELECT</span> dept_id, <span class="sql-fn">COUNT</span>(*) <span class="sql-kw">FROM</span> employees
+<span class="sql-kw">GROUP BY</span> dept_id
+<span class="sql-kw">HAVING</span> <span class="sql-fn">COUNT</span>(*) &gt;= <span class="sql-num">4</span>
+<span class="sql-kw">ORDER BY</span> dept_id;
+
+B.
+<span class="sql-kw">SELECT</span> dept_id, <span class="sql-fn">COUNT</span>(*) <span class="sql-kw">FROM</span> employees
+<span class="sql-kw">WHERE</span> dept_id &lt;&gt; <span class="sql-num">100</span> <span class="sql-kw">AND</span> <span class="sql-fn">COUNT</span>(*) &gt;= <span class="sql-num">4</span>
+<span class="sql-kw">GROUP BY</span> dept_id;
+
+C.
+<span class="sql-kw">SELECT</span> dept_id, <span class="sql-fn">COUNT</span>(*) <span class="sql-kw">FROM</span> employees
+<span class="sql-kw">WHERE</span> dept_id &lt;&gt; <span class="sql-num">100</span>
+<span class="sql-kw">GROUP BY</span> dept_id
+<span class="sql-kw">HAVING</span> <span class="sql-fn">COUNT</span>(*) &gt;= <span class="sql-num">4</span>;
+
+D.
+<span class="sql-kw">SELECT</span> dept_id, <span class="sql-fn">COUNT</span>(*) <span class="sql-kw">FROM</span> employees
+<span class="sql-kw">GROUP BY</span> dept_id
+<span class="sql-kw">HAVING</span> <span class="sql-fn">COUNT</span>(*) &gt;= <span class="sql-num">4</span>;
+
+Employees表に対して以下のクエリを実行する場合、エラーとなるものはどれですか。1つ選択してください。
+
+(<span class="sql-num">1</span>)		A
+(<span class="sql-num">2</span>)		B
+(<span class="sql-num">3</span>)		C
+(<span class="sql-num">4</span>)		D</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問で確定させる論点は「<span class="sql-kw">WHERE</span> と <span class="sql-kw">HAVING</span>」です。<br>問題文は「設問条件の読み取り」を満たす記述または SQL を求めています。<br><span class="sql-kw">WHERE</span> は集計前の行条件、<span class="sql-kw">HAVING</span> は集計後のグループ条件である。<br>集計関数を <span class="sql-kw">WHERE</span> に直接書くとエラーになる。 そのため、成立条件を満たす正答は B「<span class="sql-kw">SELECT</span> dept_id, <span class="sql-fn">COUNT</span>(*) <span class="sql-kw">FROM</span> employees <span class="sql-kw">WHERE</span> dept_id &lt;…」 です。</p>
+                    <div class="block-title">今回の失点要因</div>
+                    <p>自己回答は D「<span class="sql-kw">SELECT</span> dept_id, <span class="sql-fn">COUNT</span>(*) <span class="sql-kw">FROM</span> employees <span class="sql-kw">GROUP BY</span> dept_i…」 でした。<br>失点要因は COUNT や AVG 条件を <span class="sql-kw">WHERE</span> に置いてしまい、<span class="sql-kw">GROUP BY</span> 後の条件だと気付けないことが多い。 正答との差は、条件の向き、句の位置、返却行数、またはオブジェクトの性質を正式定義のレベルで確認し切れていない点にあります。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> dept_id, <span class="sql-fn">COUNT</span>(*) <span class="sql-kw">FROM</span> employees<br><span class="sql-kw">GROUP BY</span> dept_id<br><span class="sql-kw">HAVING</span> <span class="sql-fn">COUNT</span>(*) &gt;= <span class="sql-num">4</span><br><span class="sql-kw">ORDER BY</span> dept_id;</div>
+              <div class="option-review-reason">誤り。 <span class="sql-kw">HAVING</span> は集計後のグループに対して条件を適用します。 <span class="sql-fn">COUNT</span>(*) は <span class="sql-kw">NULL</span> の有無に関係なく行数全体を数えます。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> dept_id, <span class="sql-fn">COUNT</span>(*) <span class="sql-kw">FROM</span> employees<br><span class="sql-kw">WHERE</span> dept_id &lt;&gt; <span class="sql-num">100</span> <span class="sql-kw">AND</span> <span class="sql-fn">COUNT</span>(*) &gt;= <span class="sql-num">4</span><br><span class="sql-kw">GROUP BY</span> dept_id;</div>
+              <div class="option-review-reason">正しい。 集計関数を <span class="sql-kw">WHERE</span> に直接書くことはできず、集計後条件なら <span class="sql-kw">HAVING</span> が必要です。 <span class="sql-fn">COUNT</span>(*) は <span class="sql-kw">NULL</span> の有無に関係なく行数全体を数えます。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> dept_id, <span class="sql-fn">COUNT</span>(*) <span class="sql-kw">FROM</span> employees<br><span class="sql-kw">WHERE</span> dept_id &lt;&gt; <span class="sql-num">100</span><br><span class="sql-kw">GROUP BY</span> dept_id<br><span class="sql-kw">HAVING</span> <span class="sql-fn">COUNT</span>(*) &gt;= <span class="sql-num">4</span>;</div>
+              <div class="option-review-reason">誤り。 <span class="sql-kw">HAVING</span> は集計後のグループに対して条件を適用します。 集計関数を <span class="sql-kw">WHERE</span> に直接書くことはできず、集計後条件なら <span class="sql-kw">HAVING</span> が必要です。 <span class="sql-fn">COUNT</span>(*) は <span class="sql-kw">NULL</span> の有無に関係なく行数全体を数えます。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span><span>自己回答</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> dept_id, <span class="sql-fn">COUNT</span>(*) <span class="sql-kw">FROM</span> employees<br><span class="sql-kw">GROUP BY</span> dept_id<br><span class="sql-kw">HAVING</span> <span class="sql-fn">COUNT</span>(*) &gt;= <span class="sql-num">4</span>;<br>Employees表に対して以下のクエリを実行する場合、エラーとなるものはどれですか。<br>1つ選択してください。</div>
+              <div class="option-review-reason">誤り。 <span class="sql-kw">HAVING</span> は集計後のグループに対して条件を適用します。 <span class="sql-fn">COUNT</span>(*) は <span class="sql-kw">NULL</span> の有無に関係なく行数全体を数えます。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>条件が行単位かグループ単位かを最初に判定する。</li><li>次に <span class="sql-kw">SELECT</span> 列と <span class="sql-kw">GROUP BY</span> 列の整合を確認する。</li><li><span class="sql-kw">NULL</span> を含む列では <span class="sql-fn">COUNT</span>(*) と <span class="sql-fn">COUNT</span>(col) の違いを明示的に追う。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+            </section>
+            
+            <section class="concept-section" id="d4-2">
+              <h3>COUNT・AVG と <span class="sql-kw">NULL</span><span>2問</span></h3>
+              <p class="concept-copy"><span class="sql-fn">COUNT</span>(*) は行数、<span class="sql-fn">COUNT</span>(col) は <span class="sql-kw">NULL</span> を除く列数、<span class="sql-fn">AVG</span>(col) は <span class="sql-kw">NULL</span> を平均計算から除外する。<br>集計関数ごとに <span class="sql-kw">NULL</span> の扱いが異なる。</p>
+              
+    <div class="concept-guide" style="border-top-color:#e67e22">
+      <div class="guide-block">
+        <div class="guide-title">論点の定義</div>
+        <p>集計問題では、行条件は <span class="sql-kw">WHERE</span>、グループ条件は <span class="sql-kw">HAVING</span>、集計関数以外の列は <span class="sql-kw">GROUP BY</span> に含める、という基本規則を守る必要がある。</p>
+      </div>
+      <div class="guide-block"><div class="guide-title">句の並び順（Oracle 正式構文）</div><div class="clause-order"><span class="kw">SELECT</span>   グループ列, 集計関数(列) <span class="desc">-- 集計結果</span>
+<span class="kw">FROM</span>     表
+<span class="kw">WHERE</span>    行条件                 <span class="desc">-- ← 集計“前”。集計関数は書けない</span>
+<span class="kw">GROUP BY</span> グループ化列          <span class="desc">-- SELECT の非集計列はすべてここに含める</span>
+<span class="kw">HAVING</span>   集計条件               <span class="desc">-- ← 集計“後”。COUNT(*) 等はここに書く</span>
+<span class="kw">ORDER BY</span> 集計列 / 位置番号
+<span class="note">-- COUNT(*) は全行、COUNT(列) は NULL を除く。SUM/AVG/MIN/MAX は NULL を無視。</span></div></div>
+      <div class="guide-block">
+        <div class="guide-title">この論点の基本形</div>
+        <pre><span class="sql-kw">SELECT</span> department_id, <span class="sql-fn">COUNT</span>(*)
+<span class="sql-kw">FROM</span>   employees
+<span class="sql-kw">WHERE</span>  salary <span class="sql-kw">IS NOT NULL</span>
+GROUP  <span class="sql-kw">BY</span> department_id
+<span class="sql-kw">HAVING</span> <span class="sql-fn">COUNT</span>(*) &gt;= <span class="sql-num">2</span>;</pre>
+      </div>
+      <div class="guide-grid">
+        <div class="guide-block">
+          <div class="guide-title">成立条件</div>
+          <ul class="guide-list"><li><span class="sql-kw">WHERE</span> は集計前、<span class="sql-kw">HAVING</span> は集計後に適用される。</li><li><span class="sql-fn">COUNT</span>(*) は全行、<span class="sql-fn">COUNT</span>(col) は <span class="sql-kw">NULL</span> を除く行数を返す。</li><li><span class="sql-kw">SELECT</span> に出す非集計列は <span class="sql-kw">GROUP BY</span> にすべて含める。</li></ul>
+        </div>
+        <div class="guide-block">
+          <div class="guide-title">判定手順</div>
+          <ol class="guide-list ordered"><li>条件が行単位かグループ単位かを最初に判定する。</li><li>次に <span class="sql-kw">SELECT</span> 列と <span class="sql-kw">GROUP BY</span> 列の整合を確認する。</li><li><span class="sql-kw">NULL</span> を含む列では <span class="sql-fn">COUNT</span>(*) と <span class="sql-fn">COUNT</span>(col) の違いを明示的に追う。</li></ol>
+        </div>
+      </div>
+      <div class="guide-note">失点しやすい点: <span class="sql-fn">COUNT</span>(*) と <span class="sql-fn">COUNT</span>(col) を同一視し、AVG の分母に <span class="sql-kw">NULL</span> 行まで含めて考えやすい。</div>
+    </div>
+    
+              
+                <article class="question-card">
+                  <div class="question-meta">第2回 模擬試験 / 問23 / 正答 AC / 自己回答 AB</div>
+                  <div class="block-title">問題文</div>
+                  <pre>以下のSQLで正常に実行されるものはどれでしょうか。（2つ選択）
+
+(<span class="sql-num">1</span>)		A.　<span class="sql-kw">SELECT</span> ITEM_ID,MADE_DATE,<span class="sql-fn">AVG</span>(ITEM_PRICE) <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">GROUP BY</span> ITEM_ID,MADE_DATE;
+(<span class="sql-num">2</span>)		B.　<span class="sql-kw">SELECT</span> ITEM_ID,MADE_DATE,<span class="sql-fn">SUM</span>(ITEM_PRICE) <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">GROUP BY</span> ITEM_ID;
+(<span class="sql-num">3</span>)		C.　<span class="sql-kw">SELECT</span> <span class="sql-fn">MIN</span>(<span class="sql-fn">AVG</span>(ITEM_PRICE)) <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">GROUP BY</span> ITEM_ID;
+(<span class="sql-num">4</span>)		D.　<span class="sql-kw">SELECT</span> ITEM_ID,<span class="sql-fn">MAX</span>(<span class="sql-fn">AVG</span>(ITEM_PRICE)) <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">GROUP BY</span> ITEM_ID;</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問で確定させる論点は「COUNT・AVG と <span class="sql-kw">NULL</span>」です。<br>問題文は「以下のSQLで正常に実行されるものはどれでしょうか。<br>（2つ選択）」を満たす記述または SQL を求めています。<br><span class="sql-fn">COUNT</span>(*) は行数、<span class="sql-fn">COUNT</span>(col) は <span class="sql-kw">NULL</span> を除く列数、<span class="sql-fn">AVG</span>(col) は <span class="sql-kw">NULL</span> を平均計算から除外する。<br>集計関数ごとに <span class="sql-kw">NULL</span> の扱いが異なる。 そのため、成立条件を満たす正答は A「<span class="sql-kw">SELECT</span> ITEM_ID,MADE_DATE,<span class="sql-fn">AVG</span>(ITEM_PRICE) <span class="sql-kw">FROM</span> ITEM GROU…」 / C「<span class="sql-kw">SELECT</span> <span class="sql-fn">MIN</span>(<span class="sql-fn">AVG</span>(ITEM_PRICE)) <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">GROUP BY</span> ITEM_ID;」 です。</p>
+                    <div class="block-title">今回の失点要因</div>
+                    <p>自己回答は A「<span class="sql-kw">SELECT</span> ITEM_ID,MADE_DATE,<span class="sql-fn">AVG</span>(ITEM_PRICE) <span class="sql-kw">FROM</span> ITEM GROU…」 / B「<span class="sql-kw">SELECT</span> ITEM_ID,MADE_DATE,<span class="sql-fn">SUM</span>(ITEM_PRICE) <span class="sql-kw">FROM</span> ITEM GROU…」 でした。<br>一部は論点を捉えていますが、B「<span class="sql-kw">SELECT</span> ITEM_ID,MADE_DATE,<span class="sql-fn">SUM</span>(ITEM_PRICE) <span class="sql-kw">FROM</span> ITEM GROU…」 を混在させたことで正答条件を外しています。<br>失点要因は <span class="sql-fn">COUNT</span>(*) と <span class="sql-fn">COUNT</span>(col) を同一視し、AVG の分母に <span class="sql-kw">NULL</span> 行まで含めて考えやすい。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>正答肢</span><span>自己回答</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> ITEM_ID,MADE_DATE,<span class="sql-fn">AVG</span>(ITEM_PRICE) <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">GROUP BY</span> ITEM_ID,MADE_DATE;</div>
+              <div class="option-review-reason">正しい。 集計問題では、<span class="sql-kw">WHERE</span>・<span class="sql-kw">GROUP BY</span>・<span class="sql-kw">HAVING</span> の役割分担を崩していないかが判定基準です。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span><span>自己回答</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> ITEM_ID,MADE_DATE,<span class="sql-fn">SUM</span>(ITEM_PRICE) <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">GROUP BY</span> ITEM_ID;</div>
+              <div class="option-review-reason">誤り。 集計問題では、<span class="sql-kw">WHERE</span>・<span class="sql-kw">GROUP BY</span>・<span class="sql-kw">HAVING</span> の役割分担を崩していないかが判定基準です。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> <span class="sql-fn">MIN</span>(<span class="sql-fn">AVG</span>(ITEM_PRICE)) <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">GROUP BY</span> ITEM_ID;</div>
+              <div class="option-review-reason">正しい。 集計問題では、<span class="sql-kw">WHERE</span>・<span class="sql-kw">GROUP BY</span>・<span class="sql-kw">HAVING</span> の役割分担を崩していないかが判定基準です。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> ITEM_ID,<span class="sql-fn">MAX</span>(<span class="sql-fn">AVG</span>(ITEM_PRICE)) <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">GROUP BY</span> ITEM_ID;</div>
+              <div class="option-review-reason">誤り。 集計問題では、<span class="sql-kw">WHERE</span>・<span class="sql-kw">GROUP BY</span>・<span class="sql-kw">HAVING</span> の役割分担を崩していないかが判定基準です。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>条件が行単位かグループ単位かを最初に判定する。</li><li>次に <span class="sql-kw">SELECT</span> 列と <span class="sql-kw">GROUP BY</span> 列の整合を確認する。</li><li><span class="sql-kw">NULL</span> を含む列では <span class="sql-fn">COUNT</span>(*) と <span class="sql-fn">COUNT</span>(col) の違いを明示的に追う。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第2回 模擬試験 / 問59 / 正答 ADE / 自己回答 ABC</div>
+                  <div class="block-title">問題文</div>
+                  <pre>次のSQL文のうち、正しく動作するものはどれでしょうか。3つ選んでください。
+(<span class="sql-num">1</span>)		A. <span class="sql-kw">SELECT</span> dept_id, <span class="sql-fn">COUNT</span>(*) <span class="sql-kw">FROM</span> employees <span class="sql-kw">GROUP BY</span> dept_id;
+(<span class="sql-num">2</span>)		B. <span class="sql-kw">SELECT</span> dept_id, name, <span class="sql-fn">COUNT</span>(*) <span class="sql-kw">FROM</span> employees <span class="sql-kw">GROUP BY</span> dept_id;
+(<span class="sql-num">3</span>)		C. <span class="sql-kw">SELECT</span> dept_id, <span class="sql-fn">MAX</span>(<span class="sql-fn">SUM</span>(salary)) <span class="sql-kw">FROM</span> employees <span class="sql-kw">GROUP BY</span> dept_id;
+(<span class="sql-num">4</span>)		D. <span class="sql-kw">SELECT</span> <span class="sql-fn">MAX</span>(<span class="sql-fn">SUM</span>(salary)) <span class="sql-kw">FROM</span> employees <span class="sql-kw">GROUP BY</span> dept_id;
+(<span class="sql-num">5</span>)		E. <span class="sql-kw">SELECT</span> <span class="sql-fn">MAX</span>(salary),<span class="sql-fn">SUM</span>(salary) <span class="sql-kw">FROM</span> employees <span class="sql-kw">GROUP BY</span> dept_id;
+(<span class="sql-num">6</span>)		F. <span class="sql-kw">SELECT</span> <span class="sql-fn">AVG</span>(<span class="sql-fn">MAX</span>(<span class="sql-fn">SUM</span>(salary))) <span class="sql-kw">FROM</span> employees;</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問で確定させる論点は「COUNT・AVG と <span class="sql-kw">NULL</span>」です。<br>問題文は「次のSQL文のうち、正しく動作するものはどれでしょうか。<br>3つ選んでください。<br>」を満たす記述または SQL を求めています。<br><span class="sql-fn">COUNT</span>(*) は行数、<span class="sql-fn">COUNT</span>(col) は <span class="sql-kw">NULL</span> を除く列数、<span class="sql-fn">AVG</span>(col) は <span class="sql-kw">NULL</span> を平均計算から除外する。<br>集計関数ごとに <span class="sql-kw">NULL</span> の扱いが異なる。 そのため、成立条件を満たす正答は A「<span class="sql-kw">SELECT</span> dept_id, <span class="sql-fn">COUNT</span>(*) <span class="sql-kw">FROM</span> employees <span class="sql-kw">GROUP BY</span> dept_i…」 / D「<span class="sql-kw">SELECT</span> <span class="sql-fn">MAX</span>(<span class="sql-fn">SUM</span>(salary)) <span class="sql-kw">FROM</span> employees <span class="sql-kw">GROUP BY</span> dept_id;」 / E「<span class="sql-kw">SELECT</span> <span class="sql-fn">MAX</span>(salary),<span class="sql-fn">SUM</span>(salary) <span class="sql-kw">FROM</span> employees <span class="sql-kw">GROUP BY</span> …」 です。</p>
+                    <div class="block-title">今回の失点要因</div>
+                    <p>自己回答は A「<span class="sql-kw">SELECT</span> dept_id, <span class="sql-fn">COUNT</span>(*) <span class="sql-kw">FROM</span> employees <span class="sql-kw">GROUP BY</span> dept_i…」 / B「<span class="sql-kw">SELECT</span> dept_id, name, <span class="sql-fn">COUNT</span>(*) <span class="sql-kw">FROM</span> employees <span class="sql-kw">GROUP BY</span> …」 / C「<span class="sql-kw">SELECT</span> dept_id, <span class="sql-fn">MAX</span>(<span class="sql-fn">SUM</span>(salary)) <span class="sql-kw">FROM</span> employees GROUP B…」 でした。<br>一部は論点を捉えていますが、B「<span class="sql-kw">SELECT</span> dept_id, name, <span class="sql-fn">COUNT</span>(*) <span class="sql-kw">FROM</span> employees <span class="sql-kw">GROUP BY</span> …」 / C「<span class="sql-kw">SELECT</span> dept_id, <span class="sql-fn">MAX</span>(<span class="sql-fn">SUM</span>(salary)) <span class="sql-kw">FROM</span> employees GROUP B…」 を混在させたことで正答条件を外しています。<br>失点要因は <span class="sql-fn">COUNT</span>(*) と <span class="sql-fn">COUNT</span>(col) を同一視し、AVG の分母に <span class="sql-kw">NULL</span> 行まで含めて考えやすい。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>正答肢</span><span>自己回答</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> dept_id, <span class="sql-fn">COUNT</span>(*) <span class="sql-kw">FROM</span> employees <span class="sql-kw">GROUP BY</span> dept_id;</div>
+              <div class="option-review-reason">正しい。 <span class="sql-fn">COUNT</span>(*) は <span class="sql-kw">NULL</span> の有無に関係なく行数全体を数えます。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span><span>自己回答</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> dept_id, name, <span class="sql-fn">COUNT</span>(*) <span class="sql-kw">FROM</span> employees <span class="sql-kw">GROUP BY</span> dept_id;</div>
+              <div class="option-review-reason">誤り。 <span class="sql-fn">COUNT</span>(*) は <span class="sql-kw">NULL</span> の有無に関係なく行数全体を数えます。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span><span>自己回答</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> dept_id, <span class="sql-fn">MAX</span>(<span class="sql-fn">SUM</span>(salary)) <span class="sql-kw">FROM</span> employees <span class="sql-kw">GROUP BY</span> dept_id;</div>
+              <div class="option-review-reason">誤り。 集計問題では、<span class="sql-kw">WHERE</span>・<span class="sql-kw">GROUP BY</span>・<span class="sql-kw">HAVING</span> の役割分担を崩していないかが判定基準です。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> <span class="sql-fn">MAX</span>(<span class="sql-fn">SUM</span>(salary)) <span class="sql-kw">FROM</span> employees <span class="sql-kw">GROUP BY</span> dept_id;</div>
+              <div class="option-review-reason">正しい。 集計問題では、<span class="sql-kw">WHERE</span>・<span class="sql-kw">GROUP BY</span>・<span class="sql-kw">HAVING</span> の役割分担を崩していないかが判定基準です。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">E</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> <span class="sql-fn">MAX</span>(salary),<span class="sql-fn">SUM</span>(salary) <span class="sql-kw">FROM</span> employees <span class="sql-kw">GROUP BY</span> dept_id;</div>
+              <div class="option-review-reason">正しい。 集計問題では、<span class="sql-kw">WHERE</span>・<span class="sql-kw">GROUP BY</span>・<span class="sql-kw">HAVING</span> の役割分担を崩していないかが判定基準です。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">F</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> <span class="sql-fn">AVG</span>(<span class="sql-fn">MAX</span>(<span class="sql-fn">SUM</span>(salary))) <span class="sql-kw">FROM</span> employees;</div>
+              <div class="option-review-reason">誤り。 集計問題では、<span class="sql-kw">WHERE</span>・<span class="sql-kw">GROUP BY</span>・<span class="sql-kw">HAVING</span> の役割分担を崩していないかが判定基準です。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>条件が行単位かグループ単位かを最初に判定する。</li><li>次に <span class="sql-kw">SELECT</span> 列と <span class="sql-kw">GROUP BY</span> 列の整合を確認する。</li><li><span class="sql-kw">NULL</span> を含む列では <span class="sql-fn">COUNT</span>(*) と <span class="sql-fn">COUNT</span>(col) の違いを明示的に追う。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+            </section>
+            
+</div>
+</body>
+</html>

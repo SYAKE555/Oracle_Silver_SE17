@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EX4 DML・トランザクション - 正答済み総点検</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans JP', 'Hiragino Sans', sans-serif; background: #eef2f7; color: #1f2937; line-height: 1.7; }
+  a { color: inherit; }
+  .page-header { background: linear-gradient(135deg,#10243f 0%,#1f3d63 55%,#f1c40f 100%); color: white; padding: 42px 24px; text-align: center; }
+  .page-header h1 { font-size: 1.9rem; margin-bottom: 8px; }
+  .page-header .subtitle { opacity: 0.92; font-size: 0.95rem; }
+  .container { max-width: 1180px; margin: 0 auto; padding: 24px; }
+  .nav-back { display: inline-block; padding: 8px 16px; background: white; border-radius: 999px; text-decoration: none; color: #1f2937; box-shadow: 0 4px 14px rgba(15,23,42,.08); font-size: .9rem; margin: 0 8px 16px 0; }
+  .hero-card, .toc, .concept-section { background: white; border-radius: 18px; box-shadow: 0 10px 26px rgba(15,23,42,.08); }
+  .hero-card { padding: 20px 22px; margin-bottom: 18px; border-top: 6px solid #f1c40f; }
+  .hero-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-top: 14px; }
+  .metric { background: #f8fafc; border-radius: 14px; padding: 14px; }
+  .metric .label { color: #64748b; font-size: .82rem; }
+  .metric .value { font-size: 1.35rem; font-weight: 900; color: #0f172a; margin-top: 4px; }
+  .toc { padding: 18px 22px; margin-bottom: 22px; }
+  .toc h2 { font-size: 1rem; color: #f1c40f; margin-bottom: 10px; }
+  .toc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; }
+  .toc a { display: flex; justify-content: space-between; gap: 10px; align-items: center; text-decoration: none; padding: 10px 12px; border-radius: 12px; background: #f8fafc; border-left: 4px solid #f1c40f; font-size: .88rem; }
+  .toc a:hover { background: #eef2f7; }
+  .concept-section { padding: 22px; margin-bottom: 24px; }
+  .concept-section h3 { display: flex; justify-content: space-between; gap: 12px; align-items: center; font-size: 1.15rem; margin-bottom: 8px; color: #0f172a; }
+  .concept-section h3 span { font-size: .82rem; padding: 5px 10px; border-radius: 999px; background: #f1c40f; color: white; }
+  .concept-copy { color: #475569; font-size: .92rem; margin-bottom: 16px; }
+  .concept-guide { border-top: 5px solid #f1c40f; background: #f8fafc; border-radius: 16px; padding: 16px; margin-bottom: 18px; }
+  .guide-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+  .guide-block { margin-bottom: 12px; }
+  .guide-title { font-size: .82rem; font-weight: 900; color: #f1c40f; margin-bottom: 6px; }
+  .guide-block p { color: #334155; font-size: .9rem; }
+  .guide-list { padding-left: 20px; color: #334155; font-size: .9rem; }
+  .guide-list li { margin-bottom: 5px; }
+  .guide-note { background: #fff7ed; border-left: 4px solid #f1c40f; border-radius: 10px; padding: 10px 12px; color: #7c2d12; font-size: .88rem; margin-top: 6px; }
+  .question-card { border: 1px solid #dbe4ef; border-radius: 16px; padding: 16px; margin-bottom: 14px; background: #fcfdff; }
+  .question-meta { font-size: .8rem; color: #64748b; margin-bottom: 10px; font-weight: 700; }
+  .block-title { font-size: .85rem; font-weight: 800; color: #f1c40f; margin: 10px 0 6px; }
+  pre { white-space: pre-wrap; word-break: break-word; background: #0f172a; color: #e2e8f0; border-radius: 12px; padding: 14px; font-size: .84rem; overflow-x: auto; }
+  .analysis-block p { color: #334155; font-size: .9rem; margin-bottom: 8px; }
+  .option-review-grid { display: flex; flex-direction: column; gap: 12px; margin-bottom: 8px; }
+  .option-review { border-radius: 14px; padding: 16px 18px; border: 1px solid #dbe4ef; background: white; }
+  .option-review.correct { border-left: 6px solid #16a34a; background: #f6fdf8; }
+  .option-review.wrong { border-left: 6px solid #c0392b; background: #fffafa; }
+  .option-review-head { display: flex; justify-content: flex-start; gap: 12px; align-items: center; margin-bottom: 10px; }
+  .option-review-key { font-size: 1.05rem; font-weight: 900; color: #0f172a; min-width: 1.8em; }
+  .option-review-badges span { display: inline-block; background: #eef2f7; color: #334155; font-size: .74rem; font-weight: 800; border-radius: 999px; padding: 3px 10px; margin-left: 4px; }
+  .option-review-text { color: #1f2937; font-size: .98rem; line-height: 1.65; margin-bottom: 10px; font-weight: 600; }
+  .option-review-reason { color: #334155; font-size: .92rem; line-height: 1.75; }
+  .clause-order { background: #0f172a; color: #e2e8f0; border-radius: 12px; padding: 14px 16px; font-family: 'SFMono-Regular', Menlo, Consolas, monospace; font-size: .86rem; line-height: 1.8; white-space: pre; overflow-x: auto; }
+  .clause-order .kw { color: #fbbf24; font-weight: 800; }
+  .clause-order .desc { color: #93c5fd; }
+  .clause-order .note { color: #86efac; font-style: italic; }
+  .study-step-list { padding-left: 20px; color: #334155; font-size: .9rem; }
+  .study-step-list li { margin-bottom: 5px; }
+  @media (max-width: 720px) {
+    .page-header h1 { font-size: 1.55rem; }
+    .container { padding: 18px; }
+    .concept-section h3 { flex-direction: column; align-items: flex-start; }
+    .option-review-head { flex-direction: column; align-items: flex-start; }
+  }
+
+
+  /* sql-highlight-v3 */
+  /* default (light bg): warm tone */
+  .sql-kw  { color: #92400e; font-weight: 700; }
+  .sql-fn  { color: #1e40af; font-weight: 600; }
+  .sql-str { color: #065f46; }
+  .sql-num { color: #991b1b; }
+  .sql-cmt { color: #64748b; font-style: italic; }
+  /* dark bg override (pre / code) */
+  pre .sql-kw  { color: #fbbf24; }
+  pre .sql-fn  { color: #60a5fa; }
+  pre .sql-str { color: #86efac; }
+  pre .sql-num { color: #fca5a5; }
+  pre .sql-cmt { color: #94a3b8; }
+  code .sql-kw  { color: #fbbf24; }
+  code .sql-fn  { color: #60a5fa; }
+  code .sql-str { color: #86efac; }
+  code .sql-num { color: #fca5a5; }
+  code .sql-cmt { color: #94a3b8; }
+  /* clause-order div uses its own kw/fn/desc/note classes — no override needed */
+</style>
+</head>
+<body>
+<div class="page-header">
+  <h1>EX4 正答済み総点検</h1>
+  <div class="subtitle">DML・トランザクション / 正答した設問をカテゴリ別に再確認し、得点源を維持するページ</div>
+</div>
+<div class="container">
+  <a class="nav-back" href="mock_exam_dashboard.html">模擬試験ダッシュボード</a>
+  <a class="nav-back" href="mock_exam_report.html">結果レポート</a>
+  <a class="nav-back" href="mock_exam_correct.html">模擬試験レビュー</a>
+  
+  <a class="nav-back" href="index.html">教科書トップ</a>
+
+  <div class="hero-card">
+    <div style="font-size:.9rem;color:#64748b;font-weight:700">D7 / 要復習</div>
+    <div style="font-size:1.4rem;font-weight:900;margin-top:4px">DML・トランザクション</div>
+    <p style="margin-top:8px;color:#334155">このページは、正答できた設問をカテゴリ別に並べ、記録された問題全文を正本として、なぜ取れたのかと維持ポイントを再確認するための定着教材です。</p>
+    <div class="hero-grid">
+      <div class="metric"><div class="label">レビュー種別</div><div class="value">正答</div></div>
+      <div class="metric"><div class="label">進捗率</div><div class="value"><span class="sql-num">46.2</span>%</div></div>
+      <div class="metric"><div class="label">正答数</div><div class="value">12問</div></div>
+      <div class="metric"><div class="label">カテゴリ数</div><div class="value"><span class="sql-num">5</span></div></div>
+    </div>
+  </div>
+
+  <div class="toc">
+    <h2>カテゴリ別目次</h2>
+    <div class="toc-grid">
+      <a href="#d7-1" class="low"><span class="sql-kw">COMMIT</span>・<span class="sql-kw">ROLLBACK</span>・<span class="sql-kw">SAVEPOINT</span> <span>6問</span></a><a href="#d7-2" class="low">DML 総合 <span>2問</span></a><a href="#d7-3" class="low"><span class="sql-kw">INSERT ALL</span> / <span class="sql-kw">FIRST</span> <span>2問</span></a><a href="#d7-4" class="low">DML としての <span class="sql-kw">MERGE</span> <span>1問</span></a><a href="#d7-5" class="low"><span class="sql-kw">UPDATE</span> とサブクエリ <span>1問</span></a>
+    </div>
+  </div>
+
+  
+            <section class="concept-section" id="d7-1">
+              <h3><span class="sql-kw">COMMIT</span>・<span class="sql-kw">ROLLBACK</span>・<span class="sql-kw">SAVEPOINT</span><span>6問</span></h3>
+              <p class="concept-copy"><span class="sql-kw">COMMIT</span> は変更確定とロック解放、<span class="sql-kw">ROLLBACK TO</span> <span class="sql-kw">SAVEPOINT</span> は指定地点以降の変更だけを戻す。<br><span class="sql-kw">SAVEPOINT</span> 自体や以前の <span class="sql-kw">SAVEPOINT</span> は残るが、<span class="sql-kw">COMMIT</span> 後は全て消える。</p>
+              
+    <div class="concept-guide" style="border-top-color:#f1c40f">
+      <div class="guide-block">
+        <div class="guide-title">論点の定義</div>
+        <p>トランザクションは <span class="sql-kw">COMMIT</span> または <span class="sql-kw">ROLLBACK</span> で区切られる <span class="sql-num">1</span> まとまりの処理である。<br>DML は未確定状態を持てるが、DDL 実行時には暗黙 <span class="sql-kw">COMMIT</span> が発生する。</p>
+      </div>
+      <div class="guide-block"><div class="guide-title">句の並び順（Oracle 正式構文）</div><div class="clause-order"><span class="kw">INSERT INTO</span> 表 [(列リスト)] <span class="kw">VALUES</span> (値リスト);   <span class="desc">-- 列数と順序を一致</span>
+<span class="kw">UPDATE</span> 表 <span class="kw">SET</span> 列 = 値 [, …] [<span class="kw">WHERE</span> 条件];        <span class="desc">-- WHERE 省略で全行更新</span>
+<span class="kw">DELETE FROM</span> 表 [<span class="kw">WHERE</span> 条件];                       <span class="desc">-- DML：ロールバック可能</span>
+<span class="kw">MERGE INTO</span> 対象 t <span class="kw">USING</span> 比較元 s <span class="kw">ON</span> (条件)
+  <span class="kw">WHEN MATCHED THEN UPDATE SET</span> … 
+  <span class="kw">WHEN NOT MATCHED THEN INSERT</span> (…) <span class="kw">VALUES</span> (…);
+-- TCL --
+<span class="kw">SAVEPOINT</span> 名称; … <span class="kw">ROLLBACK TO</span> 名称; <span class="kw">COMMIT</span>;
+<span class="note">-- DDL (CREATE/ALTER/DROP/TRUNCATE) は暗黙 COMMIT。TRUNCATE はロールバック不可。</span>
+<span class="note">-- COMMIT でロック解放・SAVEPOINT 消去。ROLLBACK TO は指定地点以降のみ取消。</span></div></div>
+      <div class="guide-block">
+        <div class="guide-title">この論点の基本形</div>
+        <pre><span class="sql-kw">SAVEPOINT</span> before_update;
+<span class="sql-kw">UPDATE</span> invoices
+<span class="sql-kw">SET</span>    status = &#x27;PAID&#x27;
+<span class="sql-kw">WHERE</span>  invoice_id = <span class="sql-num">10</span>;
+<span class="sql-kw">ROLLBACK TO</span> before_update;
+<span class="sql-kw">COMMIT</span>;</pre>
+      </div>
+      <div class="guide-grid">
+        <div class="guide-block">
+          <div class="guide-title">成立条件</div>
+          <ul class="guide-list"><li><span class="sql-kw">COMMIT</span> は変更確定とロック解放、<span class="sql-kw">SAVEPOINT</span> 消去を行う。</li><li><span class="sql-kw">ROLLBACK TO</span> <span class="sql-kw">SAVEPOINT</span> は指定地点以降の変更だけを戻す。</li><li><span class="sql-kw">TRUNCATE</span> や <span class="sql-kw">ALTER</span> などの DDL はトランザクション境界を強制する。</li></ul>
+        </div>
+        <div class="guide-block">
+          <div class="guide-title">判定手順</div>
+          <ol class="guide-list ordered"><li>まず文が DML か DDL かを分類する。</li><li>次に変更が未確定で残るか、即時確定されるかを判断する。</li><li><span class="sql-kw">SAVEPOINT</span> がある場合は、どこまで戻せるかを時系列で追う。</li></ol>
+        </div>
+      </div>
+      <div class="guide-note">失点しやすい点: <span class="sql-kw">ROLLBACK TO</span> <span class="sql-kw">SAVEPOINT</span> でロックまで解放される、<span class="sql-kw">COMMIT</span> 後も <span class="sql-kw">SAVEPOINT</span> が残る、と誤認しやすい。</div>
+    </div>
+    
+              
+                <article class="question-card">
+                  <div class="question-meta">第1回 模擬試験 / 問36 / 正答 B / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>トランザクションについて正しい記述はどれでしょうか。
+(<span class="sql-num"><span class="sql-num">1</span></span>)		A.　トランザクションを終了する場合は必ずCOMMITを行う必要があります。
+(<span class="sql-num"><span class="sql-num">2</span></span>)		B.　データ定義言語（DDL）を実行した場合、トランザクションとして実行されます。
+(<span class="sql-num"><span class="sql-num">3</span></span>)		C.　トランザクションはBEGIN句で開始します。
+(<span class="sql-num"><span class="sql-num">4</span></span>)		D.　明示的にCOMMITしないでSQL*PlusをQUITで切断した場合、そのトランザクションはROLLBACKされます。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「<span class="sql-kw">COMMIT</span>・<span class="sql-kw">ROLLBACK</span>・<span class="sql-kw">SAVEPOINT</span>」です。<br>問題文は「トランザクションについて正しい記述はどれでしょうか。<br>」という条件を満たす説明または SQL を求めています。<br><span class="sql-kw">COMMIT</span> は変更確定とロック解放、<span class="sql-kw">ROLLBACK TO</span> <span class="sql-kw">SAVEPOINT</span> は指定地点以降の変更だけを戻す。<br><span class="sql-kw">SAVEPOINT</span> 自体や以前の <span class="sql-kw">SAVEPOINT</span> は残るが、<span class="sql-kw">COMMIT</span> 後は全て消える。 この設問では正答 B「データ定義言語（DDL）を実行した場合、トランザクションとして実行されます。<br>」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">トランザクションを終了する場合は必ずCOMMITを行う必要があります。</div>
+              <div class="option-review-reason">誤り。 <span class="sql-kw">COMMIT</span> は変更を確定し、ロックを解放してトランザクションを終了させます。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">データ定義言語（DDL）を実行した場合、トランザクションとして実行されます。</div>
+              <div class="option-review-reason">正しい。 DDL は定義変更であり、Oracle では暗黙 <span class="sql-kw">COMMIT</span> を伴います。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">トランザクションはBEGIN句で開始します。</div>
+              <div class="option-review-reason">誤り。 DML/TCL 問題では、対象行、変更内容、確定/取消の可否を順番に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">明示的にCOMMITしないでSQL*PlusをQUITで切断した場合、そのトランザクションはROLLBACKされます。</div>
+              <div class="option-review-reason">誤り。 <span class="sql-kw">COMMIT</span> は変更を確定し、ロックを解放してトランザクションを終了させます。 <span class="sql-kw">ROLLBACK</span> は未確定変更を取り消します。<br><span class="sql-kw">SAVEPOINT</span> 指定ならその地点以降だけを戻します。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>まず文が DML か DDL かを分類する。</li><li>次に変更が未確定で残るか、即時確定されるかを判断する。</li><li><span class="sql-kw">SAVEPOINT</span> がある場合は、どこまで戻せるかを時系列で追う。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第1回 模擬試験 / 問37 / 正答 B.C.E / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>トランザクションが終了するのは以下のどの場合でしょうか。（3つ選択）
+(<span class="sql-num"><span class="sql-num">1</span></span>)		A.　UPDATEが実行されたとき
+(<span class="sql-num"><span class="sql-num">2</span></span>)		B.　COMMITが実行されたとき
+(<span class="sql-num"><span class="sql-num">3</span></span>)		C.　ALTERが実行されたとき
+(<span class="sql-num"><span class="sql-num">4</span></span>)		D.　DELETEが実行されたとき
+(<span class="sql-num"><span class="sql-num">5</span></span>)		E.　SQL*PlusでEXITが実行されたとき</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「<span class="sql-kw">COMMIT</span>・<span class="sql-kw">ROLLBACK</span>・<span class="sql-kw">SAVEPOINT</span>」です。<br>問題文は「トランザクションが終了するのは以下のどの場合でしょうか。<br>（3つ選択）」という条件を満たす説明または SQL を求めています。<br><span class="sql-kw">COMMIT</span> は変更確定とロック解放、<span class="sql-kw">ROLLBACK TO</span> <span class="sql-kw">SAVEPOINT</span> は指定地点以降の変更だけを戻す。<br><span class="sql-kw">SAVEPOINT</span> 自体や以前の <span class="sql-kw">SAVEPOINT</span> は残るが、<span class="sql-kw">COMMIT</span> 後は全て消える。 この設問では正答 B「COMMITが実行されたとき」 / C「ALTERが実行されたとき」 / E「SQL*PlusでEXITが実行されたとき」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">UPDATEが実行されたとき</div>
+              <div class="option-review-reason">誤り。 DML/TCL 問題では、対象行、変更内容、確定/取消の可否を順番に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">COMMITが実行されたとき</div>
+              <div class="option-review-reason">正しい。 <span class="sql-kw">COMMIT</span> は変更を確定し、ロックを解放してトランザクションを終了させます。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">ALTERが実行されたとき</div>
+              <div class="option-review-reason">正しい。 DML/TCL 問題では、対象行、変更内容、確定/取消の可否を順番に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">DELETEが実行されたとき</div>
+              <div class="option-review-reason">誤り。 DML/TCL 問題では、対象行、変更内容、確定/取消の可否を順番に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">E</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">SQL*PlusでEXITが実行されたとき</div>
+              <div class="option-review-reason">正しい。 DML/TCL 問題では、対象行、変更内容、確定/取消の可否を順番に確認する必要があります。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>まず文が DML か DDL かを分類する。</li><li>次に変更が未確定で残るか、即時確定されるかを判断する。</li><li><span class="sql-kw">SAVEPOINT</span> がある場合は、どこまで戻せるかを時系列で追う。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第1回 模擬試験 / 問40 / 正答 <span class="sql-num">2.3</span> / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>以下の文を実行します。
+
+<span class="sql-kw">INSERT INTO</span> ITEM <span class="sql-kw">VALUES</span> (&#x27;<span class="sql-num">1</span>&#x27;,&#x27;CURRY&#x27;,&#x27;FOOD&#x27;,<span class="sql-num">1000</span>);
+<span class="sql-kw">SAVEPOINT</span> SP1;
+<span class="sql-kw">UPDATE</span> ITEM <span class="sql-kw">SET</span> ITEM_NAME = &#x27;SUSHI&#x27; <span class="sql-kw">WHERE</span> ITEM_ID = &#x27;<span class="sql-num">1</span>&#x27;;
+<span class="sql-kw">SAVEPOINT</span> SP2;
+<span class="sql-kw">DELETE FROM</span> ITEM;
+<span class="sql-kw">ROLLBACK TO</span> <span class="sql-kw">SAVEPOINT</span> SP1;
+<span class="sql-kw">ROLLBACK</span>;
+
+実行結果について、正しい記述はどれでしょうか。（2つ選択）
+　
+(<span class="sql-num">1</span>)		最初のROLLBACKは、DELETE文のみを取り消します。
+(<span class="sql-num">2</span>)		最初のROLLBACKは、DELETE文とUPDATE文を取り消します。
+(<span class="sql-num">3</span>)		後のROLLBACKは、すべての更新を取り消します。
+(<span class="sql-num">4</span>)		後のROLLBACKは、DELETE文とUPDATE文を取り消します。
+(<span class="sql-num">5</span>)		後のROLLBACKは、更新の取り消しはしません。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「<span class="sql-kw">COMMIT</span>・<span class="sql-kw">ROLLBACK</span>・<span class="sql-kw">SAVEPOINT</span>」です。<br>問題文は「以下の文を実行します。 <span class="sql-kw">INSERT INTO</span> ITEM <span class="sql-kw">VALUES</span> (<span class="sql-str">'1'</span>,<span class="sql-str">'CURRY'</span>,<span class="sql-str">'FOOD'</span>,<span class="sql-num">1000</span>); <span class="sql-kw">SAVEPOINT</span> SP1; <span class="sql-kw">UPDATE</span> ITEM <span class="sql-kw">SET</span> ITEM_NAME = <span class="sql-str">'SUSHI'</span> <span class="sql-kw">WHERE</span>…」という条件を満たす説明または SQL を求めています。<br><span class="sql-kw">COMMIT</span> は変更確定とロック解放、<span class="sql-kw">ROLLBACK TO</span> <span class="sql-kw">SAVEPOINT</span> は指定地点以降の変更だけを戻す。<br><span class="sql-kw">SAVEPOINT</span> 自体や以前の <span class="sql-kw">SAVEPOINT</span> は残るが、<span class="sql-kw">COMMIT</span> 後は全て消える。 この設問では正答 <span class="sql-num">2</span>「最初のROLLBACKは、DELETE文とUPDATE文を取り消します。<br>」 / <span class="sql-num">3</span>「後のROLLBACKは、すべての更新を取り消します。<br>」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key"><span class="sql-num">1</span></div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">最初のROLLBACKは、DELETE文のみを取り消します。</div>
+              <div class="option-review-reason">誤り。 <span class="sql-kw">ROLLBACK</span> は未確定変更を取り消します。<br><span class="sql-kw">SAVEPOINT</span> 指定ならその地点以降だけを戻します。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key"><span class="sql-num">2</span></div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">最初のROLLBACKは、DELETE文とUPDATE文を取り消します。</div>
+              <div class="option-review-reason">正しい。 <span class="sql-kw">ROLLBACK</span> は未確定変更を取り消します。<br><span class="sql-kw">SAVEPOINT</span> 指定ならその地点以降だけを戻します。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key"><span class="sql-num">3</span></div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">後のROLLBACKは、すべての更新を取り消します。</div>
+              <div class="option-review-reason">正しい。 <span class="sql-kw">ROLLBACK</span> は未確定変更を取り消します。<br><span class="sql-kw">SAVEPOINT</span> 指定ならその地点以降だけを戻します。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key"><span class="sql-num">4</span></div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">後のROLLBACKは、DELETE文とUPDATE文を取り消します。</div>
+              <div class="option-review-reason">誤り。 <span class="sql-kw">ROLLBACK</span> は未確定変更を取り消します。<br><span class="sql-kw">SAVEPOINT</span> 指定ならその地点以降だけを戻します。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key"><span class="sql-num">5</span></div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">後のROLLBACKは、更新の取り消しはしません。</div>
+              <div class="option-review-reason">誤り。 <span class="sql-kw">ROLLBACK</span> は未確定変更を取り消します。<br><span class="sql-kw">SAVEPOINT</span> 指定ならその地点以降だけを戻します。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>まず文が DML か DDL かを分類する。</li><li>次に変更が未確定で残るか、即時確定されるかを判断する。</li><li><span class="sql-kw">SAVEPOINT</span> がある場合は、どこまで戻せるかを時系列で追う。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第3回 模擬試験 / 問22 / 正答 BC / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre><span class="sql-kw">TRUNCATE</span> と <span class="sql-kw">DELETE</span> に関して、正しいものを2つ選んでください。
+(<span class="sql-num">1</span>)		A. <span class="sql-kw">TRUNCATE</span> は <span class="sql-kw">WHERE</span> 句を使用して削除する行を指定できる。
+(<span class="sql-num">2</span>)		B. <span class="sql-kw">DELETE</span> は <span class="sql-kw">WHERE</span> 句を使用して削除する行を指定できる。
+(<span class="sql-num">3</span>)		C. <span class="sql-kw">DELETE</span> の結果は <span class="sql-kw">ROLLBACK</span> によって取り消すことができる。
+(<span class="sql-num">4</span>)		D. <span class="sql-kw">TRUNCATE</span> の結果は <span class="sql-kw">ROLLBACK</span> によって取り消すことができる。
+(<span class="sql-num">5</span>)		E. <span class="sql-kw">TRUNCATE</span> を実行すると、テーブルのインデックスが UNUSABLE な状態になる。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「<span class="sql-kw">COMMIT</span>・<span class="sql-kw">ROLLBACK</span>・<span class="sql-kw">SAVEPOINT</span>」です。<br>問題文は「<span class="sql-kw">TRUNCATE</span> と <span class="sql-kw">DELETE</span> に関して、正しいものを2つ選んでください。<br>」という条件を満たす説明または SQL を求めています。<br><span class="sql-kw">COMMIT</span> は変更確定とロック解放、<span class="sql-kw">ROLLBACK TO</span> <span class="sql-kw">SAVEPOINT</span> は指定地点以降の変更だけを戻す。<br><span class="sql-kw">SAVEPOINT</span> 自体や以前の <span class="sql-kw">SAVEPOINT</span> は残るが、<span class="sql-kw">COMMIT</span> 後は全て消える。 この設問では正答 B「<span class="sql-kw">DELETE</span> は <span class="sql-kw">WHERE</span> 句を使用して削除する行を指定できる。<br>」 / C「<span class="sql-kw">DELETE</span> の結果は <span class="sql-kw">ROLLBACK</span> によって取り消すことができる。<br>」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">TRUNCATE</span> は <span class="sql-kw">WHERE</span> 句を使用して削除する行を指定できる。</div>
+              <div class="option-review-reason">誤り。 DDL は定義変更であり、Oracle では暗黙 <span class="sql-kw">COMMIT</span> を伴います。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">DELETE</span> は <span class="sql-kw">WHERE</span> 句を使用して削除する行を指定できる。</div>
+              <div class="option-review-reason">正しい。 DML/TCL 問題では、対象行、変更内容、確定/取消の可否を順番に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">DELETE</span> の結果は <span class="sql-kw">ROLLBACK</span> によって取り消すことができる。</div>
+              <div class="option-review-reason">正しい。 <span class="sql-kw">ROLLBACK</span> は未確定変更を取り消します。<br><span class="sql-kw">SAVEPOINT</span> 指定ならその地点以降だけを戻します。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">TRUNCATE</span> の結果は <span class="sql-kw">ROLLBACK</span> によって取り消すことができる。</div>
+              <div class="option-review-reason">誤り。 <span class="sql-kw">ROLLBACK</span> は未確定変更を取り消します。<br><span class="sql-kw">SAVEPOINT</span> 指定ならその地点以降だけを戻します。 DDL は定義変更であり、Oracle では暗黙 <span class="sql-kw">COMMIT</span> を伴います。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">E</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">TRUNCATE</span> を実行すると、テーブルのインデックスが UNUSABLE な状態になる。</div>
+              <div class="option-review-reason">誤り。 DDL は定義変更であり、Oracle では暗黙 <span class="sql-kw">COMMIT</span> を伴います。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>まず文が DML か DDL かを分類する。</li><li>次に変更が未確定で残るか、即時確定されるかを判断する。</li><li><span class="sql-kw">SAVEPOINT</span> がある場合は、どこまで戻せるかを時系列で追う。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第3回 模擬試験 / 問49 / 正答 ACD / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>以下のSQLの実行結果を考えてください。
+
+<span class="sql-kw">INSERT INTO</span> employees <span class="sql-kw">VALUES</span> (&#x27;E101&#x27;, &#x27;Taro Yamada&#x27;, <span class="sql-kw">NULL</span>, <span class="sql-kw">NULL</span>);
+<span class="sql-kw">SAVEPOINT</span> a;
+<span class="sql-kw">DELETE FROM</span> employees;
+<span class="sql-kw">ROLLBACK TO</span> <span class="sql-kw">SAVEPOINT</span> a;
+<span class="sql-kw">INSERT INTO</span> employees <span class="sql-kw">VALUES</span> (&#x27;E102&#x27;, &#x27;Hanako Sato&#x27;, <span class="sql-kw">NULL</span>, <span class="sql-kw">NULL</span>);
+<span class="sql-kw">COMMIT</span>;
+<span class="sql-kw">INSERT INTO</span> employees <span class="sql-kw">VALUES</span> (&#x27;E103&#x27;, &#x27;Jiro Suzuki&#x27;, <span class="sql-kw">NULL</span>, <span class="sql-kw">NULL</span>);
+<span class="sql-kw">ROLLBACK</span>;
+
+正しい説明を3つ選んでください。
+(<span class="sql-num">1</span>)		A. 最後の <span class="sql-kw">ROLLBACK</span> により、E103 の挿入は取り消される。
+(<span class="sql-num">2</span>)		B. 最後の <span class="sql-kw">ROLLBACK</span> により、E102 の挿入も取り消される。
+(<span class="sql-num">3</span>)		C. <span class="sql-kw">COMMIT</span> によって、E102 のデータは確定しているため、<span class="sql-kw">ROLLBACK</span> では取り消されない。
+(<span class="sql-num">4</span>)		D. <span class="sql-kw">SAVEPOINT</span> の後の <span class="sql-kw">DELETE</span> 操作は、 <span class="sql-kw">ROLLBACK TO</span> により取り消される。
+(<span class="sql-num">5</span>)		E. 最初の <span class="sql-kw">INSERT</span> 文で挿入された E101 のデータは、<span class="sql-kw">ROLLBACK TO</span> によって削除される。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「<span class="sql-kw">COMMIT</span>・<span class="sql-kw">ROLLBACK</span>・<span class="sql-kw">SAVEPOINT</span>」です。<br>問題文は「以下のSQLの実行結果を考えてください。 <span class="sql-kw">INSERT INTO</span> employees <span class="sql-kw">VALUES</span> (<span class="sql-str">'E101'</span>, <span class="sql-str">'Taro Yamada'</span>, <span class="sql-kw">NULL</span>, <span class="sql-kw">NULL</span>); <span class="sql-kw">SAVEPOINT</span> a; <span class="sql-kw">DELETE FROM</span> employe…」という条件を満たす説明または SQL を求めています。<br><span class="sql-kw">COMMIT</span> は変更確定とロック解放、<span class="sql-kw">ROLLBACK TO</span> <span class="sql-kw">SAVEPOINT</span> は指定地点以降の変更だけを戻す。<br><span class="sql-kw">SAVEPOINT</span> 自体や以前の <span class="sql-kw">SAVEPOINT</span> は残るが、<span class="sql-kw">COMMIT</span> 後は全て消える。 この設問では正答 A「最後の <span class="sql-kw">ROLLBACK</span> により、E103 の挿入は取り消される。<br>」 / C「<span class="sql-kw">COMMIT</span> によって、E102 のデータは確定しているため、<span class="sql-kw">ROLLBACK</span> では取り消されない。<br>」 / D「<span class="sql-kw">SAVEPOINT</span> の後の <span class="sql-kw">DELETE</span> 操作は、 <span class="sql-kw">ROLLBACK TO</span> により取り消される。<br>」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">最後の <span class="sql-kw">ROLLBACK</span> により、E103 の挿入は取り消される。</div>
+              <div class="option-review-reason">正しい。 <span class="sql-kw">ROLLBACK</span> は未確定変更を取り消します。<br><span class="sql-kw">SAVEPOINT</span> 指定ならその地点以降だけを戻します。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">最後の <span class="sql-kw">ROLLBACK</span> により、E102 の挿入も取り消される。</div>
+              <div class="option-review-reason">誤り。 <span class="sql-kw">ROLLBACK</span> は未確定変更を取り消します。<br><span class="sql-kw">SAVEPOINT</span> 指定ならその地点以降だけを戻します。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">COMMIT</span> によって、E102 のデータは確定しているため、<span class="sql-kw">ROLLBACK</span> では取り消されない。</div>
+              <div class="option-review-reason">正しい。 <span class="sql-kw">COMMIT</span> は変更を確定し、ロックを解放してトランザクションを終了させます。 <span class="sql-kw">ROLLBACK</span> は未確定変更を取り消します。<br><span class="sql-kw">SAVEPOINT</span> 指定ならその地点以降だけを戻します。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SAVEPOINT</span> の後の <span class="sql-kw">DELETE</span> 操作は、 <span class="sql-kw">ROLLBACK TO</span> により取り消される。</div>
+              <div class="option-review-reason">正しい。 <span class="sql-kw">SAVEPOINT</span> はロールバック復帰点であり、<span class="sql-kw">COMMIT</span> すると消去されます。 <span class="sql-kw">ROLLBACK</span> は未確定変更を取り消します。<br><span class="sql-kw">SAVEPOINT</span> 指定ならその地点以降だけを戻します。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">E</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">最初の <span class="sql-kw">INSERT</span> 文で挿入された E101 のデータは、<span class="sql-kw">ROLLBACK TO</span> によって削除される。</div>
+              <div class="option-review-reason">誤り。 <span class="sql-kw">ROLLBACK</span> は未確定変更を取り消します。<br><span class="sql-kw">SAVEPOINT</span> 指定ならその地点以降だけを戻します。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>まず文が DML か DDL かを分類する。</li><li>次に変更が未確定で残るか、即時確定されるかを判断する。</li><li><span class="sql-kw">SAVEPOINT</span> がある場合は、どこまで戻せるかを時系列で追う。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第3回 模擬試験 / 問53 / 正答 ADE / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>トランザクション制御言語（TCL）について、正しいものを3つ選んでください。
+(<span class="sql-num">1</span>)		A. <span class="sql-kw">ROLLBACK</span> を 実行すると、トランザクションのすべての変更が取り消され、ロックが解除され、すべての <span class="sql-kw">SAVEPOINT</span> が削除される。
+(<span class="sql-num">2</span>)		B. <span class="sql-kw">COMMIT</span> は、すべての <span class="sql-kw">SAVEPOINT</span> を保持し、変更を確定する。
+(<span class="sql-num">3</span>)		C. <span class="sql-kw">ROLLBACK</span> を <span class="sql-kw">SAVEPOINT</span> なしで実行すると、変更は取り消されるが、ロックは解除されない。
+(<span class="sql-num">4</span>)		D. <span class="sql-kw">ROLLBACK TO</span> <span class="sql-kw">SAVEPOINT</span> は、指定された <span class="sql-kw">SAVEPOINT</span> 以降の変更のみを元に戻し、トランザクションは終了しない。
+(<span class="sql-num">5</span>)		E. <span class="sql-kw">COMMIT</span> は、すべての変更を確定し、トランザクションを終了する。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「<span class="sql-kw">COMMIT</span>・<span class="sql-kw">ROLLBACK</span>・<span class="sql-kw">SAVEPOINT</span>」です。<br>問題文は「トランザクション制御言語（TCL）について、正しいものを3つ選んでください。<br>」という条件を満たす説明または SQL を求めています。<br><span class="sql-kw">COMMIT</span> は変更確定とロック解放、<span class="sql-kw">ROLLBACK TO</span> <span class="sql-kw">SAVEPOINT</span> は指定地点以降の変更だけを戻す。<br><span class="sql-kw">SAVEPOINT</span> 自体や以前の <span class="sql-kw">SAVEPOINT</span> は残るが、<span class="sql-kw">COMMIT</span> 後は全て消える。 この設問では正答 A「<span class="sql-kw">ROLLBACK</span> を 実行すると、トランザクションのすべての変更が取り消され、ロックが解除され、すべての SA…」 / D「<span class="sql-kw">ROLLBACK TO</span> <span class="sql-kw">SAVEPOINT</span> は、指定された <span class="sql-kw">SAVEPOINT</span> 以降の変更のみを元に戻し、トラ…」 / E「<span class="sql-kw">COMMIT</span> は、すべての変更を確定し、トランザクションを終了する。<br>」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">ROLLBACK</span> を 実行すると、トランザクションのすべての変更が取り消され、ロックが解除され、すべての <span class="sql-kw">SAVEPOINT</span> が削除される。</div>
+              <div class="option-review-reason">正しい。 <span class="sql-kw">SAVEPOINT</span> はロールバック復帰点であり、<span class="sql-kw">COMMIT</span> すると消去されます。 <span class="sql-kw">ROLLBACK</span> は未確定変更を取り消します。<br><span class="sql-kw">SAVEPOINT</span> 指定ならその地点以降だけを戻します。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">COMMIT</span> は、すべての <span class="sql-kw">SAVEPOINT</span> を保持し、変更を確定する。</div>
+              <div class="option-review-reason">誤り。 <span class="sql-kw">SAVEPOINT</span> はロールバック復帰点であり、<span class="sql-kw">COMMIT</span> すると消去されます。 <span class="sql-kw">COMMIT</span> は変更を確定し、ロックを解放してトランザクションを終了させます。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">ROLLBACK</span> を <span class="sql-kw">SAVEPOINT</span> なしで実行すると、変更は取り消されるが、ロックは解除されない。</div>
+              <div class="option-review-reason">誤り。 <span class="sql-kw">SAVEPOINT</span> はロールバック復帰点であり、<span class="sql-kw">COMMIT</span> すると消去されます。 <span class="sql-kw">ROLLBACK</span> は未確定変更を取り消します。<br><span class="sql-kw">SAVEPOINT</span> 指定ならその地点以降だけを戻します。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">ROLLBACK TO</span> <span class="sql-kw">SAVEPOINT</span> は、指定された <span class="sql-kw">SAVEPOINT</span> 以降の変更のみを元に戻し、トランザクションは終了しない。</div>
+              <div class="option-review-reason">正しい。 <span class="sql-kw">SAVEPOINT</span> はロールバック復帰点であり、<span class="sql-kw">COMMIT</span> すると消去されます。 <span class="sql-kw">ROLLBACK</span> は未確定変更を取り消します。<br><span class="sql-kw">SAVEPOINT</span> 指定ならその地点以降だけを戻します。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">E</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">COMMIT</span> は、すべての変更を確定し、トランザクションを終了する。</div>
+              <div class="option-review-reason">正しい。 <span class="sql-kw">COMMIT</span> は変更を確定し、ロックを解放してトランザクションを終了させます。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>まず文が DML か DDL かを分類する。</li><li>次に変更が未確定で残るか、即時確定されるかを判断する。</li><li><span class="sql-kw">SAVEPOINT</span> がある場合は、どこまで戻せるかを時系列で追う。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+            </section>
+            
+            <section class="concept-section" id="d7-2">
+              <h3>DML 総合<span>2問</span></h3>
+              <p class="concept-copy">DML 問題では、対象行の決まり方、更新タイミング、トランザクション制御を順番に読む必要がある。<br>1文の中で何が確定し、何が取り消せるかが核心になる。</p>
+              
+    <div class="concept-guide" style="border-top-color:#f1c40f">
+      <div class="guide-block">
+        <div class="guide-title">論点の定義</div>
+        <p>トランザクションは <span class="sql-kw">COMMIT</span> または <span class="sql-kw">ROLLBACK</span> で区切られる <span class="sql-num">1</span> まとまりの処理である。<br>DML は未確定状態を持てるが、DDL 実行時には暗黙 <span class="sql-kw">COMMIT</span> が発生する。</p>
+      </div>
+      <div class="guide-block"><div class="guide-title">句の並び順（Oracle 正式構文）</div><div class="clause-order"><span class="kw">INSERT INTO</span> 表 [(列リスト)] <span class="kw">VALUES</span> (値リスト);   <span class="desc">-- 列数と順序を一致</span>
+<span class="kw">UPDATE</span> 表 <span class="kw">SET</span> 列 = 値 [, …] [<span class="kw">WHERE</span> 条件];        <span class="desc">-- WHERE 省略で全行更新</span>
+<span class="kw">DELETE FROM</span> 表 [<span class="kw">WHERE</span> 条件];                       <span class="desc">-- DML：ロールバック可能</span>
+<span class="kw">MERGE INTO</span> 対象 t <span class="kw">USING</span> 比較元 s <span class="kw">ON</span> (条件)
+  <span class="kw">WHEN MATCHED THEN UPDATE SET</span> … 
+  <span class="kw">WHEN NOT MATCHED THEN INSERT</span> (…) <span class="kw">VALUES</span> (…);
+-- TCL --
+<span class="kw">SAVEPOINT</span> 名称; … <span class="kw">ROLLBACK TO</span> 名称; <span class="kw">COMMIT</span>;
+<span class="note">-- DDL (CREATE/ALTER/DROP/TRUNCATE) は暗黙 COMMIT。TRUNCATE はロールバック不可。</span>
+<span class="note">-- COMMIT でロック解放・SAVEPOINT 消去。ROLLBACK TO は指定地点以降のみ取消。</span></div></div>
+      <div class="guide-block">
+        <div class="guide-title">この論点の基本形</div>
+        <pre><span class="sql-kw">SAVEPOINT</span> before_update;
+<span class="sql-kw">UPDATE</span> invoices
+<span class="sql-kw">SET</span>    status = &#x27;PAID&#x27;
+<span class="sql-kw">WHERE</span>  invoice_id = <span class="sql-num">10</span>;
+<span class="sql-kw">ROLLBACK TO</span> before_update;
+<span class="sql-kw">COMMIT</span>;</pre>
+      </div>
+      <div class="guide-grid">
+        <div class="guide-block">
+          <div class="guide-title">成立条件</div>
+          <ul class="guide-list"><li><span class="sql-kw">COMMIT</span> は変更確定とロック解放、<span class="sql-kw">SAVEPOINT</span> 消去を行う。</li><li><span class="sql-kw">ROLLBACK TO</span> <span class="sql-kw">SAVEPOINT</span> は指定地点以降の変更だけを戻す。</li><li><span class="sql-kw">TRUNCATE</span> や <span class="sql-kw">ALTER</span> などの DDL はトランザクション境界を強制する。</li></ul>
+        </div>
+        <div class="guide-block">
+          <div class="guide-title">判定手順</div>
+          <ol class="guide-list ordered"><li>まず文が DML か DDL かを分類する。</li><li>次に変更が未確定で残るか、即時確定されるかを判断する。</li><li><span class="sql-kw">SAVEPOINT</span> がある場合は、どこまで戻せるかを時系列で追う。</li></ol>
+        </div>
+      </div>
+      <div class="guide-note">失点しやすい点: 構文だけを見て、実行後の状態変化まで追えずに失点しやすい。</div>
+    </div>
+    
+              
+                <article class="question-card">
+                  <div class="question-meta">第1回 模擬試験 / 問38 / 正答 <span class="sql-num">1.3</span>.<span class="sql-num">5</span> / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>SQLの機能はどれでしょうか。（3つ選択）
+(<span class="sql-num"><span class="sql-num">1</span></span>)		トランザクション機能がある
+(<span class="sql-num"><span class="sql-num">2</span></span>)		GUIを提供する
+(<span class="sql-num"><span class="sql-num">3</span></span>)		データの問い合わせを行う
+(<span class="sql-num"><span class="sql-num">4</span></span>)		表計算ソフトのファイルと整合性を保つ
+(<span class="sql-num"><span class="sql-num">5</span></span>)		データの更新を行う</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「DML 総合」です。<br>問題文は「SQLの機能はどれでしょうか。<br>（3つ選択）」という条件を満たす説明または SQL を求めています。<br>DML 問題では、対象行の決まり方、更新タイミング、トランザクション制御を順番に読む必要がある。<br>1文の中で何が確定し、何が取り消せるかが核心になる。 この設問では正答 <span class="sql-num">1</span>「トランザクション機能がある」 / <span class="sql-num">3</span>「データの問い合わせを行う」 / <span class="sql-num">5</span>「データの更新を行う」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key"><span class="sql-num">1</span></div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">トランザクション機能がある</div>
+              <div class="option-review-reason">正しい。 DML/TCL 問題では、対象行、変更内容、確定/取消の可否を順番に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key"><span class="sql-num">2</span></div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">GUIを提供する</div>
+              <div class="option-review-reason">誤り。 DML/TCL 問題では、対象行、変更内容、確定/取消の可否を順番に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key"><span class="sql-num">3</span></div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">データの問い合わせを行う</div>
+              <div class="option-review-reason">正しい。 DML/TCL 問題では、対象行、変更内容、確定/取消の可否を順番に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key"><span class="sql-num">4</span></div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">表計算ソフトのファイルと整合性を保つ</div>
+              <div class="option-review-reason">誤り。 DML/TCL 問題では、対象行、変更内容、確定/取消の可否を順番に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key"><span class="sql-num">5</span></div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">データの更新を行う</div>
+              <div class="option-review-reason">正しい。 DML/TCL 問題では、対象行、変更内容、確定/取消の可否を順番に確認する必要があります。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>まず文が DML か DDL かを分類する。</li><li>次に変更が未確定で残るか、即時確定されるかを判断する。</li><li><span class="sql-kw">SAVEPOINT</span> がある場合は、どこまで戻せるかを時系列で追う。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第3回 模擬試験 / 問31 / 正答 BD / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>Oracleデータベースにおけるトランザクションについて、正しいものを2つ選んでください。
+(<span class="sql-num"><span class="sql-num">1</span></span>)		A. DML ステートメントは常に新しいトランザクションを開始する。
+(<span class="sql-num"><span class="sql-num">2</span></span>)		B. DDL ステートメントは、実行時にデータディクショナリの更新を自動的にコミットする。
+(<span class="sql-num"><span class="sql-num">3</span></span>)		C. 同じユーザーが別のセッションで未コミットの更新を表示できる。
+(<span class="sql-num"><span class="sql-num">4</span></span>)		D. DDL ステートメントは、未コミットのトランザクションがある場合、そのトランザクションを自動的にコミットする。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「DML 総合」です。<br>問題文は「Oracleデータベースにおけるトランザクションについて、正しいものを2つ選んでください。<br>」という条件を満たす説明または SQL を求めています。<br>DML 問題では、対象行の決まり方、更新タイミング、トランザクション制御を順番に読む必要がある。<br>1文の中で何が確定し、何が取り消せるかが核心になる。 この設問では正答 B「DDL ステートメントは、実行時にデータディクショナリの更新を自動的にコミットする。<br>」 / D「DDL ステートメントは、未コミットのトランザクションがある場合、そのトランザクションを自動的にコミットする。<br>」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">DML ステートメントは常に新しいトランザクションを開始する。</div>
+              <div class="option-review-reason">誤り。 DML/TCL 問題では、対象行、変更内容、確定/取消の可否を順番に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">DDL ステートメントは、実行時にデータディクショナリの更新を自動的にコミットする。</div>
+              <div class="option-review-reason">正しい。 DDL は定義変更であり、Oracle では暗黙 <span class="sql-kw">COMMIT</span> を伴います。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">同じユーザーが別のセッションで未コミットの更新を表示できる。</div>
+              <div class="option-review-reason">誤り。 DML/TCL 問題では、対象行、変更内容、確定/取消の可否を順番に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">DDL ステートメントは、未コミットのトランザクションがある場合、そのトランザクションを自動的にコミットする。</div>
+              <div class="option-review-reason">正しい。 DDL は定義変更であり、Oracle では暗黙 <span class="sql-kw">COMMIT</span> を伴います。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>まず文が DML か DDL かを分類する。</li><li>次に変更が未確定で残るか、即時確定されるかを判断する。</li><li><span class="sql-kw">SAVEPOINT</span> がある場合は、どこまで戻せるかを時系列で追う。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+            </section>
+            
+            <section class="concept-section" id="d7-3">
+              <h3><span class="sql-kw">INSERT ALL</span> / <span class="sql-kw">FIRST</span><span>2問</span></h3>
+              <p class="concept-copy"><span class="sql-kw">INSERT ALL</span> は条件に合う全ての <span class="sql-kw">INTO</span> に挿入し、<span class="sql-kw">INSERT FIRST</span> は最初に一致した <span class="sql-kw">INTO</span> だけに挿入する。<br><span class="sql-kw">ELSE</span> 句や条件付き挿入の位置も重要である。</p>
+              
+    <div class="concept-guide" style="border-top-color:#f1c40f">
+      <div class="guide-block">
+        <div class="guide-title">論点の定義</div>
+        <p>DML 文は、対象行の決定、変更内容の記述、確定/取消の可否を文法どおりに記述する必要がある。<br><span class="sql-kw">UPDATE</span> や <span class="sql-kw">INSERT ALL</span>/<span class="sql-kw">FIRST</span>、<span class="sql-kw">MERGE</span> は句の位置が崩れると不成立になる。</p>
+      </div>
+      <div class="guide-block"><div class="guide-title">句の並び順（Oracle 正式構文）</div><div class="clause-order"><span class="kw">INSERT INTO</span> 表 [(列リスト)] <span class="kw">VALUES</span> (値リスト);   <span class="desc">-- 列数と順序を一致</span>
+<span class="kw">UPDATE</span> 表 <span class="kw">SET</span> 列 = 値 [, …] [<span class="kw">WHERE</span> 条件];        <span class="desc">-- WHERE 省略で全行更新</span>
+<span class="kw">DELETE FROM</span> 表 [<span class="kw">WHERE</span> 条件];                       <span class="desc">-- DML：ロールバック可能</span>
+<span class="kw">MERGE INTO</span> 対象 t <span class="kw">USING</span> 比較元 s <span class="kw">ON</span> (条件)
+  <span class="kw">WHEN MATCHED THEN UPDATE SET</span> … 
+  <span class="kw">WHEN NOT MATCHED THEN INSERT</span> (…) <span class="kw">VALUES</span> (…);
+-- TCL --
+<span class="kw">SAVEPOINT</span> 名称; … <span class="kw">ROLLBACK TO</span> 名称; <span class="kw">COMMIT</span>;
+<span class="note">-- DDL (CREATE/ALTER/DROP/TRUNCATE) は暗黙 COMMIT。TRUNCATE はロールバック不可。</span>
+<span class="note">-- COMMIT でロック解放・SAVEPOINT 消去。ROLLBACK TO は指定地点以降のみ取消。</span></div></div>
+      <div class="guide-block">
+        <div class="guide-title">この論点の基本形</div>
+        <pre><span class="sql-kw">UPDATE</span> invoices i
+<span class="sql-kw">SET</span>    amount = (
+         <span class="sql-kw">SELECT</span> <span class="sql-fn">SUM</span>(l.amount)
+         <span class="sql-kw">FROM</span>   invoice_lines l
+         <span class="sql-kw">WHERE</span>  l.invoice_id = i.invoice_id
+       )
+<span class="sql-kw">WHERE</span>  i.status = &#x27;OPEN&#x27;;</pre>
+      </div>
+      <div class="guide-grid">
+        <div class="guide-block">
+          <div class="guide-title">成立条件</div>
+          <ul class="guide-list"><li><span class="sql-kw">UPDATE</span> の <span class="sql-kw">SET</span> は <span class="sql-num">1</span> 回だけ書き、複数列代入はカンマで並べる。</li><li>相関サブクエリを使う場合は更新行ごとに副問合せが評価される。</li><li><span class="sql-kw">INSERT ALL</span> は一致したすべて、<span class="sql-kw">INSERT FIRST</span> は最初に一致した <span class="sql-kw">INTO</span> のみへ挿入する。</li></ul>
+        </div>
+        <div class="guide-block">
+          <div class="guide-title">判定手順</div>
+          <ol class="guide-list ordered"><li>まず対象行を決める <span class="sql-kw">WHERE</span> や <span class="sql-kw">ON</span> 句を確認する。</li><li>次に <span class="sql-kw">SET</span>、<span class="sql-kw">VALUES</span>、<span class="sql-kw">WHEN</span> 節が Oracle の文法順に並んでいるかを見る。</li><li>副問合せがある場合は単一行保証または条件分岐の位置を確認する。</li></ol>
+        </div>
+      </div>
+      <div class="guide-note">失点しやすい点: <span class="sql-kw">ALL</span> と <span class="sql-kw">FIRST</span> の挙動差を曖昧にし、<span class="sql-kw">ELSE</span> の有無や条件評価順で失点しやすい。</div>
+    </div>
+    
+              
+                <article class="question-card">
+                  <div class="question-meta">第2回 模擬試験 / 問44 / 正答 C / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>次の文を実行するとします。
+
+<span class="sql-kw">INSERT ALL</span>
+<span class="sql-kw">WHEN</span> ITEM_PRICE &lt; <span class="sql-num">1500</span> <span class="sql-kw">THEN</span>
+<span class="sql-kw">INTO</span> ITEM1
+<span class="sql-kw">WHEN</span> ITEM_PRICE &gt; <span class="sql-num">1500</span> <span class="sql-kw">AND</span> ITEM_PRICE &lt; <span class="sql-num">2500</span> <span class="sql-kw">THEN</span>
+<span class="sql-kw">INTO</span> ITEM2
+<span class="sql-kw">WHEN</span> ITEM_PRICE &gt; <span class="sql-num">2500</span> <span class="sql-kw">AND</span> ITEM_PRICE &lt; <span class="sql-num">4000</span> <span class="sql-kw">THEN</span>
+<span class="sql-kw">INTO</span> ITEM3
+<span class="sql-kw">SELECT</span> ITEM_ID, ITEM_NAME, ITEM_PRICE <span class="sql-kw">FROM</span> ITEM;
+
+正しい記述はどれでしょうか。
+(<span class="sql-num">1</span>)		A.　条件に合った最初のWHEN句のINTOのみ実行されます。
+(<span class="sql-num">2</span>)		B.　ELSE句が無いためエラーとなります。
+(<span class="sql-num">3</span>)		C.　すべてのWHEN句のINTOが条件に応じて実行されます。
+(<span class="sql-num">4</span>)		D.　すべてのWHEN句の条件を満たさないものはエラーとなります。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「<span class="sql-kw">INSERT ALL</span> / <span class="sql-kw">FIRST</span>」です。<br>問題文は「次の文を実行するとします。 <span class="sql-kw">INSERT ALL</span> <span class="sql-kw">WHEN</span> ITEM_PRICE < 1500 THEN INTO ITEM1 WHEN ITEM_PRICE > <span class="sql-num">1500</span> <span class="sql-kw">AND</span> ITEM_PRICE < 2500 THEN INTO …」という条件を満たす説明または SQL を求めています。INSERT ALL は条件に合う全ての INTO に挿入し、INSERT FIRST は最初に一致した INTO だけに挿入する。ELSE 句や条件付き挿入の位置も重要である。 この設問では正答 C「すべてのWHEN句のINTOが条件に応じて実行されます。」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">条件に合った最初のWHEN句のINTOのみ実行されます。</div>
+              <div class="option-review-reason">誤り。 DML/TCL 問題では、対象行、変更内容、確定/取消の可否を順番に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">ELSE句が無いためエラーとなります。</div>
+              <div class="option-review-reason">誤り。 DML/TCL 問題では、対象行、変更内容、確定/取消の可否を順番に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">すべてのWHEN句のINTOが条件に応じて実行されます。</div>
+              <div class="option-review-reason">正しい。 DML/TCL 問題では、対象行、変更内容、確定/取消の可否を順番に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">すべてのWHEN句の条件を満たさないものはエラーとなります。</div>
+              <div class="option-review-reason">誤り。 DML/TCL 問題では、対象行、変更内容、確定/取消の可否を順番に確認する必要があります。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>まず対象行を決める <span class="sql-kw">WHERE</span> や <span class="sql-kw">ON</span> 句を確認する。</li><li>次に <span class="sql-kw">SET</span>、<span class="sql-kw">VALUES</span>、<span class="sql-kw">WHEN</span> 節が Oracle の文法順に並んでいるかを見る。</li><li>副問合せがある場合は単一行保証または条件分岐の位置を確認する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第3回 模擬試験 / 問41 / 正答 AC / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>条件付き <span class="sql-kw">INSERT ALL</span> について、正しいものを2つ選んでください。
+(<span class="sql-num">1</span>)		A. <span class="sql-kw">INSERT ALL</span> では、複数の <span class="sql-kw">INTO</span> 句を指定できる。
+(<span class="sql-num">2</span>)		B. <span class="sql-kw">INSERT ALL</span> には <span class="sql-kw">ELSE</span> 句が必須である。
+(<span class="sql-num">3</span>)		C. 各行に対して <span class="sql-kw">WHEN</span> 条件が評価される。
+(<span class="sql-num">4</span>)		D. <span class="sql-kw">INSERT ALL</span> で返された各行は、単一の表にのみ挿入できる。
+(<span class="sql-num">5</span>)		E. 挿入される総行数は、サブクエリによって返される行数と常に等しくなる。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「<span class="sql-kw">INSERT ALL</span> / <span class="sql-kw">FIRST</span>」です。<br>問題文は「条件付き <span class="sql-kw">INSERT ALL</span> について、正しいものを2つ選んでください。<br>」という条件を満たす説明または SQL を求めています。<br><span class="sql-kw">INSERT ALL</span> は条件に合う全ての <span class="sql-kw">INTO</span> に挿入し、<span class="sql-kw">INSERT FIRST</span> は最初に一致した <span class="sql-kw">INTO</span> だけに挿入する。<br><span class="sql-kw">ELSE</span> 句や条件付き挿入の位置も重要である。 この設問では正答 A「<span class="sql-kw">INSERT ALL</span> では、複数の <span class="sql-kw">INTO</span> 句を指定できる。<br>」 / C「各行に対して <span class="sql-kw">WHEN</span> 条件が評価される。<br>」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">INSERT ALL</span> では、複数の <span class="sql-kw">INTO</span> 句を指定できる。</div>
+              <div class="option-review-reason">正しい。 DML/TCL 問題では、対象行、変更内容、確定/取消の可否を順番に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">INSERT ALL</span> には <span class="sql-kw">ELSE</span> 句が必須である。</div>
+              <div class="option-review-reason">誤り。 DML/TCL 問題では、対象行、変更内容、確定/取消の可否を順番に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">各行に対して <span class="sql-kw">WHEN</span> 条件が評価される。</div>
+              <div class="option-review-reason">正しい。 DML/TCL 問題では、対象行、変更内容、確定/取消の可否を順番に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">INSERT ALL</span> で返された各行は、単一の表にのみ挿入できる。</div>
+              <div class="option-review-reason">誤り。 DML/TCL 問題では、対象行、変更内容、確定/取消の可否を順番に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">E</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">挿入される総行数は、サブクエリによって返される行数と常に等しくなる。</div>
+              <div class="option-review-reason">誤り。 DML/TCL 問題では、対象行、変更内容、確定/取消の可否を順番に確認する必要があります。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>まず対象行を決める <span class="sql-kw">WHERE</span> や <span class="sql-kw">ON</span> 句を確認する。</li><li>次に <span class="sql-kw">SET</span>、<span class="sql-kw">VALUES</span>、<span class="sql-kw">WHEN</span> 節が Oracle の文法順に並んでいるかを見る。</li><li>副問合せがある場合は単一行保証または条件分岐の位置を確認する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+            </section>
+            
+            <section class="concept-section" id="d7-4">
+              <h3>DML としての <span class="sql-kw">MERGE</span><span>1問</span></h3>
+              <p class="concept-copy"><span class="sql-kw">MERGE</span> は DML であり、対象表1つに対して一致/非一致の分岐を行う。<br><span class="sql-kw">UPDATE</span> 対象列、<span class="sql-kw">INSERT</span> 条件、<span class="sql-kw">DELETE</span> 条件の位置を正しく読む必要がある。</p>
+              
+    <div class="concept-guide" style="border-top-color:#f1c40f">
+      <div class="guide-block">
+        <div class="guide-title">論点の定義</div>
+        <p>DML 文は、対象行の決定、変更内容の記述、確定/取消の可否を文法どおりに記述する必要がある。<br><span class="sql-kw">UPDATE</span> や <span class="sql-kw">INSERT ALL</span>/<span class="sql-kw">FIRST</span>、<span class="sql-kw">MERGE</span> は句の位置が崩れると不成立になる。</p>
+      </div>
+      <div class="guide-block"><div class="guide-title">句の並び順（Oracle 正式構文）</div><div class="clause-order"><span class="kw">INSERT INTO</span> 表 [(列リスト)] <span class="kw">VALUES</span> (値リスト);   <span class="desc">-- 列数と順序を一致</span>
+<span class="kw">UPDATE</span> 表 <span class="kw">SET</span> 列 = 値 [, …] [<span class="kw">WHERE</span> 条件];        <span class="desc">-- WHERE 省略で全行更新</span>
+<span class="kw">DELETE FROM</span> 表 [<span class="kw">WHERE</span> 条件];                       <span class="desc">-- DML：ロールバック可能</span>
+<span class="kw">MERGE INTO</span> 対象 t <span class="kw">USING</span> 比較元 s <span class="kw">ON</span> (条件)
+  <span class="kw">WHEN MATCHED THEN UPDATE SET</span> … 
+  <span class="kw">WHEN NOT MATCHED THEN INSERT</span> (…) <span class="kw">VALUES</span> (…);
+-- TCL --
+<span class="kw">SAVEPOINT</span> 名称; … <span class="kw">ROLLBACK TO</span> 名称; <span class="kw">COMMIT</span>;
+<span class="note">-- DDL (CREATE/ALTER/DROP/TRUNCATE) は暗黙 COMMIT。TRUNCATE はロールバック不可。</span>
+<span class="note">-- COMMIT でロック解放・SAVEPOINT 消去。ROLLBACK TO は指定地点以降のみ取消。</span></div></div>
+      <div class="guide-block">
+        <div class="guide-title">この論点の基本形</div>
+        <pre><span class="sql-kw">UPDATE</span> invoices i
+<span class="sql-kw">SET</span>    amount = (
+         <span class="sql-kw">SELECT</span> <span class="sql-fn">SUM</span>(l.amount)
+         <span class="sql-kw">FROM</span>   invoice_lines l
+         <span class="sql-kw">WHERE</span>  l.invoice_id = i.invoice_id
+       )
+<span class="sql-kw">WHERE</span>  i.status = &#x27;OPEN&#x27;;</pre>
+      </div>
+      <div class="guide-grid">
+        <div class="guide-block">
+          <div class="guide-title">成立条件</div>
+          <ul class="guide-list"><li><span class="sql-kw">UPDATE</span> の <span class="sql-kw">SET</span> は <span class="sql-num">1</span> 回だけ書き、複数列代入はカンマで並べる。</li><li>相関サブクエリを使う場合は更新行ごとに副問合せが評価される。</li><li><span class="sql-kw">INSERT ALL</span> は一致したすべて、<span class="sql-kw">INSERT FIRST</span> は最初に一致した <span class="sql-kw">INTO</span> のみへ挿入する。</li></ul>
+        </div>
+        <div class="guide-block">
+          <div class="guide-title">判定手順</div>
+          <ol class="guide-list ordered"><li>まず対象行を決める <span class="sql-kw">WHERE</span> や <span class="sql-kw">ON</span> 句を確認する。</li><li>次に <span class="sql-kw">SET</span>、<span class="sql-kw">VALUES</span>、<span class="sql-kw">WHEN</span> 節が Oracle の文法順に並んでいるかを見る。</li><li>副問合せがある場合は単一行保証または条件分岐の位置を確認する。</li></ol>
+        </div>
+      </div>
+      <div class="guide-note">失点しやすい点: <span class="sql-kw">MERGE</span> を DDL と感じたり、<span class="sql-kw">ON</span> 条件や <span class="sql-kw">WHEN</span> 節の向きを取り違えやすい。</div>
+    </div>
+    
+              
+                <article class="question-card">
+                  <div class="question-meta">第3回 模擬試験 / 問62 / 正答 C / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>以下の要件を満たすSQLを作成します。
+
+・STAFFテーブル内の既存の職員データを、NEW_STAFFテーブルのデータで更新する。
+・NEW_STAFFテーブルの新しい職員データを、STAFFテーブルに追加する。
+
+つぎのどの SQL 文が適切ですか。1つ選択してください。
+
+A.
+<span class="sql-kw">MERGE INTO</span> staff s
+<span class="sql-kw">USING</span> new_staff ns
+<span class="sql-kw">WHERE</span> s.staff_id = ns.staff_id
+<span class="sql-kw">WHEN MATCHED</span> <span class="sql-kw">THEN</span> <span class="sql-kw">UPDATE</span> <span class="sql-kw">SET</span> s.full_name = ns.full_name,
+s.role_id = ns.role_id, s.salary = ns.salary
+<span class="sql-kw">WHEN NOT MATCHED</span> <span class="sql-kw">THEN</span> <span class="sql-kw">INSERT</span> <span class="sql-kw">VALUES</span> (ns.staff_id, ns.full_name,
+ns.role_id, ns.salary);
+
+B.
+<span class="sql-kw">UPDATE</span> staff s
+<span class="sql-kw">SET</span> (full_name, role_id, salary) = (
+  <span class="sql-kw">SELECT</span> ns.full_name, ns.role_id, ns.salary
+  <span class="sql-kw">FROM</span> new_staff ns
+  <span class="sql-kw">WHERE</span> s.staff_id = ns.staff_id
+)
+<span class="sql-kw">WHERE</span> <span class="sql-kw">EXISTS</span> (
+  <span class="sql-kw">SELECT</span> <span class="sql-num">1</span> <span class="sql-kw">FROM</span> new_staff ns <span class="sql-kw">WHERE</span> s.staff_id = ns.staff_id
+);
+
+C.
+<span class="sql-kw">MERGE INTO</span> staff s
+<span class="sql-kw">USING</span> new_staff ns
+<span class="sql-kw">ON</span> (s.staff_id = ns.staff_id)
+<span class="sql-kw">WHEN MATCHED</span> <span class="sql-kw">THEN</span>
+<span class="sql-kw">UPDATE</span> <span class="sql-kw">SET</span> s.full_name = ns.full_name, s.role_id = ns.role_id, s.salary = ns.salary
+<span class="sql-kw">WHEN NOT MATCHED</span> <span class="sql-kw">THEN</span>
+<span class="sql-kw">INSERT</span> (staff_id, full_name, role_id, salary)
+<span class="sql-kw">VALUES</span> (ns.staff_id, ns.full_name, ns.role_id, ns.salary);
+
+D.
+<span class="sql-kw">UPDATE</span> staff
+<span class="sql-kw">SET</span> full_name = (<span class="sql-kw">SELECT</span> full_name <span class="sql-kw">FROM</span> new_staff <span class="sql-kw">WHERE</span> staff.staff_id = new_staff.staff_id),
+    role_id = (<span class="sql-kw">SELECT</span> role_id <span class="sql-kw">FROM</span> new_staff <span class="sql-kw">WHERE</span> staff.staff_id = new_staff.staff_id),
+    salary = (<span class="sql-kw">SELECT</span> salary <span class="sql-kw">FROM</span> new_staff <span class="sql-kw">WHERE</span> staff.staff_id = new_staff.staff_id)
+<span class="sql-kw">WHERE</span> staff_id <span class="sql-kw">IN</span> (<span class="sql-kw">SELECT</span> staff_id <span class="sql-kw">FROM</span> new_staff);
+
+(<span class="sql-num">1</span>)		A
+(<span class="sql-num">2</span>)		B
+(<span class="sql-num">3</span>)		C
+(<span class="sql-num">4</span>)		D</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「DML としての <span class="sql-kw">MERGE</span>」です。<br>問題文は「以下の要件を満たすSQLを作成します。 ・STAFFテーブル内の既存の職員データを、NEW_STAFFテーブルのデータで更新する。 ・NEW_STAFFテーブルの新しい職員データを、STAFFテーブルに追加する。 つぎのどの SQL 文が…」という条件を満たす説明または SQL を求めています。<br><span class="sql-kw">MERGE</span> は DML であり、対象表1つに対して一致/非一致の分岐を行う。<br><span class="sql-kw">UPDATE</span> 対象列、<span class="sql-kw">INSERT</span> 条件、<span class="sql-kw">DELETE</span> 条件の位置を正しく読む必要がある。 この設問では正答 C「<span class="sql-kw">MERGE INTO</span> staff s <span class="sql-kw">USING</span> new_staff ns <span class="sql-kw">ON</span> (s.staff_id = …」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">MERGE INTO</span> staff s<br><span class="sql-kw">USING</span> new_staff ns<br><span class="sql-kw">WHERE</span> s.staff_id = ns.staff_id<br><span class="sql-kw">WHEN MATCHED</span> <span class="sql-kw">THEN</span> <span class="sql-kw">UPDATE</span> <span class="sql-kw">SET</span> s.full_name = ns.full_name,<br>s.role_id = ns.role_id, s.salary = ns.salary<br><span class="sql-kw">WHEN NOT MATCHED</span> <span class="sql-kw">THEN</span> <span class="sql-kw">INSERT</span> <span class="sql-kw">VALUES</span> (ns.staff_id, ns.full_name,<br>ns.role_id, ns.salary);</div>
+              <div class="option-review-reason">誤り。 <span class="sql-kw">USING</span> 句は同名列に対してだけ使え、列参照では表別名を付けられません。 <span class="sql-kw">MERGE</span> は `<span class="sql-kw">MERGE INTO</span> 対象表 <span class="sql-kw">USING</span> 比較元 <span class="sql-kw">ON</span> 条件` の順に書き、一致時 <span class="sql-kw">UPDATE</span>、非一致時 <span class="sql-kw">INSERT</span> を分岐します。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">UPDATE</span> staff s<br><span class="sql-kw">SET</span> (full_name, role_id, salary) = (<br>  <span class="sql-kw">SELECT</span> ns.full_name, ns.role_id, ns.salary<br>  <span class="sql-kw">FROM</span> new_staff ns<br>  <span class="sql-kw">WHERE</span> s.staff_id = ns.staff_id<br>)<br><span class="sql-kw">WHERE</span> <span class="sql-kw">EXISTS</span> (<br>  <span class="sql-kw">SELECT</span> <span class="sql-num">1</span> <span class="sql-kw">FROM</span> new_staff ns <span class="sql-kw">WHERE</span> s.staff_id = ns.staff_id<br>);</div>
+              <div class="option-review-reason">誤り。 <span class="sql-kw">EXISTS</span> は返却列ではなく、副問合せが <span class="sql-num">1</span> 行でも存在するかどうかだけを判定します。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">MERGE INTO</span> staff s<br><span class="sql-kw">USING</span> new_staff ns<br><span class="sql-kw">ON</span> (s.staff_id = ns.staff_id)<br><span class="sql-kw">WHEN MATCHED</span> <span class="sql-kw">THEN</span><br><span class="sql-kw">UPDATE</span> <span class="sql-kw">SET</span> s.full_name = ns.full_name, s.role_id = ns.role_id, s.salary = ns.salary<br><span class="sql-kw">WHEN NOT MATCHED</span> <span class="sql-kw">THEN</span><br><span class="sql-kw">INSERT</span> (staff_id, full_name, role_id, salary)<br><span class="sql-kw">VALUES</span> (ns.staff_id, ns.full_name, ns.role_id, ns.salary);</div>
+              <div class="option-review-reason">正しい。 <span class="sql-kw">USING</span> 句は同名列に対してだけ使え、列参照では表別名を付けられません。 <span class="sql-kw">MERGE</span> は `<span class="sql-kw">MERGE INTO</span> 対象表 <span class="sql-kw">USING</span> 比較元 <span class="sql-kw">ON</span> 条件` の順に書き、一致時 <span class="sql-kw">UPDATE</span>、非一致時 <span class="sql-kw">INSERT</span> を分岐します。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">UPDATE</span> staff<br><span class="sql-kw">SET</span> full_name = (<span class="sql-kw">SELECT</span> full_name <span class="sql-kw">FROM</span> new_staff <span class="sql-kw">WHERE</span> staff.staff_id = new_staff.staff_id),<br>    role_id = (<span class="sql-kw">SELECT</span> role_id <span class="sql-kw">FROM</span> new_staff <span class="sql-kw">WHERE</span> staff.staff_id = new_staff.staff_id),<br>    salary = (<span class="sql-kw">SELECT</span> salary <span class="sql-kw">FROM</span> new_staff <span class="sql-kw">WHERE</span> staff.staff_id = new_staff.staff_id)<br><span class="sql-kw">WHERE</span> staff_id <span class="sql-kw">IN</span> (<span class="sql-kw">SELECT</span> staff_id <span class="sql-kw">FROM</span> new_staff);</div>
+              <div class="option-review-reason">誤り。 DML/TCL 問題では、対象行、変更内容、確定/取消の可否を順番に確認する必要があります。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>まず対象行を決める <span class="sql-kw">WHERE</span> や <span class="sql-kw">ON</span> 句を確認する。</li><li>次に <span class="sql-kw">SET</span>、<span class="sql-kw">VALUES</span>、<span class="sql-kw">WHEN</span> 節が Oracle の文法順に並んでいるかを見る。</li><li>副問合せがある場合は単一行保証または条件分岐の位置を確認する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+            </section>
+            
+            <section class="concept-section" id="d7-5">
+              <h3><span class="sql-kw">UPDATE</span> とサブクエリ<span>1問</span></h3>
+              <p class="concept-copy"><span class="sql-kw">UPDATE</span> の <span class="sql-kw">SET</span> 句で相関サブクエリを使うと、更新対象行ごとにサブクエリが評価される。<br>サブクエリが複数行を返せばエラーになる。</p>
+              
+    <div class="concept-guide" style="border-top-color:#f1c40f">
+      <div class="guide-block">
+        <div class="guide-title">論点の定義</div>
+        <p>DML 文は、対象行の決定、変更内容の記述、確定/取消の可否を文法どおりに記述する必要がある。<br><span class="sql-kw">UPDATE</span> や <span class="sql-kw">INSERT ALL</span>/<span class="sql-kw">FIRST</span>、<span class="sql-kw">MERGE</span> は句の位置が崩れると不成立になる。</p>
+      </div>
+      <div class="guide-block"><div class="guide-title">句の並び順（Oracle 正式構文）</div><div class="clause-order"><span class="kw">INSERT INTO</span> 表 [(列リスト)] <span class="kw">VALUES</span> (値リスト);   <span class="desc">-- 列数と順序を一致</span>
+<span class="kw">UPDATE</span> 表 <span class="kw">SET</span> 列 = 値 [, …] [<span class="kw">WHERE</span> 条件];        <span class="desc">-- WHERE 省略で全行更新</span>
+<span class="kw">DELETE FROM</span> 表 [<span class="kw">WHERE</span> 条件];                       <span class="desc">-- DML：ロールバック可能</span>
+<span class="kw">MERGE INTO</span> 対象 t <span class="kw">USING</span> 比較元 s <span class="kw">ON</span> (条件)
+  <span class="kw">WHEN MATCHED THEN UPDATE SET</span> … 
+  <span class="kw">WHEN NOT MATCHED THEN INSERT</span> (…) <span class="kw">VALUES</span> (…);
+-- TCL --
+<span class="kw">SAVEPOINT</span> 名称; … <span class="kw">ROLLBACK TO</span> 名称; <span class="kw">COMMIT</span>;
+<span class="note">-- DDL (CREATE/ALTER/DROP/TRUNCATE) は暗黙 COMMIT。TRUNCATE はロールバック不可。</span>
+<span class="note">-- COMMIT でロック解放・SAVEPOINT 消去。ROLLBACK TO は指定地点以降のみ取消。</span></div></div>
+      <div class="guide-block">
+        <div class="guide-title">この論点の基本形</div>
+        <pre><span class="sql-kw">UPDATE</span> invoices i
+<span class="sql-kw">SET</span>    amount = (
+         <span class="sql-kw">SELECT</span> <span class="sql-fn">SUM</span>(l.amount)
+         <span class="sql-kw">FROM</span>   invoice_lines l
+         <span class="sql-kw">WHERE</span>  l.invoice_id = i.invoice_id
+       )
+<span class="sql-kw">WHERE</span>  i.status = &#x27;OPEN&#x27;;</pre>
+      </div>
+      <div class="guide-grid">
+        <div class="guide-block">
+          <div class="guide-title">成立条件</div>
+          <ul class="guide-list"><li><span class="sql-kw">UPDATE</span> の <span class="sql-kw">SET</span> は <span class="sql-num">1</span> 回だけ書き、複数列代入はカンマで並べる。</li><li>相関サブクエリを使う場合は更新行ごとに副問合せが評価される。</li><li><span class="sql-kw">INSERT ALL</span> は一致したすべて、<span class="sql-kw">INSERT FIRST</span> は最初に一致した <span class="sql-kw">INTO</span> のみへ挿入する。</li></ul>
+        </div>
+        <div class="guide-block">
+          <div class="guide-title">判定手順</div>
+          <ol class="guide-list ordered"><li>まず対象行を決める <span class="sql-kw">WHERE</span> や <span class="sql-kw">ON</span> 句を確認する。</li><li>次に <span class="sql-kw">SET</span>、<span class="sql-kw">VALUES</span>、<span class="sql-kw">WHEN</span> 節が Oracle の文法順に並んでいるかを見る。</li><li>副問合せがある場合は単一行保証または条件分岐の位置を確認する。</li></ol>
+        </div>
+      </div>
+      <div class="guide-note">失点しやすい点: サブクエリが先に1回だけ実行されると思い込み、相関性や複数行エラーを見落としやすい。</div>
+    </div>
+    
+              
+                <article class="question-card">
+                  <div class="question-meta">第2回 模擬試験 / 問30 / 正答 B / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>日本とアメリカにある工場で生産している製品を、タイ工場に移管します。
+このため、ITEM表を次のように更新する必要があります。
+
+<span class="sql-num">1</span>. 日本またはアメリカのメーカーの所在地（国名）をタイに設定します。
+<span class="sql-num">2</span>. 1に当てはまる商品の価格を、一律、日本・アメリカの全商品の平均価格の0.7倍に設定します。
+
+これに応じて次のSQLを実行します。
+
+<span class="sql-kw">UPDATE</span> ITEM
+<span class="sql-kw">SET</span> MAKER_ID =
+(<span class="sql-kw">SELECT</span> MAKER_ID <span class="sql-kw">FROM</span> MAKER <span class="sql-kw">WHERE</span> COUNTRY = &#x27;THAILAND&#x27;)
+,
+ITEM_PRICE =
+(<span class="sql-kw">SELECT</span> <span class="sql-num">0.7</span>*<span class="sql-fn">AVG</span>(ITEM_PRICE) <span class="sql-kw">FROM</span> ITEM,MAKER
+<span class="sql-kw">WHERE</span> MAKER.COUNTRY = &#x27;JAPAN&#x27; <span class="sql-kw">OR</span> MAKER.COUNTRY = &#x27;U.S.A&#x27;
+)
+<span class="sql-kw">WHERE</span> MAKER_ID <span class="sql-kw">IN</span> (<span class="sql-kw">SELECT</span> MAKER_ID <span class="sql-kw">FROM</span> MAKER <span class="sql-kw">WHERE</span> COUNTRY = &#x27;JAPAN&#x27; <span class="sql-kw">OR</span> COUNTRY = &#x27;U.S.A&#x27;);
+
+SQLの実行結果はどうなるでしょうか。
+
+(<span class="sql-num">1</span>)		A.　正常に実行され、必要な更新が行われます。
+(<span class="sql-num">2</span>)		B.　正常に実行されますが、必要な更新が行われません。
+(<span class="sql-num">3</span>)		C.　UPDATEのSET句で副問合せは実行できないため、エラーとなります。
+(<span class="sql-num">4</span>)		D.　副問合せはUPDATEで結合条件を持つことができないため、エラーとなります。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「<span class="sql-kw">UPDATE</span> とサブクエリ」です。<br>問題文は「日本とアメリカにある工場で生産している製品を、タイ工場に移管します。 このため、ITEM表を次のように更新する必要があります。 <span class="sql-num">1</span>. 日本またはアメリカのメーカーの所在地（国名）をタイに設定します。 <span class="sql-num">2</span>. 1に当てはまる商品の価格を、一律…」という条件を満たす説明または SQL を求めています。<br><span class="sql-kw">UPDATE</span> の <span class="sql-kw">SET</span> 句で相関サブクエリを使うと、更新対象行ごとにサブクエリが評価される。<br>サブクエリが複数行を返せばエラーになる。 この設問では正答 B「正常に実行されますが、必要な更新が行われません。<br>」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">正常に実行され、必要な更新が行われます。</div>
+              <div class="option-review-reason">誤り。 DML/TCL 問題では、対象行、変更内容、確定/取消の可否を順番に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">正常に実行されますが、必要な更新が行われません。</div>
+              <div class="option-review-reason">正しい。 DML/TCL 問題では、対象行、変更内容、確定/取消の可否を順番に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">UPDATEのSET句で副問合せは実行できないため、エラーとなります。</div>
+              <div class="option-review-reason">誤り。 DML/TCL 問題では、対象行、変更内容、確定/取消の可否を順番に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">副問合せはUPDATEで結合条件を持つことができないため、エラーとなります。</div>
+              <div class="option-review-reason">誤り。 DML/TCL 問題では、対象行、変更内容、確定/取消の可否を順番に確認する必要があります。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>まず対象行を決める <span class="sql-kw">WHERE</span> や <span class="sql-kw">ON</span> 句を確認する。</li><li>次に <span class="sql-kw">SET</span>、<span class="sql-kw">VALUES</span>、<span class="sql-kw">WHEN</span> 節が Oracle の文法順に並んでいるかを見る。</li><li>副問合せがある場合は単一行保証または条件分岐の位置を確認する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+            </section>
+            
+</div>
+</body>
+</html>

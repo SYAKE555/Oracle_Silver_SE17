@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>模擬試験ダッシュボード</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans JP', 'Hiragino Sans', sans-serif; background: #eef2f7; color: #1f2937; line-height: 1.7; }
+  a { color: inherit; }
+  .page-header { background: linear-gradient(135deg,#10243f 0%,#1f3d63 55%,#c0392b 100%); color: white; padding: 42px 24px; text-align: center; }
+  .page-header h1 { font-size: 1.95rem; margin-bottom: 8px; }
+  .container { max-width: 1120px; margin: 0 auto; padding: 24px; }
+  .nav-back { display: inline-block; padding: 8px 16px; background: white; border-radius: 999px; text-decoration: none; color: #1f2937; box-shadow: 0 4px 14px rgba(15,23,42,.08); font-size: .9rem; margin: 0 8px 16px 0; }
+  .hero, .panel, .entry-card { background: white; border-radius: 18px; box-shadow: 0 10px 26px rgba(15,23,42,.08); }
+  .hero { padding: 22px 24px; margin-bottom: 18px; border-top: 6px solid #c0392b; }
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-top: 16px; }
+  .stat-card { background: #f8fafc; border-radius: 14px; padding: 14px; }
+  .stat-label { color: #64748b; font-size: .82rem; }
+  .stat-value { font-size: 1.35rem; font-weight: 900; color: #0f172a; margin-top: 4px; }
+  .stat-copy { font-size: .84rem; color: #475569; margin-top: 4px; }
+  .entry-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-bottom: 18px; }
+  .entry-card { padding: 18px 20px; text-decoration: none; border-top: 6px solid #1f3d63; }
+  .entry-card.review { border-top-color: #2c3e50; }
+  .entry-card.wrong { border-top-color: #c0392b; }
+  .entry-card.correct { border-top-color: #16a34a; }
+  .entry-title { font-size: 1rem; font-weight: 900; color: #0f172a; }
+  .entry-copy { margin-top: 8px; color: #475569; font-size: .9rem; }
+  .panel { padding: 20px 22px; margin-bottom: 18px; }
+  .panel h2 { font-size: 1rem; color: #10243f; margin-bottom: 12px; }
+  .link-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 10px; }
+  .mini-link { display: flex; justify-content: space-between; gap: 12px; align-items: center; text-decoration: none; padding: 12px 14px; border-radius: 12px; background: #f8fafc; }
+  .mini-link.weak { border-left: 4px solid #c0392b; }
+  .mini-link.strong { border-left: 4px solid #16a34a; }
+  .mini-link span { font-weight: 800; color: #334155; }
+
+
+  /* sql-highlight-v3 */
+  /* default (light bg): warm tone */
+  .sql-kw  { color: #92400e; font-weight: 700; }
+  .sql-fn  { color: #1e40af; font-weight: 600; }
+  .sql-str { color: #065f46; }
+  .sql-num { color: #991b1b; }
+  .sql-cmt { color: #64748b; font-style: italic; }
+  /* dark bg override (pre / code) */
+  pre .sql-kw  { color: #fbbf24; }
+  pre .sql-fn  { color: #60a5fa; }
+  pre .sql-str { color: #86efac; }
+  pre .sql-num { color: #fca5a5; }
+  pre .sql-cmt { color: #94a3b8; }
+  code .sql-kw  { color: #fbbf24; }
+  code .sql-fn  { color: #60a5fa; }
+  code .sql-str { color: #86efac; }
+  code .sql-num { color: #fca5a5; }
+  code .sql-cmt { color: #94a3b8; }
+  /* clause-order div uses its own kw/fn/desc/note classes — no override needed */
+</style>
+</head>
+<body>
+<div class="page-header">
+  <h1>模擬試験ダッシュボード</h1>
+  <div>結果分析は次の画面へ寄せ、ここでは模擬試験関連の入口だけを compact にまとめる</div>
+</div>
+<div class="container">
+  <a class="nav-back" href="index.html">教科書トップ</a>
+  <div class="hero">
+    <div style="font-size:.95rem;color:#64748b;font-weight:700">Overview</div>
+    <div style="font-size:1.45rem;font-weight:900;margin-top:4px">結果分析、誤答補強、正答維持をここで統合</div>
+    <p style="margin-top:8px;color:#334155">模擬試験の詳細分析はこの先のレポートにまとめ、トップ導線は <span class="sql-num">1</span> 箇所に集約しています。<br>まずは誤答か正答かで入り口を分け、必要なら結果分析へ進みます。</p>
+    <div class="stats">
+      
+            <div class="stat-card">
+              <div class="stat-label">第1回 模擬試験</div>
+              <div class="stat-value"><span class="sql-num">48</span>%</div>
+              <div class="stat-copy">設問正答率 <span class="sql-num">49</span>%</div>
+            </div>
+            
+            <div class="stat-card">
+              <div class="stat-label">第2回 模擬試験</div>
+              <div class="stat-value"><span class="sql-num">33</span>%</div>
+              <div class="stat-copy">設問正答率 <span class="sql-num">32</span>%</div>
+            </div>
+            
+            <div class="stat-card">
+              <div class="stat-label">第3回 模擬試験</div>
+              <div class="stat-value"><span class="sql-num">34</span>%</div>
+              <div class="stat-copy">設問正答率 <span class="sql-num">35</span>%</div>
+            </div>
+            
+    </div>
+  </div>
+
+  <div class="entry-grid">
+    <a class="entry-card review" href="mock_exam_report.html">
+      <div class="entry-title">結果分析へ進む</div>
+      <div class="entry-copy">総合スコア、失点比率、項目別進捗、試験別詳細を確認するページ。</div>
+    </a>
+    <a class="entry-card wrong" href="mock_exam_reinforce.html">
+      <div class="entry-title">誤答の徹底解説</div>
+      <div class="entry-copy">落とした問題だけをカテゴリ別にまとめた補強導線。<br>弱点回収を優先する。</div>
+    </a>
+    <a class="entry-card correct" href="mock_exam_correct.html">
+      <div class="entry-title">正答の総点検</div>
+      <div class="entry-copy">正答できた問題もカテゴリ別に再確認し、得点源を維持する導線。</div>
+    </a>
+  </div>
+
+  <div class="panel">
+    <h2>弱点から入る</h2>
+    <div class="link-grid"><a class="mini-link weak" href="EX2_reinforce.html">EX2 サブクエリ・集合演算 <span>24%</span></a><a class="mini-link weak" href="EX3_reinforce.html">EX3 単一行関数 <span>30%</span></a><a class="mini-link weak" href="EX5_reinforce.html">EX5 DDL・オブジェクト管理 <span>32%</span></a></div>
+  </div>
+
+  <div class="panel">
+    <h2>得点源を維持する</h2>
+    <div class="link-grid"><a class="mini-link strong" href="EX8_correct.html">EX8 データの絞り込みとソート <span>60%</span></a><a class="mini-link strong" href="EX7_correct.html">EX7 SQLとRDBの基礎 <span>50%</span></a><a class="mini-link strong" href="EX4_correct.html">EX4 DML・トランザクション <span>46%</span></a></div>
+  </div>
+</div>
+</body>
+</html>

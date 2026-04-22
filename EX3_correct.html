@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EX3 単一行関数 - 正答済み総点検</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans JP', 'Hiragino Sans', sans-serif; background: #eef2f7; color: #1f2937; line-height: 1.7; }
+  a { color: inherit; }
+  .page-header { background: linear-gradient(135deg,#10243f 0%,#1f3d63 55%,#c0392b 100%); color: white; padding: 42px 24px; text-align: center; }
+  .page-header h1 { font-size: 1.9rem; margin-bottom: 8px; }
+  .page-header .subtitle { opacity: 0.92; font-size: 0.95rem; }
+  .container { max-width: 1180px; margin: 0 auto; padding: 24px; }
+  .nav-back { display: inline-block; padding: 8px 16px; background: white; border-radius: 999px; text-decoration: none; color: #1f2937; box-shadow: 0 4px 14px rgba(15,23,42,.08); font-size: .9rem; margin: 0 8px 16px 0; }
+  .hero-card, .toc, .concept-section { background: white; border-radius: 18px; box-shadow: 0 10px 26px rgba(15,23,42,.08); }
+  .hero-card { padding: 20px 22px; margin-bottom: 18px; border-top: 6px solid #c0392b; }
+  .hero-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-top: 14px; }
+  .metric { background: #f8fafc; border-radius: 14px; padding: 14px; }
+  .metric .label { color: #64748b; font-size: .82rem; }
+  .metric .value { font-size: 1.35rem; font-weight: 900; color: #0f172a; margin-top: 4px; }
+  .toc { padding: 18px 22px; margin-bottom: 22px; }
+  .toc h2 { font-size: 1rem; color: #c0392b; margin-bottom: 10px; }
+  .toc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; }
+  .toc a { display: flex; justify-content: space-between; gap: 10px; align-items: center; text-decoration: none; padding: 10px 12px; border-radius: 12px; background: #f8fafc; border-left: 4px solid #c0392b; font-size: .88rem; }
+  .toc a:hover { background: #eef2f7; }
+  .concept-section { padding: 22px; margin-bottom: 24px; }
+  .concept-section h3 { display: flex; justify-content: space-between; gap: 12px; align-items: center; font-size: 1.15rem; margin-bottom: 8px; color: #0f172a; }
+  .concept-section h3 span { font-size: .82rem; padding: 5px 10px; border-radius: 999px; background: #c0392b; color: white; }
+  .concept-copy { color: #475569; font-size: .92rem; margin-bottom: 16px; }
+  .concept-guide { border-top: 5px solid #c0392b; background: #f8fafc; border-radius: 16px; padding: 16px; margin-bottom: 18px; }
+  .guide-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+  .guide-block { margin-bottom: 12px; }
+  .guide-title { font-size: .82rem; font-weight: 900; color: #c0392b; margin-bottom: 6px; }
+  .guide-block p { color: #334155; font-size: .9rem; }
+  .guide-list { padding-left: 20px; color: #334155; font-size: .9rem; }
+  .guide-list li { margin-bottom: 5px; }
+  .guide-note { background: #fff7ed; border-left: 4px solid #c0392b; border-radius: 10px; padding: 10px 12px; color: #7c2d12; font-size: .88rem; margin-top: 6px; }
+  .question-card { border: 1px solid #dbe4ef; border-radius: 16px; padding: 16px; margin-bottom: 14px; background: #fcfdff; }
+  .question-meta { font-size: .8rem; color: #64748b; margin-bottom: 10px; font-weight: 700; }
+  .block-title { font-size: .85rem; font-weight: 800; color: #c0392b; margin: 10px 0 6px; }
+  pre { white-space: pre-wrap; word-break: break-word; background: #0f172a; color: #e2e8f0; border-radius: 12px; padding: 14px; font-size: .84rem; overflow-x: auto; }
+  .analysis-block p { color: #334155; font-size: .9rem; margin-bottom: 8px; }
+  .option-review-grid { display: flex; flex-direction: column; gap: 12px; margin-bottom: 8px; }
+  .option-review { border-radius: 14px; padding: 16px 18px; border: 1px solid #dbe4ef; background: white; }
+  .option-review.correct { border-left: 6px solid #16a34a; background: #f6fdf8; }
+  .option-review.wrong { border-left: 6px solid #c0392b; background: #fffafa; }
+  .option-review-head { display: flex; justify-content: flex-start; gap: 12px; align-items: center; margin-bottom: 10px; }
+  .option-review-key { font-size: 1.05rem; font-weight: 900; color: #0f172a; min-width: 1.8em; }
+  .option-review-badges span { display: inline-block; background: #eef2f7; color: #334155; font-size: .74rem; font-weight: 800; border-radius: 999px; padding: 3px 10px; margin-left: 4px; }
+  .option-review-text { color: #1f2937; font-size: .98rem; line-height: 1.65; margin-bottom: 10px; font-weight: 600; }
+  .option-review-reason { color: #334155; font-size: .92rem; line-height: 1.75; }
+  .clause-order { background: #0f172a; color: #e2e8f0; border-radius: 12px; padding: 14px 16px; font-family: 'SFMono-Regular', Menlo, Consolas, monospace; font-size: .86rem; line-height: 1.8; white-space: pre; overflow-x: auto; }
+  .clause-order .kw { color: #fbbf24; font-weight: 800; }
+  .clause-order .desc { color: #93c5fd; }
+  .clause-order .note { color: #86efac; font-style: italic; }
+  .study-step-list { padding-left: 20px; color: #334155; font-size: .9rem; }
+  .study-step-list li { margin-bottom: 5px; }
+  @media (max-width: 720px) {
+    .page-header h1 { font-size: 1.55rem; }
+    .container { padding: 18px; }
+    .concept-section h3 { flex-direction: column; align-items: flex-start; }
+    .option-review-head { flex-direction: column; align-items: flex-start; }
+  }
+
+
+  /* sql-highlight-v3 */
+  /* default (light bg): warm tone */
+  .sql-kw  { color: #92400e; font-weight: 700; }
+  .sql-fn  { color: #1e40af; font-weight: 600; }
+  .sql-str { color: #065f46; }
+  .sql-num { color: #991b1b; }
+  .sql-cmt { color: #64748b; font-style: italic; }
+  /* dark bg override (pre / code) */
+  pre .sql-kw  { color: #fbbf24; }
+  pre .sql-fn  { color: #60a5fa; }
+  pre .sql-str { color: #86efac; }
+  pre .sql-num { color: #fca5a5; }
+  pre .sql-cmt { color: #94a3b8; }
+  code .sql-kw  { color: #fbbf24; }
+  code .sql-fn  { color: #60a5fa; }
+  code .sql-str { color: #86efac; }
+  code .sql-num { color: #fca5a5; }
+  code .sql-cmt { color: #94a3b8; }
+  /* clause-order div uses its own kw/fn/desc/note classes — no override needed */
+</style>
+</head>
+<body>
+<div class="page-header">
+  <h1>EX3 正答済み総点検</h1>
+  <div class="subtitle">単一行関数 / 正答した設問をカテゴリ別に再確認し、得点源を維持するページ</div>
+</div>
+<div class="container">
+  <a class="nav-back" href="mock_exam_dashboard.html">模擬試験ダッシュボード</a>
+  <a class="nav-back" href="mock_exam_report.html">結果レポート</a>
+  <a class="nav-back" href="mock_exam_correct.html">模擬試験レビュー</a>
+  
+  <a class="nav-back" href="index.html">教科書トップ</a>
+
+  <div class="hero-card">
+    <div style="font-size:.9rem;color:#64748b;font-weight:700">D3 / 最優先</div>
+    <div style="font-size:1.4rem;font-weight:900;margin-top:4px">単一行関数</div>
+    <p style="margin-top:8px;color:#334155">このページは、正答できた設問をカテゴリ別に並べ、記録された問題全文を正本として、なぜ取れたのかと維持ポイントを再確認するための定着教材です。</p>
+    <div class="hero-grid">
+      <div class="metric"><div class="label">レビュー種別</div><div class="value">正答</div></div>
+      <div class="metric"><div class="label">進捗率</div><div class="value"><span class="sql-num">30.0</span>%</div></div>
+      <div class="metric"><div class="label">正答数</div><div class="value">9問</div></div>
+      <div class="metric"><div class="label">カテゴリ数</div><div class="value"><span class="sql-num">4</span></div></div>
+    </div>
+  </div>
+
+  <div class="toc">
+    <h2>カテゴリ別目次</h2>
+    <div class="toc-grid">
+      <a href="#d3-1" class="high">日付演算と月数計算 <span>4問</span></a><a href="#d3-2" class="high">TO_CHAR・TO_NUMBER・TO_DATE の書式変換 <span>3問</span></a><a href="#d3-3" class="high">ROUND・TRUNC・FLOOR などの数値関数 <span>1問</span></a><a href="#d3-4" class="high">SUBSTR・INSTR・TRIM・REPLACE の使い分け <span>1問</span></a>
+    </div>
+  </div>
+
+  
+            <section class="concept-section" id="d3-1">
+              <h3>日付演算と月数計算<span>4問</span></h3>
+              <p class="concept-copy">DATE 型の差は日数で返る。<br>月単位なら MONTHS_BETWEEN、月加算なら ADD_MONTHS を使う。<br>年数を <span class="sql-num">365</span> 日換算で書くと境界条件を外しやすい。</p>
+              
+    <div class="concept-guide" style="border-top-color:#c0392b">
+      <div class="guide-block">
+        <div class="guide-title">論点の定義</div>
+        <p>DATE 型の減算結果は日数であり、月単位の計算には MONTHS_BETWEEN や ADD_MONTHS を用いる。<br>表示形式の整形は TO_CHAR、演算前の型変換は TO_DATE や TO_NUMBER が担当する。</p>
+      </div>
+      <div class="guide-block"><div class="guide-title">句の並び順（Oracle 正式構文）</div><div class="clause-order"><span class="kw">SELECT</span> 単一行関数(列)        <span class="desc">-- 値の変換・整形（列ごとに結果）</span>
+<span class="kw">FROM</span>   表
+<span class="kw">WHERE</span>  単一行関数(列) 比較演算子 値
+<span class="kw">ORDER BY</span> 単一行関数(列);
+<span class="note">-- 単一行関数は SELECT / WHERE / ORDER BY のどれにも書ける（GROUP BY 後の HAVING 内でも可）。</span>
+<span class="note">-- 変換順序: 演算前に TO_NUMBER / TO_DATE、表示直前に TO_CHAR。</span>
+<span class="note">-- NULL 処理: NVL(式, 代替) / NVL2(式, 非NULL, NULL) / COALESCE / CASE。</span></div></div>
+      <div class="guide-block">
+        <div class="guide-title">この論点の基本形</div>
+        <pre><span class="sql-kw">SELECT</span> <span class="sql-fn">ADD_MONTHS</span>(made_date, <span class="sql-num">24</span>) <span class="sql-kw">AS</span> two_years_later,
+       <span class="sql-fn">MONTHS_BETWEEN</span>(SYSDATE, made_date) <span class="sql-kw">AS</span> elapsed_months,
+       <span class="sql-fn">TO_CHAR</span>(made_date, &#x27;YYYY-MM-DD&#x27;) <span class="sql-kw">AS</span> made_ymd
+<span class="sql-kw">FROM</span>   item;</pre>
+      </div>
+      <div class="guide-grid">
+        <div class="guide-block">
+          <div class="guide-title">成立条件</div>
+          <ul class="guide-list"><li>DATE の差は日数、月差は <span class="sql-fn">MONTHS_BETWEEN</span>(date1, date2) を使う。</li><li><span class="sql-num">2</span> 年以上経過のような条件は、日本語を `SYSDATE - <span class="sql-num">730</span> &gt;= made_date` などへ書き換えて判定する。</li><li>型変換は演算前、書式変換は表示直前に行う。</li></ul>
+        </div>
+        <div class="guide-block">
+          <div class="guide-title">判定手順</div>
+          <ol class="guide-list ordered"><li>まず設問が日数計算か月数計算かを分ける。</li><li>次に不等号の向きを『いつより古いか』という日本語で確認する。</li><li>文字列との比較や表示整形がある場合は変換順序を確認する。</li></ol>
+        </div>
+      </div>
+      <div class="guide-note">失点しやすい点: 日付差と月差を同じように扱ったり、MONTHS_BETWEEN の引数順を逆に覚えやすい。</div>
+    </div>
+    
+              
+                <article class="question-card">
+                  <div class="question-meta">第1回 模擬試験 / 問16 / 正答 C / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>NUMBER型のITEM_IDと、DATE型のMADE_DATE（製造年月日）を含むITEM表があります。
+製造年月日から2か月後の月末の日付を表示したい場合、実行するSQLを選択してください。
+(<span class="sql-num">1</span>)		A.　<span class="sql-kw">SELECT</span> ITEM_ID, <span class="sql-fn">LAST_DAY</span>(<span class="sql-fn">ADD_MONTHS</span>(MADE_DATE, <span class="sql-num">2</span>),<span class="sql-num">1</span>) <span class="sql-kw">FROM</span> ITEM;
+(<span class="sql-num">2</span>)		B.　<span class="sql-kw">SELECT</span> ITEM_ID, <span class="sql-fn">NEXT_DAY</span>(<span class="sql-fn">ADD_MONTHS</span>(MADE_DATE, <span class="sql-num">2</span>),<span class="sql-num">1</span>) <span class="sql-kw">FROM</span> ITEM;
+(<span class="sql-num">3</span>)		C.　<span class="sql-kw">SELECT</span> ITEM_ID, <span class="sql-fn">LAST_DAY</span>(<span class="sql-fn">ADD_MONTHS</span>(MADE_DATE, <span class="sql-num">2</span>)) <span class="sql-kw">FROM</span> ITEM;
+(<span class="sql-num">4</span>)		D.　<span class="sql-kw">SELECT</span> ITEM_ID, <span class="sql-fn">LAST_DAY</span> (<span class="sql-fn">MONTHS_BETWEEN</span> (MADE_DATE, SYSDATE)) <span class="sql-kw">FROM</span> ITEM;</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「日付演算と月数計算」です。<br>問題文は「NUMBER型のITEM_IDと、DATE型のMADE_DATE（製造年月日）を含むITEM表があります。 製造年月日から2か月後の月末の日付を表示したい場合、実行するSQLを選択してください。<br>」という条件を満たす説明または SQL を求めています。<br>DATE 型の差は日数で返る。<br>月単位なら MONTHS_BETWEEN、月加算なら ADD_MONTHS を使う。<br>年数を <span class="sql-num">365</span> 日換算で書くと境界条件を外しやすい。 この設問では正答 C「<span class="sql-kw">SELECT</span> ITEM_ID, <span class="sql-fn">LAST_DAY</span>(<span class="sql-fn">ADD_MONTHS</span>(MADE_DATE, <span class="sql-num">2</span>)) <span class="sql-kw">FROM</span>…」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> ITEM_ID, <span class="sql-fn">LAST_DAY</span>(<span class="sql-fn">ADD_MONTHS</span>(MADE_DATE, <span class="sql-num">2</span>),<span class="sql-num">1</span>) <span class="sql-kw">FROM</span> ITEM;</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> ITEM_ID, <span class="sql-fn">NEXT_DAY</span>(<span class="sql-fn">ADD_MONTHS</span>(MADE_DATE, <span class="sql-num">2</span>),<span class="sql-num">1</span>) <span class="sql-kw">FROM</span> ITEM;</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> ITEM_ID, <span class="sql-fn">LAST_DAY</span>(<span class="sql-fn">ADD_MONTHS</span>(MADE_DATE, <span class="sql-num">2</span>)) <span class="sql-kw">FROM</span> ITEM;</div>
+              <div class="option-review-reason">正しい。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> ITEM_ID, <span class="sql-fn">LAST_DAY</span> (<span class="sql-fn">MONTHS_BETWEEN</span> (MADE_DATE, SYSDATE)) <span class="sql-kw">FROM</span> ITEM;</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>まず設問が日数計算か月数計算かを分ける。</li><li>次に不等号の向きを『いつより古いか』という日本語で確認する。</li><li>文字列との比較や表示整形がある場合は変換順序を確認する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第1回 模擬試験 / 問17 / 正答 A.B.C / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>以下のSQLでエラーとならないものはどれでしょうか。（3つ選択）
+
+(<span class="sql-num">1</span>)		A.　<span class="sql-kw">SELECT</span> <span class="sql-fn">COALESCE</span>(<span class="sql-num">100</span>, <span class="sql-kw">NULL</span>) <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;
+(<span class="sql-num">2</span>)		B.　<span class="sql-kw">SELECT</span> <span class="sql-fn">COALESCE</span>(<span class="sql-kw">NULL</span>, &#x27;<span class="sql-num">100</span>&#x27;, &#x27;<span class="sql-num">100</span>&#x27;) <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;
+(<span class="sql-num">3</span>)		C.　<span class="sql-kw">SELECT</span> <span class="sql-fn">COALESCE</span>(<span class="sql-kw">NULL</span>, &#x27;<span class="sql-num">100</span>&#x27;) <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;
+(<span class="sql-num">4</span>)		D.　<span class="sql-kw">SELECT</span> <span class="sql-fn">COALESCE</span>(SYSDATE, &#x27;<span class="sql-num">100</span>&#x27;) <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;
+(<span class="sql-num">5</span>)		E.　<span class="sql-kw">SELECT</span> <span class="sql-fn">COALESCE</span>(&#x27;<span class="sql-num">10</span>&#x27;, <span class="sql-num">100</span>) <span class="sql-kw">FROM</span> (<span class="sql-kw">SELECT</span> <span class="sql-kw">NULL</span> <span class="sql-kw">AS</span> &quot;TODAY&quot; <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>);</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「日付演算と月数計算」です。<br>問題文は「以下のSQLでエラーとならないものはどれでしょうか。<br>（3つ選択）」という条件を満たす説明または SQL を求めています。<br>DATE 型の差は日数で返る。<br>月単位なら MONTHS_BETWEEN、月加算なら ADD_MONTHS を使う。<br>年数を <span class="sql-num">365</span> 日換算で書くと境界条件を外しやすい。 この設問では正答 A「<span class="sql-kw">SELECT</span> <span class="sql-fn">COALESCE</span>(<span class="sql-num">100</span>, <span class="sql-kw">NULL</span>) <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;」 / B「<span class="sql-kw">SELECT</span> <span class="sql-fn">COALESCE</span>(<span class="sql-kw">NULL</span>, &#x27;<span class="sql-num">100</span>&#x27;, &#x27;<span class="sql-num">100</span>&#x27;) <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;」 / C「<span class="sql-kw">SELECT</span> <span class="sql-fn">COALESCE</span>(<span class="sql-kw">NULL</span>, &#x27;<span class="sql-num">100</span>&#x27;) <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> <span class="sql-fn">COALESCE</span>(<span class="sql-num">100</span>, <span class="sql-kw">NULL</span>) <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;</div>
+              <div class="option-review-reason">正しい。 <span class="sql-kw">DUAL</span> は Oracle 固有の <span class="sql-num">1</span> 行 <span class="sql-num">1</span> 列の疑似表で、式や関数結果の確認に使います。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> <span class="sql-fn">COALESCE</span>(<span class="sql-kw">NULL</span>, &#x27;<span class="sql-num">100</span>&#x27;, &#x27;<span class="sql-num">100</span>&#x27;) <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;</div>
+              <div class="option-review-reason">正しい。 <span class="sql-kw">DUAL</span> は Oracle 固有の <span class="sql-num">1</span> 行 <span class="sql-num">1</span> 列の疑似表で、式や関数結果の確認に使います。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> <span class="sql-fn">COALESCE</span>(<span class="sql-kw">NULL</span>, &#x27;<span class="sql-num">100</span>&#x27;) <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;</div>
+              <div class="option-review-reason">正しい。 <span class="sql-kw">DUAL</span> は Oracle 固有の <span class="sql-num">1</span> 行 <span class="sql-num">1</span> 列の疑似表で、式や関数結果の確認に使います。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> <span class="sql-fn">COALESCE</span>(SYSDATE, &#x27;<span class="sql-num">100</span>&#x27;) <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;</div>
+              <div class="option-review-reason">誤り。 <span class="sql-kw">DUAL</span> は Oracle 固有の <span class="sql-num">1</span> 行 <span class="sql-num">1</span> 列の疑似表で、式や関数結果の確認に使います。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">E</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> <span class="sql-fn">COALESCE</span>(&#x27;<span class="sql-num">10</span>&#x27;, <span class="sql-num">100</span>) <span class="sql-kw">FROM</span> (<span class="sql-kw">SELECT</span> <span class="sql-kw">NULL</span> <span class="sql-kw">AS</span> &quot;TODAY&quot; <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>);</div>
+              <div class="option-review-reason">誤り。 <span class="sql-kw">DUAL</span> は Oracle 固有の <span class="sql-num">1</span> 行 <span class="sql-num">1</span> 列の疑似表で、式や関数結果の確認に使います。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>まず設問が日数計算か月数計算かを分ける。</li><li>次に不等号の向きを『いつより古いか』という日本語で確認する。</li><li>文字列との比較や表示整形がある場合は変換順序を確認する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第1回 模擬試験 / 問18 / 正答 C.D / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>EMP表には、データ型 NUMBER型のDEPT_ID列とDATE型のSTART_DATE列があります。
+NLS_DATE_FORMATはDD-MON-RRに設定されます。
+SQLでこれらの列を含むデータ型変換について正しい記述はどれでしょうか。（2つ選択）
+(<span class="sql-num">1</span>)		A.　DEPT_ID &lt; &#x27;<span class="sql-num">10102</span>&#x27; : 明示的な変換が必要です
+(<span class="sql-num">2</span>)		B.　START_DATE &gt; &#x27;<span class="sql-num">07</span>-<span class="sql-num">06</span>-<span class="sql-num">2019</span>&#x27; : 暗黙的な変換を使用します
+(<span class="sql-num">3</span>)		C.　START_DATE &gt; &#x27;<span class="sql-num">07</span>-JUN-<span class="sql-num">19</span>&#x27; : 暗黙的な変換を使用します
+(<span class="sql-num">4</span>)		D.　DEPT_ID <span class="sql-kw">BETWEEN</span> &#x27;<span class="sql-num">10101</span>&#x27; <span class="sql-kw">AND</span> &#x27;<span class="sql-num">10102</span>&#x27; : 暗黙的な変換を使用します</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「日付演算と月数計算」です。<br>問題文は「EMP表には、データ型 NUMBER型のDEPT_ID列とDATE型のSTART_DATE列があります。 NLS_DATE_FORMATはDD-MON-RRに設定されます。 SQLでこれらの列を含むデータ型変換について正しい記述はどれでし…」という条件を満たす説明または SQL を求めています。<br>DATE 型の差は日数で返る。<br>月単位なら MONTHS_BETWEEN、月加算なら ADD_MONTHS を使う。<br>年数を <span class="sql-num">365</span> 日換算で書くと境界条件を外しやすい。 この設問では正答 C「START_DATE &gt; &#x27;<span class="sql-num">07</span>-JUN-<span class="sql-num">19</span>&#x27; : 暗黙的な変換を使用します」 / D「DEPT_ID <span class="sql-kw">BETWEEN</span> &#x27;<span class="sql-num">10101</span>&#x27; <span class="sql-kw">AND</span> &#x27;<span class="sql-num">10102</span>&#x27; : 暗黙的な変換を使用します」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">DEPT_ID &lt; &#x27;<span class="sql-num">10102</span>&#x27; : 明示的な変換が必要です</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">START_DATE &gt; &#x27;<span class="sql-num">07</span>-<span class="sql-num">06</span>-<span class="sql-num">2019</span>&#x27; : 暗黙的な変換を使用します</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">START_DATE &gt; &#x27;<span class="sql-num">07</span>-JUN-<span class="sql-num">19</span>&#x27; : 暗黙的な変換を使用します</div>
+              <div class="option-review-reason">正しい。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">DEPT_ID <span class="sql-kw">BETWEEN</span> &#x27;<span class="sql-num">10101</span>&#x27; <span class="sql-kw">AND</span> &#x27;<span class="sql-num">10102</span>&#x27; : 暗黙的な変換を使用します</div>
+              <div class="option-review-reason">正しい。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>まず設問が日数計算か月数計算かを分ける。</li><li>次に不等号の向きを『いつより古いか』という日本語で確認する。</li><li>文字列との比較や表示整形がある場合は変換順序を確認する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第3回 模擬試験 / 問47 / 正答 ABE / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>次のうち、正常に実行できるSQL文を3つ選んでください。
+(<span class="sql-num">1</span>)		A. <span class="sql-kw">SELECT</span> (SYSDATE - DATE &#x27;<span class="sql-num">2025</span>-<span class="sql-num">03</span>-<span class="sql-num">01</span>&#x27;) / <span class="sql-num">1</span> <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;
+(<span class="sql-num">2</span>)		B. <span class="sql-kw">SELECT</span> SYSDATE - <span class="sql-num">1</span> - DATE &#x27;<span class="sql-num">2025</span>-<span class="sql-num">03</span>-<span class="sql-num">01</span>&#x27; <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;
+(<span class="sql-num">3</span>)		C. <span class="sql-kw">SELECT</span> <span class="sql-num">1</span> - SYSDATE - DATE &#x27;<span class="sql-num">2025</span>-<span class="sql-num">03</span>-<span class="sql-num">01</span>&#x27; <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;
+(<span class="sql-num">4</span>)		D. <span class="sql-kw">SELECT</span> <span class="sql-num">1</span> / SYSDATE - DATE &#x27;<span class="sql-num">2025</span>-<span class="sql-num">03</span>-<span class="sql-num">01</span>&#x27; <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;
+(<span class="sql-num">5</span>)		E. <span class="sql-kw">SELECT</span> SYSDATE - DATE &#x27;<span class="sql-num">2025</span>-<span class="sql-num">03</span>-<span class="sql-num">01</span>&#x27; - <span class="sql-num">1</span> <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;
+(<span class="sql-num">6</span>)		F. <span class="sql-kw">SELECT</span> SYSDATE / DATE &#x27;<span class="sql-num">2025</span>-<span class="sql-num">03</span>-<span class="sql-num">01</span>&#x27; <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「日付演算と月数計算」です。<br>問題文は「次のうち、正常に実行できるSQL文を3つ選んでください。<br>」という条件を満たす説明または SQL を求めています。<br>DATE 型の差は日数で返る。<br>月単位なら MONTHS_BETWEEN、月加算なら ADD_MONTHS を使う。<br>年数を <span class="sql-num">365</span> 日換算で書くと境界条件を外しやすい。 この設問では正答 A「<span class="sql-kw">SELECT</span> (SYSDATE - DATE &#x27;<span class="sql-num">2025</span>-<span class="sql-num">03</span>-<span class="sql-num">01</span>&#x27;) / <span class="sql-num">1</span> <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;」 / B「<span class="sql-kw">SELECT</span> SYSDATE - <span class="sql-num">1</span> - DATE &#x27;<span class="sql-num">2025</span>-<span class="sql-num">03</span>-<span class="sql-num">01</span>&#x27; <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;」 / E「<span class="sql-kw">SELECT</span> SYSDATE - DATE &#x27;<span class="sql-num">2025</span>-<span class="sql-num">03</span>-<span class="sql-num">01</span>&#x27; - <span class="sql-num">1</span> <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> (SYSDATE - DATE &#x27;<span class="sql-num">2025</span>-<span class="sql-num">03</span>-<span class="sql-num">01</span>&#x27;) / <span class="sql-num">1</span> <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;</div>
+              <div class="option-review-reason">正しい。 <span class="sql-kw">DUAL</span> は Oracle 固有の <span class="sql-num">1</span> 行 <span class="sql-num">1</span> 列の疑似表で、式や関数結果の確認に使います。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> SYSDATE - <span class="sql-num">1</span> - DATE &#x27;<span class="sql-num">2025</span>-<span class="sql-num">03</span>-<span class="sql-num">01</span>&#x27; <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;</div>
+              <div class="option-review-reason">正しい。 <span class="sql-kw">DUAL</span> は Oracle 固有の <span class="sql-num">1</span> 行 <span class="sql-num">1</span> 列の疑似表で、式や関数結果の確認に使います。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> <span class="sql-num">1</span> - SYSDATE - DATE &#x27;<span class="sql-num">2025</span>-<span class="sql-num">03</span>-<span class="sql-num">01</span>&#x27; <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;</div>
+              <div class="option-review-reason">誤り。 <span class="sql-kw">DUAL</span> は Oracle 固有の <span class="sql-num">1</span> 行 <span class="sql-num">1</span> 列の疑似表で、式や関数結果の確認に使います。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> <span class="sql-num">1</span> / SYSDATE - DATE &#x27;<span class="sql-num">2025</span>-<span class="sql-num">03</span>-<span class="sql-num">01</span>&#x27; <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;</div>
+              <div class="option-review-reason">誤り。 <span class="sql-kw">DUAL</span> は Oracle 固有の <span class="sql-num">1</span> 行 <span class="sql-num">1</span> 列の疑似表で、式や関数結果の確認に使います。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">E</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> SYSDATE - DATE &#x27;<span class="sql-num">2025</span>-<span class="sql-num">03</span>-<span class="sql-num">01</span>&#x27; - <span class="sql-num">1</span> <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;</div>
+              <div class="option-review-reason">正しい。 <span class="sql-kw">DUAL</span> は Oracle 固有の <span class="sql-num">1</span> 行 <span class="sql-num">1</span> 列の疑似表で、式や関数結果の確認に使います。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">F</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> SYSDATE / DATE &#x27;<span class="sql-num">2025</span>-<span class="sql-num">03</span>-<span class="sql-num">01</span>&#x27; <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;</div>
+              <div class="option-review-reason">誤り。 <span class="sql-kw">DUAL</span> は Oracle 固有の <span class="sql-num">1</span> 行 <span class="sql-num">1</span> 列の疑似表で、式や関数結果の確認に使います。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>まず設問が日数計算か月数計算かを分ける。</li><li>次に不等号の向きを『いつより古いか』という日本語で確認する。</li><li>文字列との比較や表示整形がある場合は変換順序を確認する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+            </section>
+            
+            <section class="concept-section" id="d3-2">
+              <h3>TO_CHAR・TO_NUMBER・TO_DATE の書式変換<span>3問</span></h3>
+              <p class="concept-copy">文字列として保持された数値や日付を演算するには、まず TO_NUMBER や TO_DATE で型変換し、その後に TO_CHAR で表示形式を整える。<br>書式モデルが一致しなければ失敗する。</p>
+              
+    <div class="concept-guide" style="border-top-color:#c0392b">
+      <div class="guide-block">
+        <div class="guide-title">論点の定義</div>
+        <p>型変換関数は、内部計算のために元の型へ戻す処理と、表示形式へ整える処理を分けて書く。<br>数値演算の前に TO_NUMBER、日付演算の前に TO_DATE、表示の直前に TO_CHAR を使う。</p>
+      </div>
+      <div class="guide-block"><div class="guide-title">句の並び順（Oracle 正式構文）</div><div class="clause-order"><span class="kw">SELECT</span> 単一行関数(列)        <span class="desc">-- 値の変換・整形（列ごとに結果）</span>
+<span class="kw">FROM</span>   表
+<span class="kw">WHERE</span>  単一行関数(列) 比較演算子 値
+<span class="kw">ORDER BY</span> 単一行関数(列);
+<span class="note">-- 単一行関数は SELECT / WHERE / ORDER BY のどれにも書ける（GROUP BY 後の HAVING 内でも可）。</span>
+<span class="note">-- 変換順序: 演算前に TO_NUMBER / TO_DATE、表示直前に TO_CHAR。</span>
+<span class="note">-- NULL 処理: NVL(式, 代替) / NVL2(式, 非NULL, NULL) / COALESCE / CASE。</span></div></div>
+      <div class="guide-block">
+        <div class="guide-title">この論点の基本形</div>
+        <pre><span class="sql-kw">SELECT</span> <span class="sql-fn">TO_CHAR</span>(
+         <span class="sql-fn">TO_NUMBER</span>(shohin_kakaku, &#x27;<span class="sql-num">999</span>,<span class="sql-num">999.99</span>&#x27;) * <span class="sql-num">0.30</span>,
+         &#x27;<span class="sql-num">999</span>,<span class="sql-num">999.00</span>&#x27;
+       ) <span class="sql-kw">AS</span> discount_price
+<span class="sql-kw">FROM</span>   shohin;</pre>
+      </div>
+      <div class="guide-grid">
+        <div class="guide-block">
+          <div class="guide-title">成立条件</div>
+          <ul class="guide-list"><li>文字列として保存された数値へ直接乗算や加算を行う前に、TO_NUMBER で数値へ変換する。</li><li>表示形式を指定する最終段階では TO_CHAR を使い、TO_NUMBER を外側に置かない。</li><li>書式モデルは元データまたは出力形式と桁数・小数点位置が一致していなければならない。</li></ul>
+        </div>
+        <div class="guide-block">
+          <div class="guide-title">判定手順</div>
+          <ol class="guide-list ordered"><li>まず元データの型が文字列か数値か日付かを確認する。</li><li>次に演算前の型変換と表示直前の書式変換を分離して読む。</li><li>最後に書式モデルが入力側・出力側のどちらへ掛かっているかを確認する。</li></ol>
+        </div>
+      </div>
+      <div class="guide-note">失点しやすい点: 変換の向きを逆にしたり、表示書式と内部型の処理順を取り違えやすい。</div>
+    </div>
+    
+              
+                <article class="question-card">
+                  <div class="question-meta">第1回 模擬試験 / 問19 / 正答 A.B / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>SHOHIN 表では、PRODUCTION_DATE列はDATE型で、デフォルト日付形式はDD-MON-RRです。
+SQL文についてエラーとならないものはどれですか。（2つ選択）
+(<span class="sql-num">1</span>)		A.　<span class="sql-kw">SELECT</span> <span class="sql-fn">TO_CHAR</span>(PRODUCTION_DATE,&#x27;YYYY-MM-DD&#x27;) <span class="sql-kw">FROM</span> SHOHIN
+(<span class="sql-num">2</span>)		B.　<span class="sql-kw">SELECT</span> <span class="sql-fn">TO_DATE</span>(<span class="sql-fn">TO_CHAR</span>(PRODUCTION_DATE,&#x27;RR-MM-DD&#x27;),&#x27;RR-MM-DD&#x27;) <span class="sql-kw">FROM</span> SHOHIN
+(<span class="sql-num">3</span>)		C.　<span class="sql-kw">SELECT</span> <span class="sql-fn">TO_NUMBER</span>(PRODUCTION_DATE) * <span class="sql-num">3</span> <span class="sql-kw">FROM</span> SHOHIN
+(<span class="sql-num">4</span>)		D.　<span class="sql-kw">SELECT</span> <span class="sql-fn">TO_DATE</span>(PRODUCTION_DATE * <span class="sql-num">5</span>) <span class="sql-kw">FROM</span> SHOHIN
+(<span class="sql-num">5</span>)		E.　<span class="sql-kw">SELECT</span> <span class="sql-fn">TO_NUMBER</span>(PRODUCTION_DATE) <span class="sql-kw">FROM</span> SHOHIN</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「TO_CHAR・TO_NUMBER・TO_DATE の書式変換」です。<br>問題文は「SHOHIN 表では、PRODUCTION_DATE列はDATE型で、デフォルト日付形式はDD-MON-RRです。 SQL文についてエラーとならないものはどれですか。<br>（2つ選択）」という条件を満たす説明または SQL を求めています。<br>文字列として保持された数値や日付を演算するには、まず TO_NUMBER や TO_DATE で型変換し、その後に TO_CHAR で表示形式を整える。<br>書式モデルが一致しなければ失敗する。 この設問では正答 A「<span class="sql-kw">SELECT</span> <span class="sql-fn">TO_CHAR</span>(PRODUCTION_DATE,&#x27;YYYY-MM-DD&#x27;) <span class="sql-kw">FROM</span> SHOHIN」 / B「<span class="sql-kw">SELECT</span> <span class="sql-fn">TO_DATE</span>(<span class="sql-fn">TO_CHAR</span>(PRODUCTION_DATE,&#x27;RR-MM-DD&#x27;),&#x27;RR-…」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> <span class="sql-fn">TO_CHAR</span>(PRODUCTION_DATE,&#x27;YYYY-MM-DD&#x27;) <span class="sql-kw">FROM</span> SHOHIN</div>
+              <div class="option-review-reason">正しい。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> <span class="sql-fn">TO_DATE</span>(<span class="sql-fn">TO_CHAR</span>(PRODUCTION_DATE,&#x27;RR-MM-DD&#x27;),&#x27;RR-MM-DD&#x27;) <span class="sql-kw">FROM</span> SHOHIN</div>
+              <div class="option-review-reason">正しい。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> <span class="sql-fn">TO_NUMBER</span>(PRODUCTION_DATE) * <span class="sql-num">3</span> <span class="sql-kw">FROM</span> SHOHIN</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> <span class="sql-fn">TO_DATE</span>(PRODUCTION_DATE * <span class="sql-num">5</span>) <span class="sql-kw">FROM</span> SHOHIN</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">E</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> <span class="sql-fn">TO_NUMBER</span>(PRODUCTION_DATE) <span class="sql-kw">FROM</span> SHOHIN</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>まず元データの型が文字列か数値か日付かを確認する。</li><li>次に演算前の型変換と表示直前の書式変換を分離して読む。</li><li>最後に書式モデルが入力側・出力側のどちらへ掛かっているかを確認する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第2回 模擬試験 / 問16 / 正答 AB / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>ITEM_NAME、MADE_DATE、ITEM_PRICEを表示する必要があります。
+製造年月日（MADE_DATE）が2018年1月1日以降から24か月以内のデータを表示するためには、以下のどのSQLを実行する必要があるでしょうか。（2つ選択）
+
+(<span class="sql-num">1</span>)		A.　<span class="sql-kw">SELECT</span> ITEM_NAME, MADE_DATE, ITEM_PRICE <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> <span class="sql-fn">MONTHS_BETWEEN</span>(MADE_DATE,&#x27;<span class="sql-num">01</span>-JAN-<span class="sql-num">2018</span>&#x27;) &lt;=<span class="sql-num">24</span>;
+(<span class="sql-num">2</span>)		B.　<span class="sql-kw">SELECT</span> ITEM_NAME, MADE_DATE, ITEM_PRICE <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> <span class="sql-fn">MONTHS_BETWEEN</span>(MADE_DATE,<span class="sql-fn">TO_DATE</span>(&#x27;<span class="sql-num">01</span>-JAN-<span class="sql-num">2018</span>&#x27;,&#x27;DD-MON-RRRR&#x27;)) &lt;=<span class="sql-num">24</span>;
+(<span class="sql-num">3</span>)		C.　<span class="sql-kw">SELECT</span> ITEM_NAME, MADE_DATE, ITEM_PRICE <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> <span class="sql-fn">TO_NUMBER</span>(MADE_DATE-<span class="sql-fn">TO_DATE</span>(&#x27;<span class="sql-num">01</span>-JAN-<span class="sql-num">2018</span>&#x27;,&#x27;DD-MON-RRRR&#x27;)) &lt;=<span class="sql-num">24</span>;
+(<span class="sql-num">4</span>)		D.　<span class="sql-kw">SELECT</span> ITEM_NAME, MADE_DATE, ITEM_PRICE <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> <span class="sql-fn">TO_NUMBER</span>(MADE_DATE,SYSDATE) &lt;=<span class="sql-num">24</span>;</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「TO_CHAR・TO_NUMBER・TO_DATE の書式変換」です。<br>問題文は「ITEM_NAME、MADE_DATE、ITEM_PRICEを表示する必要があります。 製造年月日（MADE_DATE）が2018年1月1日以降から24か月以内のデータを表示するためには、以下のどのSQLを実行する必要があるでしょうか。<br>（…」という条件を満たす説明または SQL を求めています。<br>文字列として保持された数値や日付を演算するには、まず TO_NUMBER や TO_DATE で型変換し、その後に TO_CHAR で表示形式を整える。<br>書式モデルが一致しなければ失敗する。 この設問では正答 A「<span class="sql-kw">SELECT</span> ITEM_NAME, MADE_DATE, ITEM_PRICE <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span>…」 / B「<span class="sql-kw">SELECT</span> ITEM_NAME, MADE_DATE, ITEM_PRICE <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span>…」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> ITEM_NAME, MADE_DATE, ITEM_PRICE <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> <span class="sql-fn">MONTHS_BETWEEN</span>(MADE_DATE,&#x27;<span class="sql-num">01</span>-JAN-<span class="sql-num">2018</span>&#x27;) &lt;=<span class="sql-num">24</span>;</div>
+              <div class="option-review-reason">正しい。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> ITEM_NAME, MADE_DATE, ITEM_PRICE <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> <span class="sql-fn">MONTHS_BETWEEN</span>(MADE_DATE,<span class="sql-fn">TO_DATE</span>(&#x27;<span class="sql-num">01</span>-JAN-<span class="sql-num">2018</span>&#x27;,&#x27;DD-MON-RRRR&#x27;)) &lt;=<span class="sql-num">24</span>;</div>
+              <div class="option-review-reason">正しい。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> ITEM_NAME, MADE_DATE, ITEM_PRICE <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> <span class="sql-fn">TO_NUMBER</span>(MADE_DATE-<span class="sql-fn">TO_DATE</span>(&#x27;<span class="sql-num">01</span>-JAN-<span class="sql-num">2018</span>&#x27;,&#x27;DD-MON-RRRR&#x27;)) &lt;=<span class="sql-num">24</span>;</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> ITEM_NAME, MADE_DATE, ITEM_PRICE <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> <span class="sql-fn">TO_NUMBER</span>(MADE_DATE,SYSDATE) &lt;=<span class="sql-num">24</span>;</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>まず元データの型が文字列か数値か日付かを確認する。</li><li>次に演算前の型変換と表示直前の書式変換を分離して読む。</li><li>最後に書式モデルが入力側・出力側のどちらへ掛かっているかを確認する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第2回 模擬試験 / 問17 / 正答 A / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>以下のSQLでエラーとならないものはどれでしょうか。
+　
+(<span class="sql-num">1</span>)		A.　<span class="sql-kw">SELECT</span> <span class="sql-fn">NVL</span>(START_DATE, SYSDATE) <span class="sql-kw">FROM</span> EMP;
+(<span class="sql-num">2</span>)		B.　<span class="sql-kw">SELECT</span> <span class="sql-fn">NVL</span>(NAME) <span class="sql-kw">FROM</span> EMP;
+(<span class="sql-num">3</span>)		C.　<span class="sql-kw">SELECT</span> <span class="sql-fn">NVL</span>(<span class="sql-fn">TO_DATE</span>(START_DATE, END_DATE),&#x27;SYSDATE&#x27;) <span class="sql-kw">FROM</span> EMP;
+(<span class="sql-num">4</span>)		D.　<span class="sql-kw">SELECT</span> <span class="sql-fn">NVL</span>(DEPT_ID) <span class="sql-kw">FROM</span> EMP;</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「TO_CHAR・TO_NUMBER・TO_DATE の書式変換」です。<br>問題文は「以下のSQLでエラーとならないものはどれでしょうか。<br>」という条件を満たす説明または SQL を求めています。<br>文字列として保持された数値や日付を演算するには、まず TO_NUMBER や TO_DATE で型変換し、その後に TO_CHAR で表示形式を整える。<br>書式モデルが一致しなければ失敗する。 この設問では正答 A「<span class="sql-kw">SELECT</span> <span class="sql-fn">NVL</span>(START_DATE, SYSDATE) <span class="sql-kw">FROM</span> EMP;」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> <span class="sql-fn">NVL</span>(START_DATE, SYSDATE) <span class="sql-kw">FROM</span> EMP;</div>
+              <div class="option-review-reason">正しい。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> <span class="sql-fn">NVL</span>(NAME) <span class="sql-kw">FROM</span> EMP;</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> <span class="sql-fn">NVL</span>(<span class="sql-fn">TO_DATE</span>(START_DATE, END_DATE),&#x27;SYSDATE&#x27;) <span class="sql-kw">FROM</span> EMP;</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> <span class="sql-fn">NVL</span>(DEPT_ID) <span class="sql-kw">FROM</span> EMP;</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>まず元データの型が文字列か数値か日付かを確認する。</li><li>次に演算前の型変換と表示直前の書式変換を分離して読む。</li><li>最後に書式モデルが入力側・出力側のどちらへ掛かっているかを確認する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+            </section>
+            
+            <section class="concept-section" id="d3-3">
+              <h3>ROUND・TRUNC・FLOOR などの数値関数<span>1問</span></h3>
+              <p class="concept-copy">ROUND は四捨五入、TRUNC は切り捨て、FLOOR は指定値以下の最大整数、CEIL は指定値以上の最小整数を返す。<br>関数ごとの戻り値を正確に区別する必要がある。</p>
+              
+    <div class="concept-guide" style="border-top-color:#c0392b">
+      <div class="guide-block">
+        <div class="guide-title">論点の定義</div>
+        <p>単一行関数は各行に対して <span class="sql-num">1</span> つの結果を返し、文字列・数値・日付・<span class="sql-kw">NULL</span>・条件分岐の各カテゴリで役割が分かれる。</p>
+      </div>
+      <div class="guide-block"><div class="guide-title">句の並び順（Oracle 正式構文）</div><div class="clause-order"><span class="kw">SELECT</span> 単一行関数(列)        <span class="desc">-- 値の変換・整形（列ごとに結果）</span>
+<span class="kw">FROM</span>   表
+<span class="kw">WHERE</span>  単一行関数(列) 比較演算子 値
+<span class="kw">ORDER BY</span> 単一行関数(列);
+<span class="note">-- 単一行関数は SELECT / WHERE / ORDER BY のどれにも書ける（GROUP BY 後の HAVING 内でも可）。</span>
+<span class="note">-- 変換順序: 演算前に TO_NUMBER / TO_DATE、表示直前に TO_CHAR。</span>
+<span class="note">-- NULL 処理: NVL(式, 代替) / NVL2(式, 非NULL, NULL) / COALESCE / CASE。</span></div></div>
+      <div class="guide-block">
+        <div class="guide-title">この論点の基本形</div>
+        <pre><span class="sql-kw">SELECT</span> <span class="sql-fn">ROUND</span>(price, <span class="sql-num">2</span>),
+       <span class="sql-fn">NVL</span>(discount, <span class="sql-num">0</span>),
+       <span class="sql-kw">CASE</span> <span class="sql-kw">WHEN</span> quantity <span class="sql-kw">IS NULL</span> <span class="sql-kw">THEN</span> <span class="sql-num">0</span> <span class="sql-kw">ELSE</span> quantity <span class="sql-kw">END</span>
+<span class="sql-kw">FROM</span>   item;</pre>
+      </div>
+      <div class="guide-grid">
+        <div class="guide-block">
+          <div class="guide-title">成立条件</div>
+          <ul class="guide-list"><li>ROUND は四捨五入、TRUNC は切り捨てであり、結果が変わる境界値を意識する。</li><li>NVL と NVL2 は引数の意味が異なり、<span class="sql-kw">CASE</span> は一般的な条件分岐に使える。</li><li>単一行関数は <span class="sql-kw">SELECT</span> 句だけでなく <span class="sql-kw">WHERE</span> 句や <span class="sql-kw">ORDER BY</span> でも利用できる。</li></ul>
+        </div>
+        <div class="guide-block">
+          <div class="guide-title">判定手順</div>
+          <ol class="guide-list ordered"><li>何を変換したいのかを文字列・数値・日付・<span class="sql-kw">NULL</span> 処理に分ける。</li><li>入力型と戻り値型が式全体で整合しているか確認する。</li><li>境界値が変わる関数では、丸め・切り捨て・<span class="sql-kw">NULL</span> 代替の効果を具体的に追う。</li></ol>
+        </div>
+      </div>
+      <div class="guide-note">失点しやすい点: 丸める関数と切り捨てる関数を曖昧に覚えて、似た選択肢を取り違えやすい。</div>
+    </div>
+    
+              
+                <article class="question-card">
+                  <div class="question-meta">第1回 模擬試験 / 問15 / 正答 <span class="sql-num">3</span> / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>以下のSQLを実行すると結果はどうなるでしょうか。
+
+<span class="sql-kw">SELECT</span> <span class="sql-fn">ROUND</span>(<span class="sql-fn">TRUNC</span>(<span class="sql-num">345.16</span>, <span class="sql-num">1</span>), <span class="sql-num">0</span>) <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;
+(<span class="sql-num">1</span>)		<span class="sql-num">34</span>
+(<span class="sql-num">2</span>)		<span class="sql-num">35</span>
+(<span class="sql-num">3</span>)		<span class="sql-num">345</span>
+(<span class="sql-num">4</span>)		<span class="sql-num">350</span>
+(<span class="sql-num">5</span>)		<span class="sql-num">345.1</span>
+(<span class="sql-num">6</span>)		<span class="sql-num">345.2</span></pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「ROUND・TRUNC・FLOOR などの数値関数」です。<br>問題文は「以下のSQLを実行すると結果はどうなるでしょうか。 <span class="sql-kw">SELECT</span> <span class="sql-fn">ROUND</span>(<span class="sql-fn">TRUNC</span>(<span class="sql-num">345.16</span>, <span class="sql-num">1</span>), <span class="sql-num">0</span>) <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;」という条件を満たす説明または SQL を求めています。<br>ROUND は四捨五入、TRUNC は切り捨て、FLOOR は指定値以下の最大整数、CEIL は指定値以上の最小整数を返す。<br>関数ごとの戻り値を正確に区別する必要がある。 この設問では正答 <span class="sql-num">3</span>「<span class="sql-num">345</span>」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key"><span class="sql-num">1</span></div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-num">34</span></div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key"><span class="sql-num">2</span></div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-num">35</span></div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key"><span class="sql-num">3</span></div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-num">345</span></div>
+              <div class="option-review-reason">正しい。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key"><span class="sql-num">4</span></div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-num">350</span></div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key"><span class="sql-num">5</span></div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-num">345.1</span></div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key"><span class="sql-num">6</span></div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-num">345.2</span></div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>何を変換したいのかを文字列・数値・日付・<span class="sql-kw">NULL</span> 処理に分ける。</li><li>入力型と戻り値型が式全体で整合しているか確認する。</li><li>境界値が変わる関数では、丸め・切り捨て・<span class="sql-kw">NULL</span> 代替の効果を具体的に追う。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+            </section>
+            
+            <section class="concept-section" id="d3-4">
+              <h3>SUBSTR・INSTR・TRIM・REPLACE の使い分け<span>1問</span></h3>
+              <p class="concept-copy">文字列の一部抽出では、位置取得に INSTR、切り出しに SUBSTR、不要部分の削除に TRIM、置換に REPLACE を使い分ける。<br>空白位置の +<span class="sql-num">1</span> を忘れると全体がずれる。</p>
+              
+    <div class="concept-guide" style="border-top-color:#c0392b">
+      <div class="guide-block">
+        <div class="guide-title">論点の定義</div>
+        <p>文字列関数は <span class="sql-num">1</span> 行ずつ入力を受け取り、変換後の文字列または位置情報を返す。<br>大文字小文字の正規化、部分抽出、位置探索は役割を分けて扱う。</p>
+      </div>
+      <div class="guide-block"><div class="guide-title">句の並び順（Oracle 正式構文）</div><div class="clause-order"><span class="kw">SELECT</span> 単一行関数(列)        <span class="desc">-- 値の変換・整形（列ごとに結果）</span>
+<span class="kw">FROM</span>   表
+<span class="kw">WHERE</span>  単一行関数(列) 比較演算子 値
+<span class="kw">ORDER BY</span> 単一行関数(列);
+<span class="note">-- 単一行関数は SELECT / WHERE / ORDER BY のどれにも書ける（GROUP BY 後の HAVING 内でも可）。</span>
+<span class="note">-- 変換順序: 演算前に TO_NUMBER / TO_DATE、表示直前に TO_CHAR。</span>
+<span class="note">-- NULL 処理: NVL(式, 代替) / NVL2(式, 非NULL, NULL) / COALESCE / CASE。</span></div></div>
+      <div class="guide-block">
+        <div class="guide-title">この論点の基本形</div>
+        <pre><span class="sql-kw">SELECT</span> <span class="sql-fn">UPPER</span>(item_name),
+       <span class="sql-fn">SUBSTR</span>(item_name, <span class="sql-num">1</span>, <span class="sql-num">3</span>),
+       <span class="sql-fn">INSTR</span>(item_name, &#x27; &#x27;) 
+<span class="sql-kw">FROM</span>   item
+<span class="sql-kw">WHERE</span>  <span class="sql-fn">UPPER</span>(item_name) <span class="sql-kw">LIKE</span> &#x27;S%&#x27;;</pre>
+      </div>
+      <div class="guide-grid">
+        <div class="guide-block">
+          <div class="guide-title">成立条件</div>
+          <ul class="guide-list"><li><span class="sql-kw">LIKE</span> のワイルドカードは % が <span class="sql-num">0</span> 文字以上、_ が <span class="sql-num">1</span> 文字である。</li><li>INSTR は位置、SUBSTR は切り出し、TRIM は前後除去、REPLACE は置換に使う。</li><li>UPPER や LOWER を使うなら比較側の文字列も同じ規則でそろえる。</li></ul>
+        </div>
+        <div class="guide-block">
+          <div class="guide-title">判定手順</div>
+          <ol class="guide-list ordered"><li>まず要求が前方一致・部分一致・文字抽出のどれかを判定する。</li><li>次に正規化関数を列側と比較値側の両方へ必要か確認する。</li><li>位置を使う処理なら INSTR、切り出しなら SUBSTR と機能を分ける。</li></ol>
+        </div>
+      </div>
+      <div class="guide-note">失点しやすい点: 位置の起点や切り出し長を誤り、ほぼ正しそうな SQL を選んでしまいやすい。</div>
+    </div>
+    
+              
+                <article class="question-card">
+                  <div class="question-meta">第3回 模擬試験 / 問10 / 正答 B / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>次のSQLを実行したとき、employee_nameが「a」または「A」で始まる行を抽出し、名前の長さが短い順に並べるSQLはどれですか。1つ選択してください。
+
+
+A. <span class="sql-kw">SELECT</span> employee_name <span class="sql-kw">FROM</span> Employees
+   <span class="sql-kw">WHERE</span> <span class="sql-fn">LPAD</span>(employee_name) <span class="sql-kw">LIKE</span> &#x27;A%&#x27;
+   <span class="sql-kw">ORDER BY</span> <span class="sql-fn">LENGTH</span>(employee_name) <span class="sql-kw">ASC</span>;
+
+B. <span class="sql-kw">SELECT</span> employee_name <span class="sql-kw">FROM</span> Employees
+   <span class="sql-kw">WHERE</span> <span class="sql-fn">UPPER</span>(employee_name) <span class="sql-kw">LIKE</span> &#x27;A%&#x27;
+   <span class="sql-kw">ORDER BY</span> <span class="sql-fn">LENGTH</span>(employee_name) <span class="sql-kw">ASC</span>;
+
+C. <span class="sql-kw">SELECT</span> employee_name <span class="sql-kw">FROM</span> Employees
+   <span class="sql-kw">WHERE</span> <span class="sql-fn">LOWER</span>(employee_name) <span class="sql-kw">LIKE</span> &#x27;a%&#x27;
+   <span class="sql-kw">ORDER BY</span> <span class="sql-fn">LENGTH</span>(employee_name) <span class="sql-kw">DESC</span>;
+
+D. <span class="sql-kw">SELECT</span> employee_name <span class="sql-kw">FROM</span> Employees
+   <span class="sql-kw">WHERE</span> <span class="sql-fn">TRIM</span>(employee_name) <span class="sql-kw">LIKE</span> &#x27;a%&#x27;
+   <span class="sql-kw">ORDER BY</span> <span class="sql-fn">LENGTH</span>(employee_name);
+
+
+(<span class="sql-num">1</span>)		A
+(<span class="sql-num">2</span>)		B
+(<span class="sql-num">3</span>)		C
+(<span class="sql-num">4</span>)		D</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「SUBSTR・INSTR・TRIM・REPLACE の使い分け」です。<br>問題文は「次のSQLを実行したとき、employee_nameが「a」または「A」で始まる行を抽出し、名前の長さが短い順に並べるSQLはどれですか。<br>1つ選択してください。<br>」という条件を満たす説明または SQL を求めています。<br>文字列の一部抽出では、位置取得に INSTR、切り出しに SUBSTR、不要部分の削除に TRIM、置換に REPLACE を使い分ける。<br>空白位置の +<span class="sql-num">1</span> を忘れると全体がずれる。 この設問では正答 B「<span class="sql-kw">SELECT</span> employee_name <span class="sql-kw">FROM</span> Employees <span class="sql-kw">WHERE</span> <span class="sql-fn">UPPER</span>(employe…」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> employee_name <span class="sql-kw">FROM</span> Employees<br>   <span class="sql-kw">WHERE</span> <span class="sql-fn">LPAD</span>(employee_name) <span class="sql-kw">LIKE</span> &#x27;A%&#x27;<br>   <span class="sql-kw">ORDER BY</span> <span class="sql-fn">LENGTH</span>(employee_name) <span class="sql-kw">ASC</span>;</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> employee_name <span class="sql-kw">FROM</span> Employees<br>   <span class="sql-kw">WHERE</span> <span class="sql-fn">UPPER</span>(employee_name) <span class="sql-kw">LIKE</span> &#x27;A%&#x27;<br>   <span class="sql-kw">ORDER BY</span> <span class="sql-fn">LENGTH</span>(employee_name) <span class="sql-kw">ASC</span>;</div>
+              <div class="option-review-reason">正しい。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> employee_name <span class="sql-kw">FROM</span> Employees<br>   <span class="sql-kw">WHERE</span> <span class="sql-fn">LOWER</span>(employee_name) <span class="sql-kw">LIKE</span> &#x27;a%&#x27;<br>   <span class="sql-kw">ORDER BY</span> <span class="sql-fn">LENGTH</span>(employee_name) <span class="sql-kw">DESC</span>;</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text"><span class="sql-kw">SELECT</span> employee_name <span class="sql-kw">FROM</span> Employees<br>   <span class="sql-kw">WHERE</span> <span class="sql-fn">TRIM</span>(employee_name) <span class="sql-kw">LIKE</span> &#x27;a%&#x27;<br>   <span class="sql-kw">ORDER BY</span> <span class="sql-fn">LENGTH</span>(employee_name);</div>
+              <div class="option-review-reason">誤り。 単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>まず要求が前方一致・部分一致・文字抽出のどれかを判定する。</li><li>次に正規化関数を列側と比較値側の両方へ必要か確認する。</li><li>位置を使う処理なら INSTR、切り出しなら SUBSTR と機能を分ける。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+            </section>
+            
+</div>
+</body>
+</html>
