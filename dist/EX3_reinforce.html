@@ -78,7 +78,7 @@
   <div class="toc">
     <h2>カテゴリ別目次</h2>
     <div class="toc-grid">
-      <a href="#d3-1" class="high">TO_CHAR・TO_NUMBER・TO_DATE の書式変換 <span>6問</span></a><a href="#d3-2" class="high">SUBSTR・INSTR・TRIM・REPLACE の使い分け <span>5問</span></a><a href="#d3-3" class="high">日付演算と月数計算 <span>4問</span></a><a href="#d3-4" class="high">ROUND・TRUNC・FLOOR などの数値関数 <span>3問</span></a><a href="#d3-5" class="high">NULL 関数と条件式 <span>2問</span></a><a href="#d3-6" class="high">単一行関数総合 <span>1問</span></a>
+      <a href="#d3-1" class="high">TO_CHAR・TO_NUMBER・TO_DATE の書式変換 <span>6問</span></a><a href="#d3-2" class="high">SUBSTR・INSTR・TRIM・REPLACE の使い分け <span>5問</span></a><a href="#d3-3" class="high">日付演算と月数計算 <span>4問</span></a><a href="#d3-4" class="high">NULL 関数と条件式 <span>2問</span></a><a href="#d3-5" class="high">ROUND・TRUNC・FLOOR などの数値関数 <span>2問</span></a><a href="#d3-6" class="high">単一行関数の基本性質 <span>2問</span></a>
     </div>
   </div>
 
@@ -773,141 +773,6 @@ ORDER BY weeks_employed DESC;
             </section>
             
             <section class="concept-section" id="d3-4">
-              <h3>ROUND・TRUNC・FLOOR などの数値関数<span>3問</span></h3>
-              <p class="concept-copy">ROUND は四捨五入、TRUNC は切り捨て、FLOOR は指定値以下の最大整数、CEIL は指定値以上の最小整数を返す。関数ごとの戻り値を正確に区別する必要がある。</p>
-              
-                <article class="question-card">
-                  <div class="question-meta">第1回 模擬試験 / 問13 / 正答 A.E / 自己回答 A.B</div>
-                  <div class="block-title">問題文</div>
-                  <pre>品名（ITEM_NAME）の先頭文字がS,sまたはT,tで始まるもので、かつ価格（ITEM_PRICE）が1500円未満の商品情報を取得する場合、以下のどのSQLを実行すればいいでしょうか。（2つ選択してください）</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card correct selected">
-              <div class="option-label">A</div>
-              <div class="option-body"><pre>SELECT ITEM_NAME , ITEM_PRICE FROM ITEM WHERE (INITCAP(ITEM_NAME) LIKE &#x27;S%&#x27; OR INITCAP(ITEM_NAME) LIKE &#x27;T%&#x27;) AND ITEM_PRICE &lt; 1500;</pre></div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-label">B</div>
-              <div class="option-body"><pre>SELECT ITEM_NAME , ITEM_PRICE FROM ITEM WHERE (UPPER(ITEM_NAME) LIKE &#x27;S%&#x27; OR UPPER(ITEM_NAME) LIKE &#x27;T&#x27;) AND ROUND(ITEM_PRICE) &lt; 1500;</pre></div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-label">C</div>
-              <div class="option-body"><pre>SELECT ITEM_NAME , ITEM_PRICE FROM ITEM WHERE UPPER(ITEM_NAME) BETWEEN UPPER(&#x27;S%&#x27; AND &#x27;T%&#x27;) AND ROUND(ITEM_PRICE) &lt; 1500;</pre></div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-label">D</div>
-              <div class="option-body"><pre>SELECT ITEM_NAME , ITEM_PRICE FROM ITEM WHERE (UPPER(ITEM_NAME) LIKE INITCAP(&#x27;S&#x27;) OR UPPER(ITEM_NAME) LIKE INITCAP(&#x27;T&#x27;)) AND ROUND(ITEM_PRICE) &lt; ROUND(1500);</pre></div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-label">E</div>
-              <div class="option-body"><pre>SELECT ITEM_NAME , ITEM_PRICE FROM ITEM WHERE (UPPER(ITEM_NAME) LIKE &#x27;S%&#x27; OR UPPER(ITEM_NAME) LIKE &#x27;T%&#x27;) AND TRUNC(ITEM_PRICE) &lt; 1500;</pre></div>
-            </div>
-            </div>
-                  <div class="analysis-block">
-                    <div class="block-title">なぜそうなるか</div>
-                    <p>この問題の論点は「ROUND・TRUNC・FLOOR などの数値関数」です。ROUND は四捨五入、TRUNC は切り捨て、FLOOR は指定値以下の最大整数、CEIL は指定値以上の最小整数を返す。関数ごとの戻り値を正確に区別する必要がある。 したがって正答は A「SELECT ITEM_NAME , ITEM_PRICE FROM ITEM WHERE (INITCAP(…」 / E「SELECT ITEM_NAME , ITEM_PRICE FROM ITEM WHERE (UPPER(IT…」 になります。</p>
-                    <div class="block-title">今回の誤り</div>
-                    <p>自己回答は A「SELECT ITEM_NAME , ITEM_PRICE FROM ITEM WHERE (INITCAP(…」 / B「SELECT ITEM_NAME , ITEM_PRICE FROM ITEM WHERE (UPPER(IT…」 でした。一部は当たっていますが、B「SELECT ITEM_NAME , ITEM_PRICE FROM ITEM WHERE (UPPER(IT…」 に引っ張られて取りこぼしています。丸める関数と切り捨てる関数を曖昧に覚えて、似た選択肢を取り違えやすい。</p>
-                    <div class="block-title">叩き直しポイント</div>
-                    <ul class="rebuild-list">
-                      <li>ROUND=四捨五入、TRUNC=切り落とし、FLOOR/CEIL=整数方向と覚える。</li><li>小数点桁数指定があるときは第何位を見るのかを書き出す。</li><li>日付に対する ROUND/TRUNC も使えることを別で覚える。</li>
-                    </ul>
-                  </div>
-                </article>
-                
-                <article class="question-card">
-                  <div class="question-meta">第2回 模擬試験 / 問15 / 正答 DE / 自己回答 EF</div>
-                  <div class="block-title">問題文</div>
-                  <pre>単一行関数について正しい記述はどれでしょうか。 (2つ選択)</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card">
-              <div class="option-label">A</div>
-              <div class="option-body"><pre>ROUND：最大の整数を返します。</pre></div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-label">B</div>
-              <div class="option-body"><pre>FLOOR：最小の整数を返します。</pre></div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-label">C</div>
-              <div class="option-body"><pre>ABS ：四捨五入した整数を返します。</pre></div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-label">D</div>
-              <div class="option-body"><pre>TRUNC：NUMBER および DATE 値で使用できます 。</pre></div>
-            </div>
-            
-            <div class="option-card correct selected">
-              <div class="option-label">E</div>
-              <div class="option-body"><pre>MOD ：除算演算の余りを返します。</pre></div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-label">F</div>
-              <div class="option-body"><pre>TRUNC：NUMBERのみで使用できます 。</pre></div>
-            </div>
-            </div>
-                  <div class="analysis-block">
-                    <div class="block-title">なぜそうなるか</div>
-                    <p>この問題の論点は「ROUND・TRUNC・FLOOR などの数値関数」です。ROUND は四捨五入、TRUNC は切り捨て、FLOOR は指定値以下の最大整数、CEIL は指定値以上の最小整数を返す。関数ごとの戻り値を正確に区別する必要がある。 したがって正答は D「TRUNC：NUMBER および DATE 値で使用できます 。」 / E「MOD ：除算演算の余りを返します。」 になります。</p>
-                    <div class="block-title">今回の誤り</div>
-                    <p>自己回答は E「MOD ：除算演算の余りを返します。」 / F「TRUNC：NUMBERのみで使用できます 。」 でした。一部は当たっていますが、F「TRUNC：NUMBERのみで使用できます 。」 に引っ張られて取りこぼしています。丸める関数と切り捨てる関数を曖昧に覚えて、似た選択肢を取り違えやすい。</p>
-                    <div class="block-title">叩き直しポイント</div>
-                    <ul class="rebuild-list">
-                      <li>ROUND=四捨五入、TRUNC=切り落とし、FLOOR/CEIL=整数方向と覚える。</li><li>小数点桁数指定があるときは第何位を見るのかを書き出す。</li><li>日付に対する ROUND/TRUNC も使えることを別で覚える。</li>
-                    </ul>
-                  </div>
-                </article>
-                
-                <article class="question-card">
-                  <div class="question-meta">第3回 模擬試験 / 問30 / 正答 D / 自己回答 A</div>
-                  <div class="block-title">問題文</div>
-                  <pre>MOD、ROUND、TRUNC 関数の動作に関して、正しいものを1つ選んでください。</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card selected">
-              <div class="option-label">A</div>
-              <div class="option-body"><pre>TRUNC(MOD(12.7,-2)) は無効である。</pre></div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-label">B</div>
-              <div class="option-body"><pre>ROUND(MOD(12.7,-2)) は無効である。</pre></div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-label">C</div>
-              <div class="option-body"><pre>ROUND(MOD(12.7,-2)) と TRUNC(MOD(12.7,-2)) はどちらも使用でき、同じ結果を返す。</pre></div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-label">D</div>
-              <div class="option-body"><pre>ROUND(MOD(12.7,-2)) と TRUNC(MOD(12.7,-2)) はどちらも使用できるが、異なる結果を返す。</pre></div>
-            </div>
-            </div>
-                  <div class="analysis-block">
-                    <div class="block-title">なぜそうなるか</div>
-                    <p>この問題の論点は「ROUND・TRUNC・FLOOR などの数値関数」です。ROUND は四捨五入、TRUNC は切り捨て、FLOOR は指定値以下の最大整数、CEIL は指定値以上の最小整数を返す。関数ごとの戻り値を正確に区別する必要がある。 したがって正答は D「ROUND(MOD(12.7,-2)) と TRUNC(MOD(12.7,-2)) はどちらも使用できるが、異…」 になります。</p>
-                    <div class="block-title">今回の誤り</div>
-                    <p>自己回答は A「TRUNC(MOD(12.7,-2)) は無効である。」 でした。丸める関数と切り捨てる関数を曖昧に覚えて、似た選択肢を取り違えやすい。 正答との差は、条件の向き、句の置き場所、またはオブジェクトの性質を正確に読み切れていない点にあります。</p>
-                    <div class="block-title">叩き直しポイント</div>
-                    <ul class="rebuild-list">
-                      <li>ROUND=四捨五入、TRUNC=切り落とし、FLOOR/CEIL=整数方向と覚える。</li><li>小数点桁数指定があるときは第何位を見るのかを書き出す。</li><li>日付に対する ROUND/TRUNC も使えることを別で覚える。</li>
-                    </ul>
-                  </div>
-                </article>
-                
-            </section>
-            
-            <section class="concept-section" id="d3-5">
               <h3>NULL 関数と条件式<span>2問</span></h3>
               <p class="concept-copy">NVL、NVL2、NULLIF、COALESCE、CASE、DECODE は、NULL や条件分岐を表すための関数群であり、引数順と戻り値の型整合が重要である。</p>
               
@@ -1004,10 +869,145 @@ END, product_name DESC;
                 
             </section>
             
-            <section class="concept-section" id="d3-6">
-              <h3>単一行関数総合<span>1問</span></h3>
-              <p class="concept-copy">単一行関数は文字列、数値、日付、NULL、条件分岐で役割が分かれている。まず何を変換したいかを見て関数の系統を選ぶ。</p>
+            <section class="concept-section" id="d3-5">
+              <h3>ROUND・TRUNC・FLOOR などの数値関数<span>2問</span></h3>
+              <p class="concept-copy">ROUND は四捨五入、TRUNC は切り捨て、FLOOR は指定値以下の最大整数、CEIL は指定値以上の最小整数を返す。関数ごとの戻り値を正確に区別する必要がある。</p>
               
+                <article class="question-card">
+                  <div class="question-meta">第1回 模擬試験 / 問13 / 正答 A.E / 自己回答 A.B</div>
+                  <div class="block-title">問題文</div>
+                  <pre>品名（ITEM_NAME）の先頭文字がS,sまたはT,tで始まるもので、かつ価格（ITEM_PRICE）が1500円未満の商品情報を取得する場合、以下のどのSQLを実行すればいいでしょうか。（2つ選択してください）</pre>
+                  <div class="block-title">選択肢</div>
+                  <div class="options-grid">
+            <div class="option-card correct selected">
+              <div class="option-label">A</div>
+              <div class="option-body"><pre>SELECT ITEM_NAME , ITEM_PRICE FROM ITEM WHERE (INITCAP(ITEM_NAME) LIKE &#x27;S%&#x27; OR INITCAP(ITEM_NAME) LIKE &#x27;T%&#x27;) AND ITEM_PRICE &lt; 1500;</pre></div>
+            </div>
+            
+            <div class="option-card selected">
+              <div class="option-label">B</div>
+              <div class="option-body"><pre>SELECT ITEM_NAME , ITEM_PRICE FROM ITEM WHERE (UPPER(ITEM_NAME) LIKE &#x27;S%&#x27; OR UPPER(ITEM_NAME) LIKE &#x27;T&#x27;) AND ROUND(ITEM_PRICE) &lt; 1500;</pre></div>
+            </div>
+            
+            <div class="option-card">
+              <div class="option-label">C</div>
+              <div class="option-body"><pre>SELECT ITEM_NAME , ITEM_PRICE FROM ITEM WHERE UPPER(ITEM_NAME) BETWEEN UPPER(&#x27;S%&#x27; AND &#x27;T%&#x27;) AND ROUND(ITEM_PRICE) &lt; 1500;</pre></div>
+            </div>
+            
+            <div class="option-card">
+              <div class="option-label">D</div>
+              <div class="option-body"><pre>SELECT ITEM_NAME , ITEM_PRICE FROM ITEM WHERE (UPPER(ITEM_NAME) LIKE INITCAP(&#x27;S&#x27;) OR UPPER(ITEM_NAME) LIKE INITCAP(&#x27;T&#x27;)) AND ROUND(ITEM_PRICE) &lt; ROUND(1500);</pre></div>
+            </div>
+            
+            <div class="option-card correct">
+              <div class="option-label">E</div>
+              <div class="option-body"><pre>SELECT ITEM_NAME , ITEM_PRICE FROM ITEM WHERE (UPPER(ITEM_NAME) LIKE &#x27;S%&#x27; OR UPPER(ITEM_NAME) LIKE &#x27;T%&#x27;) AND TRUNC(ITEM_PRICE) &lt; 1500;</pre></div>
+            </div>
+            </div>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「ROUND・TRUNC・FLOOR などの数値関数」です。ROUND は四捨五入、TRUNC は切り捨て、FLOOR は指定値以下の最大整数、CEIL は指定値以上の最小整数を返す。関数ごとの戻り値を正確に区別する必要がある。 したがって正答は A「SELECT ITEM_NAME , ITEM_PRICE FROM ITEM WHERE (INITCAP(…」 / E「SELECT ITEM_NAME , ITEM_PRICE FROM ITEM WHERE (UPPER(IT…」 になります。</p>
+                    <div class="block-title">今回の誤り</div>
+                    <p>自己回答は A「SELECT ITEM_NAME , ITEM_PRICE FROM ITEM WHERE (INITCAP(…」 / B「SELECT ITEM_NAME , ITEM_PRICE FROM ITEM WHERE (UPPER(IT…」 でした。一部は当たっていますが、B「SELECT ITEM_NAME , ITEM_PRICE FROM ITEM WHERE (UPPER(IT…」 に引っ張られて取りこぼしています。丸める関数と切り捨てる関数を曖昧に覚えて、似た選択肢を取り違えやすい。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>ROUND=四捨五入、TRUNC=切り落とし、FLOOR/CEIL=整数方向と覚える。</li><li>小数点桁数指定があるときは第何位を見るのかを書き出す。</li><li>日付に対する ROUND/TRUNC も使えることを別で覚える。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第3回 模擬試験 / 問30 / 正答 D / 自己回答 A</div>
+                  <div class="block-title">問題文</div>
+                  <pre>MOD、ROUND、TRUNC 関数の動作に関して、正しいものを1つ選んでください。</pre>
+                  <div class="block-title">選択肢</div>
+                  <div class="options-grid">
+            <div class="option-card selected">
+              <div class="option-label">A</div>
+              <div class="option-body"><pre>TRUNC(MOD(12.7,-2)) は無効である。</pre></div>
+            </div>
+            
+            <div class="option-card">
+              <div class="option-label">B</div>
+              <div class="option-body"><pre>ROUND(MOD(12.7,-2)) は無効である。</pre></div>
+            </div>
+            
+            <div class="option-card">
+              <div class="option-label">C</div>
+              <div class="option-body"><pre>ROUND(MOD(12.7,-2)) と TRUNC(MOD(12.7,-2)) はどちらも使用でき、同じ結果を返す。</pre></div>
+            </div>
+            
+            <div class="option-card correct">
+              <div class="option-label">D</div>
+              <div class="option-body"><pre>ROUND(MOD(12.7,-2)) と TRUNC(MOD(12.7,-2)) はどちらも使用できるが、異なる結果を返す。</pre></div>
+            </div>
+            </div>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「ROUND・TRUNC・FLOOR などの数値関数」です。ROUND は四捨五入、TRUNC は切り捨て、FLOOR は指定値以下の最大整数、CEIL は指定値以上の最小整数を返す。関数ごとの戻り値を正確に区別する必要がある。 したがって正答は D「ROUND(MOD(12.7,-2)) と TRUNC(MOD(12.7,-2)) はどちらも使用できるが、異…」 になります。</p>
+                    <div class="block-title">今回の誤り</div>
+                    <p>自己回答は A「TRUNC(MOD(12.7,-2)) は無効である。」 でした。丸める関数と切り捨てる関数を曖昧に覚えて、似た選択肢を取り違えやすい。 正答との差は、条件の向き、句の置き場所、またはオブジェクトの性質を正確に読み切れていない点にあります。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>ROUND=四捨五入、TRUNC=切り落とし、FLOOR/CEIL=整数方向と覚える。</li><li>小数点桁数指定があるときは第何位を見るのかを書き出す。</li><li>日付に対する ROUND/TRUNC も使えることを別で覚える。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+            </section>
+            
+            <section class="concept-section" id="d3-6">
+              <h3>単一行関数の基本性質<span>2問</span></h3>
+              <p class="concept-copy">単一行関数は入力 1 行ごとに 1 つの結果を返し、ネストもできる。引数には列、リテラル、式が使え、戻り値の型は引数と異なる場合もある。</p>
+              
+                <article class="question-card">
+                  <div class="question-meta">第2回 模擬試験 / 問15 / 正答 DE / 自己回答 EF</div>
+                  <div class="block-title">問題文</div>
+                  <pre>単一行関数について正しい記述はどれでしょうか。 (2つ選択)</pre>
+                  <div class="block-title">選択肢</div>
+                  <div class="options-grid">
+            <div class="option-card">
+              <div class="option-label">A</div>
+              <div class="option-body"><pre>ROUND：最大の整数を返します。</pre></div>
+            </div>
+            
+            <div class="option-card">
+              <div class="option-label">B</div>
+              <div class="option-body"><pre>FLOOR：最小の整数を返します。</pre></div>
+            </div>
+            
+            <div class="option-card">
+              <div class="option-label">C</div>
+              <div class="option-body"><pre>ABS ：四捨五入した整数を返します。</pre></div>
+            </div>
+            
+            <div class="option-card correct">
+              <div class="option-label">D</div>
+              <div class="option-body"><pre>TRUNC：NUMBER および DATE 値で使用できます 。</pre></div>
+            </div>
+            
+            <div class="option-card correct selected">
+              <div class="option-label">E</div>
+              <div class="option-body"><pre>MOD ：除算演算の余りを返します。</pre></div>
+            </div>
+            
+            <div class="option-card selected">
+              <div class="option-label">F</div>
+              <div class="option-body"><pre>TRUNC：NUMBERのみで使用できます 。</pre></div>
+            </div>
+            </div>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「単一行関数の基本性質」です。単一行関数は入力 1 行ごとに 1 つの結果を返し、ネストもできる。引数には列、リテラル、式が使え、戻り値の型は引数と異なる場合もある。 したがって正答は D「TRUNC：NUMBER および DATE 値で使用できます 。」 / E「MOD ：除算演算の余りを返します。」 になります。</p>
+                    <div class="block-title">今回の誤り</div>
+                    <p>自己回答は E「MOD ：除算演算の余りを返します。」 / F「TRUNC：NUMBERのみで使用できます 。」 でした。一部は当たっていますが、F「TRUNC：NUMBERのみで使用できます 。」 に引っ張られて取りこぼしています。引数は 1 つだけ、SELECT 句でしか使えない、戻り値型は同じ、といった表面的な思い込みで落としやすい。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>単一行関数は『各行ごとに 1 結果』であって『表全体で 1 行』ではない。</li><li>ネスト可、句も SELECT 限定ではないと整理する。</li><li>引数型と戻り値型が一致しない関数も多いと覚える。</li>
+                    </ul>
+                  </div>
+                </article>
+                
                 <article class="question-card">
                   <div class="question-meta">第3回 模擬試験 / 問39 / 正答 BEF / 自己回答 ADE</div>
                   <div class="block-title">問題文</div>
@@ -1046,12 +1046,12 @@ END, product_name DESC;
             </div>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
-                    <p>この問題の論点は「単一行関数総合」です。単一行関数は文字列、数値、日付、NULL、条件分岐で役割が分かれている。まず何を変換したいかを見て関数の系統を選ぶ。 したがって正答は B「ネスト（入れ子）できる。」 / E「引数には、カラム名、変数、リテラル、または式を指定できる。」 / F「戻り値のデータ型は、引数のデータ型とは異なる場合がある。」 になります。</p>
+                    <p>この問題の論点は「単一行関数の基本性質」です。単一行関数は入力 1 行ごとに 1 つの結果を返し、ネストもできる。引数には列、リテラル、式が使え、戻り値の型は引数と異なる場合もある。 したがって正答は B「ネスト（入れ子）できる。」 / E「引数には、カラム名、変数、リテラル、または式を指定できる。」 / F「戻り値のデータ型は、引数のデータ型とは異なる場合がある。」 になります。</p>
                     <div class="block-title">今回の誤り</div>
-                    <p>自己回答は A「引数は1つしか受け取ることができない。」 / D「各テーブルで1行だけを返す。」 / E「引数には、カラム名、変数、リテラル、または式を指定できる。」 でした。一部は当たっていますが、A「引数は1つしか受け取ることができない。」 / D「各テーブルで1行だけを返す。」 に引っ張られて取りこぼしています。関数名の見た目で選んでしまい、入力型と戻り型の確認を飛ばしやすい。</p>
+                    <p>自己回答は A「引数は1つしか受け取ることができない。」 / D「各テーブルで1行だけを返す。」 / E「引数には、カラム名、変数、リテラル、または式を指定できる。」 でした。一部は当たっていますが、A「引数は1つしか受け取ることができない。」 / D「各テーブルで1行だけを返す。」 に引っ張られて取りこぼしています。引数は 1 つだけ、SELECT 句でしか使えない、戻り値型は同じ、といった表面的な思い込みで落としやすい。</p>
                     <div class="block-title">叩き直しポイント</div>
                     <ul class="rebuild-list">
-                      <li>文字列か数値か日付かを最初に決める。</li><li>戻り値をどの型で欲しいのかを確認する。</li><li>式全体の型が合っているかまで見る。</li>
+                      <li>単一行関数は『各行ごとに 1 結果』であって『表全体で 1 行』ではない。</li><li>ネスト可、句も SELECT 限定ではないと整理する。</li><li>引数型と戻り値型が一致しない関数も多いと覚える。</li>
                     </ul>
                   </div>
                 </article>
