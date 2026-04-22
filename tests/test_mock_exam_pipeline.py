@@ -53,8 +53,18 @@ class TestMockExamPipeline(unittest.TestCase):
         split_ex_pages.assign_phases(ranked)
 
         for item in ranked:
-            html = split_ex_pages.build_domain_page(item)
+            html = split_ex_pages.build_domain_page(item, review_mode="wrong")
             self.assertEqual(html.count('class="question-card"'), item["wrong_count"])
+
+    def test_domain_pages_cover_all_correct_questions(self):
+        ranked = split_ex_pages.priority_data()
+        split_ex_pages.assign_phases(ranked)
+        dataset = json.loads((ROOT / "dist" / "mock_exam_data.json").read_text(encoding="utf-8"))
+
+        combined = dataset["summary"]["combined"]
+        for item in ranked:
+            html = split_ex_pages.build_domain_page(item, review_mode="correct")
+            self.assertEqual(html.count('class="question-card"'), combined[item["domain"]]["correct"])
 
     def test_detect_concept_for_known_quality_sensitive_questions(self):
         dataset = json.loads((ROOT / "dist" / "mock_exam_data.json").read_text(encoding="utf-8"))
@@ -93,12 +103,21 @@ class TestMockExamPipeline(unittest.TestCase):
         self.assertIn("EX3_reinforce.html", phase1_html)
         self.assertIn("EX5_reinforce.html", phase1_html)
 
+        correct_hub_html = split_ex_pages.build_correct_hub_page(ranked)
+        self.assertIn("EX2_correct.html", correct_hub_html)
+        self.assertIn("EX8_correct.html", correct_hub_html)
+
+        dashboard_html = split_ex_pages.build_center_page(ranked)
+        self.assertIn("mock_exam_report.html", dashboard_html)
+        self.assertIn("mock_exam_reinforce.html", dashboard_html)
+        self.assertIn("mock_exam_correct.html", dashboard_html)
+
     def test_domain_page_uses_recorded_full_text_as_canonical_problem(self):
         ranked = split_ex_pages.priority_data()
         split_ex_pages.assign_phases(ranked)
         ex2 = next(item for item in ranked if item["ex_id"] == "EX2")
 
-        html = split_ex_pages.build_domain_page(ex2)
+        html = split_ex_pages.build_domain_page(ex2, review_mode="wrong")
 
         self.assertIn("問題文", html)
         self.assertNotIn('<div class="block-title">選択肢</div>', html)

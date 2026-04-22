@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EX5 DDL・オブジェクト管理 - 正答済み総点検</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans JP', 'Hiragino Sans', sans-serif; background: #eef2f7; color: #1f2937; line-height: 1.7; }
+  a { color: inherit; }
+  .page-header { background: linear-gradient(135deg,#10243f 0%,#1f3d63 55%,#e67e22 100%); color: white; padding: 42px 24px; text-align: center; }
+  .page-header h1 { font-size: 1.9rem; margin-bottom: 8px; }
+  .page-header .subtitle { opacity: 0.92; font-size: 0.95rem; }
+  .container { max-width: 1180px; margin: 0 auto; padding: 24px; }
+  .nav-back { display: inline-block; padding: 8px 16px; background: white; border-radius: 999px; text-decoration: none; color: #1f2937; box-shadow: 0 4px 14px rgba(15,23,42,.08); font-size: .9rem; margin: 0 8px 16px 0; }
+  .hero-card, .toc, .concept-section { background: white; border-radius: 18px; box-shadow: 0 10px 26px rgba(15,23,42,.08); }
+  .hero-card { padding: 20px 22px; margin-bottom: 18px; border-top: 6px solid #e67e22; }
+  .hero-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-top: 14px; }
+  .metric { background: #f8fafc; border-radius: 14px; padding: 14px; }
+  .metric .label { color: #64748b; font-size: .82rem; }
+  .metric .value { font-size: 1.35rem; font-weight: 900; color: #0f172a; margin-top: 4px; }
+  .toc { padding: 18px 22px; margin-bottom: 22px; }
+  .toc h2 { font-size: 1rem; color: #e67e22; margin-bottom: 10px; }
+  .toc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; }
+  .toc a { display: flex; justify-content: space-between; gap: 10px; align-items: center; text-decoration: none; padding: 10px 12px; border-radius: 12px; background: #f8fafc; border-left: 4px solid #e67e22; font-size: .88rem; }
+  .toc a:hover { background: #eef2f7; }
+  .concept-section { padding: 22px; margin-bottom: 24px; }
+  .concept-section h3 { display: flex; justify-content: space-between; gap: 12px; align-items: center; font-size: 1.15rem; margin-bottom: 8px; color: #0f172a; }
+  .concept-section h3 span { font-size: .82rem; padding: 5px 10px; border-radius: 999px; background: #e67e22; color: white; }
+  .concept-copy { color: #475569; font-size: .92rem; margin-bottom: 16px; }
+  .question-card { border: 1px solid #dbe4ef; border-radius: 16px; padding: 16px; margin-bottom: 14px; background: #fcfdff; }
+  .question-meta { font-size: .8rem; color: #64748b; margin-bottom: 10px; font-weight: 700; }
+  .block-title { font-size: .85rem; font-weight: 800; color: #e67e22; margin: 10px 0 6px; }
+  pre { white-space: pre-wrap; word-break: break-word; background: #0f172a; color: #e2e8f0; border-radius: 12px; padding: 14px; font-size: .84rem; overflow-x: auto; }
+  .analysis-block p { color: #334155; font-size: .9rem; margin-bottom: 8px; }
+  .rebuild-list { padding-left: 20px; color: #334155; font-size: .9rem; }
+  .rebuild-list li { margin-bottom: 5px; }
+  @media (max-width: 720px) {
+    .page-header h1 { font-size: 1.55rem; }
+    .container { padding: 18px; }
+    .concept-section h3 { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+<div class="page-header">
+  <h1>EX5 正答済み総点検</h1>
+  <div class="subtitle">DDL・オブジェクト管理 / 正答した設問をカテゴリ別に再確認し、得点源を維持するページ</div>
+</div>
+<div class="container">
+  <a class="nav-back" href="mock_exam_dashboard.html">模擬試験ダッシュボード</a>
+  <a class="nav-back" href="mock_exam_report.html">結果レポート</a>
+  <a class="nav-back" href="mock_exam_correct.html">模擬試験レビュー</a>
+  
+  <a class="nav-back" href="index.html">教科書トップ</a>
+
+  <div class="hero-card">
+    <div style="font-size:.9rem;color:#64748b;font-weight:700">D8 / 優先</div>
+    <div style="font-size:1.4rem;font-weight:900;margin-top:4px">DDL・オブジェクト管理</div>
+    <p style="margin-top:8px;color:#334155">このページは、正答できた設問をカテゴリ別に並べ、記録された問題全文を正本として、なぜ取れたのかと維持ポイントを再確認するための定着教材です。</p>
+    <div class="hero-grid">
+      <div class="metric"><div class="label">レビュー種別</div><div class="value">正答</div></div>
+      <div class="metric"><div class="label">進捗率</div><div class="value">32.5%</div></div>
+      <div class="metric"><div class="label">正答数</div><div class="value">25問</div></div>
+      <div class="metric"><div class="label">カテゴリ数</div><div class="value">7</div></div>
+    </div>
+  </div>
+
+  <div class="toc">
+    <h2>カテゴリ別目次</h2>
+    <div class="toc-grid">
+      <a href="#d8-1" class="mid">ビューの性質と更新可否 <span>8問</span></a><a href="#d8-2" class="mid">権限付与とロール <span>7問</span></a><a href="#d8-3" class="mid">シーケンス・シノニム・索引 <span>4問</span></a><a href="#d8-4" class="mid">DATE・TIMESTAMP・TIME ZONE <span>3問</span></a><a href="#d8-5" class="mid">DEFAULT と列追加・挿入 <span>1問</span></a><a href="#d8-6" class="mid">MERGE の文法と使える対象 <span>1問</span></a><a href="#d8-7" class="mid">制約定義と有効化・無効化 <span>1問</span></a>
+    </div>
+  </div>
+
+  
+            <section class="concept-section" id="d8-1">
+              <h3>ビューの性質と更新可否<span>8問</span></h3>
+              <p class="concept-copy">ビューはスキーマオブジェクトであり、基表に依存している。更新可否や WITH CHECK OPTION、READ ONLY、別スキーマ参照可否などが典型論点になる。</p>
+              
+                <article class="question-card">
+                  <div class="question-meta">第1回 模擬試験 / 問43 / 正答 A / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>マルチテーブル・インサートについて正しい記述はどれでしょうか。
+(1)		A.　副問合せを使用することができます。
+(2)		B.　リモート表で実行できます。
+(3)		C.　表のコレクションを指定することができます。
+(4)		D.　順序を指定することができます。
+(5)		E.　ビューを使用することができます。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「ビューの性質と更新可否」です。ビューはスキーマオブジェクトであり、基表に依存している。更新可否や WITH CHECK OPTION、READ ONLY、別スキーマ参照可否などが典型論点になる。 この設問では正答 A「副問合せを使用することができます。」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>ビューは定義保存であり、データ本体を持たないことを前提に考える。</li><li>更新可否は関数、集合演算、GROUP BY などの有無で判断する。</li><li>WITH CHECK OPTION は『ビュー条件を破る更新禁止』のための追加指定と覚える。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第1回 模擬試験 / 問55 / 正答 A.C.D / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>GLOBAL TEMPORARY TABLESについて正しい記述はどれでしょうか。（3つ選択）
+(1)		A.　複数の索引を作成することができます。
+(2)		B.　PUBLIC SYNONYMを作成することはできません。
+(3)		C.　SYNONYMを作成することができます。
+(4)		D.　トリガーを作成することができます。
+(5)		E.　ビューを使用した参照はできません。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「ビューの性質と更新可否」です。ビューはスキーマオブジェクトであり、基表に依存している。更新可否や WITH CHECK OPTION、READ ONLY、別スキーマ参照可否などが典型論点になる。 この設問では正答 A「複数の索引を作成することができます。」 / C「SYNONYMを作成することができます。」 / D「トリガーを作成することができます。」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>ビューは定義保存であり、データ本体を持たないことを前提に考える。</li><li>更新可否は関数、集合演算、GROUP BY などの有無で判断する。</li><li>WITH CHECK OPTION は『ビュー条件を破る更新禁止』のための追加指定と覚える。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第1回 模擬試験 / 問62 / 正答 A.D / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>ビューの削除について正しい記述はどれでしょうか。（2つ選択）
+(1)		A.　CASCADE CONSTRAINTSを指定すると、削除するビュー内の主キーおよび一意キーを参照するすべての参照整合性制約を削除します。
+(2)		B.　ビューが参照している表の列は、ビューが削除されると、参照している表から削除されます。
+(3)		C.　自スキーマにあるビューを削除するためには、DROP ANY VIEW 権限が付与されている必要があります。
+(4)		D.　ビューを削除すると、ロールおよびユーザーに付与された対応するオブジェクト権限はすべて取り消されます。
+(5)		E.　ビュー経由で追加した行は、ビューが削除されると表から自動的に削除されます。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「ビューの性質と更新可否」です。ビューはスキーマオブジェクトであり、基表に依存している。更新可否や WITH CHECK OPTION、READ ONLY、別スキーマ参照可否などが典型論点になる。 この設問では正答 A「CASCADE CONSTRAINTSを指定すると、削除するビュー内の主キーおよび一意キーを参照するすべての参…」 / D「ビューを削除すると、ロールおよびユーザーに付与された対応するオブジェクト権限はすべて取り消されます。」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>ビューは定義保存であり、データ本体を持たないことを前提に考える。</li><li>更新可否は関数、集合演算、GROUP BY などの有無で判断する。</li><li>WITH CHECK OPTION は『ビュー条件を破る更新禁止』のための追加指定と覚える。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第1回 模擬試験 / 問69 / 正答 D / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>システム権限を付与する文はどれでしょうか。
+(1)		A.　GRANT DELETE
+(2)		B.　GRANT ALTER TABLE TO PUBLIC;
+(3)		C.　GRANT CREATE MATERIALIZE VIEW TO USR01;
+(4)		D.　GRANT CREATE TABLE TO USR01, USR02;</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「ビューの性質と更新可否」です。ビューはスキーマオブジェクトであり、基表に依存している。更新可否や WITH CHECK OPTION、READ ONLY、別スキーマ参照可否などが典型論点になる。 この設問では正答 D「GRANT CREATE TABLE TO USR01, USR02;」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>ビューは定義保存であり、データ本体を持たないことを前提に考える。</li><li>更新可否は関数、集合演算、GROUP BY などの有無で判断する。</li><li>WITH CHECK OPTION は『ビュー条件を破る更新禁止』のための追加指定と覚える。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第1回 模擬試験 / 問76 / 正答 A.B / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>データ・ディクショナリについて正しい記述はどれでしょうか。（2つ選択）
+(1)		A.　データ・ディクショナリは、DDLが発行されるたびに常に更新されます。
+(2)		B.　SYSユーザーは、データ・ディクショナリ内のすべてのベース表とユーザーがアクセスできるビューを所有します。
+(3)		C.　すべてのユーザーは、データ・ディクショナリ内の全情報にアクセスすることができます。
+(4)		D.　データ・ディクショナリの表には接頭辞ALL_が付きます。
+(5)		E.　すべてのユーザー操作がデータ・ディクショナリに記録されます。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「ビューの性質と更新可否」です。ビューはスキーマオブジェクトであり、基表に依存している。更新可否や WITH CHECK OPTION、READ ONLY、別スキーマ参照可否などが典型論点になる。 この設問では正答 A「データ・ディクショナリは、DDLが発行されるたびに常に更新されます。」 / B「SYSユーザーは、データ・ディクショナリ内のすべてのベース表とユーザーがアクセスできるビューを所有します。」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>ビューは定義保存であり、データ本体を持たないことを前提に考える。</li><li>更新可否は関数、集合演算、GROUP BY などの有無で判断する。</li><li>WITH CHECK OPTION は『ビュー条件を破る更新禁止』のための追加指定と覚える。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第2回 模擬試験 / 問28 / 正答 AC / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>副問合せに関して正しいのはどれでしょうか。（2つ選択）
+(1)		A.　副問合せを使用して、1つ以上の表からデータにアクセスできます。
+(2)		B.　副問合せを使用して、ビューからデータにアクセスすることはできません。
+(3)		C.　副問合せが0行を返す場合、サブクエリ式によって返される値はNULLです。
+(4)		D.　1つのSQL文で記載できる副問合せは2つだけです。
+(5)		E.　SELECTのWHERE句の副問合せは、最大4レベルまでネストできます。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「ビューの性質と更新可否」です。ビューはスキーマオブジェクトであり、基表に依存している。更新可否や WITH CHECK OPTION、READ ONLY、別スキーマ参照可否などが典型論点になる。 この設問では正答 A「副問合せを使用して、1つ以上の表からデータにアクセスできます。」 / C「副問合せが0行を返す場合、サブクエリ式によって返される値はNULLです。」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>ビューは定義保存であり、データ本体を持たないことを前提に考える。</li><li>更新可否は関数、集合演算、GROUP BY などの有無で判断する。</li><li>WITH CHECK OPTION は『ビュー条件を破る更新禁止』のための追加指定と覚える。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第3回 模擬試験 / 問13 / 正答 D / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>ビューの記載について正しいものを1つ選択してください。
+(1)		A. 外部表にはビューを作成することはできない。
+(2)		B. ビューに対する更新処理を行う場合は、WITH CHECK OPTIONが必要である。
+(3)		C. ビューを作成すると、基となる表の索引も同時に複製される。
+(4)		D. ビューを作成する際に、別スキーマの表を参照することができる。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「ビューの性質と更新可否」です。ビューはスキーマオブジェクトであり、基表に依存している。更新可否や WITH CHECK OPTION、READ ONLY、別スキーマ参照可否などが典型論点になる。 この設問では正答 D「ビューを作成する際に、別スキーマの表を参照することができる。」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>ビューは定義保存であり、データ本体を持たないことを前提に考える。</li><li>更新可否は関数、集合演算、GROUP BY などの有無で判断する。</li><li>WITH CHECK OPTION は『ビュー条件を破る更新禁止』のための追加指定と覚える。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第3回 模擬試験 / 問27 / 正答 DEF / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>EMPLOYEES表は、シノニム、インデックス、ビューにより参照されています。
+次の DROP TABLE コマンドを実行した場合、どのような影響があるでしょうか。
+
+DROP TABLE employees PURGE;
+
+正しい説明を3つ選んでください。
+(1)		A. EMPLOYEES テーブルのすべての行が削除されるが、テーブルの構造は保持される。
+(2)		B. EMPLOYEES テーブルに関連するすべてのシノニムが削除される。
+(3)		C. DROP TABLE で削除したテーブルは ROLLBACK によって元に戻せる。
+(4)		D. EMPLOYEES テーブルはデータベースから完全に削除される。
+(5)		E. EMPLOYEES テーブル上のすべてのインデックスが削除される。
+(6)		F. EMPLOYEES テーブルを基にしたすべてのビューが無効化される。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「ビューの性質と更新可否」です。ビューはスキーマオブジェクトであり、基表に依存している。更新可否や WITH CHECK OPTION、READ ONLY、別スキーマ参照可否などが典型論点になる。 この設問では正答 D「EMPLOYEES テーブルはデータベースから完全に削除される。」 / E「EMPLOYEES テーブル上のすべてのインデックスが削除される。」 / F「EMPLOYEES テーブルを基にしたすべてのビューが無効化される。」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>ビューは定義保存であり、データ本体を持たないことを前提に考える。</li><li>更新可否は関数、集合演算、GROUP BY などの有無で判断する。</li><li>WITH CHECK OPTION は『ビュー条件を破る更新禁止』のための追加指定と覚える。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+            </section>
+            
+            <section class="concept-section" id="d8-2">
+              <h3>権限付与とロール<span>7問</span></h3>
+              <p class="concept-copy">オブジェクト権限は WITH GRANT OPTION、システム権限は WITH ADMIN OPTION と付与方法が異なる。列単位 UPDATE やロールの扱いも頻出である。</p>
+              
+                <article class="question-card">
+                  <div class="question-meta">第1回 模擬試験 / 問73 / 正答 A.C / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>ロールについて正しい記載はどれでしょうか。（2つ選択）
+(1)		A.　ロールは、ユーザーまたは他のロールに付与できる権限の集合です。
+(2)		B.　ロールは自分自身のロールに付与できます。
+(3)		C.　ロールはPUBLICに付与できます。
+(4)		D.　ユーザーは、1つのロールのみを付与できます。
+(5)		E.　ロールは循環的に付与できます。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「権限付与とロール」です。オブジェクト権限は WITH GRANT OPTION、システム権限は WITH ADMIN OPTION と付与方法が異なる。列単位 UPDATE やロールの扱いも頻出である。 この設問では正答 A「ロールは、ユーザーまたは他のロールに付与できる権限の集合です。」 / C「ロールはPUBLICに付与できます。」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>表や列への権限は WITH GRANT OPTION と覚える。</li><li>列単位 UPDATE は UPDATE (col1, col2) ON table の形で書く。</li><li>ロールは権限の束であり、オブジェクト権限そのものとは別だと整理する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第2回 模擬試験 / 問40 / 正答 AD / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>以下の文を実行します。
+
+INSERT INTO ITEM VALUES (&#x27;1&#x27;,&#x27;CURRY&#x27;,&#x27;FOOD&#x27;,1000);
+SAVEPOINT SP1;
+UPDATE ITEM SET ITEM_NAME = &#x27;SUSHI&#x27; WHERE ITEM_ID = &#x27;1&#x27;;
+SAVEPOINT SP2;
+DELETE FROM ITEM;
+COMMIT;
+ROLLBACK TO SAVEPOINT SP1;
+
+実行結果について、正しい記述はどれでしょうか。（2つ選択）
+　(1)		A.　トランザクションはロールバックされません。
+(2)		B.　DELETEとUPDATEの両方がロールバックされます。
+(3)		C.　DELETEのみがロールバックされます。
+(4)		D.　ROLLBACK TO SAVEPOINTはエラーとなります。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「権限付与とロール」です。オブジェクト権限は WITH GRANT OPTION、システム権限は WITH ADMIN OPTION と付与方法が異なる。列単位 UPDATE やロールの扱いも頻出である。 この設問では正答 A「トランザクションはロールバックされません。」 / D「ROLLBACK TO SAVEPOINTはエラーとなります。」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>表や列への権限は WITH GRANT OPTION と覚える。</li><li>列単位 UPDATE は UPDATE (col1, col2) ON table の形で書く。</li><li>ロールは権限の束であり、オブジェクト権限そのものとは別だと整理する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第2回 模擬試験 / 問66 / 正答 BC / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>次の順序でSQL文を実行した時の説明として、正しいものを2つ選択してください。
+
+・USER1ユーザーで以下を実行
+GRANT SELECT ON Employees TO USER2 WITH GRANT OPTION;
+・USER2ユーザーで以下を実行
+GRANT SELECT ON USER1.Employees TO USER3 WITH GRANT OPTION;
+・USER1ユーザーで以下を実行
+REVOKE SELECT ON Employees FROM USER2;
+(1)		A. USER3は他のユーザにSELECT権限を付与できない
+(2)		B. USER2のSELECT権限が取り消される
+(3)		C. USER3のSELECT権限が取り消される
+(4)		D. 2つ目のWITH GRANT OPTIONは指定できないためエラーとなる
+(5)		E. REVOKEがエラーとなる</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「権限付与とロール」です。オブジェクト権限は WITH GRANT OPTION、システム権限は WITH ADMIN OPTION と付与方法が異なる。列単位 UPDATE やロールの扱いも頻出である。 この設問では正答 B「USER2のSELECT権限が取り消される」 / C「USER3のSELECT権限が取り消される」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>表や列への権限は WITH GRANT OPTION と覚える。</li><li>列単位 UPDATE は UPDATE (col1, col2) ON table の形で書く。</li><li>ロールは権限の束であり、オブジェクト権限そのものとは別だと整理する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第2回 模擬試験 / 問68 / 正答 AC / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>次のうち、ロールに関して正しい記載を2つ選択してください。
+(1)		A. ロールはPUBLICに付与できる
+(2)		B. ロール付与でWITH GRANT OPTIONを指定できる
+(3)		C. ロール付与でWITH ADMIN OPTIONを指定できる
+(4)		D. ロールは他のロールに付与できない
+(5)		E. ロールはシステム権限とオブジェクト権限を同時に付与することができる
+(6)		F. ロールを循環的に使用することができる</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「権限付与とロール」です。オブジェクト権限は WITH GRANT OPTION、システム権限は WITH ADMIN OPTION と付与方法が異なる。列単位 UPDATE やロールの扱いも頻出である。 この設問では正答 A「ロールはPUBLICに付与できる」 / C「ロール付与でWITH ADMIN OPTIONを指定できる」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>表や列への権限は WITH GRANT OPTION と覚える。</li><li>列単位 UPDATE は UPDATE (col1, col2) ON table の形で書く。</li><li>ロールは権限の束であり、オブジェクト権限そのものとは別だと整理する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第2回 模擬試験 / 問74 / 正答 CE / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>ロールバックが実行されるケースは以下のうちどれでしょうか。2つ選択してください。
+(1)		A.　DDLが実行されたとき
+(2)		B.　SAVEPOINTが実行されたとき
+(3)		C.　システム障害が発生したとき
+(4)		D.　DMLが実行されたとき
+(5)		E.　shutdown immediateが実行されたとき</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「権限付与とロール」です。オブジェクト権限は WITH GRANT OPTION、システム権限は WITH ADMIN OPTION と付与方法が異なる。列単位 UPDATE やロールの扱いも頻出である。 この設問では正答 C「システム障害が発生したとき」 / E「shutdown immediateが実行されたとき」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>表や列への権限は WITH GRANT OPTION と覚える。</li><li>列単位 UPDATE は UPDATE (col1, col2) ON table の形で書く。</li><li>ロールは権限の束であり、オブジェクト権限そのものとは別だと整理する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第3回 模擬試験 / 問66 / 正答 E / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>インデックスについて、正しいものを1つ選んでください。
+(1)		A. インデックスの作成には、DBAロールが必要である。
+(2)		B. UNIQUE インデックスは、非一意インデックスに変更できる。
+(3)		C. テーブルを削除し、それが RECYCLE BIN に移動すると、テーブル上のすべてのインデックスは永久に削除される。
+(4)		D. あるユーザーが所有するテーブルには、他のユーザーが所有するインデックスを作成することはできない。
+(5)		E. テーブルを更新すると、すべてのインデックスに更新が反映される場合がある。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「権限付与とロール」です。オブジェクト権限は WITH GRANT OPTION、システム権限は WITH ADMIN OPTION と付与方法が異なる。列単位 UPDATE やロールの扱いも頻出である。 この設問では正答 E「テーブルを更新すると、すべてのインデックスに更新が反映される場合がある。」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>表や列への権限は WITH GRANT OPTION と覚える。</li><li>列単位 UPDATE は UPDATE (col1, col2) ON table の形で書く。</li><li>ロールは権限の束であり、オブジェクト権限そのものとは別だと整理する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第3回 模擬試験 / 問72 / 正答 BDE / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>ロール について、正しい記載を3つ選んでください。
+(1)		A. ロールは、特定のユーザーにのみ割り当てることができる、権限のグループである。
+(2)		B. 1つのロールを複数のユーザーに割り当てることができる。
+(3)		C. ALTER USER 文を使用してユーザーにロールを割り当てる。
+(4)		D. 1つのユーザーに複数のロールを割り当てることができる。
+(5)		E. GRANT 文を使用してロールに権限を割り当てる。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「権限付与とロール」です。オブジェクト権限は WITH GRANT OPTION、システム権限は WITH ADMIN OPTION と付与方法が異なる。列単位 UPDATE やロールの扱いも頻出である。 この設問では正答 B「1つのロールを複数のユーザーに割り当てることができる。」 / D「1つのユーザーに複数のロールを割り当てることができる。」 / E「GRANT 文を使用してロールに権限を割り当てる。」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>表や列への権限は WITH GRANT OPTION と覚える。</li><li>列単位 UPDATE は UPDATE (col1, col2) ON table の形で書く。</li><li>ロールは権限の束であり、オブジェクト権限そのものとは別だと整理する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+            </section>
+            
+            <section class="concept-section" id="d8-3">
+              <h3>シーケンス・シノニム・索引<span>4問</span></h3>
+              <p class="concept-copy">シーケンスは連番供給、シノニムは別名、索引は検索高速化のためのオブジェクトである。INVISIBLE INDEX、NEXTVAL/CURRVAL、PUBLIC SYNONYM など固有ルールが問われる。</p>
+              
+                <article class="question-card">
+                  <div class="question-meta">第1回 模擬試験 / 問54 / 正答 D / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>TRUNCATEとDELETEについて正しい記述はどれでしょうか。
+(1)		A.　外部キー制約に違反する場合、表をTRUNCATEすることはできません。
+(2)		B.　TRUNCATEを実行すると、索引や制約などの依存オブジェクトも削除されます。
+(3)		C.　TRUNCATEはDELETEと同じくロールバックが可能です。
+(4)		D.　データ量が大きな表のデータ削除を行う場合、TRUNCATEはDELETEよりも高速です。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「シーケンス・シノニム・索引」です。シーケンスは連番供給、シノニムは別名、索引は検索高速化のためのオブジェクトである。INVISIBLE INDEX、NEXTVAL/CURRVAL、PUBLIC SYNONYM など固有ルールが問われる。 この設問では正答 D「データ量が大きな表のデータ削除を行う場合、TRUNCATEはDELETEよりも高速です。」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>NEXTVAL を使った後でなければ CURRVAL は使えないことを覚える。</li><li>INVISIBLE INDEX でも索引自体は更新されると覚える。</li><li>シノニムは表だけでなく、ビューやシーケンスなどにも張れる。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第1回 模擬試験 / 問64 / 正答 D / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>ITEM表に索引が作成された状態で、
+DROP TABLE ITEM;
+を実行して、表と索引がRECYCLEBINに存在するとします。
+次に以下の文を実行します。
+
+FLASHBACK TABLE ITEM TO BEFORE DROP;
+
+実行結果として正しい記述はどれでしょうか。
+(1)		A.　表構造、データ、索引を回復することはできません。
+(2)		B.　表構造を回復しますが、データ、索引は回復しません。
+(3)		C.　表構造、データを回復しますが、索引は回復しません。
+(4)		D.　表構造、データ、索引を回復します。
+(5)		E.　索引のみを回復します。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「シーケンス・シノニム・索引」です。シーケンスは連番供給、シノニムは別名、索引は検索高速化のためのオブジェクトである。INVISIBLE INDEX、NEXTVAL/CURRVAL、PUBLIC SYNONYM など固有ルールが問われる。 この設問では正答 D「表構造、データ、索引を回復します。」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>NEXTVAL を使った後でなければ CURRVAL は使えないことを覚える。</li><li>INVISIBLE INDEX でも索引自体は更新されると覚える。</li><li>シノニムは表だけでなく、ビューやシーケンスなどにも張れる。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第1回 模擬試験 / 問66 / 正答 E / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>実行ユーザーにはシノニムを作成する権限があります。
+USER1ユーザーのITEM表に、すべてのユーザーがアクセスできるITEM_SYNというシノニムを作成する文はどれでしょうか。
+(1)		A.　CREATE OR REPLACE SYNONYM ITEM_SYN FOR USER1.ITEM;
+(2)		B.　CREATE OR REPLACE SYNONYM PUBLIC ITEM_SYN FOR USER1.ITEM;
+(3)		C.　CREATE OR REPLACE SYNONYM (PUBLIC ITEM_SYN) FOR USER1.ITEM;
+(4)		D.　CREATE OR REPLACE SYNONYM ITEM_SYN FOR USER1.ITEM PUBLIC;
+(5)		E.　CREATE OR REPLACE PUBLIC SYNONYM ITEM_SYN FOR USER1.ITEM;</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「シーケンス・シノニム・索引」です。シーケンスは連番供給、シノニムは別名、索引は検索高速化のためのオブジェクトである。INVISIBLE INDEX、NEXTVAL/CURRVAL、PUBLIC SYNONYM など固有ルールが問われる。 この設問では正答 E「CREATE OR REPLACE PUBLIC SYNONYM ITEM_SYN FOR USER1.ITE…」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>NEXTVAL を使った後でなければ CURRVAL は使えないことを覚える。</li><li>INVISIBLE INDEX でも索引自体は更新されると覚える。</li><li>シノニムは表だけでなく、ビューやシーケンスなどにも張れる。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第2回 模擬試験 / 問65 / 正答 D / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>シノニムについて正しい記述はどれでしょうか。
+(1)		A.　表を削除した場合、表のシノニムも削除されます。
+(2)		B.　表の列を削除した場合、その表のシノニムを再作成する必要があります。
+(3)		C.　表を削除した場合、表のシノニムは無効になります。
+(4)		D.　パブリック・シノニムを削除するには、DROP PUBLIC SYNONYMシステム権限が必要です。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「シーケンス・シノニム・索引」です。シーケンスは連番供給、シノニムは別名、索引は検索高速化のためのオブジェクトである。INVISIBLE INDEX、NEXTVAL/CURRVAL、PUBLIC SYNONYM など固有ルールが問われる。 この設問では正答 D「パブリック・シノニムを削除するには、DROP PUBLIC SYNONYMシステム権限が必要です。」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>NEXTVAL を使った後でなければ CURRVAL は使えないことを覚える。</li><li>INVISIBLE INDEX でも索引自体は更新されると覚える。</li><li>シノニムは表だけでなく、ビューやシーケンスなどにも張れる。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+            </section>
+            
+            <section class="concept-section" id="d8-4">
+              <h3>DATE・TIMESTAMP・TIME ZONE<span>3問</span></h3>
+              <p class="concept-copy">DATE は秒まで、TIMESTAMP は小数秒まで、TIMESTAMP WITH TIME ZONE はタイムゾーン情報付き、LOCAL TIME ZONE は DB タイムゾーンで正規化される。CURRENT_TIMESTAMP と SYSTIMESTAMP も基準が異なる。</p>
+              
+                <article class="question-card">
+                  <div class="question-meta">第1回 模擬試験 / 問78 / 正答 B / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>INTERVALデータ型について正しい記述はどれでしょうか。
+(1)		A.　INTERVAL YEAR TO MONTHは、負の値は使用できません。
+(2)		B.　INTERVAL YEAR TO MONTHは、年ごとの間隔をサポートします。
+(3)		C.　INTERVAL DAY TO SECONDは、小数秒は使用できません。
+(4)		D.　INTERVAL DAY TO SECONDは、年ごとの間隔をサポートします。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「DATE・TIMESTAMP・TIME ZONE」です。DATE は秒まで、TIMESTAMP は小数秒まで、TIMESTAMP WITH TIME ZONE はタイムゾーン情報付き、LOCAL TIME ZONE は DB タイムゾーンで正規化される。CURRENT_TIMESTAMP と SYSTIMESTAMP も基準が異なる。 この設問では正答 B「INTERVAL YEAR TO MONTHは、年ごとの間隔をサポートします。」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>DATE と TIMESTAMP の保持精度をまず分ける。</li><li>WITH LOCAL TIME ZONE は保存時に DB タイムゾーンへ正規化される。</li><li>CURRENT_TIMESTAMP はセッション、SYSTIMESTAMP はサーバ側で覚える。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第2回 模擬試験 / 問77 / 正答 A / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>図書館アプリケーションを設計するとします。
+表に以下の要件の列を作成する必要があります。
+
+1.貸出期間を格納する
+2.貸出期間の上限は14日
+
+どのデータ型を使用すればいいでしょうか。
+(1)		A.　INTERVAL DAY TO SECOND
+(2)		B.　INTERVAL YEAR TO MONTH
+(3)		C.　DATE
+(4)		D.　TIMESTAMP</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「DATE・TIMESTAMP・TIME ZONE」です。DATE は秒まで、TIMESTAMP は小数秒まで、TIMESTAMP WITH TIME ZONE はタイムゾーン情報付き、LOCAL TIME ZONE は DB タイムゾーンで正規化される。CURRENT_TIMESTAMP と SYSTIMESTAMP も基準が異なる。 この設問では正答 A「INTERVAL DAY TO SECOND」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>DATE と TIMESTAMP の保持精度をまず分ける。</li><li>WITH LOCAL TIME ZONE は保存時に DB タイムゾーンへ正規化される。</li><li>CURRENT_TIMESTAMP はセッション、SYSTIMESTAMP はサーバ側で覚える。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第3回 模擬試験 / 問2 / 正答 C / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>TIMESTAMP WITH LOCAL TIME ZONE型が保持する情報として正しいものを1つ選択してください。
+(1)		A. TIMESTAMP型保持情報＋タイムゾーンオフセット
+(2)		B. TIMESTAMP型保持情報＋タイムゾーンオフセットまたはタイムゾーンリージョン
+(3)		C. TIMESTAMP型保持情報＋ローカルタイムゾーンで入力された日時をデータベースのタイムゾーンに変換した値
+(4)		D. TIMESTAMP型保持情報＋固定のタイムゾーンリージョン</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「DATE・TIMESTAMP・TIME ZONE」です。DATE は秒まで、TIMESTAMP は小数秒まで、TIMESTAMP WITH TIME ZONE はタイムゾーン情報付き、LOCAL TIME ZONE は DB タイムゾーンで正規化される。CURRENT_TIMESTAMP と SYSTIMESTAMP も基準が異なる。 この設問では正答 C「TIMESTAMP型保持情報＋ローカルタイムゾーンで入力された日時をデータベースのタイムゾーンに変換した値」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>DATE と TIMESTAMP の保持精度をまず分ける。</li><li>WITH LOCAL TIME ZONE は保存時に DB タイムゾーンへ正規化される。</li><li>CURRENT_TIMESTAMP はセッション、SYSTIMESTAMP はサーバ側で覚える。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+            </section>
+            
+            <section class="concept-section" id="d8-5">
+              <h3>DEFAULT と列追加・挿入<span>1問</span></h3>
+              <p class="concept-copy">DEFAULT は値を省略したときに補われる。既存行がある表へ NOT NULL 列を追加するなら、DEFAULT と NOT NULL をセットで与えないと既存行を満たせない。</p>
+              
+                <article class="question-card">
+                  <div class="question-meta">第1回 模擬試験 / 問49 / 正答 A / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>表を作成する最適な文はどれでしょうか。
+　
+(1)		A.　CREATE TABLE SHOHIN( SHOHIN_ID NUMBER(3), SHOHIN_NAME VARCHAR2(20), SHOHIN_KAKAKU NUMBER(10), STOCK NUMBER DEFAULT 1, INPUT_DATE DATE DEFAULT SYSDATE, REMARK VARCHAR2(50) DEFAULT &#x27;　&#x27;);
+(2)		B.　CREATE TABLE SHOHIN( SHOHIN_ID NUMBER(3), SHOHIN_NAME VARCHAR2(20), SHOHIN_KAKAKU NUMBER(10), STOCK NUMBER DEFAULT 1, INPUT_DATE DATE DEFAULT SYSDATE, REMARK VARCHAR2(50) DEFAULT &quot;　&quot;);
+(3)		C.　CREATE TABLE SHOHIN( SHOHIN_ID NUMBER(3), SHOHIN_NAME VARCHAR2(20), SHOHIN_KAKAKU NUMBER(10), STOCK NUMBER DEFAULT 1, INPUT_DATE DATE DEFAULT &#x27;SYSDATE&#x27;, REMARK VARCHAR2(50) DEFAULT &#x27;　&#x27;);
+(4)		D.　CREATE TABLE SHOHIN( SHOHIN_ID NUMBER(3), SHOHIN_NAME VARCHAR2(20), SHOHIN_KAKAKU NUMBER(10), STOCK NUMBER DEFAULT = 1, INPUT_DATE DATE DEFAULT SYSDATE, REMARK VARCHAR2(50) DEFAULT = &#x27;　&#x27;);</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「DEFAULT と列追加・挿入」です。DEFAULT は値を省略したときに補われる。既存行がある表へ NOT NULL 列を追加するなら、DEFAULT と NOT NULL をセットで与えないと既存行を満たせない。 この設問では正答 A「CREATE TABLE SHOHIN( SHOHIN_ID NUMBER(3), SHOHIN_NAME V…」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>既存データあり + NOT NULL 列追加 = DEFAULT 必須、と覚える。</li><li>INSERT は列リストと VALUES の数を必ず対応させる。</li><li>DEFAULT を使うのは『省略時の補完』であり、明示列に勝手には入らない。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+            </section>
+            
+            <section class="concept-section" id="d8-6">
+              <h3>MERGE の文法と使える対象<span>1問</span></h3>
+              <p class="concept-copy">MERGE は 1 つの対象表に対し、ON 条件で一致時は UPDATE、非一致時は INSERT を行う。USING には表、ビュー、サブクエリを使える。</p>
+              
+                <article class="question-card">
+                  <div class="question-meta">第3回 模擬試験 / 問5 / 正答 D / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>ビューの記載について正しいものを1つ選択してください。
+(1)		A. MERGE文でビューを使用することはできない。
+(2)		B. ビューは非スキーマオブジェクトである。
+(3)		C. ビューが参照している表をDROP TABLE文を実行してもビューは有効状態で残る。
+(4)		D. グローバル一時表ではビューが使用できる。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「MERGE の文法と使える対象」です。MERGE は 1 つの対象表に対し、ON 条件で一致時は UPDATE、非一致時は INSERT を行う。USING には表、ビュー、サブクエリを使える。 この設問では正答 D「グローバル一時表ではビューが使用できる。」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>MATCHED=UPDATE、NOT MATCHED=INSERT を固定する。</li><li>更新対象は 1 表だけ、USING 側は比較用データと覚える。</li><li>MERGE でも WHERE 条件付き UPDATE/DELETE やビュー利用可否を確認する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+            </section>
+            
+            <section class="concept-section" id="d8-7">
+              <h3>制約定義と有効化・無効化<span>1問</span></h3>
+              <p class="concept-copy">主キー、外部キー、CHECK、NOT NULL などの制約は、型や参照整合性を守るための定義である。ENABLE/DISABLE、CASCADE、SYSDATE 使用可否など細部の制約規則が問われる。</p>
+              
+                <article class="question-card">
+                  <div class="question-meta">第1回 模擬試験 / 問27 / 正答 C.D / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>以下の文を実行して表を作成します。
+
+CREATE TABLE CARS
+(
+　　CAR_ID NUMBER PRIMARY KEY,
+　　CAR_NAME VARCHAR2(50),
+　　MAKER_ID NUMBER
+);
+
+CREATE TABLE MAKERS
+(
+　　MAKER_ID NUMBER PRIMARY KEY,
+　　MAKER_NAME VARCHAR2(50)
+);
+
+すべてのメーカーのIDと、それらに割り当てられている車のIDリストを取得するためのSQLは、どれでしょうか。（2つ選択）
+(1)		A.　SELECT M.MAKER_ID, C.CAR_ID FROM MAKERS M RIGHT OUTER JOIN CARS C ON (M.MAKER_ID=C.MAKER_ID);
+(2)		B.　SELECT M.MAKER_ID, C.CAR_ID FROM MAKERS M RIGHT OUTER JOIN CARS C ON
+(3)		C.　SELECT M.MAKER_ID, C.CAR_ID FROM MAKERS M LEFT OUTER JOIN CARS C ON (M.MAKER_ID=C.MAKER_ID);
+(4)		D.　SELECT M.MAKER_ID, C.CAR_ID FROM CARS C RIGHT OUTER JOIN MAKERS M ON (M.MAKER_ID=C.MAKER_ID);
+(5)		E.　SELECT M.MAKER_ID, C.CAR_ID FROM CARS C LEFT OUTER JOIN MAKERS M ON (C.MAKER_ID=M.MAKER_ID);</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「制約定義と有効化・無効化」です。主キー、外部キー、CHECK、NOT NULL などの制約は、型や参照整合性を守るための定義である。ENABLE/DISABLE、CASCADE、SYSDATE 使用可否など細部の制約規則が問われる。 この設問では正答 C「SELECT M.MAKER_ID, C.CAR_ID FROM MAKERS M LEFT OUTER JO…」 / D「SELECT M.MAKER_ID, C.CAR_ID FROM CARS C RIGHT OUTER JOI…」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>PK=NOT NULL + UNIQUE、FK は NULL 可、UK も NULL 可を再確認する。</li><li>CHECK では SYSDATE や他列参照など使えない式があると覚える。</li><li>ENABLE/DISABLE と CASCADE の影響範囲を図で整理する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+            </section>
+            
+</div>
+</body>
+</html>

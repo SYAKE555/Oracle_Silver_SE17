@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EX6 グループ関数・集計 - 正答済み総点検</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans JP', 'Hiragino Sans', sans-serif; background: #eef2f7; color: #1f2937; line-height: 1.7; }
+  a { color: inherit; }
+  .page-header { background: linear-gradient(135deg,#10243f 0%,#1f3d63 55%,#e67e22 100%); color: white; padding: 42px 24px; text-align: center; }
+  .page-header h1 { font-size: 1.9rem; margin-bottom: 8px; }
+  .page-header .subtitle { opacity: 0.92; font-size: 0.95rem; }
+  .container { max-width: 1180px; margin: 0 auto; padding: 24px; }
+  .nav-back { display: inline-block; padding: 8px 16px; background: white; border-radius: 999px; text-decoration: none; color: #1f2937; box-shadow: 0 4px 14px rgba(15,23,42,.08); font-size: .9rem; margin: 0 8px 16px 0; }
+  .hero-card, .toc, .concept-section { background: white; border-radius: 18px; box-shadow: 0 10px 26px rgba(15,23,42,.08); }
+  .hero-card { padding: 20px 22px; margin-bottom: 18px; border-top: 6px solid #e67e22; }
+  .hero-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-top: 14px; }
+  .metric { background: #f8fafc; border-radius: 14px; padding: 14px; }
+  .metric .label { color: #64748b; font-size: .82rem; }
+  .metric .value { font-size: 1.35rem; font-weight: 900; color: #0f172a; margin-top: 4px; }
+  .toc { padding: 18px 22px; margin-bottom: 22px; }
+  .toc h2 { font-size: 1rem; color: #e67e22; margin-bottom: 10px; }
+  .toc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; }
+  .toc a { display: flex; justify-content: space-between; gap: 10px; align-items: center; text-decoration: none; padding: 10px 12px; border-radius: 12px; background: #f8fafc; border-left: 4px solid #e67e22; font-size: .88rem; }
+  .toc a:hover { background: #eef2f7; }
+  .concept-section { padding: 22px; margin-bottom: 24px; }
+  .concept-section h3 { display: flex; justify-content: space-between; gap: 12px; align-items: center; font-size: 1.15rem; margin-bottom: 8px; color: #0f172a; }
+  .concept-section h3 span { font-size: .82rem; padding: 5px 10px; border-radius: 999px; background: #e67e22; color: white; }
+  .concept-copy { color: #475569; font-size: .92rem; margin-bottom: 16px; }
+  .question-card { border: 1px solid #dbe4ef; border-radius: 16px; padding: 16px; margin-bottom: 14px; background: #fcfdff; }
+  .question-meta { font-size: .8rem; color: #64748b; margin-bottom: 10px; font-weight: 700; }
+  .block-title { font-size: .85rem; font-weight: 800; color: #e67e22; margin: 10px 0 6px; }
+  pre { white-space: pre-wrap; word-break: break-word; background: #0f172a; color: #e2e8f0; border-radius: 12px; padding: 14px; font-size: .84rem; overflow-x: auto; }
+  .analysis-block p { color: #334155; font-size: .9rem; margin-bottom: 8px; }
+  .rebuild-list { padding-left: 20px; color: #334155; font-size: .9rem; }
+  .rebuild-list li { margin-bottom: 5px; }
+  @media (max-width: 720px) {
+    .page-header h1 { font-size: 1.55rem; }
+    .container { padding: 18px; }
+    .concept-section h3 { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+<div class="page-header">
+  <h1>EX6 正答済み総点検</h1>
+  <div class="subtitle">グループ関数・集計 / 正答した設問をカテゴリ別に再確認し、得点源を維持するページ</div>
+</div>
+<div class="container">
+  <a class="nav-back" href="mock_exam_dashboard.html">模擬試験ダッシュボード</a>
+  <a class="nav-back" href="mock_exam_report.html">結果レポート</a>
+  <a class="nav-back" href="mock_exam_correct.html">模擬試験レビュー</a>
+  
+  <a class="nav-back" href="index.html">教科書トップ</a>
+
+  <div class="hero-card">
+    <div style="font-size:.9rem;color:#64748b;font-weight:700">D4 / 優先</div>
+    <div style="font-size:1.4rem;font-weight:900;margin-top:4px">グループ関数・集計</div>
+    <p style="margin-top:8px;color:#334155">このページは、正答できた設問をカテゴリ別に並べ、記録された問題全文を正本として、なぜ取れたのかと維持ポイントを再確認するための定着教材です。</p>
+    <div class="hero-grid">
+      <div class="metric"><div class="label">レビュー種別</div><div class="value">正答</div></div>
+      <div class="metric"><div class="label">進捗率</div><div class="value">40.0%</div></div>
+      <div class="metric"><div class="label">正答数</div><div class="value">4問</div></div>
+      <div class="metric"><div class="label">カテゴリ数</div><div class="value">2</div></div>
+    </div>
+  </div>
+
+  <div class="toc">
+    <h2>カテゴリ別目次</h2>
+    <div class="toc-grid">
+      <a href="#d4-1" class="mid">WHERE と HAVING <span>3問</span></a><a href="#d4-2" class="mid">COUNT・AVG と NULL <span>1問</span></a>
+    </div>
+  </div>
+
+  
+            <section class="concept-section" id="d4-1">
+              <h3>WHERE と HAVING<span>3問</span></h3>
+              <p class="concept-copy">WHERE は集計前の行条件、HAVING は集計後のグループ条件である。集計関数を WHERE に直接書くとエラーになる。</p>
+              
+                <article class="question-card">
+                  <div class="question-meta">第1回 模擬試験 / 問21 / 正答 B.D.E / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>SQLのHAVING句とWHERE句について正しい記述はどれでしょうか。（3つ選択）
+(1)		A.　HAVINGの条件に、MAX関数を含めることはできません。
+(2)		B.　HAVINGの条件に、COUNT関数を含めることはできます。
+(3)		C.　WHEREとHAVINGを同時に使用することはできません。
+(4)		D.　WHEREとHAVINGを同時に使用することは可能です。
+(5)		E.　WHEREとHAVINGを同時に使用した場合、WHEREはHAVINGの前に実行されます。
+(6)		F.　HAVINGの条件に、列別名を使用できます。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「WHERE と HAVING」です。WHERE は集計前の行条件、HAVING は集計後のグループ条件である。集計関数を WHERE に直接書くとエラーになる。 この設問では正答 B「HAVINGの条件に、COUNT関数を含めることはできます。」 / D「WHEREとHAVINGを同時に使用することは可能です。」 / E「WHEREとHAVINGを同時に使用した場合、WHEREはHAVINGの前に実行されます。」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>行条件は WHERE、集計結果条件は HAVING と固定する。</li><li>SELECT の論理処理順を FROM→WHERE→GROUP BY→HAVING で覚える。</li><li>HAVING が必要かどうかは『集計後に絞るか』で判断する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第1回 模擬試験 / 問22 / 正答 A / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>GROUP BYの説明で正しい記述はどれでしょうか。
+(1)		A.　GROUP BYとWHEREは併用できます。
+(2)		B.　GROUP BYの後にWHEREを使用すると、グループの作成後に行が除外されます。
+(3)		C.　GROUP BYで列別名を使用できます。
+(4)		D.　SELECTで集計関数を使用している場合、GROUP BYは使用できません。
+(5)		E.　SELECTで集計関数を使用している場合、GROUP BYを使用する必要があります。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「WHERE と HAVING」です。WHERE は集計前の行条件、HAVING は集計後のグループ条件である。集計関数を WHERE に直接書くとエラーになる。 この設問では正答 A「GROUP BYとWHEREは併用できます。」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>行条件は WHERE、集計結果条件は HAVING と固定する。</li><li>SELECT の論理処理順を FROM→WHERE→GROUP BY→HAVING で覚える。</li><li>HAVING が必要かどうかは『集計後に絞るか』で判断する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第2回 模擬試験 / 問21 / 正答 C / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>以下のSQLを実行するとします。
+
+SELECT ITEM_TYPE,COUNT(ITEM_TYPE)
+FROM ITEM
+WHERE ITEM_PRICE &gt;= 2000
+GROUP BY ITEM_TYPE
+HAVING MAX(ITEM_PRICE) BETWEEN 1500 and 3000;
+
+実行結果について正しい記述はどれでしょうか。
+(1)		A.　HAVING句ではMAX演算子を使用できないため、エラーとなります。
+(2)		B.　HAVING句ではBETWEEN演算子を使用できないため、エラーとなります。
+(3)		C.　正常に実行されます。
+(4)		D.　WHERE句とHAVING句を同じSELECTで使用できないため、エラーとなります。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「WHERE と HAVING」です。WHERE は集計前の行条件、HAVING は集計後のグループ条件である。集計関数を WHERE に直接書くとエラーになる。 この設問では正答 C「正常に実行されます。」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>行条件は WHERE、集計結果条件は HAVING と固定する。</li><li>SELECT の論理処理順を FROM→WHERE→GROUP BY→HAVING で覚える。</li><li>HAVING が必要かどうかは『集計後に絞るか』で判断する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+            </section>
+            
+            <section class="concept-section" id="d4-2">
+              <h3>COUNT・AVG と NULL<span>1問</span></h3>
+              <p class="concept-copy">COUNT(*) は行数、COUNT(col) は NULL を除く列数、AVG(col) は NULL を平均計算から除外する。集計関数ごとに NULL の扱いが異なる。</p>
+              
+                <article class="question-card">
+                  <div class="question-meta">第2回 模擬試験 / 問22 / 正答 B / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>以下のSQLを実行するとします。
+
+SELECT TO_CHAR(MADE_DATE,&#x27;RR&#x27;), AVG(ITEM_PRICE) FROM ITEM
+GROUP BY TO_CHAR(MADE_DATE, &#x27;YYYY&#x27;);
+
+実行結果について、正しい記述はどれでしょうか。
+(1)		A.　AVGとGROUP BYは同時に使用できません。
+(2)		B.　2つのTO_CHAR関数のパラメータが合っていないため、エラーとなります。
+(3)		C.　AVGとTO_CHARは同時に使用できません。
+(4)		D.　正常に実行されます。</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「COUNT・AVG と NULL」です。COUNT(*) は行数、COUNT(col) は NULL を除く列数、AVG(col) は NULL を平均計算から除外する。集計関数ごとに NULL の扱いが異なる。 この設問では正答 B「2つのTO_CHAR関数のパラメータが合っていないため、エラーとなります。」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>COUNT(*) は全行、COUNT(col) は NULL 除外を声に出して確認する。</li><li>AVG(col)=SUM(col)/COUNT(col) に近い考え方で整理する。</li><li>NULL を含む列の集計問題は分母を必ず確認する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+            </section>
+            
+</div>
+</body>
+</html>

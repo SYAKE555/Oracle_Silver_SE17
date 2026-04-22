@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EX3 単一行関数 - 正答済み総点検</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans JP', 'Hiragino Sans', sans-serif; background: #eef2f7; color: #1f2937; line-height: 1.7; }
+  a { color: inherit; }
+  .page-header { background: linear-gradient(135deg,#10243f 0%,#1f3d63 55%,#c0392b 100%); color: white; padding: 42px 24px; text-align: center; }
+  .page-header h1 { font-size: 1.9rem; margin-bottom: 8px; }
+  .page-header .subtitle { opacity: 0.92; font-size: 0.95rem; }
+  .container { max-width: 1180px; margin: 0 auto; padding: 24px; }
+  .nav-back { display: inline-block; padding: 8px 16px; background: white; border-radius: 999px; text-decoration: none; color: #1f2937; box-shadow: 0 4px 14px rgba(15,23,42,.08); font-size: .9rem; margin: 0 8px 16px 0; }
+  .hero-card, .toc, .concept-section { background: white; border-radius: 18px; box-shadow: 0 10px 26px rgba(15,23,42,.08); }
+  .hero-card { padding: 20px 22px; margin-bottom: 18px; border-top: 6px solid #c0392b; }
+  .hero-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-top: 14px; }
+  .metric { background: #f8fafc; border-radius: 14px; padding: 14px; }
+  .metric .label { color: #64748b; font-size: .82rem; }
+  .metric .value { font-size: 1.35rem; font-weight: 900; color: #0f172a; margin-top: 4px; }
+  .toc { padding: 18px 22px; margin-bottom: 22px; }
+  .toc h2 { font-size: 1rem; color: #c0392b; margin-bottom: 10px; }
+  .toc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; }
+  .toc a { display: flex; justify-content: space-between; gap: 10px; align-items: center; text-decoration: none; padding: 10px 12px; border-radius: 12px; background: #f8fafc; border-left: 4px solid #c0392b; font-size: .88rem; }
+  .toc a:hover { background: #eef2f7; }
+  .concept-section { padding: 22px; margin-bottom: 24px; }
+  .concept-section h3 { display: flex; justify-content: space-between; gap: 12px; align-items: center; font-size: 1.15rem; margin-bottom: 8px; color: #0f172a; }
+  .concept-section h3 span { font-size: .82rem; padding: 5px 10px; border-radius: 999px; background: #c0392b; color: white; }
+  .concept-copy { color: #475569; font-size: .92rem; margin-bottom: 16px; }
+  .question-card { border: 1px solid #dbe4ef; border-radius: 16px; padding: 16px; margin-bottom: 14px; background: #fcfdff; }
+  .question-meta { font-size: .8rem; color: #64748b; margin-bottom: 10px; font-weight: 700; }
+  .block-title { font-size: .85rem; font-weight: 800; color: #c0392b; margin: 10px 0 6px; }
+  pre { white-space: pre-wrap; word-break: break-word; background: #0f172a; color: #e2e8f0; border-radius: 12px; padding: 14px; font-size: .84rem; overflow-x: auto; }
+  .analysis-block p { color: #334155; font-size: .9rem; margin-bottom: 8px; }
+  .rebuild-list { padding-left: 20px; color: #334155; font-size: .9rem; }
+  .rebuild-list li { margin-bottom: 5px; }
+  @media (max-width: 720px) {
+    .page-header h1 { font-size: 1.55rem; }
+    .container { padding: 18px; }
+    .concept-section h3 { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+<div class="page-header">
+  <h1>EX3 正答済み総点検</h1>
+  <div class="subtitle">単一行関数 / 正答した設問をカテゴリ別に再確認し、得点源を維持するページ</div>
+</div>
+<div class="container">
+  <a class="nav-back" href="mock_exam_dashboard.html">模擬試験ダッシュボード</a>
+  <a class="nav-back" href="mock_exam_report.html">結果レポート</a>
+  <a class="nav-back" href="mock_exam_correct.html">模擬試験レビュー</a>
+  
+  <a class="nav-back" href="index.html">教科書トップ</a>
+
+  <div class="hero-card">
+    <div style="font-size:.9rem;color:#64748b;font-weight:700">D3 / 最優先</div>
+    <div style="font-size:1.4rem;font-weight:900;margin-top:4px">単一行関数</div>
+    <p style="margin-top:8px;color:#334155">このページは、正答できた設問をカテゴリ別に並べ、記録された問題全文を正本として、なぜ取れたのかと維持ポイントを再確認するための定着教材です。</p>
+    <div class="hero-grid">
+      <div class="metric"><div class="label">レビュー種別</div><div class="value">正答</div></div>
+      <div class="metric"><div class="label">進捗率</div><div class="value">30.0%</div></div>
+      <div class="metric"><div class="label">正答数</div><div class="value">9問</div></div>
+      <div class="metric"><div class="label">カテゴリ数</div><div class="value">4</div></div>
+    </div>
+  </div>
+
+  <div class="toc">
+    <h2>カテゴリ別目次</h2>
+    <div class="toc-grid">
+      <a href="#d3-1" class="high">日付演算と月数計算 <span>4問</span></a><a href="#d3-2" class="high">TO_CHAR・TO_NUMBER・TO_DATE の書式変換 <span>3問</span></a><a href="#d3-3" class="high">ROUND・TRUNC・FLOOR などの数値関数 <span>1問</span></a><a href="#d3-4" class="high">SUBSTR・INSTR・TRIM・REPLACE の使い分け <span>1問</span></a>
+    </div>
+  </div>
+
+  
+            <section class="concept-section" id="d3-1">
+              <h3>日付演算と月数計算<span>4問</span></h3>
+              <p class="concept-copy">DATE 型の差は日数で返る。月単位なら MONTHS_BETWEEN、月加算なら ADD_MONTHS を使う。年数を 365 日換算で書くと境界条件を外しやすい。</p>
+              
+                <article class="question-card">
+                  <div class="question-meta">第1回 模擬試験 / 問16 / 正答 C / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>NUMBER型のITEM_IDと、DATE型のMADE_DATE（製造年月日）を含むITEM表があります。
+製造年月日から2か月後の月末の日付を表示したい場合、実行するSQLを選択してください。
+(1)		A.　SELECT ITEM_ID, LAST_DAY(ADD_MONTHS(MADE_DATE, 2),1) FROM ITEM;
+(2)		B.　SELECT ITEM_ID, NEXT_DAY(ADD_MONTHS(MADE_DATE, 2),1) FROM ITEM;
+(3)		C.　SELECT ITEM_ID, LAST_DAY(ADD_MONTHS(MADE_DATE, 2)) FROM ITEM;
+(4)		D.　SELECT ITEM_ID, LAST_DAY (MONTHS_BETWEEN (MADE_DATE, SYSDATE)) FROM ITEM;</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「日付演算と月数計算」です。DATE 型の差は日数で返る。月単位なら MONTHS_BETWEEN、月加算なら ADD_MONTHS を使う。年数を 365 日換算で書くと境界条件を外しやすい。 この設問では正答 C「SELECT ITEM_ID, LAST_DAY(ADD_MONTHS(MADE_DATE, 2)) FROM…」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>日数差は date1 - date2、月差は MONTHS_BETWEEN(date1, date2)。</li><li>nか月後・前は ADD_MONTHS(date, n) で書く。</li><li>条件式では『過去16か月以内』のような日本語を数式に言い換えてから書く。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第1回 模擬試験 / 問17 / 正答 A.B.C / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>以下のSQLでエラーとならないものはどれでしょうか。（3つ選択）
+
+(1)		A.　SELECT COALESCE(100, NULL) FROM DUAL;
+(2)		B.　SELECT COALESCE(NULL, &#x27;100&#x27;, &#x27;100&#x27;) FROM DUAL;
+(3)		C.　SELECT COALESCE(NULL, &#x27;100&#x27;) FROM DUAL;
+(4)		D.　SELECT COALESCE(SYSDATE, &#x27;100&#x27;) FROM DUAL;
+(5)		E.　SELECT COALESCE(&#x27;10&#x27;, 100) FROM (SELECT NULL AS &quot;TODAY&quot; FROM DUAL);</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「日付演算と月数計算」です。DATE 型の差は日数で返る。月単位なら MONTHS_BETWEEN、月加算なら ADD_MONTHS を使う。年数を 365 日換算で書くと境界条件を外しやすい。 この設問では正答 A「SELECT COALESCE(100, NULL) FROM DUAL;」 / B「SELECT COALESCE(NULL, &#x27;100&#x27;, &#x27;100&#x27;) FROM DUAL;」 / C「SELECT COALESCE(NULL, &#x27;100&#x27;) FROM DUAL;」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>日数差は date1 - date2、月差は MONTHS_BETWEEN(date1, date2)。</li><li>nか月後・前は ADD_MONTHS(date, n) で書く。</li><li>条件式では『過去16か月以内』のような日本語を数式に言い換えてから書く。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第1回 模擬試験 / 問18 / 正答 C.D / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>EMP表には、データ型 NUMBER型のDEPT_ID列とDATE型のSTART_DATE列があります。
+NLS_DATE_FORMATはDD-MON-RRに設定されます。
+SQLでこれらの列を含むデータ型変換について正しい記述はどれでしょうか。（2つ選択）
+(1)		A.　DEPT_ID &lt; &#x27;10102&#x27; : 明示的な変換が必要です
+(2)		B.　START_DATE &gt; &#x27;07-06-2019&#x27; : 暗黙的な変換を使用します
+(3)		C.　START_DATE &gt; &#x27;07-JUN-19&#x27; : 暗黙的な変換を使用します
+(4)		D.　DEPT_ID BETWEEN &#x27;10101&#x27; AND &#x27;10102&#x27; : 暗黙的な変換を使用します</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「日付演算と月数計算」です。DATE 型の差は日数で返る。月単位なら MONTHS_BETWEEN、月加算なら ADD_MONTHS を使う。年数を 365 日換算で書くと境界条件を外しやすい。 この設問では正答 C「START_DATE &gt; &#x27;07-JUN-19&#x27; : 暗黙的な変換を使用します」 / D「DEPT_ID BETWEEN &#x27;10101&#x27; AND &#x27;10102&#x27; : 暗黙的な変換を使用します」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>日数差は date1 - date2、月差は MONTHS_BETWEEN(date1, date2)。</li><li>nか月後・前は ADD_MONTHS(date, n) で書く。</li><li>条件式では『過去16か月以内』のような日本語を数式に言い換えてから書く。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第3回 模擬試験 / 問47 / 正答 ABE / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>次のうち、正常に実行できるSQL文を3つ選んでください。
+(1)		A. SELECT (SYSDATE - DATE &#x27;2025-03-01&#x27;) / 1 FROM DUAL;
+(2)		B. SELECT SYSDATE - 1 - DATE &#x27;2025-03-01&#x27; FROM DUAL;
+(3)		C. SELECT 1 - SYSDATE - DATE &#x27;2025-03-01&#x27; FROM DUAL;
+(4)		D. SELECT 1 / SYSDATE - DATE &#x27;2025-03-01&#x27; FROM DUAL;
+(5)		E. SELECT SYSDATE - DATE &#x27;2025-03-01&#x27; - 1 FROM DUAL;
+(6)		F. SELECT SYSDATE / DATE &#x27;2025-03-01&#x27; FROM DUAL;</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「日付演算と月数計算」です。DATE 型の差は日数で返る。月単位なら MONTHS_BETWEEN、月加算なら ADD_MONTHS を使う。年数を 365 日換算で書くと境界条件を外しやすい。 この設問では正答 A「SELECT (SYSDATE - DATE &#x27;2025-03-01&#x27;) / 1 FROM DUAL;」 / B「SELECT SYSDATE - 1 - DATE &#x27;2025-03-01&#x27; FROM DUAL;」 / E「SELECT SYSDATE - DATE &#x27;2025-03-01&#x27; - 1 FROM DUAL;」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>日数差は date1 - date2、月差は MONTHS_BETWEEN(date1, date2)。</li><li>nか月後・前は ADD_MONTHS(date, n) で書く。</li><li>条件式では『過去16か月以内』のような日本語を数式に言い換えてから書く。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+            </section>
+            
+            <section class="concept-section" id="d3-2">
+              <h3>TO_CHAR・TO_NUMBER・TO_DATE の書式変換<span>3問</span></h3>
+              <p class="concept-copy">文字列として保持された数値や日付を演算するには、まず TO_NUMBER や TO_DATE で型変換し、その後に TO_CHAR で表示形式を整える。書式モデルが一致しなければ失敗する。</p>
+              
+                <article class="question-card">
+                  <div class="question-meta">第1回 模擬試験 / 問19 / 正答 A.B / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>SHOHIN 表では、PRODUCTION_DATE列はDATE型で、デフォルト日付形式はDD-MON-RRです。
+SQL文についてエラーとならないものはどれですか。（2つ選択）
+(1)		A.　SELECT TO_CHAR(PRODUCTION_DATE,&#x27;YYYY-MM-DD&#x27;) FROM SHOHIN
+(2)		B.　SELECT TO_DATE(TO_CHAR(PRODUCTION_DATE,&#x27;RR-MM-DD&#x27;),&#x27;RR-MM-DD&#x27;) FROM SHOHIN
+(3)		C.　SELECT TO_NUMBER(PRODUCTION_DATE) * 3 FROM SHOHIN
+(4)		D.　SELECT TO_DATE(PRODUCTION_DATE * 5) FROM SHOHIN
+(5)		E.　SELECT TO_NUMBER(PRODUCTION_DATE) FROM SHOHIN</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「TO_CHAR・TO_NUMBER・TO_DATE の書式変換」です。文字列として保持された数値や日付を演算するには、まず TO_NUMBER や TO_DATE で型変換し、その後に TO_CHAR で表示形式を整える。書式モデルが一致しなければ失敗する。 この設問では正答 A「SELECT TO_CHAR(PRODUCTION_DATE,&#x27;YYYY-MM-DD&#x27;) FROM SHOHIN」 / B「SELECT TO_DATE(TO_CHAR(PRODUCTION_DATE,&#x27;RR-MM-DD&#x27;),&#x27;RR-…」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>演算前に元の型へ戻し、表示直前に TO_CHAR で整形する。</li><li>書式モデルの桁数、カンマ、小数点位置まで確認する。</li><li>TO_CHAR は表示、TO_NUMBER/TO_DATE は演算準備と役割分担で覚える。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第2回 模擬試験 / 問16 / 正答 AB / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>ITEM_NAME、MADE_DATE、ITEM_PRICEを表示する必要があります。
+製造年月日（MADE_DATE）が2018年1月1日以降から24か月以内のデータを表示するためには、以下のどのSQLを実行する必要があるでしょうか。（2つ選択）
+
+(1)		A.　SELECT ITEM_NAME, MADE_DATE, ITEM_PRICE FROM ITEM WHERE MONTHS_BETWEEN(MADE_DATE,&#x27;01-JAN-2018&#x27;) &lt;=24;
+(2)		B.　SELECT ITEM_NAME, MADE_DATE, ITEM_PRICE FROM ITEM WHERE MONTHS_BETWEEN(MADE_DATE,TO_DATE(&#x27;01-JAN-2018&#x27;,&#x27;DD-MON-RRRR&#x27;)) &lt;=24;
+(3)		C.　SELECT ITEM_NAME, MADE_DATE, ITEM_PRICE FROM ITEM WHERE TO_NUMBER(MADE_DATE-TO_DATE(&#x27;01-JAN-2018&#x27;,&#x27;DD-MON-RRRR&#x27;)) &lt;=24;
+(4)		D.　SELECT ITEM_NAME, MADE_DATE, ITEM_PRICE FROM ITEM WHERE TO_NUMBER(MADE_DATE,SYSDATE) &lt;=24;</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「TO_CHAR・TO_NUMBER・TO_DATE の書式変換」です。文字列として保持された数値や日付を演算するには、まず TO_NUMBER や TO_DATE で型変換し、その後に TO_CHAR で表示形式を整える。書式モデルが一致しなければ失敗する。 この設問では正答 A「SELECT ITEM_NAME, MADE_DATE, ITEM_PRICE FROM ITEM WHERE…」 / B「SELECT ITEM_NAME, MADE_DATE, ITEM_PRICE FROM ITEM WHERE…」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>演算前に元の型へ戻し、表示直前に TO_CHAR で整形する。</li><li>書式モデルの桁数、カンマ、小数点位置まで確認する。</li><li>TO_CHAR は表示、TO_NUMBER/TO_DATE は演算準備と役割分担で覚える。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+                <article class="question-card">
+                  <div class="question-meta">第2回 模擬試験 / 問17 / 正答 A / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>以下のSQLでエラーとならないものはどれでしょうか。
+　
+(1)		A.　SELECT NVL(START_DATE, SYSDATE) FROM EMP;
+(2)		B.　SELECT NVL(NAME) FROM EMP;
+(3)		C.　SELECT NVL(TO_DATE(START_DATE, END_DATE),&#x27;SYSDATE&#x27;) FROM EMP;
+(4)		D.　SELECT NVL(DEPT_ID) FROM EMP;</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「TO_CHAR・TO_NUMBER・TO_DATE の書式変換」です。文字列として保持された数値や日付を演算するには、まず TO_NUMBER や TO_DATE で型変換し、その後に TO_CHAR で表示形式を整える。書式モデルが一致しなければ失敗する。 この設問では正答 A「SELECT NVL(START_DATE, SYSDATE) FROM EMP;」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>演算前に元の型へ戻し、表示直前に TO_CHAR で整形する。</li><li>書式モデルの桁数、カンマ、小数点位置まで確認する。</li><li>TO_CHAR は表示、TO_NUMBER/TO_DATE は演算準備と役割分担で覚える。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+            </section>
+            
+            <section class="concept-section" id="d3-3">
+              <h3>ROUND・TRUNC・FLOOR などの数値関数<span>1問</span></h3>
+              <p class="concept-copy">ROUND は四捨五入、TRUNC は切り捨て、FLOOR は指定値以下の最大整数、CEIL は指定値以上の最小整数を返す。関数ごとの戻り値を正確に区別する必要がある。</p>
+              
+                <article class="question-card">
+                  <div class="question-meta">第1回 模擬試験 / 問15 / 正答 3 / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>以下のSQLを実行すると結果はどうなるでしょうか。
+
+SELECT ROUND(TRUNC(345.16, 1), 0) FROM DUAL;
+(1)		34
+(2)		35
+(3)		345
+(4)		350
+(5)		345.1
+(6)		345.2</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「ROUND・TRUNC・FLOOR などの数値関数」です。ROUND は四捨五入、TRUNC は切り捨て、FLOOR は指定値以下の最大整数、CEIL は指定値以上の最小整数を返す。関数ごとの戻り値を正確に区別する必要がある。 この設問では正答 3「345」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>ROUND=四捨五入、TRUNC=切り落とし、FLOOR/CEIL=整数方向と覚える。</li><li>小数点桁数指定があるときは第何位を見るのかを書き出す。</li><li>日付に対する ROUND/TRUNC も使えることを別で覚える。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+            </section>
+            
+            <section class="concept-section" id="d3-4">
+              <h3>SUBSTR・INSTR・TRIM・REPLACE の使い分け<span>1問</span></h3>
+              <p class="concept-copy">文字列の一部抽出では、位置取得に INSTR、切り出しに SUBSTR、不要部分の削除に TRIM、置換に REPLACE を使い分ける。空白位置の +1 を忘れると全体がずれる。</p>
+              
+                <article class="question-card">
+                  <div class="question-meta">第3回 模擬試験 / 問10 / 正答 B / 自己回答 -</div>
+                  <div class="block-title">問題文</div>
+                  <pre>次のSQLを実行したとき、employee_nameが「a」または「A」で始まる行を抽出し、名前の長さが短い順に並べるSQLはどれですか。1つ選択してください。
+
+
+A. SELECT employee_name FROM Employees
+   WHERE LPAD(employee_name) LIKE &#x27;A%&#x27;
+   ORDER BY LENGTH(employee_name) ASC;
+
+B. SELECT employee_name FROM Employees
+   WHERE UPPER(employee_name) LIKE &#x27;A%&#x27;
+   ORDER BY LENGTH(employee_name) ASC;
+
+C. SELECT employee_name FROM Employees
+   WHERE LOWER(employee_name) LIKE &#x27;a%&#x27;
+   ORDER BY LENGTH(employee_name) DESC;
+
+D. SELECT employee_name FROM Employees
+   WHERE TRIM(employee_name) LIKE &#x27;a%&#x27;
+   ORDER BY LENGTH(employee_name);
+
+
+(1)		A
+(2)		B
+(3)		C
+(4)		D</pre>
+                  <div class="analysis-block">
+                    <div class="block-title">なぜそうなるか</div>
+                    <p>この問題の論点は「SUBSTR・INSTR・TRIM・REPLACE の使い分け」です。文字列の一部抽出では、位置取得に INSTR、切り出しに SUBSTR、不要部分の削除に TRIM、置換に REPLACE を使い分ける。空白位置の +1 を忘れると全体がずれる。 この設問では正答 B「SELECT employee_name FROM Employees WHERE UPPER(employe…」 を選べており、論点自体は取れています。</p>
+                    <div class="block-title">維持ポイント</div>
+                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
+                    <div class="block-title">叩き直しポイント</div>
+                    <ul class="rebuild-list">
+                      <li>まず INSTR で位置を求め、その位置を SUBSTR に渡す。</li><li>先頭や末尾を削るなら TRIM、途中の語句置換なら REPLACE を使う。</li><li>1始まりのインデックスであることを常に意識する。</li>
+                    </ul>
+                  </div>
+                </article>
+                
+            </section>
+            
+</div>
+</body>
+</html>
