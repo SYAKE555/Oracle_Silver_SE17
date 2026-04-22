@@ -32,16 +32,6 @@
   .question-meta { font-size: .8rem; color: #64748b; margin-bottom: 10px; font-weight: 700; }
   .block-title { font-size: .85rem; font-weight: 800; color: #e67e22; margin: 10px 0 6px; }
   pre { white-space: pre-wrap; word-break: break-word; background: #0f172a; color: #e2e8f0; border-radius: 12px; padding: 14px; font-size: .84rem; overflow-x: auto; }
-  .options-grid { display: grid; gap: 8px; }
-  .option-card { display: grid; grid-template-columns: 32px 1fr; gap: 10px; align-items: start; border: 1px solid #dbe4ef; border-radius: 12px; padding: 10px 12px; background: white; }
-  .option-card.correct { border-color: #22c55e; box-shadow: inset 0 0 0 1px #22c55e; }
-  .option-card.selected { background: #fff7ed; }
-  .option-card.correct.selected { background: #f0fdf4; }
-  .option-key { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 999px; font-size: .82rem; font-weight: 900; background: #e2e8f0; color: #0f172a; }
-  .option-card.correct .option-key { background: #dcfce7; color: #166534; }
-  .option-card.selected .option-key { background: #ffedd5; color: #9a3412; }
-  .option-card.correct.selected .option-key { background: linear-gradient(90deg,#dcfce7,#ffedd5); color: #166534; }
-  .option-text { font-size: .88rem; color: #1f2937; line-height: 1.6; padding-top: 3px; word-break: break-word; }
   .analysis-block p { color: #334155; font-size: .9rem; margin-bottom: 8px; }
   .rebuild-list { padding-left: 20px; color: #334155; font-size: .9rem; }
   .rebuild-list li { margin-bottom: 5px; }
@@ -66,7 +56,7 @@
   <div class="hero-card">
     <div style="font-size:.9rem;color:#64748b;font-weight:700">D8 / 優先</div>
     <div style="font-size:1.4rem;font-weight:900;margin-top:4px">DDL・オブジェクト管理</div>
-    <p style="margin-top:8px;color:#334155">このページは、実際に間違えた設問をカテゴリ別に並べ、問題文・選択肢・正答理由・誤答理由・叩き直しポイントまで一気に確認するための再構築教材です。</p>
+    <p style="margin-top:8px;color:#334155">このページは、実際に間違えた設問をカテゴリ別に並べ、記録された問題全文を正本として、正答理由・誤答理由・叩き直しポイントまで一気に確認するための再構築教材です。</p>
     <div class="hero-grid">
       <div class="metric"><div class="label">フェーズ</div><div class="value">Phase 1</div></div>
       <div class="metric"><div class="label">進捗率</div><div class="value">32.5%</div></div>
@@ -90,34 +80,12 @@
                 <article class="question-card">
                   <div class="question-meta">第1回 模擬試験 / 問53 / 正答 D / 自己回答 A</div>
                   <div class="block-title">問題文</div>
-                  <pre>DELETE文およびTRUNCATE文について正しい記述は以下のどれでしょうか。</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card selected">
-              <div class="option-key">A</div>
-              <div class="option-text">TRUNCATE文を使用して索引を削除できます。</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">B</div>
-              <div class="option-text">DELETE文を使用してデータを削除できますが、TRUNCATE文を使用してデータを削除することはできません。</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">C</div>
-              <div class="option-text">DELETE文およびTRUNCATE文では、データを表に復元するためにロールバックを行うことができます。</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">D</div>
-              <div class="option-text">DELETE文を使用して、表から行を選択して削除できます。</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">E</div>
-              <div class="option-text">TRUNCATE文を使用して、表から行を選択して削除できます。</div>
-            </div>
-            </div>
+                  <pre>DELETE文およびTRUNCATE文について正しい記述は以下のどれでしょうか。
+(1)		A.　TRUNCATE文を使用して索引を削除できます。
+(2)		B.　DELETE文を使用してデータを削除できますが、TRUNCATE文を使用してデータを削除することはできません。
+(3)		C.　DELETE文およびTRUNCATE文では、データを表に復元するためにロールバックを行うことができます。
+(4)		D.　DELETE文を使用して、表から行を選択して削除できます。
+(5)		E.　TRUNCATE文を使用して、表から行を選択して削除できます。</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「シーケンス・シノニム・索引」です。シーケンスは連番供給、シノニムは別名、索引は検索高速化のためのオブジェクトである。INVISIBLE INDEX、NEXTVAL/CURRVAL、PUBLIC SYNONYM など固有ルールが問われる。 したがって正答は D「DELETE文を使用して、表から行を選択して削除できます。」 になります。</p>
@@ -133,34 +101,12 @@
                 <article class="question-card">
                   <div class="question-meta">第1回 模擬試験 / 問63 / 正答 A.C / 自己回答 C.E</div>
                   <div class="block-title">問題文</div>
-                  <pre>索引とその管理について正しい記述はどれでしょうか。（2つ選択）</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card correct">
-              <div class="option-key">A</div>
-              <div class="option-text">CREATE TABLE文の中で主キー制約および一意キー制約を定義すると、索引が暗黙的に作成されます。</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">B</div>
-              <div class="option-text">不可視索引は、DML実行中は維持されません。</div>
-            </div>
-            
-            <div class="option-card correct selected">
-              <div class="option-key">C</div>
-              <div class="option-text">索引は一意にも非一意にも設定できます。</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">D</div>
-              <div class="option-text">索引作成時にOracle標準関数を使用することはできません。</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">E</div>
-              <div class="option-text">主キー制約や一意キー制約で暗黙的に作成された索引は、その索引のみを削除することができます。</div>
-            </div>
-            </div>
+                  <pre>索引とその管理について正しい記述はどれでしょうか。（2つ選択）
+(1)		A.　CREATE TABLE文の中で主キー制約および一意キー制約を定義すると、索引が暗黙的に作成されます。
+(2)		B.　不可視索引は、DML実行中は維持されません。
+(3)		C.　索引は一意にも非一意にも設定できます。
+(4)		D.　索引作成時にOracle標準関数を使用することはできません。
+(5)		E.　主キー制約や一意キー制約で暗黙的に作成された索引は、その索引のみを削除することができます。</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「シーケンス・シノニム・索引」です。シーケンスは連番供給、シノニムは別名、索引は検索高速化のためのオブジェクトである。INVISIBLE INDEX、NEXTVAL/CURRVAL、PUBLIC SYNONYM など固有ルールが問われる。 したがって正答は A「CREATE TABLE文の中で主キー制約および一意キー制約を定義すると、索引が暗黙的に作成されます。」 / C「索引は一意にも非一意にも設定できます。」 になります。</p>
@@ -176,34 +122,12 @@
                 <article class="question-card">
                   <div class="question-meta">第1回 模擬試験 / 問65 / 正答 E / 自己回答 D</div>
                   <div class="block-title">問題文</div>
-                  <pre>シノニムについて正しい記述はどれでしょうか。</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card">
-              <div class="option-key">A</div>
-              <div class="option-text">シノニムの変更をする場合、いったん削除して再作成する必要があります。</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">B</div>
-              <div class="option-text">全ユーザーから使用できるシノニムを作成するためには、CREATE SYNONYMシステム権限が必要です。</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">C</div>
-              <div class="option-text">権限を持たないユーザーでも PUBLIC SYNONYMを作成できます。</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">D</div>
-              <div class="option-text">プライベート・シノニムは、データベース内で一意である必要があります。</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">E</div>
-              <div class="option-text">シノニムはシノニムを持つことができます。</div>
-            </div>
-            </div>
+                  <pre>シノニムについて正しい記述はどれでしょうか。
+(1)		A.　シノニムの変更をする場合、いったん削除して再作成する必要があります。
+(2)		B.　全ユーザーから使用できるシノニムを作成するためには、CREATE SYNONYMシステム権限が必要です。
+(3)		C.　権限を持たないユーザーでも PUBLIC SYNONYMを作成できます。
+(4)		D.　プライベート・シノニムは、データベース内で一意である必要があります。
+(5)		E.　シノニムはシノニムを持つことができます。</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「シーケンス・シノニム・索引」です。シーケンスは連番供給、シノニムは別名、索引は検索高速化のためのオブジェクトである。INVISIBLE INDEX、NEXTVAL/CURRVAL、PUBLIC SYNONYM など固有ルールが問われる。 したがって正答は E「シノニムはシノニムを持つことができます。」 になります。</p>
@@ -219,44 +143,14 @@
                 <article class="question-card">
                   <div class="question-meta">第1回 模擬試験 / 問67 / 正答 B.D.F / 自己回答 A.D.F</div>
                   <div class="block-title">問題文</div>
-                  <pre>シーケンスについて正しい記述はどれでしょうか。（3つ選択）</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card selected">
-              <div class="option-key">A</div>
-              <div class="option-text">シーケンスの初期値はMAXVALUEで指定します。</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">B</div>
-              <div class="option-text">シーケンス値はマイナス値の指定も可能です。</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">C</div>
-              <div class="option-text">シーケンスは、1つのセッションのみで使用できます。</div>
-            </div>
-            
-            <div class="option-card correct selected">
-              <div class="option-key">D</div>
-              <div class="option-text">CURRVALは、シーケンスの現在の値を取得します。</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">E</div>
-              <div class="option-text">インスタンスに障害が発生した場合、キャッシュされていたシーケンス番号は再度利用可能となります。</div>
-            </div>
-            
-            <div class="option-card correct selected">
-              <div class="option-key">F</div>
-              <div class="option-text">NEXTVALは、現在値に加増した値を取得します。</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">G</div>
-              <div class="option-text">MAXVALUE/MINVALUEの値の変更は、シーケンスを一度DROPして再作成する必要があります。</div>
-            </div>
-            </div>
+                  <pre>シーケンスについて正しい記述はどれでしょうか。（3つ選択）
+(1)		A.　シーケンスの初期値はMAXVALUEで指定します。
+(2)		B.　シーケンス値はマイナス値の指定も可能です。
+(3)		C.　シーケンスは、1つのセッションのみで使用できます。
+(4)		D.　CURRVALは、シーケンスの現在の値を取得します。
+(5)		E.　インスタンスに障害が発生した場合、キャッシュされていたシーケンス番号は再度利用可能となります。
+(6)		F.　NEXTVALは、現在値に加増した値を取得します。
+(7)		G.　MAXVALUE/MINVALUEの値の変更は、シーケンスを一度DROPして再作成する必要があります。</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「シーケンス・シノニム・索引」です。シーケンスは連番供給、シノニムは別名、索引は検索高速化のためのオブジェクトである。INVISIBLE INDEX、NEXTVAL/CURRVAL、PUBLIC SYNONYM など固有ルールが問われる。 したがって正答は B「シーケンス値はマイナス値の指定も可能です。」 / D「CURRVALは、シーケンスの現在の値を取得します。」 / F「NEXTVALは、現在値に加増した値を取得します。」 になります。</p>
@@ -272,39 +166,13 @@
                 <article class="question-card">
                   <div class="question-meta">第1回 模擬試験 / 問70 / 正答 A.B.F / 自己回答 A.B.E</div>
                   <div class="block-title">問題文</div>
-                  <pre>システム権限で実行できるものについての説明はどれでしょうか。（3つ選択）</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card correct selected">
-              <div class="option-key">A</div>
-              <div class="option-text">データベースに接続します。</div>
-            </div>
-            
-            <div class="option-card correct selected">
-              <div class="option-key">B</div>
-              <div class="option-text">データベース内の任意の順序（シーケンス）にアクセスできます。</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">C</div>
-              <div class="option-text">OSのファイルにアクセスします。</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">D</div>
-              <div class="option-text">別のスキーマでファンクションを実行します。</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">E</div>
-              <div class="option-text">WITH GRANT OPTIONを使用します。</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">F</div>
-              <div class="option-text">WITH ADMIN OPTIONを使用します。</div>
-            </div>
-            </div>
+                  <pre>システム権限で実行できるものについての説明はどれでしょうか。（3つ選択）
+(1)		A.　データベースに接続します。
+(2)		B.　データベース内の任意の順序（シーケンス）にアクセスできます。
+(3)		C.　OSのファイルにアクセスします。
+(4)		D.　別のスキーマでファンクションを実行します。
+(5)		E.　WITH GRANT OPTIONを使用します。
+(6)		F.　WITH ADMIN OPTIONを使用します。</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「シーケンス・シノニム・索引」です。シーケンスは連番供給、シノニムは別名、索引は検索高速化のためのオブジェクトである。INVISIBLE INDEX、NEXTVAL/CURRVAL、PUBLIC SYNONYM など固有ルールが問われる。 したがって正答は A「データベースに接続します。」 / B「データベース内の任意の順序（シーケンス）にアクセスできます。」 / F「WITH ADMIN OPTIONを使用します。」 になります。</p>
@@ -320,34 +188,12 @@
                 <article class="question-card">
                   <div class="question-meta">第2回 模擬試験 / 問64 / 正答 AC / 自己回答 CE</div>
                   <div class="block-title">問題文</div>
-                  <pre>シーケンス変更について、正しいものを2つ選択してください。</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card correct">
-              <div class="option-key">A</div>
-              <div class="option-text">増分値は変更できる</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">B</div>
-              <div class="option-text">初期値は変更できる</div>
-            </div>
-            
-            <div class="option-card correct selected">
-              <div class="option-key">C</div>
-              <div class="option-text">CYCLEの変更で値の重複が有りうる</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">D</div>
-              <div class="option-text">CACHEサイズを変更すると既存キャッシュがクリアされる</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">E</div>
-              <div class="option-text">シーケンス変更を行うと初期値から再生成される</div>
-            </div>
-            </div>
+                  <pre>シーケンス変更について、正しいものを2つ選択してください。
+(1)		A. 増分値は変更できる
+(2)		B. 初期値は変更できる
+(3)		C. CYCLEの変更で値の重複が有りうる
+(4)		D. CACHEサイズを変更すると既存キャッシュがクリアされる
+(5)		E. シーケンス変更を行うと初期値から再生成される</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「シーケンス・シノニム・索引」です。シーケンスは連番供給、シノニムは別名、索引は検索高速化のためのオブジェクトである。INVISIBLE INDEX、NEXTVAL/CURRVAL、PUBLIC SYNONYM など固有ルールが問われる。 したがって正答は A「増分値は変更できる」 / C「CYCLEの変更で値の重複が有りうる」 になります。</p>
@@ -364,41 +210,21 @@
                   <div class="question-meta">第2回 模擬試験 / 問67 / 正答 A / 自己回答 D</div>
                   <div class="block-title">問題文</div>
                   <pre>以下のシーケンスを作成します。
+
 CREATE SEQUENCE ITEM_SEQ
 START WITH 100
 INCREMENT BY 10
 MAXVALUE 1000
 CYCLE
 CACHE 10;
+
 シーケンスITEM_SEQを用いて最大値1000まで番号を生成したのち、このシーケンスが生成する値を使った1行を表にINSERTを実行します。
-INSERTした行をSELECTによって表示したとき、生成したシーケンス番号の値は何でしょうか。</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card correct">
-              <div class="option-key">A</div>
-              <div class="option-text">1</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">B</div>
-              <div class="option-text">10</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">C</div>
-              <div class="option-text">100</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">D</div>
-              <div class="option-text">1000</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">E</div>
-              <div class="option-text">エラー</div>
-            </div>
-            </div>
+INSERTした行をSELECTによって表示したとき、生成したシーケンス番号の値は何でしょうか。
+(1)		A.　1
+(2)		B.　10
+(3)		C.　100
+(4)		D.　1000
+(5)		E.　エラー</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「シーケンス・シノニム・索引」です。シーケンスは連番供給、シノニムは別名、索引は検索高速化のためのオブジェクトである。INVISIBLE INDEX、NEXTVAL/CURRVAL、PUBLIC SYNONYM など固有ルールが問われる。 したがって正答は A「1」 になります。</p>
@@ -414,29 +240,11 @@ INSERTした行をSELECTによって表示したとき、生成したシーケ�
                 <article class="question-card">
                   <div class="question-meta">第3回 模擬試験 / 問8 / 正答 C / 自己回答 B</div>
                   <div class="block-title">問題文</div>
-                  <pre>次のうち、索引にINVISIBLEを指定した場合の動作について正しい説明はどれでしょうか。1つ選択してください。</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card">
-              <div class="option-key">A</div>
-              <div class="option-text">通常のINDEX相当の性能が期待できる。</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">B</div>
-              <div class="option-text">DML実行時に索引情報の更新が抑止される。</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">C</div>
-              <div class="option-text">索引の有効性を確認できる。</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">D</div>
-              <div class="option-text">一度不可視にすると索引を可視化することはできない。</div>
-            </div>
-            </div>
+                  <pre>次のうち、索引にINVISIBLEを指定した場合の動作について正しい説明はどれでしょうか。1つ選択してください。
+(1)		A. 通常のINDEX相当の性能が期待できる。
+(2)		B. DML実行時に索引情報の更新が抑止される。
+(3)		C. 索引の有効性を確認できる。
+(4)		D. 一度不可視にすると索引を可視化することはできない。</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「シーケンス・シノニム・索引」です。シーケンスは連番供給、シノニムは別名、索引は検索高速化のためのオブジェクトである。INVISIBLE INDEX、NEXTVAL/CURRVAL、PUBLIC SYNONYM など固有ルールが問われる。 したがって正答は C「索引の有効性を確認できる。」 になります。</p>
@@ -452,34 +260,12 @@ INSERTした行をSELECTによって表示したとき、生成したシーケ�
                 <article class="question-card">
                   <div class="question-meta">第3回 模擬試験 / 問18 / 正答 CDE / 自己回答 CD</div>
                   <div class="block-title">問題文</div>
-                  <pre>シノニム に関する正しい記述を 3つ 選んでください。</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card">
-              <div class="option-key">A</div>
-              <div class="option-text">PL/SQLプロシージャのシノニムを作成することはできない。</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">B</div>
-              <div class="option-text">パブリックシノニムは、どのユーザーでも削除できる。</div>
-            </div>
-            
-            <div class="option-card correct selected">
-              <div class="option-key">C</div>
-              <div class="option-text">シーケンスにもシノニムを設定できる。</div>
-            </div>
-            
-            <div class="option-card correct selected">
-              <div class="option-key">D</div>
-              <div class="option-text">シノニムは、すべてのユーザーが利用可能にできる。</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">E</div>
-              <div class="option-text">あるユーザーが作成したシノニムは、別のユーザーのオブジェクトを参照できる。</div>
-            </div>
-            </div>
+                  <pre>シノニム に関する正しい記述を 3つ 選んでください。
+(1)		A. PL/SQLプロシージャのシノニムを作成することはできない。
+(2)		B. パブリックシノニムは、どのユーザーでも削除できる。
+(3)		C. シーケンスにもシノニムを設定できる。
+(4)		D. シノニムは、すべてのユーザーが利用可能にできる。
+(5)		E. あるユーザーが作成したシノニムは、別のユーザーのオブジェクトを参照できる。</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「シーケンス・シノニム・索引」です。シーケンスは連番供給、シノニムは別名、索引は検索高速化のためのオブジェクトである。INVISIBLE INDEX、NEXTVAL/CURRVAL、PUBLIC SYNONYM など固有ルールが問われる。 したがって正答は C「シーケンスにもシノニムを設定できる。」 / D「シノニムは、すべてのユーザーが利用可能にできる。」 / E「あるユーザーが作成したシノニムは、別のユーザーのオブジェクトを参照できる。」 になります。</p>
@@ -495,34 +281,12 @@ INSERTした行をSELECTによって表示したとき、生成したシーケ�
                 <article class="question-card">
                   <div class="question-meta">第3回 模擬試験 / 問29 / 正答 AD / 自己回答 AC</div>
                   <div class="block-title">問題文</div>
-                  <pre>Oracleのシノニムについて、正しいものを2つ選んでください。</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card correct selected">
-              <div class="option-key">A</div>
-              <div class="option-text">シノニムに対して別のシノニムを作成できる。</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">B</div>
-              <div class="option-text">シノニムは参照先のオブジェクトが削除されても自動的に削除される。</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">C</div>
-              <div class="option-text">すべてのユーザーが PUBLIC SYNONYM を作成できる。</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">D</div>
-              <div class="option-text">PACKAGE 内のオブジェクトにはシノニムを作成できる。</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">E</div>
-              <div class="option-text">データベース内のすべてのプライベートシノニム名は一意でなければならない。</div>
-            </div>
-            </div>
+                  <pre>Oracleのシノニムについて、正しいものを2つ選んでください。
+(1)		A. シノニムに対して別のシノニムを作成できる。
+(2)		B. シノニムは参照先のオブジェクトが削除されても自動的に削除される。
+(3)		C. すべてのユーザーが PUBLIC SYNONYM を作成できる。
+(4)		D. PACKAGE 内のオブジェクトにはシノニムを作成できる。
+(5)		E. データベース内のすべてのプライベートシノニム名は一意でなければならない。</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「シーケンス・シノニム・索引」です。シーケンスは連番供給、シノニムは別名、索引は検索高速化のためのオブジェクトである。INVISIBLE INDEX、NEXTVAL/CURRVAL、PUBLIC SYNONYM など固有ルールが問われる。 したがって正答は A「シノニムに対して別のシノニムを作成できる。」 / D「PACKAGE 内のオブジェクトにはシノニムを作成できる。」 になります。</p>
@@ -539,38 +303,18 @@ INSERTした行をSELECTによって表示したとき、生成したシーケ�
                   <div class="question-meta">第3回 模擬試験 / 問46 / 正答 E / 自己回答 C</div>
                   <div class="block-title">問題文</div>
                   <pre>以下の条件を満たす シーケンスを作成する必要があります。
+
 ・名前：PRO_SEQ
 ・最初の値は 1
 ・重複は許可されない
 ・値の欠落を減らす
-次のうち、要件を満たすものを1つ選んでください。</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card">
-              <div class="option-key">A</div>
-              <div class="option-text">CREATE SEQUENCE pro_seq START WITH 1 CACHE;</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">B</div>
-              <div class="option-text">CREATE SEQUENCE pro_seq START WITH 1 INCREMENT BY 1;</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">C</div>
-              <div class="option-text">CREATE SEQUENCE pro_seq START WITH 1 INCREMENT BY 1 CACHE;</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">D</div>
-              <div class="option-text">CREATE SEQUENCE pro_seq START WITH 1 INCREMENT BY 1 CYCLE;</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">E</div>
-              <div class="option-text">CREATE SEQUENCE pro_seq START WITH 1 INCREMENT BY 1 NOCACHE;</div>
-            </div>
-            </div>
+
+次のうち、要件を満たすものを1つ選んでください。
+(1)		A. CREATE SEQUENCE pro_seq START WITH 1 CACHE;
+(2)		B. CREATE SEQUENCE pro_seq START WITH 1 INCREMENT BY 1;
+(3)		C. CREATE SEQUENCE pro_seq START WITH 1 INCREMENT BY 1 CACHE;
+(4)		D. CREATE SEQUENCE pro_seq START WITH 1 INCREMENT BY 1 CYCLE;
+(5)		E. CREATE SEQUENCE pro_seq START WITH 1 INCREMENT BY 1 NOCACHE;</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「シーケンス・シノニム・索引」です。シーケンスは連番供給、シノニムは別名、索引は検索高速化のためのオブジェクトである。INVISIBLE INDEX、NEXTVAL/CURRVAL、PUBLIC SYNONYM など固有ルールが問われる。 したがって正答は E「CREATE SEQUENCE pro_seq START WITH 1 INCREMENT BY 1 NOC…」 になります。</p>
@@ -592,34 +336,12 @@ INSERTした行をSELECTによって表示したとき、生成したシーケ�
                 <article class="question-card">
                   <div class="question-meta">第1回 模擬試験 / 問61 / 正答 A.D.E / 自己回答 B.D.E</div>
                   <div class="block-title">問題文</div>
-                  <pre>ビューに関して正しい記述はどれでしょうか。（3つ選択）</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card correct">
-              <div class="option-key">A</div>
-              <div class="option-text">ビューでDISTINCTを使用している場合、ビュー経由でデータを更新することはできません。</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">B</div>
-              <div class="option-text">存在しない表に対してビューを作成することはできません。</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">C</div>
-              <div class="option-text">ビューでGROUP BYを使用している場合、ビュー経由でデータを更新することができます。</div>
-            </div>
-            
-            <div class="option-card correct selected">
-              <div class="option-key">D</div>
-              <div class="option-text">すべてのDMLを禁止する場合、WITH READ ONLY制約を使用します。</div>
-            </div>
-            
-            <div class="option-card correct selected">
-              <div class="option-key">E</div>
-              <div class="option-text">OR REPLACEオプションは、すでにビューが存在する場合、ビューを削除せずに定義を変更します。</div>
-            </div>
-            </div>
+                  <pre>ビューに関して正しい記述はどれでしょうか。（3つ選択）
+(1)		A.　ビューでDISTINCTを使用している場合、ビュー経由でデータを更新することはできません。
+(2)		B.　存在しない表に対してビューを作成することはできません。
+(3)		C.　ビューでGROUP BYを使用している場合、ビュー経由でデータを更新することができます。
+(4)		D.　すべてのDMLを禁止する場合、WITH READ ONLY制約を使用します。
+(5)		E.　OR REPLACEオプションは、すでにビューが存在する場合、ビューを削除せずに定義を変更します。</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「ビューの性質と更新可否」です。ビューはスキーマオブジェクトであり、基表に依存している。更新可否や WITH CHECK OPTION、READ ONLY、別スキーマ参照可否などが典型論点になる。 したがって正答は A「ビューでDISTINCTを使用している場合、ビュー経由でデータを更新することはできません。」 / D「すべてのDMLを禁止する場合、WITH READ ONLY制約を使用します。」 / E「OR REPLACEオプションは、すでにビューが存在する場合、ビューを削除せずに定義を変更します。」 になります。</p>
@@ -635,29 +357,11 @@ INSERTした行をSELECTによって表示したとき、生成したシーケ�
                 <article class="question-card">
                   <div class="question-meta">第1回 模擬試験 / 問75 / 正答 C.D / 自己回答 B.C</div>
                   <div class="block-title">問題文</div>
-                  <pre>データ・ディクショナリについての正しい記述を2つ選択してください。</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card">
-              <div class="option-key">A</div>
-              <div class="option-text">データ・ディクショナリは、DBAが手動で管理します。</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">B</div>
-              <div class="option-text">データ・ディクショナリ・ビューは、データベース管理用表とユーザー定義表の集合体です。</div>
-            </div>
-            
-            <div class="option-card correct selected">
-              <div class="option-key">C</div>
-              <div class="option-text">ユーザー名、およびユーザーに付与された権限とロールは、データ・ディクショナリに保存されます。</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">D</div>
-              <div class="option-text">DBA、ALL、USER などのプレフィックスが異なっていて、その後の名前が同じビューは、権限と名前に応じた最適な情報を取得します。</div>
-            </div>
-            </div>
+                  <pre>データ・ディクショナリについての正しい記述を2つ選択してください。
+(1)		A.　データ・ディクショナリは、DBAが手動で管理します。
+(2)		B.　データ・ディクショナリ・ビューは、データベース管理用表とユーザー定義表の集合体です。
+(3)		C.　ユーザー名、およびユーザーに付与された権限とロールは、データ・ディクショナリに保存されます。
+(4)		D.　DBA、ALL、USER などのプレフィックスが異なっていて、その後の名前が同じビューは、権限と名前に応じた最適な情報を取得します。</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「ビューの性質と更新可否」です。ビューはスキーマオブジェクトであり、基表に依存している。更新可否や WITH CHECK OPTION、READ ONLY、別スキーマ参照可否などが典型論点になる。 したがって正答は C「ユーザー名、およびユーザーに付与された権限とロールは、データ・ディクショナリに保存されます。」 / D「DBA、ALL、USER などのプレフィックスが異なっていて、その後の名前が同じビューは、権限と名前に応じた最…」 になります。</p>
@@ -673,29 +377,12 @@ INSERTした行をSELECTによって表示したとき、生成したシーケ�
                 <article class="question-card">
                   <div class="question-meta">第2回 模擬試験 / 問61 / 正答 B / 自己回答 A</div>
                   <div class="block-title">問題文</div>
-                  <pre>次の文で正常実行されるものはどれでしょうか。</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card selected">
-              <div class="option-key">A</div>
-              <div class="option-text">CREATE OR REPLACE VIEW ITEM_VIEW1 AS SELECT I.ITEM_ID, I.ITEM_PRICE || &quot;Price&quot; FROM ITEM I JOIN MAKER M ON (I.MAKER_ID = M.MAKER_ID) GROUP BY I.ITEM_ID, I.ITEM_PRICE;</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">B</div>
-              <div class="option-text">CREATE OR REPLACE VIEW ITEM_VIEW1 AS SELECT I.ITEM_ID, I.ITEM_PRICE &quot;Price&quot; FROM ITEM I JOIN MAKER M ON (I.MAKER_ID = M.MAKER_ID) GROUP BY I.ITEM_ID, I.ITEM_PRICE;</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">C</div>
-              <div class="option-text">CREATE OR REPLACE VIEW ITEM_VIEW1 AS SELECT I.ITEM_ID, I.ITEM_PRICE &quot;Price&quot; FROM ITEM I JOIN MAKER M ON (I.MAKER_ID = M.MAKER_ID) GROUP BY I.ITEM_ID, I.ITEM_PRICE WITH READ OPTION;</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">D</div>
-              <div class="option-text">CREATE OR REPLACE VIEW ITEM_VIEW1 AS SELECT I.ITEM_ID, I.ITEM_PRICE FROM ITEM I JOIN MAKER M ON (I.MAKER_ID = M.MAKER_ID) GROUP BY I.ITEM_ID, I.ITEM_PRICE WITH CHECK OPTION CONSTRAINT;</div>
-            </div>
-            </div>
+                  <pre>次の文で正常実行されるものはどれでしょうか。
+　
+(1)		A.　CREATE OR REPLACE VIEW ITEM_VIEW1 AS SELECT I.ITEM_ID, I.ITEM_PRICE || &quot;Price&quot; FROM ITEM I JOIN MAKER M ON (I.MAKER_ID = M.MAKER_ID) GROUP BY I.ITEM_ID, I.ITEM_PRICE;
+(2)		B.　CREATE OR REPLACE VIEW ITEM_VIEW1 AS SELECT I.ITEM_ID, I.ITEM_PRICE &quot;Price&quot; FROM ITEM I JOIN MAKER M ON (I.MAKER_ID = M.MAKER_ID) GROUP BY I.ITEM_ID, I.ITEM_PRICE;
+(3)		C.　CREATE OR REPLACE VIEW ITEM_VIEW1 AS SELECT I.ITEM_ID, I.ITEM_PRICE &quot;Price&quot; FROM ITEM I JOIN MAKER M ON (I.MAKER_ID = M.MAKER_ID) GROUP BY I.ITEM_ID, I.ITEM_PRICE WITH READ OPTION;
+(4)		D.　CREATE OR REPLACE VIEW ITEM_VIEW1 AS SELECT I.ITEM_ID, I.ITEM_PRICE FROM ITEM I JOIN MAKER M ON (I.MAKER_ID = M.MAKER_ID) GROUP BY I.ITEM_ID, I.ITEM_PRICE WITH CHECK OPTION CONSTRAINT;</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「ビューの性質と更新可否」です。ビューはスキーマオブジェクトであり、基表に依存している。更新可否や WITH CHECK OPTION、READ ONLY、別スキーマ参照可否などが典型論点になる。 したがって正答は B「CREATE OR REPLACE VIEW ITEM_VIEW1 AS SELECT I.ITEM_ID, …」 になります。</p>
@@ -712,34 +399,18 @@ INSERTした行をSELECTによって表示したとき、生成したシーケ�
                   <div class="question-meta">第2回 模擬試験 / 問73 / 正答 B / 自己回答 D</div>
                   <div class="block-title">問題文</div>
                   <pre>以下の文を実行します。
-1. CREATE ROLE ITEM_ROLE;
-2. GRANT CREATE VIEW, UPDATE
-  ON USER01.ITEM
-  TO ITEM_ROLE;
-3. GRANT ITEM_ROLE, CREATE VIEW TO USER01;
-実行結果について正しい記述はどれでしょうか。</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card">
-              <div class="option-key">A</div>
-              <div class="option-text">1の文はエラーとなります。</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">B</div>
-              <div class="option-text">2の文はエラーとなります。</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">C</div>
-              <div class="option-text">3の文はエラーとなります。</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">D</div>
-              <div class="option-text">すべて正常に実行できます。</div>
-            </div>
-            </div>
+
+1.　CREATE ROLE ITEM_ROLE;
+2.　GRANT CREATE VIEW, UPDATE
+　　ON USER01.ITEM
+　　TO ITEM_ROLE;
+3.　GRANT ITEM_ROLE, CREATE VIEW TO USER01;
+
+実行結果について正しい記述はどれでしょうか。
+(1)		A.　1の文はエラーとなります。
+(2)		B.　2の文はエラーとなります。
+(3)		C.　3の文はエラーとなります。
+(4)		D.　すべて正常に実行できます。</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「ビューの性質と更新可否」です。ビューはスキーマオブジェクトであり、基表に依存している。更新可否や WITH CHECK OPTION、READ ONLY、別スキーマ参照可否などが典型論点になる。 したがって正答は B「2の文はエラーとなります。」 になります。</p>
@@ -755,29 +426,11 @@ INSERTした行をSELECTによって表示したとき、生成したシーケ�
                 <article class="question-card">
                   <div class="question-meta">第2回 模擬試験 / 問75 / 正答 AB / 自己回答 CD</div>
                   <div class="block-title">問題文</div>
-                  <pre>データ・ディクショナリについて、正しい記述はどれでしょうか。（2つ選択）</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card correct">
-              <div class="option-key">A</div>
-              <div class="option-text">接頭辞 ALL_、DBA_、および USER_ が付いたビューは、&quot;_&quot;の後の名称が一致しないものが存在します。</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">B</div>
-              <div class="option-text">接頭辞 ALL_ の付いたビューは、ユーザーが権限を持つオブジェクトのメタデータを表示します。</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">C</div>
-              <div class="option-text">接頭辞 USER_ の付いたビューは、ユーザーが権限を持つオブジェクトのメタデータを表示します。</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">D</div>
-              <div class="option-text">接頭辞 DBA_ の付いたビューは、SYS スキーマ内のオブジェクトのメタデータのみを表示します。</div>
-            </div>
-            </div>
+                  <pre>データ・ディクショナリについて、正しい記述はどれでしょうか。（2つ選択）
+(1)		A.　接頭辞 ALL_、DBA_、および USER_ が付いたビューは、&quot;_&quot;の後の名称が一致しないものが存在します。
+(2)		B.　接頭辞 ALL_ の付いたビューは、ユーザーが権限を持つオブジェクトのメタデータを表示します。
+(3)		C.　接頭辞 USER_ の付いたビューは、ユーザーが権限を持つオブジェクトのメタデータを表示します。
+(4)		D.　接頭辞 DBA_ の付いたビューは、SYS スキーマ内のオブジェクトのメタデータのみを表示します。</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「ビューの性質と更新可否」です。ビューはスキーマオブジェクトであり、基表に依存している。更新可否や WITH CHECK OPTION、READ ONLY、別スキーマ参照可否などが典型論点になる。 したがって正答は A「接頭辞 ALL_、DBA_、および USER_ が付いたビューは、&quot;_&quot;の後の名称が一致しないものが存在します。」 / B「接頭辞 ALL_ の付いたビューは、ユーザーが権限を持つオブジェクトのメタデータを表示します。」 になります。</p>
@@ -793,39 +446,13 @@ INSERTした行をSELECTによって表示したとき、生成したシーケ�
                 <article class="question-card">
                   <div class="question-meta">第3回 模擬試験 / 問40 / 正答 BF / 自己回答 DF</div>
                   <div class="block-title">問題文</div>
-                  <pre>データ・ディクショナリ・ビューの、「*_TABLES ビュー」について、正しいものを2つ選んでください。</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card">
-              <div class="option-key">A</div>
-              <div class="option-text">DBA_TABLES は、すべてのユーザーが参照できる。</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">B</div>
-              <div class="option-text">USER_TABLES は、現在ログインしているユーザーが所有するすべてのテーブルを表示する。</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">C</div>
-              <div class="option-text">USER_TABLES を表示するには、ANY TABLE システム権限、またはテーブルへのオブジェクト権限が必要である。</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">D</div>
-              <div class="option-text">ALL_TABLES は、現在のユーザーが所有するすべてのテーブルを表示する。</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">E</div>
-              <div class="option-text">ALL_TABLES を表示するには、ANY TABLE システム権限、またはテーブルへのオブジェクト権限が必要である。</div>
-            </div>
-            
-            <div class="option-card correct selected">
-              <div class="option-key">F</div>
-              <div class="option-text">DBA_TABLES を表示するには、ANY TABLE システム権限、またはテーブルへのオブジェクト権限が必要である。</div>
-            </div>
-            </div>
+                  <pre>データ・ディクショナリ・ビューの、「*_TABLES ビュー」について、正しいものを2つ選んでください。
+(1)		A. DBA_TABLES は、すべてのユーザーが参照できる。
+(2)		B. USER_TABLES は、現在ログインしているユーザーが所有するすべてのテーブルを表示する。
+(3)		C. USER_TABLES を表示するには、ANY TABLE システム権限、またはテーブルへのオブジェクト権限が必要である。
+(4)		D. ALL_TABLES は、現在のユーザーが所有するすべてのテーブルを表示する。
+(5)		E. ALL_TABLES を表示するには、ANY TABLE システム権限、またはテーブルへのオブジェクト権限が必要である。
+(6)		F. DBA_TABLES を表示するには、ANY TABLE システム権限、またはテーブルへのオブジェクト権限が必要である。</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「ビューの性質と更新可否」です。ビューはスキーマオブジェクトであり、基表に依存している。更新可否や WITH CHECK OPTION、READ ONLY、別スキーマ参照可否などが典型論点になる。 したがって正答は B「USER_TABLES は、現在ログインしているユーザーが所有するすべてのテーブルを表示する。」 / F「DBA_TABLES を表示するには、ANY TABLE システム権限、またはテーブルへのオブジェクト権限が必…」 になります。</p>
@@ -841,34 +468,12 @@ INSERTした行をSELECTによって表示したとき、生成したシーケ�
                 <article class="question-card">
                   <div class="question-meta">第3回 模擬試験 / 問48 / 正答 CE / 自己回答 CD</div>
                   <div class="block-title">問題文</div>
-                  <pre>オブジェクト権限に関して、正しいものを2つ選んでください。</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card">
-              <div class="option-key">A</div>
-              <div class="option-text">INDEX権限は、ビューに付与できる。</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">B</div>
-              <div class="option-text">INSERT 権限は、テーブルとシーケンスのみに付与できる。</div>
-            </div>
-            
-            <div class="option-card correct selected">
-              <div class="option-key">C</div>
-              <div class="option-text">SELECT 権限は、テーブル、ビュー、シーケンスに付与できる。</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">D</div>
-              <div class="option-text">DELETE 権限は、テーブル、ビュー、シーケンスに付与できる。</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">E</div>
-              <div class="option-text">REFERENCES 権限は、テーブル、ビューに付与できる。</div>
-            </div>
-            </div>
+                  <pre>オブジェクト権限に関して、正しいものを2つ選んでください。
+(1)		A. INDEX権限は、ビューに付与できる。
+(2)		B. INSERT 権限は、テーブルとシーケンスのみに付与できる。
+(3)		C. SELECT 権限は、テーブル、ビュー、シーケンスに付与できる。
+(4)		D. DELETE 権限は、テーブル、ビュー、シーケンスに付与できる。
+(5)		E. REFERENCES 権限は、テーブル、ビューに付与できる。</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「ビューの性質と更新可否」です。ビューはスキーマオブジェクトであり、基表に依存している。更新可否や WITH CHECK OPTION、READ ONLY、別スキーマ参照可否などが典型論点になる。 したがって正答は C「SELECT 権限は、テーブル、ビュー、シーケンスに付与できる。」 / E「REFERENCES 権限は、テーブル、ビューに付与できる。」 になります。</p>
@@ -884,34 +489,12 @@ INSERTした行をSELECTによって表示したとき、生成したシーケ�
                 <article class="question-card">
                   <div class="question-meta">第3回 模擬試験 / 問52 / 正答 ACD / 自己回答 ABE</div>
                   <div class="block-title">問題文</div>
-                  <pre>システム権限で実行できる操作を3つ選んでください。</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card correct selected">
-              <div class="option-key">A</div>
-              <div class="option-text">自分以外のスキーマの表を検索する。</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">B</div>
-              <div class="option-text">自分のスキーマの表を削除する。</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">C</div>
-              <div class="option-text">自分以外のスキーマのプロシージャを実行する。</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">D</div>
-              <div class="option-text">自分以外のスキーマにビューを作成する。</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">E</div>
-              <div class="option-text">自分のスキーマの表を検索する。</div>
-            </div>
-            </div>
+                  <pre>システム権限で実行できる操作を3つ選んでください。
+(1)		A. 自分以外のスキーマの表を検索する。
+(2)		B. 自分のスキーマの表を削除する。
+(3)		C. 自分以外のスキーマのプロシージャを実行する。
+(4)		D. 自分以外のスキーマにビューを作成する。
+(5)		E. 自分のスキーマの表を検索する。</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「ビューの性質と更新可否」です。ビューはスキーマオブジェクトであり、基表に依存している。更新可否や WITH CHECK OPTION、READ ONLY、別スキーマ参照可否などが典型論点になる。 したがって正答は A「自分以外のスキーマの表を検索する。」 / C「自分以外のスキーマのプロシージャを実行する。」 / D「自分以外のスキーマにビューを作成する。」 になります。</p>
@@ -927,39 +510,13 @@ INSERTした行をSELECTによって表示したとき、生成したシーケ�
                 <article class="question-card">
                   <div class="question-meta">第3回 模擬試験 / 問56 / 正答 ACE / 自己回答 AEF</div>
                   <div class="block-title">問題文</div>
-                  <pre>ビュー（View）に関する正しい説明を3つ選んでください。</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card correct selected">
-              <div class="option-key">A</div>
-              <div class="option-text">ビューは、存在しないテーブルを参照する形で作成できる。</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">B</div>
-              <div class="option-text">ビューにはオブジェクト番号が存在しない。</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">C</div>
-              <div class="option-text">ビューにはセグメントが存在しない。</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">D</div>
-              <div class="option-text">SELECT 文で定義されたビューをクエリする際、WHERE 句を含むことができない。</div>
-            </div>
-            
-            <div class="option-card correct selected">
-              <div class="option-key">E</div>
-              <div class="option-text">ビューを削除しても、基となるテーブルのデータは保持される。</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">F</div>
-              <div class="option-text">ビューは、同じスキーマに属するテーブルのみを結合できる。</div>
-            </div>
-            </div>
+                  <pre>ビュー（View）に関する正しい説明を3つ選んでください。
+(1)		A. ビューは、存在しないテーブルを参照する形で作成できる。
+(2)		B. ビューにはオブジェクト番号が存在しない。
+(3)		C. ビューにはセグメントが存在しない。
+(4)		D. SELECT 文で定義されたビューをクエリする際、WHERE 句を含むことができない。
+(5)		E. ビューを削除しても、基となるテーブルのデータは保持される。
+(6)		F. ビューは、同じスキーマに属するテーブルのみを結合できる。</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「ビューの性質と更新可否」です。ビューはスキーマオブジェクトであり、基表に依存している。更新可否や WITH CHECK OPTION、READ ONLY、別スキーマ参照可否などが典型論点になる。 したがって正答は A「ビューは、存在しないテーブルを参照する形で作成できる。」 / C「ビューにはセグメントが存在しない。」 / E「ビューを削除しても、基となるテーブルのデータは保持される。」 になります。</p>
@@ -981,39 +538,13 @@ INSERTした行をSELECTによって表示したとき、生成したシーケ�
                 <article class="question-card">
                   <div class="question-meta">第1回 模擬試験 / 問47 / 正答 B.D.F / 自己回答 A.B.E</div>
                   <div class="block-title">問題文</div>
-                  <pre>DDLの説明で正しいのはどれでしょうか。（3つ選択）</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card selected">
-              <div class="option-key">A</div>
-              <div class="option-text">データの追加を行うことができます。</div>
-            </div>
-            
-            <div class="option-card correct selected">
-              <div class="option-key">B</div>
-              <div class="option-text">表名を変更することができます。</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">C</div>
-              <div class="option-text">データの回復（ロールバック）を行うことができます。</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">D</div>
-              <div class="option-text">表に対してデータ更新をさせないよう設定できます。</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">E</div>
-              <div class="option-text">データの更新を行うことができます。</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">F</div>
-              <div class="option-text">特定の条件に違反するデータが列に挿入されないように表設定を変更できます。</div>
-            </div>
-            </div>
+                  <pre>DDLの説明で正しいのはどれでしょうか。（3つ選択）
+(1)		A.　データの追加を行うことができます。
+(2)		B.　表名を変更することができます。
+(3)		C.　データの回復（ロールバック）を行うことができます。
+(4)		D.　表に対してデータ更新をさせないよう設定できます。
+(5)		E.　データの更新を行うことができます。
+(6)		F.　特定の条件に違反するデータが列に挿入されないように表設定を変更できます。</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「権限付与とロール」です。オブジェクト権限は WITH GRANT OPTION、システム権限は WITH ADMIN OPTION と付与方法が異なる。列単位 UPDATE やロールの扱いも頻出である。 したがって正答は B「表名を変更することができます。」 / D「表に対してデータ更新をさせないよう設定できます。」 / F「特定の条件に違反するデータが列に挿入されないように表設定を変更できます。」 になります。</p>
@@ -1029,29 +560,11 @@ INSERTした行をSELECTによって表示したとき、生成したシーケ�
                 <article class="question-card">
                   <div class="question-meta">第1回 模擬試験 / 問71 / 正答 B.D / 自己回答 A.D</div>
                   <div class="block-title">問題文</div>
-                  <pre>WITH GRANT OPTIONについて正しい記述はどれでしょうか。（2つ選択）</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card selected">
-              <div class="option-key">A</div>
-              <div class="option-text">システム権限の場合に使用します。</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">B</div>
-              <div class="option-text">GRANT文で使用します。</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">C</div>
-              <div class="option-text">REVOKE文で使用します。</div>
-            </div>
-            
-            <div class="option-card correct selected">
-              <div class="option-key">D</div>
-              <div class="option-text">WITH GRANT OPTION付きで付与されたオブジェクト権限は、別のユーザーに付与できます。</div>
-            </div>
-            </div>
+                  <pre>WITH GRANT OPTIONについて正しい記述はどれでしょうか。（2つ選択）
+(1)		A.　システム権限の場合に使用します。
+(2)		B.　GRANT文で使用します。
+(3)		C.　REVOKE文で使用します。
+(4)		D.　WITH GRANT OPTION付きで付与されたオブジェクト権限は、別のユーザーに付与できます。</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「権限付与とロール」です。オブジェクト権限は WITH GRANT OPTION、システム権限は WITH ADMIN OPTION と付与方法が異なる。列単位 UPDATE やロールの扱いも頻出である。 したがって正答は B「GRANT文で使用します。」 / D「WITH GRANT OPTION付きで付与されたオブジェクト権限は、別のユーザーに付与できます。」 になります。</p>
@@ -1068,34 +581,18 @@ INSERTした行をSELECTによって表示したとき、生成したシーケ�
                   <div class="question-meta">第1回 模擬試験 / 問72 / 正答 C / 自己回答 B</div>
                   <div class="block-title">問題文</div>
                   <pre>次の文を実行します。
+
 GRANT ALL PRIVILEGES
 ON ITEM,MAKER
 WITH GRANT OPTION;
+
 ITEMとMAKER表の所有者とGRANT文の実行ユーザーは一般ユーザーですが、
 上記の文を実行するとエラーとなりました。
-エラーの原因について正しい記述はどれでしょうか。</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card">
-              <div class="option-key">A</div>
-              <div class="option-text">一般ユーザーでALL PRIVILEGESは指定できません。</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">B</div>
-              <div class="option-text">複数の表にGRANT文の一括実行はできません。</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">C</div>
-              <div class="option-text">一般ユーザーでWITH GRANT OPTIONは指定できません。</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">D</div>
-              <div class="option-text">WITH ADMIN OPTIONを追加する必要があります。</div>
-            </div>
-            </div>
+エラーの原因について正しい記述はどれでしょうか。
+(1)		A.　一般ユーザーでALL PRIVILEGESは指定できません。
+(2)		B.　複数の表にGRANT文の一括実行はできません。
+(3)		C.　一般ユーザーでWITH GRANT OPTIONは指定できません。
+(4)		D.　WITH ADMIN OPTIONを追加する必要があります。</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「権限付与とロール」です。オブジェクト権限は WITH GRANT OPTION、システム権限は WITH ADMIN OPTION と付与方法が異なる。列単位 UPDATE やロールの扱いも頻出である。 したがって正答は C「一般ユーザーでWITH GRANT OPTIONは指定できません。」 になります。</p>
@@ -1111,34 +608,12 @@ ITEMとMAKER表の所有者とGRANT文の実行ユーザーは一般ユーザー
                 <article class="question-card">
                   <div class="question-meta">第1回 模擬試験 / 問74 / 正答 C.D.E / 自己回答 A.D.E</div>
                   <div class="block-title">問題文</div>
-                  <pre>権限とロールについて正しい記述はどれでしょうか。（3つ選択）</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card selected">
-              <div class="option-key">A</div>
-              <div class="option-text">ロールは作成したユーザーによって所有されます。</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">B</div>
-              <div class="option-text">すべてのロールはSYSユーザーによって所有されます。</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">C</div>
-              <div class="option-text">ロールはいずれのスキーマにも含まれません。</div>
-            </div>
-            
-            <div class="option-card correct selected">
-              <div class="option-key">D</div>
-              <div class="option-text">ロールには、システム権限、オブジェクト権限、他のロールを含めることができます。</div>
-            </div>
-            
-            <div class="option-card correct selected">
-              <div class="option-key">E</div>
-              <div class="option-text">ロールにPUBLICに付与すると、すべてのユーザーがそのロールを使用できます。</div>
-            </div>
-            </div>
+                  <pre>権限とロールについて正しい記述はどれでしょうか。（3つ選択）
+(1)		A.　ロールは作成したユーザーによって所有されます。
+(2)		B.　すべてのロールはSYSユーザーによって所有されます。
+(3)		C.　ロールはいずれのスキーマにも含まれません。
+(4)		D.　ロールには、システム権限、オブジェクト権限、他のロールを含めることができます。
+(5)		E.　ロールにPUBLICに付与すると、すべてのユーザーがそのロールを使用できます。</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「権限付与とロール」です。オブジェクト権限は WITH GRANT OPTION、システム権限は WITH ADMIN OPTION と付与方法が異なる。列単位 UPDATE やロールの扱いも頻出である。 したがって正答は C「ロールはいずれのスキーマにも含まれません。」 / D「ロールには、システム権限、オブジェクト権限、他のロールを含めることができます。」 / E「ロールにPUBLICに付与すると、すべてのユーザーがそのロールを使用できます。」 になります。</p>
@@ -1154,34 +629,12 @@ ITEMとMAKER表の所有者とGRANT文の実行ユーザーは一般ユーザー
                 <article class="question-card">
                   <div class="question-meta">第2回 模擬試験 / 問52 / 正答 DE / 自己回答 BC</div>
                   <div class="block-title">問題文</div>
-                  <pre>ALTER TABLE ～ DROP COLUMNについて正しい記述はどれでしょうか。（2つ選択）</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card">
-              <div class="option-key">A</div>
-              <div class="option-text">複数の列を一回のコマンドで削除することはできません。</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">B</div>
-              <div class="option-text">削除された列はロールバックで復元できます。</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">C</div>
-              <div class="option-text">データが含まれていない場合にのみ、列を削除できます。</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">D</div>
-              <div class="option-text">表に別の列が存在する場合にのみ、列を削除できます。</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">E</div>
-              <div class="option-text">PRIMARY KEYが設定された列でもオプション指定で削除できます。</div>
-            </div>
-            </div>
+                  <pre>ALTER TABLE ～ DROP COLUMNについて正しい記述はどれでしょうか。（2つ選択）
+(1)		A.　複数の列を一回のコマンドで削除することはできません。
+(2)		B.　削除された列はロールバックで復元できます。
+(3)		C.　データが含まれていない場合にのみ、列を削除できます。
+(4)		D.　表に別の列が存在する場合にのみ、列を削除できます。
+(5)		E.　PRIMARY KEYが設定された列でもオプション指定で削除できます。</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「権限付与とロール」です。オブジェクト権限は WITH GRANT OPTION、システム権限は WITH ADMIN OPTION と付与方法が異なる。列単位 UPDATE やロールの扱いも頻出である。 したがって正答は D「表に別の列が存在する場合にのみ、列を削除できます。」 / E「PRIMARY KEYが設定された列でもオプション指定で削除できます。」 になります。</p>
@@ -1197,29 +650,11 @@ ITEMとMAKER表の所有者とGRANT文の実行ユーザーは一般ユーザー
                 <article class="question-card">
                   <div class="question-meta">第2回 模擬試験 / 問56 / 正答 AC / 自己回答 CD</div>
                   <div class="block-title">問題文</div>
-                  <pre>GLOBAL TEMPORARY TABLESについて正しい記述はどれでしょうか。（2つ選択）</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card correct">
-              <div class="option-key">A</div>
-              <div class="option-text">UNDOが生成されます。</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">B</div>
-              <div class="option-text">REDOは生成されません。</div>
-            </div>
-            
-            <div class="option-card correct selected">
-              <div class="option-key">C</div>
-              <div class="option-text">TRUNCATEコマンドにより、GLOBAL TEMPORARY TABLE内のすべての行が削除されます。</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">D</div>
-              <div class="option-text">GLOBAL TEMPORARY TABLEに対するDML文のロールバックはできません。</div>
-            </div>
-            </div>
+                  <pre>GLOBAL TEMPORARY TABLESについて正しい記述はどれでしょうか。（2つ選択）
+(1)		A.　UNDOが生成されます。
+(2)		B.　REDOは生成されません。
+(3)		C.　TRUNCATEコマンドにより、GLOBAL TEMPORARY TABLE内のすべての行が削除されます。
+(4)		D.　GLOBAL TEMPORARY TABLEに対するDML文のロールバックはできません。</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「権限付与とロール」です。オブジェクト権限は WITH GRANT OPTION、システム権限は WITH ADMIN OPTION と付与方法が異なる。列単位 UPDATE やロールの扱いも頻出である。 したがって正答は A「UNDOが生成されます。」 / C「TRUNCATEコマンドにより、GLOBAL TEMPORARY TABLE内のすべての行が削除されます。」 になります。</p>
@@ -1235,29 +670,11 @@ ITEMとMAKER表の所有者とGRANT文の実行ユーザーは一般ユーザー
                 <article class="question-card">
                   <div class="question-meta">第2回 模擬試験 / 問69 / 正答 B / 自己回答 D</div>
                   <div class="block-title">問題文</div>
-                  <pre>システムとオブジェクトの権限について正しい記述はどれでしょうか。</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card">
-              <div class="option-key">A</div>
-              <div class="option-text">他スキーマの表へ問合せをするには、システム権限が必要です。</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">B</div>
-              <div class="option-text">他スキーマの表に外部キー制約を追加するには、オブジェクト権限が必要です。</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">C</div>
-              <div class="option-text">WITH GRANT OPTIONは、ユーザーとロールの両方にオブジェクト権限を付与するときに使用できます 。</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">D</div>
-              <div class="option-text">WITH ADMIN OPTIONで付与されたシステム権限を取り消すと、依存権限が取り消される場合があります。</div>
-            </div>
-            </div>
+                  <pre>システムとオブジェクトの権限について正しい記述はどれでしょうか。
+(1)		A.　他スキーマの表へ問合せをするには、システム権限が必要です。
+(2)		B.　他スキーマの表に外部キー制約を追加するには、オブジェクト権限が必要です。
+(3)		C.　WITH GRANT OPTIONは、ユーザーとロールの両方にオブジェクト権限を付与するときに使用できます 。
+(4)		D.　WITH ADMIN OPTIONで付与されたシステム権限を取り消すと、依存権限が取り消される場合があります。</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「権限付与とロール」です。オブジェクト権限は WITH GRANT OPTION、システム権限は WITH ADMIN OPTION と付与方法が異なる。列単位 UPDATE やロールの扱いも頻出である。 したがって正答は B「他スキーマの表に外部キー制約を追加するには、オブジェクト権限が必要です。」 になります。</p>
@@ -1274,41 +691,17 @@ ITEMとMAKER表の所有者とGRANT文の実行ユーザーは一般ユーザー
                   <div class="question-meta">第2回 模擬試験 / 問71 / 正答 E / 自己回答 A</div>
                   <div class="block-title">問題文</div>
                   <pre>ユーザー:USER01に次のことを許可します。
+
 1. ITEM表のITEM_NAME列とITEM_PRICE列に更新権限を付与
 2. 他のユーザーにその権限を許可
-上記を実行するための正しい文はどれでしょうか。</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card selected">
-              <div class="option-key">A</div>
-              <div class="option-text">GRANT UPDATE ON ITEM.ITEM_NAME, ITEM.ITEM_PRICE TO USER01 WITH ADMIN OPTION;</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">B</div>
-              <div class="option-text">GRANT UPDATE ON ITEM.ITEM_NAME, ITEM.ITEM_PRICE TO USER01 WITH GRANT OPTION;</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">C</div>
-              <div class="option-text">GRANT UPDATE ITEM_NAME, ITEM_PRICE ON ITEM TO USER01;</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">D</div>
-              <div class="option-text">GRANT UPDATE (ITEM_NAME, ITEM_PRICE) ON ITEM TO USER01;</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">E</div>
-              <div class="option-text">GRANT UPDATE (ITEM_NAME, ITEM_PRICE) ON ITEM TO USER01 WITH GRANT OPTION;</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">F</div>
-              <div class="option-text">GRANT UPDATE (ITEM_NAME, ITEM_PRICE) ON ITEM TO USER01 WITH ADMIN OPTION;</div>
-            </div>
-            </div>
+
+上記を実行するための正しい文はどれでしょうか。
+(1)		A. GRANT UPDATE ON ITEM.ITEM_NAME, ITEM.ITEM_PRICE TO USER01 WITH ADMIN OPTION;
+(2)		B. GRANT UPDATE ON ITEM.ITEM_NAME, ITEM.ITEM_PRICE TO USER01 WITH GRANT OPTION;
+(3)		C. GRANT UPDATE ITEM_NAME, ITEM_PRICE ON ITEM TO USER01;
+(4)		D. GRANT UPDATE (ITEM_NAME, ITEM_PRICE) ON ITEM TO USER01;
+(5)		E. GRANT UPDATE (ITEM_NAME, ITEM_PRICE) ON ITEM TO USER01 WITH GRANT OPTION;
+(6)		F. GRANT UPDATE (ITEM_NAME, ITEM_PRICE) ON ITEM TO USER01 WITH ADMIN OPTION;</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「権限付与とロール」です。オブジェクト権限は WITH GRANT OPTION、システム権限は WITH ADMIN OPTION と付与方法が異なる。列単位 UPDATE やロールの扱いも頻出である。 したがって正答は E「GRANT UPDATE (ITEM_NAME, ITEM_PRICE) ON ITEM TO USER01 …」 になります。</p>
@@ -1325,36 +718,16 @@ ITEMとMAKER表の所有者とGRANT文の実行ユーザーは一般ユーザー
                   <div class="question-meta">第3回 模擬試験 / 問26 / 正答 E / 自己回答 D</div>
                   <div class="block-title">問題文</div>
                   <pre>ユーザー LISAに以下の権限を与えたい。
+
 ・ORDERSテーブルの STATUSおよび DELIVERY_DATE列を更新可能とする
 ・その権限を他のユーザーにも付与できるようにする。
-この操作を行う正しいSQL文はどれですか？1つ選択してください。</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card">
-              <div class="option-key">A</div>
-              <div class="option-text">GRANT UPDATE ON orders.status, orders.delivery_date TO lisa WITH GRANT OPTION;</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">B</div>
-              <div class="option-text">GRANT UPDATE (status, delivery_date) ON orders TO lisa WITH ADMIN OPTION;</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">C</div>
-              <div class="option-text">GRANT UPDATE (status, delivery_date) ON orders TO lisa;</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">D</div>
-              <div class="option-text">GRANT UPDATE ON orders.status, orders.delivery_date TO lisa WITH ADMIN OPTION;</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">E</div>
-              <div class="option-text">GRANT UPDATE (status, delivery_date) ON orders TO lisa WITH GRANT OPTION;</div>
-            </div>
-            </div>
+
+この操作を行う正しいSQL文はどれですか？1つ選択してください。
+(1)		A. GRANT UPDATE ON orders.status, orders.delivery_date TO lisa WITH GRANT OPTION;
+(2)		B. GRANT UPDATE (status, delivery_date) ON orders TO lisa WITH ADMIN OPTION;
+(3)		C. GRANT UPDATE (status, delivery_date) ON orders TO lisa;
+(4)		D. GRANT UPDATE ON orders.status, orders.delivery_date TO lisa WITH ADMIN OPTION;
+(5)		E. GRANT UPDATE (status, delivery_date) ON orders TO lisa WITH GRANT OPTION;</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「権限付与とロール」です。オブジェクト権限は WITH GRANT OPTION、システム権限は WITH ADMIN OPTION と付与方法が異なる。列単位 UPDATE やロールの扱いも頻出である。 したがって正答は E「GRANT UPDATE (status, delivery_date) ON orders TO lisa …」 になります。</p>
@@ -1377,36 +750,20 @@ ITEMとMAKER表の所有者とGRANT文の実行ユーザーは一般ユーザー
                   <div class="question-meta">第1回 模擬試験 / 問50 / 正答 4 / 自己回答 3</div>
                   <div class="block-title">問題文</div>
                   <pre>以下の文を実行するとエラーとなります。
+
 CREATE TABLE SHOHIN
 (
- SHOHIN_ID NUMBER(3),
- SHOHIN_NAME VARCHAR2(50) CHECK(SHOHIN_NAME IS NOT NULL),
- STOCK NUMBER(3) CHECK(STOCK BETWEEN 0 AND 200),
- INPUT_DATE DATE CHECK (INPUT_DATE &gt; SYSDATE)
+　SHOHIN_ID NUMBER(3),
+　SHOHIN_NAME VARCHAR2(50) CHECK(SHOHIN_NAME IS NOT NULL),
+　STOCK NUMBER(3) CHECK(STOCK BETWEEN 0 AND 200),
+　INPUT_DATE DATE CHECK (INPUT_DATE &gt; SYSDATE)
 );
-エラーとなる理由を以下から選択してください。</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card">
-              <div class="option-key">1</div>
-              <div class="option-text">CHECKとBETWEENは同時に使用できません。</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">2</div>
-              <div class="option-text">CHECKでNULLは使用できません。</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">3</div>
-              <div class="option-text">CHECKでDATE型では使用できません。</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">4</div>
-              <div class="option-text">CHECKとSYSDATEは同時に使用できません。</div>
-            </div>
-            </div>
+
+エラーとなる理由を以下から選択してください。
+(1)		CHECKとBETWEENは同時に使用できません。
+(2)		CHECKでNULLは使用できません。
+(3)		CHECKでDATE型では使用できません。
+(4)		CHECKとSYSDATEは同時に使用できません。</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「制約定義と有効化・無効化」です。主キー、外部キー、CHECK、NOT NULL などの制約は、型や参照整合性を守るための定義である。ENABLE/DISABLE、CASCADE、SYSDATE 使用可否など細部の制約規則が問われる。 したがって正答は 4「CHECKとSYSDATEは同時に使用できません。」 になります。</p>
@@ -1423,29 +780,13 @@ CREATE TABLE SHOHIN
                   <div class="question-meta">第1回 模擬試験 / 問59 / 正答 C / 自己回答 A</div>
                   <div class="block-title">問題文</div>
                   <pre>ITEM表にはデータが含まれています。
-ITEM_ID列に主キー制約を追加する文はどれでしょうか。</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card selected">
-              <div class="option-key">A</div>
-              <div class="option-text">ALTER TABLE ITEM ADD ITEM_ID CONSTRAINT ITEM_PK PRIMARY KEY;</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">B</div>
-              <div class="option-text">ALTER TABLE ITEM MODIFY ITEM_ID CONSTRAINT ITEM_PK PRIMARY_KEY;</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">C</div>
-              <div class="option-text">ALTER TABLE ITEM ADD CONSTRAINT ITEM_PK PRIMARY KEY (ITEM_ID);</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">D</div>
-              <div class="option-text">ALTER TABLE ITEM MODIFY CONSTRAINT ITEM_PK PRIMARY KEY (ITEM_ID);</div>
-            </div>
-            </div>
+ITEM_ID列に主キー制約を追加する文はどれでしょうか。
+　
+拡大する
+(1)		A.　ALTER TABLE ITEM ADD ITEM_ID CONSTRAINT ITEM_PK PRIMARY KEY;
+(2)		B.　ALTER TABLE ITEM MODIFY ITEM_ID CONSTRAINT ITEM_PK PRIMARY_KEY;
+(3)		C.　ALTER TABLE ITEM ADD CONSTRAINT ITEM_PK PRIMARY KEY (ITEM_ID);
+(4)		D.　ALTER TABLE ITEM MODIFY CONSTRAINT ITEM_PK PRIMARY KEY (ITEM_ID);</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「制約定義と有効化・無効化」です。主キー、外部キー、CHECK、NOT NULL などの制約は、型や参照整合性を守るための定義である。ENABLE/DISABLE、CASCADE、SYSDATE 使用可否など細部の制約規則が問われる。 したがって正答は C「ALTER TABLE ITEM ADD CONSTRAINT ITEM_PK PRIMARY KEY (IT…」 になります。</p>
@@ -1462,39 +803,25 @@ ITEM_ID列に主キー制約を追加する文はどれでしょうか。</pre>
                   <div class="question-meta">第1回 模擬試験 / 問60 / 正答 C / 自己回答 D</div>
                   <div class="block-title">問題文</div>
                   <pre>次の順でSQLを実行します。
+
 1. 表を作成します。
 CREATE TABLE ITEM
 (ITEM_NO NUMBER(4) CONSTRAINT ITEM_PK PRIMARY KEY,
- ITEM_NAME VARCHAR2(30),
- PARENT_ITEM_NO NUMBER(4) CONSTRAINT PARENT_FK REFERENCES ITEM(ITEM_NO)
+　ITEM_NAME VARCHAR2(30),
+　PARENT_ITEM_NO NUMBER(4) CONSTRAINT PARENT_FK REFERENCES ITEM(ITEM_NO)
 );
+
 2. CASCADEオプション付きで主キー制約を無効化します。
 ALTER TABLE ITEM DISABLE CONSTRAINT ITEM_PK CASCADE;
+
 3. 主キー制約を有効化します。
 ALTER TABLE ITEM ENABLE CONSTRAINT ITEM_PK;
-この時点での、外部キー：PARENT_FKの状態について、正しい記述はどれでしょうか。</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card">
-              <div class="option-key">A</div>
-              <div class="option-text">無効のままです。外部キーの状態を有効にする手段はありません。</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">B</div>
-              <div class="option-text">無効のままです。外部キーの状態を有効にするためには、制約を削除して再作成します。</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">C</div>
-              <div class="option-text">無効のままです。外部キーの状態を有効にするためには、手動でALTER TABLEコマンドを実行します。</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">D</div>
-              <div class="option-text">外部キーの状態は自動的に有効になります。</div>
-            </div>
-            </div>
+
+この時点での、外部キー：PARENT_FKの状態について、正しい記述はどれでしょうか。
+(1)		A.　無効のままです。外部キーの状態を有効にする手段はありません。
+(2)		B.　無効のままです。外部キーの状態を有効にするためには、制約を削除して再作成します。
+(3)		C.　無効のままです。外部キーの状態を有効にするためには、手動でALTER TABLEコマンドを実行します。
+(4)		D.　外部キーの状態は自動的に有効になります。</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「制約定義と有効化・無効化」です。主キー、外部キー、CHECK、NOT NULL などの制約は、型や参照整合性を守るための定義である。ENABLE/DISABLE、CASCADE、SYSDATE 使用可否など細部の制約規則が問われる。 したがって正答は C「無効のままです。外部キーの状態を有効にするためには、手動でALTER TABLEコマンドを実行します。」 になります。</p>
@@ -1511,45 +838,26 @@ ALTER TABLE ITEM ENABLE CONSTRAINT ITEM_PK;
                   <div class="question-meta">第2回 模擬試験 / 問27 / 正答 AC / 自己回答 BE</div>
                   <div class="block-title">問題文</div>
                   <pre>以下の文を実行して表を作成します。
+
 CREATE TABLE CARS
 (
-  CAR_ID NUMBER PRIMARY KEY,
-  CAR_NAME VARCHAR2(50),
-  MAKER_ID NUMBER
+　　CAR_ID NUMBER PRIMARY KEY,
+　　CAR_NAME VARCHAR2(50),
+　　MAKER_ID NUMBER
 );
+
 CREATE TABLE MAKERS
 (
-  MAKER_ID NUMBER PRIMARY KEY,
-  MAKER_NAME VARCHAR2(50)
+　　MAKER_ID NUMBER PRIMARY KEY,
+　　MAKER_NAME VARCHAR2(50)
 );
-対応するメーカーがあるかどうかに関係なく、すべての車を表示するSQLはどれでしょうか。（2つ選択）</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card correct">
-              <div class="option-key">A</div>
-              <div class="option-text">SELECT C.CAR_ID, M.MAKER_ID FROM CARS C FULL OUTER JOIN MAKERS M ON (C.MAKER_ID=M.MAKER_ID)</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">B</div>
-              <div class="option-text">SELECT C.CAR_ID, M.MAKER_ID FROM CARS C RIGHT OUTER JOIN MAKERS M ON (C.MAKER_ID=M.MAKER_ID)</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">C</div>
-              <div class="option-text">SELECT C.CAR_ID, M.MAKER_ID FROM CARS C FULL OUTER JOIN MAKERS M ON (C.MAKER_ID&lt;&gt;M.MAKER_ID)</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">D</div>
-              <div class="option-text">SELECT CAR_ID, MAKER_ID, FROM MAKERS M RIGHT OUTER JOIN CARS C USING (MAKER_ID)</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">E</div>
-              <div class="option-text">SELECT C.CAR_ID, M.MAKER_ID FROM MAKERS M LEFT OUTER JOIN CARS C ON (C.MAKER_ID=M.MAKER_ID)</div>
-            </div>
-            </div>
+
+対応するメーカーがあるかどうかに関係なく、すべての車を表示するSQLはどれでしょうか。（2つ選択）
+(1)		A.　SELECT C.CAR_ID, M.MAKER_ID FROM CARS C FULL OUTER JOIN MAKERS M ON (C.MAKER_ID=M.MAKER_ID)
+(2)		B.　SELECT C.CAR_ID, M.MAKER_ID FROM CARS C RIGHT OUTER JOIN MAKERS M ON (C.MAKER_ID=M.MAKER_ID)
+(3)		C.　SELECT C.CAR_ID, M.MAKER_ID FROM CARS C FULL OUTER JOIN MAKERS M ON (C.MAKER_ID&lt;&gt;M.MAKER_ID)
+(4)		D.　SELECT CAR_ID, MAKER_ID, FROM MAKERS M RIGHT OUTER JOIN CARS C USING (MAKER_ID)
+(5)		E.　SELECT C.CAR_ID, M.MAKER_ID FROM MAKERS M LEFT OUTER JOIN CARS C ON (C.MAKER_ID=M.MAKER_ID)</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「制約定義と有効化・無効化」です。主キー、外部キー、CHECK、NOT NULL などの制約は、型や参照整合性を守るための定義である。ENABLE/DISABLE、CASCADE、SYSDATE 使用可否など細部の制約規則が問われる。 したがって正答は A「SELECT C.CAR_ID, M.MAKER_ID FROM CARS C FULL OUTER JOIN…」 / C「SELECT C.CAR_ID, M.MAKER_ID FROM CARS C FULL OUTER JOIN…」 になります。</p>
@@ -1565,34 +873,12 @@ CREATE TABLE MAKERS
                 <article class="question-card">
                   <div class="question-meta">第2回 模擬試験 / 問50 / 正答 BC / 自己回答 AE</div>
                   <div class="block-title">問題文</div>
-                  <pre>SHOHIN_ID列とSHOHIN_KAKAKU列の値の組み合わせが一意であり、どちらの列もNULLではない表を作成する場合（表名：SHOHIN）、以下のどの文を実行すればいいでしょうか。(2つ選択)</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card selected">
-              <div class="option-key">A</div>
-              <div class="option-text">CREATE TABLE SHOHIN (SHOHIN_ID NUMBER, SHOHIN_KAKAKU NUMBER, SHOHIN_NAME VARCHAR2(20), INPUT_DATE DATE, CONSTRAINT SHOHIN_ID_UQ UNIQUE (SHOHIN_ID, SHOHIN_KAKAKU) CONSTRAINT SHOHIN_ID_NN NOT NULL (SHOHIN_ID, SHOHIN_KAKAKU););</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">B</div>
-              <div class="option-text">CREATE TABLE SHOHIN (SHOHIN_ID NUMBER CONSTRAINT SHOHIN_ID_NOT_NULL NOT NULL, SHOHIN_KAKAKU NUMBER CONSTRAINT SHOHIN_KAKAKU_NOT_NULL NOT NULL, SHOHIN_NAME VARCHAR2(20), INPUT_DATE DATE, CONSTRAINT SHOHIN_ID_UQ UNIQUE (SHOHIN_ID, SHOHIN_KAKAKU));</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">C</div>
-              <div class="option-text">CREATE TABLE SHOHIN (SHOHIN_ID NUMBER, SHOHIN_KAKAKU NUMBER, SHOHIN_NAME VARCHAR2(20), INPUT_DATE DATE, CONSTRAINT SHOHIN_PK PRIMARY KEY (SHOHIN_ID, SHOHIN_KAKAKU));</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">D</div>
-              <div class="option-text">CREATE TABLE SHOHIN (SHOHIN_ID NUMBER CONSTRAINT SHOHIN_PK PRIMARY KEY, SHOHIN_KAKAKU NUMBER UNIQUE, SHOHIN_NAME VARCHAR2(20), INPUT_DATE DATE);</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">E</div>
-              <div class="option-text">CREATE TABLE SHOHIN (SHOHIN_ID NUMBER, SHOHIN_KAKAKU NUMBER, SHOHIN_NAME VARCHAR2(20), INPUT_DATE DATE, CONSTRAINT SHOHIN_ID_UQ UNIQUE (SHOHIN_ID, SHOHIN_KAKAKU));</div>
-            </div>
-            </div>
+                  <pre>SHOHIN_ID列とSHOHIN_KAKAKU列の値の組み合わせが一意であり、どちらの列もNULLではない表を作成する場合（表名：SHOHIN）、以下のどの文を実行すればいいでしょうか。(2つ選択)
+(1)		A.　CREATE TABLE SHOHIN (SHOHIN_ID NUMBER, SHOHIN_KAKAKU NUMBER, SHOHIN_NAME VARCHAR2(20), INPUT_DATE DATE, CONSTRAINT SHOHIN_ID_UQ UNIQUE (SHOHIN_ID, SHOHIN_KAKAKU) CONSTRAINT SHOHIN_ID_NN NOT NULL (SHOHIN_ID, SHOHIN_KAKAKU););
+(2)		B.　CREATE TABLE SHOHIN (SHOHIN_ID NUMBER CONSTRAINT SHOHIN_ID_NOT_NULL NOT NULL, SHOHIN_KAKAKU NUMBER CONSTRAINT SHOHIN_KAKAKU_NOT_NULL NOT NULL, SHOHIN_NAME VARCHAR2(20), INPUT_DATE DATE, CONSTRAINT SHOHIN_ID_UQ UNIQUE (SHOHIN_ID, SHOHIN_KAKAKU));
+(3)		C.　CREATE TABLE SHOHIN (SHOHIN_ID NUMBER, SHOHIN_KAKAKU NUMBER, SHOHIN_NAME VARCHAR2(20), INPUT_DATE DATE, CONSTRAINT SHOHIN_PK PRIMARY KEY (SHOHIN_ID, SHOHIN_KAKAKU));
+(4)		D.　CREATE TABLE SHOHIN (SHOHIN_ID NUMBER CONSTRAINT SHOHIN_PK PRIMARY KEY, SHOHIN_KAKAKU NUMBER UNIQUE, SHOHIN_NAME VARCHAR2(20), INPUT_DATE DATE);
+(5)		E.　CREATE TABLE SHOHIN (SHOHIN_ID NUMBER, SHOHIN_KAKAKU NUMBER, SHOHIN_NAME VARCHAR2(20), INPUT_DATE DATE, CONSTRAINT SHOHIN_ID_UQ UNIQUE (SHOHIN_ID, SHOHIN_KAKAKU));</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「制約定義と有効化・無効化」です。主キー、外部キー、CHECK、NOT NULL などの制約は、型や参照整合性を守るための定義である。ENABLE/DISABLE、CASCADE、SYSDATE 使用可否など細部の制約規則が問われる。 したがって正答は B「CREATE TABLE SHOHIN (SHOHIN_ID NUMBER CONSTRAINT SHOHIN…」 / C「CREATE TABLE SHOHIN (SHOHIN_ID NUMBER, SHOHIN_KAKAKU NU…」 になります。</p>
@@ -1609,48 +895,31 @@ CREATE TABLE MAKERS
                   <div class="question-meta">第3回 模擬試験 / 問20 / 正答 AD / 自己回答 AE</div>
                   <div class="block-title">問題文</div>
                   <pre>以下のSQLステートメントを確認してください。
+
 CREATE TABLE Employees
 (emp_no NUMBER(2) CONSTRAINT pk_emp PRIMARY KEY,
 ename VARCHAR2(15),
 salary NUMBER(8,2),
 mgr_no NUMBER(2));
+
 ALTER TABLE Employees ADD CONSTRAINT fk_mgr
 FOREIGN KEY (mgr_no)
 REFERENCES Employees(emp_no)
 ON DELETE SET NULL;
+
 ALTER TABLE Employees
 DISABLE CONSTRAINT pk_emp
 CASCADE;
+
 ALTER TABLE Employees
 ENABLE CONSTRAINT pk_emp;
-次のうち、実行後に正しいものを2つ選んでください。</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card correct selected">
-              <div class="option-key">A</div>
-              <div class="option-text">主キー制約は有効化され、IMMEDIATE となる。</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">B</div>
-              <div class="option-text">外部キー制約は有効化され、DEFERRED となる。</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">C</div>
-              <div class="option-text">主キー制約は無効化され、DEFERRED となる。</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">D</div>
-              <div class="option-text">外部キー制約は無効化される。</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">E</div>
-              <div class="option-text">外部キー制約は有効化され、IMMEDIATE となる。</div>
-            </div>
-            </div>
+
+次のうち、実行後に正しいものを2つ選んでください。
+(1)		A. 主キー制約は有効化され、IMMEDIATE となる。
+(2)		B. 外部キー制約は有効化され、DEFERRED となる。
+(3)		C. 主キー制約は無効化され、DEFERRED となる。
+(4)		D. 外部キー制約は無効化される。
+(5)		E. 外部キー制約は有効化され、IMMEDIATE となる。</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「制約定義と有効化・無効化」です。主キー、外部キー、CHECK、NOT NULL などの制約は、型や参照整合性を守るための定義である。ENABLE/DISABLE、CASCADE、SYSDATE 使用可否など細部の制約規則が問われる。 したがって正答は A「主キー制約は有効化され、IMMEDIATE となる。」 / D「外部キー制約は無効化される。」 になります。</p>
@@ -1667,45 +936,24 @@ ENABLE CONSTRAINT pk_emp;
                   <div class="question-meta">第3回 模擬試験 / 問57 / 正答 BD / 自己回答 BC</div>
                   <div class="block-title">問題文</div>
                   <pre>次のSQLコマンドを実行したときの動作を確認してください。
+
 CREATE GLOBAL TEMPORARY TABLE emp_gtt (
- emp_id NUMBER(6),
- salary NUMBER(10)
+　emp_id NUMBER(6),
+　salary NUMBER(10)
 ) ON COMMIT PRESERVE ROWS;
+
 INSERT INTO emp_gtt VALUES (101, 5000);
+
 COMMIT;
-次のうち、正しいものを2つ選んでください。</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card">
-              <div class="option-key">A</div>
-              <div class="option-text">他のセッションからコミット済みの行を参照できる。</div>
-            </div>
-            
-            <div class="option-card correct selected">
-              <div class="option-key">B</div>
-              <div class="option-text">セッションが終了すると、このテーブルの行は削除される。</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">C</div>
-              <div class="option-text">このセッションで ALTER TABLE を使用して外部キーを追加できる。</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">D</div>
-              <div class="option-text">このセッションで ALTER TABLE を使用してカラムを追加できる。</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">E</div>
-              <div class="option-text">このテーブルを削除するには、まず TRUNCATE しなければならない。</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">F</div>
-              <div class="option-text">このテーブルを削除するには、まず制約をすべて削除しなければならない。</div>
-            </div>
-            </div>
+
+次のうち、正しいものを2つ選んでください。
+
+(1)		A. 他のセッションからコミット済みの行を参照できる。
+(2)		B. セッションが終了すると、このテーブルの行は削除される。
+(3)		C. このセッションで ALTER TABLE を使用して外部キーを追加できる。
+(4)		D. このセッションで ALTER TABLE を使用してカラムを追加できる。
+(5)		E. このテーブルを削除するには、まず TRUNCATE しなければならない。
+(6)		F. このテーブルを削除するには、まず制約をすべて削除しなければならない。</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「制約定義と有効化・無効化」です。主キー、外部キー、CHECK、NOT NULL などの制約は、型や参照整合性を守るための定義である。ENABLE/DISABLE、CASCADE、SYSDATE 使用可否など細部の制約規則が問われる。 したがって正答は B「セッションが終了すると、このテーブルの行は削除される。」 / D「このセッションで ALTER TABLE を使用してカラムを追加できる。」 になります。</p>
@@ -1727,34 +975,12 @@ COMMIT;
                 <article class="question-card">
                   <div class="question-meta">第1回 模擬試験 / 問77 / 正答 B.C.E / 自己回答 A.C</div>
                   <div class="block-title">問題文</div>
-                  <pre>セッションに、NLS_DATE_FORMAT DD-MON-YYYY HH24:MI:SS を設定している場合、日付/時刻関数について正しい記述はどれでしょうか。（3つ選択）</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card selected">
-              <div class="option-key">A</div>
-              <div class="option-text">SYSDATEは、セッション・タイムゾーンに従って現在の日付と時刻を返します。</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">B</div>
-              <div class="option-text">SYSDATEは、データベース・サーバーが存在するオペレーティング・システムの現在の日付と時刻のセットを返します。</div>
-            </div>
-            
-            <div class="option-card correct selected">
-              <div class="option-key">C</div>
-              <div class="option-text">CURRENT_DATEは、セッション・タイムゾーンに従って現在の日付と時刻を返します。</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">D</div>
-              <div class="option-text">CURRENT_TIMESTAMPとSYSDATEは、同じ日付を返します。</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">E</div>
-              <div class="option-text">CURRENT_DATEとCURRENT_TIMESTAMPは、同じ日付を返します。</div>
-            </div>
-            </div>
+                  <pre>セッションに、NLS_DATE_FORMAT DD-MON-YYYY HH24:MI:SS を設定している場合、日付/時刻関数について正しい記述はどれでしょうか。（3つ選択）
+(1)		A.　SYSDATEは、セッション・タイムゾーンに従って現在の日付と時刻を返します。
+(2)		B.　SYSDATEは、データベース・サーバーが存在するオペレーティング・システムの現在の日付と時刻のセットを返します。
+(3)		C.　CURRENT_DATEは、セッション・タイムゾーンに従って現在の日付と時刻を返します。
+(4)		D.　CURRENT_TIMESTAMPとSYSDATEは、同じ日付を返します。
+(5)		E.　CURRENT_DATEとCURRENT_TIMESTAMPは、同じ日付を返します。</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「DATE・TIMESTAMP・TIME ZONE」です。DATE は秒まで、TIMESTAMP は小数秒まで、TIMESTAMP WITH TIME ZONE はタイムゾーン情報付き、LOCAL TIME ZONE は DB タイムゾーンで正規化される。CURRENT_TIMESTAMP と SYSTIMESTAMP も基準が異なる。 したがって正答は B「SYSDATEは、データベース・サーバーが存在するオペレーティング・システムの現在の日付と時刻のセットを返しま…」 / C「CURRENT_DATEは、セッション・タイムゾーンに従って現在の日付と時刻を返します。」 / E「CURRENT_DATEとCURRENT_TIMESTAMPは、同じ日付を返します。」 になります。</p>
@@ -1771,41 +997,17 @@ COMMIT;
                   <div class="question-meta">第2回 模擬試験 / 問47 / 正答 2.6 / 自己回答 3.6</div>
                   <div class="block-title">問題文</div>
                   <pre>2つの列が次の仕様を持つ表を設計します。
+
 ・ITEM_ID：6文字の固定長で、英数字を扱います。
 ・MADE_DATE：年、月、日、時、分、秒（小数点以下の最大精度）を扱います。
-これらの要件を最も効率的に処理するデータ型の記述はどれでしょうか。（2つ選択）</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card">
-              <div class="option-key">1</div>
-              <div class="option-text">ITEM_ID は ROWID型である必要があります。</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">2</div>
-              <div class="option-text">ITEM_ID 列は CHAR型である必要があります。</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">3</div>
-              <div class="option-text">ITEM_ID は BLOB型である必要があります。</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">4</div>
-              <div class="option-text">MADE_DATE は DATE型である必要があります。</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">5</div>
-              <div class="option-text">MADE_DATE は INTERVAL DAY TO SECOND型である必要があります。</div>
-            </div>
-            
-            <div class="option-card correct selected">
-              <div class="option-key">6</div>
-              <div class="option-text">MADE_DATE は TIMESTAMP型である必要があります。</div>
-            </div>
-            </div>
+
+これらの要件を最も効率的に処理するデータ型の記述はどれでしょうか。（2つ選択）
+(1)		ITEM_ID は ROWID型である必要があります。
+(2)		ITEM_ID 列は CHAR型である必要があります。
+(3)		ITEM_ID は BLOB型である必要があります。
+(4)		MADE_DATE は DATE型である必要があります。
+(5)		MADE_DATE は INTERVAL DAY TO SECOND型である必要があります。
+(6)		MADE_DATE は TIMESTAMP型である必要があります。</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「DATE・TIMESTAMP・TIME ZONE」です。DATE は秒まで、TIMESTAMP は小数秒まで、TIMESTAMP WITH TIME ZONE はタイムゾーン情報付き、LOCAL TIME ZONE は DB タイムゾーンで正規化される。CURRENT_TIMESTAMP と SYSTIMESTAMP も基準が異なる。 したがって正答は 2「ITEM_ID 列は CHAR型である必要があります。」 / 6「MADE_DATE は TIMESTAMP型である必要があります。」 になります。</p>
@@ -1821,34 +1023,12 @@ COMMIT;
                 <article class="question-card">
                   <div class="question-meta">第2回 模擬試験 / 問72 / 正答 BD / 自己回答 AC</div>
                   <div class="block-title">問題文</div>
-                  <pre>TIMESTAMP WITH TIME ZONE型の特徴について、正しい記述を2つ選択してください。</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card selected">
-              <div class="option-key">A</div>
-              <div class="option-text">年・月・日・時・分・秒だけを格納し、小数秒は扱えない</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">B</div>
-              <div class="option-text">CURRENT_TIMESTAMP関数はTIMESTAMP WITH TIME ZONE型の値を返す</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">C</div>
-              <div class="option-text">値はデータベース・タイムゾーンで正規化して格納される</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">D</div>
-              <div class="option-text">値にタイムゾーン・リージョン名またはオフセット情報を含む</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">E</div>
-              <div class="option-text">タイムゾーン情報を無視して格納される</div>
-            </div>
-            </div>
+                  <pre>TIMESTAMP WITH TIME ZONE型の特徴について、正しい記述を2つ選択してください。
+(1)		A.　年・月・日・時・分・秒だけを格納し、小数秒は扱えない
+(2)		B.　CURRENT_TIMESTAMP関数はTIMESTAMP WITH TIME ZONE型の値を返す
+(3)		C.　値はデータベース・タイムゾーンで正規化して格納される
+(4)		D.　値にタイムゾーン・リージョン名またはオフセット情報を含む
+(5)		E.　タイムゾーン情報を無視して格納される</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「DATE・TIMESTAMP・TIME ZONE」です。DATE は秒まで、TIMESTAMP は小数秒まで、TIMESTAMP WITH TIME ZONE はタイムゾーン情報付き、LOCAL TIME ZONE は DB タイムゾーンで正規化される。CURRENT_TIMESTAMP と SYSTIMESTAMP も基準が異なる。 したがって正答は B「CURRENT_TIMESTAMP関数はTIMESTAMP WITH TIME ZONE型の値を返す」 / D「値にタイムゾーン・リージョン名またはオフセット情報を含む」 になります。</p>
@@ -1864,34 +1044,12 @@ COMMIT;
                 <article class="question-card">
                   <div class="question-meta">第2回 模擬試験 / 問76 / 正答 ABD / 自己回答 BD</div>
                   <div class="block-title">問題文</div>
-                  <pre>タイムゾーンについて正しい記述はどれでしょうか。（3つ選択）</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card correct">
-              <div class="option-key">A</div>
-              <div class="option-text">DBTIMEZONEは、協定世界時 (UTC) からのオフセットを返すことができます。</div>
-            </div>
-            
-            <div class="option-card correct selected">
-              <div class="option-key">B</div>
-              <div class="option-text">SESSIONTIMEZONEは、協定世界時 (UTC) からのオフセットを返すことができます。</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">C</div>
-              <div class="option-text">DBTIMEZONEを変更した場合、データベースの再起動は不要です。</div>
-            </div>
-            
-            <div class="option-card correct selected">
-              <div class="option-key">D</div>
-              <div class="option-text">CURRENT_DATEは、タイムゾーン情報のないデータを返します。</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">E</div>
-              <div class="option-text">CURRENT_TIMESTAMPは、タイムゾーン情報のないデータを返します。</div>
-            </div>
-            </div>
+                  <pre>タイムゾーンについて正しい記述はどれでしょうか。（3つ選択）
+(1)		A.　DBTIMEZONEは、協定世界時 (UTC) からのオフセットを返すことができます。
+(2)		B.　SESSIONTIMEZONEは、協定世界時 (UTC) からのオフセットを返すことができます。
+(3)		C.　DBTIMEZONEを変更した場合、データベースの再起動は不要です。
+(4)		D.　CURRENT_DATEは、タイムゾーン情報のないデータを返します。
+(5)		E.　CURRENT_TIMESTAMPは、タイムゾーン情報のないデータを返します。</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「DATE・TIMESTAMP・TIME ZONE」です。DATE は秒まで、TIMESTAMP は小数秒まで、TIMESTAMP WITH TIME ZONE はタイムゾーン情報付き、LOCAL TIME ZONE は DB タイムゾーンで正規化される。CURRENT_TIMESTAMP と SYSTIMESTAMP も基準が異なる。 したがって正答は A「DBTIMEZONEは、協定世界時 (UTC) からのオフセットを返すことができます。」 / B「SESSIONTIMEZONEは、協定世界時 (UTC) からのオフセットを返すことができます。」 / D「CURRENT_DATEは、タイムゾーン情報のないデータを返します。」 になります。</p>
@@ -1908,29 +1066,12 @@ COMMIT;
                   <div class="question-meta">第3回 模擬試験 / 問9 / 正答 C / 自己回答 A</div>
                   <div class="block-title">問題文</div>
                   <pre>次のSQLを実行したとき、取得できる情報として正しいものはどれですか。1つ選択してください。
-SELECT CURRENT_TIMESTAMP, SYSTIMESTAMP FROM DUAL;</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card selected">
-              <div class="option-key">A</div>
-              <div class="option-text">どちらもセッションのタイムゾーンに基づく現在時刻を返す</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">B</div>
-              <div class="option-text">CURRENT_TIMESTAMPはサーバのローカル時刻、SYSTIMESTAMPはセッションのシステム時刻を返す</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">C</div>
-              <div class="option-text">CURRENT_TIMESTAMPはセッションのタイムゾーンに基づく現在時刻、SYSTIMESTAMPはサーバのローカル時刻を返す</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">D</div>
-              <div class="option-text">どちらもUTCに変換された時刻を返す</div>
-            </div>
-            </div>
+
+SELECT CURRENT_TIMESTAMP, SYSTIMESTAMP FROM DUAL;
+(1)		A. どちらもセッションのタイムゾーンに基づく現在時刻を返す
+(2)		B. CURRENT_TIMESTAMPはサーバのローカル時刻、SYSTIMESTAMPはセッションのシステム時刻を返す
+(3)		C. CURRENT_TIMESTAMPはセッションのタイムゾーンに基づく現在時刻、SYSTIMESTAMPはサーバのローカル時刻を返す
+(4)		D. どちらもUTCに変換された時刻を返す</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「DATE・TIMESTAMP・TIME ZONE」です。DATE は秒まで、TIMESTAMP は小数秒まで、TIMESTAMP WITH TIME ZONE はタイムゾーン情報付き、LOCAL TIME ZONE は DB タイムゾーンで正規化される。CURRENT_TIMESTAMP と SYSTIMESTAMP も基準が異なる。 したがって正答は C「CURRENT_TIMESTAMPはセッションのタイムゾーンに基づく現在時刻、SYSTIMESTAMPはサーバ…」 になります。</p>
@@ -1949,29 +1090,13 @@ SELECT CURRENT_TIMESTAMP, SYSTIMESTAMP FROM DUAL;</pre>
                   <pre>現在のセッションで NLS_DATE_FORMAT は DD-MM-YYYY に設定されています。
 86400秒が1日です。
 以下の日付結果を得るためには、どのSQLが正しいですか。1つ選択してください。
-日付 = 03-JAN-2025</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card">
-              <div class="option-key">A</div>
-              <div class="option-text">SELECT TO_CHAR(TO_DATE(&#x27;30-OCT-2024&#x27;) + INTERVAL &#x27;2&#x27; MONTH + INTERVAL &#x27;4&#x27; DAY - INTERVAL &#x27;120&#x27; SECOND, &#x27;DD-MON-YYYY&#x27;) AS &quot;date&quot; FROM DUAL;</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">B</div>
-              <div class="option-text">SELECT TO_CHAR(TO_DATE(&#x27;30-OCT-2024&#x27;) + INTERVAL &#x27;2&#x27; MONTH + INTERVAL &#x27;4&#x27; DAY + INTERVAL &#x27;120&#x27; SECOND, &#x27;DD-MON-YYYY&#x27;) AS &quot;date&quot; FROM DUAL;</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">C</div>
-              <div class="option-text">SELECT TO_CHAR(TO_DATE(&#x27;30-OCT-2024&#x27;) + INTERVAL &#x27;2&#x27; MONTH + INTERVAL &#x27;6&#x27; DAY - INTERVAL &#x27;120&#x27; SECOND, &#x27;DD-MON-YYYY&#x27;) AS &quot;date&quot; FROM DUAL;</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">D</div>
-              <div class="option-text">SELECT TO_CHAR(TO_DATE(&#x27;30-OCT-2024&#x27;) + INTERVAL &#x27;3&#x27; MONTH + INTERVAL &#x27;7&#x27; DAY - INTERVAL &#x27;360&#x27; SECOND, &#x27;DD-MON-YYYY&#x27;) AS &quot;date&quot; FROM DUAL;</div>
-            </div>
-            </div>
+
+日付 = 03-JAN-2025
+
+(1)		A. SELECT TO_CHAR(TO_DATE(&#x27;30-OCT-2024&#x27;) + INTERVAL &#x27;2&#x27; MONTH + INTERVAL &#x27;4&#x27; DAY - INTERVAL &#x27;120&#x27; SECOND, &#x27;DD-MON-YYYY&#x27;) AS &quot;date&quot; FROM DUAL;
+(2)		B. SELECT TO_CHAR(TO_DATE(&#x27;30-OCT-2024&#x27;) + INTERVAL &#x27;2&#x27; MONTH + INTERVAL &#x27;4&#x27; DAY + INTERVAL &#x27;120&#x27; SECOND, &#x27;DD-MON-YYYY&#x27;) AS &quot;date&quot; FROM DUAL;
+(3)		C. SELECT TO_CHAR(TO_DATE(&#x27;30-OCT-2024&#x27;) + INTERVAL &#x27;2&#x27; MONTH + INTERVAL &#x27;6&#x27; DAY - INTERVAL &#x27;120&#x27; SECOND, &#x27;DD-MON-YYYY&#x27;) AS &quot;date&quot; FROM DUAL;
+(4)		D. SELECT TO_CHAR(TO_DATE(&#x27;30-OCT-2024&#x27;) + INTERVAL &#x27;3&#x27; MONTH + INTERVAL &#x27;7&#x27; DAY - INTERVAL &#x27;360&#x27; SECOND, &#x27;DD-MON-YYYY&#x27;) AS &quot;date&quot; FROM DUAL;</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「DATE・TIMESTAMP・TIME ZONE」です。DATE は秒まで、TIMESTAMP は小数秒まで、TIMESTAMP WITH TIME ZONE はタイムゾーン情報付き、LOCAL TIME ZONE は DB タイムゾーンで正規化される。CURRENT_TIMESTAMP と SYSTIMESTAMP も基準が異なる。 したがって正答は B「SELECT TO_CHAR(TO_DATE(&#x27;30-OCT-2024&#x27;) + INTERVAL &#x27;2&#x27; MO…」 になります。</p>
@@ -1994,43 +1119,23 @@ SELECT CURRENT_TIMESTAMP, SYSTIMESTAMP FROM DUAL;</pre>
                   <div class="question-meta">第1回 模擬試験 / 問41 / 正答 B.D / 自己回答 A.D</div>
                   <div class="block-title">問題文</div>
                   <pre>ITEM 表を作成します。
+
 CREATE TABLE ITEM
 (
-  ITEM_ID VARCHAR(4) PRIMARY KEY,
-  ITEM_NAME VARCHAR(20) NOT NULL,
-  PRODUCTION_DATE DATE,
-  RELEASE_DATE DATE DEFAULT SYSDATE,
-  END_OF_SALE_DATE DATE
+　　ITEM_ID VARCHAR(4) PRIMARY KEY,
+　　ITEM_NAME VARCHAR(20) NOT NULL,
+　　PRODUCTION_DATE DATE,
+　　RELEASE_DATE DATE DEFAULT SYSDATE,
+　　END_OF_SALE_DATE DATE
 );
+
 この表にはデータが1件も存在しません。
-RELEASE_DATEのデフォルト値を使用して、表に行を正常に挿入するSQLはどれでしょうか。（2つ選択）</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card selected">
-              <div class="option-key">A</div>
-              <div class="option-text">INSERT INTO ITEM VALUES (&#x27;1001&#x27;, &#x27;ITEM1&#x27;, &#x27;10-JUN-2021&#x27;);</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">B</div>
-              <div class="option-text">INSERT INTO ITEM (ITEM_ID, ITEM_NAME, PRODUCTION_DATE,END_OF_SALE_DATE) VALUES (&#x27;1001&#x27;, &#x27;ITEM1&#x27;,&#x27;10-JUN-2021&#x27;,NULL);</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">C</div>
-              <div class="option-text">INSERT INTO ITEM (ITEM_ID, ITEM_NAME, PRODUCTION_DATE, RELEASE_DATE) VALUES (&#x27;1001&#x27;, &#x27;ITEM1&#x27;, &#x27;10-JUN-2021&#x27;);</div>
-            </div>
-            
-            <div class="option-card correct selected">
-              <div class="option-key">D</div>
-              <div class="option-text">INSERT INTO ITEM VALUES (&#x27;1001&#x27;, &#x27;ITEM1&#x27;, &#x27;10-DEC-2021&#x27;, DEFAULT, &#x27;10-JUN-2022&#x27;);</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">E</div>
-              <div class="option-text">INSERT INTO ITEM (ITEM_ID, PRODUCTION_DATE, END_OF_SALE_DATE) VALUES (&#x27;1001&#x27;, &#x27;10-JUN-2022&#x27;, NULL);</div>
-            </div>
-            </div>
+RELEASE_DATEのデフォルト値を使用して、表に行を正常に挿入するSQLはどれでしょうか。（2つ選択）
+(1)		A.　INSERT INTO ITEM VALUES (&#x27;1001&#x27;, &#x27;ITEM1&#x27;, &#x27;10-JUN-2021&#x27;);
+(2)		B.　INSERT INTO ITEM (ITEM_ID, ITEM_NAME, PRODUCTION_DATE,END_OF_SALE_DATE) VALUES (&#x27;1001&#x27;, &#x27;ITEM1&#x27;,&#x27;10-JUN-2021&#x27;,NULL);
+(3)		C.　INSERT INTO ITEM (ITEM_ID, ITEM_NAME, PRODUCTION_DATE, RELEASE_DATE) VALUES (&#x27;1001&#x27;, &#x27;ITEM1&#x27;, &#x27;10-JUN-2021&#x27;);
+(4)		D.　INSERT INTO ITEM VALUES (&#x27;1001&#x27;, &#x27;ITEM1&#x27;, &#x27;10-DEC-2021&#x27;, DEFAULT, &#x27;10-JUN-2022&#x27;);
+(5)		E.　INSERT INTO ITEM (ITEM_ID, PRODUCTION_DATE, END_OF_SALE_DATE) VALUES (&#x27;1001&#x27;, &#x27;10-JUN-2022&#x27;, NULL);</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「DEFAULT と列追加・挿入」です。DEFAULT は値を省略したときに補われる。既存行がある表へ NOT NULL 列を追加するなら、DEFAULT と NOT NULL をセットで与えないと既存行を満たせない。 したがって正答は B「INSERT INTO ITEM (ITEM_ID, ITEM_NAME, PRODUCTION_DATE,E…」 / D「INSERT INTO ITEM VALUES (&#x27;1001&#x27;, &#x27;ITEM1&#x27;, &#x27;10-DEC-2021&#x27;…」 になります。</p>
@@ -2047,47 +1152,27 @@ RELEASE_DATEのデフォルト値を使用して、表に行を正常に挿入�
                   <div class="question-meta">第1回 模擬試験 / 問68 / 正答 B.E / 自己回答 B.D</div>
                   <div class="block-title">問題文</div>
                   <pre>CREATE SEQUENCE ITEM_SEQ
- MAXVALUE 9999
- CYCLE
- CACHE 1000;
+　MAXVALUE 9999
+　CYCLE
+　CACHE 1000;
+
 CREATE TABLE ITEM
 (
-  ITEM_ID NUMBER(4) DEFAULT ITEM_SEQ.NEXTVAL CONSTRAINT ITEM_PK PRIMARY KEY,
-  ITEM_NO NUMBER(3),
-  ITEM_NAME VARCHAR2(20),
-  ITEM_TYPE VARCHAR2(20),
-  MADE_DATE DATE,
-  ITEM_PRICE NUMBER(7)
+　　ITEM_ID NUMBER(4) DEFAULT ITEM_SEQ.NEXTVAL CONSTRAINT ITEM_PK PRIMARY KEY,
+　　ITEM_NO NUMBER(3),
+　　ITEM_NAME VARCHAR2(20),
+　　ITEM_TYPE VARCHAR2(20),
+　　MADE_DATE DATE,
+　　ITEM_PRICE NUMBER(7)
 );
+
 表のITEM_IDにシーケンス：ITEM_SEQを適用するとします。
-表とシーケンスについて正しい記述はどれでしょうか。（2つ選択）</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card">
-              <div class="option-key">A</div>
-              <div class="option-text">他のユーザーのスキーマ内に順序を作成する場合は、CREATE SEQUENCEシステム権限が必要です。</div>
-            </div>
-            
-            <div class="option-card correct selected">
-              <div class="option-key">B</div>
-              <div class="option-text">ITEM_SEQは、9999ごとに1に戻ります。</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">C</div>
-              <div class="option-text">ITEM_SEQのシーケンス値はITEM表のITEM_IDと同じ値になります。</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">D</div>
-              <div class="option-text">ITEM_SEQが削除された場合、ITEM に挿入された行の列 ITEM_ID のデフォルト値は NULL になります。</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">E</div>
-              <div class="option-text">ITEM表にINSERT文が実行された場合、かつITEM_ID列の値がDEFAULT指定の場合、ITEM_ID列シーケンスITEM_SEQから次の番号を取得します。</div>
-            </div>
-            </div>
+表とシーケンスについて正しい記述はどれでしょうか。（2つ選択）
+(1)		A.　他のユーザーのスキーマ内に順序を作成する場合は、CREATE SEQUENCEシステム権限が必要です。
+(2)		B.　ITEM_SEQは、9999ごとに1に戻ります。
+(3)		C.　ITEM_SEQのシーケンス値はITEM表のITEM_IDと同じ値になります。
+(4)		D.　ITEM_SEQが削除された場合、ITEM に挿入された行の列 ITEM_ID のデフォルト値は NULL になります。
+(5)		E.　ITEM表にINSERT文が実行された場合、かつITEM_ID列の値がDEFAULT指定の場合、ITEM_ID列シーケンスITEM_SEQから次の番号を取得します。</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「DEFAULT と列追加・挿入」です。DEFAULT は値を省略したときに補われる。既存行がある表へ NOT NULL 列を追加するなら、DEFAULT と NOT NULL をセットで与えないと既存行を満たせない。 したがって正答は B「ITEM_SEQは、9999ごとに1に戻ります。」 / E「ITEM表にINSERT文が実行された場合、かつITEM_ID列の値がDEFAULT指定の場合、ITEM_ID…」 になります。</p>
@@ -2105,29 +1190,11 @@ CREATE TABLE ITEM
                   <div class="block-title">問題文</div>
                   <pre>ITEM表に在庫数（NUMBER_OF_STOCK）の列を追加します。
 ITEM表に1行以上のデータが存在する場合、
-列にNULL値は含まないように設定するための文はどれでしょうか。</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card">
-              <div class="option-key">1</div>
-              <div class="option-text">1. ALTER TABLE ITEM ADD NUMBER_OF_STOCK NUMBER(5) DEFAULT NOT NULL;</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">2</div>
-              <div class="option-text">2. ALTER TABLE ITEM ADD NUMBER_OF_STOCK NUMBER(5) DEFAULT 0 NOT NULL;</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">3</div>
-              <div class="option-text">3. ALTER TABLE ITEM ADD NUMBER_OF_STOCK NUMBER(5) DEFAULT CONSTRAINT NOT NULL;</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">4</div>
-              <div class="option-text">4. ALTER TABLE ITEM ADD NUMBER_OF_STOCK NUMBER(5) DEFAULT CONSTRAINT MD_NN NOT NULL;</div>
-            </div>
-            </div>
+列にNULL値は含まないように設定するための文はどれでしょうか。
+(1)		1.　ALTER TABLE ITEM ADD NUMBER_OF_STOCK NUMBER(5) DEFAULT NOT NULL;
+(2)		2.　ALTER TABLE ITEM ADD NUMBER_OF_STOCK NUMBER(5) DEFAULT 0 NOT NULL;
+(3)		3.　ALTER TABLE ITEM ADD NUMBER_OF_STOCK NUMBER(5) DEFAULT CONSTRAINT NOT NULL;
+(4)		4.　ALTER TABLE ITEM ADD NUMBER_OF_STOCK NUMBER(5) DEFAULT CONSTRAINT MD_NN NOT NULL;</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「DEFAULT と列追加・挿入」です。DEFAULT は値を省略したときに補われる。既存行がある表へ NOT NULL 列を追加するなら、DEFAULT と NOT NULL をセットで与えないと既存行を満たせない。 したがって正答は 2「2. ALTER TABLE ITEM ADD NUMBER_OF_STOCK NUMBER(5) DEFAU…」 になります。</p>
@@ -2144,39 +1211,19 @@ ITEM表に1行以上のデータが存在する場合、
                   <div class="question-meta">第3回 模擬試験 / 問33 / 正答 CD / 自己回答 AD</div>
                   <div class="block-title">問題文</div>
                   <pre>以下の CREATE TABLE コマンドを確認してください。
+
 CREATE TABLE cust (
- cust_id NUMBER(2),
- credit_limit NUMBER(10)
+　cust_id NUMBER(2),
+　credit_limit NUMBER(10)
 )
 ORGANIZATION EXTERNAL;
-このコマンドを正常に実行するために必ず指定する句を2つ選んでください。</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card selected">
-              <div class="option-key">A</div>
-              <div class="option-text">REJECT LIMIT 句</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">B</div>
-              <div class="option-text">TYPE 句（ドライバ種別）</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">C</div>
-              <div class="option-text">DEFAULT DIRECTORY 句</div>
-            </div>
-            
-            <div class="option-card correct selected">
-              <div class="option-key">D</div>
-              <div class="option-text">LOCATION 句</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">E</div>
-              <div class="option-text">ACCESS PARAMETERS 句</div>
-            </div>
-            </div>
+
+このコマンドを正常に実行するために必ず指定する句を2つ選んでください。
+(1)		A. REJECT LIMIT 句
+(2)		B. TYPE 句（ドライバ種別）
+(3)		C. DEFAULT DIRECTORY 句
+(4)		D. LOCATION 句
+(5)		E. ACCESS PARAMETERS 句</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「DEFAULT と列追加・挿入」です。DEFAULT は値を省略したときに補われる。既存行がある表へ NOT NULL 列を追加するなら、DEFAULT と NOT NULL をセットで与えないと既存行を満たせない。 したがって正答は C「DEFAULT DIRECTORY 句」 / D「LOCATION 句」 になります。</p>
@@ -2192,34 +1239,48 @@ ORGANIZATION EXTERNAL;
                 <article class="question-card">
                   <div class="question-meta">第3回 模擬試験 / 問68 / 正答 CD / 自己回答 AC</div>
                   <div class="block-title">問題文</div>
-                  <pre>シーケンス名：USER_SEQが存在している環境で、次の CREATE TABLE コマンドのうち、有効なものを2つ選んでください。</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card selected">
-              <div class="option-key">A</div>
-              <div class="option-text">CREATE TABLE reservations (<br>    rs_id NUMBER(6) DEFAULT user_seq.CURRVAL,<br>    created_at DATE,<br>    expires_at DATE DEFAULT created_at<br>);</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">B</div>
-              <div class="option-text">CREATE TABLE reservations (<br>    rs_id NUMBER(6),<br>    created_at DATE DEFAULT SYSDATE,<br>    expires_at DATE DEFAULT (expires_at &gt;= created_at)<br>);</div>
-            </div>
-            
-            <div class="option-card correct selected">
-              <div class="option-key">C</div>
-              <div class="option-text">CREATE TABLE reservations (<br>    rs_id NUMBER(6) DEFAULT user_seq.NEXTVAL PRIMARY KEY,<br>    created_at DATE DEFAULT SYSDATE,<br>    expires_at DATE DEFAULT SYSDATE NOT NULL<br>);</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">D</div>
-              <div class="option-text">CREATE TABLE reservations (<br>    rs_id NUMBER(6) NOT NULL PRIMARY KEY,<br>    created_at DATE NOT NULL,<br>    expires_at DATE DEFAULT SYSDATE<br>);</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">E</div>
-              <div class="option-text">CREATE TABLE reservations (<br>    rs_id NUMBER(6) NOT NULL DEFAULT user_seq.CURRVAL,<br>    created_at DATE,<br>    expires_at DATE DEFAULT SYSDATE<br>);</div>
-            </div>
-            </div>
+                  <pre>シーケンス名：USER_SEQが存在している環境で、次の CREATE TABLE コマンドのうち、有効なものを2つ選んでください。
+A.
+CREATE TABLE reservations (
+    rs_id NUMBER(6) DEFAULT user_seq.CURRVAL,
+    created_at DATE,
+    expires_at DATE DEFAULT created_at
+);
+
+B.
+CREATE TABLE reservations (
+    rs_id NUMBER(6),
+    created_at DATE DEFAULT SYSDATE,
+    expires_at DATE DEFAULT (expires_at &gt;= created_at)
+);
+
+C.
+CREATE TABLE reservations (
+    rs_id NUMBER(6) DEFAULT user_seq.NEXTVAL PRIMARY KEY,
+    created_at DATE DEFAULT SYSDATE,
+    expires_at DATE DEFAULT SYSDATE NOT NULL
+);
+
+D.
+CREATE TABLE reservations (
+    rs_id NUMBER(6) NOT NULL PRIMARY KEY,
+    created_at DATE NOT NULL,
+    expires_at DATE DEFAULT SYSDATE
+);
+
+E.
+CREATE TABLE reservations (
+    rs_id NUMBER(6) NOT NULL DEFAULT user_seq.CURRVAL,
+    created_at DATE,
+    expires_at DATE DEFAULT SYSDATE
+);
+
+
+(1)		A
+(2)		B
+(3)		C
+(4)		D
+(5)		E</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「DEFAULT と列追加・挿入」です。DEFAULT は値を省略したときに補われる。既存行がある表へ NOT NULL 列を追加するなら、DEFAULT と NOT NULL をセットで与えないと既存行を満たせない。 したがって正答は C「CREATE TABLE reservations ( rs_id NUMBER(6) DEFAULT use…」 / D「CREATE TABLE reservations ( rs_id NUMBER(6) NOT NULL PR…」 になります。</p>
@@ -2241,34 +1302,12 @@ ORGANIZATION EXTERNAL;
                 <article class="question-card">
                   <div class="question-meta">第1回 模擬試験 / 問51 / 正答 B / 自己回答 E</div>
                   <div class="block-title">問題文</div>
-                  <pre>読み取り専用モードのEMP表に対して、正常に実行されるものはどれでしょうか。</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card">
-              <div class="option-key">A</div>
-              <div class="option-text">TRUNCATE TABLE EMP;</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">B</div>
-              <div class="option-text">DROP TABLE EMP;</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">C</div>
-              <div class="option-text">DELETE FROM EMP;</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">D</div>
-              <div class="option-text">ALTER TABLE EMP DROP COLUMN START_DATE;</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">E</div>
-              <div class="option-text">ALTER TABLE EMP SET UNUSED (START_DATE);</div>
-            </div>
-            </div>
+                  <pre>読み取り専用モードのEMP表に対して、正常に実行されるものはどれでしょうか。
+(1)		A.　TRUNCATE TABLE EMP;
+(2)		B.　DROP TABLE EMP;
+(3)		C.　DELETE FROM EMP;
+(4)		D.　ALTER TABLE EMP DROP COLUMN START_DATE;
+(5)		E.　ALTER TABLE EMP SET UNUSED (START_DATE);</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「DDL と DML/TCL の切り分け」です。CREATE、ALTER、DROP、TRUNCATE などは DDL、INSERT/UPDATE/DELETE/MERGE は DML、COMMIT/ROLLBACK/SAVEPOINT は TCL である。DDL は暗黙コミットを伴う。 したがって正答は B「DROP TABLE EMP;」 になります。</p>
@@ -2285,29 +1324,12 @@ ORGANIZATION EXTERNAL;
                   <div class="question-meta">第1回 模擬試験 / 問52 / 正答 D / 自己回答 A</div>
                   <div class="block-title">問題文</div>
                   <pre>ALTER TABLE ITEM DROP COLUMN ITEM_NAME;
-を実行した場合の正しい記述はどれでしょうか。</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card selected">
-              <div class="option-key">A</div>
-              <div class="option-text">他の列が1つでも表に残っている場合、ITEM_NAME列は削除されます。</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">B</div>
-              <div class="option-text">ITEM_NAME列は、データが含まれていない場合にのみ削除されます。</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">C</div>
-              <div class="option-text">ITEM_NAME列は、データにNULL値が含まれている場合は削除されません。</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">D</div>
-              <div class="option-text">ITEM_NAME列にSET UNUSEDが設定されている場合、データを元に戻せます。</div>
-            </div>
-            </div>
+を実行した場合の正しい記述はどれでしょうか。
+　
+(1)		A.　他の列が1つでも表に残っている場合、ITEM_NAME列は削除されます。
+(2)		B.　ITEM_NAME列は、データが含まれていない場合にのみ削除されます。
+(3)		C.　ITEM_NAME列は、データにNULL値が含まれている場合は削除されません。
+(4)		D.　ITEM_NAME列にSET UNUSEDが設定されている場合、データを元に戻せます。</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「DDL と DML/TCL の切り分け」です。CREATE、ALTER、DROP、TRUNCATE などは DDL、INSERT/UPDATE/DELETE/MERGE は DML、COMMIT/ROLLBACK/SAVEPOINT は TCL である。DDL は暗黙コミットを伴う。 したがって正答は D「ITEM_NAME列にSET UNUSEDが設定されている場合、データを元に戻せます。」 になります。</p>
@@ -2323,34 +1345,12 @@ ORGANIZATION EXTERNAL;
                 <article class="question-card">
                   <div class="question-meta">第3回 模擬試験 / 問24 / 正答 DE / 自己回答 BD</div>
                   <div class="block-title">問題文</div>
-                  <pre>スカラサブクエリについて、正しいものを2つ選んでください。</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card">
-              <div class="option-key">A</div>
-              <div class="option-text">GROUP BY 句では使用できない。</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">B</div>
-              <div class="option-text">ゼロ行を返すスカラサブクエリの結果は 0 になる。</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">C</div>
-              <div class="option-text">INSERT 文の VALUES 句では使用できない。</div>
-            </div>
-            
-            <div class="option-card correct selected">
-              <div class="option-key">D</div>
-              <div class="option-text">スカラサブクエリは CREATE TABLE 文のデフォルト値として使用できる。</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">E</div>
-              <div class="option-text">スカラサブクエリはネスト（入れ子）できる。</div>
-            </div>
-            </div>
+                  <pre>スカラサブクエリについて、正しいものを2つ選んでください。
+(1)		A. GROUP BY 句では使用できない。
+(2)		B. ゼロ行を返すスカラサブクエリの結果は 0 になる。
+(3)		C. INSERT 文の VALUES 句では使用できない。
+(4)		D. スカラサブクエリは CREATE TABLE 文のデフォルト値として使用できる。
+(5)		E. スカラサブクエリはネスト（入れ子）できる。</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「DDL と DML/TCL の切り分け」です。CREATE、ALTER、DROP、TRUNCATE などは DDL、INSERT/UPDATE/DELETE/MERGE は DML、COMMIT/ROLLBACK/SAVEPOINT は TCL である。DDL は暗黙コミットを伴う。 したがって正答は D「スカラサブクエリは CREATE TABLE 文のデフォルト値として使用できる。」 / E「スカラサブクエリはネスト（入れ子）できる。」 になります。</p>
@@ -2366,39 +1366,14 @@ ORGANIZATION EXTERNAL;
                 <article class="question-card">
                   <div class="question-meta">第3回 模擬試験 / 問55 / 正答 BEF / 自己回答 ADE</div>
                   <div class="block-title">問題文</div>
-                  <pre>テーブルのカラム削除に関して、正しいものを3つ選んでください。</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card selected">
-              <div class="option-key">A</div>
-              <div class="option-text">カラムを削除すると、そのカラムのデータは削除されるが、カラム定義は残る。</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">B</div>
-              <div class="option-text">カラムの削除を実行すると暗黙的にコミットが発生する。</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">C</div>
-              <div class="option-text">カラムは、テーブルから削除する前に未使用としてマークする必要がある。</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">D</div>
-              <div class="option-text">プライマリキーのカラムは削除できない。</div>
-            </div>
-            
-            <div class="option-card correct selected">
-              <div class="option-key">E</div>
-              <div class="option-text">他のテーブルのカラムに参照されているカラムは削除できない。</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">F</div>
-              <div class="option-text">ALTER TABLE コマンドを使用して、複数のカラムを同時に削除できる。</div>
-            </div>
-            </div>
+                  <pre>テーブルのカラム削除に関して、正しいものを3つ選んでください。
+
+(1)		A. カラムを削除すると、そのカラムのデータは削除されるが、カラム定義は残る。
+(2)		B. カラムの削除を実行すると暗黙的にコミットが発生する。
+(3)		C. カラムは、テーブルから削除する前に未使用としてマークする必要がある。
+(4)		D. プライマリキーのカラムは削除できない。
+(5)		E. 他のテーブルのカラムに参照されているカラムは削除できない。
+(6)		F. ALTER TABLE コマンドを使用して、複数のカラムを同時に削除できる。</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「DDL と DML/TCL の切り分け」です。CREATE、ALTER、DROP、TRUNCATE などは DDL、INSERT/UPDATE/DELETE/MERGE は DML、COMMIT/ROLLBACK/SAVEPOINT は TCL である。DDL は暗黙コミットを伴う。 したがって正答は B「カラムの削除を実行すると暗黙的にコミットが発生する。」 / E「他のテーブルのカラムに参照されているカラムは削除できない。」 / F「ALTER TABLE コマンドを使用して、複数のカラムを同時に削除できる。」 になります。</p>
@@ -2420,34 +1395,12 @@ ORGANIZATION EXTERNAL;
                 <article class="question-card">
                   <div class="question-meta">第1回 模擬試験 / 問45 / 正答 B.E / 自己回答 B.D</div>
                   <div class="block-title">問題文</div>
-                  <pre>MERGE文について正しい記述はどれでしょうか。（2つ選択）</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card">
-              <div class="option-key">A</div>
-              <div class="option-text">表からのみ行をマージできます。</div>
-            </div>
-            
-            <div class="option-card correct selected">
-              <div class="option-key">B</div>
-              <div class="option-text">複数の表の行を条件付きで結合して、一つの表に挿入できます。</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">C</div>
-              <div class="option-text">削除することはできません。</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">D</div>
-              <div class="option-text">1つのMERGE文で複数の表を更新できます。</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">E</div>
-              <div class="option-text">ビューを使用して行をマージできます。</div>
-            </div>
-            </div>
+                  <pre>MERGE文について正しい記述はどれでしょうか。（2つ選択）
+(1)		A.　表からのみ行をマージできます。
+(2)		B.　複数の表の行を条件付きで結合して、一つの表に挿入できます。
+(3)		C.　削除することはできません。
+(4)		D.　1つのMERGE文で複数の表を更新できます。
+(5)		E.　ビューを使用して行をマージできます。</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「MERGE の文法と使える対象」です。MERGE は 1 つの対象表に対し、ON 条件で一致時は UPDATE、非一致時は INSERT を行う。USING には表、ビュー、サブクエリを使える。 したがって正答は B「複数の表の行を条件付きで結合して、一つの表に挿入できます。」 / E「ビューを使用して行をマージできます。」 になります。</p>

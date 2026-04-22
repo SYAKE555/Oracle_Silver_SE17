@@ -32,16 +32,6 @@
   .question-meta { font-size: .8rem; color: #64748b; margin-bottom: 10px; font-weight: 700; }
   .block-title { font-size: .85rem; font-weight: 800; color: #c0392b; margin: 10px 0 6px; }
   pre { white-space: pre-wrap; word-break: break-word; background: #0f172a; color: #e2e8f0; border-radius: 12px; padding: 14px; font-size: .84rem; overflow-x: auto; }
-  .options-grid { display: grid; gap: 8px; }
-  .option-card { display: grid; grid-template-columns: 32px 1fr; gap: 10px; align-items: start; border: 1px solid #dbe4ef; border-radius: 12px; padding: 10px 12px; background: white; }
-  .option-card.correct { border-color: #22c55e; box-shadow: inset 0 0 0 1px #22c55e; }
-  .option-card.selected { background: #fff7ed; }
-  .option-card.correct.selected { background: #f0fdf4; }
-  .option-key { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 999px; font-size: .82rem; font-weight: 900; background: #e2e8f0; color: #0f172a; }
-  .option-card.correct .option-key { background: #dcfce7; color: #166534; }
-  .option-card.selected .option-key { background: #ffedd5; color: #9a3412; }
-  .option-card.correct.selected .option-key { background: linear-gradient(90deg,#dcfce7,#ffedd5); color: #166534; }
-  .option-text { font-size: .88rem; color: #1f2937; line-height: 1.6; padding-top: 3px; word-break: break-word; }
   .analysis-block p { color: #334155; font-size: .9rem; margin-bottom: 8px; }
   .rebuild-list { padding-left: 20px; color: #334155; font-size: .9rem; }
   .rebuild-list li { margin-bottom: 5px; }
@@ -66,7 +56,7 @@
   <div class="hero-card">
     <div style="font-size:.9rem;color:#64748b;font-weight:700">D3 / 最優先</div>
     <div style="font-size:1.4rem;font-weight:900;margin-top:4px">単一行関数</div>
-    <p style="margin-top:8px;color:#334155">このページは、実際に間違えた設問をカテゴリ別に並べ、問題文・選択肢・正答理由・誤答理由・叩き直しポイントまで一気に確認するための再構築教材です。</p>
+    <p style="margin-top:8px;color:#334155">このページは、実際に間違えた設問をカテゴリ別に並べ、記録された問題全文を正本として、正答理由・誤答理由・叩き直しポイントまで一気に確認するための再構築教材です。</p>
     <div class="hero-grid">
       <div class="metric"><div class="label">フェーズ</div><div class="value">Phase 1</div></div>
       <div class="metric"><div class="label">進捗率</div><div class="value">30.0%</div></div>
@@ -91,35 +81,16 @@
                   <div class="question-meta">第1回 模擬試験 / 問20 / 正答 E / 自己回答 D</div>
                   <div class="block-title">問題文</div>
                   <pre>図のような表があります。
+
 これらの商品について、30%割引価格を提供する予定です。
-割引額をSHOHIN_KAKAKUと同じ形式にして表示するSQLはどれですか。</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card">
-              <div class="option-key">A</div>
-              <div class="option-text">SELECT TO_NUMBER(TO_NUMBER(SHOHIN_KAKAKU, &#x27;999,999.99&#x27;) * .30, &#x27;999,999.00&#x27;) FROM SHOHIN</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">B</div>
-              <div class="option-text">SELECT TO_CHAR (SHOHIN_KAKAKU * .30, &#x27;99,999.99&#x27;) FROM SHOHIN</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">C</div>
-              <div class="option-text">SELECT TO_CHAR (SHOHIN_KAKAKU * .30) FROM SHOHIN</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">D</div>
-              <div class="option-text">SELECT TO_CHAR (TO_NUMBER(SHOHIN_KAKAKU) * .30, &#x27;99,999.00&#x27;) FROM SHOHIN</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">E</div>
-              <div class="option-text">SELECT TO_CHAR (TO_NUMBER(SHOHIN_KAKAKU, &#x27;999,999.99&#x27;) * .30, &#x27;999,999.00&#x27;) FROM SHOHIN</div>
-            </div>
-            </div>
+割引額をSHOHIN_KAKAKUと同じ形式にして表示するSQLはどれですか。
+　
+拡大する
+(1)		A.　SELECT TO_NUMBER(TO_NUMBER(SHOHIN_KAKAKU, &#x27;999,999.99&#x27;) * .30, &#x27;999,999.00&#x27;) FROM SHOHIN
+(2)		B.　SELECT TO_CHAR (SHOHIN_KAKAKU * .30, &#x27;99,999.99&#x27;) FROM SHOHIN
+(3)		C.　SELECT TO_CHAR (SHOHIN_KAKAKU * .30) FROM SHOHIN
+(4)		D.　SELECT TO_CHAR (TO_NUMBER(SHOHIN_KAKAKU) * .30, &#x27;99,999.00&#x27;) FROM SHOHIN
+(5)		E.　SELECT TO_CHAR (TO_NUMBER(SHOHIN_KAKAKU, &#x27;999,999.99&#x27;) * .30, &#x27;999,999.00&#x27;) FROM SHOHIN</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「TO_CHAR・TO_NUMBER・TO_DATE の書式変換」です。文字列として保持された数値や日付を演算するには、まず TO_NUMBER や TO_DATE で型変換し、その後に TO_CHAR で表示形式を整える。書式モデルが一致しなければ失敗する。 したがって正答は E「SELECT TO_CHAR (TO_NUMBER(SHOHIN_KAKAKU, &#x27;999,999.99&#x27;) …」 になります。</p>
@@ -136,29 +107,11 @@
                   <div class="question-meta">第2回 模擬試験 / 問14 / 正答 C / 自己回答 D</div>
                   <div class="block-title">問題文</div>
                   <pre>ITEM表には製造年月日（DATE型）が存在します。
-次のSQLでエラーになるものはどれでしょうか。</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card">
-              <div class="option-key">A</div>
-              <div class="option-text">SELECT MIN(SYSDATE - MADE_DATE) FROM ITEM</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">B</div>
-              <div class="option-text">SELECT MAX(MADE_DATE) FROM ITEM</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">C</div>
-              <div class="option-text">SELECT AVG(MADE_DATE) FROM ITEM</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">D</div>
-              <div class="option-text">SELECT TO_CHAR(SYSDATE - MADE_DATE) FROM ITEM</div>
-            </div>
-            </div>
+次のSQLでエラーになるものはどれでしょうか。
+(1)		A.　SELECT MIN(SYSDATE - MADE_DATE) FROM ITEM
+(2)		B.　SELECT MAX(MADE_DATE) FROM ITEM
+(3)		C.　SELECT AVG(MADE_DATE) FROM ITEM
+(4)		D.　SELECT TO_CHAR(SYSDATE - MADE_DATE) FROM ITEM</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「TO_CHAR・TO_NUMBER・TO_DATE の書式変換」です。文字列として保持された数値や日付を演算するには、まず TO_NUMBER や TO_DATE で型変換し、その後に TO_CHAR で表示形式を整える。書式モデルが一致しなければ失敗する。 したがって正答は C「SELECT AVG(MADE_DATE) FROM ITEM」 になります。</p>
@@ -175,34 +128,13 @@
                   <div class="question-meta">第2回 模擬試験 / 問51 / 正答 ABD / 自己回答 CDE</div>
                   <div class="block-title">問題文</div>
                   <pre>次のSQL文の「_____」に入れる値として、$付きで表示されるものを3つ選択してください。
-SELECT TO_CHAR(_____, &#x27;$9,999&#x27;) FROM dual;</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card correct">
-              <div class="option-key">A</div>
-              <div class="option-text">123.4</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">B</div>
-              <div class="option-text">1.234</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">C</div>
-              <div class="option-text">12345</div>
-            </div>
-            
-            <div class="option-card correct selected">
-              <div class="option-key">D</div>
-              <div class="option-text">1234.56</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">E</div>
-              <div class="option-text">9999.9</div>
-            </div>
-            </div>
+
+SELECT TO_CHAR(_____, &#x27;$9,999&#x27;) FROM dual;
+(1)		A. 123.4
+(2)		B. 1.234
+(3)		C. 12345
+(4)		D. 1234.56
+(5)		E. 9999.9</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「TO_CHAR・TO_NUMBER・TO_DATE の書式変換」です。文字列として保持された数値や日付を演算するには、まず TO_NUMBER や TO_DATE で型変換し、その後に TO_CHAR で表示形式を整える。書式モデルが一致しなければ失敗する。 したがって正答は A「123.4」 / B「1.234」 / D「1234.56」 になります。</p>
@@ -219,6 +151,7 @@ SELECT TO_CHAR(_____, &#x27;$9,999&#x27;) FROM dual;</pre>
                   <div class="question-meta">第3回 模擬試験 / 問4 / 正答 B / 自己回答 A</div>
                   <div class="block-title">問題文</div>
                   <pre>次のSQLの実行結果は次のうちどれですか。1つ選択してください。
+
 ---- 実行するSQL ----
 SELECT product_id,
 DECODE(TRIM(category),
@@ -226,29 +159,12 @@ DECODE(TRIM(category),
 &#x27;CLOTHING&#x27;, &#x27;C-&#x27; || TO_CHAR(product_id),
 &#x27;X-&#x27; || TO_CHAR(product_id)) AS 管理コード
 FROM Products
-WHERE LENGTH(product_name) &gt;= 5 AND NVL(status, &#x27;0&#x27;) = &#x27;1&#x27;;</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card selected">
-              <div class="option-key">A</div>
-              <div class="option-text">DECODE関数では戻り値に関数や演算子を使うことはできないため、このSQLはエラーになる。</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">B</div>
-              <div class="option-text">構文エラーはないため正常に実行される。</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">C</div>
-              <div class="option-text">DECODE関数はNULLの比較ができないため、WHERE句でNVLを使うとエラーとなる。</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">D</div>
-              <div class="option-text">TO_CHAR関数は文字列型以外では使えないため、このSQLは構文エラーになる。</div>
-            </div>
-            </div>
+WHERE LENGTH(product_name) &gt;= 5 AND NVL(status, &#x27;0&#x27;) = &#x27;1&#x27;;
+
+(1)		A. DECODE関数では戻り値に関数や演算子を使うことはできないため、このSQLはエラーになる。
+(2)		B. 構文エラーはないため正常に実行される。
+(3)		C. DECODE関数はNULLの比較ができないため、WHERE句でNVLを使うとエラーとなる。
+(4)		D. TO_CHAR関数は文字列型以外では使えないため、このSQLは構文エラーになる。</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「TO_CHAR・TO_NUMBER・TO_DATE の書式変換」です。文字列として保持された数値や日付を演算するには、まず TO_NUMBER や TO_DATE で型変換し、その後に TO_CHAR で表示形式を整える。書式モデルが一致しなければ失敗する。 したがって正答は B「構文エラーはないため正常に実行される。」 になります。</p>
@@ -265,44 +181,28 @@ WHERE LENGTH(product_name) &gt;= 5 AND NVL(status, &#x27;0&#x27;) = &#x27;1&#x27
                   <div class="question-meta">第3回 模擬試験 / 問11 / 正答 D / 自己回答 A</div>
                   <div class="block-title">問題文</div>
                   <pre>以下のSQL文を実行したときの結果として正しいものを1つ選びなさい。
+
 ---- 実行するSQL ----
 SELECT
- name,
- CASE
-  WHEN TO_NUMBER(REPLACE(price, &#x27;,&#x27;, &#x27;&#x27;)) &gt; 10000 THEN
-   NVL2(description, &#x27;記載あり&#x27;, &#x27;記載なし&#x27;)
-  ELSE
-   DECODE(NULLIF(kind, &#x27;くだもの&#x27;), NULL, &#x27;分類なし&#x27;, &#x27;分類あり&#x27;)
- END AS 判定
+　name,
+　CASE
+　　WHEN TO_NUMBER(REPLACE(price, &#x27;,&#x27;, &#x27;&#x27;)) &gt; 10000 THEN
+　　　NVL2(description, &#x27;記載あり&#x27;, &#x27;記載なし&#x27;)
+　　ELSE
+　　　DECODE(NULLIF(kind, &#x27;くだもの&#x27;), NULL, &#x27;分類なし&#x27;, &#x27;分類あり&#x27;)
+　END AS 判定
 FROM Products;
+
 前提：
 ・Products表には以下の列が存在する
 name（VARCHAR2型）、price（VARCHAR2型）、description（VARCHAR2型）、kind（VARCHAR2型）
 ・priceはすべてカンマ区切りの数値文字列（例：&#x27;12,000&#x27;）
 ・descriptionにはNULLが含まれる可能性がある
-・kind列には&#x27;くだもの&#x27;を含むさまざまな分類が設定されている</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card selected">
-              <div class="option-key">A</div>
-              <div class="option-text">TO_NUMBER関数の引数は数値にする必要があるのに、REPLACE関数という文字変換関数を使用しているため構文エラーになる。</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">B</div>
-              <div class="option-text">DECODE関数ではNULLIF関数を指定できないため構文エラーになる。</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">C</div>
-              <div class="option-text">NVL2関数の第2引数と第3引数が連続して評価されるため構文エラーになる。</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">D</div>
-              <div class="option-text">SQLは正常に実行される。</div>
-            </div>
-            </div>
+・kind列には&#x27;くだもの&#x27;を含むさまざまな分類が設定されている
+(1)		A. TO_NUMBER関数の引数は数値にする必要があるのに、REPLACE関数という文字変換関数を使用しているため構文エラーになる。
+(2)		B. DECODE関数ではNULLIF関数を指定できないため構文エラーになる。
+(3)		C. NVL2関数の第2引数と第3引数が連続して評価されるため構文エラーになる。
+(4)		D. SQLは正常に実行される。</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「TO_CHAR・TO_NUMBER・TO_DATE の書式変換」です。文字列として保持された数値や日付を演算するには、まず TO_NUMBER や TO_DATE で型変換し、その後に TO_CHAR で表示形式を整える。書式モデルが一致しなければ失敗する。 したがって正答は D「SQLは正常に実行される。」 になります。</p>
@@ -320,29 +220,11 @@ name（VARCHAR2型）、price（VARCHAR2型）、description（VARCHAR2型）、
                   <div class="block-title">問題文</div>
                   <pre>SHOPS テーブルには、データ型 DATE の START_DATE 列があり、行が挿入された日付を格納しています。
 START_DATE が過去16か月以内の行のみを表示したいとします。
-使用できる WHERE 句はどれですか？1つ選択してください。</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card">
-              <div class="option-key">A</div>
-              <div class="option-text">WHERE MONTHS_BETWEEN(start_date, SYSDATE) &lt;= 16</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">B</div>
-              <div class="option-text">WHERE TO_NUMBER(start_date - SYSDATE) &lt;= 16</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">C</div>
-              <div class="option-text">WHERE MONTHS_BETWEEN(SYSDATE, start_date) &lt;= 16</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">D</div>
-              <div class="option-text">WHERE ADD_MONTHS(start_date, 16) &lt;= SYSDATE</div>
-            </div>
-            </div>
+使用できる WHERE 句はどれですか？1つ選択してください。
+(1)		A. WHERE MONTHS_BETWEEN(start_date, SYSDATE) &lt;= 16
+(2)		B. WHERE TO_NUMBER(start_date - SYSDATE) &lt;= 16
+(3)		C. WHERE MONTHS_BETWEEN(SYSDATE, start_date) &lt;= 16
+(4)		D. WHERE ADD_MONTHS(start_date, 16) &lt;= SYSDATE</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「TO_CHAR・TO_NUMBER・TO_DATE の書式変換」です。文字列として保持された数値や日付を演算するには、まず TO_NUMBER や TO_DATE で型変換し、その後に TO_CHAR で表示形式を整える。書式モデルが一致しなければ失敗する。 したがって正答は C「WHERE MONTHS_BETWEEN(SYSDATE, start_date) &lt;= 16」 になります。</p>
@@ -364,34 +246,14 @@ START_DATE が過去16か月以内の行のみを表示したいとします。
                 <article class="question-card">
                   <div class="question-meta">第2回 模擬試験 / 問12 / 正答 BD / 自己回答 BE</div>
                   <div class="block-title">問題文</div>
-                  <pre>半角スペースで区切られている商品名の2単語目が&quot;CU&quot;もしくは&quot;Cu&quot;で始まる値を表示する場合、以下のどのSELECT文を実行すればいいでしょうか。（2つ選択）</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card">
-              <div class="option-key">A</div>
-              <div class="option-text">SELECT ITEM_NAME FROM ITEM WHERE LOWER (SUBSTR (ITEM_NAME, INSTR(ITEM_NAME, &#x27; &#x27;)+1)) IN (&#x27;CU%&#x27;, &#x27;Cu)</div>
-            </div>
-            
-            <div class="option-card correct selected">
-              <div class="option-key">B</div>
-              <div class="option-text">SELECT ITEM_NAME FROM ITEM WHERE UPPER (SUBSTR (ITEM_NAME, INSTR(ITEM_NAME, &#x27; &#x27;)+1)) LIKE UPPER (&#x27;CU%&#x27;)</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">C</div>
-              <div class="option-text">SELECT ITEM_NAME FROM ITEM WHERE SUBSTR(ITEM_NAME, INSTR (ITEM_NAME, &#x27; &#x27;) +1) LIKE &#x27;Cu%&#x27;</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">D</div>
-              <div class="option-text">SELECT ITEM_NAME FROM ITEM WHERE INITCAP (SUBSTR (ITEM_NAME, INSTR(ITEM_NAME, &#x27; &#x27;)+1)) LIKE &#x27;Cu%&#x27;</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">E</div>
-              <div class="option-text">SELECT ITEM_NAME FROM ITEM WHERE LOWER (SUBSTR (ITEM_NAME, INSTR(ITEM_NAME, &#x27; &#x27;)+1)) LIKE UPPER (&#x27;CU%&#x27;)</div>
-            </div>
-            </div>
+                  <pre>半角スペースで区切られている商品名の2単語目が&quot;CU&quot;もしくは&quot;Cu&quot;で始まる値を表示する場合、以下のどのSELECT文を実行すればいいでしょうか。（2つ選択）
+　
+拡大する
+(1)		A.　SELECT ITEM_NAME FROM ITEM WHERE LOWER (SUBSTR (ITEM_NAME, INSTR(ITEM_NAME, &#x27; &#x27;)+1)) IN (&#x27;CU%&#x27;, &#x27;Cu)
+(2)		B.　SELECT ITEM_NAME FROM ITEM WHERE UPPER (SUBSTR (ITEM_NAME, INSTR(ITEM_NAME, &#x27; &#x27;)+1)) LIKE UPPER (&#x27;CU%&#x27;)
+(3)		C.　SELECT ITEM_NAME FROM ITEM WHERE SUBSTR(ITEM_NAME, INSTR (ITEM_NAME, &#x27; &#x27;) +1) LIKE &#x27;Cu%&#x27;
+(4)		D.　SELECT ITEM_NAME FROM ITEM WHERE INITCAP (SUBSTR (ITEM_NAME, INSTR(ITEM_NAME, &#x27; &#x27;)+1)) LIKE &#x27;Cu%&#x27;
+(5)		E.　SELECT ITEM_NAME FROM ITEM WHERE LOWER (SUBSTR (ITEM_NAME, INSTR(ITEM_NAME, &#x27; &#x27;)+1)) LIKE UPPER (&#x27;CU%&#x27;)</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「SUBSTR・INSTR・TRIM・REPLACE の使い分け」です。文字列の一部抽出では、位置取得に INSTR、切り出しに SUBSTR、不要部分の削除に TRIM、置換に REPLACE を使い分ける。空白位置の +1 を忘れると全体がずれる。 したがって正答は B「SELECT ITEM_NAME FROM ITEM WHERE UPPER (SUBSTR (ITEM_NA…」 / D「SELECT ITEM_NAME FROM ITEM WHERE INITCAP (SUBSTR (ITEM_…」 になります。</p>
@@ -411,29 +273,11 @@ START_DATE が過去16か月以内の行のみを表示したいとします。
 &#x27;Japanese Beef Curry&#x27;
 &#x27;Japanese Pork Curry&#x27;
 の2行が存在しています。
-末尾の&#x27;Curry&#x27;を省いて、先頭の&#x27;Japanese&#x27;を&#x27;日本産&#x27;に置換して表示するSQLはどれでしょうか。</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card selected">
-              <div class="option-key">A</div>
-              <div class="option-text">SELECT REPLACE (TRIM(TRAILING &#x27;Curry&#x27; FROM ITEM_NAME), &#x27;Japanese&#x27;, &#x27;日本産&#x27;) FROM ITEM;</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">B</div>
-              <div class="option-text">SELECT INITCAP (REPLACE(TRIM(&#x27;Curry&#x27; FROM ITEM_NAME), &#x27;Japanese&#x27;, &#x27;日本産&#x27;)) FROM ITEM;</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">C</div>
-              <div class="option-text">SELECT REPLACE (SUBSTR(ITEM_NAME, -5), &#x27;Japanese&#x27;, &#x27;日本産&#x27;) FROM ITEM;</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">D</div>
-              <div class="option-text">SELECT REPLACE (REPLACE(ITEM_NAME, &#x27;Curry&#x27;, &#x27; &#x27;), &#x27;Japanese&#x27;, &#x27;日本産&#x27;) FROM ITEM;</div>
-            </div>
-            </div>
+末尾の&#x27;Curry&#x27;を省いて、先頭の&#x27;Japanese&#x27;を&#x27;日本産&#x27;に置換して表示するSQLはどれでしょうか。
+(1)		A.　SELECT REPLACE (TRIM(TRAILING &#x27;Curry&#x27; FROM ITEM_NAME), &#x27;Japanese&#x27;, &#x27;日本産&#x27;) FROM ITEM;
+(2)		B.　SELECT INITCAP (REPLACE(TRIM(&#x27;Curry&#x27; FROM ITEM_NAME), &#x27;Japanese&#x27;, &#x27;日本産&#x27;)) FROM ITEM;
+(3)		C.　SELECT REPLACE (SUBSTR(ITEM_NAME, -5), &#x27;Japanese&#x27;, &#x27;日本産&#x27;) FROM ITEM;
+(4)		D.　SELECT REPLACE (REPLACE(ITEM_NAME, &#x27;Curry&#x27;, &#x27; &#x27;), &#x27;Japanese&#x27;, &#x27;日本産&#x27;) FROM ITEM;</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「SUBSTR・INSTR・TRIM・REPLACE の使い分け」です。文字列の一部抽出では、位置取得に INSTR、切り出しに SUBSTR、不要部分の削除に TRIM、置換に REPLACE を使い分ける。空白位置の +1 を忘れると全体がずれる。 したがって正答は D「SELECT REPLACE (REPLACE(ITEM_NAME, &#x27;Curry&#x27;, &#x27; &#x27;), &#x27;Japa…」 になります。</p>
@@ -450,34 +294,13 @@ START_DATE が過去16か月以内の行のみを表示したいとします。
                   <div class="question-meta">第2回 模擬試験 / 問18 / 正答 A / 自己回答 D</div>
                   <div class="block-title">問題文</div>
                   <pre>NLS_DATE_FORMATはDD-MON-YYが設定されています。
-明示的なデータ型変換が必要なSQLは以下のどれですか。</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card correct">
-              <div class="option-key">A</div>
-              <div class="option-text">SELECT MADE_DATE FROM ITEM WHERE MADE_DATE &gt; &#x27;01-06-2021&#x27;;</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">B</div>
-              <div class="option-text">SELECT ITEM_ID || &#x27; &#x27; || ITEM_PRICE FROM ITEM;</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">C</div>
-              <div class="option-text">SELECT SUBSTR(MADE_DATE, 1, 2) FROM ITEM;</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">D</div>
-              <div class="option-text">SELECT ITEM_ID || &#x27; &#x27; || MADE_DATE FROM ITEM;</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">E</div>
-              <div class="option-text">SELECT MADE_DATE || &#x27; &#x27; || ITEM_PRICE FROM ITEM;</div>
-            </div>
-            </div>
+明示的なデータ型変換が必要なSQLは以下のどれですか。
+
+(1)		A.　SELECT MADE_DATE FROM ITEM WHERE MADE_DATE &gt; &#x27;01-06-2021&#x27;;
+(2)		B.　SELECT ITEM_ID || &#x27; &#x27; || ITEM_PRICE FROM ITEM;
+(3)		C.　SELECT SUBSTR(MADE_DATE, 1, 2) FROM ITEM;
+(4)		D.　SELECT ITEM_ID || &#x27; &#x27; || MADE_DATE FROM ITEM;
+(5)		E.　SELECT MADE_DATE || &#x27; &#x27; || ITEM_PRICE FROM ITEM;</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「SUBSTR・INSTR・TRIM・REPLACE の使い分け」です。文字列の一部抽出では、位置取得に INSTR、切り出しに SUBSTR、不要部分の削除に TRIM、置換に REPLACE を使い分ける。空白位置の +1 を忘れると全体がずれる。 したがって正答は A「SELECT MADE_DATE FROM ITEM WHERE MADE_DATE &gt; &#x27;01-06-202…」 になります。</p>
@@ -493,39 +316,13 @@ START_DATE が過去16か月以内の行のみを表示したいとします。
                 <article class="question-card">
                   <div class="question-meta">第2回 模擬試験 / 問37 / 正答 AE / 自己回答 BE</div>
                   <div class="block-title">問題文</div>
-                  <pre>名前の3文字目が&#x27;o&#x27;となっているデータを取得したい場合、妥当なSQLはどれでしょうか。（2つ選択）</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card correct">
-              <div class="option-key">A</div>
-              <div class="option-text">SELECT * FROM employees WHERE name LIKE &#x27;__o%&#x27;</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">B</div>
-              <div class="option-text">SELECT * FROM employees WHERE name LIKE &#x27;%%o%&#x27;</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">C</div>
-              <div class="option-text">SELECT * FROM employees WHERE name LIKE &#x27;__o&#x27;</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">D</div>
-              <div class="option-text">SELECT * FROM employees WHERE name LIKE &#x27;%%o&#x27;</div>
-            </div>
-            
-            <div class="option-card correct selected">
-              <div class="option-key">E</div>
-              <div class="option-text">SELECT * FROM employees WHERE SUBSTR(name,3,1) = &#x27;o&#x27;;</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">F</div>
-              <div class="option-text">SELECT * FROM employees WHERE INSTR(name,&#x27;o&#x27;,3) = 1;</div>
-            </div>
-            </div>
+                  <pre>名前の3文字目が&#x27;o&#x27;となっているデータを取得したい場合、妥当なSQLはどれでしょうか。（2つ選択）
+(1)		A.　SELECT * FROM employees WHERE name LIKE &#x27;__o%&#x27;
+(2)		B.　SELECT * FROM employees WHERE name LIKE &#x27;%%o%&#x27;
+(3)		C.　SELECT * FROM employees WHERE name LIKE &#x27;__o&#x27;
+(4)		D.　SELECT * FROM employees WHERE name LIKE &#x27;%%o&#x27;
+(5)		E.　SELECT * FROM employees WHERE SUBSTR(name,3,1) = &#x27;o&#x27;;
+(6)		F.　SELECT * FROM employees WHERE INSTR(name,&#x27;o&#x27;,3) = 1;</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「SUBSTR・INSTR・TRIM・REPLACE の使い分け」です。文字列の一部抽出では、位置取得に INSTR、切り出しに SUBSTR、不要部分の削除に TRIM、置換に REPLACE を使い分ける。空白位置の +1 を忘れると全体がずれる。 したがって正答は A「SELECT * FROM employees WHERE name LIKE &#x27;__o%&#x27;」 / E「SELECT * FROM employees WHERE SUBSTR(name,3,1) = &#x27;o&#x27;;」 になります。</p>
@@ -543,34 +340,12 @@ START_DATE が過去16か月以内の行のみを表示したいとします。
                   <div class="block-title">問題文</div>
                   <pre>Employees表には、START_DATE列（データ型: DATE）とSALARY列（データ型: NUMBER）が存在します。
 次の記載で正しいものを2つ選んでください。
-なお、NLS_DATE_FORMATはDD-MON-RRに設定されています。</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card correct">
-              <div class="option-key">A</div>
-              <div class="option-text">start_date = &#x27;15-JUL-2025&#x27; ：左式は暗黙的な変換を使用</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">B</div>
-              <div class="option-text">CONCAT(salary, start_date)  ：左式は明示的な変換を使用</div>
-            </div>
-            
-            <div class="option-card correct selected">
-              <div class="option-key">C</div>
-              <div class="option-text">salary BETWEEN &#x27;101000&#x27; AND &#x27;110000&#x27; ：左式は暗黙的な変換を使用</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">D</div>
-              <div class="option-text">start_date = &#x27;05-04-2025&#x27; ：左式は暗黙的な変換を使用</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">E</div>
-              <div class="option-text">salary = 0150000  ：左式は明示的な変換を使用</div>
-            </div>
-            </div>
+なお、NLS_DATE_FORMATはDD-MON-RRに設定されています。
+(1)		A. start_date = &#x27;15-JUL-2025&#x27;　：左式は暗黙的な変換を使用
+(2)		B. CONCAT(salary, start_date)　 ：左式は明示的な変換を使用
+(3)		C. salary BETWEEN &#x27;101000&#x27; AND &#x27;110000&#x27;　：左式は暗黙的な変換を使用
+(4)		D. start_date = &#x27;05-04-2025&#x27;　：左式は暗黙的な変換を使用
+(5)		E. salary = 0150000　 ：左式は明示的な変換を使用</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「SUBSTR・INSTR・TRIM・REPLACE の使い分け」です。文字列の一部抽出では、位置取得に INSTR、切り出しに SUBSTR、不要部分の削除に TRIM、置換に REPLACE を使い分ける。空白位置の +1 を忘れると全体がずれる。 したがって正答は A「start_date = &#x27;15-JUL-2025&#x27; ：左式は暗黙的な変換を使用」 / C「salary BETWEEN &#x27;101000&#x27; AND &#x27;110000&#x27; ：左式は暗黙的な変換を使用」 になります。</p>
@@ -593,29 +368,11 @@ START_DATE が過去16か月以内の行のみを表示したいとします。
                   <div class="question-meta">第1回 模擬試験 / 問14 / 正答 C / 自己回答 D</div>
                   <div class="block-title">問題文</div>
                   <pre>ITEM表には商品名と製造年月日（DATE型）が存在します。
-製造から2年以上経過した商品を抽出するSQLはどれでしょうか。</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card">
-              <div class="option-key">A</div>
-              <div class="option-text">SELECT ITEM_NAME,MADE_DATE FROM ITEM WHERE MADE_DATE + 2*365 = SYSDATE;</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">B</div>
-              <div class="option-text">SELECT ITEM_NAME,MADE_DATE FROM ITEM WHERE SYSDATE &gt; MADE_DATE - 2*365;</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">C</div>
-              <div class="option-text">SELECT ITEM_NAME,MADE_DATE FROM ITEM WHERE SYSDATE - 2*365 &gt;= MADE_DATE;</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">D</div>
-              <div class="option-text">SELECT ITEM_NAME,MADE_DATE FROM ITEM WHERE MADE_DATE &gt;= SYSDATE - 2*365;</div>
-            </div>
-            </div>
+製造から2年以上経過した商品を抽出するSQLはどれでしょうか。
+(1)		A.　SELECT ITEM_NAME,MADE_DATE FROM ITEM WHERE MADE_DATE + 2*365 = SYSDATE;
+(2)		B.　SELECT ITEM_NAME,MADE_DATE FROM ITEM WHERE SYSDATE &gt; MADE_DATE - 2*365;
+(3)		C.　SELECT ITEM_NAME,MADE_DATE FROM ITEM WHERE SYSDATE - 2*365 &gt;= MADE_DATE;
+(4)		D.　SELECT ITEM_NAME,MADE_DATE FROM ITEM WHERE MADE_DATE &gt;= SYSDATE - 2*365;</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「日付演算と月数計算」です。DATE 型の差は日数で返る。月単位なら MONTHS_BETWEEN、月加算なら ADD_MONTHS を使う。年数を 365 日換算で書くと境界条件を外しやすい。 したがって正答は C「SELECT ITEM_NAME,MADE_DATE FROM ITEM WHERE SYSDATE - 2*…」 になります。</p>
@@ -631,34 +388,12 @@ START_DATE が過去16か月以内の行のみを表示したいとします。
                 <article class="question-card">
                   <div class="question-meta">第2回 模擬試験 / 問41 / 正答 AD / 自己回答 BE</div>
                   <div class="block-title">問題文</div>
-                  <pre>以下のうち、過去365日のSTART_DATEを抽出するSQL文はどれでしょうか。2つ選択してください。</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card correct">
-              <div class="option-key">A</div>
-              <div class="option-text">SELECT START_DATE FROM EMP WHERE START_DATE &gt; TRUNC(SYSDATE)-365;</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">B</div>
-              <div class="option-text">SELECT START_DATE FROM EMP WHERE START_DATE &gt; ROUND(SYSDATE)+365;</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">C</div>
-              <div class="option-text">SELECT START_DATE FROM EMP WHERE START_DATE &gt; ADD_MONTHS(SYSDATE,-12);</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">D</div>
-              <div class="option-text">SELECT START_DATE FROM EMP WHERE START_DATE &gt; (SELECT SYSDATE-365 FROM DUAL);</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">E</div>
-              <div class="option-text">SELECT START_DATE FROM EMP WHERE MONTHS_BETWEEN(SYSDATE,START_DATE) &lt; 12;</div>
-            </div>
-            </div>
+                  <pre>以下のうち、過去365日のSTART_DATEを抽出するSQL文はどれでしょうか。2つ選択してください。
+(1)		A. SELECT START_DATE FROM EMP WHERE START_DATE &gt; TRUNC(SYSDATE)-365;
+(2)		B. SELECT START_DATE FROM EMP WHERE START_DATE &gt; ROUND(SYSDATE)+365;
+(3)		C. SELECT START_DATE FROM EMP WHERE START_DATE &gt; ADD_MONTHS(SYSDATE,-12);
+(4)		D. SELECT START_DATE FROM EMP WHERE START_DATE &gt; (SELECT SYSDATE-365 FROM DUAL);
+(5)		E. SELECT START_DATE FROM EMP WHERE MONTHS_BETWEEN(SYSDATE,START_DATE) &lt; 12;</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「日付演算と月数計算」です。DATE 型の差は日数で返る。月単位なら MONTHS_BETWEEN、月加算なら ADD_MONTHS を使う。年数を 365 日換算で書くと境界条件を外しやすい。 したがって正答は A「SELECT START_DATE FROM EMP WHERE START_DATE &gt; TRUNC(SYS…」 / D「SELECT START_DATE FROM EMP WHERE START_DATE &gt; (SELECT S…」 になります。</p>
@@ -675,29 +410,11 @@ START_DATE が過去16か月以内の行のみを表示したいとします。
                   <div class="question-meta">第3回 模擬試験 / 問43 / 正答 B / 自己回答 A</div>
                   <div class="block-title">問題文</div>
                   <pre>従業員の入社1か月後の最初の月曜日の日付を取得するクエリを選んでください。
-なお、STAFF テーブルには、NUMBER型 の STAFF_ID 列と、DATE型 の START_DATE 列が存在しています。</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card selected">
-              <div class="option-key">A</div>
-              <div class="option-text">SELECT staff_id, NEXT_DAY(ADD_MONTHS(start_date, 1), 1) FROM staff;</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">B</div>
-              <div class="option-text">SELECT staff_id, NEXT_DAY(ADD_MONTHS(start_date, 1), &#x27;MONDAY&#x27;) FROM staff;</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">C</div>
-              <div class="option-text">SELECT staff_id, NEXT_DAY(MONTHS_BETWEEN(start_date, SYSDATE), 6) FROM staff;</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">D</div>
-              <div class="option-text">SELECT staff_id, ADD_MONTHS(start_date, 1), NEXT_DAY(&#x27;MONDAY&#x27;) FROM staff;</div>
-            </div>
-            </div>
+なお、STAFF テーブルには、NUMBER型 の STAFF_ID 列と、DATE型 の START_DATE 列が存在しています。
+(1)		A. SELECT staff_id, NEXT_DAY(ADD_MONTHS(start_date, 1), 1) FROM staff;
+(2)		B. SELECT staff_id, NEXT_DAY(ADD_MONTHS(start_date, 1), &#x27;MONDAY&#x27;) FROM staff;
+(3)		C. SELECT staff_id, NEXT_DAY(MONTHS_BETWEEN(start_date, SYSDATE), 6) FROM staff;
+(4)		D. SELECT staff_id, ADD_MONTHS(start_date, 1), NEXT_DAY(&#x27;MONDAY&#x27;) FROM staff;</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「日付演算と月数計算」です。DATE 型の差は日数で返る。月単位なら MONTHS_BETWEEN、月加算なら ADD_MONTHS を使う。年数を 365 日換算で書くと境界条件を外しやすい。 したがって正答は B「SELECT staff_id, NEXT_DAY(ADD_MONTHS(start_date, 1), &#x27;M…」 になります。</p>
@@ -716,35 +433,46 @@ START_DATE が過去16か月以内の行のみを表示したいとします。
                   <pre>EMPLOYEES表について、部門 10 の従業員の以下の情報を表示する必要があります。
 ・従業員の姓
 ・雇用されてからの週間数
+
 | Name       | Null?     | Type         |
 |------------|-----------|--------------|
 | EMP_NO     | NOT NULL  | NUMBER(6)    |
 | LAST_NAME  |           | VARCHAR2(10) |
 | START_DATE |           | DATE         |
 | SALARY     |           | NUMBER(8)    |
-| DEPT_ID    |           | NUMBER(6)    |</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card correct">
-              <div class="option-key">A</div>
-              <div class="option-text">SELECT last_name, TRUNC((SYSDATE - start_date) / 7) AS weeks_employed<br>FROM employees<br>WHERE dept_id = 10<br>ORDER BY weeks_employed DESC;</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">B</div>
-              <div class="option-text">SELECT last_name, TRUNC((SYSDATE - start_date) / 7) AS weeks_employed<br>FROM employees<br>WHERE dept_id = 10<br>ORDER BY weeks_employed;</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">C</div>
-              <div class="option-text">SELECT last_name, ROUND((SYSDATE - start_date) / 7) AS weeks_employed<br>FROM employees<br>WHERE dept_id = 10<br>ORDER BY weeks_employed;</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">D</div>
-              <div class="option-text">SELECT last_name, ROUND((SYSDATE - start_date) / 7) AS weeks_employed<br>FROM employees<br>WHERE dept_id = 10<br>ORDER BY weeks_employed DESC;<br>結果は、週間数の多い順にソートする必要があります。どの SQL 文が適切ですか。1つ選択してください。</div>
-            </div>
-            </div>
+| DEPT_ID    |           | NUMBER(6)    |
+
+A.
+SELECT last_name, TRUNC((SYSDATE - start_date) / 7) AS weeks_employed
+FROM employees
+WHERE dept_id = 10
+ORDER BY weeks_employed DESC;
+
+B.
+SELECT last_name, TRUNC((SYSDATE - start_date) / 7) AS weeks_employed
+FROM employees
+WHERE dept_id = 10
+ORDER BY weeks_employed;
+
+C.
+SELECT last_name, ROUND((SYSDATE - start_date) / 7) AS weeks_employed
+FROM employees
+WHERE dept_id = 10
+ORDER BY weeks_employed;
+
+D.
+SELECT last_name, ROUND((SYSDATE - start_date) / 7) AS weeks_employed
+FROM employees
+WHERE dept_id = 10
+ORDER BY weeks_employed DESC;
+
+
+結果は、週間数の多い順にソートする必要があります。どの SQL 文が適切ですか。1つ選択してください。
+拡大する
+(1)		A
+(2)		B
+(3)		C
+(4)		D</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「日付演算と月数計算」です。DATE 型の差は日数で返る。月単位なら MONTHS_BETWEEN、月加算なら ADD_MONTHS を使う。年数を 365 日換算で書くと境界条件を外しやすい。 したがって正答は A「SELECT last_name, TRUNC((SYSDATE - start_date) / 7) AS …」 になります。</p>
@@ -767,34 +495,13 @@ START_DATE が過去16か月以内の行のみを表示したいとします。
                   <div class="question-meta">第2回 模擬試験 / 問55 / 正答 AD / 自己回答 BC</div>
                   <div class="block-title">問題文</div>
                   <pre>以下の文の実行結果と同じ結果になるものを2つ選択してください。
-SELECT COUNT(*) FROM employees;</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card correct">
-              <div class="option-key">A</div>
-              <div class="option-text">SELECT COUNT(NVL(salary, 0)) FROM employees;</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">B</div>
-              <div class="option-text">SELECT COUNT(salary) FROM employees WHERE salary IS NOT NULL;</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">C</div>
-              <div class="option-text">SELECT COUNT(NULLIF(salary, 0)) FROM employees;</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">D</div>
-              <div class="option-text">SELECT COUNT(COALESCE(salary, 0)) FROM employees;</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">E</div>
-              <div class="option-text">SELECT COUNT(NVL2(salary, 0, NULL)) FROM employees;</div>
-            </div>
-            </div>
+
+SELECT COUNT(*) FROM employees;
+(1)		A.　SELECT COUNT(NVL(salary, 0)) FROM employees;
+(2)		B.　SELECT COUNT(salary) FROM employees WHERE salary IS NOT NULL;
+(3)		C.　SELECT COUNT(NULLIF(salary, 0)) FROM employees;
+(4)		D.　SELECT COUNT(COALESCE(salary, 0)) FROM employees;
+(5)		E.　SELECT COUNT(NVL2(salary, 0, NULL)) FROM employees;</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「NULL 関数と条件式」です。NVL、NVL2、NULLIF、COALESCE、CASE、DECODE は、NULL や条件分岐を表すための関数群であり、引数順と戻り値の型整合が重要である。 したがって正答は A「SELECT COUNT(NVL(salary, 0)) FROM employees;」 / D「SELECT COUNT(COALESCE(salary, 0)) FROM employees;」 になります。</p>
@@ -811,37 +518,35 @@ SELECT COUNT(*) FROM employees;</pre>
                   <div class="question-meta">第3回 模擬試験 / 問58 / 正答 A / 自己回答 D</div>
                   <div class="block-title">問題文</div>
                   <pre>次のSQLを実行したときのソート順を確認してください。
+
+ 
+
 SELECT product_name
+
 FROM products
+
 ORDER BY
+
 CASE WHEN price = (SELECT MAX(price) FROM products)
+
 THEN &#x27;A&#x27;
+
 ELSE product_name
+
 END, product_name DESC;
+
+ 
+
 ※商品名（product_name）はすべてアルファベットで構成されているものとします。また、’A’という商品名は存在しません。
-正しい説明を1つ選んでください。</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card correct">
-              <div class="option-key">A</div>
-              <div class="option-text">最高価格の商品は、先頭に表示される。</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">B</div>
-              <div class="option-text">最高価格以外の商品は、商品名の降順で表示される。</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">C</div>
-              <div class="option-text">最高価格の商品が複数ある場合、商品名の昇順で表示される。</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">D</div>
-              <div class="option-text">ORDER BY 句の CASE 式の中で複数の式を組み合わせているため、構文エラーとなる。</div>
-            </div>
-            </div>
+
+ 
+
+正しい説明を1つ選んでください。
+
+(1)		A. 最高価格の商品は、先頭に表示される。
+(2)		B. 最高価格以外の商品は、商品名の降順で表示される。
+(3)		C. 最高価格の商品が複数ある場合、商品名の昇順で表示される。
+(4)		D. ORDER BY 句の CASE 式の中で複数の式を組み合わせているため、構文エラーとなる。</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「NULL 関数と条件式」です。NVL、NVL2、NULLIF、COALESCE、CASE、DECODE は、NULL や条件分岐を表すための関数群であり、引数順と戻り値の型整合が重要である。 したがって正答は A「最高価格の商品は、先頭に表示される。」 になります。</p>
@@ -863,34 +568,13 @@ END, product_name DESC;
                 <article class="question-card">
                   <div class="question-meta">第1回 模擬試験 / 問13 / 正答 A.E / 自己回答 A.B</div>
                   <div class="block-title">問題文</div>
-                  <pre>品名（ITEM_NAME）の先頭文字がS,sまたはT,tで始まるもので、かつ価格（ITEM_PRICE）が1500円未満の商品情報を取得する場合、以下のどのSQLを実行すればいいでしょうか。（2つ選択してください）</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card correct selected">
-              <div class="option-key">A</div>
-              <div class="option-text">SELECT ITEM_NAME , ITEM_PRICE FROM ITEM WHERE (INITCAP(ITEM_NAME) LIKE &#x27;S%&#x27; OR INITCAP(ITEM_NAME) LIKE &#x27;T%&#x27;) AND ITEM_PRICE &lt; 1500;</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">B</div>
-              <div class="option-text">SELECT ITEM_NAME , ITEM_PRICE FROM ITEM WHERE (UPPER(ITEM_NAME) LIKE &#x27;S%&#x27; OR UPPER(ITEM_NAME) LIKE &#x27;T&#x27;) AND ROUND(ITEM_PRICE) &lt; 1500;</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">C</div>
-              <div class="option-text">SELECT ITEM_NAME , ITEM_PRICE FROM ITEM WHERE UPPER(ITEM_NAME) BETWEEN UPPER(&#x27;S%&#x27; AND &#x27;T%&#x27;) AND ROUND(ITEM_PRICE) &lt; 1500;</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">D</div>
-              <div class="option-text">SELECT ITEM_NAME , ITEM_PRICE FROM ITEM WHERE (UPPER(ITEM_NAME) LIKE INITCAP(&#x27;S&#x27;) OR UPPER(ITEM_NAME) LIKE INITCAP(&#x27;T&#x27;)) AND ROUND(ITEM_PRICE) &lt; ROUND(1500);</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">E</div>
-              <div class="option-text">SELECT ITEM_NAME , ITEM_PRICE FROM ITEM WHERE (UPPER(ITEM_NAME) LIKE &#x27;S%&#x27; OR UPPER(ITEM_NAME) LIKE &#x27;T%&#x27;) AND TRUNC(ITEM_PRICE) &lt; 1500;</div>
-            </div>
-            </div>
+                  <pre>品名（ITEM_NAME）の先頭文字がS,sまたはT,tで始まるもので、かつ価格（ITEM_PRICE）が1500円未満の商品情報を取得する場合、以下のどのSQLを実行すればいいでしょうか。（2つ選択してください）
+拡大する
+(1)		A.　SELECT ITEM_NAME , ITEM_PRICE FROM ITEM WHERE (INITCAP(ITEM_NAME) LIKE &#x27;S%&#x27; OR INITCAP(ITEM_NAME) LIKE &#x27;T%&#x27;) AND ITEM_PRICE &lt; 1500;
+(2)		B.　SELECT ITEM_NAME , ITEM_PRICE FROM ITEM WHERE (UPPER(ITEM_NAME) LIKE &#x27;S%&#x27; OR UPPER(ITEM_NAME) LIKE &#x27;T&#x27;) AND ROUND(ITEM_PRICE) &lt; 1500;
+(3)		C.　SELECT ITEM_NAME , ITEM_PRICE FROM ITEM WHERE UPPER(ITEM_NAME) BETWEEN UPPER(&#x27;S%&#x27; AND &#x27;T%&#x27;) AND ROUND(ITEM_PRICE) &lt; 1500;
+(4)		D.　SELECT ITEM_NAME , ITEM_PRICE FROM ITEM WHERE (UPPER(ITEM_NAME) LIKE INITCAP(&#x27;S&#x27;) OR UPPER(ITEM_NAME) LIKE INITCAP(&#x27;T&#x27;)) AND ROUND(ITEM_PRICE) &lt; ROUND(1500);
+(5)		E.　SELECT ITEM_NAME , ITEM_PRICE FROM ITEM WHERE (UPPER(ITEM_NAME) LIKE &#x27;S%&#x27; OR UPPER(ITEM_NAME) LIKE &#x27;T%&#x27;) AND TRUNC(ITEM_PRICE) &lt; 1500;</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「ROUND・TRUNC・FLOOR などの数値関数」です。ROUND は四捨五入、TRUNC は切り捨て、FLOOR は指定値以下の最大整数、CEIL は指定値以上の最小整数を返す。関数ごとの戻り値を正確に区別する必要がある。 したがって正答は A「SELECT ITEM_NAME , ITEM_PRICE FROM ITEM WHERE (INITCAP(…」 / E「SELECT ITEM_NAME , ITEM_PRICE FROM ITEM WHERE (UPPER(IT…」 になります。</p>
@@ -906,29 +590,11 @@ END, product_name DESC;
                 <article class="question-card">
                   <div class="question-meta">第3回 模擬試験 / 問30 / 正答 D / 自己回答 A</div>
                   <div class="block-title">問題文</div>
-                  <pre>MOD、ROUND、TRUNC 関数の動作に関して、正しいものを1つ選んでください。</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card selected">
-              <div class="option-key">A</div>
-              <div class="option-text">TRUNC(MOD(12.7,-2)) は無効である。</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">B</div>
-              <div class="option-text">ROUND(MOD(12.7,-2)) は無効である。</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">C</div>
-              <div class="option-text">ROUND(MOD(12.7,-2)) と TRUNC(MOD(12.7,-2)) はどちらも使用でき、同じ結果を返す。</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">D</div>
-              <div class="option-text">ROUND(MOD(12.7,-2)) と TRUNC(MOD(12.7,-2)) はどちらも使用できるが、異なる結果を返す。</div>
-            </div>
-            </div>
+                  <pre>MOD、ROUND、TRUNC 関数の動作に関して、正しいものを1つ選んでください。
+(1)		A. TRUNC(MOD(12.7,-2)) は無効である。
+(2)		B. ROUND(MOD(12.7,-2)) は無効である。
+(3)		C. ROUND(MOD(12.7,-2)) と TRUNC(MOD(12.7,-2)) はどちらも使用でき、同じ結果を返す。
+(4)		D. ROUND(MOD(12.7,-2)) と TRUNC(MOD(12.7,-2)) はどちらも使用できるが、異なる結果を返す。</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「ROUND・TRUNC・FLOOR などの数値関数」です。ROUND は四捨五入、TRUNC は切り捨て、FLOOR は指定値以下の最大整数、CEIL は指定値以上の最小整数を返す。関数ごとの戻り値を正確に区別する必要がある。 したがって正答は D「ROUND(MOD(12.7,-2)) と TRUNC(MOD(12.7,-2)) はどちらも使用できるが、異…」 になります。</p>
@@ -950,39 +616,13 @@ END, product_name DESC;
                 <article class="question-card">
                   <div class="question-meta">第2回 模擬試験 / 問15 / 正答 DE / 自己回答 EF</div>
                   <div class="block-title">問題文</div>
-                  <pre>単一行関数について正しい記述はどれでしょうか。 (2つ選択)</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card">
-              <div class="option-key">A</div>
-              <div class="option-text">ROUND：最大の整数を返します。</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">B</div>
-              <div class="option-text">FLOOR：最小の整数を返します。</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">C</div>
-              <div class="option-text">ABS ：四捨五入した整数を返します。</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">D</div>
-              <div class="option-text">TRUNC：NUMBER および DATE 値で使用できます 。</div>
-            </div>
-            
-            <div class="option-card correct selected">
-              <div class="option-key">E</div>
-              <div class="option-text">MOD ：除算演算の余りを返します。</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">F</div>
-              <div class="option-text">TRUNC：NUMBERのみで使用できます 。</div>
-            </div>
-            </div>
+                  <pre>単一行関数について正しい記述はどれでしょうか。 (2つ選択)
+(1)		A.　ROUND：最大の整数を返します。
+(2)		B.　FLOOR：最小の整数を返します。
+(3)		C.　ABS ：四捨五入した整数を返します。
+(4)		D.　TRUNC：NUMBER および DATE 値で使用できます 。
+(5)		E.　MOD ：除算演算の余りを返します。
+(6)		F.　TRUNC：NUMBERのみで使用できます 。</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「単一行関数の基本性質」です。単一行関数は入力 1 行ごとに 1 つの結果を返し、ネストもできる。引数には列、リテラル、式が使え、戻り値の型は引数と異なる場合もある。 したがって正答は D「TRUNC：NUMBER および DATE 値で使用できます 。」 / E「MOD ：除算演算の余りを返します。」 になります。</p>
@@ -998,39 +638,13 @@ END, product_name DESC;
                 <article class="question-card">
                   <div class="question-meta">第3回 模擬試験 / 問39 / 正答 BEF / 自己回答 ADE</div>
                   <div class="block-title">問題文</div>
-                  <pre>シングル行関数（単一行関数）について、正しいものを3つ選んでください。</pre>
-                  <div class="block-title">選択肢</div>
-                  <div class="options-grid">
-            <div class="option-card selected">
-              <div class="option-key">A</div>
-              <div class="option-text">引数は1つしか受け取ることができない。</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">B</div>
-              <div class="option-text">ネスト（入れ子）できる。</div>
-            </div>
-            
-            <div class="option-card">
-              <div class="option-key">C</div>
-              <div class="option-text">SELECT句でのみ使用できる。</div>
-            </div>
-            
-            <div class="option-card selected">
-              <div class="option-key">D</div>
-              <div class="option-text">各テーブルで1行だけを返す。</div>
-            </div>
-            
-            <div class="option-card correct selected">
-              <div class="option-key">E</div>
-              <div class="option-text">引数には、カラム名、変数、リテラル、または式を指定できる。</div>
-            </div>
-            
-            <div class="option-card correct">
-              <div class="option-key">F</div>
-              <div class="option-text">戻り値のデータ型は、引数のデータ型とは異なる場合がある。</div>
-            </div>
-            </div>
+                  <pre>シングル行関数（単一行関数）について、正しいものを3つ選んでください。
+(1)		A. 引数は1つしか受け取ることができない。
+(2)		B. ネスト（入れ子）できる。
+(3)		C. SELECT句でのみ使用できる。
+(4)		D. 各テーブルで1行だけを返す。
+(5)		E. 引数には、カラム名、変数、リテラル、または式を指定できる。
+(6)		F. 戻り値のデータ型は、引数のデータ型とは異なる場合がある。</pre>
                   <div class="analysis-block">
                     <div class="block-title">なぜそうなるか</div>
                     <p>この問題の論点は「単一行関数の基本性質」です。単一行関数は入力 1 行ごとに 1 つの結果を返し、ネストもできる。引数には列、リテラル、式が使え、戻り値の型は引数と異なる場合もある。 したがって正答は B「ネスト（入れ子）できる。」 / E「引数には、カラム名、変数、リテラル、または式を指定できる。」 / F「戻り値のデータ型は、引数のデータ型とは異なる場合がある。」 になります。</p>
