@@ -62,6 +62,17 @@
     .concept-section h3 { flex-direction: column; align-items: flex-start; }
     .option-review-head { flex-direction: column; align-items: flex-start; }
   }
+
+  pre .sql-kw { color: #fbbf24; font-weight: 700; }
+  pre .sql-fn { color: #60a5fa; font-weight: 600; }
+  pre .sql-str { color: #86efac; }
+  pre .sql-num { color: #fca5a5; }
+  pre .sql-cmt { color: #94a3b8; font-style: italic; }
+  code .sql-kw { color: #b45309; font-weight: 700; }
+  code .sql-fn { color: #1d4ed8; font-weight: 600; }
+  code .sql-str { color: #047857; }
+  code .sql-num { color: #b91c1c; }
+  code .sql-cmt { color: #64748b; font-style: italic; }
 </style>
 </head>
 <body>
@@ -118,11 +129,11 @@
 <span class="note">-- DDL はすべて暗黙 COMMIT を伴う。DEFAULT は値省略時 / VALUES(DEFAULT) で補完。</span></div></div>
       <div class="guide-block">
         <div class="guide-title">この論点の基本形</div>
-        <pre>CREATE VIEW v_item AS
-SELECT item_id, item_name FROM item;
+        <pre><span class="sql-kw">CREATE VIEW</span> v_item <span class="sql-kw">AS</span>
+<span class="sql-kw">SELECT</span> item_id, item_name <span class="sql-kw">FROM</span> item;
 
-CREATE SEQUENCE seq_item START WITH 1;
-GRANT SELECT ON item TO user_name;</pre>
+<span class="sql-kw">CREATE SEQUENCE</span> seq_item <span class="sql-kw">START WITH</span> <span class="sql-num">1</span>;
+<span class="sql-kw">GRANT</span> <span class="sql-kw">SELECT</span> <span class="sql-kw">ON</span> item <span class="sql-kw">TO</span> user_name;</pre>
       </div>
       <div class="guide-grid">
         <div class="guide-block">
@@ -142,11 +153,11 @@ GRANT SELECT ON item TO user_name;</pre>
                   <div class="question-meta">第1回 模擬試験 / 問53 / 正答 D / 自己回答 A</div>
                   <div class="block-title">問題文</div>
                   <pre>DELETE文およびTRUNCATE文について正しい記述は以下のどれでしょうか。
-(1)		A.　TRUNCATE文を使用して索引を削除できます。
-(2)		B.　DELETE文を使用してデータを削除できますが、TRUNCATE文を使用してデータを削除することはできません。
-(3)		C.　DELETE文およびTRUNCATE文では、データを表に復元するためにロールバックを行うことができます。
-(4)		D.　DELETE文を使用して、表から行を選択して削除できます。
-(5)		E.　TRUNCATE文を使用して、表から行を選択して削除できます。</pre>
+(<span class="sql-num">1</span>)		A.　TRUNCATE文を使用して索引を削除できます。
+(<span class="sql-num">2</span>)		B.　DELETE文を使用してデータを削除できますが、TRUNCATE文を使用してデータを削除することはできません。
+(<span class="sql-num">3</span>)		C.　DELETE文およびTRUNCATE文では、データを表に復元するためにロールバックを行うことができます。
+(<span class="sql-num">4</span>)		D.　DELETE文を使用して、表から行を選択して削除できます。
+(<span class="sql-num">5</span>)		E.　TRUNCATE文を使用して、表から行を選択して削除できます。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「シーケンス・シノニム・索引」です。問題文は「DELETE文およびTRUNCATE文について正しい記述は以下のどれでしょうか。」を満たす記述または SQL を求めています。シーケンスは連番供給、シノニムは別名、索引は検索高速化のためのオブジェクトである。INVISIBLE INDEX、NEXTVAL/CURRVAL、PUBLIC SYNONYM など固有ルールが問われる。 そのため、成立条件を満たす正答は D「DELETE文を使用して、表から行を選択して削除できます。」 です。</p>
@@ -210,11 +221,11 @@ GRANT SELECT ON item TO user_name;</pre>
                   <div class="question-meta">第1回 模擬試験 / 問63 / 正答 A.C / 自己回答 C.E</div>
                   <div class="block-title">問題文</div>
                   <pre>索引とその管理について正しい記述はどれでしょうか。（2つ選択）
-(1)		A.　CREATE TABLE文の中で主キー制約および一意キー制約を定義すると、索引が暗黙的に作成されます。
-(2)		B.　不可視索引は、DML実行中は維持されません。
-(3)		C.　索引は一意にも非一意にも設定できます。
-(4)		D.　索引作成時にOracle標準関数を使用することはできません。
-(5)		E.　主キー制約や一意キー制約で暗黙的に作成された索引は、その索引のみを削除することができます。</pre>
+(<span class="sql-num">1</span>)		A.　<span class="sql-kw">CREATE</span> TABLE文の中で主キー制約および一意キー制約を定義すると、索引が暗黙的に作成されます。
+(<span class="sql-num">2</span>)		B.　不可視索引は、DML実行中は維持されません。
+(<span class="sql-num">3</span>)		C.　索引は一意にも非一意にも設定できます。
+(<span class="sql-num">4</span>)		D.　索引作成時にOracle標準関数を使用することはできません。
+(<span class="sql-num">5</span>)		E.　主キー制約や一意キー制約で暗黙的に作成された索引は、その索引のみを削除することができます。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「シーケンス・シノニム・索引」です。問題文は「索引とその管理について正しい記述はどれでしょうか。（2つ選択）」を満たす記述または SQL を求めています。シーケンスは連番供給、シノニムは別名、索引は検索高速化のためのオブジェクトである。INVISIBLE INDEX、NEXTVAL/CURRVAL、PUBLIC SYNONYM など固有ルールが問われる。 そのため、成立条件を満たす正答は A「CREATE TABLE文の中で主キー制約および一意キー制約を定義すると、索引が暗黙的に作成されます。」 / C「索引は一意にも非一意にも設定できます。」 です。</p>
@@ -278,11 +289,11 @@ GRANT SELECT ON item TO user_name;</pre>
                   <div class="question-meta">第1回 模擬試験 / 問65 / 正答 E / 自己回答 D</div>
                   <div class="block-title">問題文</div>
                   <pre>シノニムについて正しい記述はどれでしょうか。
-(1)		A.　シノニムの変更をする場合、いったん削除して再作成する必要があります。
-(2)		B.　全ユーザーから使用できるシノニムを作成するためには、CREATE SYNONYMシステム権限が必要です。
-(3)		C.　権限を持たないユーザーでも PUBLIC SYNONYMを作成できます。
-(4)		D.　プライベート・シノニムは、データベース内で一意である必要があります。
-(5)		E.　シノニムはシノニムを持つことができます。</pre>
+(<span class="sql-num">1</span>)		A.　シノニムの変更をする場合、いったん削除して再作成する必要があります。
+(<span class="sql-num">2</span>)		B.　全ユーザーから使用できるシノニムを作成するためには、<span class="sql-kw">CREATE</span> SYNONYMシステム権限が必要です。
+(<span class="sql-num">3</span>)		C.　権限を持たないユーザーでも <span class="sql-kw">PUBLIC</span> SYNONYMを作成できます。
+(<span class="sql-num">4</span>)		D.　プライベート・シノニムは、データベース内で一意である必要があります。
+(<span class="sql-num">5</span>)		E.　シノニムはシノニムを持つことができます。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「シーケンス・シノニム・索引」です。問題文は「シノニムについて正しい記述はどれでしょうか。」を満たす記述または SQL を求めています。シーケンスは連番供給、シノニムは別名、索引は検索高速化のためのオブジェクトである。INVISIBLE INDEX、NEXTVAL/CURRVAL、PUBLIC SYNONYM など固有ルールが問われる。 そのため、成立条件を満たす正答は E「シノニムはシノニムを持つことができます。」 です。</p>
@@ -346,13 +357,13 @@ GRANT SELECT ON item TO user_name;</pre>
                   <div class="question-meta">第1回 模擬試験 / 問67 / 正答 B.D.F / 自己回答 A.D.F</div>
                   <div class="block-title">問題文</div>
                   <pre>シーケンスについて正しい記述はどれでしょうか。（3つ選択）
-(1)		A.　シーケンスの初期値はMAXVALUEで指定します。
-(2)		B.　シーケンス値はマイナス値の指定も可能です。
-(3)		C.　シーケンスは、1つのセッションのみで使用できます。
-(4)		D.　CURRVALは、シーケンスの現在の値を取得します。
-(5)		E.　インスタンスに障害が発生した場合、キャッシュされていたシーケンス番号は再度利用可能となります。
-(6)		F.　NEXTVALは、現在値に加増した値を取得します。
-(7)		G.　MAXVALUE/MINVALUEの値の変更は、シーケンスを一度DROPして再作成する必要があります。</pre>
+(<span class="sql-num">1</span>)		A.　シーケンスの初期値はMAXVALUEで指定します。
+(<span class="sql-num">2</span>)		B.　シーケンス値はマイナス値の指定も可能です。
+(<span class="sql-num">3</span>)		C.　シーケンスは、1つのセッションのみで使用できます。
+(<span class="sql-num">4</span>)		D.　CURRVALは、シーケンスの現在の値を取得します。
+(<span class="sql-num">5</span>)		E.　インスタンスに障害が発生した場合、キャッシュされていたシーケンス番号は再度利用可能となります。
+(<span class="sql-num">6</span>)		F.　NEXTVALは、現在値に加増した値を取得します。
+(<span class="sql-num">7</span>)		G.　MAXVALUE/MINVALUEの値の変更は、シーケンスを一度DROPして再作成する必要があります。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「シーケンス・シノニム・索引」です。問題文は「シーケンスについて正しい記述はどれでしょうか。（3つ選択）」を満たす記述または SQL を求めています。シーケンスは連番供給、シノニムは別名、索引は検索高速化のためのオブジェクトである。INVISIBLE INDEX、NEXTVAL/CURRVAL、PUBLIC SYNONYM など固有ルールが問われる。 そのため、成立条件を満たす正答は B「シーケンス値はマイナス値の指定も可能です。」 / D「CURRVALは、シーケンスの現在の値を取得します。」 / F「NEXTVALは、現在値に加増した値を取得します。」 です。</p>
@@ -434,12 +445,12 @@ GRANT SELECT ON item TO user_name;</pre>
                   <div class="question-meta">第1回 模擬試験 / 問70 / 正答 A.B.F / 自己回答 A.B.E</div>
                   <div class="block-title">問題文</div>
                   <pre>システム権限で実行できるものについての説明はどれでしょうか。（3つ選択）
-(1)		A.　データベースに接続します。
-(2)		B.　データベース内の任意の順序（シーケンス）にアクセスできます。
-(3)		C.　OSのファイルにアクセスします。
-(4)		D.　別のスキーマでファンクションを実行します。
-(5)		E.　WITH GRANT OPTIONを使用します。
-(6)		F.　WITH ADMIN OPTIONを使用します。</pre>
+(<span class="sql-num">1</span>)		A.　データベースに接続します。
+(<span class="sql-num">2</span>)		B.　データベース内の任意の順序（シーケンス）にアクセスできます。
+(<span class="sql-num">3</span>)		C.　OSのファイルにアクセスします。
+(<span class="sql-num">4</span>)		D.　別のスキーマでファンクションを実行します。
+(<span class="sql-num">5</span>)		E.　<span class="sql-kw">WITH</span> <span class="sql-kw">GRANT</span> OPTIONを使用します。
+(<span class="sql-num">6</span>)		F.　<span class="sql-kw">WITH</span> ADMIN OPTIONを使用します。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「シーケンス・シノニム・索引」です。問題文は「システム権限で実行できるものについての説明はどれでしょうか。（3つ選択）」を満たす記述または SQL を求めています。シーケンスは連番供給、シノニムは別名、索引は検索高速化のためのオブジェクトである。INVISIBLE INDEX、NEXTVAL/CURRVAL、PUBLIC SYNONYM など固有ルールが問われる。 そのため、成立条件を満たす正答は A「データベースに接続します。」 / B「データベース内の任意の順序（シーケンス）にアクセスできます。」 / F「WITH ADMIN OPTIONを使用します。」 です。</p>
@@ -512,11 +523,11 @@ GRANT SELECT ON item TO user_name;</pre>
                   <div class="question-meta">第2回 模擬試験 / 問64 / 正答 AC / 自己回答 CE</div>
                   <div class="block-title">問題文</div>
                   <pre>シーケンス変更について、正しいものを2つ選択してください。
-(1)		A. 増分値は変更できる
-(2)		B. 初期値は変更できる
-(3)		C. CYCLEの変更で値の重複が有りうる
-(4)		D. CACHEサイズを変更すると既存キャッシュがクリアされる
-(5)		E. シーケンス変更を行うと初期値から再生成される</pre>
+(<span class="sql-num">1</span>)		A. 増分値は変更できる
+(<span class="sql-num">2</span>)		B. 初期値は変更できる
+(<span class="sql-num">3</span>)		C. CYCLEの変更で値の重複が有りうる
+(<span class="sql-num">4</span>)		D. CACHEサイズを変更すると既存キャッシュがクリアされる
+(<span class="sql-num">5</span>)		E. シーケンス変更を行うと初期値から再生成される</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「シーケンス・シノニム・索引」です。問題文は「シーケンス変更について、正しいものを2つ選択してください。」を満たす記述または SQL を求めています。シーケンスは連番供給、シノニムは別名、索引は検索高速化のためのオブジェクトである。INVISIBLE INDEX、NEXTVAL/CURRVAL、PUBLIC SYNONYM など固有ルールが問われる。 そのため、成立条件を満たす正答は A「増分値は変更できる」 / C「CYCLEの変更で値の重複が有りうる」 です。</p>
@@ -581,20 +592,20 @@ GRANT SELECT ON item TO user_name;</pre>
                   <div class="block-title">問題文</div>
                   <pre>以下のシーケンスを作成します。
 
-CREATE SEQUENCE ITEM_SEQ
-START WITH 100
-INCREMENT BY 10
-MAXVALUE 1000
+<span class="sql-kw">CREATE SEQUENCE</span> ITEM_SEQ
+<span class="sql-kw">START WITH</span> <span class="sql-num">100</span>
+<span class="sql-kw">INCREMENT BY</span> <span class="sql-num">10</span>
+MAXVALUE <span class="sql-num">1000</span>
 CYCLE
-CACHE 10;
+CACHE <span class="sql-num">10</span>;
 
 シーケンスITEM_SEQを用いて最大値1000まで番号を生成したのち、このシーケンスが生成する値を使った1行を表にINSERTを実行します。
 INSERTした行をSELECTによって表示したとき、生成したシーケンス番号の値は何でしょうか。
-(1)		A.　1
-(2)		B.　10
-(3)		C.　100
-(4)		D.　1000
-(5)		E.　エラー</pre>
+(<span class="sql-num">1</span>)		A.　<span class="sql-num">1</span>
+(<span class="sql-num">2</span>)		B.　<span class="sql-num">10</span>
+(<span class="sql-num">3</span>)		C.　<span class="sql-num">100</span>
+(<span class="sql-num">4</span>)		D.　<span class="sql-num">1000</span>
+(<span class="sql-num">5</span>)		E.　エラー</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「シーケンス・シノニム・索引」です。問題文は「以下のシーケンスを作成します。 CREATE SEQUENCE ITEM_SEQ START WITH 100 INCREMENT BY 10 MAXVALUE 1000 CYCLE CACHE 10; シーケンスITEM_SEQを用いて…」を満たす記述または SQL を求めています。シーケンスは連番供給、シノニムは別名、索引は検索高速化のためのオブジェクトである。INVISIBLE INDEX、NEXTVAL/CURRVAL、PUBLIC SYNONYM など固有ルールが問われる。 そのため、成立条件を満たす正答は A「1」 です。</p>
@@ -658,10 +669,10 @@ INSERTした行をSELECTによって表示したとき、生成したシーケ�
                   <div class="question-meta">第3回 模擬試験 / 問8 / 正答 C / 自己回答 B</div>
                   <div class="block-title">問題文</div>
                   <pre>次のうち、索引にINVISIBLEを指定した場合の動作について正しい説明はどれでしょうか。1つ選択してください。
-(1)		A. 通常のINDEX相当の性能が期待できる。
-(2)		B. DML実行時に索引情報の更新が抑止される。
-(3)		C. 索引の有効性を確認できる。
-(4)		D. 一度不可視にすると索引を可視化することはできない。</pre>
+(<span class="sql-num">1</span>)		A. 通常のINDEX相当の性能が期待できる。
+(<span class="sql-num">2</span>)		B. DML実行時に索引情報の更新が抑止される。
+(<span class="sql-num">3</span>)		C. 索引の有効性を確認できる。
+(<span class="sql-num">4</span>)		D. 一度不可視にすると索引を可視化することはできない。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「シーケンス・シノニム・索引」です。問題文は「次のうち、索引にINVISIBLEを指定した場合の動作について正しい説明はどれでしょうか。1つ選択してください。」を満たす記述または SQL を求めています。シーケンスは連番供給、シノニムは別名、索引は検索高速化のためのオブジェクトである。INVISIBLE INDEX、NEXTVAL/CURRVAL、PUBLIC SYNONYM など固有ルールが問われる。 そのため、成立条件を満たす正答は C「索引の有効性を確認できる。」 です。</p>
@@ -716,11 +727,11 @@ INSERTした行をSELECTによって表示したとき、生成したシーケ�
                   <div class="question-meta">第3回 模擬試験 / 問18 / 正答 CDE / 自己回答 CD</div>
                   <div class="block-title">問題文</div>
                   <pre>シノニム に関する正しい記述を 3つ 選んでください。
-(1)		A. PL/SQLプロシージャのシノニムを作成することはできない。
-(2)		B. パブリックシノニムは、どのユーザーでも削除できる。
-(3)		C. シーケンスにもシノニムを設定できる。
-(4)		D. シノニムは、すべてのユーザーが利用可能にできる。
-(5)		E. あるユーザーが作成したシノニムは、別のユーザーのオブジェクトを参照できる。</pre>
+(<span class="sql-num">1</span>)		A. PL/SQLプロシージャのシノニムを作成することはできない。
+(<span class="sql-num">2</span>)		B. パブリックシノニムは、どのユーザーでも削除できる。
+(<span class="sql-num">3</span>)		C. シーケンスにもシノニムを設定できる。
+(<span class="sql-num">4</span>)		D. シノニムは、すべてのユーザーが利用可能にできる。
+(<span class="sql-num">5</span>)		E. あるユーザーが作成したシノニムは、別のユーザーのオブジェクトを参照できる。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「シーケンス・シノニム・索引」です。問題文は「シノニム に関する正しい記述を 3つ 選んでください。」を満たす記述または SQL を求めています。シーケンスは連番供給、シノニムは別名、索引は検索高速化のためのオブジェクトである。INVISIBLE INDEX、NEXTVAL/CURRVAL、PUBLIC SYNONYM など固有ルールが問われる。 そのため、成立条件を満たす正答は C「シーケンスにもシノニムを設定できる。」 / D「シノニムは、すべてのユーザーが利用可能にできる。」 / E「あるユーザーが作成したシノニムは、別のユーザーのオブジェクトを参照できる。」 です。</p>
@@ -784,11 +795,11 @@ INSERTした行をSELECTによって表示したとき、生成したシーケ�
                   <div class="question-meta">第3回 模擬試験 / 問29 / 正答 AD / 自己回答 AC</div>
                   <div class="block-title">問題文</div>
                   <pre>Oracleのシノニムについて、正しいものを2つ選んでください。
-(1)		A. シノニムに対して別のシノニムを作成できる。
-(2)		B. シノニムは参照先のオブジェクトが削除されても自動的に削除される。
-(3)		C. すべてのユーザーが PUBLIC SYNONYM を作成できる。
-(4)		D. PACKAGE 内のオブジェクトにはシノニムを作成できる。
-(5)		E. データベース内のすべてのプライベートシノニム名は一意でなければならない。</pre>
+(<span class="sql-num">1</span>)		A. シノニムに対して別のシノニムを作成できる。
+(<span class="sql-num">2</span>)		B. シノニムは参照先のオブジェクトが削除されても自動的に削除される。
+(<span class="sql-num">3</span>)		C. すべてのユーザーが <span class="sql-kw">PUBLIC</span> <span class="sql-kw">SYNONYM</span> を作成できる。
+(<span class="sql-num">4</span>)		D. PACKAGE 内のオブジェクトにはシノニムを作成できる。
+(<span class="sql-num">5</span>)		E. データベース内のすべてのプライベートシノニム名は一意でなければならない。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「シーケンス・シノニム・索引」です。問題文は「Oracleのシノニムについて、正しいものを2つ選んでください。」を満たす記述または SQL を求めています。シーケンスは連番供給、シノニムは別名、索引は検索高速化のためのオブジェクトである。INVISIBLE INDEX、NEXTVAL/CURRVAL、PUBLIC SYNONYM など固有ルールが問われる。 そのため、成立条件を満たす正答は A「シノニムに対して別のシノニムを作成できる。」 / D「PACKAGE 内のオブジェクトにはシノニムを作成できる。」 です。</p>
@@ -854,16 +865,16 @@ INSERTした行をSELECTによって表示したとき、生成したシーケ�
                   <pre>以下の条件を満たす シーケンスを作成する必要があります。
 
 ・名前：PRO_SEQ
-・最初の値は 1
+・最初の値は <span class="sql-num">1</span>
 ・重複は許可されない
 ・値の欠落を減らす
 
 次のうち、要件を満たすものを1つ選んでください。
-(1)		A. CREATE SEQUENCE pro_seq START WITH 1 CACHE;
-(2)		B. CREATE SEQUENCE pro_seq START WITH 1 INCREMENT BY 1;
-(3)		C. CREATE SEQUENCE pro_seq START WITH 1 INCREMENT BY 1 CACHE;
-(4)		D. CREATE SEQUENCE pro_seq START WITH 1 INCREMENT BY 1 CYCLE;
-(5)		E. CREATE SEQUENCE pro_seq START WITH 1 INCREMENT BY 1 NOCACHE;</pre>
+(<span class="sql-num">1</span>)		A. <span class="sql-kw">CREATE SEQUENCE</span> pro_seq <span class="sql-kw">START WITH</span> <span class="sql-num">1</span> CACHE;
+(<span class="sql-num">2</span>)		B. <span class="sql-kw">CREATE SEQUENCE</span> pro_seq <span class="sql-kw">START WITH</span> <span class="sql-num">1</span> <span class="sql-kw">INCREMENT BY</span> <span class="sql-num">1</span>;
+(<span class="sql-num">3</span>)		C. <span class="sql-kw">CREATE SEQUENCE</span> pro_seq <span class="sql-kw">START WITH</span> <span class="sql-num">1</span> <span class="sql-kw">INCREMENT BY</span> <span class="sql-num">1</span> CACHE;
+(<span class="sql-num">4</span>)		D. <span class="sql-kw">CREATE SEQUENCE</span> pro_seq <span class="sql-kw">START WITH</span> <span class="sql-num">1</span> <span class="sql-kw">INCREMENT BY</span> <span class="sql-num">1</span> CYCLE;
+(<span class="sql-num">5</span>)		E. <span class="sql-kw">CREATE SEQUENCE</span> pro_seq <span class="sql-kw">START WITH</span> <span class="sql-num">1</span> <span class="sql-kw">INCREMENT BY</span> <span class="sql-num">1</span> NOCACHE;</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「シーケンス・シノニム・索引」です。問題文は「以下の条件を満たす シーケンスを作成する必要があります。 ・名前：PRO_SEQ ・最初の値は 1 ・重複は許可されない ・値の欠落を減らす 次のうち、要件を満たすものを1つ選んでください。」を満たす記述または SQL を求めています。シーケンスは連番供給、シノニムは別名、索引は検索高速化のためのオブジェクトである。INVISIBLE INDEX、NEXTVAL/CURRVAL、PUBLIC SYNONYM など固有ルールが問われる。 そのため、成立条件を満たす正答は E「CREATE SEQUENCE pro_seq START WITH 1 INCREMENT BY 1 NOC…」 です。</p>
@@ -947,11 +958,11 @@ INSERTした行をSELECTによって表示したとき、生成したシーケ�
 <span class="note">-- DDL はすべて暗黙 COMMIT を伴う。DEFAULT は値省略時 / VALUES(DEFAULT) で補完。</span></div></div>
       <div class="guide-block">
         <div class="guide-title">この論点の基本形</div>
-        <pre>CREATE VIEW v_item AS
-SELECT item_id, item_name FROM item;
+        <pre><span class="sql-kw">CREATE VIEW</span> v_item <span class="sql-kw">AS</span>
+<span class="sql-kw">SELECT</span> item_id, item_name <span class="sql-kw">FROM</span> item;
 
-CREATE SEQUENCE seq_item START WITH 1;
-GRANT SELECT ON item TO user_name;</pre>
+<span class="sql-kw">CREATE SEQUENCE</span> seq_item <span class="sql-kw">START WITH</span> <span class="sql-num">1</span>;
+<span class="sql-kw">GRANT</span> <span class="sql-kw">SELECT</span> <span class="sql-kw">ON</span> item <span class="sql-kw">TO</span> user_name;</pre>
       </div>
       <div class="guide-grid">
         <div class="guide-block">
@@ -971,11 +982,11 @@ GRANT SELECT ON item TO user_name;</pre>
                   <div class="question-meta">第1回 模擬試験 / 問61 / 正答 A.D.E / 自己回答 B.D.E</div>
                   <div class="block-title">問題文</div>
                   <pre>ビューに関して正しい記述はどれでしょうか。（3つ選択）
-(1)		A.　ビューでDISTINCTを使用している場合、ビュー経由でデータを更新することはできません。
-(2)		B.　存在しない表に対してビューを作成することはできません。
-(3)		C.　ビューでGROUP BYを使用している場合、ビュー経由でデータを更新することができます。
-(4)		D.　すべてのDMLを禁止する場合、WITH READ ONLY制約を使用します。
-(5)		E.　OR REPLACEオプションは、すでにビューが存在する場合、ビューを削除せずに定義を変更します。</pre>
+(<span class="sql-num">1</span>)		A.　ビューでDISTINCTを使用している場合、ビュー経由でデータを更新することはできません。
+(<span class="sql-num">2</span>)		B.　存在しない表に対してビューを作成することはできません。
+(<span class="sql-num">3</span>)		C.　ビューでGROUP BYを使用している場合、ビュー経由でデータを更新することができます。
+(<span class="sql-num">4</span>)		D.　すべてのDMLを禁止する場合、<span class="sql-kw">WITH</span> READ ONLY制約を使用します。
+(<span class="sql-num">5</span>)		E.　<span class="sql-kw">OR</span> REPLACEオプションは、すでにビューが存在する場合、ビューを削除せずに定義を変更します。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「ビューの性質と更新可否」です。問題文は「ビューに関して正しい記述はどれでしょうか。（3つ選択）」を満たす記述または SQL を求めています。ビューはスキーマオブジェクトであり、基表に依存している。更新可否や WITH CHECK OPTION、READ ONLY、別スキーマ参照可否などが典型論点になる。 そのため、成立条件を満たす正答は A「ビューでDISTINCTを使用している場合、ビュー経由でデータを更新することはできません。」 / D「すべてのDMLを禁止する場合、WITH READ ONLY制約を使用します。」 / E「OR REPLACEオプションは、すでにビューが存在する場合、ビューを削除せずに定義を変更します。」 です。</p>
@@ -1039,10 +1050,10 @@ GRANT SELECT ON item TO user_name;</pre>
                   <div class="question-meta">第1回 模擬試験 / 問75 / 正答 C.D / 自己回答 B.C</div>
                   <div class="block-title">問題文</div>
                   <pre>データ・ディクショナリについての正しい記述を2つ選択してください。
-(1)		A.　データ・ディクショナリは、DBAが手動で管理します。
-(2)		B.　データ・ディクショナリ・ビューは、データベース管理用表とユーザー定義表の集合体です。
-(3)		C.　ユーザー名、およびユーザーに付与された権限とロールは、データ・ディクショナリに保存されます。
-(4)		D.　DBA、ALL、USER などのプレフィックスが異なっていて、その後の名前が同じビューは、権限と名前に応じた最適な情報を取得します。</pre>
+(<span class="sql-num">1</span>)		A.　データ・ディクショナリは、DBAが手動で管理します。
+(<span class="sql-num">2</span>)		B.　データ・ディクショナリ・ビューは、データベース管理用表とユーザー定義表の集合体です。
+(<span class="sql-num">3</span>)		C.　ユーザー名、およびユーザーに付与された権限とロールは、データ・ディクショナリに保存されます。
+(<span class="sql-num">4</span>)		D.　DBA、<span class="sql-kw">ALL</span>、USER などのプレフィックスが異なっていて、その後の名前が同じビューは、権限と名前に応じた最適な情報を取得します。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「ビューの性質と更新可否」です。問題文は「データ・ディクショナリについての正しい記述を2つ選択してください。」を満たす記述または SQL を求めています。ビューはスキーマオブジェクトであり、基表に依存している。更新可否や WITH CHECK OPTION、READ ONLY、別スキーマ参照可否などが典型論点になる。 そのため、成立条件を満たす正答は C「ユーザー名、およびユーザーに付与された権限とロールは、データ・ディクショナリに保存されます。」 / D「DBA、ALL、USER などのプレフィックスが異なっていて、その後の名前が同じビューは、権限と名前に応じた最…」 です。</p>
@@ -1098,10 +1109,10 @@ GRANT SELECT ON item TO user_name;</pre>
                   <div class="block-title">問題文</div>
                   <pre>次の文で正常実行されるものはどれでしょうか。
 　
-(1)		A.　CREATE OR REPLACE VIEW ITEM_VIEW1 AS SELECT I.ITEM_ID, I.ITEM_PRICE || &quot;Price&quot; FROM ITEM I JOIN MAKER M ON (I.MAKER_ID = M.MAKER_ID) GROUP BY I.ITEM_ID, I.ITEM_PRICE;
-(2)		B.　CREATE OR REPLACE VIEW ITEM_VIEW1 AS SELECT I.ITEM_ID, I.ITEM_PRICE &quot;Price&quot; FROM ITEM I JOIN MAKER M ON (I.MAKER_ID = M.MAKER_ID) GROUP BY I.ITEM_ID, I.ITEM_PRICE;
-(3)		C.　CREATE OR REPLACE VIEW ITEM_VIEW1 AS SELECT I.ITEM_ID, I.ITEM_PRICE &quot;Price&quot; FROM ITEM I JOIN MAKER M ON (I.MAKER_ID = M.MAKER_ID) GROUP BY I.ITEM_ID, I.ITEM_PRICE WITH READ OPTION;
-(4)		D.　CREATE OR REPLACE VIEW ITEM_VIEW1 AS SELECT I.ITEM_ID, I.ITEM_PRICE FROM ITEM I JOIN MAKER M ON (I.MAKER_ID = M.MAKER_ID) GROUP BY I.ITEM_ID, I.ITEM_PRICE WITH CHECK OPTION CONSTRAINT;</pre>
+(<span class="sql-num">1</span>)		A.　<span class="sql-kw">CREATE OR REPLACE</span> <span class="sql-kw">VIEW</span> ITEM_VIEW1 <span class="sql-kw">AS</span> <span class="sql-kw">SELECT</span> I.ITEM_ID, I.ITEM_PRICE || &quot;Price&quot; <span class="sql-kw">FROM</span> ITEM I <span class="sql-kw">JOIN</span> MAKER M <span class="sql-kw">ON</span> (I.MAKER_ID = M.MAKER_ID) <span class="sql-kw">GROUP BY</span> I.ITEM_ID, I.ITEM_PRICE;
+(<span class="sql-num">2</span>)		B.　<span class="sql-kw">CREATE OR REPLACE</span> <span class="sql-kw">VIEW</span> ITEM_VIEW1 <span class="sql-kw">AS</span> <span class="sql-kw">SELECT</span> I.ITEM_ID, I.ITEM_PRICE &quot;Price&quot; <span class="sql-kw">FROM</span> ITEM I <span class="sql-kw">JOIN</span> MAKER M <span class="sql-kw">ON</span> (I.MAKER_ID = M.MAKER_ID) <span class="sql-kw">GROUP BY</span> I.ITEM_ID, I.ITEM_PRICE;
+(<span class="sql-num">3</span>)		C.　<span class="sql-kw">CREATE OR REPLACE</span> <span class="sql-kw">VIEW</span> ITEM_VIEW1 <span class="sql-kw">AS</span> <span class="sql-kw">SELECT</span> I.ITEM_ID, I.ITEM_PRICE &quot;Price&quot; <span class="sql-kw">FROM</span> ITEM I <span class="sql-kw">JOIN</span> MAKER M <span class="sql-kw">ON</span> (I.MAKER_ID = M.MAKER_ID) <span class="sql-kw">GROUP BY</span> I.ITEM_ID, I.ITEM_PRICE <span class="sql-kw">WITH</span> READ OPTION;
+(<span class="sql-num">4</span>)		D.　<span class="sql-kw">CREATE OR REPLACE</span> <span class="sql-kw">VIEW</span> ITEM_VIEW1 <span class="sql-kw">AS</span> <span class="sql-kw">SELECT</span> I.ITEM_ID, I.ITEM_PRICE <span class="sql-kw">FROM</span> ITEM I <span class="sql-kw">JOIN</span> MAKER M <span class="sql-kw">ON</span> (I.MAKER_ID = M.MAKER_ID) <span class="sql-kw">GROUP BY</span> I.ITEM_ID, I.ITEM_PRICE <span class="sql-kw">WITH CHECK OPTION</span> <span class="sql-kw">CONSTRAINT</span>;</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「ビューの性質と更新可否」です。問題文は「次の文で正常実行されるものはどれでしょうか。」を満たす記述または SQL を求めています。ビューはスキーマオブジェクトであり、基表に依存している。更新可否や WITH CHECK OPTION、READ ONLY、別スキーマ参照可否などが典型論点になる。 そのため、成立条件を満たす正答は B「CREATE OR REPLACE VIEW ITEM_VIEW1 AS SELECT I.ITEM_ID, …」 です。</p>
@@ -1157,17 +1168,17 @@ GRANT SELECT ON item TO user_name;</pre>
                   <div class="block-title">問題文</div>
                   <pre>以下の文を実行します。
 
-1.　CREATE ROLE ITEM_ROLE;
-2.　GRANT CREATE VIEW, UPDATE
-　　ON USER01.ITEM
-　　TO ITEM_ROLE;
-3.　GRANT ITEM_ROLE, CREATE VIEW TO USER01;
+<span class="sql-num">1</span>.　<span class="sql-kw">CREATE</span> ROLE ITEM_ROLE;
+<span class="sql-num">2</span>.　<span class="sql-kw">GRANT</span> <span class="sql-kw">CREATE VIEW</span>, <span class="sql-kw">UPDATE</span>
+　　<span class="sql-kw">ON</span> USER01.ITEM
+　　<span class="sql-kw">TO</span> ITEM_ROLE;
+<span class="sql-num">3</span>.　<span class="sql-kw">GRANT</span> ITEM_ROLE, <span class="sql-kw">CREATE VIEW</span> <span class="sql-kw">TO</span> USER01;
 
 実行結果について正しい記述はどれでしょうか。
-(1)		A.　1の文はエラーとなります。
-(2)		B.　2の文はエラーとなります。
-(3)		C.　3の文はエラーとなります。
-(4)		D.　すべて正常に実行できます。</pre>
+(<span class="sql-num">1</span>)		A.　1の文はエラーとなります。
+(<span class="sql-num">2</span>)		B.　2の文はエラーとなります。
+(<span class="sql-num">3</span>)		C.　3の文はエラーとなります。
+(<span class="sql-num">4</span>)		D.　すべて正常に実行できます。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「ビューの性質と更新可否」です。問題文は「以下の文を実行します。 1. CREATE ROLE ITEM_ROLE; 2. GRANT CREATE VIEW, UPDATE ON USER01.ITEM TO ITEM_ROLE; 3. GRANT ITEM_ROLE, CRE…」を満たす記述または SQL を求めています。ビューはスキーマオブジェクトであり、基表に依存している。更新可否や WITH CHECK OPTION、READ ONLY、別スキーマ参照可否などが典型論点になる。 そのため、成立条件を満たす正答は B「2の文はエラーとなります。」 です。</p>
@@ -1222,10 +1233,10 @@ GRANT SELECT ON item TO user_name;</pre>
                   <div class="question-meta">第2回 模擬試験 / 問75 / 正答 AB / 自己回答 CD</div>
                   <div class="block-title">問題文</div>
                   <pre>データ・ディクショナリについて、正しい記述はどれでしょうか。（2つ選択）
-(1)		A.　接頭辞 ALL_、DBA_、および USER_ が付いたビューは、&quot;_&quot;の後の名称が一致しないものが存在します。
-(2)		B.　接頭辞 ALL_ の付いたビューは、ユーザーが権限を持つオブジェクトのメタデータを表示します。
-(3)		C.　接頭辞 USER_ の付いたビューは、ユーザーが権限を持つオブジェクトのメタデータを表示します。
-(4)		D.　接頭辞 DBA_ の付いたビューは、SYS スキーマ内のオブジェクトのメタデータのみを表示します。</pre>
+(<span class="sql-num">1</span>)		A.　接頭辞 ALL_、DBA_、および USER_ が付いたビューは、&quot;_&quot;の後の名称が一致しないものが存在します。
+(<span class="sql-num">2</span>)		B.　接頭辞 ALL_ の付いたビューは、ユーザーが権限を持つオブジェクトのメタデータを表示します。
+(<span class="sql-num">3</span>)		C.　接頭辞 USER_ の付いたビューは、ユーザーが権限を持つオブジェクトのメタデータを表示します。
+(<span class="sql-num">4</span>)		D.　接頭辞 DBA_ の付いたビューは、SYS スキーマ内のオブジェクトのメタデータのみを表示します。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「ビューの性質と更新可否」です。問題文は「データ・ディクショナリについて、正しい記述はどれでしょうか。（2つ選択）」を満たす記述または SQL を求めています。ビューはスキーマオブジェクトであり、基表に依存している。更新可否や WITH CHECK OPTION、READ ONLY、別スキーマ参照可否などが典型論点になる。 そのため、成立条件を満たす正答は A「接頭辞 ALL_、DBA_、および USER_ が付いたビューは、&quot;_&quot;の後の名称が一致しないものが存在します。」 / B「接頭辞 ALL_ の付いたビューは、ユーザーが権限を持つオブジェクトのメタデータを表示します。」 です。</p>
@@ -1280,12 +1291,12 @@ GRANT SELECT ON item TO user_name;</pre>
                   <div class="question-meta">第3回 模擬試験 / 問40 / 正答 BF / 自己回答 DF</div>
                   <div class="block-title">問題文</div>
                   <pre>データ・ディクショナリ・ビューの、「*_TABLES ビュー」について、正しいものを2つ選んでください。
-(1)		A. DBA_TABLES は、すべてのユーザーが参照できる。
-(2)		B. USER_TABLES は、現在ログインしているユーザーが所有するすべてのテーブルを表示する。
-(3)		C. USER_TABLES を表示するには、ANY TABLE システム権限、またはテーブルへのオブジェクト権限が必要である。
-(4)		D. ALL_TABLES は、現在のユーザーが所有するすべてのテーブルを表示する。
-(5)		E. ALL_TABLES を表示するには、ANY TABLE システム権限、またはテーブルへのオブジェクト権限が必要である。
-(6)		F. DBA_TABLES を表示するには、ANY TABLE システム権限、またはテーブルへのオブジェクト権限が必要である。</pre>
+(<span class="sql-num">1</span>)		A. DBA_TABLES は、すべてのユーザーが参照できる。
+(<span class="sql-num">2</span>)		B. USER_TABLES は、現在ログインしているユーザーが所有するすべてのテーブルを表示する。
+(<span class="sql-num">3</span>)		C. USER_TABLES を表示するには、<span class="sql-kw">ANY</span> <span class="sql-kw">TABLE</span> システム権限、またはテーブルへのオブジェクト権限が必要である。
+(<span class="sql-num">4</span>)		D. ALL_TABLES は、現在のユーザーが所有するすべてのテーブルを表示する。
+(<span class="sql-num">5</span>)		E. ALL_TABLES を表示するには、<span class="sql-kw">ANY</span> <span class="sql-kw">TABLE</span> システム権限、またはテーブルへのオブジェクト権限が必要である。
+(<span class="sql-num">6</span>)		F. DBA_TABLES を表示するには、<span class="sql-kw">ANY</span> <span class="sql-kw">TABLE</span> システム権限、またはテーブルへのオブジェクト権限が必要である。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「ビューの性質と更新可否」です。問題文は「データ・ディクショナリ・ビューの、「*_TABLES ビュー」について、正しいものを2つ選んでください。」を満たす記述または SQL を求めています。ビューはスキーマオブジェクトであり、基表に依存している。更新可否や WITH CHECK OPTION、READ ONLY、別スキーマ参照可否などが典型論点になる。 そのため、成立条件を満たす正答は B「USER_TABLES は、現在ログインしているユーザーが所有するすべてのテーブルを表示する。」 / F「DBA_TABLES を表示するには、ANY TABLE システム権限、またはテーブルへのオブジェクト権限が必…」 です。</p>
@@ -1358,11 +1369,11 @@ GRANT SELECT ON item TO user_name;</pre>
                   <div class="question-meta">第3回 模擬試験 / 問48 / 正答 CE / 自己回答 CD</div>
                   <div class="block-title">問題文</div>
                   <pre>オブジェクト権限に関して、正しいものを2つ選んでください。
-(1)		A. INDEX権限は、ビューに付与できる。
-(2)		B. INSERT 権限は、テーブルとシーケンスのみに付与できる。
-(3)		C. SELECT 権限は、テーブル、ビュー、シーケンスに付与できる。
-(4)		D. DELETE 権限は、テーブル、ビュー、シーケンスに付与できる。
-(5)		E. REFERENCES 権限は、テーブル、ビューに付与できる。</pre>
+(<span class="sql-num">1</span>)		A. INDEX権限は、ビューに付与できる。
+(<span class="sql-num">2</span>)		B. <span class="sql-kw">INSERT</span> 権限は、テーブルとシーケンスのみに付与できる。
+(<span class="sql-num">3</span>)		C. <span class="sql-kw">SELECT</span> 権限は、テーブル、ビュー、シーケンスに付与できる。
+(<span class="sql-num">4</span>)		D. <span class="sql-kw">DELETE</span> 権限は、テーブル、ビュー、シーケンスに付与できる。
+(<span class="sql-num">5</span>)		E. <span class="sql-kw">REFERENCES</span> 権限は、テーブル、ビューに付与できる。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「ビューの性質と更新可否」です。問題文は「オブジェクト権限に関して、正しいものを2つ選んでください。」を満たす記述または SQL を求めています。ビューはスキーマオブジェクトであり、基表に依存している。更新可否や WITH CHECK OPTION、READ ONLY、別スキーマ参照可否などが典型論点になる。 そのため、成立条件を満たす正答は C「SELECT 権限は、テーブル、ビュー、シーケンスに付与できる。」 / E「REFERENCES 権限は、テーブル、ビューに付与できる。」 です。</p>
@@ -1426,11 +1437,11 @@ GRANT SELECT ON item TO user_name;</pre>
                   <div class="question-meta">第3回 模擬試験 / 問52 / 正答 ACD / 自己回答 ABE</div>
                   <div class="block-title">問題文</div>
                   <pre>システム権限で実行できる操作を3つ選んでください。
-(1)		A. 自分以外のスキーマの表を検索する。
-(2)		B. 自分のスキーマの表を削除する。
-(3)		C. 自分以外のスキーマのプロシージャを実行する。
-(4)		D. 自分以外のスキーマにビューを作成する。
-(5)		E. 自分のスキーマの表を検索する。</pre>
+(<span class="sql-num">1</span>)		A. 自分以外のスキーマの表を検索する。
+(<span class="sql-num">2</span>)		B. 自分のスキーマの表を削除する。
+(<span class="sql-num">3</span>)		C. 自分以外のスキーマのプロシージャを実行する。
+(<span class="sql-num">4</span>)		D. 自分以外のスキーマにビューを作成する。
+(<span class="sql-num">5</span>)		E. 自分のスキーマの表を検索する。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「ビューの性質と更新可否」です。問題文は「システム権限で実行できる操作を3つ選んでください。」を満たす記述または SQL を求めています。ビューはスキーマオブジェクトであり、基表に依存している。更新可否や WITH CHECK OPTION、READ ONLY、別スキーマ参照可否などが典型論点になる。 そのため、成立条件を満たす正答は A「自分以外のスキーマの表を検索する。」 / C「自分以外のスキーマのプロシージャを実行する。」 / D「自分以外のスキーマにビューを作成する。」 です。</p>
@@ -1494,12 +1505,12 @@ GRANT SELECT ON item TO user_name;</pre>
                   <div class="question-meta">第3回 模擬試験 / 問56 / 正答 ACE / 自己回答 AEF</div>
                   <div class="block-title">問題文</div>
                   <pre>ビュー（View）に関する正しい説明を3つ選んでください。
-(1)		A. ビューは、存在しないテーブルを参照する形で作成できる。
-(2)		B. ビューにはオブジェクト番号が存在しない。
-(3)		C. ビューにはセグメントが存在しない。
-(4)		D. SELECT 文で定義されたビューをクエリする際、WHERE 句を含むことができない。
-(5)		E. ビューを削除しても、基となるテーブルのデータは保持される。
-(6)		F. ビューは、同じスキーマに属するテーブルのみを結合できる。</pre>
+(<span class="sql-num">1</span>)		A. ビューは、存在しないテーブルを参照する形で作成できる。
+(<span class="sql-num">2</span>)		B. ビューにはオブジェクト番号が存在しない。
+(<span class="sql-num">3</span>)		C. ビューにはセグメントが存在しない。
+(<span class="sql-num">4</span>)		D. <span class="sql-kw">SELECT</span> 文で定義されたビューをクエリする際、<span class="sql-kw">WHERE</span> 句を含むことができない。
+(<span class="sql-num">5</span>)		E. ビューを削除しても、基となるテーブルのデータは保持される。
+(<span class="sql-num">6</span>)		F. ビューは、同じスキーマに属するテーブルのみを結合できる。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「ビューの性質と更新可否」です。問題文は「ビュー（View）に関する正しい説明を3つ選んでください。」を満たす記述または SQL を求めています。ビューはスキーマオブジェクトであり、基表に依存している。更新可否や WITH CHECK OPTION、READ ONLY、別スキーマ参照可否などが典型論点になる。 そのため、成立条件を満たす正答は A「ビューは、存在しないテーブルを参照する形で作成できる。」 / C「ビューにはセグメントが存在しない。」 / E「ビューを削除しても、基となるテーブルのデータは保持される。」 です。</p>
@@ -1592,11 +1603,11 @@ GRANT SELECT ON item TO user_name;</pre>
 <span class="note">-- DDL はすべて暗黙 COMMIT を伴う。DEFAULT は値省略時 / VALUES(DEFAULT) で補完。</span></div></div>
       <div class="guide-block">
         <div class="guide-title">この論点の基本形</div>
-        <pre>CREATE VIEW v_item AS
-SELECT item_id, item_name FROM item;
+        <pre><span class="sql-kw">CREATE VIEW</span> v_item <span class="sql-kw">AS</span>
+<span class="sql-kw">SELECT</span> item_id, item_name <span class="sql-kw">FROM</span> item;
 
-CREATE SEQUENCE seq_item START WITH 1;
-GRANT SELECT ON item TO user_name;</pre>
+<span class="sql-kw">CREATE SEQUENCE</span> seq_item <span class="sql-kw">START WITH</span> <span class="sql-num">1</span>;
+<span class="sql-kw">GRANT</span> <span class="sql-kw">SELECT</span> <span class="sql-kw">ON</span> item <span class="sql-kw">TO</span> user_name;</pre>
       </div>
       <div class="guide-grid">
         <div class="guide-block">
@@ -1616,12 +1627,12 @@ GRANT SELECT ON item TO user_name;</pre>
                   <div class="question-meta">第1回 模擬試験 / 問47 / 正答 B.D.F / 自己回答 A.B.E</div>
                   <div class="block-title">問題文</div>
                   <pre>DDLの説明で正しいのはどれでしょうか。（3つ選択）
-(1)		A.　データの追加を行うことができます。
-(2)		B.　表名を変更することができます。
-(3)		C.　データの回復（ロールバック）を行うことができます。
-(4)		D.　表に対してデータ更新をさせないよう設定できます。
-(5)		E.　データの更新を行うことができます。
-(6)		F.　特定の条件に違反するデータが列に挿入されないように表設定を変更できます。</pre>
+(<span class="sql-num">1</span>)		A.　データの追加を行うことができます。
+(<span class="sql-num">2</span>)		B.　表名を変更することができます。
+(<span class="sql-num">3</span>)		C.　データの回復（ロールバック）を行うことができます。
+(<span class="sql-num">4</span>)		D.　表に対してデータ更新をさせないよう設定できます。
+(<span class="sql-num">5</span>)		E.　データの更新を行うことができます。
+(<span class="sql-num">6</span>)		F.　特定の条件に違反するデータが列に挿入されないように表設定を変更できます。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「権限付与とロール」です。問題文は「DDLの説明で正しいのはどれでしょうか。（3つ選択）」を満たす記述または SQL を求めています。オブジェクト権限は WITH GRANT OPTION、システム権限は WITH ADMIN OPTION と付与方法が異なる。列単位 UPDATE やロールの扱いも頻出である。 そのため、成立条件を満たす正答は B「表名を変更することができます。」 / D「表に対してデータ更新をさせないよう設定できます。」 / F「特定の条件に違反するデータが列に挿入されないように表設定を変更できます。」 です。</p>
@@ -1693,11 +1704,11 @@ GRANT SELECT ON item TO user_name;</pre>
                 <article class="question-card">
                   <div class="question-meta">第1回 模擬試験 / 問71 / 正答 B.D / 自己回答 A.D</div>
                   <div class="block-title">問題文</div>
-                  <pre>WITH GRANT OPTIONについて正しい記述はどれでしょうか。（2つ選択）
-(1)		A.　システム権限の場合に使用します。
-(2)		B.　GRANT文で使用します。
-(3)		C.　REVOKE文で使用します。
-(4)		D.　WITH GRANT OPTION付きで付与されたオブジェクト権限は、別のユーザーに付与できます。</pre>
+                  <pre><span class="sql-kw">WITH</span> <span class="sql-kw">GRANT</span> OPTIONについて正しい記述はどれでしょうか。（2つ選択）
+(<span class="sql-num">1</span>)		A.　システム権限の場合に使用します。
+(<span class="sql-num">2</span>)		B.　GRANT文で使用します。
+(<span class="sql-num">3</span>)		C.　REVOKE文で使用します。
+(<span class="sql-num">4</span>)		D.　<span class="sql-kw">WITH</span> <span class="sql-kw">GRANT</span> OPTION付きで付与されたオブジェクト権限は、別のユーザーに付与できます。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「権限付与とロール」です。問題文は「WITH GRANT OPTIONについて正しい記述はどれでしょうか。（2つ選択）」を満たす記述または SQL を求めています。オブジェクト権限は WITH GRANT OPTION、システム権限は WITH ADMIN OPTION と付与方法が異なる。列単位 UPDATE やロールの扱いも頻出である。 そのため、成立条件を満たす正答は B「GRANT文で使用します。」 / D「WITH GRANT OPTION付きで付与されたオブジェクト権限は、別のユーザーに付与できます。」 です。</p>
@@ -1753,17 +1764,17 @@ GRANT SELECT ON item TO user_name;</pre>
                   <div class="block-title">問題文</div>
                   <pre>次の文を実行します。
 
-GRANT ALL PRIVILEGES
-ON ITEM,MAKER
-WITH GRANT OPTION;
+<span class="sql-kw">GRANT</span> <span class="sql-kw">ALL</span> PRIVILEGES
+<span class="sql-kw">ON</span> ITEM,MAKER
+<span class="sql-kw">WITH GRANT OPTION</span>;
 
 ITEMとMAKER表の所有者とGRANT文の実行ユーザーは一般ユーザーですが、
 上記の文を実行するとエラーとなりました。
 エラーの原因について正しい記述はどれでしょうか。
-(1)		A.　一般ユーザーでALL PRIVILEGESは指定できません。
-(2)		B.　複数の表にGRANT文の一括実行はできません。
-(3)		C.　一般ユーザーでWITH GRANT OPTIONは指定できません。
-(4)		D.　WITH ADMIN OPTIONを追加する必要があります。</pre>
+(<span class="sql-num">1</span>)		A.　一般ユーザーでALL PRIVILEGESは指定できません。
+(<span class="sql-num">2</span>)		B.　複数の表にGRANT文の一括実行はできません。
+(<span class="sql-num">3</span>)		C.　一般ユーザーでWITH <span class="sql-kw">GRANT</span> OPTIONは指定できません。
+(<span class="sql-num">4</span>)		D.　<span class="sql-kw">WITH</span> ADMIN OPTIONを追加する必要があります。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「権限付与とロール」です。問題文は「次の文を実行します。 GRANT ALL PRIVILEGES ON ITEM,MAKER WITH GRANT OPTION; ITEMとMAKER表の所有者とGRANT文の実行ユーザーは一般ユーザーですが、 上記の文を実行するとエラー…」を満たす記述または SQL を求めています。オブジェクト権限は WITH GRANT OPTION、システム権限は WITH ADMIN OPTION と付与方法が異なる。列単位 UPDATE やロールの扱いも頻出である。 そのため、成立条件を満たす正答は C「一般ユーザーでWITH GRANT OPTIONは指定できません。」 です。</p>
@@ -1818,11 +1829,11 @@ ITEMとMAKER表の所有者とGRANT文の実行ユーザーは一般ユーザー
                   <div class="question-meta">第1回 模擬試験 / 問74 / 正答 C.D.E / 自己回答 A.D.E</div>
                   <div class="block-title">問題文</div>
                   <pre>権限とロールについて正しい記述はどれでしょうか。（3つ選択）
-(1)		A.　ロールは作成したユーザーによって所有されます。
-(2)		B.　すべてのロールはSYSユーザーによって所有されます。
-(3)		C.　ロールはいずれのスキーマにも含まれません。
-(4)		D.　ロールには、システム権限、オブジェクト権限、他のロールを含めることができます。
-(5)		E.　ロールにPUBLICに付与すると、すべてのユーザーがそのロールを使用できます。</pre>
+(<span class="sql-num">1</span>)		A.　ロールは作成したユーザーによって所有されます。
+(<span class="sql-num">2</span>)		B.　すべてのロールはSYSユーザーによって所有されます。
+(<span class="sql-num">3</span>)		C.　ロールはいずれのスキーマにも含まれません。
+(<span class="sql-num">4</span>)		D.　ロールには、システム権限、オブジェクト権限、他のロールを含めることができます。
+(<span class="sql-num">5</span>)		E.　ロールにPUBLICに付与すると、すべてのユーザーがそのロールを使用できます。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「権限付与とロール」です。問題文は「権限とロールについて正しい記述はどれでしょうか。（3つ選択）」を満たす記述または SQL を求めています。オブジェクト権限は WITH GRANT OPTION、システム権限は WITH ADMIN OPTION と付与方法が異なる。列単位 UPDATE やロールの扱いも頻出である。 そのため、成立条件を満たす正答は C「ロールはいずれのスキーマにも含まれません。」 / D「ロールには、システム権限、オブジェクト権限、他のロールを含めることができます。」 / E「ロールにPUBLICに付与すると、すべてのユーザーがそのロールを使用できます。」 です。</p>
@@ -1885,12 +1896,12 @@ ITEMとMAKER表の所有者とGRANT文の実行ユーザーは一般ユーザー
                 <article class="question-card">
                   <div class="question-meta">第2回 模擬試験 / 問52 / 正答 DE / 自己回答 BC</div>
                   <div class="block-title">問題文</div>
-                  <pre>ALTER TABLE ～ DROP COLUMNについて正しい記述はどれでしょうか。（2つ選択）
-(1)		A.　複数の列を一回のコマンドで削除することはできません。
-(2)		B.　削除された列はロールバックで復元できます。
-(3)		C.　データが含まれていない場合にのみ、列を削除できます。
-(4)		D.　表に別の列が存在する場合にのみ、列を削除できます。
-(5)		E.　PRIMARY KEYが設定された列でもオプション指定で削除できます。</pre>
+                  <pre><span class="sql-kw">ALTER TABLE</span> ～ <span class="sql-kw">DROP</span> COLUMNについて正しい記述はどれでしょうか。（2つ選択）
+(<span class="sql-num">1</span>)		A.　複数の列を一回のコマンドで削除することはできません。
+(<span class="sql-num">2</span>)		B.　削除された列はロールバックで復元できます。
+(<span class="sql-num">3</span>)		C.　データが含まれていない場合にのみ、列を削除できます。
+(<span class="sql-num">4</span>)		D.　表に別の列が存在する場合にのみ、列を削除できます。
+(<span class="sql-num">5</span>)		E.　PRIMARY KEYが設定された列でもオプション指定で削除できます。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「権限付与とロール」です。問題文は「ALTER TABLE ～ DROP COLUMNについて正しい記述はどれでしょうか。（2つ選択）」を満たす記述または SQL を求めています。オブジェクト権限は WITH GRANT OPTION、システム権限は WITH ADMIN OPTION と付与方法が異なる。列単位 UPDATE やロールの扱いも頻出である。 そのため、成立条件を満たす正答は D「表に別の列が存在する場合にのみ、列を削除できます。」 / E「PRIMARY KEYが設定された列でもオプション指定で削除できます。」 です。</p>
@@ -1954,10 +1965,10 @@ ITEMとMAKER表の所有者とGRANT文の実行ユーザーは一般ユーザー
                   <div class="question-meta">第2回 模擬試験 / 問56 / 正答 AC / 自己回答 CD</div>
                   <div class="block-title">問題文</div>
                   <pre>GLOBAL TEMPORARY TABLESについて正しい記述はどれでしょうか。（2つ選択）
-(1)		A.　UNDOが生成されます。
-(2)		B.　REDOは生成されません。
-(3)		C.　TRUNCATEコマンドにより、GLOBAL TEMPORARY TABLE内のすべての行が削除されます。
-(4)		D.　GLOBAL TEMPORARY TABLEに対するDML文のロールバックはできません。</pre>
+(<span class="sql-num">1</span>)		A.　UNDOが生成されます。
+(<span class="sql-num">2</span>)		B.　REDOは生成されません。
+(<span class="sql-num">3</span>)		C.　TRUNCATEコマンドにより、GLOBAL TEMPORARY TABLE内のすべての行が削除されます。
+(<span class="sql-num">4</span>)		D.　GLOBAL TEMPORARY TABLEに対するDML文のロールバックはできません。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「権限付与とロール」です。問題文は「GLOBAL TEMPORARY TABLESについて正しい記述はどれでしょうか。（2つ選択）」を満たす記述または SQL を求めています。オブジェクト権限は WITH GRANT OPTION、システム権限は WITH ADMIN OPTION と付与方法が異なる。列単位 UPDATE やロールの扱いも頻出である。 そのため、成立条件を満たす正答は A「UNDOが生成されます。」 / C「TRUNCATEコマンドにより、GLOBAL TEMPORARY TABLE内のすべての行が削除されます。」 です。</p>
@@ -2012,10 +2023,10 @@ ITEMとMAKER表の所有者とGRANT文の実行ユーザーは一般ユーザー
                   <div class="question-meta">第2回 模擬試験 / 問69 / 正答 B / 自己回答 D</div>
                   <div class="block-title">問題文</div>
                   <pre>システムとオブジェクトの権限について正しい記述はどれでしょうか。
-(1)		A.　他スキーマの表へ問合せをするには、システム権限が必要です。
-(2)		B.　他スキーマの表に外部キー制約を追加するには、オブジェクト権限が必要です。
-(3)		C.　WITH GRANT OPTIONは、ユーザーとロールの両方にオブジェクト権限を付与するときに使用できます 。
-(4)		D.　WITH ADMIN OPTIONで付与されたシステム権限を取り消すと、依存権限が取り消される場合があります。</pre>
+(<span class="sql-num">1</span>)		A.　他スキーマの表へ問合せをするには、システム権限が必要です。
+(<span class="sql-num">2</span>)		B.　他スキーマの表に外部キー制約を追加するには、オブジェクト権限が必要です。
+(<span class="sql-num">3</span>)		C.　<span class="sql-kw">WITH</span> <span class="sql-kw">GRANT</span> OPTIONは、ユーザーとロールの両方にオブジェクト権限を付与するときに使用できます 。
+(<span class="sql-num">4</span>)		D.　<span class="sql-kw">WITH</span> ADMIN OPTIONで付与されたシステム権限を取り消すと、依存権限が取り消される場合があります。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「権限付与とロール」です。問題文は「システムとオブジェクトの権限について正しい記述はどれでしょうか。」を満たす記述または SQL を求めています。オブジェクト権限は WITH GRANT OPTION、システム権限は WITH ADMIN OPTION と付与方法が異なる。列単位 UPDATE やロールの扱いも頻出である。 そのため、成立条件を満たす正答は B「他スキーマの表に外部キー制約を追加するには、オブジェクト権限が必要です。」 です。</p>
@@ -2071,16 +2082,16 @@ ITEMとMAKER表の所有者とGRANT文の実行ユーザーは一般ユーザー
                   <div class="block-title">問題文</div>
                   <pre>ユーザー:USER01に次のことを許可します。
 
-1. ITEM表のITEM_NAME列とITEM_PRICE列に更新権限を付与
-2. 他のユーザーにその権限を許可
+<span class="sql-num">1</span>. ITEM表のITEM_NAME列とITEM_PRICE列に更新権限を付与
+<span class="sql-num">2</span>. 他のユーザーにその権限を許可
 
 上記を実行するための正しい文はどれでしょうか。
-(1)		A. GRANT UPDATE ON ITEM.ITEM_NAME, ITEM.ITEM_PRICE TO USER01 WITH ADMIN OPTION;
-(2)		B. GRANT UPDATE ON ITEM.ITEM_NAME, ITEM.ITEM_PRICE TO USER01 WITH GRANT OPTION;
-(3)		C. GRANT UPDATE ITEM_NAME, ITEM_PRICE ON ITEM TO USER01;
-(4)		D. GRANT UPDATE (ITEM_NAME, ITEM_PRICE) ON ITEM TO USER01;
-(5)		E. GRANT UPDATE (ITEM_NAME, ITEM_PRICE) ON ITEM TO USER01 WITH GRANT OPTION;
-(6)		F. GRANT UPDATE (ITEM_NAME, ITEM_PRICE) ON ITEM TO USER01 WITH ADMIN OPTION;</pre>
+(<span class="sql-num">1</span>)		A. <span class="sql-kw">GRANT</span> <span class="sql-kw">UPDATE</span> <span class="sql-kw">ON</span> ITEM.ITEM_NAME, ITEM.ITEM_PRICE <span class="sql-kw">TO</span> USER01 <span class="sql-kw">WITH</span> ADMIN OPTION;
+(<span class="sql-num">2</span>)		B. <span class="sql-kw">GRANT</span> <span class="sql-kw">UPDATE</span> <span class="sql-kw">ON</span> ITEM.ITEM_NAME, ITEM.ITEM_PRICE <span class="sql-kw">TO</span> USER01 <span class="sql-kw">WITH GRANT OPTION</span>;
+(<span class="sql-num">3</span>)		C. <span class="sql-kw">GRANT</span> <span class="sql-kw">UPDATE</span> ITEM_NAME, ITEM_PRICE <span class="sql-kw">ON</span> ITEM <span class="sql-kw">TO</span> USER01;
+(<span class="sql-num">4</span>)		D. <span class="sql-kw">GRANT</span> <span class="sql-kw">UPDATE</span> (ITEM_NAME, ITEM_PRICE) <span class="sql-kw">ON</span> ITEM <span class="sql-kw">TO</span> USER01;
+(<span class="sql-num">5</span>)		E. <span class="sql-kw">GRANT</span> <span class="sql-kw">UPDATE</span> (ITEM_NAME, ITEM_PRICE) <span class="sql-kw">ON</span> ITEM <span class="sql-kw">TO</span> USER01 <span class="sql-kw">WITH GRANT OPTION</span>;
+(<span class="sql-num">6</span>)		F. <span class="sql-kw">GRANT</span> <span class="sql-kw">UPDATE</span> (ITEM_NAME, ITEM_PRICE) <span class="sql-kw">ON</span> ITEM <span class="sql-kw">TO</span> USER01 <span class="sql-kw">WITH</span> ADMIN OPTION;</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「権限付与とロール」です。問題文は「ユーザー:USER01に次のことを許可します。 1. ITEM表のITEM_NAME列とITEM_PRICE列に更新権限を付与 2. 他のユーザーにその権限を許可 上記を実行するための正しい文はどれでしょうか。」を満たす記述または SQL を求めています。オブジェクト権限は WITH GRANT OPTION、システム権限は WITH ADMIN OPTION と付与方法が異なる。列単位 UPDATE やロールの扱いも頻出である。 そのため、成立条件を満たす正答は E「GRANT UPDATE (ITEM_NAME, ITEM_PRICE) ON ITEM TO USER01 …」 です。</p>
@@ -2158,11 +2169,11 @@ ITEMとMAKER表の所有者とGRANT文の実行ユーザーは一般ユーザー
 ・その権限を他のユーザーにも付与できるようにする。
 
 この操作を行う正しいSQL文はどれですか？1つ選択してください。
-(1)		A. GRANT UPDATE ON orders.status, orders.delivery_date TO lisa WITH GRANT OPTION;
-(2)		B. GRANT UPDATE (status, delivery_date) ON orders TO lisa WITH ADMIN OPTION;
-(3)		C. GRANT UPDATE (status, delivery_date) ON orders TO lisa;
-(4)		D. GRANT UPDATE ON orders.status, orders.delivery_date TO lisa WITH ADMIN OPTION;
-(5)		E. GRANT UPDATE (status, delivery_date) ON orders TO lisa WITH GRANT OPTION;</pre>
+(<span class="sql-num">1</span>)		A. <span class="sql-kw">GRANT</span> <span class="sql-kw">UPDATE</span> <span class="sql-kw">ON</span> orders.status, orders.delivery_date <span class="sql-kw">TO</span> lisa <span class="sql-kw">WITH GRANT OPTION</span>;
+(<span class="sql-num">2</span>)		B. <span class="sql-kw">GRANT</span> <span class="sql-kw">UPDATE</span> (status, delivery_date) <span class="sql-kw">ON</span> orders <span class="sql-kw">TO</span> lisa <span class="sql-kw">WITH</span> ADMIN OPTION;
+(<span class="sql-num">3</span>)		C. <span class="sql-kw">GRANT</span> <span class="sql-kw">UPDATE</span> (status, delivery_date) <span class="sql-kw">ON</span> orders <span class="sql-kw">TO</span> lisa;
+(<span class="sql-num">4</span>)		D. <span class="sql-kw">GRANT</span> <span class="sql-kw">UPDATE</span> <span class="sql-kw">ON</span> orders.status, orders.delivery_date <span class="sql-kw">TO</span> lisa <span class="sql-kw">WITH</span> ADMIN OPTION;
+(<span class="sql-num">5</span>)		E. <span class="sql-kw">GRANT</span> <span class="sql-kw">UPDATE</span> (status, delivery_date) <span class="sql-kw">ON</span> orders <span class="sql-kw">TO</span> lisa <span class="sql-kw">WITH GRANT OPTION</span>;</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「権限付与とロール」です。問題文は「ユーザー LISAに以下の権限を与えたい。 ・ORDERSテーブルの STATUSおよび DELIVERY_DATE列を更新可能とする ・その権限を他のユーザーにも付与できるようにする。 この操作を行う正しいSQL文はどれですか？1つ選択…」を満たす記述または SQL を求めています。オブジェクト権限は WITH GRANT OPTION、システム権限は WITH ADMIN OPTION と付与方法が異なる。列単位 UPDATE やロールの扱いも頻出である。 そのため、成立条件を満たす正答は E「GRANT UPDATE (status, delivery_date) ON orders TO lisa …」 です。</p>
@@ -2246,11 +2257,11 @@ ITEMとMAKER表の所有者とGRANT文の実行ユーザーは一般ユーザー
 <span class="note">-- DDL はすべて暗黙 COMMIT を伴う。DEFAULT は値省略時 / VALUES(DEFAULT) で補完。</span></div></div>
       <div class="guide-block">
         <div class="guide-title">この論点の基本形</div>
-        <pre>ALTER TABLE item
-ADD status VARCHAR2(10) DEFAULT &#x27;NEW&#x27; NOT NULL;
+        <pre><span class="sql-kw">ALTER TABLE</span> item
+<span class="sql-kw">ADD</span> status VARCHAR2(<span class="sql-num">10</span>) <span class="sql-kw">DEFAULT</span> &#x27;NEW&#x27; <span class="sql-kw">NOT NULL</span>;
 
-INSERT INTO item (item_id, item_name)
-VALUES (&#x27;1001&#x27;, &#x27;ITEM1&#x27;);</pre>
+<span class="sql-kw">INSERT INTO</span> item (item_id, item_name)
+<span class="sql-kw">VALUES</span> (&#x27;<span class="sql-num">1001</span>&#x27;, &#x27;ITEM1&#x27;);</pre>
       </div>
       <div class="guide-grid">
         <div class="guide-block">
@@ -2271,19 +2282,19 @@ VALUES (&#x27;1001&#x27;, &#x27;ITEM1&#x27;);</pre>
                   <div class="block-title">問題文</div>
                   <pre>以下の文を実行するとエラーとなります。
 
-CREATE TABLE SHOHIN
+<span class="sql-kw">CREATE TABLE</span> SHOHIN
 (
-　SHOHIN_ID NUMBER(3),
-　SHOHIN_NAME VARCHAR2(50) CHECK(SHOHIN_NAME IS NOT NULL),
-　STOCK NUMBER(3) CHECK(STOCK BETWEEN 0 AND 200),
-　INPUT_DATE DATE CHECK (INPUT_DATE &gt; SYSDATE)
+　SHOHIN_ID NUMBER(<span class="sql-num">3</span>),
+　SHOHIN_NAME VARCHAR2(<span class="sql-num">50</span>) <span class="sql-kw">CHECK</span>(SHOHIN_NAME <span class="sql-kw">IS NOT NULL</span>),
+　STOCK NUMBER(<span class="sql-num">3</span>) <span class="sql-kw">CHECK</span>(STOCK <span class="sql-kw">BETWEEN</span> <span class="sql-num">0</span> <span class="sql-kw">AND</span> <span class="sql-num">200</span>),
+　INPUT_DATE DATE <span class="sql-kw">CHECK</span> (INPUT_DATE &gt; SYSDATE)
 );
 
 エラーとなる理由を以下から選択してください。
-(1)		CHECKとBETWEENは同時に使用できません。
-(2)		CHECKでNULLは使用できません。
-(3)		CHECKでDATE型では使用できません。
-(4)		CHECKとSYSDATEは同時に使用できません。</pre>
+(<span class="sql-num">1</span>)		CHECKとBETWEENは同時に使用できません。
+(<span class="sql-num">2</span>)		CHECKでNULLは使用できません。
+(<span class="sql-num">3</span>)		CHECKでDATE型では使用できません。
+(<span class="sql-num">4</span>)		CHECKとSYSDATEは同時に使用できません。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「制約定義と有効化・無効化」です。問題文は「以下の文を実行するとエラーとなります。 CREATE TABLE SHOHIN ( SHOHIN_ID NUMBER(3), SHOHIN_NAME VARCHAR2(50) CHECK(SHOHIN_NAME IS NOT NULL),…」を満たす記述または SQL を求めています。主キー、外部キー、CHECK、NOT NULL などの制約は、型や参照整合性を守るための定義である。ENABLE/DISABLE、CASCADE、SYSDATE 使用可否など細部の制約規則が問われる。 そのため、成立条件を満たす正答は 4「CHECKとSYSDATEは同時に使用できません。」 です。</p>
@@ -2341,10 +2352,10 @@ CREATE TABLE SHOHIN
 ITEM_ID列に主キー制約を追加する文はどれでしょうか。
 　
 拡大する
-(1)		A.　ALTER TABLE ITEM ADD ITEM_ID CONSTRAINT ITEM_PK PRIMARY KEY;
-(2)		B.　ALTER TABLE ITEM MODIFY ITEM_ID CONSTRAINT ITEM_PK PRIMARY_KEY;
-(3)		C.　ALTER TABLE ITEM ADD CONSTRAINT ITEM_PK PRIMARY KEY (ITEM_ID);
-(4)		D.　ALTER TABLE ITEM MODIFY CONSTRAINT ITEM_PK PRIMARY KEY (ITEM_ID);</pre>
+(<span class="sql-num">1</span>)		A.　<span class="sql-kw">ALTER TABLE</span> ITEM <span class="sql-kw">ADD</span> ITEM_ID <span class="sql-kw">CONSTRAINT</span> ITEM_PK <span class="sql-kw">PRIMARY KEY</span>;
+(<span class="sql-num">2</span>)		B.　<span class="sql-kw">ALTER TABLE</span> ITEM <span class="sql-kw">MODIFY</span> ITEM_ID <span class="sql-kw">CONSTRAINT</span> ITEM_PK PRIMARY_KEY;
+(<span class="sql-num">3</span>)		C.　<span class="sql-kw">ALTER TABLE</span> ITEM <span class="sql-kw">ADD</span> <span class="sql-kw">CONSTRAINT</span> ITEM_PK <span class="sql-kw">PRIMARY KEY</span> (ITEM_ID);
+(<span class="sql-num">4</span>)		D.　<span class="sql-kw">ALTER TABLE</span> ITEM <span class="sql-kw">MODIFY</span> <span class="sql-kw">CONSTRAINT</span> ITEM_PK <span class="sql-kw">PRIMARY KEY</span> (ITEM_ID);</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「制約定義と有効化・無効化」です。問題文は「ITEM表にはデータが含まれています。 ITEM_ID列に主キー制約を追加する文はどれでしょうか。」を満たす記述または SQL を求めています。主キー、外部キー、CHECK、NOT NULL などの制約は、型や参照整合性を守るための定義である。ENABLE/DISABLE、CASCADE、SYSDATE 使用可否など細部の制約規則が問われる。 そのため、成立条件を満たす正答は C「ALTER TABLE ITEM ADD CONSTRAINT ITEM_PK PRIMARY KEY (IT…」 です。</p>
@@ -2400,24 +2411,24 @@ ITEM_ID列に主キー制約を追加する文はどれでしょうか。
                   <div class="block-title">問題文</div>
                   <pre>次の順でSQLを実行します。
 
-1. 表を作成します。
-CREATE TABLE ITEM
-(ITEM_NO NUMBER(4) CONSTRAINT ITEM_PK PRIMARY KEY,
-　ITEM_NAME VARCHAR2(30),
-　PARENT_ITEM_NO NUMBER(4) CONSTRAINT PARENT_FK REFERENCES ITEM(ITEM_NO)
+<span class="sql-num">1</span>. 表を作成します。
+<span class="sql-kw">CREATE TABLE</span> ITEM
+(ITEM_NO NUMBER(<span class="sql-num">4</span>) <span class="sql-kw">CONSTRAINT</span> ITEM_PK <span class="sql-kw">PRIMARY KEY</span>,
+　ITEM_NAME VARCHAR2(<span class="sql-num">30</span>),
+　PARENT_ITEM_NO NUMBER(<span class="sql-num">4</span>) <span class="sql-kw">CONSTRAINT</span> PARENT_FK <span class="sql-kw">REFERENCES</span> ITEM(ITEM_NO)
 );
 
-2. CASCADEオプション付きで主キー制約を無効化します。
-ALTER TABLE ITEM DISABLE CONSTRAINT ITEM_PK CASCADE;
+<span class="sql-num">2</span>. CASCADEオプション付きで主キー制約を無効化します。
+<span class="sql-kw">ALTER TABLE</span> ITEM DISABLE <span class="sql-kw">CONSTRAINT</span> ITEM_PK <span class="sql-kw">CASCADE</span>;
 
-3. 主キー制約を有効化します。
-ALTER TABLE ITEM ENABLE CONSTRAINT ITEM_PK;
+<span class="sql-num">3</span>. 主キー制約を有効化します。
+<span class="sql-kw">ALTER TABLE</span> ITEM ENABLE <span class="sql-kw">CONSTRAINT</span> ITEM_PK;
 
 この時点での、外部キー：PARENT_FKの状態について、正しい記述はどれでしょうか。
-(1)		A.　無効のままです。外部キーの状態を有効にする手段はありません。
-(2)		B.　無効のままです。外部キーの状態を有効にするためには、制約を削除して再作成します。
-(3)		C.　無効のままです。外部キーの状態を有効にするためには、手動でALTER TABLEコマンドを実行します。
-(4)		D.　外部キーの状態は自動的に有効になります。</pre>
+(<span class="sql-num">1</span>)		A.　無効のままです。外部キーの状態を有効にする手段はありません。
+(<span class="sql-num">2</span>)		B.　無効のままです。外部キーの状態を有効にするためには、制約を削除して再作成します。
+(<span class="sql-num">3</span>)		C.　無効のままです。外部キーの状態を有効にするためには、手動でALTER TABLEコマンドを実行します。
+(<span class="sql-num">4</span>)		D.　外部キーの状態は自動的に有効になります。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「制約定義と有効化・無効化」です。問題文は「次の順でSQLを実行します。 1. 表を作成します。 CREATE TABLE ITEM (ITEM_NO NUMBER(4) CONSTRAINT ITEM_PK PRIMARY KEY, ITEM_NAME VARCHAR2(30),…」を満たす記述または SQL を求めています。主キー、外部キー、CHECK、NOT NULL などの制約は、型や参照整合性を守るための定義である。ENABLE/DISABLE、CASCADE、SYSDATE 使用可否など細部の制約規則が問われる。 そのため、成立条件を満たす正答は C「無効のままです。外部キーの状態を有効にするためには、手動でALTER TABLEコマンドを実行します。」 です。</p>
@@ -2473,25 +2484,25 @@ ALTER TABLE ITEM ENABLE CONSTRAINT ITEM_PK;
                   <div class="block-title">問題文</div>
                   <pre>以下の文を実行して表を作成します。
 
-CREATE TABLE CARS
+<span class="sql-kw">CREATE TABLE</span> CARS
 (
-　　CAR_ID NUMBER PRIMARY KEY,
-　　CAR_NAME VARCHAR2(50),
+　　CAR_ID NUMBER <span class="sql-kw">PRIMARY KEY</span>,
+　　CAR_NAME VARCHAR2(<span class="sql-num">50</span>),
 　　MAKER_ID NUMBER
 );
 
-CREATE TABLE MAKERS
+<span class="sql-kw">CREATE TABLE</span> MAKERS
 (
-　　MAKER_ID NUMBER PRIMARY KEY,
-　　MAKER_NAME VARCHAR2(50)
+　　MAKER_ID NUMBER <span class="sql-kw">PRIMARY KEY</span>,
+　　MAKER_NAME VARCHAR2(<span class="sql-num">50</span>)
 );
 
 対応するメーカーがあるかどうかに関係なく、すべての車を表示するSQLはどれでしょうか。（2つ選択）
-(1)		A.　SELECT C.CAR_ID, M.MAKER_ID FROM CARS C FULL OUTER JOIN MAKERS M ON (C.MAKER_ID=M.MAKER_ID)
-(2)		B.　SELECT C.CAR_ID, M.MAKER_ID FROM CARS C RIGHT OUTER JOIN MAKERS M ON (C.MAKER_ID=M.MAKER_ID)
-(3)		C.　SELECT C.CAR_ID, M.MAKER_ID FROM CARS C FULL OUTER JOIN MAKERS M ON (C.MAKER_ID&lt;&gt;M.MAKER_ID)
-(4)		D.　SELECT CAR_ID, MAKER_ID, FROM MAKERS M RIGHT OUTER JOIN CARS C USING (MAKER_ID)
-(5)		E.　SELECT C.CAR_ID, M.MAKER_ID FROM MAKERS M LEFT OUTER JOIN CARS C ON (C.MAKER_ID=M.MAKER_ID)</pre>
+(<span class="sql-num">1</span>)		A.　<span class="sql-kw">SELECT</span> C.CAR_ID, M.MAKER_ID <span class="sql-kw">FROM</span> CARS C <span class="sql-kw">FULL OUTER JOIN</span> MAKERS M <span class="sql-kw">ON</span> (C.MAKER_ID=M.MAKER_ID)
+(<span class="sql-num">2</span>)		B.　<span class="sql-kw">SELECT</span> C.CAR_ID, M.MAKER_ID <span class="sql-kw">FROM</span> CARS C <span class="sql-kw">RIGHT OUTER JOIN</span> MAKERS M <span class="sql-kw">ON</span> (C.MAKER_ID=M.MAKER_ID)
+(<span class="sql-num">3</span>)		C.　<span class="sql-kw">SELECT</span> C.CAR_ID, M.MAKER_ID <span class="sql-kw">FROM</span> CARS C <span class="sql-kw">FULL OUTER JOIN</span> MAKERS M <span class="sql-kw">ON</span> (C.MAKER_ID&lt;&gt;M.MAKER_ID)
+(<span class="sql-num">4</span>)		D.　<span class="sql-kw">SELECT</span> CAR_ID, MAKER_ID, <span class="sql-kw">FROM</span> MAKERS M <span class="sql-kw">RIGHT OUTER JOIN</span> CARS C <span class="sql-kw">USING</span> (MAKER_ID)
+(<span class="sql-num">5</span>)		E.　<span class="sql-kw">SELECT</span> C.CAR_ID, M.MAKER_ID <span class="sql-kw">FROM</span> MAKERS M <span class="sql-kw">LEFT OUTER JOIN</span> CARS C <span class="sql-kw">ON</span> (C.MAKER_ID=M.MAKER_ID)</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「制約定義と有効化・無効化」です。問題文は「以下の文を実行して表を作成します。 CREATE TABLE CARS ( CAR_ID NUMBER PRIMARY KEY, CAR_NAME VARCHAR2(50), MAKER_ID NUMBER ); CREATE TABLE…」を満たす記述または SQL を求めています。主キー、外部キー、CHECK、NOT NULL などの制約は、型や参照整合性を守るための定義である。ENABLE/DISABLE、CASCADE、SYSDATE 使用可否など細部の制約規則が問われる。 そのため、成立条件を満たす正答は A「SELECT C.CAR_ID, M.MAKER_ID FROM CARS C FULL OUTER JOIN…」 / C「SELECT C.CAR_ID, M.MAKER_ID FROM CARS C FULL OUTER JOIN…」 です。</p>
@@ -2555,11 +2566,11 @@ CREATE TABLE MAKERS
                   <div class="question-meta">第2回 模擬試験 / 問50 / 正答 BC / 自己回答 AE</div>
                   <div class="block-title">問題文</div>
                   <pre>SHOHIN_ID列とSHOHIN_KAKAKU列の値の組み合わせが一意であり、どちらの列もNULLではない表を作成する場合（表名：SHOHIN）、以下のどの文を実行すればいいでしょうか。(2つ選択)
-(1)		A.　CREATE TABLE SHOHIN (SHOHIN_ID NUMBER, SHOHIN_KAKAKU NUMBER, SHOHIN_NAME VARCHAR2(20), INPUT_DATE DATE, CONSTRAINT SHOHIN_ID_UQ UNIQUE (SHOHIN_ID, SHOHIN_KAKAKU) CONSTRAINT SHOHIN_ID_NN NOT NULL (SHOHIN_ID, SHOHIN_KAKAKU););
-(2)		B.　CREATE TABLE SHOHIN (SHOHIN_ID NUMBER CONSTRAINT SHOHIN_ID_NOT_NULL NOT NULL, SHOHIN_KAKAKU NUMBER CONSTRAINT SHOHIN_KAKAKU_NOT_NULL NOT NULL, SHOHIN_NAME VARCHAR2(20), INPUT_DATE DATE, CONSTRAINT SHOHIN_ID_UQ UNIQUE (SHOHIN_ID, SHOHIN_KAKAKU));
-(3)		C.　CREATE TABLE SHOHIN (SHOHIN_ID NUMBER, SHOHIN_KAKAKU NUMBER, SHOHIN_NAME VARCHAR2(20), INPUT_DATE DATE, CONSTRAINT SHOHIN_PK PRIMARY KEY (SHOHIN_ID, SHOHIN_KAKAKU));
-(4)		D.　CREATE TABLE SHOHIN (SHOHIN_ID NUMBER CONSTRAINT SHOHIN_PK PRIMARY KEY, SHOHIN_KAKAKU NUMBER UNIQUE, SHOHIN_NAME VARCHAR2(20), INPUT_DATE DATE);
-(5)		E.　CREATE TABLE SHOHIN (SHOHIN_ID NUMBER, SHOHIN_KAKAKU NUMBER, SHOHIN_NAME VARCHAR2(20), INPUT_DATE DATE, CONSTRAINT SHOHIN_ID_UQ UNIQUE (SHOHIN_ID, SHOHIN_KAKAKU));</pre>
+(<span class="sql-num">1</span>)		A.　<span class="sql-kw">CREATE TABLE</span> SHOHIN (SHOHIN_ID NUMBER, SHOHIN_KAKAKU NUMBER, SHOHIN_NAME VARCHAR2(<span class="sql-num">20</span>), INPUT_DATE DATE, <span class="sql-kw">CONSTRAINT</span> SHOHIN_ID_UQ <span class="sql-kw">UNIQUE</span> (SHOHIN_ID, SHOHIN_KAKAKU) <span class="sql-kw">CONSTRAINT</span> SHOHIN_ID_NN <span class="sql-kw">NOT NULL</span> (SHOHIN_ID, SHOHIN_KAKAKU););
+(<span class="sql-num">2</span>)		B.　<span class="sql-kw">CREATE TABLE</span> SHOHIN (SHOHIN_ID NUMBER <span class="sql-kw">CONSTRAINT</span> SHOHIN_ID_NOT_NULL <span class="sql-kw">NOT NULL</span>, SHOHIN_KAKAKU NUMBER <span class="sql-kw">CONSTRAINT</span> SHOHIN_KAKAKU_NOT_NULL <span class="sql-kw">NOT NULL</span>, SHOHIN_NAME VARCHAR2(<span class="sql-num">20</span>), INPUT_DATE DATE, <span class="sql-kw">CONSTRAINT</span> SHOHIN_ID_UQ <span class="sql-kw">UNIQUE</span> (SHOHIN_ID, SHOHIN_KAKAKU));
+(<span class="sql-num">3</span>)		C.　<span class="sql-kw">CREATE TABLE</span> SHOHIN (SHOHIN_ID NUMBER, SHOHIN_KAKAKU NUMBER, SHOHIN_NAME VARCHAR2(<span class="sql-num">20</span>), INPUT_DATE DATE, <span class="sql-kw">CONSTRAINT</span> SHOHIN_PK <span class="sql-kw">PRIMARY KEY</span> (SHOHIN_ID, SHOHIN_KAKAKU));
+(<span class="sql-num">4</span>)		D.　<span class="sql-kw">CREATE TABLE</span> SHOHIN (SHOHIN_ID NUMBER <span class="sql-kw">CONSTRAINT</span> SHOHIN_PK <span class="sql-kw">PRIMARY KEY</span>, SHOHIN_KAKAKU NUMBER <span class="sql-kw">UNIQUE</span>, SHOHIN_NAME VARCHAR2(<span class="sql-num">20</span>), INPUT_DATE DATE);
+(<span class="sql-num">5</span>)		E.　<span class="sql-kw">CREATE TABLE</span> SHOHIN (SHOHIN_ID NUMBER, SHOHIN_KAKAKU NUMBER, SHOHIN_NAME VARCHAR2(<span class="sql-num">20</span>), INPUT_DATE DATE, <span class="sql-kw">CONSTRAINT</span> SHOHIN_ID_UQ <span class="sql-kw">UNIQUE</span> (SHOHIN_ID, SHOHIN_KAKAKU));</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「制約定義と有効化・無効化」です。問題文は「SHOHIN_ID列とSHOHIN_KAKAKU列の値の組み合わせが一意であり、どちらの列もNULLではない表を作成する場合（表名：SHOHIN）、以下のどの文を実行すればいいでしょうか。(2つ選択)」を満たす記述または SQL を求めています。主キー、外部キー、CHECK、NOT NULL などの制約は、型や参照整合性を守るための定義である。ENABLE/DISABLE、CASCADE、SYSDATE 使用可否など細部の制約規則が問われる。 そのため、成立条件を満たす正答は B「CREATE TABLE SHOHIN (SHOHIN_ID NUMBER CONSTRAINT SHOHIN…」 / C「CREATE TABLE SHOHIN (SHOHIN_ID NUMBER, SHOHIN_KAKAKU NU…」 です。</p>
@@ -2624,30 +2635,30 @@ CREATE TABLE MAKERS
                   <div class="block-title">問題文</div>
                   <pre>以下のSQLステートメントを確認してください。
 
-CREATE TABLE Employees
-(emp_no NUMBER(2) CONSTRAINT pk_emp PRIMARY KEY,
-ename VARCHAR2(15),
-salary NUMBER(8,2),
-mgr_no NUMBER(2));
+<span class="sql-kw">CREATE TABLE</span> Employees
+(emp_no NUMBER(<span class="sql-num">2</span>) <span class="sql-kw">CONSTRAINT</span> pk_emp <span class="sql-kw">PRIMARY KEY</span>,
+ename VARCHAR2(<span class="sql-num">15</span>),
+salary NUMBER(<span class="sql-num">8</span>,<span class="sql-num">2</span>),
+mgr_no NUMBER(<span class="sql-num">2</span>));
 
-ALTER TABLE Employees ADD CONSTRAINT fk_mgr
-FOREIGN KEY (mgr_no)
-REFERENCES Employees(emp_no)
-ON DELETE SET NULL;
+<span class="sql-kw">ALTER TABLE</span> Employees <span class="sql-kw">ADD</span> <span class="sql-kw">CONSTRAINT</span> fk_mgr
+<span class="sql-kw">FOREIGN KEY</span> (mgr_no)
+<span class="sql-kw">REFERENCES</span> Employees(emp_no)
+<span class="sql-kw">ON DELETE SET NULL</span>;
 
-ALTER TABLE Employees
-DISABLE CONSTRAINT pk_emp
-CASCADE;
+<span class="sql-kw">ALTER TABLE</span> Employees
+DISABLE <span class="sql-kw">CONSTRAINT</span> pk_emp
+<span class="sql-kw">CASCADE</span>;
 
-ALTER TABLE Employees
-ENABLE CONSTRAINT pk_emp;
+<span class="sql-kw">ALTER TABLE</span> Employees
+ENABLE <span class="sql-kw">CONSTRAINT</span> pk_emp;
 
 次のうち、実行後に正しいものを2つ選んでください。
-(1)		A. 主キー制約は有効化され、IMMEDIATE となる。
-(2)		B. 外部キー制約は有効化され、DEFERRED となる。
-(3)		C. 主キー制約は無効化され、DEFERRED となる。
-(4)		D. 外部キー制約は無効化される。
-(5)		E. 外部キー制約は有効化され、IMMEDIATE となる。</pre>
+(<span class="sql-num">1</span>)		A. 主キー制約は有効化され、IMMEDIATE となる。
+(<span class="sql-num">2</span>)		B. 外部キー制約は有効化され、DEFERRED となる。
+(<span class="sql-num">3</span>)		C. 主キー制約は無効化され、DEFERRED となる。
+(<span class="sql-num">4</span>)		D. 外部キー制約は無効化される。
+(<span class="sql-num">5</span>)		E. 外部キー制約は有効化され、IMMEDIATE となる。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「制約定義と有効化・無効化」です。問題文は「以下のSQLステートメントを確認してください。 CREATE TABLE Employees (emp_no NUMBER(2) CONSTRAINT pk_emp PRIMARY KEY, ename VARCHAR2(15), sal…」を満たす記述または SQL を求めています。主キー、外部キー、CHECK、NOT NULL などの制約は、型や参照整合性を守るための定義である。ENABLE/DISABLE、CASCADE、SYSDATE 使用可否など細部の制約規則が問われる。 そのため、成立条件を満たす正答は A「主キー制約は有効化され、IMMEDIATE となる。」 / D「外部キー制約は無効化される。」 です。</p>
@@ -2712,23 +2723,23 @@ ENABLE CONSTRAINT pk_emp;
                   <div class="block-title">問題文</div>
                   <pre>次のSQLコマンドを実行したときの動作を確認してください。
 
-CREATE GLOBAL TEMPORARY TABLE emp_gtt (
-　emp_id NUMBER(6),
-　salary NUMBER(10)
-) ON COMMIT PRESERVE ROWS;
+<span class="sql-kw">CREATE</span> GLOBAL TEMPORARY <span class="sql-kw">TABLE</span> emp_gtt (
+　emp_id NUMBER(<span class="sql-num">6</span>),
+　salary NUMBER(<span class="sql-num">10</span>)
+) <span class="sql-kw">ON</span> <span class="sql-kw">COMMIT</span> PRESERVE <span class="sql-kw">ROWS</span>;
 
-INSERT INTO emp_gtt VALUES (101, 5000);
+<span class="sql-kw">INSERT INTO</span> emp_gtt <span class="sql-kw">VALUES</span> (<span class="sql-num">101</span>, <span class="sql-num">5000</span>);
 
-COMMIT;
+<span class="sql-kw">COMMIT</span>;
 
 次のうち、正しいものを2つ選んでください。
 
-(1)		A. 他のセッションからコミット済みの行を参照できる。
-(2)		B. セッションが終了すると、このテーブルの行は削除される。
-(3)		C. このセッションで ALTER TABLE を使用して外部キーを追加できる。
-(4)		D. このセッションで ALTER TABLE を使用してカラムを追加できる。
-(5)		E. このテーブルを削除するには、まず TRUNCATE しなければならない。
-(6)		F. このテーブルを削除するには、まず制約をすべて削除しなければならない。</pre>
+(<span class="sql-num">1</span>)		A. 他のセッションからコミット済みの行を参照できる。
+(<span class="sql-num">2</span>)		B. セッションが終了すると、このテーブルの行は削除される。
+(<span class="sql-num">3</span>)		C. このセッションで <span class="sql-kw">ALTER TABLE</span> を使用して外部キーを追加できる。
+(<span class="sql-num">4</span>)		D. このセッションで <span class="sql-kw">ALTER TABLE</span> を使用してカラムを追加できる。
+(<span class="sql-num">5</span>)		E. このテーブルを削除するには、まず <span class="sql-kw">TRUNCATE</span> しなければならない。
+(<span class="sql-num">6</span>)		F. このテーブルを削除するには、まず制約をすべて削除しなければならない。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「制約定義と有効化・無効化」です。問題文は「次のSQLコマンドを実行したときの動作を確認してください。 CREATE GLOBAL TEMPORARY TABLE emp_gtt ( emp_id NUMBER(6), salary NUMBER(10) ) ON COMMIT P…」を満たす記述または SQL を求めています。主キー、外部キー、CHECK、NOT NULL などの制約は、型や参照整合性を守るための定義である。ENABLE/DISABLE、CASCADE、SYSDATE 使用可否など細部の制約規則が問われる。 そのため、成立条件を満たす正答は B「セッションが終了すると、このテーブルの行は削除される。」 / D「このセッションで ALTER TABLE を使用してカラムを追加できる。」 です。</p>
@@ -2821,11 +2832,11 @@ COMMIT;
 <span class="note">-- DDL はすべて暗黙 COMMIT を伴う。DEFAULT は値省略時 / VALUES(DEFAULT) で補完。</span></div></div>
       <div class="guide-block">
         <div class="guide-title">この論点の基本形</div>
-        <pre>CREATE VIEW v_item AS
-SELECT item_id, item_name FROM item;
+        <pre><span class="sql-kw">CREATE VIEW</span> v_item <span class="sql-kw">AS</span>
+<span class="sql-kw">SELECT</span> item_id, item_name <span class="sql-kw">FROM</span> item;
 
-CREATE SEQUENCE seq_item START WITH 1;
-GRANT SELECT ON item TO user_name;</pre>
+<span class="sql-kw">CREATE SEQUENCE</span> seq_item <span class="sql-kw">START WITH</span> <span class="sql-num">1</span>;
+<span class="sql-kw">GRANT</span> <span class="sql-kw">SELECT</span> <span class="sql-kw">ON</span> item <span class="sql-kw">TO</span> user_name;</pre>
       </div>
       <div class="guide-grid">
         <div class="guide-block">
@@ -2845,11 +2856,11 @@ GRANT SELECT ON item TO user_name;</pre>
                   <div class="question-meta">第1回 模擬試験 / 問77 / 正答 B.C.E / 自己回答 A.C</div>
                   <div class="block-title">問題文</div>
                   <pre>セッションに、NLS_DATE_FORMAT DD-MON-YYYY HH24:MI:SS を設定している場合、日付/時刻関数について正しい記述はどれでしょうか。（3つ選択）
-(1)		A.　SYSDATEは、セッション・タイムゾーンに従って現在の日付と時刻を返します。
-(2)		B.　SYSDATEは、データベース・サーバーが存在するオペレーティング・システムの現在の日付と時刻のセットを返します。
-(3)		C.　CURRENT_DATEは、セッション・タイムゾーンに従って現在の日付と時刻を返します。
-(4)		D.　CURRENT_TIMESTAMPとSYSDATEは、同じ日付を返します。
-(5)		E.　CURRENT_DATEとCURRENT_TIMESTAMPは、同じ日付を返します。</pre>
+(<span class="sql-num">1</span>)		A.　SYSDATEは、セッション・タイムゾーンに従って現在の日付と時刻を返します。
+(<span class="sql-num">2</span>)		B.　SYSDATEは、データベース・サーバーが存在するオペレーティング・システムの現在の日付と時刻のセットを返します。
+(<span class="sql-num">3</span>)		C.　CURRENT_DATEは、セッション・タイムゾーンに従って現在の日付と時刻を返します。
+(<span class="sql-num">4</span>)		D.　CURRENT_TIMESTAMPとSYSDATEは、同じ日付を返します。
+(<span class="sql-num">5</span>)		E.　CURRENT_DATEとCURRENT_TIMESTAMPは、同じ日付を返します。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「DATE・TIMESTAMP・TIME ZONE」です。問題文は「セッションに、NLS_DATE_FORMAT DD-MON-YYYY HH24:MI:SS を設定している場合、日付/時刻関数について正しい記述はどれでしょうか。（3つ選択）」を満たす記述または SQL を求めています。DATE は秒まで、TIMESTAMP は小数秒まで、TIMESTAMP WITH TIME ZONE はタイムゾーン情報付き、LOCAL TIME ZONE は DB タイムゾーンで正規化される。CURRENT_TIMESTAMP と SYSTIMESTAMP も基準が異なる。 そのため、成立条件を満たす正答は B「SYSDATEは、データベース・サーバーが存在するオペレーティング・システムの現在の日付と時刻のセットを返しま…」 / C「CURRENT_DATEは、セッション・タイムゾーンに従って現在の日付と時刻を返します。」 / E「CURRENT_DATEとCURRENT_TIMESTAMPは、同じ日付を返します。」 です。</p>
@@ -2918,12 +2929,12 @@ GRANT SELECT ON item TO user_name;</pre>
 ・MADE_DATE：年、月、日、時、分、秒（小数点以下の最大精度）を扱います。
 
 これらの要件を最も効率的に処理するデータ型の記述はどれでしょうか。（2つ選択）
-(1)		ITEM_ID は ROWID型である必要があります。
-(2)		ITEM_ID 列は CHAR型である必要があります。
-(3)		ITEM_ID は BLOB型である必要があります。
-(4)		MADE_DATE は DATE型である必要があります。
-(5)		MADE_DATE は INTERVAL DAY TO SECOND型である必要があります。
-(6)		MADE_DATE は TIMESTAMP型である必要があります。</pre>
+(<span class="sql-num">1</span>)		ITEM_ID は ROWID型である必要があります。
+(<span class="sql-num">2</span>)		ITEM_ID 列は CHAR型である必要があります。
+(<span class="sql-num">3</span>)		ITEM_ID は BLOB型である必要があります。
+(<span class="sql-num">4</span>)		MADE_DATE は DATE型である必要があります。
+(<span class="sql-num">5</span>)		MADE_DATE は INTERVAL DAY <span class="sql-kw">TO</span> SECOND型である必要があります。
+(<span class="sql-num">6</span>)		MADE_DATE は TIMESTAMP型である必要があります。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「DATE・TIMESTAMP・TIME ZONE」です。問題文は「2つの列が次の仕様を持つ表を設計します。 ・ITEM_ID：6文字の固定長で、英数字を扱います。 ・MADE_DATE：年、月、日、時、分、秒（小数点以下の最大精度）を扱います。 これらの要件を最も効率的に処理するデータ型の記述はどれでし…」を満たす記述または SQL を求めています。DATE は秒まで、TIMESTAMP は小数秒まで、TIMESTAMP WITH TIME ZONE はタイムゾーン情報付き、LOCAL TIME ZONE は DB タイムゾーンで正規化される。CURRENT_TIMESTAMP と SYSTIMESTAMP も基準が異なる。 そのため、成立条件を満たす正答は 2「ITEM_ID 列は CHAR型である必要があります。」 / 6「MADE_DATE は TIMESTAMP型である必要があります。」 です。</p>
@@ -2995,12 +3006,12 @@ GRANT SELECT ON item TO user_name;</pre>
                 <article class="question-card">
                   <div class="question-meta">第2回 模擬試験 / 問72 / 正答 BD / 自己回答 AC</div>
                   <div class="block-title">問題文</div>
-                  <pre>TIMESTAMP WITH TIME ZONE型の特徴について、正しい記述を2つ選択してください。
-(1)		A.　年・月・日・時・分・秒だけを格納し、小数秒は扱えない
-(2)		B.　CURRENT_TIMESTAMP関数はTIMESTAMP WITH TIME ZONE型の値を返す
-(3)		C.　値はデータベース・タイムゾーンで正規化して格納される
-(4)		D.　値にタイムゾーン・リージョン名またはオフセット情報を含む
-(5)		E.　タイムゾーン情報を無視して格納される</pre>
+                  <pre>TIMESTAMP <span class="sql-kw">WITH</span> TIME ZONE型の特徴について、正しい記述を2つ選択してください。
+(<span class="sql-num">1</span>)		A.　年・月・日・時・分・秒だけを格納し、小数秒は扱えない
+(<span class="sql-num">2</span>)		B.　CURRENT_TIMESTAMP関数はTIMESTAMP <span class="sql-kw">WITH</span> TIME ZONE型の値を返す
+(<span class="sql-num">3</span>)		C.　値はデータベース・タイムゾーンで正規化して格納される
+(<span class="sql-num">4</span>)		D.　値にタイムゾーン・リージョン名またはオフセット情報を含む
+(<span class="sql-num">5</span>)		E.　タイムゾーン情報を無視して格納される</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「DATE・TIMESTAMP・TIME ZONE」です。問題文は「TIMESTAMP WITH TIME ZONE型の特徴について、正しい記述を2つ選択してください。」を満たす記述または SQL を求めています。DATE は秒まで、TIMESTAMP は小数秒まで、TIMESTAMP WITH TIME ZONE はタイムゾーン情報付き、LOCAL TIME ZONE は DB タイムゾーンで正規化される。CURRENT_TIMESTAMP と SYSTIMESTAMP も基準が異なる。 そのため、成立条件を満たす正答は B「CURRENT_TIMESTAMP関数はTIMESTAMP WITH TIME ZONE型の値を返す」 / D「値にタイムゾーン・リージョン名またはオフセット情報を含む」 です。</p>
@@ -3064,11 +3075,11 @@ GRANT SELECT ON item TO user_name;</pre>
                   <div class="question-meta">第2回 模擬試験 / 問76 / 正答 ABD / 自己回答 BD</div>
                   <div class="block-title">問題文</div>
                   <pre>タイムゾーンについて正しい記述はどれでしょうか。（3つ選択）
-(1)		A.　DBTIMEZONEは、協定世界時 (UTC) からのオフセットを返すことができます。
-(2)		B.　SESSIONTIMEZONEは、協定世界時 (UTC) からのオフセットを返すことができます。
-(3)		C.　DBTIMEZONEを変更した場合、データベースの再起動は不要です。
-(4)		D.　CURRENT_DATEは、タイムゾーン情報のないデータを返します。
-(5)		E.　CURRENT_TIMESTAMPは、タイムゾーン情報のないデータを返します。</pre>
+(<span class="sql-num">1</span>)		A.　DBTIMEZONEは、協定世界時 (UTC) からのオフセットを返すことができます。
+(<span class="sql-num">2</span>)		B.　SESSIONTIMEZONEは、協定世界時 (UTC) からのオフセットを返すことができます。
+(<span class="sql-num">3</span>)		C.　DBTIMEZONEを変更した場合、データベースの再起動は不要です。
+(<span class="sql-num">4</span>)		D.　CURRENT_DATEは、タイムゾーン情報のないデータを返します。
+(<span class="sql-num">5</span>)		E.　CURRENT_TIMESTAMPは、タイムゾーン情報のないデータを返します。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「DATE・TIMESTAMP・TIME ZONE」です。問題文は「タイムゾーンについて正しい記述はどれでしょうか。（3つ選択）」を満たす記述または SQL を求めています。DATE は秒まで、TIMESTAMP は小数秒まで、TIMESTAMP WITH TIME ZONE はタイムゾーン情報付き、LOCAL TIME ZONE は DB タイムゾーンで正規化される。CURRENT_TIMESTAMP と SYSTIMESTAMP も基準が異なる。 そのため、成立条件を満たす正答は A「DBTIMEZONEは、協定世界時 (UTC) からのオフセットを返すことができます。」 / B「SESSIONTIMEZONEは、協定世界時 (UTC) からのオフセットを返すことができます。」 / D「CURRENT_DATEは、タイムゾーン情報のないデータを返します。」 です。</p>
@@ -3133,11 +3144,11 @@ GRANT SELECT ON item TO user_name;</pre>
                   <div class="block-title">問題文</div>
                   <pre>次のSQLを実行したとき、取得できる情報として正しいものはどれですか。1つ選択してください。
 
-SELECT CURRENT_TIMESTAMP, SYSTIMESTAMP FROM DUAL;
-(1)		A. どちらもセッションのタイムゾーンに基づく現在時刻を返す
-(2)		B. CURRENT_TIMESTAMPはサーバのローカル時刻、SYSTIMESTAMPはセッションのシステム時刻を返す
-(3)		C. CURRENT_TIMESTAMPはセッションのタイムゾーンに基づく現在時刻、SYSTIMESTAMPはサーバのローカル時刻を返す
-(4)		D. どちらもUTCに変換された時刻を返す</pre>
+<span class="sql-kw">SELECT</span> CURRENT_TIMESTAMP, SYSTIMESTAMP <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;
+(<span class="sql-num">1</span>)		A. どちらもセッションのタイムゾーンに基づく現在時刻を返す
+(<span class="sql-num">2</span>)		B. CURRENT_TIMESTAMPはサーバのローカル時刻、SYSTIMESTAMPはセッションのシステム時刻を返す
+(<span class="sql-num">3</span>)		C. CURRENT_TIMESTAMPはセッションのタイムゾーンに基づく現在時刻、SYSTIMESTAMPはサーバのローカル時刻を返す
+(<span class="sql-num">4</span>)		D. どちらもUTCに変換された時刻を返す</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「DATE・TIMESTAMP・TIME ZONE」です。問題文は「次のSQLを実行したとき、取得できる情報として正しいものはどれですか。1つ選択してください。 SELECT CURRENT_TIMESTAMP, SYSTIMESTAMP FROM DUAL;」を満たす記述または SQL を求めています。DATE は秒まで、TIMESTAMP は小数秒まで、TIMESTAMP WITH TIME ZONE はタイムゾーン情報付き、LOCAL TIME ZONE は DB タイムゾーンで正規化される。CURRENT_TIMESTAMP と SYSTIMESTAMP も基準が異なる。 そのため、成立条件を満たす正答は C「CURRENT_TIMESTAMPはセッションのタイムゾーンに基づく現在時刻、SYSTIMESTAMPはサーバ…」 です。</p>
@@ -3195,12 +3206,12 @@ SELECT CURRENT_TIMESTAMP, SYSTIMESTAMP FROM DUAL;
 86400秒が1日です。
 以下の日付結果を得るためには、どのSQLが正しいですか。1つ選択してください。
 
-日付 = 03-JAN-2025
+日付 = <span class="sql-num">03</span>-JAN-<span class="sql-num">2025</span>
 
-(1)		A. SELECT TO_CHAR(TO_DATE(&#x27;30-OCT-2024&#x27;) + INTERVAL &#x27;2&#x27; MONTH + INTERVAL &#x27;4&#x27; DAY - INTERVAL &#x27;120&#x27; SECOND, &#x27;DD-MON-YYYY&#x27;) AS &quot;date&quot; FROM DUAL;
-(2)		B. SELECT TO_CHAR(TO_DATE(&#x27;30-OCT-2024&#x27;) + INTERVAL &#x27;2&#x27; MONTH + INTERVAL &#x27;4&#x27; DAY + INTERVAL &#x27;120&#x27; SECOND, &#x27;DD-MON-YYYY&#x27;) AS &quot;date&quot; FROM DUAL;
-(3)		C. SELECT TO_CHAR(TO_DATE(&#x27;30-OCT-2024&#x27;) + INTERVAL &#x27;2&#x27; MONTH + INTERVAL &#x27;6&#x27; DAY - INTERVAL &#x27;120&#x27; SECOND, &#x27;DD-MON-YYYY&#x27;) AS &quot;date&quot; FROM DUAL;
-(4)		D. SELECT TO_CHAR(TO_DATE(&#x27;30-OCT-2024&#x27;) + INTERVAL &#x27;3&#x27; MONTH + INTERVAL &#x27;7&#x27; DAY - INTERVAL &#x27;360&#x27; SECOND, &#x27;DD-MON-YYYY&#x27;) AS &quot;date&quot; FROM DUAL;</pre>
+(<span class="sql-num">1</span>)		A. <span class="sql-kw">SELECT</span> <span class="sql-fn">TO_CHAR</span>(<span class="sql-fn">TO_DATE</span>(&#x27;<span class="sql-num">30</span>-OCT-<span class="sql-num">2024</span>&#x27;) + INTERVAL &#x27;<span class="sql-num">2</span>&#x27; MONTH + INTERVAL &#x27;<span class="sql-num">4</span>&#x27; DAY - INTERVAL &#x27;<span class="sql-num">120</span>&#x27; SECOND, &#x27;DD-MON-YYYY&#x27;) <span class="sql-kw">AS</span> &quot;date&quot; <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;
+(<span class="sql-num">2</span>)		B. <span class="sql-kw">SELECT</span> <span class="sql-fn">TO_CHAR</span>(<span class="sql-fn">TO_DATE</span>(&#x27;<span class="sql-num">30</span>-OCT-<span class="sql-num">2024</span>&#x27;) + INTERVAL &#x27;<span class="sql-num">2</span>&#x27; MONTH + INTERVAL &#x27;<span class="sql-num">4</span>&#x27; DAY + INTERVAL &#x27;<span class="sql-num">120</span>&#x27; SECOND, &#x27;DD-MON-YYYY&#x27;) <span class="sql-kw">AS</span> &quot;date&quot; <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;
+(<span class="sql-num">3</span>)		C. <span class="sql-kw">SELECT</span> <span class="sql-fn">TO_CHAR</span>(<span class="sql-fn">TO_DATE</span>(&#x27;<span class="sql-num">30</span>-OCT-<span class="sql-num">2024</span>&#x27;) + INTERVAL &#x27;<span class="sql-num">2</span>&#x27; MONTH + INTERVAL &#x27;<span class="sql-num">6</span>&#x27; DAY - INTERVAL &#x27;<span class="sql-num">120</span>&#x27; SECOND, &#x27;DD-MON-YYYY&#x27;) <span class="sql-kw">AS</span> &quot;date&quot; <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;
+(<span class="sql-num">4</span>)		D. <span class="sql-kw">SELECT</span> <span class="sql-fn">TO_CHAR</span>(<span class="sql-fn">TO_DATE</span>(&#x27;<span class="sql-num">30</span>-OCT-<span class="sql-num">2024</span>&#x27;) + INTERVAL &#x27;<span class="sql-num">3</span>&#x27; MONTH + INTERVAL &#x27;<span class="sql-num">7</span>&#x27; DAY - INTERVAL &#x27;<span class="sql-num">360</span>&#x27; SECOND, &#x27;DD-MON-YYYY&#x27;) <span class="sql-kw">AS</span> &quot;date&quot; <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「DATE・TIMESTAMP・TIME ZONE」です。問題文は「現在のセッションで NLS_DATE_FORMAT は DD-MM-YYYY に設定されています。 86400秒が1日です。 以下の日付結果を得るためには、どのSQLが正しいですか。1つ選択してください。 日付 = 03-JAN-2025」を満たす記述または SQL を求めています。DATE は秒まで、TIMESTAMP は小数秒まで、TIMESTAMP WITH TIME ZONE はタイムゾーン情報付き、LOCAL TIME ZONE は DB タイムゾーンで正規化される。CURRENT_TIMESTAMP と SYSTIMESTAMP も基準が異なる。 そのため、成立条件を満たす正答は B「SELECT TO_CHAR(TO_DATE(&#x27;30-OCT-2024&#x27;) + INTERVAL &#x27;2&#x27; MO…」 です。</p>
@@ -3275,11 +3286,11 @@ SELECT CURRENT_TIMESTAMP, SYSTIMESTAMP FROM DUAL;
 <span class="note">-- DDL はすべて暗黙 COMMIT を伴う。DEFAULT は値省略時 / VALUES(DEFAULT) で補完。</span></div></div>
       <div class="guide-block">
         <div class="guide-title">この論点の基本形</div>
-        <pre>ALTER TABLE item
-ADD status VARCHAR2(10) DEFAULT &#x27;NEW&#x27; NOT NULL;
+        <pre><span class="sql-kw">ALTER TABLE</span> item
+<span class="sql-kw">ADD</span> status VARCHAR2(<span class="sql-num">10</span>) <span class="sql-kw">DEFAULT</span> &#x27;NEW&#x27; <span class="sql-kw">NOT NULL</span>;
 
-INSERT INTO item (item_id, item_name)
-VALUES (&#x27;1001&#x27;, &#x27;ITEM1&#x27;);</pre>
+<span class="sql-kw">INSERT INTO</span> item (item_id, item_name)
+<span class="sql-kw">VALUES</span> (&#x27;<span class="sql-num">1001</span>&#x27;, &#x27;ITEM1&#x27;);</pre>
       </div>
       <div class="guide-grid">
         <div class="guide-block">
@@ -3300,22 +3311,22 @@ VALUES (&#x27;1001&#x27;, &#x27;ITEM1&#x27;);</pre>
                   <div class="block-title">問題文</div>
                   <pre>ITEM 表を作成します。
 
-CREATE TABLE ITEM
+<span class="sql-kw">CREATE TABLE</span> ITEM
 (
-　　ITEM_ID VARCHAR(4) PRIMARY KEY,
-　　ITEM_NAME VARCHAR(20) NOT NULL,
+　　ITEM_ID VARCHAR(<span class="sql-num">4</span>) <span class="sql-kw">PRIMARY KEY</span>,
+　　ITEM_NAME VARCHAR(<span class="sql-num">20</span>) <span class="sql-kw">NOT NULL</span>,
 　　PRODUCTION_DATE DATE,
-　　RELEASE_DATE DATE DEFAULT SYSDATE,
+　　RELEASE_DATE DATE <span class="sql-kw">DEFAULT</span> SYSDATE,
 　　END_OF_SALE_DATE DATE
 );
 
 この表にはデータが1件も存在しません。
 RELEASE_DATEのデフォルト値を使用して、表に行を正常に挿入するSQLはどれでしょうか。（2つ選択）
-(1)		A.　INSERT INTO ITEM VALUES (&#x27;1001&#x27;, &#x27;ITEM1&#x27;, &#x27;10-JUN-2021&#x27;);
-(2)		B.　INSERT INTO ITEM (ITEM_ID, ITEM_NAME, PRODUCTION_DATE,END_OF_SALE_DATE) VALUES (&#x27;1001&#x27;, &#x27;ITEM1&#x27;,&#x27;10-JUN-2021&#x27;,NULL);
-(3)		C.　INSERT INTO ITEM (ITEM_ID, ITEM_NAME, PRODUCTION_DATE, RELEASE_DATE) VALUES (&#x27;1001&#x27;, &#x27;ITEM1&#x27;, &#x27;10-JUN-2021&#x27;);
-(4)		D.　INSERT INTO ITEM VALUES (&#x27;1001&#x27;, &#x27;ITEM1&#x27;, &#x27;10-DEC-2021&#x27;, DEFAULT, &#x27;10-JUN-2022&#x27;);
-(5)		E.　INSERT INTO ITEM (ITEM_ID, PRODUCTION_DATE, END_OF_SALE_DATE) VALUES (&#x27;1001&#x27;, &#x27;10-JUN-2022&#x27;, NULL);</pre>
+(<span class="sql-num">1</span>)		A.　<span class="sql-kw">INSERT INTO</span> ITEM <span class="sql-kw">VALUES</span> (&#x27;<span class="sql-num">1001</span>&#x27;, &#x27;ITEM1&#x27;, &#x27;<span class="sql-num">10</span>-JUN-<span class="sql-num">2021</span>&#x27;);
+(<span class="sql-num">2</span>)		B.　<span class="sql-kw">INSERT INTO</span> ITEM (ITEM_ID, ITEM_NAME, PRODUCTION_DATE,END_OF_SALE_DATE) <span class="sql-kw">VALUES</span> (&#x27;<span class="sql-num">1001</span>&#x27;, &#x27;ITEM1&#x27;,&#x27;<span class="sql-num">10</span>-JUN-<span class="sql-num">2021</span>&#x27;,<span class="sql-kw">NULL</span>);
+(<span class="sql-num">3</span>)		C.　<span class="sql-kw">INSERT INTO</span> ITEM (ITEM_ID, ITEM_NAME, PRODUCTION_DATE, RELEASE_DATE) <span class="sql-kw">VALUES</span> (&#x27;<span class="sql-num">1001</span>&#x27;, &#x27;ITEM1&#x27;, &#x27;<span class="sql-num">10</span>-JUN-<span class="sql-num">2021</span>&#x27;);
+(<span class="sql-num">4</span>)		D.　<span class="sql-kw">INSERT INTO</span> ITEM <span class="sql-kw">VALUES</span> (&#x27;<span class="sql-num">1001</span>&#x27;, &#x27;ITEM1&#x27;, &#x27;<span class="sql-num">10</span>-DEC-<span class="sql-num">2021</span>&#x27;, <span class="sql-kw">DEFAULT</span>, &#x27;<span class="sql-num">10</span>-JUN-<span class="sql-num">2022</span>&#x27;);
+(<span class="sql-num">5</span>)		E.　<span class="sql-kw">INSERT INTO</span> ITEM (ITEM_ID, PRODUCTION_DATE, END_OF_SALE_DATE) <span class="sql-kw">VALUES</span> (&#x27;<span class="sql-num">1001</span>&#x27;, &#x27;<span class="sql-num">10</span>-JUN-<span class="sql-num">2022</span>&#x27;, <span class="sql-kw">NULL</span>);</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「DEFAULT と列追加・挿入」です。問題文は「ITEM 表を作成します。 CREATE TABLE ITEM ( ITEM_ID VARCHAR(4) PRIMARY KEY, ITEM_NAME VARCHAR(20) NOT NULL, PRODUCTION_DATE DATE,…」を満たす記述または SQL を求めています。DEFAULT は値を省略したときに補われる。既存行がある表へ NOT NULL 列を追加するなら、DEFAULT と NOT NULL をセットで与えないと既存行を満たせない。 そのため、成立条件を満たす正答は B「INSERT INTO ITEM (ITEM_ID, ITEM_NAME, PRODUCTION_DATE,E…」 / D「INSERT INTO ITEM VALUES (&#x27;1001&#x27;, &#x27;ITEM1&#x27;, &#x27;10-DEC-2021&#x27;…」 です。</p>
@@ -3378,28 +3389,28 @@ RELEASE_DATEのデフォルト値を使用して、表に行を正常に挿入�
                 <article class="question-card">
                   <div class="question-meta">第1回 模擬試験 / 問68 / 正答 B.E / 自己回答 B.D</div>
                   <div class="block-title">問題文</div>
-                  <pre>CREATE SEQUENCE ITEM_SEQ
-　MAXVALUE 9999
+                  <pre><span class="sql-kw">CREATE SEQUENCE</span> ITEM_SEQ
+　MAXVALUE <span class="sql-num">9999</span>
 　CYCLE
-　CACHE 1000;
+　CACHE <span class="sql-num">1000</span>;
 
-CREATE TABLE ITEM
+<span class="sql-kw">CREATE TABLE</span> ITEM
 (
-　　ITEM_ID NUMBER(4) DEFAULT ITEM_SEQ.NEXTVAL CONSTRAINT ITEM_PK PRIMARY KEY,
-　　ITEM_NO NUMBER(3),
-　　ITEM_NAME VARCHAR2(20),
-　　ITEM_TYPE VARCHAR2(20),
+　　ITEM_ID NUMBER(<span class="sql-num">4</span>) <span class="sql-kw">DEFAULT</span> ITEM_SEQ.<span class="sql-kw">NEXTVAL</span> <span class="sql-kw">CONSTRAINT</span> ITEM_PK <span class="sql-kw">PRIMARY KEY</span>,
+　　ITEM_NO NUMBER(<span class="sql-num">3</span>),
+　　ITEM_NAME VARCHAR2(<span class="sql-num">20</span>),
+　　ITEM_TYPE VARCHAR2(<span class="sql-num">20</span>),
 　　MADE_DATE DATE,
-　　ITEM_PRICE NUMBER(7)
+　　ITEM_PRICE NUMBER(<span class="sql-num">7</span>)
 );
 
 表のITEM_IDにシーケンス：ITEM_SEQを適用するとします。
 表とシーケンスについて正しい記述はどれでしょうか。（2つ選択）
-(1)		A.　他のユーザーのスキーマ内に順序を作成する場合は、CREATE SEQUENCEシステム権限が必要です。
-(2)		B.　ITEM_SEQは、9999ごとに1に戻ります。
-(3)		C.　ITEM_SEQのシーケンス値はITEM表のITEM_IDと同じ値になります。
-(4)		D.　ITEM_SEQが削除された場合、ITEM に挿入された行の列 ITEM_ID のデフォルト値は NULL になります。
-(5)		E.　ITEM表にINSERT文が実行された場合、かつITEM_ID列の値がDEFAULT指定の場合、ITEM_ID列シーケンスITEM_SEQから次の番号を取得します。</pre>
+(<span class="sql-num">1</span>)		A.　他のユーザーのスキーマ内に順序を作成する場合は、<span class="sql-kw">CREATE</span> SEQUENCEシステム権限が必要です。
+(<span class="sql-num">2</span>)		B.　ITEM_SEQは、9999ごとに1に戻ります。
+(<span class="sql-num">3</span>)		C.　ITEM_SEQのシーケンス値はITEM表のITEM_IDと同じ値になります。
+(<span class="sql-num">4</span>)		D.　ITEM_SEQが削除された場合、ITEM に挿入された行の列 ITEM_ID のデフォルト値は <span class="sql-kw">NULL</span> になります。
+(<span class="sql-num">5</span>)		E.　ITEM表にINSERT文が実行された場合、かつITEM_ID列の値がDEFAULT指定の場合、ITEM_ID列シーケンスITEM_SEQから次の番号を取得します。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「DEFAULT と列追加・挿入」です。問題文は「CREATE SEQUENCE ITEM_SEQ MAXVALUE 9999 CYCLE CACHE 1000; CREATE TABLE ITEM ( ITEM_ID NUMBER(4) DEFAULT ITEM_SEQ.NEXTVAL…」を満たす記述または SQL を求めています。DEFAULT は値を省略したときに補われる。既存行がある表へ NOT NULL 列を追加するなら、DEFAULT と NOT NULL をセットで与えないと既存行を満たせない。 そのため、成立条件を満たす正答は B「ITEM_SEQは、9999ごとに1に戻ります。」 / E「ITEM表にINSERT文が実行された場合、かつITEM_ID列の値がDEFAULT指定の場合、ITEM_ID…」 です。</p>
@@ -3465,10 +3476,10 @@ CREATE TABLE ITEM
                   <pre>ITEM表に在庫数（NUMBER_OF_STOCK）の列を追加します。
 ITEM表に1行以上のデータが存在する場合、
 列にNULL値は含まないように設定するための文はどれでしょうか。
-(1)		1.　ALTER TABLE ITEM ADD NUMBER_OF_STOCK NUMBER(5) DEFAULT NOT NULL;
-(2)		2.　ALTER TABLE ITEM ADD NUMBER_OF_STOCK NUMBER(5) DEFAULT 0 NOT NULL;
-(3)		3.　ALTER TABLE ITEM ADD NUMBER_OF_STOCK NUMBER(5) DEFAULT CONSTRAINT NOT NULL;
-(4)		4.　ALTER TABLE ITEM ADD NUMBER_OF_STOCK NUMBER(5) DEFAULT CONSTRAINT MD_NN NOT NULL;</pre>
+(<span class="sql-num">1</span>)		<span class="sql-num">1</span>.　<span class="sql-kw">ALTER TABLE</span> ITEM <span class="sql-kw">ADD</span> NUMBER_OF_STOCK NUMBER(<span class="sql-num">5</span>) <span class="sql-kw">DEFAULT</span> <span class="sql-kw">NOT NULL</span>;
+(<span class="sql-num">2</span>)		<span class="sql-num">2</span>.　<span class="sql-kw">ALTER TABLE</span> ITEM <span class="sql-kw">ADD</span> NUMBER_OF_STOCK NUMBER(<span class="sql-num">5</span>) <span class="sql-kw">DEFAULT</span> <span class="sql-num">0</span> <span class="sql-kw">NOT NULL</span>;
+(<span class="sql-num">3</span>)		<span class="sql-num">3</span>.　<span class="sql-kw">ALTER TABLE</span> ITEM <span class="sql-kw">ADD</span> NUMBER_OF_STOCK NUMBER(<span class="sql-num">5</span>) <span class="sql-kw">DEFAULT</span> <span class="sql-kw">CONSTRAINT</span> <span class="sql-kw">NOT NULL</span>;
+(<span class="sql-num">4</span>)		<span class="sql-num">4</span>.　<span class="sql-kw">ALTER TABLE</span> ITEM <span class="sql-kw">ADD</span> NUMBER_OF_STOCK NUMBER(<span class="sql-num">5</span>) <span class="sql-kw">DEFAULT</span> <span class="sql-kw">CONSTRAINT</span> MD_NN <span class="sql-kw">NOT NULL</span>;</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「DEFAULT と列追加・挿入」です。問題文は「ITEM表に在庫数（NUMBER_OF_STOCK）の列を追加します。 ITEM表に1行以上のデータが存在する場合、 列にNULL値は含まないように設定するための文はどれでしょうか。」を満たす記述または SQL を求めています。DEFAULT は値を省略したときに補われる。既存行がある表へ NOT NULL 列を追加するなら、DEFAULT と NOT NULL をセットで与えないと既存行を満たせない。 そのため、成立条件を満たす正答は 2「2. ALTER TABLE ITEM ADD NUMBER_OF_STOCK NUMBER(5) DEFAU…」 です。</p>
@@ -3522,20 +3533,20 @@ ITEM表に1行以上のデータが存在する場合、
                 <article class="question-card">
                   <div class="question-meta">第3回 模擬試験 / 問33 / 正答 CD / 自己回答 AD</div>
                   <div class="block-title">問題文</div>
-                  <pre>以下の CREATE TABLE コマンドを確認してください。
+                  <pre>以下の <span class="sql-kw">CREATE TABLE</span> コマンドを確認してください。
 
-CREATE TABLE cust (
-　cust_id NUMBER(2),
-　credit_limit NUMBER(10)
+<span class="sql-kw">CREATE TABLE</span> cust (
+　cust_id NUMBER(<span class="sql-num">2</span>),
+　credit_limit NUMBER(<span class="sql-num">10</span>)
 )
 ORGANIZATION EXTERNAL;
 
 このコマンドを正常に実行するために必ず指定する句を2つ選んでください。
-(1)		A. REJECT LIMIT 句
-(2)		B. TYPE 句（ドライバ種別）
-(3)		C. DEFAULT DIRECTORY 句
-(4)		D. LOCATION 句
-(5)		E. ACCESS PARAMETERS 句</pre>
+(<span class="sql-num">1</span>)		A. REJECT LIMIT 句
+(<span class="sql-num">2</span>)		B. TYPE 句（ドライバ種別）
+(<span class="sql-num">3</span>)		C. <span class="sql-kw">DEFAULT</span> DIRECTORY 句
+(<span class="sql-num">4</span>)		D. LOCATION 句
+(<span class="sql-num">5</span>)		E. ACCESS PARAMETERS 句</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「DEFAULT と列追加・挿入」です。問題文は「以下の CREATE TABLE コマンドを確認してください。 CREATE TABLE cust ( cust_id NUMBER(2), credit_limit NUMBER(10) ) ORGANIZATION EXTERNAL;…」を満たす記述または SQL を求めています。DEFAULT は値を省略したときに補われる。既存行がある表へ NOT NULL 列を追加するなら、DEFAULT と NOT NULL をセットで与えないと既存行を満たせない。 そのため、成立条件を満たす正答は C「DEFAULT DIRECTORY 句」 / D「LOCATION 句」 です。</p>
@@ -3598,48 +3609,48 @@ ORGANIZATION EXTERNAL;
                 <article class="question-card">
                   <div class="question-meta">第3回 模擬試験 / 問68 / 正答 CD / 自己回答 AC</div>
                   <div class="block-title">問題文</div>
-                  <pre>シーケンス名：USER_SEQが存在している環境で、次の CREATE TABLE コマンドのうち、有効なものを2つ選んでください。
+                  <pre>シーケンス名：USER_SEQが存在している環境で、次の <span class="sql-kw">CREATE TABLE</span> コマンドのうち、有効なものを2つ選んでください。
 A.
-CREATE TABLE reservations (
-    rs_id NUMBER(6) DEFAULT user_seq.CURRVAL,
+<span class="sql-kw">CREATE TABLE</span> reservations (
+    rs_id NUMBER(<span class="sql-num">6</span>) <span class="sql-kw">DEFAULT</span> user_seq.<span class="sql-kw">CURRVAL</span>,
     created_at DATE,
-    expires_at DATE DEFAULT created_at
+    expires_at DATE <span class="sql-kw">DEFAULT</span> created_at
 );
 
 B.
-CREATE TABLE reservations (
-    rs_id NUMBER(6),
-    created_at DATE DEFAULT SYSDATE,
-    expires_at DATE DEFAULT (expires_at &gt;= created_at)
+<span class="sql-kw">CREATE TABLE</span> reservations (
+    rs_id NUMBER(<span class="sql-num">6</span>),
+    created_at DATE <span class="sql-kw">DEFAULT</span> SYSDATE,
+    expires_at DATE <span class="sql-kw">DEFAULT</span> (expires_at &gt;= created_at)
 );
 
 C.
-CREATE TABLE reservations (
-    rs_id NUMBER(6) DEFAULT user_seq.NEXTVAL PRIMARY KEY,
-    created_at DATE DEFAULT SYSDATE,
-    expires_at DATE DEFAULT SYSDATE NOT NULL
+<span class="sql-kw">CREATE TABLE</span> reservations (
+    rs_id NUMBER(<span class="sql-num">6</span>) <span class="sql-kw">DEFAULT</span> user_seq.<span class="sql-kw">NEXTVAL</span> <span class="sql-kw">PRIMARY KEY</span>,
+    created_at DATE <span class="sql-kw">DEFAULT</span> SYSDATE,
+    expires_at DATE <span class="sql-kw">DEFAULT</span> SYSDATE <span class="sql-kw">NOT NULL</span>
 );
 
 D.
-CREATE TABLE reservations (
-    rs_id NUMBER(6) NOT NULL PRIMARY KEY,
-    created_at DATE NOT NULL,
-    expires_at DATE DEFAULT SYSDATE
+<span class="sql-kw">CREATE TABLE</span> reservations (
+    rs_id NUMBER(<span class="sql-num">6</span>) <span class="sql-kw">NOT NULL</span> <span class="sql-kw">PRIMARY KEY</span>,
+    created_at DATE <span class="sql-kw">NOT NULL</span>,
+    expires_at DATE <span class="sql-kw">DEFAULT</span> SYSDATE
 );
 
 E.
-CREATE TABLE reservations (
-    rs_id NUMBER(6) NOT NULL DEFAULT user_seq.CURRVAL,
+<span class="sql-kw">CREATE TABLE</span> reservations (
+    rs_id NUMBER(<span class="sql-num">6</span>) <span class="sql-kw">NOT NULL</span> <span class="sql-kw">DEFAULT</span> user_seq.<span class="sql-kw">CURRVAL</span>,
     created_at DATE,
-    expires_at DATE DEFAULT SYSDATE
+    expires_at DATE <span class="sql-kw">DEFAULT</span> SYSDATE
 );
 
 
-(1)		A
-(2)		B
-(3)		C
-(4)		D
-(5)		E</pre>
+(<span class="sql-num">1</span>)		A
+(<span class="sql-num">2</span>)		B
+(<span class="sql-num">3</span>)		C
+(<span class="sql-num">4</span>)		D
+(<span class="sql-num">5</span>)		E</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「DEFAULT と列追加・挿入」です。問題文は「シーケンス名：USER_SEQが存在している環境で、次の CREATE TABLE コマンドのうち、有効なものを2つ選んでください。」を満たす記述または SQL を求めています。DEFAULT は値を省略したときに補われる。既存行がある表へ NOT NULL 列を追加するなら、DEFAULT と NOT NULL をセットで与えないと既存行を満たせない。 そのため、成立条件を満たす正答は C「CREATE TABLE reservations ( rs_id NUMBER(6) DEFAULT use…」 / D「CREATE TABLE reservations ( rs_id NUMBER(6) NOT NULL PR…」 です。</p>
@@ -3723,11 +3734,11 @@ CREATE TABLE reservations (
 <span class="note">-- DDL はすべて暗黙 COMMIT を伴う。DEFAULT は値省略時 / VALUES(DEFAULT) で補完。</span></div></div>
       <div class="guide-block">
         <div class="guide-title">この論点の基本形</div>
-        <pre>ALTER TABLE item
-ADD status VARCHAR2(10) DEFAULT &#x27;NEW&#x27; NOT NULL;
+        <pre><span class="sql-kw">ALTER TABLE</span> item
+<span class="sql-kw">ADD</span> status VARCHAR2(<span class="sql-num">10</span>) <span class="sql-kw">DEFAULT</span> &#x27;NEW&#x27; <span class="sql-kw">NOT NULL</span>;
 
-INSERT INTO item (item_id, item_name)
-VALUES (&#x27;1001&#x27;, &#x27;ITEM1&#x27;);</pre>
+<span class="sql-kw">INSERT INTO</span> item (item_id, item_name)
+<span class="sql-kw">VALUES</span> (&#x27;<span class="sql-num">1001</span>&#x27;, &#x27;ITEM1&#x27;);</pre>
       </div>
       <div class="guide-grid">
         <div class="guide-block">
@@ -3747,11 +3758,11 @@ VALUES (&#x27;1001&#x27;, &#x27;ITEM1&#x27;);</pre>
                   <div class="question-meta">第1回 模擬試験 / 問51 / 正答 B / 自己回答 E</div>
                   <div class="block-title">問題文</div>
                   <pre>読み取り専用モードのEMP表に対して、正常に実行されるものはどれでしょうか。
-(1)		A.　TRUNCATE TABLE EMP;
-(2)		B.　DROP TABLE EMP;
-(3)		C.　DELETE FROM EMP;
-(4)		D.　ALTER TABLE EMP DROP COLUMN START_DATE;
-(5)		E.　ALTER TABLE EMP SET UNUSED (START_DATE);</pre>
+(<span class="sql-num">1</span>)		A.　<span class="sql-kw">TRUNCATE TABLE</span> EMP;
+(<span class="sql-num">2</span>)		B.　<span class="sql-kw">DROP TABLE</span> EMP;
+(<span class="sql-num">3</span>)		C.　<span class="sql-kw">DELETE FROM</span> EMP;
+(<span class="sql-num">4</span>)		D.　<span class="sql-kw">ALTER TABLE</span> EMP <span class="sql-kw">DROP COLUMN</span> START_DATE;
+(<span class="sql-num">5</span>)		E.　<span class="sql-kw">ALTER TABLE</span> EMP <span class="sql-kw">SET</span> UNUSED (START_DATE);</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「DDL と DML/TCL の切り分け」です。問題文は「読み取り専用モードのEMP表に対して、正常に実行されるものはどれでしょうか。」を満たす記述または SQL を求めています。CREATE、ALTER、DROP、TRUNCATE などは DDL、INSERT/UPDATE/DELETE/MERGE は DML、COMMIT/ROLLBACK/SAVEPOINT は TCL である。DDL は暗黙コミットを伴う。 そのため、成立条件を満たす正答は B「DROP TABLE EMP;」 です。</p>
@@ -3814,13 +3825,13 @@ VALUES (&#x27;1001&#x27;, &#x27;ITEM1&#x27;);</pre>
                 <article class="question-card">
                   <div class="question-meta">第1回 模擬試験 / 問52 / 正答 D / 自己回答 A</div>
                   <div class="block-title">問題文</div>
-                  <pre>ALTER TABLE ITEM DROP COLUMN ITEM_NAME;
+                  <pre><span class="sql-kw">ALTER TABLE</span> ITEM <span class="sql-kw">DROP COLUMN</span> ITEM_NAME;
 を実行した場合の正しい記述はどれでしょうか。
 　
-(1)		A.　他の列が1つでも表に残っている場合、ITEM_NAME列は削除されます。
-(2)		B.　ITEM_NAME列は、データが含まれていない場合にのみ削除されます。
-(3)		C.　ITEM_NAME列は、データにNULL値が含まれている場合は削除されません。
-(4)		D.　ITEM_NAME列にSET UNUSEDが設定されている場合、データを元に戻せます。</pre>
+(<span class="sql-num">1</span>)		A.　他の列が1つでも表に残っている場合、ITEM_NAME列は削除されます。
+(<span class="sql-num">2</span>)		B.　ITEM_NAME列は、データが含まれていない場合にのみ削除されます。
+(<span class="sql-num">3</span>)		C.　ITEM_NAME列は、データにNULL値が含まれている場合は削除されません。
+(<span class="sql-num">4</span>)		D.　ITEM_NAME列にSET UNUSEDが設定されている場合、データを元に戻せます。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「DDL と DML/TCL の切り分け」です。問題文は「ALTER TABLE ITEM DROP COLUMN ITEM_NAME; を実行した場合の正しい記述はどれでしょうか。」を満たす記述または SQL を求めています。CREATE、ALTER、DROP、TRUNCATE などは DDL、INSERT/UPDATE/DELETE/MERGE は DML、COMMIT/ROLLBACK/SAVEPOINT は TCL である。DDL は暗黙コミットを伴う。 そのため、成立条件を満たす正答は D「ITEM_NAME列にSET UNUSEDが設定されている場合、データを元に戻せます。」 です。</p>
@@ -3875,11 +3886,11 @@ VALUES (&#x27;1001&#x27;, &#x27;ITEM1&#x27;);</pre>
                   <div class="question-meta">第3回 模擬試験 / 問24 / 正答 DE / 自己回答 BD</div>
                   <div class="block-title">問題文</div>
                   <pre>スカラサブクエリについて、正しいものを2つ選んでください。
-(1)		A. GROUP BY 句では使用できない。
-(2)		B. ゼロ行を返すスカラサブクエリの結果は 0 になる。
-(3)		C. INSERT 文の VALUES 句では使用できない。
-(4)		D. スカラサブクエリは CREATE TABLE 文のデフォルト値として使用できる。
-(5)		E. スカラサブクエリはネスト（入れ子）できる。</pre>
+(<span class="sql-num">1</span>)		A. <span class="sql-kw">GROUP BY</span> 句では使用できない。
+(<span class="sql-num">2</span>)		B. ゼロ行を返すスカラサブクエリの結果は <span class="sql-num">0</span> になる。
+(<span class="sql-num">3</span>)		C. <span class="sql-kw">INSERT</span> 文の <span class="sql-kw">VALUES</span> 句では使用できない。
+(<span class="sql-num">4</span>)		D. スカラサブクエリは <span class="sql-kw">CREATE TABLE</span> 文のデフォルト値として使用できる。
+(<span class="sql-num">5</span>)		E. スカラサブクエリはネスト（入れ子）できる。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「DDL と DML/TCL の切り分け」です。問題文は「スカラサブクエリについて、正しいものを2つ選んでください。」を満たす記述または SQL を求めています。CREATE、ALTER、DROP、TRUNCATE などは DDL、INSERT/UPDATE/DELETE/MERGE は DML、COMMIT/ROLLBACK/SAVEPOINT は TCL である。DDL は暗黙コミットを伴う。 そのため、成立条件を満たす正答は D「スカラサブクエリは CREATE TABLE 文のデフォルト値として使用できる。」 / E「スカラサブクエリはネスト（入れ子）できる。」 です。</p>
@@ -3944,12 +3955,12 @@ VALUES (&#x27;1001&#x27;, &#x27;ITEM1&#x27;);</pre>
                   <div class="block-title">問題文</div>
                   <pre>テーブルのカラム削除に関して、正しいものを3つ選んでください。
 
-(1)		A. カラムを削除すると、そのカラムのデータは削除されるが、カラム定義は残る。
-(2)		B. カラムの削除を実行すると暗黙的にコミットが発生する。
-(3)		C. カラムは、テーブルから削除する前に未使用としてマークする必要がある。
-(4)		D. プライマリキーのカラムは削除できない。
-(5)		E. 他のテーブルのカラムに参照されているカラムは削除できない。
-(6)		F. ALTER TABLE コマンドを使用して、複数のカラムを同時に削除できる。</pre>
+(<span class="sql-num">1</span>)		A. カラムを削除すると、そのカラムのデータは削除されるが、カラム定義は残る。
+(<span class="sql-num">2</span>)		B. カラムの削除を実行すると暗黙的にコミットが発生する。
+(<span class="sql-num">3</span>)		C. カラムは、テーブルから削除する前に未使用としてマークする必要がある。
+(<span class="sql-num">4</span>)		D. プライマリキーのカラムは削除できない。
+(<span class="sql-num">5</span>)		E. 他のテーブルのカラムに参照されているカラムは削除できない。
+(<span class="sql-num">6</span>)		F. <span class="sql-kw">ALTER TABLE</span> コマンドを使用して、複数のカラムを同時に削除できる。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「DDL と DML/TCL の切り分け」です。問題文は「テーブルのカラム削除に関して、正しいものを3つ選んでください。」を満たす記述または SQL を求めています。CREATE、ALTER、DROP、TRUNCATE などは DDL、INSERT/UPDATE/DELETE/MERGE は DML、COMMIT/ROLLBACK/SAVEPOINT は TCL である。DDL は暗黙コミットを伴う。 そのため、成立条件を満たす正答は B「カラムの削除を実行すると暗黙的にコミットが発生する。」 / E「他のテーブルのカラムに参照されているカラムは削除できない。」 / F「ALTER TABLE コマンドを使用して、複数のカラムを同時に削除できる。」 です。</p>
@@ -4042,13 +4053,13 @@ VALUES (&#x27;1001&#x27;, &#x27;ITEM1&#x27;);</pre>
 <span class="note">-- DDL はすべて暗黙 COMMIT を伴う。DEFAULT は値省略時 / VALUES(DEFAULT) で補完。</span></div></div>
       <div class="guide-block">
         <div class="guide-title">この論点の基本形</div>
-        <pre>MERGE INTO target t
-USING source s
-ON (t.id = s.id)
-WHEN MATCHED THEN
-  UPDATE SET t.name = s.name
-WHEN NOT MATCHED THEN
-  INSERT (id, name) VALUES (s.id, s.name);</pre>
+        <pre><span class="sql-kw">MERGE INTO</span> target t
+<span class="sql-kw">USING</span> source s
+<span class="sql-kw">ON</span> (t.id = s.id)
+<span class="sql-kw">WHEN MATCHED</span> <span class="sql-kw">THEN</span>
+  <span class="sql-kw">UPDATE</span> <span class="sql-kw">SET</span> t.name = s.name
+<span class="sql-kw">WHEN NOT MATCHED</span> <span class="sql-kw">THEN</span>
+  <span class="sql-kw">INSERT</span> (id, name) <span class="sql-kw">VALUES</span> (s.id, s.name);</pre>
       </div>
       <div class="guide-grid">
         <div class="guide-block">
@@ -4068,11 +4079,11 @@ WHEN NOT MATCHED THEN
                   <div class="question-meta">第1回 模擬試験 / 問45 / 正答 B.E / 自己回答 B.D</div>
                   <div class="block-title">問題文</div>
                   <pre>MERGE文について正しい記述はどれでしょうか。（2つ選択）
-(1)		A.　表からのみ行をマージできます。
-(2)		B.　複数の表の行を条件付きで結合して、一つの表に挿入できます。
-(3)		C.　削除することはできません。
-(4)		D.　1つのMERGE文で複数の表を更新できます。
-(5)		E.　ビューを使用して行をマージできます。</pre>
+(<span class="sql-num">1</span>)		A.　表からのみ行をマージできます。
+(<span class="sql-num">2</span>)		B.　複数の表の行を条件付きで結合して、一つの表に挿入できます。
+(<span class="sql-num">3</span>)		C.　削除することはできません。
+(<span class="sql-num">4</span>)		D.　1つのMERGE文で複数の表を更新できます。
+(<span class="sql-num">5</span>)		E.　ビューを使用して行をマージできます。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「MERGE の文法と使える対象」です。問題文は「MERGE文について正しい記述はどれでしょうか。（2つ選択）」を満たす記述または SQL を求めています。MERGE は 1 つの対象表に対し、ON 条件で一致時は UPDATE、非一致時は INSERT を行う。USING には表、ビュー、サブクエリを使える。 そのため、成立条件を満たす正答は B「複数の表の行を条件付きで結合して、一つの表に挿入できます。」 / E「ビューを使用して行をマージできます。」 です。</p>

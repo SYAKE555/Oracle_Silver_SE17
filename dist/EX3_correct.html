@@ -62,6 +62,17 @@
     .concept-section h3 { flex-direction: column; align-items: flex-start; }
     .option-review-head { flex-direction: column; align-items: flex-start; }
   }
+
+  pre .sql-kw { color: #fbbf24; font-weight: 700; }
+  pre .sql-fn { color: #60a5fa; font-weight: 600; }
+  pre .sql-str { color: #86efac; }
+  pre .sql-num { color: #fca5a5; }
+  pre .sql-cmt { color: #94a3b8; font-style: italic; }
+  code .sql-kw { color: #b45309; font-weight: 700; }
+  code .sql-fn { color: #1d4ed8; font-weight: 600; }
+  code .sql-str { color: #047857; }
+  code .sql-num { color: #b91c1c; }
+  code .sql-cmt { color: #64748b; font-style: italic; }
 </style>
 </head>
 <body>
@@ -114,10 +125,10 @@
 <span class="note">-- NULL 処理: NVL(式, 代替) / NVL2(式, 非NULL, NULL) / COALESCE / CASE。</span></div></div>
       <div class="guide-block">
         <div class="guide-title">この論点の基本形</div>
-        <pre>SELECT ADD_MONTHS(made_date, 24) AS two_years_later,
-       MONTHS_BETWEEN(SYSDATE, made_date) AS elapsed_months,
-       TO_CHAR(made_date, &#x27;YYYY-MM-DD&#x27;) AS made_ymd
-FROM   item;</pre>
+        <pre><span class="sql-kw">SELECT</span> <span class="sql-fn">ADD_MONTHS</span>(made_date, <span class="sql-num">24</span>) <span class="sql-kw">AS</span> two_years_later,
+       <span class="sql-fn">MONTHS_BETWEEN</span>(SYSDATE, made_date) <span class="sql-kw">AS</span> elapsed_months,
+       <span class="sql-fn">TO_CHAR</span>(made_date, &#x27;YYYY-MM-DD&#x27;) <span class="sql-kw">AS</span> made_ymd
+<span class="sql-kw">FROM</span>   item;</pre>
       </div>
       <div class="guide-grid">
         <div class="guide-block">
@@ -138,10 +149,10 @@ FROM   item;</pre>
                   <div class="block-title">問題文</div>
                   <pre>NUMBER型のITEM_IDと、DATE型のMADE_DATE（製造年月日）を含むITEM表があります。
 製造年月日から2か月後の月末の日付を表示したい場合、実行するSQLを選択してください。
-(1)		A.　SELECT ITEM_ID, LAST_DAY(ADD_MONTHS(MADE_DATE, 2),1) FROM ITEM;
-(2)		B.　SELECT ITEM_ID, NEXT_DAY(ADD_MONTHS(MADE_DATE, 2),1) FROM ITEM;
-(3)		C.　SELECT ITEM_ID, LAST_DAY(ADD_MONTHS(MADE_DATE, 2)) FROM ITEM;
-(4)		D.　SELECT ITEM_ID, LAST_DAY (MONTHS_BETWEEN (MADE_DATE, SYSDATE)) FROM ITEM;</pre>
+(<span class="sql-num">1</span>)		A.　<span class="sql-kw">SELECT</span> ITEM_ID, <span class="sql-fn">LAST_DAY</span>(<span class="sql-fn">ADD_MONTHS</span>(MADE_DATE, <span class="sql-num">2</span>),<span class="sql-num">1</span>) <span class="sql-kw">FROM</span> ITEM;
+(<span class="sql-num">2</span>)		B.　<span class="sql-kw">SELECT</span> ITEM_ID, <span class="sql-fn">NEXT_DAY</span>(<span class="sql-fn">ADD_MONTHS</span>(MADE_DATE, <span class="sql-num">2</span>),<span class="sql-num">1</span>) <span class="sql-kw">FROM</span> ITEM;
+(<span class="sql-num">3</span>)		C.　<span class="sql-kw">SELECT</span> ITEM_ID, <span class="sql-fn">LAST_DAY</span>(<span class="sql-fn">ADD_MONTHS</span>(MADE_DATE, <span class="sql-num">2</span>)) <span class="sql-kw">FROM</span> ITEM;
+(<span class="sql-num">4</span>)		D.　<span class="sql-kw">SELECT</span> ITEM_ID, <span class="sql-fn">LAST_DAY</span> (<span class="sql-fn">MONTHS_BETWEEN</span> (MADE_DATE, SYSDATE)) <span class="sql-kw">FROM</span> ITEM;</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問の論点は「日付演算と月数計算」です。問題文は「NUMBER型のITEM_IDと、DATE型のMADE_DATE（製造年月日）を含むITEM表があります。 製造年月日から2か月後の月末の日付を表示したい場合、実行するSQLを選択してください。」という条件を満たす説明または SQL を求めています。DATE 型の差は日数で返る。月単位なら MONTHS_BETWEEN、月加算なら ADD_MONTHS を使う。年数を 365 日換算で書くと境界条件を外しやすい。 この設問では正答 C「SELECT ITEM_ID, LAST_DAY(ADD_MONTHS(MADE_DATE, 2)) FROM…」 を選べており、成立条件を正しく読めています。</p>
@@ -197,11 +208,11 @@ FROM   item;</pre>
                   <div class="block-title">問題文</div>
                   <pre>以下のSQLでエラーとならないものはどれでしょうか。（3つ選択）
 
-(1)		A.　SELECT COALESCE(100, NULL) FROM DUAL;
-(2)		B.　SELECT COALESCE(NULL, &#x27;100&#x27;, &#x27;100&#x27;) FROM DUAL;
-(3)		C.　SELECT COALESCE(NULL, &#x27;100&#x27;) FROM DUAL;
-(4)		D.　SELECT COALESCE(SYSDATE, &#x27;100&#x27;) FROM DUAL;
-(5)		E.　SELECT COALESCE(&#x27;10&#x27;, 100) FROM (SELECT NULL AS &quot;TODAY&quot; FROM DUAL);</pre>
+(<span class="sql-num">1</span>)		A.　<span class="sql-kw">SELECT</span> <span class="sql-fn">COALESCE</span>(<span class="sql-num">100</span>, <span class="sql-kw">NULL</span>) <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;
+(<span class="sql-num">2</span>)		B.　<span class="sql-kw">SELECT</span> <span class="sql-fn">COALESCE</span>(<span class="sql-kw">NULL</span>, &#x27;<span class="sql-num">100</span>&#x27;, &#x27;<span class="sql-num">100</span>&#x27;) <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;
+(<span class="sql-num">3</span>)		C.　<span class="sql-kw">SELECT</span> <span class="sql-fn">COALESCE</span>(<span class="sql-kw">NULL</span>, &#x27;<span class="sql-num">100</span>&#x27;) <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;
+(<span class="sql-num">4</span>)		D.　<span class="sql-kw">SELECT</span> <span class="sql-fn">COALESCE</span>(SYSDATE, &#x27;<span class="sql-num">100</span>&#x27;) <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;
+(<span class="sql-num">5</span>)		E.　<span class="sql-kw">SELECT</span> <span class="sql-fn">COALESCE</span>(&#x27;<span class="sql-num">10</span>&#x27;, <span class="sql-num">100</span>) <span class="sql-kw">FROM</span> (<span class="sql-kw">SELECT</span> <span class="sql-kw">NULL</span> <span class="sql-kw">AS</span> &quot;TODAY&quot; <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>);</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問の論点は「日付演算と月数計算」です。問題文は「以下のSQLでエラーとならないものはどれでしょうか。（3つ選択）」という条件を満たす説明または SQL を求めています。DATE 型の差は日数で返る。月単位なら MONTHS_BETWEEN、月加算なら ADD_MONTHS を使う。年数を 365 日換算で書くと境界条件を外しやすい。 この設問では正答 A「SELECT COALESCE(100, NULL) FROM DUAL;」 / B「SELECT COALESCE(NULL, &#x27;100&#x27;, &#x27;100&#x27;) FROM DUAL;」 / C「SELECT COALESCE(NULL, &#x27;100&#x27;) FROM DUAL;」 を選べており、成立条件を正しく読めています。</p>
@@ -267,10 +278,10 @@ FROM   item;</pre>
                   <pre>EMP表には、データ型 NUMBER型のDEPT_ID列とDATE型のSTART_DATE列があります。
 NLS_DATE_FORMATはDD-MON-RRに設定されます。
 SQLでこれらの列を含むデータ型変換について正しい記述はどれでしょうか。（2つ選択）
-(1)		A.　DEPT_ID &lt; &#x27;10102&#x27; : 明示的な変換が必要です
-(2)		B.　START_DATE &gt; &#x27;07-06-2019&#x27; : 暗黙的な変換を使用します
-(3)		C.　START_DATE &gt; &#x27;07-JUN-19&#x27; : 暗黙的な変換を使用します
-(4)		D.　DEPT_ID BETWEEN &#x27;10101&#x27; AND &#x27;10102&#x27; : 暗黙的な変換を使用します</pre>
+(<span class="sql-num">1</span>)		A.　DEPT_ID &lt; &#x27;<span class="sql-num">10102</span>&#x27; : 明示的な変換が必要です
+(<span class="sql-num">2</span>)		B.　START_DATE &gt; &#x27;<span class="sql-num">07</span>-<span class="sql-num">06</span>-<span class="sql-num">2019</span>&#x27; : 暗黙的な変換を使用します
+(<span class="sql-num">3</span>)		C.　START_DATE &gt; &#x27;<span class="sql-num">07</span>-JUN-<span class="sql-num">19</span>&#x27; : 暗黙的な変換を使用します
+(<span class="sql-num">4</span>)		D.　DEPT_ID <span class="sql-kw">BETWEEN</span> &#x27;<span class="sql-num">10101</span>&#x27; <span class="sql-kw">AND</span> &#x27;<span class="sql-num">10102</span>&#x27; : 暗黙的な変換を使用します</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問の論点は「日付演算と月数計算」です。問題文は「EMP表には、データ型 NUMBER型のDEPT_ID列とDATE型のSTART_DATE列があります。 NLS_DATE_FORMATはDD-MON-RRに設定されます。 SQLでこれらの列を含むデータ型変換について正しい記述はどれでし…」という条件を満たす説明または SQL を求めています。DATE 型の差は日数で返る。月単位なら MONTHS_BETWEEN、月加算なら ADD_MONTHS を使う。年数を 365 日換算で書くと境界条件を外しやすい。 この設問では正答 C「START_DATE &gt; &#x27;07-JUN-19&#x27; : 暗黙的な変換を使用します」 / D「DEPT_ID BETWEEN &#x27;10101&#x27; AND &#x27;10102&#x27; : 暗黙的な変換を使用します」 を選べており、成立条件を正しく読めています。</p>
@@ -325,12 +336,12 @@ SQLでこれらの列を含むデータ型変換について正しい記述は�
                   <div class="question-meta">第3回 模擬試験 / 問47 / 正答 ABE / 自己回答 -</div>
                   <div class="block-title">問題文</div>
                   <pre>次のうち、正常に実行できるSQL文を3つ選んでください。
-(1)		A. SELECT (SYSDATE - DATE &#x27;2025-03-01&#x27;) / 1 FROM DUAL;
-(2)		B. SELECT SYSDATE - 1 - DATE &#x27;2025-03-01&#x27; FROM DUAL;
-(3)		C. SELECT 1 - SYSDATE - DATE &#x27;2025-03-01&#x27; FROM DUAL;
-(4)		D. SELECT 1 / SYSDATE - DATE &#x27;2025-03-01&#x27; FROM DUAL;
-(5)		E. SELECT SYSDATE - DATE &#x27;2025-03-01&#x27; - 1 FROM DUAL;
-(6)		F. SELECT SYSDATE / DATE &#x27;2025-03-01&#x27; FROM DUAL;</pre>
+(<span class="sql-num">1</span>)		A. <span class="sql-kw">SELECT</span> (SYSDATE - DATE &#x27;<span class="sql-num">2025</span>-<span class="sql-num">03</span>-<span class="sql-num">01</span>&#x27;) / <span class="sql-num">1</span> <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;
+(<span class="sql-num">2</span>)		B. <span class="sql-kw">SELECT</span> SYSDATE - <span class="sql-num">1</span> - DATE &#x27;<span class="sql-num">2025</span>-<span class="sql-num">03</span>-<span class="sql-num">01</span>&#x27; <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;
+(<span class="sql-num">3</span>)		C. <span class="sql-kw">SELECT</span> <span class="sql-num">1</span> - SYSDATE - DATE &#x27;<span class="sql-num">2025</span>-<span class="sql-num">03</span>-<span class="sql-num">01</span>&#x27; <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;
+(<span class="sql-num">4</span>)		D. <span class="sql-kw">SELECT</span> <span class="sql-num">1</span> / SYSDATE - DATE &#x27;<span class="sql-num">2025</span>-<span class="sql-num">03</span>-<span class="sql-num">01</span>&#x27; <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;
+(<span class="sql-num">5</span>)		E. <span class="sql-kw">SELECT</span> SYSDATE - DATE &#x27;<span class="sql-num">2025</span>-<span class="sql-num">03</span>-<span class="sql-num">01</span>&#x27; - <span class="sql-num">1</span> <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;
+(<span class="sql-num">6</span>)		F. <span class="sql-kw">SELECT</span> SYSDATE / DATE &#x27;<span class="sql-num">2025</span>-<span class="sql-num">03</span>-<span class="sql-num">01</span>&#x27; <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問の論点は「日付演算と月数計算」です。問題文は「次のうち、正常に実行できるSQL文を3つ選んでください。」という条件を満たす説明または SQL を求めています。DATE 型の差は日数で返る。月単位なら MONTHS_BETWEEN、月加算なら ADD_MONTHS を使う。年数を 365 日換算で書くと境界条件を外しやすい。 この設問では正答 A「SELECT (SYSDATE - DATE &#x27;2025-03-01&#x27;) / 1 FROM DUAL;」 / B「SELECT SYSDATE - 1 - DATE &#x27;2025-03-01&#x27; FROM DUAL;」 / E「SELECT SYSDATE - DATE &#x27;2025-03-01&#x27; - 1 FROM DUAL;」 を選べており、成立条件を正しく読めています。</p>
@@ -419,11 +430,11 @@ SQLでこれらの列を含むデータ型変換について正しい記述は�
 <span class="note">-- NULL 処理: NVL(式, 代替) / NVL2(式, 非NULL, NULL) / COALESCE / CASE。</span></div></div>
       <div class="guide-block">
         <div class="guide-title">この論点の基本形</div>
-        <pre>SELECT TO_CHAR(
-         TO_NUMBER(shohin_kakaku, &#x27;999,999.99&#x27;) * 0.30,
-         &#x27;999,999.00&#x27;
-       ) AS discount_price
-FROM   shohin;</pre>
+        <pre><span class="sql-kw">SELECT</span> <span class="sql-fn">TO_CHAR</span>(
+         <span class="sql-fn">TO_NUMBER</span>(shohin_kakaku, &#x27;<span class="sql-num">999</span>,<span class="sql-num">999.99</span>&#x27;) * <span class="sql-num">0.30</span>,
+         &#x27;<span class="sql-num">999</span>,<span class="sql-num">999.00</span>&#x27;
+       ) <span class="sql-kw">AS</span> discount_price
+<span class="sql-kw">FROM</span>   shohin;</pre>
       </div>
       <div class="guide-grid">
         <div class="guide-block">
@@ -444,11 +455,11 @@ FROM   shohin;</pre>
                   <div class="block-title">問題文</div>
                   <pre>SHOHIN 表では、PRODUCTION_DATE列はDATE型で、デフォルト日付形式はDD-MON-RRです。
 SQL文についてエラーとならないものはどれですか。（2つ選択）
-(1)		A.　SELECT TO_CHAR(PRODUCTION_DATE,&#x27;YYYY-MM-DD&#x27;) FROM SHOHIN
-(2)		B.　SELECT TO_DATE(TO_CHAR(PRODUCTION_DATE,&#x27;RR-MM-DD&#x27;),&#x27;RR-MM-DD&#x27;) FROM SHOHIN
-(3)		C.　SELECT TO_NUMBER(PRODUCTION_DATE) * 3 FROM SHOHIN
-(4)		D.　SELECT TO_DATE(PRODUCTION_DATE * 5) FROM SHOHIN
-(5)		E.　SELECT TO_NUMBER(PRODUCTION_DATE) FROM SHOHIN</pre>
+(<span class="sql-num">1</span>)		A.　<span class="sql-kw">SELECT</span> <span class="sql-fn">TO_CHAR</span>(PRODUCTION_DATE,&#x27;YYYY-MM-DD&#x27;) <span class="sql-kw">FROM</span> SHOHIN
+(<span class="sql-num">2</span>)		B.　<span class="sql-kw">SELECT</span> <span class="sql-fn">TO_DATE</span>(<span class="sql-fn">TO_CHAR</span>(PRODUCTION_DATE,&#x27;RR-MM-DD&#x27;),&#x27;RR-MM-DD&#x27;) <span class="sql-kw">FROM</span> SHOHIN
+(<span class="sql-num">3</span>)		C.　<span class="sql-kw">SELECT</span> <span class="sql-fn">TO_NUMBER</span>(PRODUCTION_DATE) * <span class="sql-num">3</span> <span class="sql-kw">FROM</span> SHOHIN
+(<span class="sql-num">4</span>)		D.　<span class="sql-kw">SELECT</span> <span class="sql-fn">TO_DATE</span>(PRODUCTION_DATE * <span class="sql-num">5</span>) <span class="sql-kw">FROM</span> SHOHIN
+(<span class="sql-num">5</span>)		E.　<span class="sql-kw">SELECT</span> <span class="sql-fn">TO_NUMBER</span>(PRODUCTION_DATE) <span class="sql-kw">FROM</span> SHOHIN</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問の論点は「TO_CHAR・TO_NUMBER・TO_DATE の書式変換」です。問題文は「SHOHIN 表では、PRODUCTION_DATE列はDATE型で、デフォルト日付形式はDD-MON-RRです。 SQL文についてエラーとならないものはどれですか。（2つ選択）」という条件を満たす説明または SQL を求めています。文字列として保持された数値や日付を演算するには、まず TO_NUMBER や TO_DATE で型変換し、その後に TO_CHAR で表示形式を整える。書式モデルが一致しなければ失敗する。 この設問では正答 A「SELECT TO_CHAR(PRODUCTION_DATE,&#x27;YYYY-MM-DD&#x27;) FROM SHOHIN」 / B「SELECT TO_DATE(TO_CHAR(PRODUCTION_DATE,&#x27;RR-MM-DD&#x27;),&#x27;RR-…」 を選べており、成立条件を正しく読めています。</p>
@@ -514,10 +525,10 @@ SQL文についてエラーとならないものはどれですか。（2つ選�
                   <pre>ITEM_NAME、MADE_DATE、ITEM_PRICEを表示する必要があります。
 製造年月日（MADE_DATE）が2018年1月1日以降から24か月以内のデータを表示するためには、以下のどのSQLを実行する必要があるでしょうか。（2つ選択）
 
-(1)		A.　SELECT ITEM_NAME, MADE_DATE, ITEM_PRICE FROM ITEM WHERE MONTHS_BETWEEN(MADE_DATE,&#x27;01-JAN-2018&#x27;) &lt;=24;
-(2)		B.　SELECT ITEM_NAME, MADE_DATE, ITEM_PRICE FROM ITEM WHERE MONTHS_BETWEEN(MADE_DATE,TO_DATE(&#x27;01-JAN-2018&#x27;,&#x27;DD-MON-RRRR&#x27;)) &lt;=24;
-(3)		C.　SELECT ITEM_NAME, MADE_DATE, ITEM_PRICE FROM ITEM WHERE TO_NUMBER(MADE_DATE-TO_DATE(&#x27;01-JAN-2018&#x27;,&#x27;DD-MON-RRRR&#x27;)) &lt;=24;
-(4)		D.　SELECT ITEM_NAME, MADE_DATE, ITEM_PRICE FROM ITEM WHERE TO_NUMBER(MADE_DATE,SYSDATE) &lt;=24;</pre>
+(<span class="sql-num">1</span>)		A.　<span class="sql-kw">SELECT</span> ITEM_NAME, MADE_DATE, ITEM_PRICE <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> <span class="sql-fn">MONTHS_BETWEEN</span>(MADE_DATE,&#x27;<span class="sql-num">01</span>-JAN-<span class="sql-num">2018</span>&#x27;) &lt;=<span class="sql-num">24</span>;
+(<span class="sql-num">2</span>)		B.　<span class="sql-kw">SELECT</span> ITEM_NAME, MADE_DATE, ITEM_PRICE <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> <span class="sql-fn">MONTHS_BETWEEN</span>(MADE_DATE,<span class="sql-fn">TO_DATE</span>(&#x27;<span class="sql-num">01</span>-JAN-<span class="sql-num">2018</span>&#x27;,&#x27;DD-MON-RRRR&#x27;)) &lt;=<span class="sql-num">24</span>;
+(<span class="sql-num">3</span>)		C.　<span class="sql-kw">SELECT</span> ITEM_NAME, MADE_DATE, ITEM_PRICE <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> <span class="sql-fn">TO_NUMBER</span>(MADE_DATE-<span class="sql-fn">TO_DATE</span>(&#x27;<span class="sql-num">01</span>-JAN-<span class="sql-num">2018</span>&#x27;,&#x27;DD-MON-RRRR&#x27;)) &lt;=<span class="sql-num">24</span>;
+(<span class="sql-num">4</span>)		D.　<span class="sql-kw">SELECT</span> ITEM_NAME, MADE_DATE, ITEM_PRICE <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> <span class="sql-fn">TO_NUMBER</span>(MADE_DATE,SYSDATE) &lt;=<span class="sql-num">24</span>;</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問の論点は「TO_CHAR・TO_NUMBER・TO_DATE の書式変換」です。問題文は「ITEM_NAME、MADE_DATE、ITEM_PRICEを表示する必要があります。 製造年月日（MADE_DATE）が2018年1月1日以降から24か月以内のデータを表示するためには、以下のどのSQLを実行する必要があるでしょうか。（…」という条件を満たす説明または SQL を求めています。文字列として保持された数値や日付を演算するには、まず TO_NUMBER や TO_DATE で型変換し、その後に TO_CHAR で表示形式を整える。書式モデルが一致しなければ失敗する。 この設問では正答 A「SELECT ITEM_NAME, MADE_DATE, ITEM_PRICE FROM ITEM WHERE…」 / B「SELECT ITEM_NAME, MADE_DATE, ITEM_PRICE FROM ITEM WHERE…」 を選べており、成立条件を正しく読めています。</p>
@@ -573,10 +584,10 @@ SQL文についてエラーとならないものはどれですか。（2つ選�
                   <div class="block-title">問題文</div>
                   <pre>以下のSQLでエラーとならないものはどれでしょうか。
 　
-(1)		A.　SELECT NVL(START_DATE, SYSDATE) FROM EMP;
-(2)		B.　SELECT NVL(NAME) FROM EMP;
-(3)		C.　SELECT NVL(TO_DATE(START_DATE, END_DATE),&#x27;SYSDATE&#x27;) FROM EMP;
-(4)		D.　SELECT NVL(DEPT_ID) FROM EMP;</pre>
+(<span class="sql-num">1</span>)		A.　<span class="sql-kw">SELECT</span> <span class="sql-fn">NVL</span>(START_DATE, SYSDATE) <span class="sql-kw">FROM</span> EMP;
+(<span class="sql-num">2</span>)		B.　<span class="sql-kw">SELECT</span> <span class="sql-fn">NVL</span>(NAME) <span class="sql-kw">FROM</span> EMP;
+(<span class="sql-num">3</span>)		C.　<span class="sql-kw">SELECT</span> <span class="sql-fn">NVL</span>(<span class="sql-fn">TO_DATE</span>(START_DATE, END_DATE),&#x27;SYSDATE&#x27;) <span class="sql-kw">FROM</span> EMP;
+(<span class="sql-num">4</span>)		D.　<span class="sql-kw">SELECT</span> <span class="sql-fn">NVL</span>(DEPT_ID) <span class="sql-kw">FROM</span> EMP;</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問の論点は「TO_CHAR・TO_NUMBER・TO_DATE の書式変換」です。問題文は「以下のSQLでエラーとならないものはどれでしょうか。」という条件を満たす説明または SQL を求めています。文字列として保持された数値や日付を演算するには、まず TO_NUMBER や TO_DATE で型変換し、その後に TO_CHAR で表示形式を整える。書式モデルが一致しなければ失敗する。 この設問では正答 A「SELECT NVL(START_DATE, SYSDATE) FROM EMP;」 を選べており、成立条件を正しく読めています。</p>
@@ -647,10 +658,10 @@ SQL文についてエラーとならないものはどれですか。（2つ選�
 <span class="note">-- NULL 処理: NVL(式, 代替) / NVL2(式, 非NULL, NULL) / COALESCE / CASE。</span></div></div>
       <div class="guide-block">
         <div class="guide-title">この論点の基本形</div>
-        <pre>SELECT ROUND(price, 2),
-       NVL(discount, 0),
-       CASE WHEN quantity IS NULL THEN 0 ELSE quantity END
-FROM   item;</pre>
+        <pre><span class="sql-kw">SELECT</span> <span class="sql-fn">ROUND</span>(price, <span class="sql-num">2</span>),
+       <span class="sql-fn">NVL</span>(discount, <span class="sql-num">0</span>),
+       <span class="sql-kw">CASE</span> <span class="sql-kw">WHEN</span> quantity <span class="sql-kw">IS NULL</span> <span class="sql-kw">THEN</span> <span class="sql-num">0</span> <span class="sql-kw">ELSE</span> quantity <span class="sql-kw">END</span>
+<span class="sql-kw">FROM</span>   item;</pre>
       </div>
       <div class="guide-grid">
         <div class="guide-block">
@@ -671,13 +682,13 @@ FROM   item;</pre>
                   <div class="block-title">問題文</div>
                   <pre>以下のSQLを実行すると結果はどうなるでしょうか。
 
-SELECT ROUND(TRUNC(345.16, 1), 0) FROM DUAL;
-(1)		34
-(2)		35
-(3)		345
-(4)		350
-(5)		345.1
-(6)		345.2</pre>
+<span class="sql-kw">SELECT</span> <span class="sql-fn">ROUND</span>(<span class="sql-fn">TRUNC</span>(<span class="sql-num">345.16</span>, <span class="sql-num">1</span>), <span class="sql-num">0</span>) <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;
+(<span class="sql-num">1</span>)		<span class="sql-num">34</span>
+(<span class="sql-num">2</span>)		<span class="sql-num">35</span>
+(<span class="sql-num">3</span>)		<span class="sql-num">345</span>
+(<span class="sql-num">4</span>)		<span class="sql-num">350</span>
+(<span class="sql-num">5</span>)		<span class="sql-num">345.1</span>
+(<span class="sql-num">6</span>)		<span class="sql-num">345.2</span></pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問の論点は「ROUND・TRUNC・FLOOR などの数値関数」です。問題文は「以下のSQLを実行すると結果はどうなるでしょうか。 SELECT ROUND(TRUNC(345.16, 1), 0) FROM DUAL;」という条件を満たす説明または SQL を求めています。ROUND は四捨五入、TRUNC は切り捨て、FLOOR は指定値以下の最大整数、CEIL は指定値以上の最小整数を返す。関数ごとの戻り値を正確に区別する必要がある。 この設問では正答 3「345」 を選べており、成立条件を正しく読めています。</p>
@@ -766,11 +777,11 @@ SELECT ROUND(TRUNC(345.16, 1), 0) FROM DUAL;
 <span class="note">-- NULL 処理: NVL(式, 代替) / NVL2(式, 非NULL, NULL) / COALESCE / CASE。</span></div></div>
       <div class="guide-block">
         <div class="guide-title">この論点の基本形</div>
-        <pre>SELECT UPPER(item_name),
-       SUBSTR(item_name, 1, 3),
-       INSTR(item_name, &#x27; &#x27;) 
-FROM   item
-WHERE  UPPER(item_name) LIKE &#x27;S%&#x27;;</pre>
+        <pre><span class="sql-kw">SELECT</span> <span class="sql-fn">UPPER</span>(item_name),
+       <span class="sql-fn">SUBSTR</span>(item_name, <span class="sql-num">1</span>, <span class="sql-num">3</span>),
+       <span class="sql-fn">INSTR</span>(item_name, &#x27; &#x27;) 
+<span class="sql-kw">FROM</span>   item
+<span class="sql-kw">WHERE</span>  <span class="sql-fn">UPPER</span>(item_name) <span class="sql-kw">LIKE</span> &#x27;S%&#x27;;</pre>
       </div>
       <div class="guide-grid">
         <div class="guide-block">
@@ -792,27 +803,27 @@ WHERE  UPPER(item_name) LIKE &#x27;S%&#x27;;</pre>
                   <pre>次のSQLを実行したとき、employee_nameが「a」または「A」で始まる行を抽出し、名前の長さが短い順に並べるSQLはどれですか。1つ選択してください。
 
 
-A. SELECT employee_name FROM Employees
-   WHERE LPAD(employee_name) LIKE &#x27;A%&#x27;
-   ORDER BY LENGTH(employee_name) ASC;
+A. <span class="sql-kw">SELECT</span> employee_name <span class="sql-kw">FROM</span> Employees
+   <span class="sql-kw">WHERE</span> <span class="sql-fn">LPAD</span>(employee_name) <span class="sql-kw">LIKE</span> &#x27;A%&#x27;
+   <span class="sql-kw">ORDER BY</span> <span class="sql-fn">LENGTH</span>(employee_name) <span class="sql-kw">ASC</span>;
 
-B. SELECT employee_name FROM Employees
-   WHERE UPPER(employee_name) LIKE &#x27;A%&#x27;
-   ORDER BY LENGTH(employee_name) ASC;
+B. <span class="sql-kw">SELECT</span> employee_name <span class="sql-kw">FROM</span> Employees
+   <span class="sql-kw">WHERE</span> <span class="sql-fn">UPPER</span>(employee_name) <span class="sql-kw">LIKE</span> &#x27;A%&#x27;
+   <span class="sql-kw">ORDER BY</span> <span class="sql-fn">LENGTH</span>(employee_name) <span class="sql-kw">ASC</span>;
 
-C. SELECT employee_name FROM Employees
-   WHERE LOWER(employee_name) LIKE &#x27;a%&#x27;
-   ORDER BY LENGTH(employee_name) DESC;
+C. <span class="sql-kw">SELECT</span> employee_name <span class="sql-kw">FROM</span> Employees
+   <span class="sql-kw">WHERE</span> <span class="sql-fn">LOWER</span>(employee_name) <span class="sql-kw">LIKE</span> &#x27;a%&#x27;
+   <span class="sql-kw">ORDER BY</span> <span class="sql-fn">LENGTH</span>(employee_name) <span class="sql-kw">DESC</span>;
 
-D. SELECT employee_name FROM Employees
-   WHERE TRIM(employee_name) LIKE &#x27;a%&#x27;
-   ORDER BY LENGTH(employee_name);
+D. <span class="sql-kw">SELECT</span> employee_name <span class="sql-kw">FROM</span> Employees
+   <span class="sql-kw">WHERE</span> <span class="sql-fn">TRIM</span>(employee_name) <span class="sql-kw">LIKE</span> &#x27;a%&#x27;
+   <span class="sql-kw">ORDER BY</span> <span class="sql-fn">LENGTH</span>(employee_name);
 
 
-(1)		A
-(2)		B
-(3)		C
-(4)		D</pre>
+(<span class="sql-num">1</span>)		A
+(<span class="sql-num">2</span>)		B
+(<span class="sql-num">3</span>)		C
+(<span class="sql-num">4</span>)		D</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問の論点は「SUBSTR・INSTR・TRIM・REPLACE の使い分け」です。問題文は「次のSQLを実行したとき、employee_nameが「a」または「A」で始まる行を抽出し、名前の長さが短い順に並べるSQLはどれですか。1つ選択してください。」という条件を満たす説明または SQL を求めています。文字列の一部抽出では、位置取得に INSTR、切り出しに SUBSTR、不要部分の削除に TRIM、置換に REPLACE を使い分ける。空白位置の +1 を忘れると全体がずれる。 この設問では正答 B「SELECT employee_name FROM Employees WHERE UPPER(employe…」 を選べており、成立条件を正しく読めています。</p>

@@ -25,6 +25,17 @@ code{font-family:"Consolas","Monaco",monospace;font-size:.88rem}
 .table-wrap{overflow:auto}.table-wrap table{width:100%;border-collapse:collapse}.table-wrap th,.table-wrap td{border:1px solid #d8e4f5;padding:9px;vertical-align:top}.table-wrap th{background:#eef4fd;text-align:left}
 .top{text-align:right;margin-top:12px}
 @media(max-width:1120px){.layout{grid-template-columns:1fr}.sidebar{position:static;max-height:none}}
+
+  pre .sql-kw { color: #fbbf24; font-weight: 700; }
+  pre .sql-fn { color: #60a5fa; font-weight: 600; }
+  pre .sql-str { color: #86efac; }
+  pre .sql-num { color: #fca5a5; }
+  pre .sql-cmt { color: #94a3b8; font-style: italic; }
+  code .sql-kw { color: #b45309; font-weight: 700; }
+  code .sql-fn { color: #1d4ed8; font-weight: 600; }
+  code .sql-str { color: #047857; }
+  code .sql-num { color: #b91c1c; }
+  code .sql-cmt { color: #64748b; font-style: italic; }
 </style>
 </head>
 <body>
@@ -71,9 +82,9 @@ code{font-family:"Consolas","Monaco",monospace;font-size:.88rem}
 <section class="card" id="tstz">
 <h2>16.3 TIMESTAMP WITH TIME ZONE</h2>
 <p>`TIMESTAMP WITH TIME ZONE`は日時に加え、オフセットまたは地域情報を保持する。入力時のタイムゾーンを保持できるため、元の時刻文脈を追跡しやすい。試験では文字列リテラル変換や比較時の挙動が問われる。実務ではログ、監査イベント、外部連携時刻など「元のタイムゾーンを残したい」データに適している。欠点は表示や比較の理解コストが高いことで、運用チームへ仕様共有しないと誤読が発生する。保存ポリシーを明文化し、表示フォーマットを統一することが必要である。</p>
-<pre><code>CREATE TABLE audit_events (
-  event_id NUMBER PRIMARY KEY,
-  occurred_at TIMESTAMP WITH TIME ZONE
+<pre><code><span class="sql-kw">CREATE TABLE</span> audit_events (
+  event_id NUMBER <span class="sql-kw">PRIMARY KEY</span>,
+  occurred_at TIMESTAMP <span class="sql-kw">WITH</span> TIME ZONE
 );</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
@@ -86,23 +97,23 @@ code{font-family:"Consolas","Monaco",monospace;font-size:.88rem}
 <section class="card" id="interval">
 <h2>16.5 INTERVALデータ型</h2>
 <p>期間データは`INTERVAL YEAR TO MONTH`と`INTERVAL DAY TO SECOND`で保持する。前者は年・月単位、後者は日・時分秒単位の差分表現に適する。試験では両者の使い分けとリテラル構文が問われる。実務では「契約期間（年/月）」と「処理遅延（秒）」のように業務意味が異なるため、同じ数値列で代用しないことが重要である。INTERVAL型を使うと可読性と整合性が上がり、単位誤解によるバグを減らせる。</p>
-<pre><code>SELECT INTERVAL '2-3' YEAR TO MONTH AS contract_term,
-       INTERVAL '5 04:30:00' DAY TO SECOND AS process_delay
-FROM dual;</code></pre>
+<pre><code><span class="sql-kw">SELECT</span> INTERVAL <span class="sql-str">'2-3'</span> YEAR <span class="sql-kw">TO</span> MONTH <span class="sql-kw">AS</span> contract_term,
+       INTERVAL <span class="sql-str">'5 04:30:00'</span> DAY <span class="sql-kw">TO</span> SECOND <span class="sql-kw">AS</span> process_delay
+<span class="sql-kw">FROM</span> dual;</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="calc">
 <h2>16.6 日時計算と変換</h2>
 <p>日時計算では`SYSTIMESTAMP`、`CURRENT_TIMESTAMP`、`FROM_TZ`、`AT TIME ZONE`などを使い分ける。試験では関数の返却型やセッション依存性が論点になる。実務では、保存時に統一基準へ変換し、画面表示時に利用者タイムゾーンへ変換する2段階運用が安定する。計算時に文字列変換を多用するとNLS設定差で不具合が出るため、内部は型のまま演算し最終出力で整形する。SQLレビューでは「どのタイムゾーン基準で比較しているか」を必ず確認する。</p>
-<pre><code>SELECT SYSTIMESTAMP AT TIME ZONE 'UTC' AS utc_now,
-       SYSTIMESTAMP AT TIME ZONE 'Asia/Tokyo' AS tokyo_now
-FROM dual;</code></pre>
+<pre><code><span class="sql-kw">SELECT</span> SYSTIMESTAMP AT TIME ZONE <span class="sql-str">'UTC'</span> <span class="sql-kw">AS</span> utc_now,
+       SYSTIMESTAMP AT TIME ZONE <span class="sql-str">'Asia/Tokyo'</span> <span class="sql-kw">AS</span> tokyo_now
+<span class="sql-kw">FROM</span> dual;</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="session-db-tz">
 <h2>16.7 DBTZとSESSIONTIMEZONE</h2>
 <p>`DBTIMEZONE`はDBの基準、`SESSIONTIMEZONE`は接続セッションの表示基準である。試験ではこの2つの違いを判別させる問題が出る。実務ではバッチ接続とアプリ接続でセッションタイムゾーンが異なるケースが多く、同一SQLでも表示差異が生じる。障害調査では、発生時刻の値だけでなく「どのセッション設定で見た値か」を必ず併記する。運用標準として接続時にセッションタイムゾーンを明示設定することで、環境差異による不具合を大幅に減らせる。</p>
-<pre><code>SELECT DBTIMEZONE, SESSIONTIMEZONE FROM dual;</code></pre>
+<pre><code><span class="sql-kw">SELECT</span> DBTIMEZONE, SESSIONTIMEZONE <span class="sql-kw">FROM</span> dual;</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="errors">

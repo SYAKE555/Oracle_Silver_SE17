@@ -35,6 +35,17 @@ table{width:100%;min-width:860px;border-collapse:collapse}
 th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef5ff}
 .top{text-align:right;margin-top:12px}
 @media(max-width:1120px){.layout{grid-template-columns:1fr}.sidebar{position:static;max-height:none}}
+
+  pre .sql-kw { color: #fbbf24; font-weight: 700; }
+  pre .sql-fn { color: #60a5fa; font-weight: 600; }
+  pre .sql-str { color: #86efac; }
+  pre .sql-num { color: #fca5a5; }
+  pre .sql-cmt { color: #94a3b8; font-style: italic; }
+  code .sql-kw { color: #b45309; font-weight: 700; }
+  code .sql-fn { color: #1d4ed8; font-weight: 600; }
+  code .sql-str { color: #047857; }
+  code .sql-num { color: #b91c1c; }
+  code .sql-cmt { color: #64748b; font-style: italic; }
 </style>
 </head>
 <body>
@@ -81,8 +92,8 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 <p>典型的アンチパターンは`SELECT *`の常用である。列追加によりアプリ側の列位置依存が壊れたり、不要列読み出しでI/O負荷が増えたりする。次に、FROM句の誤指定で別スキーマ同名表を参照し、検証環境では動くが本番で結果が変わる事故も多い。さらに、列名誤記によるORA-00904を軽視し、場当たりでSQLを修正すると原因追跡が遅れる。制約として、SELECTは参照命令でもロックや実行計画の影響を無視できない。最初から列明示、スキーマ認識、実行前件数確認を習慣化しないと、参照系でも運用品質は崩れる。</p>
 <h3>5) 試験・実務の急所</h3>
 <p>試験では「最小構文」「句の役割」「列別名やDISTINCTとの位置関係」が頻出である。実務ではこれに加え、レビュー可能性が重要になる。具体的には、列を業務意味順で並べる、別名を統一する、WHERE条件を機能単位で改行する、といった書式規約が障害解析速度に直結する。新人が陥りやすい誤りは、見た目で正しそうなSQLを即実行することだが、実務では必ず同条件の件数確認SELECTを先に実行する。第2章でこの手順を定着させると、後続のDML実行前チェックが自然に行えるようになり、試験合格後の実務事故を大幅に減らせる。</p>
-<pre><code><span class="kw">SELECT</span> <span class="obj">employee_id</span>, <span class="obj">last_name</span>, <span class="obj">salary</span>
-<span class="kw">FROM</span> <span class="obj">employees</span>;</code></pre>
+<pre><code><span class="kw"><span class="sql-kw">SELECT</span></span> <span class="obj">employee_id</span>, <span class="obj">last_name</span>, <span class="obj">salary</span>
+<span class="kw"><span class="sql-kw">FROM</span></span> <span class="obj">employees</span>;</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="expr">
@@ -97,11 +108,11 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 <p>アンチパターンは、型が保証されていない列へ算術式を直接適用すること、括弧なしで複合式を書いて意図と異なる結果を返すこと、NULL補完方針を決めないことの3つである。例えば文字列型金額列に加算を行うと、開発環境では偶然動いても本番データで変換エラーが発生しやすい。さらに、計算結果をそのまま業務確定値として利用すると、丸め誤差や小数点規約違反が下流障害になる。対策は、型定義の正規化、明示的CAST、括弧による評価順固定、NULL補完ルールの文書化である。式は短く書くより、解釈が一意になるよう書くべきである。</p>
 <h3>5) 試験・実務の急所</h3>
 <p>試験では演算子優先順位、NULL伝播、式への別名付与が繰り返し問われる。実務ではこれに「監査可能性」が加わる。計算列を使うSQLは、式がどの業務定義に対応するかコメントや別名で明確にしないと、後日レビューで意図が読めなくなる。特に金額や率計算は、丸め位置・除算時ゼロ対策・NULL扱いを明示しないと部門間で数値不一致が起きる。第2章時点で、式を1行で詰め込まず段階的に分解して書く習慣を持てば、試験問題の見抜き力が上がるだけでなく、実務の障害調査時に式のどこで誤差が出たかを短時間で切り分けられる。</p>
-<pre><code><span class="kw">SELECT</span> <span class="obj">employee_id</span>,
+<pre><code><span class="kw"><span class="sql-kw">SELECT</span></span> <span class="obj">employee_id</span>,
        <span class="obj">salary</span>,
-       <span class="obj">salary</span> * <span class="obj">12</span> <span class="kw">AS</span> <span class="obj">annual_salary</span>,
-       (<span class="obj">salary</span> + <span class="kw">NVL</span>(<span class="obj">commission_pct</span>, <span class="obj">0</span>) * <span class="obj">salary</span>) <span class="kw">AS</span> <span class="obj">monthly_total</span>
-<span class="kw">FROM</span> <span class="obj">employees</span>;</code></pre>
+       <span class="obj">salary</span> * <span class="obj"><span class="sql-num">12</span></span> <span class="kw"><span class="sql-kw">AS</span></span> <span class="obj">annual_salary</span>,
+       (<span class="obj">salary</span> + <span class="kw">NVL</span>(<span class="obj">commission_pct</span>, <span class="obj"><span class="sql-num">0</span></span>) * <span class="obj">salary</span>) <span class="kw"><span class="sql-kw">AS</span></span> <span class="obj">monthly_total</span>
+<span class="kw"><span class="sql-kw">FROM</span></span> <span class="obj">employees</span>;</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="alias">
@@ -116,10 +127,10 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 <p>アンチパターンは、無意味な短縮別名、引用符乱用、チームで不統一な命名の3点である。例えば`a1`,`a2`のような別名は一時的には短いが、障害調査で意味復元に時間を要する。さらに、日本語別名と英語別名が混在し規約がない場合、帳票マッピングで列対応ミスが増える。ダブルクォート別名を多用すると、後続SQLで引用忘れによるORA-00904を誘発しやすい。制限として、別名は同一SELECT句で重複させると利用側が混乱する。対策は命名規約を定め、業務語彙と技術語彙の対応を固定し、レビューで別名の意味妥当性まで確認することである。</p>
 <h3>5) 試験・実務の急所</h3>
 <p>試験ではAS省略可否、ダブルクォートの挙動、ORDER BYでの別名利用が典型論点となる。実務では、別名を使って「結果の契約」を明示することが重要で、APIやCSV出力へ直結するケースでは特に慎重さが求められる。例えば同一名称の列を複数返すと、連携先が後勝ちで上書きしてデータ欠落を起こす危険がある。別名設計はSQLの見た目調整ではなく、インタフェース設計の一部として扱うべきである。第2章でこの意識を持つと、後続のJOINや集約で列競合を早期に解消でき、試験だけでなく実装現場で即戦力になる。</p>
-<pre><code><span class="kw">SELECT</span> <span class="obj">last_name</span> <span class="kw">AS</span> <span class="obj">employee_name</span>,
-       <span class="obj">salary</span> * <span class="obj">12</span> <span class="kw">AS</span> <span class="obj">annual_salary</span>
-<span class="kw">FROM</span> <span class="obj">employees</span>
-<span class="kw">ORDER BY</span> <span class="obj">annual_salary</span> <span class="kw">DESC</span>;</code></pre>
+<pre><code><span class="kw"><span class="sql-kw">SELECT</span></span> <span class="obj">last_name</span> <span class="kw"><span class="sql-kw">AS</span></span> <span class="obj">employee_name</span>,
+       <span class="obj">salary</span> * <span class="obj"><span class="sql-num">12</span></span> <span class="kw"><span class="sql-kw">AS</span></span> <span class="obj">annual_salary</span>
+<span class="kw"><span class="sql-kw">FROM</span></span> <span class="obj">employees</span>
+<span class="kw"><span class="sql-kw">ORDER BY</span></span> <span class="obj">annual_salary</span> <span class="kw"><span class="sql-kw">DESC</span></span>;</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="concat">
@@ -134,12 +145,12 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 <p>アンチパターンは、連結結果をそのまま識別子として業務キー扱いすること、日付や数値の暗黙変換へ依存すること、DUALを実データ代替として誤用することにある。表示名連結は便利だが、重複や表記揺れが起こるため主キー代替にはならない。暗黙変換依存は環境移行時に表示崩れや変換エラーを誘発しやすい。さらに、DUALで確認した式が実テーブルでも同じ性能になると誤解し、索引やデータ分布を無視して本番適用するのも危険である。対策は、表示用途と識別用途の分離、明示変換の徹底、DUALは検証専用と位置付ける運用規約である。</p>
 <h3>5) 試験・実務の急所</h3>
 <p>試験では`||`演算子、リテラル記述、DUAL利用が高確率で問われる。特に「文字列連結時のNULL挙動」「AS別名との組み合わせ」「関数確認SQL」が論点になる。実務では、連結列をWHERE条件へ使うと索引活用が難しくなるため、表示用列と検索用列を分離する設計判断が必要である。さらに、帳票作成時にSQLで過剰整形すると再利用性が下がるため、どこまでをSQLで行い、どこからを表示層へ委譲するかを決めることが重要になる。第2章でこの境界感覚を持つと、後続の関数章や性能調整時に適切な責務分離ができる。</p>
-<pre><code><span class="kw">SELECT</span> <span class="obj">last_name</span> || <span class="str">', '</span> || <span class="obj">first_name</span> <span class="kw">AS</span> <span class="obj">full_name</span>,
-       <span class="str">'EMP'</span> || <span class="obj">employee_id</span> <span class="kw">AS</span> <span class="obj">employee_code</span>
-<span class="kw">FROM</span> <span class="obj">employees</span>;
+<pre><code><span class="kw"><span class="sql-kw">SELECT</span></span> <span class="obj">last_name</span> || <span class="str"><span class="sql-str">', '</span></span> || <span class="obj">first_name</span> <span class="kw"><span class="sql-kw">AS</span></span> <span class="obj">full_name</span>,
+       <span class="str"><span class="sql-str">'EMP'</span></span> || <span class="obj">employee_id</span> <span class="kw"><span class="sql-kw">AS</span></span> <span class="obj">employee_code</span>
+<span class="kw"><span class="sql-kw">FROM</span></span> <span class="obj">employees</span>;
 
-<span class="kw">SELECT</span> <span class="kw">CURRENT_DATE</span> <span class="kw">AS</span> <span class="obj">today_local</span>
-<span class="kw">FROM</span> <span class="obj">dual</span>;</code></pre>
+<span class="kw"><span class="sql-kw">SELECT</span></span> <span class="kw">CURRENT_DATE</span> <span class="kw"><span class="sql-kw">AS</span></span> <span class="obj">today_local</span>
+<span class="kw"><span class="sql-kw">FROM</span></span> <span class="obj">dual</span>;</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="distinct">
@@ -154,9 +165,9 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 <p>アンチパターンとして最も多いのは、JOIN条件誤りによる重複発生をDISTINCTで隠す実装である。この方法は一時的に行数を減らせても、計算値の重複加算や欠損を見逃し、別帳票で不一致を生む。次に、重複要因を把握せず安易にDISTINCTを入れると性能が悪化し、ピーク時間帯の応答遅延原因になりやすい。制限として、DISTINCT対象列に不要な列を含めると重複除去効果が消える。対策は、まず重複の原因（データ重複かJOIN多重化か）を調査し、必要ならGROUP BYやEXISTS、制約追加など根本策を選ぶことである。DISTINCTは最後の整形手段であり、根治策の代替ではない。</p>
 <h3>5) 試験・実務の急所</h3>
 <p>試験では「DISTINCTはSELECT直後に置く」「列組単位で重複判定」「NULLを含む挙動」が問われる。実務ではさらに、DISTINCTを使った理由を説明できるかが品質指標になる。レビューで「なぜ重複が生じたのか」が説明できないDISTINCTは高リスクであり、後続改修で破綻しやすい。重複排除の目的がUI表示だけなのか、業務計算の正当性担保なのかを分けて設計する必要がある。第2章の段階で、DISTINCTを便利句としてではなく「行集合を変形する演算」として理解しておけば、集約章・結合章でも誤用を避けられる。</p>
-<pre><code><span class="kw">SELECT DISTINCT</span> <span class="obj">department_id</span>
-<span class="kw">FROM</span> <span class="obj">employees</span>
-<span class="kw">ORDER BY</span> <span class="obj">department_id</span>;</code></pre>
+<pre><code><span class="kw"><span class="sql-kw">SELECT</span> <span class="sql-kw">DISTINCT</span></span> <span class="obj">department_id</span>
+<span class="kw"><span class="sql-kw">FROM</span></span> <span class="obj">employees</span>
+<span class="kw"><span class="sql-kw">ORDER BY</span></span> <span class="obj">department_id</span>;</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="where">
@@ -171,11 +182,11 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 <p>アンチパターンは、日付を文字列比較する、NULL比較を等号で行う、`LIKE '%xxx'`を多用して索引効率を落とす、`IN`リストへ大量値を直書きする、といった実装である。特に文字列日付比較はNLS依存で誤判定を招きやすい。さらに、条件式へ関数を過度に適用すると索引利用が難しくなり、フルスキャン増加で応答劣化を起こす。制限として、WHEREは要件の曖昧さを吸収できない。要件が「当月」なのか「直近30日」なのか不明なまま実装すると、正しいSQLは存在しない。対策は要件の時間境界とNULL方針を事前固定し、実行前に件数とサンプル行を検証することである。</p>
 <h3>5) 試験・実務の急所</h3>
 <p>試験では`BETWEEN`の境界包含、`IN`と`OR`の等価性、`LIKE`のワイルドカード、NULL比較の誤りが高頻度で出題される。実務ではこれに加え、条件の再現性が問われる。すなわち、同じSQLを翌日に実行しても要件通りの対象が取れるかを確認する必要がある。`SYSDATE`依存条件は便利だが、監査や再実行時に結果差が出るため、基準日時をパラメータ化する設計が望ましい。第2章でWHERE句を厳密に扱う習慣を持てば、後続の結合や副問合せでも条件漏れ・過抽出を減らせる。試験対策としても、条件式を日本語要件へ逆翻訳できる力が得点を安定させる。</p>
-<pre><code><span class="kw">SELECT</span> <span class="obj">employee_id</span>, <span class="obj">last_name</span>, <span class="obj">salary</span>
-<span class="kw">FROM</span> <span class="obj">employees</span>
-<span class="kw">WHERE</span> <span class="obj">department_id</span> <span class="kw">IN</span> (<span class="obj">50</span>, <span class="obj">60</span>)
-  <span class="kw">AND</span> <span class="obj">salary</span> <span class="kw">BETWEEN</span> <span class="obj">7000</span> <span class="kw">AND</span> <span class="obj">12000</span>
-  <span class="kw">AND</span> <span class="obj">last_name</span> <span class="kw">LIKE</span> <span class="str">'S%'</span>;</code></pre>
+<pre><code><span class="kw"><span class="sql-kw">SELECT</span></span> <span class="obj">employee_id</span>, <span class="obj">last_name</span>, <span class="obj">salary</span>
+<span class="kw"><span class="sql-kw">FROM</span></span> <span class="obj">employees</span>
+<span class="kw"><span class="sql-kw">WHERE</span></span> <span class="obj">department_id</span> <span class="kw"><span class="sql-kw">IN</span></span> (<span class="obj"><span class="sql-num">50</span></span>, <span class="obj"><span class="sql-num">60</span></span>)
+  <span class="kw"><span class="sql-kw">AND</span></span> <span class="obj">salary</span> <span class="kw"><span class="sql-kw">BETWEEN</span></span> <span class="obj"><span class="sql-num">7000</span></span> <span class="kw"><span class="sql-kw">AND</span></span> <span class="obj"><span class="sql-num">12000</span></span>
+  <span class="kw"><span class="sql-kw">AND</span></span> <span class="obj">last_name</span> <span class="kw"><span class="sql-kw">LIKE</span></span> <span class="str"><span class="sql-str">'S%'</span></span>;</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="logic">
@@ -190,12 +201,12 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 <p>アンチパターンは、括弧省略で意図を暗黙化すること、NOT条件を多重化して可読性を落とすこと、NULL可能列への否定条件を無検証で使うことである。特に`NOT IN`は候補集合にNULLが含まれると期待外れの結果を返しやすく、障害頻度が高い。複雑なOR条件を1文へ詰め込むと、レビュー時に条件漏れを発見しづらい。制限として、論理式が長くなるほど人間の検算精度が下がる。対策は、条件ブロックごとに括弧を明示し、要件文と同じ単位で改行すること、検証用に条件ごとの件数を段階的に確認すること、NULL混在の有無を先に把握することである。</p>
 <h3>5) 試験・実務の急所</h3>
 <p>試験ではAND/OR優先順位、NOTの作用範囲、NULLを含む論理評価が頻出である。実務では、条件式レビュー時に「人間の読解順ではなくOracleの評価順」で検証する姿勢が必要になる。さらに運用SQLでは、要件変更が入るたびに条件を継ぎ足すことが多いため、初期から括弧と改行規約を統一しておかないと保守不能になる。第2章で論理式を厳密に扱う習慣を作ると、後続の副問合せ条件や結合条件でも誤判定を減らせる。試験対策としては、候補式を真理値表で比較する練習が有効であり、誤答の多くは優先順位思い込みで説明できる。</p>
-<pre><code><span class="kw">SELECT</span> <span class="obj">employee_id</span>, <span class="obj">department_id</span>, <span class="obj">salary</span>
-<span class="kw">FROM</span> <span class="obj">employees</span>
-<span class="kw">WHERE</span> (<span class="obj">department_id</span> = <span class="obj">50</span> <span class="kw">OR</span> <span class="obj">department_id</span> = <span class="obj">60</span>)
-  <span class="kw">AND</span> <span class="obj">salary</span> &gt;= <span class="obj">8000</span>;
+<pre><code><span class="kw"><span class="sql-kw">SELECT</span></span> <span class="obj">employee_id</span>, <span class="obj">department_id</span>, <span class="obj">salary</span>
+<span class="kw"><span class="sql-kw">FROM</span></span> <span class="obj">employees</span>
+<span class="kw"><span class="sql-kw">WHERE</span></span> (<span class="obj">department_id</span> = <span class="obj"><span class="sql-num">50</span></span> <span class="kw"><span class="sql-kw">OR</span></span> <span class="obj">department_id</span> = <span class="obj"><span class="sql-num">60</span></span>)
+  <span class="kw"><span class="sql-kw">AND</span></span> <span class="obj">salary</span> &gt;= <span class="obj"><span class="sql-num">8000</span></span>;
 
-<span class="kw">-- 括弧を外すと意味が変わる点に注意</span></code></pre>
+<span class="kw"><span class="sql-cmt">-- 括弧を外すと意味が変わる点に注意</span></span></code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="null">
@@ -210,13 +221,13 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 <p>アンチパターンは、NULL許容列へ`= ''`で判定する、未入力を0で保存して欠損を隠す、`NOT IN`へNULL混在集合を渡す、の3つが代表的である。これらは見た目上は動作しても、件数不一致や条件漏れを招き、障害時に原因特定が難しくなる。さらに、NULLを一律禁止して運用上必要な「未確定状態」まで失う設計も問題である。制限として、NULLの意味は列ごとに異なるため、共通ルールを無理に適用すると業務意味が破綻する。対策は、列単位でNULL許容理由を定義し、抽出時はIS NULL明示、演算時は補完方針明示、NOT IN利用時はNULL混在検査を必須化することである。</p>
 <h3>5) 試験・実務の急所</h3>
 <p>試験ではNULL比較、IS NULL/IS NOT NULL、NULLを含む式結果が高頻度で出題される。実務ではこれに加えて、帳票不一致や対象漏れの一次原因としてNULL誤判定が非常に多い。障害解析時にはまずNULL条件の有無、NVL適用有無、NOT INの候補集合を確認するのが有効である。開発規約として「NULL判定は必ずIS句」「演算前に補完要否を判断」「NULL意味を列定義へ記述」を徹底すると再発率が下がる。第2章でこの規律を身につけると、後続の集約・結合・副問合せでも論理崩れを防げる。試験の得点だけでなく、実運用での信頼性を高める必須知識である。</p>
-<pre><code><span class="kw">SELECT</span> <span class="obj">employee_id</span>, <span class="obj">last_name</span>
-<span class="kw">FROM</span> <span class="obj">employees</span>
-<span class="kw">WHERE</span> <span class="obj">commission_pct</span> <span class="kw">IS NULL</span>;
+<pre><code><span class="kw"><span class="sql-kw">SELECT</span></span> <span class="obj">employee_id</span>, <span class="obj">last_name</span>
+<span class="kw"><span class="sql-kw">FROM</span></span> <span class="obj">employees</span>
+<span class="kw"><span class="sql-kw">WHERE</span></span> <span class="obj">commission_pct</span> <span class="kw"><span class="sql-kw">IS NULL</span></span>;
 
-<span class="kw">SELECT</span> <span class="obj">employee_id</span>,
-       <span class="obj">salary</span> + <span class="kw">NVL</span>(<span class="obj">commission_pct</span> * <span class="obj">salary</span>, <span class="obj">0</span>) <span class="kw">AS</span> <span class="obj">pay_total</span>
-<span class="kw">FROM</span> <span class="obj">employees</span>;</code></pre>
+<span class="kw"><span class="sql-kw">SELECT</span></span> <span class="obj">employee_id</span>,
+       <span class="obj">salary</span> + <span class="kw">NVL</span>(<span class="obj">commission_pct</span> * <span class="obj">salary</span>, <span class="obj"><span class="sql-num">0</span></span>) <span class="kw"><span class="sql-kw">AS</span></span> <span class="obj">pay_total</span>
+<span class="kw"><span class="sql-kw">FROM</span></span> <span class="obj">employees</span>;</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="order">
@@ -231,10 +242,10 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 <p>アンチパターンは、ORDER BY省略で結果順を暗黙前提にすること、同値行の第2キーを指定しないこと、列位置番号に依存して後続改修で意味が変わることにある。例えば`ORDER BY 2`は短いが、SELECT列順を変更した瞬間に並び順が変わる。さらに、NULLの位置規則を理解せず比較すると、上位・下位抽出で期待外れ結果が出る。制限として、大規模結果への無条件ソートはTEMP領域負荷を高める。対策は、目的に合った複合キー定義、必要時のNULLS制御、列名指定、そして抽出件数をWHEREで絞ってからソートする手順である。順序は「偶然同じ」ではなく「意図的に同じ」にする必要がある。</p>
 <h3>5) 試験・実務の急所</h3>
 <p>試験ではORDER BYの記述位置、昇降順、NULLS FIRST/LAST、別名指定可否が問われる。実務ではこれにページング安定性が加わり、同値行の順序固定が重要になる。例えば給与降順だけでは同給社員の表示順が毎回変わるため、`employee_id`など不変キーを第2ソートに入れるべきである。第2章でORDER BYを厳密に扱うと、後続のOFFSET/FETCHや分析SQLでも再現性を保ちやすい。試験対策としても、ORDER BYは「見栄え」ではなく「結果契約」の一部と認識することで、選択肢の誤りを論理的に排除できる。実務では監査比較の精度と説明可能性を高める基礎になる。</p>
-<pre><code><span class="kw">SELECT</span> <span class="obj">employee_id</span>, <span class="obj">last_name</span>, <span class="obj">salary</span>, <span class="obj">commission_pct</span>
-<span class="kw">FROM</span> <span class="obj">employees</span>
-<span class="kw">WHERE</span> <span class="obj">department_id</span> = <span class="obj">50</span>
-<span class="kw">ORDER BY</span> <span class="obj">salary</span> <span class="kw">DESC</span>, <span class="obj">employee_id</span> <span class="kw">ASC</span>, <span class="obj">commission_pct</span> <span class="kw">NULLS LAST</span>;</code></pre>
+<pre><code><span class="kw"><span class="sql-kw">SELECT</span></span> <span class="obj">employee_id</span>, <span class="obj">last_name</span>, <span class="obj">salary</span>, <span class="obj">commission_pct</span>
+<span class="kw"><span class="sql-kw">FROM</span></span> <span class="obj">employees</span>
+<span class="kw"><span class="sql-kw">WHERE</span></span> <span class="obj">department_id</span> = <span class="obj"><span class="sql-num">50</span></span>
+<span class="kw"><span class="sql-kw">ORDER BY</span></span> <span class="obj">salary</span> <span class="kw"><span class="sql-kw">DESC</span></span>, <span class="obj">employee_id</span> <span class="kw"><span class="sql-kw">ASC</span></span>, <span class="obj">commission_pct</span> <span class="kw">NULLS LAST</span>;</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="logical-order">
@@ -249,13 +260,13 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 <p>アンチパターンは、論理順序を無視して「とりあえず動くSQL」を継ぎ足すこと、別名参照エラーを場当たりで回避すること、ORDER BYで絞り込みが起きると誤解することにある。これらは短期的には修正できても、複雑化した瞬間に再発する。制限として、論理順序モデルだけでは性能問題を完全説明できないため、必要に応じて実行計画確認が必要になる。ただし順序理解がなければ実行計画読解も困難である。対策は、SQLレビュー時に必ず「FROM→WHERE→SELECT→ORDER BY」の順で説明し、各句の責務逸脱がないか確認する運用を標準化することだ。これが品質の最低ラインを作る。</p>
 <h3>5) 試験・実務の急所</h3>
 <p>試験では処理順序そのものの暗記だけでなく、順序前提で解ける文法問題が多い。例えばWHEREで別名を使った選択肢、ORDER BY位置誤り、NULL判定の評価タイミングなどである。実務では順序理解があるだけで、誤SQLの修正速度が大幅に上がる。更新系SQLでもまず同条件SELECTで対象確認する運用は、この順序理解に基づく安全策である。第2章の完了基準は、任意のSELECTを見たとき「どの句がどの順に効き、どこで誤りが起きるか」を口頭説明できること。これができれば、後続章で文法が増えても破綻しにくい学習基盤になる。</p>
-<div class="figure"><strong>図解テキスト:</strong><pre><code>記述順: SELECT -&gt; FROM -&gt; WHERE -&gt; ORDER BY
-論理順: FROM -&gt; WHERE -&gt; SELECT -&gt; ORDER BY
+<div class="figure"><strong>図解テキスト:</strong><pre><code>記述順: <span class="sql-kw">SELECT</span> -&gt; <span class="sql-kw">FROM</span> -&gt; <span class="sql-kw">WHERE</span> -&gt; <span class="sql-kw">ORDER BY</span>
+論理順: <span class="sql-kw">FROM</span> -&gt; <span class="sql-kw">WHERE</span> -&gt; <span class="sql-kw">SELECT</span> -&gt; <span class="sql-kw">ORDER BY</span>
 
-(1) FROM で対象行集合を作る
-(2) WHERE で条件適合行のみ残す
-(3) SELECT で返却列・式を確定する
-(4) ORDER BY で最終表示順を決める</code></pre></div>
+(<span class="sql-num">1</span>) <span class="sql-kw">FROM</span> で対象行集合を作る
+(<span class="sql-num">2</span>) <span class="sql-kw">WHERE</span> で条件適合行のみ残す
+(<span class="sql-num">3</span>) <span class="sql-kw">SELECT</span> で返却列・式を確定する
+(<span class="sql-num">4</span>) <span class="sql-kw">ORDER BY</span> で最終表示順を決める</code></pre></div>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 

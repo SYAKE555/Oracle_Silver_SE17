@@ -23,6 +23,17 @@ a{color:var(--pri);text-decoration:none}
 pre{background:var(--code);border:1px solid #dce8f8;border-radius:10px;padding:12px;overflow-x:auto;margin:10px 0}
 code{font-family:"Consolas","Monaco",monospace;font-size:.88rem}.top{text-align:right;margin-top:12px}
 @media(max-width:1120px){.layout{grid-template-columns:1fr}.sidebar{position:static;max-height:none}}
+
+  pre .sql-kw { color: #fbbf24; font-weight: 700; }
+  pre .sql-fn { color: #60a5fa; font-weight: 600; }
+  pre .sql-str { color: #86efac; }
+  pre .sql-num { color: #fca5a5; }
+  pre .sql-cmt { color: #94a3b8; font-style: italic; }
+  code .sql-kw { color: #b45309; font-weight: 700; }
+  code .sql-fn { color: #1d4ed8; font-weight: 600; }
+  code .sql-str { color: #047857; }
+  code .sql-num { color: #b91c1c; }
+  code .sql-cmt { color: #64748b; font-style: italic; }
 </style>
 </head>
 <body>
@@ -65,33 +76,33 @@ code{font-family:"Consolas","Monaco",monospace;font-size:.88rem}.top{text-align:
 <section class="card" id="insert">
 <h2>10.2 INSERT</h2>
 <p>INSERTは新規行を追加する。列順省略時は表定義順依存になるため、実務では列名明示が原則である。NOT NULLやFK制約違反で失敗するため、入力検証と参照先確認が必要。試験ではVALUES句、INSERT SELECT、制約違反時挙動が頻出である。</p>
-<pre><code>INSERT INTO departments(department_id, department_name)
-VALUES(290, 'Ops');</code></pre>
+<pre><code><span class="sql-kw">INSERT INTO</span> departments(department_id, department_name)
+<span class="sql-kw">VALUES</span>(<span class="sql-num">290</span>, <span class="sql-str">'Ops'</span>);</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="update">
 <h2>10.3 UPDATE</h2>
 <p>UPDATEは既存行を変更する。最大リスクはWHERE漏れ全件更新であり、実務では同条件SELECTで件数確認を必須化する。複数列更新や副問合せ更新では型整合・NULL補完も重要。試験では構文よりWHERE有無の影響理解が得点差になる。</p>
-<pre><code>UPDATE employees
-SET salary = salary * 1.03
-WHERE department_id = 50;</code></pre>
+<pre><code><span class="sql-kw">UPDATE</span> employees
+<span class="sql-kw">SET</span> salary = salary * <span class="sql-num">1.03</span>
+<span class="sql-kw">WHERE</span> department_id = <span class="sql-num">50</span>;</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="delete">
 <h2>10.4 DELETE</h2>
 <p>DELETEは行削除を行う。参照整合制約により削除できない場合があり、子表存在を先に確認する必要がある。WHERE漏れは全件削除事故に直結する。試験ではDELETEとTRUNCATEの違い（DML/DDL、ROLLBACK可否）が重要論点になる。</p>
-<pre><code>DELETE FROM departments
-WHERE department_id = 290;</code></pre>
+<pre><code><span class="sql-kw">DELETE FROM</span> departments
+<span class="sql-kw">WHERE</span> department_id = <span class="sql-num">290</span>;</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="merge">
 <h2>10.5 MERGE</h2>
 <p>MERGEは一致時UPDATE・不一致時INSERTを1文で行う。ETLやマスタ同期で有効だが、ON条件の誤りで意図外更新が発生しやすい。実務ではONキーの一意性確認が最重要で、重複キーを許したまま使うと品質が崩れる。試験ではWHEN MATCHED/NOT MATCHEDの意味理解が問われる。</p>
-<pre><code>MERGE INTO sales_target t
-USING (SELECT 10 dept_id, 1200000 amt FROM dual) s
-ON (t.dept_id = s.dept_id)
-WHEN MATCHED THEN UPDATE SET t.target_amt = s.amt
-WHEN NOT MATCHED THEN INSERT (dept_id, target_amt) VALUES (s.dept_id, s.amt);</code></pre>
+<pre><code><span class="sql-kw">MERGE INTO</span> sales_target t
+<span class="sql-kw">USING</span> (<span class="sql-kw">SELECT</span> <span class="sql-num">10</span> dept_id, <span class="sql-num">1200000</span> amt <span class="sql-kw">FROM</span> dual) s
+<span class="sql-kw">ON</span> (t.dept_id = s.dept_id)
+<span class="sql-kw">WHEN MATCHED</span> <span class="sql-kw">THEN</span> <span class="sql-kw">UPDATE</span> <span class="sql-kw">SET</span> t.target_amt = s.amt
+<span class="sql-kw">WHEN NOT MATCHED</span> <span class="sql-kw">THEN</span> <span class="sql-kw">INSERT</span> (dept_id, target_amt) <span class="sql-kw">VALUES</span> (s.dept_id, s.amt);</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="tx">

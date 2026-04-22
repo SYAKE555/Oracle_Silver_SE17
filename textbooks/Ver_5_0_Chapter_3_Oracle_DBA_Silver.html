@@ -35,6 +35,17 @@ table{width:100%;min-width:860px;border-collapse:collapse}
 th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef5ff}
 .top{text-align:right;margin-top:12px}
 @media(max-width:1120px){.layout{grid-template-columns:1fr}.sidebar{position:static;max-height:none}}
+
+  pre .sql-kw { color: #fbbf24; font-weight: 700; }
+  pre .sql-fn { color: #60a5fa; font-weight: 600; }
+  pre .sql-str { color: #86efac; }
+  pre .sql-num { color: #fca5a5; }
+  pre .sql-cmt { color: #94a3b8; font-style: italic; }
+  code .sql-kw { color: #b45309; font-weight: 700; }
+  code .sql-fn { color: #1d4ed8; font-weight: 600; }
+  code .sql-str { color: #047857; }
+  code .sql-num { color: #b91c1c; }
+  code .sql-cmt { color: #64748b; font-style: italic; }
 </style>
 </head>
 <body>
@@ -95,11 +106,11 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 <p>アンチパターンは、BETWEENで終端日23:59:59を考慮しない、IN句へ無制限に値を直書きする、LIKEで先頭`%`を常用する、NOT INへNULL混在集合を渡す、の4点が代表的である。これらは件数不一致や性能悪化を引き起こしやすい。特に期間抽出では`BETWEEN start AND end`が期待と異なり、日次帳票で漏れが発生することがある。対策は、日付は半開区間で設計する、候補値は一時表や結合で管理する、LIKEは要件に応じて前方一致を優先する、NOT IN使用時はNULL排除を明示することである。演算子の便利さに頼るほど、境界条件の検証を強化する必要がある。</p>
 <h3>5) 試験・実務の急所</h3>
 <p>試験ではBETWEENの境界含有、INとORの等価、LIKEワイルドカード意味が頻出である。実務ではこれに加えて、`NOT IN`とNULLの罠が高頻度障害ポイントになる。レビュー時には、候補集合の由来、パターン条件の対象範囲、期間端点の定義を確認するべきである。第3章でこれらを厳密に扱うと、後続のサブクエリ章でANY/ALL/EXISTSを学ぶ際も条件比較の軸がぶれない。試験対策としても、演算子単体暗記ではなく「どの業務要件にどの演算子が自然か」を判断できるようにすることが、ひっかけ選択肢の回避に有効である。</p>
-<pre><code><span class="kw">SELECT</span> <span class="obj">employee_id</span>, <span class="obj">last_name</span>, <span class="obj">salary</span>
-<span class="kw">FROM</span> <span class="obj">employees</span>
-<span class="kw">WHERE</span> <span class="obj">salary</span> <span class="kw">BETWEEN</span> <span class="obj">7000</span> <span class="kw">AND</span> <span class="obj">12000</span>
-  <span class="kw">AND</span> <span class="obj">department_id</span> <span class="kw">IN</span> (<span class="obj">50</span>, <span class="obj">60</span>)
-  <span class="kw">AND</span> <span class="obj">last_name</span> <span class="kw">LIKE</span> <span class="str">'S%'</span>;</code></pre>
+<pre><code><span class="kw"><span class="sql-kw">SELECT</span></span> <span class="obj">employee_id</span>, <span class="obj">last_name</span>, <span class="obj">salary</span>
+<span class="kw"><span class="sql-kw">FROM</span></span> <span class="obj">employees</span>
+<span class="kw"><span class="sql-kw">WHERE</span></span> <span class="obj">salary</span> <span class="kw"><span class="sql-kw">BETWEEN</span></span> <span class="obj"><span class="sql-num">7000</span></span> <span class="kw"><span class="sql-kw">AND</span></span> <span class="obj"><span class="sql-num">12000</span></span>
+  <span class="kw"><span class="sql-kw">AND</span></span> <span class="obj">department_id</span> <span class="kw"><span class="sql-kw">IN</span></span> (<span class="obj"><span class="sql-num">50</span></span>, <span class="obj"><span class="sql-num">60</span></span>)
+  <span class="kw"><span class="sql-kw">AND</span></span> <span class="obj">last_name</span> <span class="kw"><span class="sql-kw">LIKE</span></span> <span class="str"><span class="sql-str">'S%'</span></span>;</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="logical">
@@ -119,9 +130,9 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 <section class="card" id="null-conditions">
 <h2>3.4 NULLを含む条件設計</h2>
 <p>NULLが条件へ混在すると、単純比較ではUNKNOWNが発生し結果が変わる。`IS NULL`の明示、NOT IN時のNULL排除、NVLによる補完方針を先に定めることが第3章の核心である。NULLはエラー値ではなく業務状態値なので、どの列でNULLを許容し、どの列で禁止するかを要件として固定しなければならない。特に抽出対象の漏れが許されない運用では、NULL行を別系統で監視するSQLを常設し、通常抽出と分離管理することが実務上有効である。試験でもNULL混在時の結果差は頻出であり、通常比較で判定しない原則を徹底する。</p>
-<pre><code><span class="kw">SELECT</span> <span class="obj">employee_id</span>
-<span class="kw">FROM</span> <span class="obj">employees</span>
-<span class="kw">WHERE</span> <span class="obj">commission_pct</span> <span class="kw">IS NULL</span>;</code></pre>
+<pre><code><span class="kw"><span class="sql-kw">SELECT</span></span> <span class="obj">employee_id</span>
+<span class="kw"><span class="sql-kw">FROM</span></span> <span class="obj">employees</span>
+<span class="kw"><span class="sql-kw">WHERE</span></span> <span class="obj">commission_pct</span> <span class="kw"><span class="sql-kw">IS NULL</span></span>;</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="orderby-basic">
@@ -132,9 +143,9 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 <section class="card" id="null-order">
 <h2>3.6 NULLS FIRST / LAST</h2>
 <p>NULLの並び位置はデフォルト任せにせず、`NULLS FIRST`または`NULLS LAST`で明示する。ASC時は通常NULL末尾、DESC時は通常NULL先頭だが、要件が「未設定を先に確認」なのか「確定値を優先表示」なのかで最適解は変わる。運用現場では未設定行の監視が重要なため、NULLS FIRSTを使うだけでレビュー効率が上がる場面が多い。逆にこの制御を省くと、並び順変更時に監視結果が揺れ、差分確認が不安定になる。試験でもNULLソート規則は頻出のため、ASC/DESCとの組合せで説明できる状態が必要である。</p>
-<pre><code><span class="kw">SELECT</span> <span class="obj">employee_id</span>, <span class="obj">commission_pct</span>
-<span class="kw">FROM</span> <span class="obj">employees</span>
-<span class="kw">ORDER BY</span> <span class="obj">commission_pct</span> <span class="kw">DESC NULLS LAST</span>;</code></pre>
+<pre><code><span class="kw"><span class="sql-kw">SELECT</span></span> <span class="obj">employee_id</span>, <span class="obj">commission_pct</span>
+<span class="kw"><span class="sql-kw">FROM</span></span> <span class="obj">employees</span>
+<span class="kw"><span class="sql-kw">ORDER BY</span></span> <span class="obj">commission_pct</span> <span class="kw"><span class="sql-kw">DESC</span> NULLS LAST</span>;</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="stable-sort">
@@ -145,31 +156,31 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 <section class="card" id="row-limiting">
 <h2>3.8 行制限（OFFSET / FETCH）</h2>
 <p>行制限句は結果の一部を返す機能で、ページングや上位N件抽出に利用される。Oracleでは`OFFSET n ROWS FETCH NEXT m ROWS ONLY`を用いる。重要なのは、ORDER BYなしの行制限は再現性を持たない点である。上位N件を取得する意図なら、まず業務意味のあるソートを定義し、そのうえで行制限を適用する必要がある。OFFSETが大きい場合は性能劣化が起こるため、実務ではキーセットページング検討も必要になる。試験では構文順序と意味理解が問われるため、ORDER BYとのセット利用を原則として覚えると誤答を避けやすい。</p>
-<pre><code><span class="kw">SELECT</span> <span class="obj">employee_id</span>, <span class="obj">last_name</span>, <span class="obj">salary</span>
-<span class="kw">FROM</span> <span class="obj">employees</span>
-<span class="kw">ORDER BY</span> <span class="obj">salary</span> <span class="kw">DESC</span>, <span class="obj">employee_id</span> <span class="kw">ASC</span>
-<span class="kw">OFFSET</span> <span class="obj">20</span> <span class="kw">ROWS FETCH NEXT</span> <span class="obj">10</span> <span class="kw">ROWS ONLY</span>;</code></pre>
+<pre><code><span class="kw"><span class="sql-kw">SELECT</span></span> <span class="obj">employee_id</span>, <span class="obj">last_name</span>, <span class="obj">salary</span>
+<span class="kw"><span class="sql-kw">FROM</span></span> <span class="obj">employees</span>
+<span class="kw"><span class="sql-kw">ORDER BY</span></span> <span class="obj">salary</span> <span class="kw"><span class="sql-kw">DESC</span></span>, <span class="obj">employee_id</span> <span class="kw"><span class="sql-kw">ASC</span></span>
+<span class="kw"><span class="sql-kw">OFFSET</span></span> <span class="obj"><span class="sql-num">20</span></span> <span class="kw"><span class="sql-kw">ROWS</span> <span class="sql-kw">FETCH</span> <span class="sql-kw">NEXT</span></span> <span class="obj"><span class="sql-num">10</span></span> <span class="kw"><span class="sql-kw">ROWS ONLY</span></span>;</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="substitution">
 <h2>3.9 置換変数（SQL*Plus系）</h2>
 <p>置換変数は実行時に値を差し込むための仕組みで、SQL*Plusや互換ツールで利用される。`&amp;var`や`&amp;&amp;var`を使うことで、同一SQLを値だけ変えて再実行できる。実務では手動調査の効率化に有効だが、値型の明示や引用符管理を誤ると条件誤判定や実行エラーを招く。アプリケーション実装ではバインド変数を使うのが原則であり、置換変数は対話実行向け機能として位置付けるべきである。試験では基本挙動が問われるため、置換変数とバインド変数の用途差を区別して理解することが重要になる。</p>
-<pre><code><span class="kw">DEFINE</span> <span class="obj">dept_id</span> = <span class="obj">50</span>
-<span class="kw">SELECT</span> <span class="obj">employee_id</span>, <span class="obj">last_name</span>
-<span class="kw">FROM</span> <span class="obj">employees</span>
-<span class="kw">WHERE</span> <span class="obj">department_id</span> = &amp;<span class="obj">dept_id</span>;</code></pre>
+<pre><code><span class="kw">DEFINE</span> <span class="obj">dept_id</span> = <span class="obj"><span class="sql-num">50</span></span>
+<span class="kw"><span class="sql-kw">SELECT</span></span> <span class="obj">employee_id</span>, <span class="obj">last_name</span>
+<span class="kw"><span class="sql-kw">FROM</span></span> <span class="obj">employees</span>
+<span class="kw"><span class="sql-kw">WHERE</span></span> <span class="obj">department_id</span> = &amp;<span class="obj">dept_id</span>;</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="flow">
 <h2>3.10 条件絞り込みとソートの実行順</h2>
 <p>第3章では、WHEREとORDER BYの責務分離が最重要である。まずWHEREで対象を絞り、その結果にORDER BYが適用される。さらに行制限がある場合、ソート後の結果から切り出される。つまり順序定義が曖昧なまま行制限すると、毎回異なる行が返る。運用での再現性を担保するには、対象条件、並び順、切り出し範囲の3点を一貫して定義し、件数検証を伴って運用する必要がある。試験でもこの順序前提で解く問題が多く、句の役割を混同すると正解率が下がる。設計時に必ず「どの段階で何が確定するか」を言語化する習慣を持つべきである。</p>
-<div class="figure"><strong>図解テキスト:</strong><pre><code>FROM -&gt; WHERE -&gt; SELECT -&gt; ORDER BY -&gt; OFFSET/FETCH
+<div class="figure"><strong>図解テキスト:</strong><pre><code><span class="sql-kw">FROM</span> -&gt; <span class="sql-kw">WHERE</span> -&gt; <span class="sql-kw">SELECT</span> -&gt; <span class="sql-kw">ORDER BY</span> -&gt; <span class="sql-kw">OFFSET</span>/<span class="sql-kw">FETCH</span>
 
-1) 対象集合を決める
-2) 条件で不要行を除外する
-3) 返却列を確定する
-4) 並び順を固定する
-5) 必要範囲だけ取得する</code></pre></div>
+<span class="sql-num">1</span>) 対象集合を決める
+<span class="sql-num">2</span>) 条件で不要行を除外する
+<span class="sql-num">3</span>) 返却列を確定する
+<span class="sql-num">4</span>) 並び順を固定する
+<span class="sql-num">5</span>) 必要範囲だけ取得する</code></pre></div>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 

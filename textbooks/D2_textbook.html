@@ -68,7 +68,18 @@
         .breadcrumb { padding: 12px 24px; background: white; border-bottom: 1px solid #e2e8f0; font-size: 0.85rem; }
         .breadcrumb a { color: #c0392b; text-decoration: none; }
         .intro-box { background: #fff8f8; border: 1px solid #f0a0a0; border-radius: 8px; padding: 16px; margin-bottom: 24px; }
-        </style>
+        
+  pre .sql-kw { color: #fbbf24; font-weight: 700; }
+  pre .sql-fn { color: #60a5fa; font-weight: 600; }
+  pre .sql-str { color: #86efac; }
+  pre .sql-num { color: #fca5a5; }
+  pre .sql-cmt { color: #94a3b8; font-style: italic; }
+  code .sql-kw { color: #b45309; font-weight: 700; }
+  code .sql-fn { color: #1d4ed8; font-weight: 600; }
+  code .sql-str { color: #047857; }
+  code .sql-num { color: #b91c1c; }
+  code .sql-cmt { color: #64748b; font-style: italic; }
+</style>
 </head>
 <body>
 <div class="breadcrumb">
@@ -219,226 +230,226 @@
     </table>
   </div>
 
-  <div class="section-card"><div class="section-title">WHERE句と比較演算子</div><div class="topic-chips"><span class="chip">WHERE</span><span class="chip">BETWEEN</span><span class="chip">IN</span><span class="chip">比較演算子</span><span class="chip">AND</span><span class="chip">OR</span><span class="chip">NOT</span></div><div class="section-content"><h3>WHERE 句の基本</h3><p>WHERE 句を使うと条件に合う行だけを取得できます。</p><pre><code>SELECT LAST_NAME, SALARY
-FROM   EMPLOYEES
-WHERE  SALARY >= 10000;
--- 実行結果例：
--- LAST_NAME   SALARY
--- ----------  ------
--- King         24000
--- Kochhar      17000
--- De Haan      17000
--- （SALARY が 10000 以上の行のみ返される）</code></pre><h3>比較演算子一覧</h3><table class='summary-table'><tr><th>演算子</th><th>意味</th><th>例</th></tr><tr><td>=</td><td>等しい</td><td>SALARY = 5000</td></tr><tr><td>&lt;&gt; または !=</td><td>等しくない</td><td>SALARY &lt;&gt; 5000</td></tr><tr><td>&gt;</td><td>より大きい</td><td>SALARY &gt; 5000</td></tr><tr><td>&lt;</td><td>より小さい</td><td>SALARY &lt; 5000</td></tr><tr><td>&gt;=</td><td>以上</td><td>SALARY &gt;= 5000</td></tr><tr><td>&lt;=</td><td>以下</td><td>SALARY &lt;= 5000</td></tr></table><h3>BETWEEN ... AND</h3><pre><code>-- 5000 以上 10000 以下の給与（両端含む）
-SELECT LAST_NAME, SALARY
-FROM   EMPLOYEES
-WHERE  SALARY BETWEEN 5000 AND 10000;
--- 実行結果例：
--- LAST_NAME   SALARY
--- ----------  ------
--- Hunold        9000
--- Ernst         6000
--- Austin        4800
--- （SALARY = 5000 および 10000 の行も含まれる）</code></pre><h3>IN 演算子</h3><pre><code>-- 部署 10, 20, 30 のいずれか
-SELECT LAST_NAME, DEPARTMENT_ID
-FROM   EMPLOYEES
-WHERE  DEPARTMENT_ID IN (10, 20, 30);
--- 実行結果例：
--- LAST_NAME   DEPARTMENT_ID
--- ----------  -------------
--- Whalen                 10
--- Hartstein              20
--- Fay                    20
--- Raphaely               30
--- （部署 10, 20, 30 のいずれかに属する行が返される）</code></pre><h3>AND / OR / NOT</h3><pre><code>-- AND: 両方の条件を満たす
-SELECT LAST_NAME, SALARY, DEPARTMENT_ID
-FROM   EMPLOYEES
-WHERE  SALARY > 5000
-AND    DEPARTMENT_ID = 50;
--- 実行結果例：
--- LAST_NAME   SALARY  DEPARTMENT_ID
--- ----------  ------  -------------
--- Mourgos       5800             50
--- Rajs          3500             50
--- （SALARY > 5000 かつ DEPARTMENT_ID = 50 の行のみ返される）
+  <div class="section-card"><div class="section-title">WHERE句と比較演算子</div><div class="topic-chips"><span class="chip">WHERE</span><span class="chip">BETWEEN</span><span class="chip">IN</span><span class="chip">比較演算子</span><span class="chip">AND</span><span class="chip">OR</span><span class="chip">NOT</span></div><div class="section-content"><h3>WHERE 句の基本</h3><p>WHERE 句を使うと条件に合う行だけを取得できます。</p><pre><code><span class="sql-kw">SELECT</span> LAST_NAME, SALARY
+<span class="sql-kw">FROM</span>   EMPLOYEES
+<span class="sql-kw">WHERE</span>  SALARY >= <span class="sql-num">10000</span>;
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- LAST_NAME   SALARY</span>
+<span class="sql-cmt">-- ----------  ------</span>
+<span class="sql-cmt">-- King         24000</span>
+<span class="sql-cmt">-- Kochhar      17000</span>
+<span class="sql-cmt">-- De Haan      17000</span>
+<span class="sql-cmt">-- （SALARY が 10000 以上の行のみ返される）</span></code></pre><h3>比較演算子一覧</h3><table class='summary-table'><tr><th>演算子</th><th>意味</th><th>例</th></tr><tr><td>=</td><td>等しい</td><td>SALARY = 5000</td></tr><tr><td>&lt;&gt; または !=</td><td>等しくない</td><td>SALARY &lt;&gt; 5000</td></tr><tr><td>&gt;</td><td>より大きい</td><td>SALARY &gt; 5000</td></tr><tr><td>&lt;</td><td>より小さい</td><td>SALARY &lt; 5000</td></tr><tr><td>&gt;=</td><td>以上</td><td>SALARY &gt;= 5000</td></tr><tr><td>&lt;=</td><td>以下</td><td>SALARY &lt;= 5000</td></tr></table><h3>BETWEEN ... AND</h3><pre><code><span class="sql-cmt">-- 5000 以上 10000 以下の給与（両端含む）</span>
+<span class="sql-kw">SELECT</span> LAST_NAME, SALARY
+<span class="sql-kw">FROM</span>   EMPLOYEES
+<span class="sql-kw">WHERE</span>  SALARY <span class="sql-kw">BETWEEN</span> <span class="sql-num">5000</span> <span class="sql-kw">AND</span> <span class="sql-num">10000</span>;
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- LAST_NAME   SALARY</span>
+<span class="sql-cmt">-- ----------  ------</span>
+<span class="sql-cmt">-- Hunold        9000</span>
+<span class="sql-cmt">-- Ernst         6000</span>
+<span class="sql-cmt">-- Austin        4800</span>
+<span class="sql-cmt">-- （SALARY = 5000 および 10000 の行も含まれる）</span></code></pre><h3>IN 演算子</h3><pre><code><span class="sql-cmt">-- 部署 10, 20, 30 のいずれか</span>
+<span class="sql-kw">SELECT</span> LAST_NAME, DEPARTMENT_ID
+<span class="sql-kw">FROM</span>   EMPLOYEES
+<span class="sql-kw">WHERE</span>  DEPARTMENT_ID <span class="sql-kw">IN</span> (<span class="sql-num">10</span>, <span class="sql-num">20</span>, <span class="sql-num">30</span>);
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- LAST_NAME   DEPARTMENT_ID</span>
+<span class="sql-cmt">-- ----------  -------------</span>
+<span class="sql-cmt">-- Whalen                 10</span>
+<span class="sql-cmt">-- Hartstein              20</span>
+<span class="sql-cmt">-- Fay                    20</span>
+<span class="sql-cmt">-- Raphaely               30</span>
+<span class="sql-cmt">-- （部署 10, 20, 30 のいずれかに属する行が返される）</span></code></pre><h3>AND / OR / NOT</h3><pre><code><span class="sql-cmt">-- AND: 両方の条件を満たす</span>
+<span class="sql-kw">SELECT</span> LAST_NAME, SALARY, DEPARTMENT_ID
+<span class="sql-kw">FROM</span>   EMPLOYEES
+<span class="sql-kw">WHERE</span>  SALARY > <span class="sql-num">5000</span>
+<span class="sql-kw">AND</span>    DEPARTMENT_ID = <span class="sql-num">50</span>;
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- LAST_NAME   SALARY  DEPARTMENT_ID</span>
+<span class="sql-cmt">-- ----------  ------  -------------</span>
+<span class="sql-cmt">-- Mourgos       5800             50</span>
+<span class="sql-cmt">-- Rajs          3500             50</span>
+<span class="sql-cmt">-- （SALARY > 5000 かつ DEPARTMENT_ID = 50 の行のみ返される）</span>
 
--- OR: どちらかの条件を満たす
-SELECT LAST_NAME, SALARY, DEPARTMENT_ID
-FROM   EMPLOYEES
-WHERE  SALARY > 10000
-OR     DEPARTMENT_ID = 10;
--- 実行結果例：
--- LAST_NAME   SALARY  DEPARTMENT_ID
--- ----------  ------  -------------
--- King         24000             90
--- Kochhar      17000             90
--- Whalen        4400             10
--- （SALARY > 10000 または DEPARTMENT_ID = 10 のどちらかを満たす行が返される）</code></pre><div class='tip-box'><strong>試験のポイント：</strong> BETWEEN の値は「小さい値 AND 大きい値」の順で指定します。NOT IN に NULL が含まれる場合、全件が返りません（NULL との比較が不定のため）。AND は OR より優先度が高いため、OR を使う場合は括弧で明示的にグループ化を推奨。</div></div><div class="problem-section-title">練習問題</div><div class="problem-card" id="prob-OSLV-D2-001"><div class="problem-header">問題 1 <span class="qid">#OSLV-D2-001</span></div><p class="problem-text">以下のSQL文で返される行を正しく説明しているものはどれか。<br>```sql<br>SELECT employee_id, salary<br>FROM employees<br>WHERE salary BETWEEN 5000 AND 10000;<br>```</p><ul class="choices"><li>A. salary が 5000 より大きく 10000 より小さい行</li><li>B. salary が 5000 以上かつ 10000 以下の行</li><li>C. salary が 5000 未満または 10000 超の行</li><li>D. salary が 5000 または 10000 の行のみ</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> B. salary が 5000 以上かつ 10000 以下の行</p><p>正解は「salary が 5000 以上かつ 10000 以下の行」である。BETWEEN x AND y は x <= 値 <= y の範囲を意味し、両端の値を含む（inclusive）。したがって salary = 5000 および salary = 10000 の行も結果に含まれる。選択肢Aは両端を含まない（exclusive）の説明であり誤り。BETWEENはNOT BETWEENで否定でき、数値・日付・文字列のいずれにも使用可能。Oracle SQL Reference §BETWEEN条件参照。</p></div></details></div><div class="problem-card" id="prob-OSLV-D2-002"><div class="problem-header">問題 2 <span class="qid">#OSLV-D2-002</span></div><p class="problem-text">以下のSQL文の結果として正しいものはどれか。<br>```sql<br>SELECT last_name<br>FROM employees<br>WHERE last_name LIKE '_a%';<br>```</p><ul class="choices"><li>A. 'a' を含む全ての last_name</li><li>B. 'a' で始まる last_name</li><li>C. 2文字目が 'a' の last_name を持つ全行</li><li>D. 'a' で終わる last_name</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> C. 2文字目が 'a' の last_name を持つ全行</p><p>正解は「2文字目が 'a' の last_name を持つ全行」である。LIKEパターンの_（アンダースコア）は任意の1文字に一致し、%（パーセント）は0文字以上の任意の文字列に一致する。'_a%' は「1文字（何でもよい）」+「a」+「0文字以上（何でもよい）」のパターンであるため、2文字目が 'a' である文字列に一致する。例: 'James', 'Mary', 'Barry' 等。Oracle SQL Reference §LIKE条件参照。</p></div></details></div><div class="problem-card" id="prob-OSLV-D2-003"><div class="problem-header">問題 3 <span class="qid">#OSLV-D2-003</span></div><p class="problem-text">以下のSQL文の実行結果として正しいものはどれか。<br>```sql<br>SELECT last_name, salary<br>FROM employees<br>WHERE commission_pct IS NULL<br>ORDER BY salary DESC NULLS LAST;<br>```<br>commission_pctがNULLの行には salary = 8000, 5000, NULL の3行があるとする。</p><ul class="choices"><li>A. salary: NULL → 8000 → 5000 の順で3行</li><li>B. salary: 8000 → 5000 → NULL の順で3行</li><li>C. salary: 5000 → 8000 → NULL の順で3行</li><li>D. エラーになる（NULLをORDER BYに使えない）</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> B. salary: 8000 → 5000 → NULL の順で3行</p><p>正解は「salary: 8000 → 5000 → NULL の順で3行」である。ORDER BY salary DESC はsalaryを降順にソートする。NULLS LAST を指定すると、NULLの値を持つ行はソート結果の末尾に配置される。IS NULLはNULL値を持つ行を選択する正しい構文（= NULLは使えない）。ORDER BYのデフォルトNULL順序は昇順（ASC）ではNULLS LAST、降順（DESC）ではNULLS FIRSTとなる。NULLS FIRST/NULLS LASTで明示的に制御できる。</p></div></details></div></div><div class="section-card"><div class="section-title">LIKE演算子とワイルドカード</div><div class="topic-chips"><span class="chip">LIKE</span><span class="chip">ワイルドカード</span><span class="chip">アンダースコア</span><span class="chip">パーセント</span><span class="chip">ESCAPE</span></div><div class="section-content"><h3>LIKE 演算子</h3><p>LIKE は文字列のパターンマッチングに使います。2種類のワイルドカードがあります。</p><table class='summary-table'><tr><th>ワイルドカード</th><th>意味</th><th>例</th></tr><tr><td>%（パーセント）</td><td>0文字以上の任意の文字列</td><td>'A%' → A で始まる</td></tr><tr><td>_（アンダースコア）</td><td>任意の1文字</td><td>'_a%' → 2文字目が a</td></tr></table><pre><code>-- 'S' で始まる名前
-SELECT LAST_NAME
-FROM   EMPLOYEES
-WHERE  LAST_NAME LIKE 'S%';
--- 実行結果例：
--- LAST_NAME
--- ----------
--- Sully
--- Smith
--- （'S' で始まる姓の行が返される）
+<span class="sql-cmt">-- OR: どちらかの条件を満たす</span>
+<span class="sql-kw">SELECT</span> LAST_NAME, SALARY, DEPARTMENT_ID
+<span class="sql-kw">FROM</span>   EMPLOYEES
+<span class="sql-kw">WHERE</span>  SALARY > <span class="sql-num">10000</span>
+<span class="sql-kw">OR</span>     DEPARTMENT_ID = <span class="sql-num">10</span>;
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- LAST_NAME   SALARY  DEPARTMENT_ID</span>
+<span class="sql-cmt">-- ----------  ------  -------------</span>
+<span class="sql-cmt">-- King         24000             90</span>
+<span class="sql-cmt">-- Kochhar      17000             90</span>
+<span class="sql-cmt">-- Whalen        4400             10</span>
+<span class="sql-cmt">-- （SALARY > 10000 または DEPARTMENT_ID = 10 のどちらかを満たす行が返される）</span></code></pre><div class='tip-box'><strong>試験のポイント：</strong> BETWEEN の値は「小さい値 AND 大きい値」の順で指定します。NOT IN に NULL が含まれる場合、全件が返りません（NULL との比較が不定のため）。AND は OR より優先度が高いため、OR を使う場合は括弧で明示的にグループ化を推奨。</div></div><div class="problem-section-title">練習問題</div><div class="problem-card" id="prob-OSLV-D2-001"><div class="problem-header">問題 1 <span class="qid">#OSLV-D2-001</span></div><p class="problem-text">以下のSQL文で返される行を正しく説明しているものはどれか。<br>```sql<br>SELECT employee_id, salary<br>FROM employees<br>WHERE salary BETWEEN 5000 AND 10000;<br>```</p><ul class="choices"><li>A. salary が 5000 より大きく 10000 より小さい行</li><li>B. salary が 5000 以上かつ 10000 以下の行</li><li>C. salary が 5000 未満または 10000 超の行</li><li>D. salary が 5000 または 10000 の行のみ</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> B. salary が 5000 以上かつ 10000 以下の行</p><p>正解は「salary が 5000 以上かつ 10000 以下の行」である。BETWEEN x AND y は x <= 値 <= y の範囲を意味し、両端の値を含む（inclusive）。したがって salary = 5000 および salary = 10000 の行も結果に含まれる。選択肢Aは両端を含まない（exclusive）の説明であり誤り。BETWEENはNOT BETWEENで否定でき、数値・日付・文字列のいずれにも使用可能。Oracle SQL Reference §BETWEEN条件参照。</p></div></details></div><div class="problem-card" id="prob-OSLV-D2-002"><div class="problem-header">問題 2 <span class="qid">#OSLV-D2-002</span></div><p class="problem-text">以下のSQL文の結果として正しいものはどれか。<br>```sql<br>SELECT last_name<br>FROM employees<br>WHERE last_name LIKE '_a%';<br>```</p><ul class="choices"><li>A. 'a' を含む全ての last_name</li><li>B. 'a' で始まる last_name</li><li>C. 2文字目が 'a' の last_name を持つ全行</li><li>D. 'a' で終わる last_name</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> C. 2文字目が 'a' の last_name を持つ全行</p><p>正解は「2文字目が 'a' の last_name を持つ全行」である。LIKEパターンの_（アンダースコア）は任意の1文字に一致し、%（パーセント）は0文字以上の任意の文字列に一致する。'_a%' は「1文字（何でもよい）」+「a」+「0文字以上（何でもよい）」のパターンであるため、2文字目が 'a' である文字列に一致する。例: 'James', 'Mary', 'Barry' 等。Oracle SQL Reference §LIKE条件参照。</p></div></details></div><div class="problem-card" id="prob-OSLV-D2-003"><div class="problem-header">問題 3 <span class="qid">#OSLV-D2-003</span></div><p class="problem-text">以下のSQL文の実行結果として正しいものはどれか。<br>```sql<br>SELECT last_name, salary<br>FROM employees<br>WHERE commission_pct IS NULL<br>ORDER BY salary DESC NULLS LAST;<br>```<br>commission_pctがNULLの行には salary = 8000, 5000, NULL の3行があるとする。</p><ul class="choices"><li>A. salary: NULL → 8000 → 5000 の順で3行</li><li>B. salary: 8000 → 5000 → NULL の順で3行</li><li>C. salary: 5000 → 8000 → NULL の順で3行</li><li>D. エラーになる（NULLをORDER BYに使えない）</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> B. salary: 8000 → 5000 → NULL の順で3行</p><p>正解は「salary: 8000 → 5000 → NULL の順で3行」である。ORDER BY salary DESC はsalaryを降順にソートする。NULLS LAST を指定すると、NULLの値を持つ行はソート結果の末尾に配置される。IS NULLはNULL値を持つ行を選択する正しい構文（= NULLは使えない）。ORDER BYのデフォルトNULL順序は昇順（ASC）ではNULLS LAST、降順（DESC）ではNULLS FIRSTとなる。NULLS FIRST/NULLS LASTで明示的に制御できる。</p></div></details></div></div><div class="section-card"><div class="section-title">LIKE演算子とワイルドカード</div><div class="topic-chips"><span class="chip">LIKE</span><span class="chip">ワイルドカード</span><span class="chip">アンダースコア</span><span class="chip">パーセント</span><span class="chip">ESCAPE</span></div><div class="section-content"><h3>LIKE 演算子</h3><p>LIKE は文字列のパターンマッチングに使います。2種類のワイルドカードがあります。</p><table class='summary-table'><tr><th>ワイルドカード</th><th>意味</th><th>例</th></tr><tr><td>%（パーセント）</td><td>0文字以上の任意の文字列</td><td>'A%' → A で始まる</td></tr><tr><td>_（アンダースコア）</td><td>任意の1文字</td><td>'_a%' → 2文字目が a</td></tr></table><pre><code><span class="sql-cmt">-- 'S' で始まる名前</span>
+<span class="sql-kw">SELECT</span> LAST_NAME
+<span class="sql-kw">FROM</span>   EMPLOYEES
+<span class="sql-kw">WHERE</span>  LAST_NAME <span class="sql-kw">LIKE</span> <span class="sql-str">'S%'</span>;
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- LAST_NAME</span>
+<span class="sql-cmt">-- ----------</span>
+<span class="sql-cmt">-- Sully</span>
+<span class="sql-cmt">-- Smith</span>
+<span class="sql-cmt">-- （'S' で始まる姓の行が返される）</span>
 
--- 2文字目が 'a' の名前
-SELECT LAST_NAME
-FROM   EMPLOYEES
-WHERE  LAST_NAME LIKE '_a%';
--- 実行結果例：
--- LAST_NAME
--- ----------
--- Fay
--- Hall
--- （2文字目が 'a' の姓の行が返される）
+<span class="sql-cmt">-- 2文字目が 'a' の名前</span>
+<span class="sql-kw">SELECT</span> LAST_NAME
+<span class="sql-kw">FROM</span>   EMPLOYEES
+<span class="sql-kw">WHERE</span>  LAST_NAME <span class="sql-kw">LIKE</span> <span class="sql-str">'_a%'</span>;
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- LAST_NAME</span>
+<span class="sql-cmt">-- ----------</span>
+<span class="sql-cmt">-- Fay</span>
+<span class="sql-cmt">-- Hall</span>
+<span class="sql-cmt">-- （2文字目が 'a' の姓の行が返される）</span>
 
--- 名前に 'an' を含む
-SELECT LAST_NAME
-FROM   EMPLOYEES
-WHERE  LAST_NAME LIKE '%an%';
--- 実行結果例：
--- LAST_NAME
--- ----------
--- Grant
--- Landry
--- （'an' を含む姓の行が返される）</code></pre><h3>ESCAPE オプション</h3><p>% や _ を文字として検索したい場合は ESCAPE を使います。</p><pre><code>-- JOB_ID に 'SA_' を含む（_ をリテラルとして扱う）
-SELECT JOB_ID
-FROM   EMPLOYEES
-WHERE  JOB_ID LIKE '%SA$_%' ESCAPE '$';
--- 実行結果例：
--- JOB_ID
--- --------
--- SA_MAN
--- SA_REP
--- （'SA_' を文字列として含む JOB_ID の行が返される）</code></pre><div class='tip-box'><strong>試験のポイント：</strong> LIKE の比較は大文字小文字を区別します（Oracle のデフォルト）。ESCAPE に使う文字は任意の1文字で、慣例的に \ や $ が使われます。</div></div><div class="problem-section-title">練習問題</div><div class="problem-card" id="prob-OSLV-D2-002"><div class="problem-header">問題 1 <span class="qid">#OSLV-D2-002</span></div><p class="problem-text">以下のSQL文の結果として正しいものはどれか。<br>```sql<br>SELECT last_name<br>FROM employees<br>WHERE last_name LIKE '_a%';<br>```</p><ul class="choices"><li>A. 'a' を含む全ての last_name</li><li>B. 'a' で始まる last_name</li><li>C. 2文字目が 'a' の last_name を持つ全行</li><li>D. 'a' で終わる last_name</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> C. 2文字目が 'a' の last_name を持つ全行</p><p>正解は「2文字目が 'a' の last_name を持つ全行」である。LIKEパターンの_（アンダースコア）は任意の1文字に一致し、%（パーセント）は0文字以上の任意の文字列に一致する。'_a%' は「1文字（何でもよい）」+「a」+「0文字以上（何でもよい）」のパターンであるため、2文字目が 'a' である文字列に一致する。例: 'James', 'Mary', 'Barry' 等。Oracle SQL Reference §LIKE条件参照。</p></div></details></div></div><div class="section-card"><div class="section-title">ORDER BY句</div><div class="topic-chips"><span class="chip">ORDER BY</span><span class="chip">ASC</span><span class="chip">DESC</span><span class="chip">NULLS FIRST</span><span class="chip">NULLS LAST</span></div><div class="section-content"><h3>ORDER BY の基本</h3><p>ORDER BY 句で検索結果をソートします。デフォルトは昇順（ASC）です。</p><pre><code>-- 給与の昇順（デフォルト）
-SELECT LAST_NAME, SALARY
-FROM   EMPLOYEES
-ORDER BY SALARY;
--- 実行結果例：
--- LAST_NAME   SALARY
--- ----------  ------
--- Olson         2100
--- Markle        2200
--- Philtanker    2200
--- （SALARY の小さい順に並ぶ）
+<span class="sql-cmt">-- 名前に 'an' を含む</span>
+<span class="sql-kw">SELECT</span> LAST_NAME
+<span class="sql-kw">FROM</span>   EMPLOYEES
+<span class="sql-kw">WHERE</span>  LAST_NAME <span class="sql-kw">LIKE</span> <span class="sql-str">'%an%'</span>;
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- LAST_NAME</span>
+<span class="sql-cmt">-- ----------</span>
+<span class="sql-cmt">-- Grant</span>
+<span class="sql-cmt">-- Landry</span>
+<span class="sql-cmt">-- （'an' を含む姓の行が返される）</span></code></pre><h3>ESCAPE オプション</h3><p>% や _ を文字として検索したい場合は ESCAPE を使います。</p><pre><code><span class="sql-cmt">-- JOB_ID に 'SA_' を含む（_ をリテラルとして扱う）</span>
+<span class="sql-kw">SELECT</span> JOB_ID
+<span class="sql-kw">FROM</span>   EMPLOYEES
+<span class="sql-kw">WHERE</span>  JOB_ID <span class="sql-kw">LIKE</span> <span class="sql-str">'%SA$_%'</span> <span class="sql-kw">ESCAPE</span> <span class="sql-str">'$'</span>;
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- JOB_ID</span>
+<span class="sql-cmt">-- --------</span>
+<span class="sql-cmt">-- SA_MAN</span>
+<span class="sql-cmt">-- SA_REP</span>
+<span class="sql-cmt">-- （'SA_' を文字列として含む JOB_ID の行が返される）</span></code></pre><div class='tip-box'><strong>試験のポイント：</strong> LIKE の比較は大文字小文字を区別します（Oracle のデフォルト）。ESCAPE に使う文字は任意の1文字で、慣例的に \ や $ が使われます。</div></div><div class="problem-section-title">練習問題</div><div class="problem-card" id="prob-OSLV-D2-002"><div class="problem-header">問題 1 <span class="qid">#OSLV-D2-002</span></div><p class="problem-text">以下のSQL文の結果として正しいものはどれか。<br>```sql<br>SELECT last_name<br>FROM employees<br>WHERE last_name LIKE '_a%';<br>```</p><ul class="choices"><li>A. 'a' を含む全ての last_name</li><li>B. 'a' で始まる last_name</li><li>C. 2文字目が 'a' の last_name を持つ全行</li><li>D. 'a' で終わる last_name</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> C. 2文字目が 'a' の last_name を持つ全行</p><p>正解は「2文字目が 'a' の last_name を持つ全行」である。LIKEパターンの_（アンダースコア）は任意の1文字に一致し、%（パーセント）は0文字以上の任意の文字列に一致する。'_a%' は「1文字（何でもよい）」+「a」+「0文字以上（何でもよい）」のパターンであるため、2文字目が 'a' である文字列に一致する。例: 'James', 'Mary', 'Barry' 等。Oracle SQL Reference §LIKE条件参照。</p></div></details></div></div><div class="section-card"><div class="section-title">ORDER BY句</div><div class="topic-chips"><span class="chip">ORDER BY</span><span class="chip">ASC</span><span class="chip">DESC</span><span class="chip">NULLS FIRST</span><span class="chip">NULLS LAST</span></div><div class="section-content"><h3>ORDER BY の基本</h3><p>ORDER BY 句で検索結果をソートします。デフォルトは昇順（ASC）です。</p><pre><code><span class="sql-cmt">-- 給与の昇順（デフォルト）</span>
+<span class="sql-kw">SELECT</span> LAST_NAME, SALARY
+<span class="sql-kw">FROM</span>   EMPLOYEES
+<span class="sql-kw">ORDER BY</span> SALARY;
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- LAST_NAME   SALARY</span>
+<span class="sql-cmt">-- ----------  ------</span>
+<span class="sql-cmt">-- Olson         2100</span>
+<span class="sql-cmt">-- Markle        2200</span>
+<span class="sql-cmt">-- Philtanker    2200</span>
+<span class="sql-cmt">-- （SALARY の小さい順に並ぶ）</span>
 
--- 給与の降順
-SELECT LAST_NAME, SALARY
-FROM   EMPLOYEES
-ORDER BY SALARY DESC;
--- 実行結果例：
--- LAST_NAME   SALARY
--- ----------  ------
--- King         24000
--- Kochhar      17000
--- De Haan      17000
--- （SALARY の大きい順に並ぶ）
+<span class="sql-cmt">-- 給与の降順</span>
+<span class="sql-kw">SELECT</span> LAST_NAME, SALARY
+<span class="sql-kw">FROM</span>   EMPLOYEES
+<span class="sql-kw">ORDER BY</span> SALARY <span class="sql-kw">DESC</span>;
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- LAST_NAME   SALARY</span>
+<span class="sql-cmt">-- ----------  ------</span>
+<span class="sql-cmt">-- King         24000</span>
+<span class="sql-cmt">-- Kochhar      17000</span>
+<span class="sql-cmt">-- De Haan      17000</span>
+<span class="sql-cmt">-- （SALARY の大きい順に並ぶ）</span>
 
--- 複数列でのソート（部署昇順、給与降順）
-SELECT LAST_NAME, DEPARTMENT_ID, SALARY
-FROM   EMPLOYEES
-ORDER BY DEPARTMENT_ID ASC, SALARY DESC;
--- 実行結果例：
--- LAST_NAME   DEPARTMENT_ID  SALARY
--- ----------  -------------  ------
--- Whalen                 10    4400
--- Hartstein              20   13000
--- Fay                    20    6000
--- （部署番号の昇順、同一部署内では給与の降順に並ぶ）</code></pre><h3>NULLS FIRST / NULLS LAST</h3><pre><code>-- NULL を最初に表示
-SELECT LAST_NAME, COMMISSION_PCT
-FROM   EMPLOYEES
-ORDER BY COMMISSION_PCT NULLS FIRST;
--- 実行結果例：
--- LAST_NAME   COMMISSION_PCT
--- ----------  --------------
--- King                （NULL）
--- Kochhar             （NULL）
--- Abel                   0.30
--- （NULL の行が先頭に来る）
+<span class="sql-cmt">-- 複数列でのソート（部署昇順、給与降順）</span>
+<span class="sql-kw">SELECT</span> LAST_NAME, DEPARTMENT_ID, SALARY
+<span class="sql-kw">FROM</span>   EMPLOYEES
+<span class="sql-kw">ORDER BY</span> DEPARTMENT_ID <span class="sql-kw">ASC</span>, SALARY <span class="sql-kw">DESC</span>;
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- LAST_NAME   DEPARTMENT_ID  SALARY</span>
+<span class="sql-cmt">-- ----------  -------------  ------</span>
+<span class="sql-cmt">-- Whalen                 10    4400</span>
+<span class="sql-cmt">-- Hartstein              20   13000</span>
+<span class="sql-cmt">-- Fay                    20    6000</span>
+<span class="sql-cmt">-- （部署番号の昇順、同一部署内では給与の降順に並ぶ）</span></code></pre><h3>NULLS FIRST / NULLS LAST</h3><pre><code><span class="sql-cmt">-- NULL を最初に表示</span>
+<span class="sql-kw">SELECT</span> LAST_NAME, COMMISSION_PCT
+<span class="sql-kw">FROM</span>   EMPLOYEES
+<span class="sql-kw">ORDER BY</span> COMMISSION_PCT NULLS <span class="sql-kw">FIRST</span>;
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- LAST_NAME   COMMISSION_PCT</span>
+<span class="sql-cmt">-- ----------  --------------</span>
+<span class="sql-cmt">-- King                （NULL）</span>
+<span class="sql-cmt">-- Kochhar             （NULL）</span>
+<span class="sql-cmt">-- Abel                   0.30</span>
+<span class="sql-cmt">-- （NULL の行が先頭に来る）</span>
 
--- NULL を最後に表示
-SELECT LAST_NAME, COMMISSION_PCT
-FROM   EMPLOYEES
-ORDER BY COMMISSION_PCT NULLS LAST;
--- 実行結果例：
--- LAST_NAME   COMMISSION_PCT
--- ----------  --------------
--- Grant                  0.15
--- Abel                   0.30
--- King                （NULL）
--- （NULL の行が末尾に来る）</code></pre><h3>列位置や別名でのソート</h3><pre><code>-- SELECT の列番号でソート（2列目 = SALARY）
-SELECT LAST_NAME, SALARY
-FROM   EMPLOYEES
-ORDER BY 2 DESC;
--- 実行結果例：
--- LAST_NAME   SALARY
--- ----------  ------
--- King         24000
--- Kochhar      17000
--- De Haan      17000
--- （SELECT リストの2列目 SALARY の降順で並ぶ）
+<span class="sql-cmt">-- NULL を最後に表示</span>
+<span class="sql-kw">SELECT</span> LAST_NAME, COMMISSION_PCT
+<span class="sql-kw">FROM</span>   EMPLOYEES
+<span class="sql-kw">ORDER BY</span> COMMISSION_PCT NULLS LAST;
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- LAST_NAME   COMMISSION_PCT</span>
+<span class="sql-cmt">-- ----------  --------------</span>
+<span class="sql-cmt">-- Grant                  0.15</span>
+<span class="sql-cmt">-- Abel                   0.30</span>
+<span class="sql-cmt">-- King                （NULL）</span>
+<span class="sql-cmt">-- （NULL の行が末尾に来る）</span></code></pre><h3>列位置や別名でのソート</h3><pre><code><span class="sql-cmt">-- SELECT の列番号でソート（2列目 = SALARY）</span>
+<span class="sql-kw">SELECT</span> LAST_NAME, SALARY
+<span class="sql-kw">FROM</span>   EMPLOYEES
+<span class="sql-kw">ORDER BY</span> <span class="sql-num">2</span> <span class="sql-kw">DESC</span>;
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- LAST_NAME   SALARY</span>
+<span class="sql-cmt">-- ----------  ------</span>
+<span class="sql-cmt">-- King         24000</span>
+<span class="sql-cmt">-- Kochhar      17000</span>
+<span class="sql-cmt">-- De Haan      17000</span>
+<span class="sql-cmt">-- （SELECT リストの2列目 SALARY の降順で並ぶ）</span>
 
--- 列別名でソート
-SELECT LAST_NAME, SALARY * 12 AS annual_sal
-FROM   EMPLOYEES
-ORDER BY annual_sal DESC;
--- 実行結果例：
--- LAST_NAME   ANNUAL_SAL
--- ----------  ----------
--- King            288000
--- Kochhar         204000
--- De Haan         204000
--- （別名 annual_sal の降順で並ぶ）</code></pre><div class='tip-box'><strong>試験のポイント：</strong> NULL は昇順ソートではデフォルトで最後（NULLS LAST）、降順ソートではデフォルトで最初（NULLS FIRST）に表示されます。ORDER BY は SELECT リストにない列でもソートできます（DISTINCT 使用時を除く）。</div></div><div class="problem-section-title">練習問題</div><div class="problem-card" id="prob-OSLV-D2-003"><div class="problem-header">問題 1 <span class="qid">#OSLV-D2-003</span></div><p class="problem-text">以下のSQL文の実行結果として正しいものはどれか。<br>```sql<br>SELECT last_name, salary<br>FROM employees<br>WHERE commission_pct IS NULL<br>ORDER BY salary DESC NULLS LAST;<br>```<br>commission_pctがNULLの行には salary = 8000, 5000, NULL の3行があるとする。</p><ul class="choices"><li>A. salary: NULL → 8000 → 5000 の順で3行</li><li>B. salary: 8000 → 5000 → NULL の順で3行</li><li>C. salary: 5000 → 8000 → NULL の順で3行</li><li>D. エラーになる（NULLをORDER BYに使えない）</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> B. salary: 8000 → 5000 → NULL の順で3行</p><p>正解は「salary: 8000 → 5000 → NULL の順で3行」である。ORDER BY salary DESC はsalaryを降順にソートする。NULLS LAST を指定すると、NULLの値を持つ行はソート結果の末尾に配置される。IS NULLはNULL値を持つ行を選択する正しい構文（= NULLは使えない）。ORDER BYのデフォルトNULL順序は昇順（ASC）ではNULLS LAST、降順（DESC）ではNULLS FIRSTとなる。NULLS FIRST/NULLS LASTで明示的に制御できる。</p></div></details></div></div><div class="section-card"><div class="section-title">行制限と置換変数</div><div class="topic-chips"><span class="chip">OFFSET</span><span class="chip">FETCH</span><span class="chip">ROWNUM</span><span class="chip">置換変数</span><span class="chip">DEFINE</span><span class="chip">VERIFY</span></div><div class="section-content"><h3>OFFSET / FETCH（行制限）</h3><p>ORDER BY と組み合わせて、先頭から何行スキップし、何行取得するかを指定します。</p><pre><code>-- 給与の高い順に、上位5件を取得
-SELECT EMPLOYEE_ID, LAST_NAME, SALARY
-FROM   EMPLOYEES
-ORDER BY SALARY DESC
-FETCH FIRST 5 ROWS ONLY;
--- 実行結果例：
--- EMPLOYEE_ID  LAST_NAME   SALARY
--- -----------  ----------  ------
---         100  King         24000
---         101  Kochhar      17000
---         102  De Haan      17000
---         145  Russell      14000
---         146  Partners     13500
--- （給与上位5件のみ返される）
+<span class="sql-cmt">-- 列別名でソート</span>
+<span class="sql-kw">SELECT</span> LAST_NAME, SALARY * <span class="sql-num">12</span> <span class="sql-kw">AS</span> annual_sal
+<span class="sql-kw">FROM</span>   EMPLOYEES
+<span class="sql-kw">ORDER BY</span> annual_sal <span class="sql-kw">DESC</span>;
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- LAST_NAME   ANNUAL_SAL</span>
+<span class="sql-cmt">-- ----------  ----------</span>
+<span class="sql-cmt">-- King            288000</span>
+<span class="sql-cmt">-- Kochhar         204000</span>
+<span class="sql-cmt">-- De Haan         204000</span>
+<span class="sql-cmt">-- （別名 annual_sal の降順で並ぶ）</span></code></pre><div class='tip-box'><strong>試験のポイント：</strong> NULL は昇順ソートではデフォルトで最後（NULLS LAST）、降順ソートではデフォルトで最初（NULLS FIRST）に表示されます。ORDER BY は SELECT リストにない列でもソートできます（DISTINCT 使用時を除く）。</div></div><div class="problem-section-title">練習問題</div><div class="problem-card" id="prob-OSLV-D2-003"><div class="problem-header">問題 1 <span class="qid">#OSLV-D2-003</span></div><p class="problem-text">以下のSQL文の実行結果として正しいものはどれか。<br>```sql<br>SELECT last_name, salary<br>FROM employees<br>WHERE commission_pct IS NULL<br>ORDER BY salary DESC NULLS LAST;<br>```<br>commission_pctがNULLの行には salary = 8000, 5000, NULL の3行があるとする。</p><ul class="choices"><li>A. salary: NULL → 8000 → 5000 の順で3行</li><li>B. salary: 8000 → 5000 → NULL の順で3行</li><li>C. salary: 5000 → 8000 → NULL の順で3行</li><li>D. エラーになる（NULLをORDER BYに使えない）</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> B. salary: 8000 → 5000 → NULL の順で3行</p><p>正解は「salary: 8000 → 5000 → NULL の順で3行」である。ORDER BY salary DESC はsalaryを降順にソートする。NULLS LAST を指定すると、NULLの値を持つ行はソート結果の末尾に配置される。IS NULLはNULL値を持つ行を選択する正しい構文（= NULLは使えない）。ORDER BYのデフォルトNULL順序は昇順（ASC）ではNULLS LAST、降順（DESC）ではNULLS FIRSTとなる。NULLS FIRST/NULLS LASTで明示的に制御できる。</p></div></details></div></div><div class="section-card"><div class="section-title">行制限と置換変数</div><div class="topic-chips"><span class="chip">OFFSET</span><span class="chip">FETCH</span><span class="chip">ROWNUM</span><span class="chip">置換変数</span><span class="chip">DEFINE</span><span class="chip">VERIFY</span></div><div class="section-content"><h3>OFFSET / FETCH（行制限）</h3><p>ORDER BY と組み合わせて、先頭から何行スキップし、何行取得するかを指定します。</p><pre><code><span class="sql-cmt">-- 給与の高い順に、上位5件を取得</span>
+<span class="sql-kw">SELECT</span> EMPLOYEE_ID, LAST_NAME, SALARY
+<span class="sql-kw">FROM</span>   EMPLOYEES
+<span class="sql-kw">ORDER BY</span> SALARY <span class="sql-kw">DESC</span>
+<span class="sql-kw">FETCH FIRST</span> <span class="sql-num">5</span> <span class="sql-kw">ROWS ONLY</span>;
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- EMPLOYEE_ID  LAST_NAME   SALARY</span>
+<span class="sql-cmt">-- -----------  ----------  ------</span>
+<span class="sql-cmt">--         100  King         24000</span>
+<span class="sql-cmt">--         101  Kochhar      17000</span>
+<span class="sql-cmt">--         102  De Haan      17000</span>
+<span class="sql-cmt">--         145  Russell      14000</span>
+<span class="sql-cmt">--         146  Partners     13500</span>
+<span class="sql-cmt">-- （給与上位5件のみ返される）</span>
 
--- 6〜10位を取得（5行スキップして5行取得）
-SELECT EMPLOYEE_ID, LAST_NAME, SALARY
-FROM   EMPLOYEES
-ORDER BY SALARY DESC
-OFFSET 5 ROWS FETCH NEXT 5 ROWS ONLY;
--- 実行結果例：
--- EMPLOYEE_ID  LAST_NAME   SALARY
--- -----------  ----------  ------
---         201  Hartstein    13000
---         205  Higgins      12008
---         108  Greenberg    12008
---         168  Ozer         11500
---         174  Abel         11000
--- （給与順の6位〜10位の5件が返される）</code></pre><h3>ROWNUM（疑似列）</h3><pre><code>-- 先頭10行（取得順）
-SELECT *
-FROM   EMPLOYEES
-WHERE  ROWNUM &lt;= 10;
--- 実行結果例：
--- EMPLOYEE_ID  LAST_NAME   SALARY  ...
--- -----------  ----------  ------
---         100  King         24000
---         101  Kochhar      17000
---         102  De Haan      17000
--- （テーブルの格納順で先頭10行が返される。ORDER BY を使わないと順序は不定）</code></pre><h3>置換変数（SQL*Plus系）</h3><p>実行時に値を入力させる変数です。学習・検証で使われます。</p><pre><code>-- &amp; で単発置換
-SELECT LAST_NAME, SALARY
-FROM   EMPLOYEES
-WHERE  DEPARTMENT_ID = &amp;dept_id;
+<span class="sql-cmt">-- 6〜10位を取得（5行スキップして5行取得）</span>
+<span class="sql-kw">SELECT</span> EMPLOYEE_ID, LAST_NAME, SALARY
+<span class="sql-kw">FROM</span>   EMPLOYEES
+<span class="sql-kw">ORDER BY</span> SALARY <span class="sql-kw">DESC</span>
+<span class="sql-kw">OFFSET</span> <span class="sql-num">5</span> <span class="sql-kw">ROWS</span> <span class="sql-kw">FETCH</span> <span class="sql-kw">NEXT</span> <span class="sql-num">5</span> <span class="sql-kw">ROWS ONLY</span>;
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- EMPLOYEE_ID  LAST_NAME   SALARY</span>
+<span class="sql-cmt">-- -----------  ----------  ------</span>
+<span class="sql-cmt">--         201  Hartstein    13000</span>
+<span class="sql-cmt">--         205  Higgins      12008</span>
+<span class="sql-cmt">--         108  Greenberg    12008</span>
+<span class="sql-cmt">--         168  Ozer         11500</span>
+<span class="sql-cmt">--         174  Abel         11000</span>
+<span class="sql-cmt">-- （給与順の6位〜10位の5件が返される）</span></code></pre><h3>ROWNUM（疑似列）</h3><pre><code><span class="sql-cmt">-- 先頭10行（取得順）</span>
+<span class="sql-kw">SELECT</span> *
+<span class="sql-kw">FROM</span>   EMPLOYEES
+<span class="sql-kw">WHERE</span>  ROWNUM &lt;= <span class="sql-num">10</span>;
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- EMPLOYEE_ID  LAST_NAME   SALARY  ...</span>
+<span class="sql-cmt">-- -----------  ----------  ------</span>
+<span class="sql-cmt">--         100  King         24000</span>
+<span class="sql-cmt">--         101  Kochhar      17000</span>
+<span class="sql-cmt">--         102  De Haan      17000</span>
+<span class="sql-cmt">-- （テーブルの格納順で先頭10行が返される。ORDER BY を使わないと順序は不定）</span></code></pre><h3>置換変数（SQL*Plus系）</h3><p>実行時に値を入力させる変数です。学習・検証で使われます。</p><pre><code><span class="sql-cmt">-- &amp; で単発置換</span>
+<span class="sql-kw">SELECT</span> LAST_NAME, SALARY
+<span class="sql-kw">FROM</span>   EMPLOYEES
+<span class="sql-kw">WHERE</span>  DEPARTMENT_ID = &amp;dept_id;
 
--- DEFINE で固定
-DEFINE dept_id = 50
-SELECT LAST_NAME FROM EMPLOYEES WHERE DEPARTMENT_ID = &amp;dept_id;
+<span class="sql-cmt">-- DEFINE で固定</span>
+DEFINE dept_id = <span class="sql-num">50</span>
+<span class="sql-kw">SELECT</span> LAST_NAME <span class="sql-kw">FROM</span> EMPLOYEES <span class="sql-kw">WHERE</span> DEPARTMENT_ID = &amp;dept_id;
 
--- VERIFY ON/OFF（置換前後の表示）
-SET VERIFY ON</code></pre><div class='tip-box'><strong>試験のポイント：</strong> 行制限は ORDER BY とセットで使わないと結果の順序が不定になります。ROWNUM は ORDER BY より前に付与されるため、上位N件抽出で誤用しやすいです。置換変数（DEFINE/VERIFY）は SQL*Plus 系の操作問題で問われることがあります。</div></div></div>
+<span class="sql-cmt">-- VERIFY ON/OFF（置換前後の表示）</span>
+<span class="sql-kw">SET</span> VERIFY <span class="sql-kw">ON</span></code></pre><div class='tip-box'><strong>試験のポイント：</strong> 行制限は ORDER BY とセットで使わないと結果の順序が不定になります。ROWNUM は ORDER BY より前に付与されるため、上位N件抽出で誤用しやすいです。置換変数（DEFINE/VERIFY）は SQL*Plus 系の操作問題で問われることがあります。</div></div></div>
 </div>
 </body>
 </html>

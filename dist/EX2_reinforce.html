@@ -62,6 +62,17 @@
     .concept-section h3 { flex-direction: column; align-items: flex-start; }
     .option-review-head { flex-direction: column; align-items: flex-start; }
   }
+
+  pre .sql-kw { color: #fbbf24; font-weight: 700; }
+  pre .sql-fn { color: #60a5fa; font-weight: 600; }
+  pre .sql-str { color: #86efac; }
+  pre .sql-num { color: #fca5a5; }
+  pre .sql-cmt { color: #94a3b8; font-style: italic; }
+  code .sql-kw { color: #b45309; font-weight: 700; }
+  code .sql-fn { color: #1d4ed8; font-weight: 600; }
+  code .sql-str { color: #047857; }
+  code .sql-num { color: #b91c1c; }
+  code .sql-cmt { color: #64748b; font-style: italic; }
 </style>
 </head>
 <body>
@@ -117,12 +128,12 @@
 <span class="note">-- 集合演算は各 SELECT の列数・型が一致。列名は先頭 SELECT 基準。</span></div></div>
       <div class="guide-block">
         <div class="guide-title">この論点の基本形</div>
-        <pre>SELECT col1, col2
-FROM   table_a
-UNION | UNION ALL | INTERSECT | MINUS
-SELECT col1, col2
-FROM   table_b
-ORDER BY 1;</pre>
+        <pre><span class="sql-kw">SELECT</span> col1, col2
+<span class="sql-kw">FROM</span>   table_a
+<span class="sql-kw">UNION</span> | <span class="sql-kw">UNION ALL</span> | <span class="sql-kw">INTERSECT</span> | <span class="sql-kw">MINUS</span>
+<span class="sql-kw">SELECT</span> col1, col2
+<span class="sql-kw">FROM</span>   table_b
+<span class="sql-kw">ORDER BY</span> <span class="sql-num">1</span>;</pre>
       </div>
       <div class="guide-grid">
         <div class="guide-block">
@@ -146,11 +157,11 @@ ORDER BY 1;</pre>
 履歴は商品毎に1件のみ、商品情報マスター表と同じ形式のものを登録します。
 
 一度も取引が無い商品情報を取得するには、以下のどれを使用すべきでしょうか。
-(1)		INTERSECT
-(2)		MINUS
-(3)		MINUS ALL
-(4)		UNION
-(5)		UNION ALL</pre>
+(<span class="sql-num">1</span>)		<span class="sql-kw">INTERSECT</span>
+(<span class="sql-num">2</span>)		<span class="sql-kw">MINUS</span>
+(<span class="sql-num">3</span>)		<span class="sql-kw">MINUS</span> <span class="sql-kw">ALL</span>
+(<span class="sql-num">4</span>)		<span class="sql-kw">UNION</span>
+(<span class="sql-num">5</span>)		<span class="sql-kw">UNION ALL</span></pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「INTERSECT を含む集合演算の基本」です。問題文は「商品情報マスター表と、商品取引履歴表が存在していて、 商品の取引があると商品取引履歴表に取引情報を登録するとします。 履歴は商品毎に1件のみ、商品情報マスター表と同じ形式のものを登録します。 一度も取引が無い商品情報を取得するには、以下の…」を満たす記述または SQL を求めています。複合問合せでは、各 SELECT の列数と対応するデータ型をそろえる必要がある。INTERSECT は両方の結果に共通する行を返し、NULL を含む行も比較対象になる。 そのため、成立条件を満たす正答は 2「MINUS」 です。</p>
@@ -213,12 +224,12 @@ ORDER BY 1;</pre>
                 <article class="question-card">
                   <div class="question-meta">第2回 模擬試験 / 問34 / 正答 BD / 自己回答 AD</div>
                   <div class="block-title">問題文</div>
-                  <pre>複合問合せで INTERSECT 演算子を使用した結果について正しいのはどれでしょうか。（2つ選択）
-(1)		A.　複合問合せの各SELECT文の列数は異なる場合があります。
-(2)		B.　複合問合せの各SELECT文の列名は異なる場合があります。
-(3)		C.　複合問合せの各SELECT文のデータ型は異なる場合があります。
-(4)		D.　INTERSECT演算子は、結果にNULLがあった場合、データを抽出します。
-(5)		E.　INTERSECT演算子は、結果にNULLがあった場合、データを抽出しません。</pre>
+                  <pre>複合問合せで <span class="sql-kw">INTERSECT</span> 演算子を使用した結果について正しいのはどれでしょうか。（2つ選択）
+(<span class="sql-num">1</span>)		A.　複合問合せの各SELECT文の列数は異なる場合があります。
+(<span class="sql-num">2</span>)		B.　複合問合せの各SELECT文の列名は異なる場合があります。
+(<span class="sql-num">3</span>)		C.　複合問合せの各SELECT文のデータ型は異なる場合があります。
+(<span class="sql-num">4</span>)		D.　INTERSECT演算子は、結果にNULLがあった場合、データを抽出します。
+(<span class="sql-num">5</span>)		E.　INTERSECT演算子は、結果にNULLがあった場合、データを抽出しません。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「INTERSECT を含む集合演算の基本」です。問題文は「複合問合せで INTERSECT 演算子を使用した結果について正しいのはどれでしょうか。（2つ選択）」を満たす記述または SQL を求めています。複合問合せでは、各 SELECT の列数と対応するデータ型をそろえる必要がある。INTERSECT は両方の結果に共通する行を返し、NULL を含む行も比較対象になる。 そのため、成立条件を満たす正答は B「複合問合せの各SELECT文の列名は異なる場合があります。」 / D「INTERSECT演算子は、結果にNULLがあった場合、データを抽出します。」 です。</p>
@@ -285,17 +296,17 @@ ORDER BY 1;</pre>
 
 以下の従業員の詳細を表示する必要があります。
 
-・DEPT_ID &#x27;10101&#x27; の部署に所属
+・DEPT_ID &#x27;<span class="sql-num">10101</span>&#x27; の部署に所属
 ・入社年数(START_DATE)が1年以下
 ・月の定期代(PASS_PRICE)が5万円を超える
 
 必要な結果を取得するSQLはどれですか。（2つ選択）
 　
 拡大する
-(1)		A.　SELECT NAME, PASS_PRICE, START_DATE FROM EMP WHERE START_DATE &gt; SYSDATE-365 AND DEPT_ID = &#x27;10101&#x27; INTERSECT SELECT NAME, PASS_PRICE, START_DATE FROM EMP WHERE PASS_PRICE &gt; 50000;
-(2)		B.　SELECT NAME, PASS_PRICE, START_DATE FROM EMP WHERE PASS_PRICE &gt; 50000 AND DEPT_ID = 10101 INTERSECT SELECT NAME, PASS_PRICE, START_DATE FROM EMP WHERE START_DATE &gt; SYSDATE-365;
-(3)		C.　SELECT NAME, PASS_PRICE, START_DATE FROM EMP WHERE START_DATE &gt; SYSDATE-365 AND DEPT_ID = &#x27;10101&#x27; UNION ALL SELECT NAME, PASS_PRICE, START_DATE FROM EMP WHERE PASS_PRICE &gt; 50000;
-(4)		D.　SELECT NAME, PASS_PRICE, START_DATE FROM EMP WHERE START_DATE &gt; SYSDATE-365 AND DEPT_ID = &#x27;10101&#x27; UNION SELECT NAME, PASS_PRICE, START_DATE FROM EMP WHERE PASS_PRICE &gt; 50000;</pre>
+(<span class="sql-num">1</span>)		A.　<span class="sql-kw">SELECT</span> NAME, PASS_PRICE, START_DATE <span class="sql-kw">FROM</span> EMP <span class="sql-kw">WHERE</span> START_DATE &gt; SYSDATE-<span class="sql-num">365</span> <span class="sql-kw">AND</span> DEPT_ID = &#x27;<span class="sql-num">10101</span>&#x27; <span class="sql-kw">INTERSECT</span> <span class="sql-kw">SELECT</span> NAME, PASS_PRICE, START_DATE <span class="sql-kw">FROM</span> EMP <span class="sql-kw">WHERE</span> PASS_PRICE &gt; <span class="sql-num">50000</span>;
+(<span class="sql-num">2</span>)		B.　<span class="sql-kw">SELECT</span> NAME, PASS_PRICE, START_DATE <span class="sql-kw">FROM</span> EMP <span class="sql-kw">WHERE</span> PASS_PRICE &gt; <span class="sql-num">50000</span> <span class="sql-kw">AND</span> DEPT_ID = <span class="sql-num">10101</span> <span class="sql-kw">INTERSECT</span> <span class="sql-kw">SELECT</span> NAME, PASS_PRICE, START_DATE <span class="sql-kw">FROM</span> EMP <span class="sql-kw">WHERE</span> START_DATE &gt; SYSDATE-<span class="sql-num">365</span>;
+(<span class="sql-num">3</span>)		C.　<span class="sql-kw">SELECT</span> NAME, PASS_PRICE, START_DATE <span class="sql-kw">FROM</span> EMP <span class="sql-kw">WHERE</span> START_DATE &gt; SYSDATE-<span class="sql-num">365</span> <span class="sql-kw">AND</span> DEPT_ID = &#x27;<span class="sql-num">10101</span>&#x27; <span class="sql-kw">UNION ALL</span> <span class="sql-kw">SELECT</span> NAME, PASS_PRICE, START_DATE <span class="sql-kw">FROM</span> EMP <span class="sql-kw">WHERE</span> PASS_PRICE &gt; <span class="sql-num">50000</span>;
+(<span class="sql-num">4</span>)		D.　<span class="sql-kw">SELECT</span> NAME, PASS_PRICE, START_DATE <span class="sql-kw">FROM</span> EMP <span class="sql-kw">WHERE</span> START_DATE &gt; SYSDATE-<span class="sql-num">365</span> <span class="sql-kw">AND</span> DEPT_ID = &#x27;<span class="sql-num">10101</span>&#x27; <span class="sql-kw">UNION</span> <span class="sql-kw">SELECT</span> NAME, PASS_PRICE, START_DATE <span class="sql-kw">FROM</span> EMP <span class="sql-kw">WHERE</span> PASS_PRICE &gt; <span class="sql-num">50000</span>;</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「INTERSECT を含む集合演算の基本」です。問題文は「図のような表があります。 以下の従業員の詳細を表示する必要があります。 ・DEPT_ID '10101' の部署に所属 ・入社年数(START_DATE)が1年以下 ・月の定期代(PASS_PRICE)が5万円を超える 必要な結果を取得す…」を満たす記述または SQL を求めています。複合問合せでは、各 SELECT の列数と対応するデータ型をそろえる必要がある。INTERSECT は両方の結果に共通する行を返し、NULL を含む行も比較対象になる。 そのため、成立条件を満たす正答は A「SELECT NAME, PASS_PRICE, START_DATE FROM EMP WHERE STAR…」 / B「SELECT NAME, PASS_PRICE, START_DATE FROM EMP WHERE PASS…」 です。</p>
@@ -349,12 +360,12 @@ ORDER BY 1;</pre>
                 <article class="question-card">
                   <div class="question-meta">第2回 模擬試験 / 問53 / 正答 AC / 自己回答 DE</div>
                   <div class="block-title">問題文</div>
-                  <pre>複合問合せ（UNION / INTERSECT / MINUS 等）において、次の記述のうち正しいものを2つ選択してください。
-(1)		A. SELECT句の列数はすべて同一である必要がある
-(2)		B. SELECT句の列名はすべて同一である必要がある
-(3)		C. ORDER BY句は最初のSELECTの列を指定する
-(4)		D. 結果セットの列名は、指定した最後のSELECTの列名が使用される
-(5)		E. NULL値は無視される</pre>
+                  <pre>複合問合せ（<span class="sql-kw">UNION</span> / <span class="sql-kw">INTERSECT</span> / <span class="sql-kw">MINUS</span> 等）において、次の記述のうち正しいものを2つ選択してください。
+(<span class="sql-num">1</span>)		A. SELECT句の列数はすべて同一である必要がある
+(<span class="sql-num">2</span>)		B. SELECT句の列名はすべて同一である必要がある
+(<span class="sql-num">3</span>)		C. ORDER BY句は最初のSELECTの列を指定する
+(<span class="sql-num">4</span>)		D. 結果セットの列名は、指定した最後のSELECTの列名が使用される
+(<span class="sql-num">5</span>)		E. NULL値は無視される</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「INTERSECT を含む集合演算の基本」です。問題文は「複合問合せ（UNION / INTERSECT / MINUS 等）において、次の記述のうち正しいものを2つ選択してください。」を満たす記述または SQL を求めています。複合問合せでは、各 SELECT の列数と対応するデータ型をそろえる必要がある。INTERSECT は両方の結果に共通する行を返し、NULL を含む行も比較対象になる。 そのため、成立条件を満たす正答は A「SELECT句の列数はすべて同一である必要がある」 / C「ORDER BY句は最初のSELECTの列を指定する」 です。</p>
@@ -418,11 +429,11 @@ ORDER BY 1;</pre>
                   <div class="question-meta">第2回 模擬試験 / 問60 / 正答 BE / 自己回答 BD</div>
                   <div class="block-title">問題文</div>
                   <pre>INTERSECTの特徴として正しいものを2つ選択してください。
-(1)		A. 列数やデータ型が異なるSELECT同士でも使用できる
-(2)		B. 2つの結果の共通する行を選択する
-(3)		C. 結果はソートされない
-(4)		D. NULL値は除外される
-(5)		E. SELECT文の順番を入れ替えても結果は変わらない</pre>
+(<span class="sql-num">1</span>)		A. 列数やデータ型が異なるSELECT同士でも使用できる
+(<span class="sql-num">2</span>)		B. 2つの結果の共通する行を選択する
+(<span class="sql-num">3</span>)		C. 結果はソートされない
+(<span class="sql-num">4</span>)		D. NULL値は除外される
+(<span class="sql-num">5</span>)		E. SELECT文の順番を入れ替えても結果は変わらない</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「INTERSECT を含む集合演算の基本」です。問題文は「INTERSECTの特徴として正しいものを2つ選択してください。」を満たす記述または SQL を求めています。複合問合せでは、各 SELECT の列数と対応するデータ型をそろえる必要がある。INTERSECT は両方の結果に共通する行を返し、NULL を含む行も比較対象になる。 そのため、成立条件を満たす正答は B「2つの結果の共通する行を選択する」 / E「SELECT文の順番を入れ替えても結果は変わらない」 です。</p>
@@ -487,15 +498,15 @@ ORDER BY 1;</pre>
                   <div class="block-title">問題文</div>
                   <pre>次のクエリを実行して検索される行数は何行でしょうか。1つ選択してください。
 
-SELECT dummy &quot;DUMMY1&quot; FROM DUAL
-INTERSECT
-SELECT dummy FROM DUAL
-INTERSECT
-SELECT dummy &quot;DUMMY3&quot; FROM DUAL
-(1)		A. 0
-(2)		B. 1
-(3)		C. 3
-(4)		D. エラーになる</pre>
+<span class="sql-kw">SELECT</span> dummy &quot;DUMMY1&quot; <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>
+<span class="sql-kw">INTERSECT</span>
+<span class="sql-kw">SELECT</span> dummy <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>
+<span class="sql-kw">INTERSECT</span>
+<span class="sql-kw">SELECT</span> dummy &quot;DUMMY3&quot; <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>
+(<span class="sql-num">1</span>)		A. <span class="sql-num">0</span>
+(<span class="sql-num">2</span>)		B. <span class="sql-num">1</span>
+(<span class="sql-num">3</span>)		C. <span class="sql-num">3</span>
+(<span class="sql-num">4</span>)		D. エラーになる</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「INTERSECT を含む集合演算の基本」です。問題文は「次のクエリを実行して検索される行数は何行でしょうか。1つ選択してください。 SELECT dummy "DUMMY1" FROM DUAL INTERSECT SELECT dummy FROM DUAL INTERSECT SELECT…」を満たす記述または SQL を求めています。複合問合せでは、各 SELECT の列数と対応するデータ型をそろえる必要がある。INTERSECT は両方の結果に共通する行を返し、NULL を含む行も比較対象になる。 そのため、成立条件を満たす正答は B「1」 です。</p>
@@ -569,12 +580,12 @@ SELECT dummy &quot;DUMMY3&quot; FROM DUAL
 <span class="note">-- 集合演算は各 SELECT の列数・型が一致。列名は先頭 SELECT 基準。</span></div></div>
       <div class="guide-block">
         <div class="guide-title">この論点の基本形</div>
-        <pre>SELECT col1, col2
-FROM   table_a
-UNION | UNION ALL | INTERSECT | MINUS
-SELECT col1, col2
-FROM   table_b
-ORDER BY 1;</pre>
+        <pre><span class="sql-kw">SELECT</span> col1, col2
+<span class="sql-kw">FROM</span>   table_a
+<span class="sql-kw">UNION</span> | <span class="sql-kw">UNION ALL</span> | <span class="sql-kw">INTERSECT</span> | <span class="sql-kw">MINUS</span>
+<span class="sql-kw">SELECT</span> col1, col2
+<span class="sql-kw">FROM</span>   table_b
+<span class="sql-kw">ORDER BY</span> <span class="sql-num">1</span>;</pre>
       </div>
       <div class="guide-grid">
         <div class="guide-block">
@@ -594,10 +605,10 @@ ORDER BY 1;</pre>
                   <div class="question-meta">第1回 模擬試験 / 問32 / 正答 D / 自己回答 C</div>
                   <div class="block-title">問題文</div>
                   <pre>SQLのUNION演算子でORDER BY句を使用する場合の説明で正しい記述はどれでしょうか。
-(1)		A.　各SELECT文には、それぞれORDER BY句が必要です。
-(2)		B.　ORDER BY句では、列名ではなく位置で指定する必要があります。
-(3)		C.　ORDER BY句がない場合は、最初のSELECT文の最初の列名でソートされます。
-(4)		D.　ORDER BY句には、最初のSELECT文の列名を指定します。</pre>
+(<span class="sql-num">1</span>)		A.　各SELECT文には、それぞれORDER BY句が必要です。
+(<span class="sql-num">2</span>)		B.　ORDER BY句では、列名ではなく位置で指定する必要があります。
+(<span class="sql-num">3</span>)		C.　ORDER BY句がない場合は、最初のSELECT文の最初の列名でソートされます。
+(<span class="sql-num">4</span>)		D.　ORDER BY句には、最初のSELECT文の列名を指定します。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「集合演算と ORDER BY」です。問題文は「SQLのUNION演算子でORDER BY句を使用する場合の説明で正しい記述はどれでしょうか。」を満たす記述または SQL を求めています。UNION、INTERSECT、MINUS を使った文では、ORDER BY は最後に1回だけ書ける。列名は先頭 SELECT の列名、または位置番号で指定する。 そのため、成立条件を満たす正答は D「ORDER BY句には、最初のSELECT文の列名を指定します。」 です。</p>
@@ -653,20 +664,20 @@ ORDER BY 1;</pre>
                   <div class="block-title">問題文</div>
                   <pre>次のSQLを確認してください。
 
-SELECT ITEM_ID, ITEM_NAME &quot;商品名&quot;
-FROM ITEM
-WHERE ITEM_TYPE = &#x27;FOOD&#x27;
-UNION
-SELECT ITEM_ID ITEM_TYPE, ITEM_NAME
-FROM ITEM
-WHERE ITEM_TYPE = &#x27;CASUAL&#x27;
+<span class="sql-kw">SELECT</span> ITEM_ID, ITEM_NAME &quot;商品名&quot;
+<span class="sql-kw">FROM</span> ITEM
+<span class="sql-kw">WHERE</span> ITEM_TYPE = &#x27;FOOD&#x27;
+<span class="sql-kw">UNION</span>
+<span class="sql-kw">SELECT</span> ITEM_ID ITEM_TYPE, ITEM_NAME
+<span class="sql-kw">FROM</span> ITEM
+<span class="sql-kw">WHERE</span> ITEM_TYPE = &#x27;CASUAL&#x27;
 
 このSQLにORDER BY句を記述するとした場合、正常に実行できるものはどれでしょうか。（3つ選択）
-(1)		A.　ORDER BY &quot;商品名&quot;
-(2)		B.　ORDER BY &quot;ITEM_TYPE&quot;
-(3)		C.　ORDER BY 1
-(4)		D.　ORDER BY ITEM_TYPE
-(5)		E.　ORDER BY 2, ITEM_ID</pre>
+(<span class="sql-num">1</span>)		A.　<span class="sql-kw">ORDER BY</span> &quot;商品名&quot;
+(<span class="sql-num">2</span>)		B.　<span class="sql-kw">ORDER BY</span> &quot;ITEM_TYPE&quot;
+(<span class="sql-num">3</span>)		C.　<span class="sql-kw">ORDER BY</span> <span class="sql-num">1</span>
+(<span class="sql-num">4</span>)		D.　<span class="sql-kw">ORDER BY</span> ITEM_TYPE
+(<span class="sql-num">5</span>)		E.　<span class="sql-kw">ORDER BY</span> <span class="sql-num">2</span>, ITEM_ID</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「集合演算と ORDER BY」です。問題文は「次のSQLを確認してください。 SELECT ITEM_ID, ITEM_NAME "商品名" FROM ITEM WHERE ITEM_TYPE = 'FOOD' UNION SELECT ITEM_ID ITEM_TYPE, ITEM…」を満たす記述または SQL を求めています。UNION、INTERSECT、MINUS を使った文では、ORDER BY は最後に1回だけ書ける。列名は先頭 SELECT の列名、または位置番号で指定する。 そのため、成立条件を満たす正答は A「ORDER BY &quot;商品名&quot;」 / C「ORDER BY 1」 / E「ORDER BY 2, ITEM_ID」 です。</p>
@@ -731,25 +742,25 @@ WHERE ITEM_TYPE = &#x27;CASUAL&#x27;
                   <div class="block-title">問題文</div>
                   <pre>以下のSQL文を実行するとします。
 
-SELECT ITEM_ID, MAKER_ID
-FROM ITEM
-WHERE MAKER_ID LIKE &#x27;1%&#x27; ORDER BY MAKER_ID
-UNION
-SELECT ITEM_ID, MAKER_ID
-FROM ITEM
-WHERE MAKER_ID=90
-UNION
-SELECT ITEM_ID, MAKER_ID
-FROM ITEM
-WHERE MAKER_ID LIKE &#x27;2%&#x27;;
+<span class="sql-kw">SELECT</span> ITEM_ID, MAKER_ID
+<span class="sql-kw">FROM</span> ITEM
+<span class="sql-kw">WHERE</span> MAKER_ID <span class="sql-kw">LIKE</span> &#x27;<span class="sql-num">1</span>%&#x27; <span class="sql-kw">ORDER BY</span> MAKER_ID
+<span class="sql-kw">UNION</span>
+<span class="sql-kw">SELECT</span> ITEM_ID, MAKER_ID
+<span class="sql-kw">FROM</span> ITEM
+<span class="sql-kw">WHERE</span> MAKER_ID=<span class="sql-num">90</span>
+<span class="sql-kw">UNION</span>
+<span class="sql-kw">SELECT</span> ITEM_ID, MAKER_ID
+<span class="sql-kw">FROM</span> ITEM
+<span class="sql-kw">WHERE</span> MAKER_ID <span class="sql-kw">LIKE</span> &#x27;<span class="sql-num">2</span>%&#x27;;
 
 実行結果はどうなるでしょうか。
 　
 
-(1)		A.　正常に実行され、すべての行がMAKER_IDの昇順で表示されます。
-(2)		B.　列名の代わりに位置番号（数値）をORDER BY句で使用する必要があるため、エラーとなります。
-(3)		C.　ORDER BY句は最後のSELECT文に記述する必要があるため、エラーとなります。
-(4)		D.　正常に実行されますが、ORDER BY句が無視され、ソートされません。</pre>
+(<span class="sql-num">1</span>)		A.　正常に実行され、すべての行がMAKER_IDの昇順で表示されます。
+(<span class="sql-num">2</span>)		B.　列名の代わりに位置番号（数値）をORDER BY句で使用する必要があるため、エラーとなります。
+(<span class="sql-num">3</span>)		C.　ORDER BY句は最後のSELECT文に記述する必要があるため、エラーとなります。
+(<span class="sql-num">4</span>)		D.　正常に実行されますが、ORDER BY句が無視され、ソートされません。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「集合演算と ORDER BY」です。問題文は「以下のSQL文を実行するとします。 SELECT ITEM_ID, MAKER_ID FROM ITEM WHERE MAKER_ID LIKE '1%' ORDER BY MAKER_ID UNION SELECT ITEM_ID, M…」を満たす記述または SQL を求めています。UNION、INTERSECT、MINUS を使った文では、ORDER BY は最後に1回だけ書ける。列名は先頭 SELECT の列名、または位置番号で指定する。 そのため、成立条件を満たす正答は C「ORDER BY句は最後のSELECT文に記述する必要があるため、エラーとなります。」 です。</p>
@@ -805,48 +816,48 @@ WHERE MAKER_ID LIKE &#x27;2%&#x27;;
                   <div class="block-title">問題文</div>
                   <pre>次の SQL 文のうち、正常に実行されるものはどれですか？（2つ選択）
 A.
-SELECT 1, 2 FROM DUAL
-UNION
-SELECT 3, 4 FROM DUAL
-ORDER BY 2;
+<span class="sql-kw">SELECT</span> <span class="sql-num">1</span>, <span class="sql-num">2</span> <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>
+<span class="sql-kw">UNION</span>
+<span class="sql-kw">SELECT</span> <span class="sql-num">3</span>, <span class="sql-num">4</span> <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>
+<span class="sql-kw">ORDER BY</span> <span class="sql-num">2</span>;
 
 B.
-SELECT 1, 2 FROM DUAL
-UNION
-SELECT 3, 4 FROM DUAL
-ORDER BY 3, 4;
+<span class="sql-kw">SELECT</span> <span class="sql-num">1</span>, <span class="sql-num">2</span> <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>
+<span class="sql-kw">UNION</span>
+<span class="sql-kw">SELECT</span> <span class="sql-num">3</span>, <span class="sql-num">4</span> <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>
+<span class="sql-kw">ORDER BY</span> <span class="sql-num">3</span>, <span class="sql-num">4</span>;
 
 C.
-SELECT 1, 2 FROM DUAL
-UNION
-SELECT 3, 4 FROM DUAL
-ORDER BY 1, 2;
+<span class="sql-kw">SELECT</span> <span class="sql-num">1</span>, <span class="sql-num">2</span> <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>
+<span class="sql-kw">UNION</span>
+<span class="sql-kw">SELECT</span> <span class="sql-num">3</span>, <span class="sql-num">4</span> <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>
+<span class="sql-kw">ORDER BY</span> <span class="sql-num">1</span>, <span class="sql-num">2</span>;
 
 D.
-SELECT 1 FROM DUAL
-UNION
-SELECT 2 FROM DUAL
-ORDER BY 1, 2;
+<span class="sql-kw">SELECT</span> <span class="sql-num">1</span> <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>
+<span class="sql-kw">UNION</span>
+<span class="sql-kw">SELECT</span> <span class="sql-num">2</span> <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>
+<span class="sql-kw">ORDER BY</span> <span class="sql-num">1</span>, <span class="sql-num">2</span>;
 
 E.
-SELECT 2 FROM DUAL
-UNION
-SELECT 2, 3 FROM DUAL
-ORDER BY 2;
+<span class="sql-kw">SELECT</span> <span class="sql-num">2</span> <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>
+<span class="sql-kw">UNION</span>
+<span class="sql-kw">SELECT</span> <span class="sql-num">2</span>, <span class="sql-num">3</span> <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>
+<span class="sql-kw">ORDER BY</span> <span class="sql-num">2</span>;
 
 F.
-SELECT 1, 2 FROM DUAL
-ORDER BY 1;
-UNION
-SELECT 3, 4 FROM DUAL
-ORDER BY 2;
+<span class="sql-kw">SELECT</span> <span class="sql-num">1</span>, <span class="sql-num">2</span> <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>
+<span class="sql-kw">ORDER BY</span> <span class="sql-num">1</span>;
+<span class="sql-kw">UNION</span>
+<span class="sql-kw">SELECT</span> <span class="sql-num">3</span>, <span class="sql-num">4</span> <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>
+<span class="sql-kw">ORDER BY</span> <span class="sql-num">2</span>;
 
-(1)		A
-(2)		B
-(3)		C
-(4)		D
-(5)		E
-(6)		F</pre>
+(<span class="sql-num">1</span>)		A
+(<span class="sql-num">2</span>)		B
+(<span class="sql-num">3</span>)		C
+(<span class="sql-num">4</span>)		D
+(<span class="sql-num">5</span>)		E
+(<span class="sql-num">6</span>)		F</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「集合演算と ORDER BY」です。問題文は「次の SQL 文のうち、正常に実行されるものはどれですか？（2つ選択）」を満たす記述または SQL を求めています。UNION、INTERSECT、MINUS を使った文では、ORDER BY は最後に1回だけ書ける。列名は先頭 SELECT の列名、または位置番号で指定する。 そのため、成立条件を満たす正答は A「SELECT 1, 2 FROM DUAL UNION SELECT 3, 4 FROM DUAL ORDER…」 / C「SELECT 1, 2 FROM DUAL UNION SELECT 3, 4 FROM DUAL ORDER…」 です。</p>
@@ -938,12 +949,12 @@ ORDER BY 2;
 <span class="note">-- 集合演算は各 SELECT の列数・型が一致。列名は先頭 SELECT 基準。</span></div></div>
       <div class="guide-block">
         <div class="guide-title">この論点の基本形</div>
-        <pre>SELECT o.col
-FROM   outer_table o
-WHERE  o.value &gt; (
-         SELECT AVG(i.value)
-         FROM   inner_table i
-         WHERE  i.group_id = o.group_id
+        <pre><span class="sql-kw">SELECT</span> o.col
+<span class="sql-kw">FROM</span>   outer_table o
+<span class="sql-kw">WHERE</span>  o.value &gt; (
+         <span class="sql-kw">SELECT</span> <span class="sql-fn">AVG</span>(i.value)
+         <span class="sql-kw">FROM</span>   inner_table i
+         <span class="sql-kw">WHERE</span>  i.group_id = o.group_id
        );</pre>
       </div>
       <div class="guide-grid">
@@ -964,10 +975,10 @@ WHERE  o.value &gt; (
                   <div class="question-meta">第1回 模擬試験 / 問31 / 正答 B.C / 自己回答 A.D</div>
                   <div class="block-title">問題文</div>
                   <pre>相関副問合せの実行に関して正しいのはどれでしょうか。（2つ選択）
-(1)		A.　内側の文が最初に実行され、次に外側の文が実行されます。
-(2)		B.　内側の文は、外側の文が実行された後に実行されます。
-(3)		C.　外側の文の1行ごとに、内側の文を実行します。
-(4)		D.　内側の文の1行ごとに、外側の文を実行します。</pre>
+(<span class="sql-num">1</span>)		A.　内側の文が最初に実行され、次に外側の文が実行されます。
+(<span class="sql-num">2</span>)		B.　内側の文は、外側の文が実行された後に実行されます。
+(<span class="sql-num">3</span>)		C.　外側の文の1行ごとに、内側の文を実行します。
+(<span class="sql-num">4</span>)		D.　内側の文の1行ごとに、外側の文を実行します。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「相関サブクエリの実行順」です。問題文は「相関副問合せの実行に関して正しいのはどれでしょうか。（2つ選択）」を満たす記述または SQL を求めています。相関サブクエリは、外側問い合わせの行を1行ずつ評価し、その行ごとに内側問い合わせを再実行する。非相関サブクエリのように内側が先に1回だけ動くわけではない。 そのため、成立条件を満たす正答は B「内側の文は、外側の文が実行された後に実行されます。」 / C「外側の文の1行ごとに、内側の文を実行します。」 です。</p>
@@ -1022,10 +1033,10 @@ WHERE  o.value &gt; (
                   <div class="question-meta">第2回 模擬試験 / 問31 / 正答 AD / 自己回答 CD</div>
                   <div class="block-title">問題文</div>
                   <pre>相関副問合せのEXISTS演算子に関して正しい記述はどれでしょうか。（2つ選択）
-(1)		A.　内部問合せ結果にNULL値以外の値が見つかると、外部問合せは内部問合せの実行を中断します。
-(2)		B.　外部問合せは、副問合せのすべての結果の実行が完了するまで、内部問合せを実行し続けます。
-(3)		C.　内部問合せによって取得された値が、外部問合せの結果に存在するかどうかを判定するために使用されます。
-(4)		D.　外部問合せによって取得された値が、内部問合せの結果に存在するかどうかを判定するために使用されます。</pre>
+(<span class="sql-num">1</span>)		A.　内部問合せ結果にNULL値以外の値が見つかると、外部問合せは内部問合せの実行を中断します。
+(<span class="sql-num">2</span>)		B.　外部問合せは、副問合せのすべての結果の実行が完了するまで、内部問合せを実行し続けます。
+(<span class="sql-num">3</span>)		C.　内部問合せによって取得された値が、外部問合せの結果に存在するかどうかを判定するために使用されます。
+(<span class="sql-num">4</span>)		D.　外部問合せによって取得された値が、内部問合せの結果に存在するかどうかを判定するために使用されます。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「相関サブクエリの実行順」です。問題文は「相関副問合せのEXISTS演算子に関して正しい記述はどれでしょうか。（2つ選択）」を満たす記述または SQL を求めています。相関サブクエリは、外側問い合わせの行を1行ずつ評価し、その行ごとに内側問い合わせを再実行する。非相関サブクエリのように内側が先に1回だけ動くわけではない。 そのため、成立条件を満たす正答は A「内部問合せ結果にNULL値以外の値が見つかると、外部問合せは内部問合せの実行を中断します。」 / D「外部問合せによって取得された値が、内部問合せの結果に存在するかどうかを判定するために使用されます。」 です。</p>
@@ -1081,46 +1092,46 @@ WHERE  o.value &gt; (
                   <div class="block-title">問題文</div>
                   <pre>EMPLOYEES テーブルの構造を確認し、各部門の平均給与よりも高い給与を得ている従業員の行を返すクエリを2つ選んでください。
 | Name    | Null?     | Type         |
-|---------|-----------|--------------|
-| EMP_ID  | NOT NULL  | NUMBER(6)    |
-| NAME    | NOT NULL  | VARCHAR2(20) |
-| SALARY  | NOT NULL  | NUMBER       |
-| DEPT_ID | NOT NULL  | NUMBER(6)    |
+|<span class="sql-cmt">---------|-----------|--------------|</span>
+| EMP_ID  | <span class="sql-kw">NOT NULL</span>  | NUMBER(<span class="sql-num">6</span>)    |
+| NAME    | <span class="sql-kw">NOT NULL</span>  | VARCHAR2(<span class="sql-num">20</span>) |
+| SALARY  | <span class="sql-kw">NOT NULL</span>  | NUMBER       |
+| DEPT_ID | <span class="sql-kw">NOT NULL</span>  | NUMBER(<span class="sql-num">6</span>)    |
 
 A.
-SELECT * FROM employees e1
-WHERE salary &gt; (
-  SELECT AVG(salary) FROM employees e2
-  WHERE e1.dept_id = e2.dept_id
+<span class="sql-kw">SELECT</span> * <span class="sql-kw">FROM</span> employees e1
+<span class="sql-kw">WHERE</span> salary &gt; (
+  <span class="sql-kw">SELECT</span> <span class="sql-fn">AVG</span>(salary) <span class="sql-kw">FROM</span> employees e2
+  <span class="sql-kw">WHERE</span> e1.dept_id = e2.dept_id
 );
 
 B.
-SELECT e1.* FROM employees e1
-JOIN (
-  SELECT dept_id, AVG(salary) AS avg_sal FROM employees
-  GROUP BY dept_id
-) e2 ON e1.dept_id = e2.dept_id
-WHERE e1.salary &gt; e2.avg_sal;
+<span class="sql-kw">SELECT</span> e1.* <span class="sql-kw">FROM</span> employees e1
+<span class="sql-kw">JOIN</span> (
+  <span class="sql-kw">SELECT</span> dept_id, <span class="sql-fn">AVG</span>(salary) <span class="sql-kw">AS</span> avg_sal <span class="sql-kw">FROM</span> employees
+  <span class="sql-kw">GROUP BY</span> dept_id
+) e2 <span class="sql-kw">ON</span> e1.dept_id = e2.dept_id
+<span class="sql-kw">WHERE</span> e1.salary &gt; e2.avg_sal;
 
 C.
-SELECT * FROM employees
-WHERE salary &gt; ANY (
-  SELECT AVG(salary) FROM employees
-  GROUP BY dept_id
+<span class="sql-kw">SELECT</span> * <span class="sql-kw">FROM</span> employees
+<span class="sql-kw">WHERE</span> salary &gt; <span class="sql-kw">ANY</span> (
+  <span class="sql-kw">SELECT</span> <span class="sql-fn">AVG</span>(salary) <span class="sql-kw">FROM</span> employees
+  <span class="sql-kw">GROUP BY</span> dept_id
 );
 
 D.
-SELECT * FROM employees
-WHERE salary &gt; (
-  SELECT AVG(salary) FROM employees
-  GROUP BY dept_id
+<span class="sql-kw">SELECT</span> * <span class="sql-kw">FROM</span> employees
+<span class="sql-kw">WHERE</span> salary &gt; (
+  <span class="sql-kw">SELECT</span> <span class="sql-fn">AVG</span>(salary) <span class="sql-kw">FROM</span> employees
+  <span class="sql-kw">GROUP BY</span> dept_id
 );
 
 
-(1)		A
-(2)		B
-(3)		C
-(4)		D</pre>
+(<span class="sql-num">1</span>)		A
+(<span class="sql-num">2</span>)		B
+(<span class="sql-num">3</span>)		C
+(<span class="sql-num">4</span>)		D</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「相関サブクエリの実行順」です。問題文は「EMPLOYEES テーブルの構造を確認し、各部門の平均給与よりも高い給与を得ている従業員の行を返すクエリを2つ選んでください。 | Name | Null? | Type | |---------|-----------|-------…」を満たす記述または SQL を求めています。相関サブクエリは、外側問い合わせの行を1行ずつ評価し、その行ごとに内側問い合わせを再実行する。非相関サブクエリのように内側が先に1回だけ動くわけではない。 そのため、成立条件を満たす正答は A「SELECT * FROM employees e1 WHERE salary &gt; ( SELECT AVG(…」 / B「SELECT e1.* FROM employees e1 JOIN ( SELECT dept_id, AV…」 です。</p>
@@ -1194,12 +1205,12 @@ WHERE salary &gt; (
 <span class="note">-- 集合演算は各 SELECT の列数・型が一致。列名は先頭 SELECT 基準。</span></div></div>
       <div class="guide-block">
         <div class="guide-title">この論点の基本形</div>
-        <pre>SELECT o.col
-FROM   outer_table o
-WHERE  o.value &gt; (
-         SELECT AVG(i.value)
-         FROM   inner_table i
-         WHERE  i.group_id = o.group_id
+        <pre><span class="sql-kw">SELECT</span> o.col
+<span class="sql-kw">FROM</span>   outer_table o
+<span class="sql-kw">WHERE</span>  o.value &gt; (
+         <span class="sql-kw">SELECT</span> <span class="sql-fn">AVG</span>(i.value)
+         <span class="sql-kw">FROM</span>   inner_table i
+         <span class="sql-kw">WHERE</span>  i.group_id = o.group_id
        );</pre>
       </div>
       <div class="guide-grid">
@@ -1221,24 +1232,24 @@ WHERE  o.value &gt; (
                   <div class="block-title">問題文</div>
                   <pre>以下のSELECT文について、正しい記載を2つ選択してください。
 
-SELECT
-　product_id, price - cost AS profit
-FROM
+<span class="sql-kw">SELECT</span>
+　product_id, price - cost <span class="sql-kw">AS</span> profit
+<span class="sql-kw">FROM</span>
 　Products
-WHERE
-　price - cost &lt; ALL (
-　　SELECT
-　　　AVG(price - cost)
-　　FROM
+<span class="sql-kw">WHERE</span>
+　price - cost &lt; <span class="sql-kw">ALL</span> (
+　　<span class="sql-kw">SELECT</span>
+　　　<span class="sql-fn">AVG</span>(price - cost)
+　　<span class="sql-kw">FROM</span>
 　　　Products
-　　GROUP BY
+　　<span class="sql-kw">GROUP BY</span>
 　　dept_id
 　);
-(1)		A. 製品ごとの利益が全ての部門平均利益より小さい製品を抽出する
-(2)		B. 製品ごとの利益が全ての部門平均利益より大きい製品を抽出する
-(3)		C. WHERE句で集合関数を使用しているためエラーになる
-(4)		D. サブクエリのGROUP BYで指定した列名をサブクエリのSELECT句で使用していないためエラーになる
-(5)		E. ALL内でグループ関数やGROUP BYを使用したサブクエリは使用できる</pre>
+(<span class="sql-num">1</span>)		A. 製品ごとの利益が全ての部門平均利益より小さい製品を抽出する
+(<span class="sql-num">2</span>)		B. 製品ごとの利益が全ての部門平均利益より大きい製品を抽出する
+(<span class="sql-num">3</span>)		C. WHERE句で集合関数を使用しているためエラーになる
+(<span class="sql-num">4</span>)		D. サブクエリのGROUP BYで指定した列名をサブクエリのSELECT句で使用していないためエラーになる
+(<span class="sql-num">5</span>)		E. ALL内でグループ関数やGROUP BYを使用したサブクエリは使用できる</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「ANY・ALL・平均比較」です。問題文は「以下のSELECT文について、正しい記載を2つ選択してください。 SELECT product_id, price - cost AS profit FROM Products WHERE price - cost < ALL ( SEL…」を満たす記述または SQL を求めています。サブクエリ結果が複数行になるときは、IN、ANY、ALL を使って比較する。部門別平均より高い給与のような問題では、相関サブクエリか集約結果との結合で表現する。 そのため、成立条件を満たす正答は A「製品ごとの利益が全ての部門平均利益より小さい製品を抽出する」 / E「ALL内でグループ関数やGROUP BYを使用したサブクエリは使用できる」 です。</p>
@@ -1321,12 +1332,12 @@ WHERE
 <span class="note">-- 集合演算は各 SELECT の列数・型が一致。列名は先頭 SELECT 基準。</span></div></div>
       <div class="guide-block">
         <div class="guide-title">この論点の基本形</div>
-        <pre>SELECT col1, col2
-FROM   table_a
-UNION | UNION ALL | INTERSECT | MINUS
-SELECT col1, col2
-FROM   table_b
-ORDER BY 1;</pre>
+        <pre><span class="sql-kw">SELECT</span> col1, col2
+<span class="sql-kw">FROM</span>   table_a
+<span class="sql-kw">UNION</span> | <span class="sql-kw">UNION ALL</span> | <span class="sql-kw">INTERSECT</span> | <span class="sql-kw">MINUS</span>
+<span class="sql-kw">SELECT</span> col1, col2
+<span class="sql-kw">FROM</span>   table_b
+<span class="sql-kw">ORDER BY</span> <span class="sql-num">1</span>;</pre>
       </div>
       <div class="guide-grid">
         <div class="guide-block">
@@ -1346,12 +1357,12 @@ ORDER BY 1;</pre>
                   <div class="question-meta">第1回 模擬試験 / 問34 / 正答 B.C.D / 自己回答 B.D.E</div>
                   <div class="block-title">問題文</div>
                   <pre>UNION演算子とUNION ALL演算子について、正しい記述はどれでしょうか。(3つ選択)
-(1)		A.　それぞれのSELECT文で抽出された列の名前は同じである必要があります。
-(2)		B.　それぞれのSELECT文で抽出された列の数は同数である必要があります。
-(3)		C.　UNION演算子を使用すると、ソートされます。
-(4)		D.　UNION演算子を使用すると、重複行は削除されます。
-(5)		E.　UNION ALL演算子を使用すると、ソートされます。
-(6)		F.　UNION ALL演算子を使用すると、重複行は削除されます。</pre>
+(<span class="sql-num">1</span>)		A.　それぞれのSELECT文で抽出された列の名前は同じである必要があります。
+(<span class="sql-num">2</span>)		B.　それぞれのSELECT文で抽出された列の数は同数である必要があります。
+(<span class="sql-num">3</span>)		C.　UNION演算子を使用すると、ソートされます。
+(<span class="sql-num">4</span>)		D.　UNION演算子を使用すると、重複行は削除されます。
+(<span class="sql-num">5</span>)		E.　<span class="sql-kw">UNION</span> ALL演算子を使用すると、ソートされます。
+(<span class="sql-num">6</span>)		F.　<span class="sql-kw">UNION</span> ALL演算子を使用すると、重複行は削除されます。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「UNION と UNION ALL の違い」です。問題文は「UNION演算子とUNION ALL演算子について、正しい記述はどれでしょうか。(3つ選択)」を満たす記述または SQL を求めています。UNION は列数と型をそろえたうえで重複行を削除する。UNION ALL は重複を残し、重複排除のソート処理も行わない。 そのため、成立条件を満たす正答は B「それぞれのSELECT文で抽出された列の数は同数である必要があります。」 / C「UNION演算子を使用すると、ソートされます。」 / D「UNION演算子を使用すると、重複行は削除されます。」 です。</p>
@@ -1443,12 +1454,12 @@ ORDER BY 1;</pre>
 <span class="note">-- 集合演算は各 SELECT の列数・型が一致。列名は先頭 SELECT 基準。</span></div></div>
       <div class="guide-block">
         <div class="guide-title">この論点の基本形</div>
-        <pre>SELECT o.col
-FROM   outer_table o
-WHERE  o.value &gt; (
-         SELECT AVG(i.value)
-         FROM   inner_table i
-         WHERE  i.group_id = o.group_id
+        <pre><span class="sql-kw">SELECT</span> o.col
+<span class="sql-kw">FROM</span>   outer_table o
+<span class="sql-kw">WHERE</span>  o.value &gt; (
+         <span class="sql-kw">SELECT</span> <span class="sql-fn">AVG</span>(i.value)
+         <span class="sql-kw">FROM</span>   inner_table i
+         <span class="sql-kw">WHERE</span>  i.group_id = o.group_id
        );</pre>
       </div>
       <div class="guide-grid">
@@ -1469,11 +1480,11 @@ WHERE  o.value &gt; (
                   <div class="question-meta">第2回 模擬試験 / 問62 / 正答 AC / 自己回答 AB</div>
                   <div class="block-title">問題文</div>
                   <pre>次のうち、サブクエリが必要なケースはどれでしょうか。最適なものを2つ選択してください。
-(1)		A. 全商品の平均価格より高い価格の商品を表示する
-(2)		B. 各カテゴリごとの平均価格を表示する
-(3)		C. 注文テーブルから最も高額の注文を表示する
-(4)		D. 各顧客ごとの注文数を表示する
-(5)		E. 商品テーブルとカテゴリテーブルから商品名とカテゴリ名を表示する</pre>
+(<span class="sql-num">1</span>)		A. 全商品の平均価格より高い価格の商品を表示する
+(<span class="sql-num">2</span>)		B. 各カテゴリごとの平均価格を表示する
+(<span class="sql-num">3</span>)		C. 注文テーブルから最も高額の注文を表示する
+(<span class="sql-num">4</span>)		D. 各顧客ごとの注文数を表示する
+(<span class="sql-num">5</span>)		E. 商品テーブルとカテゴリテーブルから商品名とカテゴリ名を表示する</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「サブクエリが必要になる場面」です。問題文は「次のうち、サブクエリが必要なケースはどれでしょうか。最適なものを2つ選択してください。」を満たす記述または SQL を求めています。外側の検索条件で『別の結果を先に求めてから比較する』必要があるとき、サブクエリが必要になる。平均値との比較や、他の検索結果を条件に使う問題が典型である。 そのため、成立条件を満たす正答は A「全商品の平均価格より高い価格の商品を表示する」 / C「注文テーブルから最も高額の注文を表示する」 です。</p>
@@ -1556,11 +1567,11 @@ WHERE  o.value &gt; (
 <span class="note">-- 集合演算は各 SELECT の列数・型が一致。列名は先頭 SELECT 基準。</span></div></div>
       <div class="guide-block">
         <div class="guide-title">この論点の基本形</div>
-        <pre>SELECT col,
-       (SELECT MAX(inner_col)
-        FROM   inner_table
-        WHERE  key = outer_table.key) AS max_val
-FROM   outer_table;</pre>
+        <pre><span class="sql-kw">SELECT</span> col,
+       (<span class="sql-kw">SELECT</span> <span class="sql-fn">MAX</span>(inner_col)
+        <span class="sql-kw">FROM</span>   inner_table
+        <span class="sql-kw">WHERE</span>  key = outer_table.key) <span class="sql-kw">AS</span> max_val
+<span class="sql-kw">FROM</span>   outer_table;</pre>
       </div>
       <div class="guide-grid">
         <div class="guide-block">
@@ -1580,22 +1591,22 @@ FROM   outer_table;</pre>
                   <div class="question-meta">第3回 模擬試験 / 問12 / 正答 C / 自己回答 D</div>
                   <div class="block-title">問題文</div>
                   <pre>図のSQL文でエラーにならないものを1つ選びなさい。
-A. SELECT name FROM employees WHERE dept_id =
-   (SELECT dept_id FROM departments WHERE location_id = 100 ORDER BY dept_name);
+A. <span class="sql-kw">SELECT</span> name <span class="sql-kw">FROM</span> employees <span class="sql-kw">WHERE</span> dept_id =
+   (<span class="sql-kw">SELECT</span> dept_id <span class="sql-kw">FROM</span> departments <span class="sql-kw">WHERE</span> location_id = <span class="sql-num">100</span> <span class="sql-kw">ORDER BY</span> dept_name);
 
-B. SELECT name FROM employees WHERE dept_id =
-   (SELECT dept_id FROM departments WHERE location_id = 200);
+B. <span class="sql-kw">SELECT</span> name <span class="sql-kw">FROM</span> employees <span class="sql-kw">WHERE</span> dept_id =
+   (<span class="sql-kw">SELECT</span> dept_id <span class="sql-kw">FROM</span> departments <span class="sql-kw">WHERE</span> location_id = <span class="sql-num">200</span>);
 
-C. SELECT name FROM employees e WHERE EXISTS
-   (SELECT 1 FROM departments d WHERE d.deptid = e.dept_id AND d.dept_name LIKE &#x27;SALES%&#x27;);
+C. <span class="sql-kw">SELECT</span> name <span class="sql-kw">FROM</span> employees e <span class="sql-kw">WHERE</span> <span class="sql-kw">EXISTS</span>
+   (<span class="sql-kw">SELECT</span> <span class="sql-num">1</span> <span class="sql-kw">FROM</span> departments d <span class="sql-kw">WHERE</span> d.deptid = e.dept_id <span class="sql-kw">AND</span> d.dept_name <span class="sql-kw">LIKE</span> &#x27;SALES%&#x27;);
 
-D. SELECT name FROM employees WHERE dept_id IN
-   (SELECT deptid, dept_name FROM departments);
+D. <span class="sql-kw">SELECT</span> name <span class="sql-kw">FROM</span> employees <span class="sql-kw">WHERE</span> dept_id <span class="sql-kw">IN</span>
+   (<span class="sql-kw">SELECT</span> deptid, dept_name <span class="sql-kw">FROM</span> departments);
 
-(1)		A
-(2)		B
-(3)		C
-(4)		D</pre>
+(<span class="sql-num">1</span>)		A
+(<span class="sql-num">2</span>)		B
+(<span class="sql-num">3</span>)		C
+(<span class="sql-num">4</span>)		D</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「スカラサブクエリの制約」です。問題文は「図のSQL文でエラーにならないものを1つ選びなさい。」を満たす記述または SQL を求めています。スカラサブクエリは1行1列だけを返すサブクエリであり、0行なら NULL、2行以上ならエラーになる。使える句と使えない場所を区別する必要がある。 そのため、成立条件を満たす正答は C「SELECT name FROM employees e WHERE EXISTS (SELECT 1 FRO…」 です。</p>
@@ -1669,12 +1680,12 @@ D. SELECT name FROM employees WHERE dept_id IN
 <span class="note">-- 集合演算は各 SELECT の列数・型が一致。列名は先頭 SELECT 基準。</span></div></div>
       <div class="guide-block">
         <div class="guide-title">この論点の基本形</div>
-        <pre>SELECT o.col
-FROM   outer_table o
-WHERE  o.value &gt; (
-         SELECT AVG(i.value)
-         FROM   inner_table i
-         WHERE  i.group_id = o.group_id
+        <pre><span class="sql-kw">SELECT</span> o.col
+<span class="sql-kw">FROM</span>   outer_table o
+<span class="sql-kw">WHERE</span>  o.value &gt; (
+         <span class="sql-kw">SELECT</span> <span class="sql-fn">AVG</span>(i.value)
+         <span class="sql-kw">FROM</span>   inner_table i
+         <span class="sql-kw">WHERE</span>  i.group_id = o.group_id
        );</pre>
       </div>
       <div class="guide-grid">
@@ -1695,11 +1706,11 @@ WHERE  o.value &gt; (
                   <div class="question-meta">第2回 模擬試験 / 問25 / 正答 AB / 自己回答 AC</div>
                   <div class="block-title">問題文</div>
                   <pre>異なるITEM_IDで同じ商品名（ITEM_NAME）が入力されているものをチェックする方法は下記のどれでしょうか。（2つ選択）
-(1)		A.　自己結合
-(2)		B.　副問合せ
-(3)		C.　自己結合によるFULL OUTER JOIN
-(4)		D.　自己結合によるRIGHT OUTER JOIN
-(5)		E.　自己結合によるLEFT OUTER JOIN</pre>
+(<span class="sql-num">1</span>)		A.　自己結合
+(<span class="sql-num">2</span>)		B.　副問合せ
+(<span class="sql-num">3</span>)		C.　自己結合によるFULL <span class="sql-kw">OUTER JOIN</span>
+(<span class="sql-num">4</span>)		D.　自己結合によるRIGHT <span class="sql-kw">OUTER JOIN</span>
+(<span class="sql-num">5</span>)		E.　自己結合によるLEFT <span class="sql-kw">OUTER JOIN</span></pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「自己結合と副問合せの使い分け」です。問題文は「異なるITEM_IDで同じ商品名（ITEM_NAME）が入力されているものをチェックする方法は下記のどれでしょうか。（2つ選択）」を満たす記述または SQL を求めています。同一表内の重複や対応関係を確認するときは、同じ表を別名で比較する自己結合でも、集約や存在確認を使う副問合せでも表現できる。要件に対して成立する手法を見分けるのが論点である。 そのため、成立条件を満たす正答は A「自己結合」 / B「副問合せ」 です。</p>
@@ -1782,12 +1793,12 @@ WHERE  o.value &gt; (
 <span class="note">-- 集合演算は各 SELECT の列数・型が一致。列名は先頭 SELECT 基準。</span></div></div>
       <div class="guide-block">
         <div class="guide-title">この論点の基本形</div>
-        <pre>SELECT o.col
-FROM   outer_table o
-WHERE  o.value &gt; (
-         SELECT AVG(i.value)
-         FROM   inner_table i
-         WHERE  i.group_id = o.group_id
+        <pre><span class="sql-kw">SELECT</span> o.col
+<span class="sql-kw">FROM</span>   outer_table o
+<span class="sql-kw">WHERE</span>  o.value &gt; (
+         <span class="sql-kw">SELECT</span> <span class="sql-fn">AVG</span>(i.value)
+         <span class="sql-kw">FROM</span>   inner_table i
+         <span class="sql-kw">WHERE</span>  i.group_id = o.group_id
        );</pre>
       </div>
       <div class="guide-grid">
@@ -1808,12 +1819,12 @@ WHERE  o.value &gt; (
                   <div class="question-meta">第3回 模擬試験 / 問69 / 正答 ACD / 自己回答 ABC</div>
                   <div class="block-title">問題文</div>
                   <pre>複数行の副問合せについて、正しいものを3つ選んでください
-(1)		A. HAVING 句を含めることができる。
-(2)		B. WHERE句は使えない。
-(3)		C. GROUP BY 句を含めることができる。
-(4)		D. 複数の列を返すことができる。
-(5)		E. 副問合せ内で IN を使用できない。
-(6)		F. 副問合せから常に2つ以上の値が返される。</pre>
+(<span class="sql-num">1</span>)		A. <span class="sql-kw">HAVING</span> 句を含めることができる。
+(<span class="sql-num">2</span>)		B. WHERE句は使えない。
+(<span class="sql-num">3</span>)		C. <span class="sql-kw">GROUP BY</span> 句を含めることができる。
+(<span class="sql-num">4</span>)		D. 複数の列を返すことができる。
+(<span class="sql-num">5</span>)		E. 副問合せ内で <span class="sql-kw">IN</span> を使用できない。
+(<span class="sql-num">6</span>)		F. 副問合せから常に2つ以上の値が返される。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「複数行サブクエリの性質」です。問題文は「複数行の副問合せについて、正しいものを3つ選んでください」を満たす記述または SQL を求めています。複数行サブクエリは、複数行を返し得る副問合せであり、WHERE、HAVING、GROUP BY を内部に持つこともできる。比較では IN、ANY、ALL など複数行対応の演算子を使う必要がある。 そのため、成立条件を満たす正答は A「HAVING 句を含めることができる。」 / C「GROUP BY 句を含めることができる。」 / D「複数の列を返すことができる。」 です。</p>

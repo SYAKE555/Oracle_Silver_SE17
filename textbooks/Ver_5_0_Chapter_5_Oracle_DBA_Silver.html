@@ -35,6 +35,17 @@ table{width:100%;min-width:860px;border-collapse:collapse}
 th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef5ff}
 .top{text-align:right;margin-top:12px}
 @media(max-width:1120px){.layout{grid-template-columns:1fr}.sidebar{position:static;max-height:none}}
+
+  pre .sql-kw { color: #fbbf24; font-weight: 700; }
+  pre .sql-fn { color: #60a5fa; font-weight: 600; }
+  pre .sql-str { color: #86efac; }
+  pre .sql-num { color: #fca5a5; }
+  pre .sql-cmt { color: #94a3b8; font-style: italic; }
+  code .sql-kw { color: #b45309; font-weight: 700; }
+  code .sql-fn { color: #1d4ed8; font-weight: 600; }
+  code .sql-str { color: #047857; }
+  code .sql-num { color: #b91c1c; }
+  code .sql-cmt { color: #64748b; font-style: italic; }
 </style>
 </head>
 <body>
@@ -86,45 +97,45 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 <section class="card" id="to-char">
 <h2>5.2 TO_CHAR</h2>
 <p>TO_CHARは日付や数値を文字列化し、表示形式を制御する関数である。帳票や画面出力で多用されるが、WHERE句で乱用すると比較が文字列化され意味が変わる危険がある。`TO_CHAR(hire_date,'YYYY-MM-DD')`のように書式を明示すると再現性が高い。試験では書式モデルの意味、実務では表示用途と判定用途の分離が急所となる。</p>
-<pre><code><span class="kw">SELECT</span> <span class="kw">TO_CHAR</span>(<span class="obj">hire_date</span>, <span class="str">'YYYY-MM-DD'</span>) <span class="kw">AS</span> <span class="obj">hire_date_str</span>
-<span class="kw">FROM</span> <span class="obj">employees</span>;</code></pre>
+<pre><code><span class="kw"><span class="sql-kw">SELECT</span></span> <span class="kw">TO_CHAR</span>(<span class="obj">hire_date</span>, <span class="str"><span class="sql-str">'YYYY-MM-DD'</span></span>) <span class="kw"><span class="sql-kw">AS</span></span> <span class="obj">hire_date_str</span>
+<span class="kw"><span class="sql-kw">FROM</span></span> <span class="obj">employees</span>;</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="to-date">
 <h2>5.3 TO_DATE</h2>
 <p>TO_DATEは文字列をDATE型へ変換する。最重要は入力文字列と書式モデルの一致であり、不一致時はORA-01861が発生する。日付比較を正確に行うには、文字列比較ではなくDATE比較へ統一することが必要である。実務では連携データの日付表記ゆれが多く、変換前の品質検証と異常値隔離を運用に組み込むと障害を減らせる。</p>
-<pre><code><span class="kw">SELECT</span> <span class="kw">TO_DATE</span>(<span class="str">'2026-04-01'</span>, <span class="str">'YYYY-MM-DD'</span>) <span class="kw">AS</span> <span class="obj">dt</span>
-<span class="kw">FROM</span> <span class="obj">dual</span>;</code></pre>
-<div class="warn"><b>失敗例:</b> <code>TO_DATE('2026/04/01','YYYY-MM-DD')</code> → 書式不一致</div>
+<pre><code><span class="kw"><span class="sql-kw">SELECT</span></span> <span class="kw">TO_DATE</span>(<span class="str"><span class="sql-str">'2026-04-01'</span></span>, <span class="str"><span class="sql-str">'YYYY-MM-DD'</span></span>) <span class="kw"><span class="sql-kw">AS</span></span> <span class="obj">dt</span>
+<span class="kw"><span class="sql-kw">FROM</span></span> <span class="obj">dual</span>;</code></pre>
+<div class="warn"><b>失敗例:</b> <code><span class="sql-fn">TO_DATE</span>(<span class="sql-str">'2026/04/01'</span>,<span class="sql-str">'YYYY-MM-DD'</span>)</code> → 書式不一致</div>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="to-number">
 <h2>5.4 TO_NUMBER / CAST</h2>
 <p>TO_NUMBERは文字列を数値へ変換し、CASTは汎用型変換を行う。非数値文字を含む入力はORA-01722を発生させるため、変換前検証が必須である。CASTは型意図を明示できるためレビュー性が高い。試験では構文理解、実務では異常入力時の扱い（除外・補正・エラー停止）の方針定義が重要になる。</p>
-<pre><code><span class="kw">SELECT</span> <span class="kw">TO_NUMBER</span>(<span class="str">'12,345'</span>, <span class="str">'99,999'</span>) <span class="kw">AS</span> <span class="obj">num_val</span>,
-       <span class="kw">CAST</span>(<span class="obj">salary</span> <span class="kw">AS</span> <span class="kw">NUMBER</span>(<span class="obj">10</span>,<span class="obj">2</span>)) <span class="kw">AS</span> <span class="obj">salary_cast</span>
-<span class="kw">FROM</span> <span class="obj">employees</span>;</code></pre>
+<pre><code><span class="kw"><span class="sql-kw">SELECT</span></span> <span class="kw">TO_NUMBER</span>(<span class="str"><span class="sql-str">'12,345'</span></span>, <span class="str"><span class="sql-str">'99,999'</span></span>) <span class="kw"><span class="sql-kw">AS</span></span> <span class="obj">num_val</span>,
+       <span class="kw">CAST</span>(<span class="obj">salary</span> <span class="kw"><span class="sql-kw">AS</span></span> <span class="kw">NUMBER</span>(<span class="obj"><span class="sql-num">10</span></span>,<span class="obj"><span class="sql-num">2</span></span>)) <span class="kw"><span class="sql-kw">AS</span></span> <span class="obj">salary_cast</span>
+<span class="kw"><span class="sql-kw">FROM</span></span> <span class="obj">employees</span>;</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="null-func">
 <h2>5.5 NULL処理関数（NVL系）</h2>
 <p>NVL、NVL2、COALESCE、NULLIFはNULL状態を制御する関数群である。NVLは2択補完、NVL2はNULL有無で2分岐、COALESCEは多段補完、NULLIFは同値をNULLへ変換する。関数選択を誤ると戻り値型が想定外となり、後続計算で失敗する。実務では「未知値を補完すべきか保持すべきか」を列単位で決めることが重要で、無条件補完は監査性を下げる。</p>
-<pre><code><span class="kw">SELECT</span> <span class="obj">employee_id</span>,
-       <span class="kw">NVL</span>(<span class="obj">commission_pct</span>, <span class="obj">0</span>) <span class="kw">AS</span> <span class="obj">comm_nvl</span>,
-       <span class="kw">COALESCE</span>(<span class="obj">bonus</span>, <span class="obj">allowance</span>, <span class="obj">0</span>) <span class="kw">AS</span> <span class="obj">bonus_safe</span>
-<span class="kw">FROM</span> <span class="obj">employees</span>;</code></pre>
+<pre><code><span class="kw"><span class="sql-kw">SELECT</span></span> <span class="obj">employee_id</span>,
+       <span class="kw">NVL</span>(<span class="obj">commission_pct</span>, <span class="obj"><span class="sql-num">0</span></span>) <span class="kw"><span class="sql-kw">AS</span></span> <span class="obj">comm_nvl</span>,
+       <span class="kw">COALESCE</span>(<span class="obj">bonus</span>, <span class="obj">allowance</span>, <span class="obj"><span class="sql-num">0</span></span>) <span class="kw"><span class="sql-kw">AS</span></span> <span class="obj">bonus_safe</span>
+<span class="kw"><span class="sql-kw">FROM</span></span> <span class="obj">employees</span>;</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="case">
 <h2>5.6 CASE式</h2>
 <p>CASE式はSQL内で条件分岐を行い、業務分類やランク付けに利用される。重要なのはTHEN/ELSEの戻り値型を整合させることで、型不一致はORA-00932につながる。判定順序は上から評価されるため、条件の粒度を誤ると後続条件が到達不能になる。試験では構文、実務では可読性と再利用性のため分類ロジックの集約管理が急所である。</p>
-<pre><code><span class="kw">SELECT</span> <span class="obj">employee_id</span>,
-  <span class="kw">CASE</span>
-    <span class="kw">WHEN</span> <span class="obj">salary</span> &gt;= <span class="obj">12000</span> <span class="kw">THEN</span> <span class="str">'A'</span>
-    <span class="kw">WHEN</span> <span class="obj">salary</span> &gt;= <span class="obj">8000</span> <span class="kw">THEN</span> <span class="str">'B'</span>
-    <span class="kw">ELSE</span> <span class="str">'C'</span>
-  <span class="kw">END</span> <span class="kw">AS</span> <span class="obj">grade</span>
-<span class="kw">FROM</span> <span class="obj">employees</span>;</code></pre>
+<pre><code><span class="kw"><span class="sql-kw">SELECT</span></span> <span class="obj">employee_id</span>,
+  <span class="kw"><span class="sql-kw">CASE</span></span>
+    <span class="kw"><span class="sql-kw">WHEN</span></span> <span class="obj">salary</span> &gt;= <span class="obj"><span class="sql-num">12000</span></span> <span class="kw"><span class="sql-kw">THEN</span></span> <span class="str"><span class="sql-str">'A'</span></span>
+    <span class="kw"><span class="sql-kw">WHEN</span></span> <span class="obj">salary</span> &gt;= <span class="obj"><span class="sql-num">8000</span></span> <span class="kw"><span class="sql-kw">THEN</span></span> <span class="str"><span class="sql-str">'B'</span></span>
+    <span class="kw"><span class="sql-kw">ELSE</span></span> <span class="str"><span class="sql-str">'C'</span></span>
+  <span class="kw"><span class="sql-kw">END</span></span> <span class="kw"><span class="sql-kw">AS</span></span> <span class="obj">grade</span>
+<span class="kw"><span class="sql-kw">FROM</span></span> <span class="obj">employees</span>;</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="implicit">
@@ -144,10 +155,10 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 <div class="warn"><b>失敗2 (ORA-01722):</b> 非数値のTO_NUMBER。修正は事前バリデーション。</div>
 <div class="warn"><b>失敗3 (ORA-00932):</b> CASE戻り値型不整合。修正は枝の型統一。</div>
 <div class="warn"><b>失敗4 (ORA-01400):</b> NOT NULL列へNULL投入。修正はNVL/COALESCE補完と入力検証。</div>
-<div class="figure"><strong>優先対処順:</strong><pre><code>1) 型変換エラー
-2) NULL処理漏れ
-3) CASE型不一致
-=&gt; 先に型・NULL・分岐を固定する</code></pre></div>
+<div class="figure"><strong>優先対処順:</strong><pre><code><span class="sql-num">1</span>) 型変換エラー
+<span class="sql-num">2</span>) NULL処理漏れ
+<span class="sql-num">3</span>) CASE型不一致
+=&gt; 先に型・<span class="sql-kw">NULL</span>・分岐を固定する</code></pre></div>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="catalog">

@@ -25,6 +25,17 @@ code{font-family:"Consolas","Monaco",monospace;font-size:.88rem}
 .table-wrap{overflow:auto}.table-wrap table{width:100%;border-collapse:collapse}.table-wrap th,.table-wrap td{border:1px solid #d8e4f5;padding:9px;vertical-align:top}.table-wrap th{background:#eef4fd;text-align:left}
 .top{text-align:right;margin-top:12px}
 @media(max-width:1120px){.layout{grid-template-columns:1fr}.sidebar{position:static;max-height:none}}
+
+  pre .sql-kw { color: #fbbf24; font-weight: 700; }
+  pre .sql-fn { color: #60a5fa; font-weight: 600; }
+  pre .sql-str { color: #86efac; }
+  pre .sql-num { color: #fca5a5; }
+  pre .sql-cmt { color: #94a3b8; font-style: italic; }
+  code .sql-kw { color: #b45309; font-weight: 700; }
+  code .sql-fn { color: #1d4ed8; font-weight: 600; }
+  code .sql-str { color: #047857; }
+  code .sql-num { color: #b91c1c; }
+  code .sql-cmt { color: #64748b; font-style: italic; }
 </style>
 </head>
 <body>
@@ -66,8 +77,8 @@ code{font-family:"Consolas","Monaco",monospace;font-size:.88rem}
 <section class="card" id="index-create">
 <h2>13.2 索引作成と使われ方</h2>
 <p>索引は`CREATE INDEX`で作成する。単一列・複合列のどちらを選ぶかは、WHERE条件や結合条件の実態に依存する。複合索引では列順序が重要で、先頭列が使われない検索では効果が落ちる。試験では構文と合わせて、LIKE先頭ワイルドカードや関数適用で索引利用が低下する点が出題される。実務では作成後に実行計画を確認し、期待通り利用されるかを検証することが必須である。</p>
-<pre><code>CREATE INDEX idx_emp_dept_hire
-ON employees(department_id, hire_date);</code></pre>
+<pre><code><span class="sql-kw">CREATE INDEX</span> idx_emp_dept_hire
+<span class="sql-kw">ON</span> employees(department_id, hire_date);</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="index-limit">
@@ -79,17 +90,17 @@ ON employees(department_id, hire_date);</code></pre>
 <section class="card" id="synonym">
 <h2>13.4 シノニム（SYNONYM）</h2>
 <p>シノニムはオブジェクトの別名を定義し、長いスキーマ修飾名を簡略化する。`PRIVATE SYNONYM`は作成者スキーマ内、`PUBLIC SYNONYM`は全体公開である。試験では公開範囲の違いと、シノニムが権限を付与する機能ではない点が重要である。実務ではシノニムを参照抽象化に使えるが、乱立すると実体追跡が困難になる。運用では命名規約と管理責任者を明確にし、参照先変更の影響を追える状態を維持することが必要である。</p>
-<pre><code>CREATE SYNONYM emp FOR hr.employees;
-CREATE PUBLIC SYNONYM dept FOR hr.departments;</code></pre>
+<pre><code><span class="sql-kw">CREATE SYNONYM</span> emp <span class="sql-kw">FOR</span> hr.employees;
+<span class="sql-kw">CREATE</span> <span class="sql-kw">PUBLIC</span> <span class="sql-kw">SYNONYM</span> dept <span class="sql-kw">FOR</span> hr.departments;</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="sequence">
 <h2>13.5 シーケンス（SEQUENCE）</h2>
 <p>シーケンスは重複しない連番を生成するオブジェクトで、主キー採番に広く使われる。`NEXTVAL`で次値取得、`CURRVAL`は同一セッションで一度NEXTVAL実行後に参照可能となる。試験ではこの順序制約が頻出である。実務ではトランザクションロールバック後も取得済み番号は戻らないため、欠番は通常仕様として扱う。連番に業務意味を持たせると欠番問題で混乱するため、識別子と業務番号を分離設計するのが安全である。</p>
-<pre><code>CREATE SEQUENCE seq_orders
-START WITH 1000
-INCREMENT BY 1
-CACHE 20
+<pre><code><span class="sql-kw">CREATE SEQUENCE</span> seq_orders
+<span class="sql-kw">START WITH</span> <span class="sql-num">1000</span>
+<span class="sql-kw">INCREMENT BY</span> <span class="sql-num">1</span>
+CACHE <span class="sql-num">20</span>
 NOCYCLE;</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
@@ -101,9 +112,9 @@ NOCYCLE;</code></pre>
 <section class="card" id="dict">
 <h2>13.7 辞書ビューで確認</h2>
 <p>作成後は辞書ビューで定義確認する。索引は`USER_INDEXES`と`USER_IND_COLUMNS`、シノニムは`USER_SYNONYMS`、シーケンスは`USER_SEQUENCES`で確認できる。試験ではどの辞書ビューが何を保持するかの対応が問われる。実務では作成SQLだけでなく確認SQLを変更手順に含めると、定義漏れや環境差異を早期検知できる。オブジェクト管理は「作成したつもり」ではなく「確認済み」で初めて完了である。</p>
-<pre><code>SELECT sequence_name, increment_by, cache_size, last_number
-FROM user_sequences
-ORDER BY sequence_name;</code></pre>
+<pre><code><span class="sql-kw">SELECT</span> sequence_name, increment_by, cache_size, last_number
+<span class="sql-kw">FROM</span> user_sequences
+<span class="sql-kw">ORDER BY</span> sequence_name;</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="errors">

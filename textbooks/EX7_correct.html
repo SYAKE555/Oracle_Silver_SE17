@@ -62,6 +62,17 @@
     .concept-section h3 { flex-direction: column; align-items: flex-start; }
     .option-review-head { flex-direction: column; align-items: flex-start; }
   }
+
+  pre .sql-kw { color: #fbbf24; font-weight: 700; }
+  pre .sql-fn { color: #60a5fa; font-weight: 600; }
+  pre .sql-str { color: #86efac; }
+  pre .sql-num { color: #fca5a5; }
+  pre .sql-cmt { color: #94a3b8; font-style: italic; }
+  code .sql-kw { color: #b45309; font-weight: 700; }
+  code .sql-fn { color: #1d4ed8; font-weight: 600; }
+  code .sql-str { color: #047857; }
+  code .sql-num { color: #b91c1c; }
+  code .sql-cmt { color: #64748b; font-style: italic; }
 </style>
 </head>
 <body>
@@ -114,9 +125,9 @@
 <span class="note">-- DDL/DML/DCL/TCL は役割で分類する（CREATE=DDL、INSERT=DML、GRANT=DCL、COMMIT=TCL）。</span></div></div>
       <div class="guide-block">
         <div class="guide-title">この論点の基本形</div>
-        <pre>CREATE TABLE child (
-  child_id NUMBER PRIMARY KEY,
-  parent_id NUMBER REFERENCES parent(parent_id)
+        <pre><span class="sql-kw">CREATE TABLE</span> child (
+  child_id NUMBER <span class="sql-kw">PRIMARY KEY</span>,
+  parent_id NUMBER <span class="sql-kw">REFERENCES</span> parent(parent_id)
 );</pre>
       </div>
       <div class="guide-grid">
@@ -137,12 +148,12 @@
                   <div class="question-meta">第1回 模擬試験 / 問3 / 正答 A.B.C / 自己回答 -</div>
                   <div class="block-title">問題文</div>
                   <pre>SQL（構造化問合せ言語）について、正しい記述はどれでしょうか。（3つ選択）
-(1)		A.　データ操作言語をDMLと言います。
-(2)		B.　リレーショナル・データベース管理システムに含まれるデータを取得します。
-(3)		C.　一貫性を保証します。
-(4)		D.　オブジェクト型データベース管理システムに含まれるデータを取得します。
-(5)		E.　カプセル化を定義するために使用されます。
-(6)		F.　ポリモーフィズムを定義するために使用されます。</pre>
+(<span class="sql-num">1</span>)		A.　データ操作言語をDMLと言います。
+(<span class="sql-num">2</span>)		B.　リレーショナル・データベース管理システムに含まれるデータを取得します。
+(<span class="sql-num">3</span>)		C.　一貫性を保証します。
+(<span class="sql-num">4</span>)		D.　オブジェクト型データベース管理システムに含まれるデータを取得します。
+(<span class="sql-num">5</span>)		E.　カプセル化を定義するために使用されます。
+(<span class="sql-num">6</span>)		F.　ポリモーフィズムを定義するために使用されます。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問の論点は「SQL 分類の基礎」です。問題文は「SQL（構造化問合せ言語）について、正しい記述はどれでしょうか。（3つ選択）」という条件を満たす説明または SQL を求めています。DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。各文をどこへ分類するかが基礎力になる。 この設問では正答 A「データ操作言語をDMLと言います。」 / B「リレーショナル・データベース管理システムに含まれるデータを取得します。」 / C「一貫性を保証します。」 を選べており、成立条件を正しく読めています。</p>
@@ -218,11 +229,11 @@
 どのSQL文を実行すればいいでしょうか。(2つ選択)
 　
 拡大する
-(1)		A.　SELECT S_NAME AS &#x27;スポーツ&#x27; FROM SPORTS;
-(2)		B.　SELECT S_NAME IS &#x27;スポーツ&#x27; FROM SPORTS;
-(3)		C.　SELECT S_NAME AS スポーツ FROM SPORTS;
-(4)		D.　SELECT S_NAME IS スポーツ FROM SPORTS;
-(5)		E.　SELECT S_NAME スポーツ FROM SPORTS;</pre>
+(<span class="sql-num">1</span>)		A.　<span class="sql-kw">SELECT</span> S_NAME <span class="sql-kw">AS</span> &#x27;スポーツ&#x27; <span class="sql-kw">FROM</span> SPORTS;
+(<span class="sql-num">2</span>)		B.　<span class="sql-kw">SELECT</span> S_NAME <span class="sql-kw">IS</span> &#x27;スポーツ&#x27; <span class="sql-kw">FROM</span> SPORTS;
+(<span class="sql-num">3</span>)		C.　<span class="sql-kw">SELECT</span> S_NAME <span class="sql-kw">AS</span> スポーツ <span class="sql-kw">FROM</span> SPORTS;
+(<span class="sql-num">4</span>)		D.　<span class="sql-kw">SELECT</span> S_NAME <span class="sql-kw">IS</span> スポーツ <span class="sql-kw">FROM</span> SPORTS;
+(<span class="sql-num">5</span>)		E.　<span class="sql-kw">SELECT</span> S_NAME スポーツ <span class="sql-kw">FROM</span> SPORTS;</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問の論点は「SQL 分類の基礎」です。問題文は「S_NAMEの列名を日本語で表示したいとします。 どのSQL文を実行すればいいでしょうか。(2つ選択)」という条件を満たす説明または SQL を求めています。DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。各文をどこへ分類するかが基礎力になる。 この設問では正答 C「SELECT S_NAME AS スポーツ FROM SPORTS;」 / E「SELECT S_NAME スポーツ FROM SPORTS;」 を選べており、成立条件を正しく読めています。</p>
@@ -289,10 +300,10 @@
 また表示からITEM_TYPEの重複行を取り除く必要があります。
 上記条件に当てはまる結果を表示するSQLはどれでしょうか。
 
-(1)		A.　SELECT DISTINCT ITEM_TYPE || &#x27; &#x27; || ITEM_PRICE * 0.80 AS &quot;20% OFF&quot; FROM ITEM
-(2)		B.　SELECT ITEM_TYPE, DISTINCT ITEM_PRICE * 0.80 AS &quot;20% OFF&quot; FROM ITEM
-(3)		C.　SELECT DISTINCT ITEM_TYPE, DISTINCT ITEM_PRICE * 0.80 AS &quot;20% OFF&quot; FROM ITEM
-(4)		D.　SELECT ITEM_TYPE || &#x27; &#x27; || ITEM_PRICE * 0.80 AS &quot;20% OFF&quot; DISTINCT FROM ITEM</pre>
+(<span class="sql-num">1</span>)		A.　<span class="sql-kw">SELECT</span> <span class="sql-kw">DISTINCT</span> ITEM_TYPE || &#x27; &#x27; || ITEM_PRICE * <span class="sql-num">0.80</span> <span class="sql-kw">AS</span> &quot;<span class="sql-num">20</span>% OFF&quot; <span class="sql-kw">FROM</span> ITEM
+(<span class="sql-num">2</span>)		B.　<span class="sql-kw">SELECT</span> ITEM_TYPE, <span class="sql-kw">DISTINCT</span> ITEM_PRICE * <span class="sql-num">0.80</span> <span class="sql-kw">AS</span> &quot;<span class="sql-num">20</span>% OFF&quot; <span class="sql-kw">FROM</span> ITEM
+(<span class="sql-num">3</span>)		C.　<span class="sql-kw">SELECT</span> <span class="sql-kw">DISTINCT</span> ITEM_TYPE, <span class="sql-kw">DISTINCT</span> ITEM_PRICE * <span class="sql-num">0.80</span> <span class="sql-kw">AS</span> &quot;<span class="sql-num">20</span>% OFF&quot; <span class="sql-kw">FROM</span> ITEM
+(<span class="sql-num">4</span>)		D.　<span class="sql-kw">SELECT</span> ITEM_TYPE || &#x27; &#x27; || ITEM_PRICE * <span class="sql-num">0.80</span> <span class="sql-kw">AS</span> &quot;<span class="sql-num">20</span>% OFF&quot; <span class="sql-kw">DISTINCT</span> <span class="sql-kw">FROM</span> ITEM</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問の論点は「SQL 分類の基礎」です。問題文は「ITEM表を使用して、各ITEM_TYPEの各価格の20%OFFを表示する必要があります。 また表示からITEM_TYPEの重複行を取り除く必要があります。 上記条件に当てはまる結果を表示するSQLはどれでしょうか。」という条件を満たす説明または SQL を求めています。DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。各文をどこへ分類するかが基礎力になる。 この設問では正答 A「SELECT DISTINCT ITEM_TYPE || &#x27; &#x27; || ITEM_PRICE * 0.80 A…」 を選べており、成立条件を正しく読めています。</p>
@@ -347,11 +358,11 @@
                   <div class="question-meta">第1回 模擬試験 / 問57 / 正答 B.D / 自己回答 -</div>
                   <div class="block-title">問題文</div>
                   <pre>外部表に関して正しい記述はどれでしょうか。（2つ選択）
-(1)		A.　索引を使用することができます。
-(2)		B.　外部表からデータベース内の表にデータをアップロードできます。
-(3)		C.　外部表で使用するORACLE_LOADERとORACLE_DATAPUMPは、全く同じ機能となります。
-(4)		D.　外部表のデータは、データベースの外部に保存されます。
-(5)		E.　外部表のメタデータは、データベースの外部に保存されます。</pre>
+(<span class="sql-num">1</span>)		A.　索引を使用することができます。
+(<span class="sql-num">2</span>)		B.　外部表からデータベース内の表にデータをアップロードできます。
+(<span class="sql-num">3</span>)		C.　外部表で使用するORACLE_LOADERとORACLE_DATAPUMPは、全く同じ機能となります。
+(<span class="sql-num">4</span>)		D.　外部表のデータは、データベースの外部に保存されます。
+(<span class="sql-num">5</span>)		E.　外部表のメタデータは、データベースの外部に保存されます。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問の論点は「SQL 分類の基礎」です。問題文は「外部表に関して正しい記述はどれでしょうか。（2つ選択）」という条件を満たす説明または SQL を求めています。DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。各文をどこへ分類するかが基礎力になる。 この設問では正答 B「外部表からデータベース内の表にデータをアップロードできます。」 / D「外部表のデータは、データベースの外部に保存されます。」 を選べており、成立条件を正しく読めています。</p>
@@ -421,10 +432,10 @@
 という列見出しが表示される必要があります。
 列見出しには、各単語の最初の文字のみを大文字にする必要があります。
 この要件を達成するSQLはどれでしょうか。
-(1)		A.　SELECT NAME AS Name, SALARY + 10000 AS New Salary FROM EMP;
-(2)		B.　SELECT NAME AS &quot;NAME&quot;, SALARY + 10000 &quot;New Salary&quot; FROM EMP;
-(3)		C.　SELECT NAME AS &quot;Name&quot;, SALARY + 10000 AS &quot;NEW SALARY&quot; FROM EMP;
-(4)		D.　SELECT NAME AS &quot;Name&quot;, SALARY + 10000 AS &quot;New Salary&quot; FROM EMP;</pre>
+(<span class="sql-num">1</span>)		A.　<span class="sql-kw">SELECT</span> NAME <span class="sql-kw">AS</span> Name, SALARY + <span class="sql-num">10000</span> <span class="sql-kw">AS</span> New Salary <span class="sql-kw">FROM</span> EMP;
+(<span class="sql-num">2</span>)		B.　<span class="sql-kw">SELECT</span> NAME <span class="sql-kw">AS</span> &quot;NAME&quot;, SALARY + <span class="sql-num">10000</span> &quot;New Salary&quot; <span class="sql-kw">FROM</span> EMP;
+(<span class="sql-num">3</span>)		C.　<span class="sql-kw">SELECT</span> NAME <span class="sql-kw">AS</span> &quot;Name&quot;, SALARY + <span class="sql-num">10000</span> <span class="sql-kw">AS</span> &quot;NEW SALARY&quot; <span class="sql-kw">FROM</span> EMP;
+(<span class="sql-num">4</span>)		D.　<span class="sql-kw">SELECT</span> NAME <span class="sql-kw">AS</span> &quot;Name&quot;, SALARY + <span class="sql-num">10000</span> <span class="sql-kw">AS</span> &quot;New Salary&quot; <span class="sql-kw">FROM</span> EMP;</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問の論点は「SQL 分類の基礎」です。問題文は「従業員の給与が10000円昇給させる場合のレポートを作成する必要があります。 出力では、 従業員の名前の見出しに Name、 昇給後の見出しに New Salary という列見出しが表示される必要があります。 列見出しには、各単語の最初の…」という条件を満たす説明または SQL を求めています。DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。各文をどこへ分類するかが基礎力になる。 この設問では正答 D「SELECT NAME AS &quot;Name&quot;, SALARY + 10000 AS &quot;New Salary&quot; F…」 を選べており、成立条件を正しく読めています。</p>
@@ -479,11 +490,11 @@
                   <div class="question-meta">第2回 模擬試験 / 問8 / 正答 CE / 自己回答 -</div>
                   <div class="block-title">問題文</div>
                   <pre>演算子の優先順位について正しい記載はどれでしょうか。（2つ選択）
-(1)		A.　比較演算子は、算術演算子より先に評価されます。
-(2)		B.　+演算子は、-演算子より先に評価されます。
-(3)		C.　カッコを使用して、式内の演算子の優先順位を制御できます 。
-(4)		D.　連結演算子 || は、乗算より先に評価されます。
-(5)		E.　優先順位の等しい算術演算子は、式内の左から右の順に評価されます。</pre>
+(<span class="sql-num">1</span>)		A.　比較演算子は、算術演算子より先に評価されます。
+(<span class="sql-num">2</span>)		B.　+演算子は、-演算子より先に評価されます。
+(<span class="sql-num">3</span>)		C.　カッコを使用して、式内の演算子の優先順位を制御できます 。
+(<span class="sql-num">4</span>)		D.　連結演算子 || は、乗算より先に評価されます。
+(<span class="sql-num">5</span>)		E.　優先順位の等しい算術演算子は、式内の左から右の順に評価されます。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問の論点は「SQL 分類の基礎」です。問題文は「演算子の優先順位について正しい記載はどれでしょうか。（2つ選択）」という条件を満たす説明または SQL を求めています。DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。各文をどこへ分類するかが基礎力になる。 この設問では正答 C「カッコを使用して、式内の演算子の優先順位を制御できます 。」 / E「優先順位の等しい算術演算子は、式内の左から右の順に評価されます。」 を選べており、成立条件を正しく読めています。</p>
@@ -547,12 +558,12 @@
                   <div class="question-meta">第2回 模擬試験 / 問26 / 正答 CF / 自己回答 -</div>
                   <div class="block-title">問題文</div>
                   <pre>Oracle結合構文・ANSI結合構文について正しい記述はどれでしょうか。（2つ選択）
-(1)		A.　Oracle結合構文は、ANSI結合構文よりもパフォーマンスが低くなります。
-(2)		B.　Oracle結合構文は、ANSI結合構文よりもパフォーマンスは優れています。
-(3)		C.　ANSI結合構文は、自然結合に対応しています
-(4)		D.　Oracle結合構文は、右外部結合のみに対応しています。
-(5)		E.　Oracle結合構文は、左外部結合のみに対応しています。
-(6)		F.　ANSI結合構文は、クロス結合に対応しています。</pre>
+(<span class="sql-num">1</span>)		A.　Oracle結合構文は、ANSI結合構文よりもパフォーマンスが低くなります。
+(<span class="sql-num">2</span>)		B.　Oracle結合構文は、ANSI結合構文よりもパフォーマンスは優れています。
+(<span class="sql-num">3</span>)		C.　ANSI結合構文は、自然結合に対応しています
+(<span class="sql-num">4</span>)		D.　Oracle結合構文は、右外部結合のみに対応しています。
+(<span class="sql-num">5</span>)		E.　Oracle結合構文は、左外部結合のみに対応しています。
+(<span class="sql-num">6</span>)		F.　ANSI結合構文は、クロス結合に対応しています。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問の論点は「SQL 分類の基礎」です。問題文は「Oracle結合構文・ANSI結合構文について正しい記述はどれでしょうか。（2つ選択）」という条件を満たす説明または SQL を求めています。DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。各文をどこへ分類するかが基礎力になる。 この設問では正答 C「ANSI結合構文は、自然結合に対応しています」 / F「ANSI結合構文は、クロス結合に対応しています。」 を選べており、成立条件を正しく読めています。</p>
@@ -625,11 +636,11 @@
                   <div class="question-meta">第3回 模擬試験 / 問15 / 正答 BCE / 自己回答 -</div>
                   <div class="block-title">問題文</div>
                   <pre>以下のうち、有効なSQLの式を含むクエリ を 3つ 選んでください。
-(1)		A. SELECT emp_id, salary, &#x27; Adjusted&#x27;, salary + bonus - tax FROM employees;
-(2)		B. SELECT emp_id, (salary * 0.15 / (4.75 + 552.25)) FROM employees;
-(3)		C. SELECT emp_id, birth_date - hire_date + 2 FROM employees;
-(4)		D. SELECT emp_id, salary || &#x27; Adjusted&#x27;, salary + bonus - tax FROM employees;
-(5)		E. SELECT emp_id, salary + bonus FROM employees;</pre>
+(<span class="sql-num">1</span>)		A. <span class="sql-kw">SELECT</span> emp_id, salary, &#x27; Adjusted&#x27;, salary + bonus - tax <span class="sql-kw">FROM</span> employees;
+(<span class="sql-num">2</span>)		B. <span class="sql-kw">SELECT</span> emp_id, (salary * <span class="sql-num">0.15</span> / (<span class="sql-num">4.75</span> + <span class="sql-num">552.25</span>)) <span class="sql-kw">FROM</span> employees;
+(<span class="sql-num">3</span>)		C. <span class="sql-kw">SELECT</span> emp_id, birth_date - hire_date + <span class="sql-num">2</span> <span class="sql-kw">FROM</span> employees;
+(<span class="sql-num">4</span>)		D. <span class="sql-kw">SELECT</span> emp_id, salary || &#x27; Adjusted&#x27;, salary + bonus - tax <span class="sql-kw">FROM</span> employees;
+(<span class="sql-num">5</span>)		E. <span class="sql-kw">SELECT</span> emp_id, salary + bonus <span class="sql-kw">FROM</span> employees;</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問の論点は「SQL 分類の基礎」です。問題文は「以下のうち、有効なSQLの式を含むクエリ を 3つ 選んでください。」という条件を満たす説明または SQL を求めています。DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。各文をどこへ分類するかが基礎力になる。 この設問では正答 B「SELECT emp_id, (salary * 0.15 / (4.75 + 552.25)) FROM e…」 / C「SELECT emp_id, birth_date - hire_date + 2 FROM employee…」 / E「SELECT emp_id, salary + bonus FROM employees;」 を選べており、成立条件を正しく読めています。</p>
@@ -693,10 +704,10 @@
                   <div class="question-meta">第3回 模擬試験 / 問16 / 正答 CD / 自己回答 -</div>
                   <div class="block-title">問題文</div>
                   <pre>Oracleのパフォーマンス について正しいものを 2つ 選んでください。
-(1)		A. 結合条件に関係のない列をSELECT句に含めた場合でも、パフォーマンスに影響はない。
-(2)		B. Oracleの結合構文は、SQL:1999準拠のANSI結合構文よりもパフォーマンスが優れている。
-(3)		C. 使用する結合構文の違いは、パフォーマンスには影響しない。
-(4)		D. 結合対象の列にインデックスがあると、パフォーマンスが向上する可能性がある。</pre>
+(<span class="sql-num">1</span>)		A. 結合条件に関係のない列をSELECT句に含めた場合でも、パフォーマンスに影響はない。
+(<span class="sql-num">2</span>)		B. Oracleの結合構文は、SQL:1999準拠のANSI結合構文よりもパフォーマンスが優れている。
+(<span class="sql-num">3</span>)		C. 使用する結合構文の違いは、パフォーマンスには影響しない。
+(<span class="sql-num">4</span>)		D. 結合対象の列にインデックスがあると、パフォーマンスが向上する可能性がある。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問の論点は「SQL 分類の基礎」です。問題文は「Oracleのパフォーマンス について正しいものを 2つ 選んでください。」という条件を満たす説明または SQL を求めています。DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。各文をどこへ分類するかが基礎力になる。 この設問では正答 C「使用する結合構文の違いは、パフォーマンスには影響しない。」 / D「結合対象の列にインデックスがあると、パフォーマンスが向上する可能性がある。」 を選べており、成立条件を正しく読めています。</p>
@@ -751,12 +762,12 @@
                   <div class="question-meta">第3回 模擬試験 / 問28 / 正答 ABC / 自己回答 -</div>
                   <div class="block-title">問題文</div>
                   <pre>SQLに関する正しい説明を3つ選んでください。
-(1)		A. リレーショナルデータベースに最も適している。
-(2)		B. ACID（Atomicity, Consistency, Isolation, Durability）特性を保証する。
-(3)		C. 物理ストレージから独立し、論理データ構造の操作を可能にする。
-(4)		D. オブジェクト指向データベースの両方で使用できる唯一の言語である。
-(5)		E. 関係データベースで多態性（ポリモーフィズム）を定義および実装するために使用される。
-(6)		F. 階層型データストレージを必要とする。</pre>
+(<span class="sql-num">1</span>)		A. リレーショナルデータベースに最も適している。
+(<span class="sql-num">2</span>)		B. ACID（Atomicity, Consistency, Isolation, Durability）特性を保証する。
+(<span class="sql-num">3</span>)		C. 物理ストレージから独立し、論理データ構造の操作を可能にする。
+(<span class="sql-num">4</span>)		D. オブジェクト指向データベースの両方で使用できる唯一の言語である。
+(<span class="sql-num">5</span>)		E. 関係データベースで多態性（ポリモーフィズム）を定義および実装するために使用される。
+(<span class="sql-num">6</span>)		F. 階層型データストレージを必要とする。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問の論点は「SQL 分類の基礎」です。問題文は「SQLに関する正しい説明を3つ選んでください。」という条件を満たす説明または SQL を求めています。DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。各文をどこへ分類するかが基礎力になる。 この設問では正答 A「リレーショナルデータベースに最も適している。」 / B「ACID（Atomicity, Consistency, Isolation, Durability）特性を保…」 / C「物理ストレージから独立し、論理データ構造の操作を可能にする。」 を選べており、成立条件を正しく読めています。</p>
@@ -829,11 +840,11 @@
                   <div class="question-meta">第3回 模擬試験 / 問35 / 正答 AC / 自己回答 -</div>
                   <div class="block-title">問題文</div>
                   <pre>演算子と条件の優先順位について、正しいものを2つ選んでください。
-(1)		A. NOT 演算子は、AND や OR よりも優先順位が高い。
-(2)		B. +（加算）演算子は *（乗算）演算子よりも優先順位が高い。
-(3)		C. || 演算子は *（乗算）演算子よりも優先順位が低い。
-(4)		D. AND と OR は、条件内で同じ優先順位を持つ。
-(5)		E. 演算子は条件よりも先に評価される。</pre>
+(<span class="sql-num">1</span>)		A. <span class="sql-kw">NOT</span> 演算子は、<span class="sql-kw">AND</span> や <span class="sql-kw">OR</span> よりも優先順位が高い。
+(<span class="sql-num">2</span>)		B. +（加算）演算子は *（乗算）演算子よりも優先順位が高い。
+(<span class="sql-num">3</span>)		C. || 演算子は *（乗算）演算子よりも優先順位が低い。
+(<span class="sql-num">4</span>)		D. <span class="sql-kw">AND</span> と <span class="sql-kw">OR</span> は、条件内で同じ優先順位を持つ。
+(<span class="sql-num">5</span>)		E. 演算子は条件よりも先に評価される。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問の論点は「SQL 分類の基礎」です。問題文は「演算子と条件の優先順位について、正しいものを2つ選んでください。」という条件を満たす説明または SQL を求めています。DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。各文をどこへ分類するかが基礎力になる。 この設問では正答 A「NOT 演算子は、AND や OR よりも優先順位が高い。」 / C「|| 演算子は *（乗算）演算子よりも優先順位が低い。」 を選べており、成立条件を正しく読めています。</p>
@@ -913,9 +924,9 @@
 <span class="note">-- DDL/DML/DCL/TCL は役割で分類する（CREATE=DDL、INSERT=DML、GRANT=DCL、COMMIT=TCL）。</span></div></div>
       <div class="guide-block">
         <div class="guide-title">この論点の基本形</div>
-        <pre>CREATE TABLE child (
-  child_id NUMBER PRIMARY KEY,
-  parent_id NUMBER REFERENCES parent(parent_id)
+        <pre><span class="sql-kw">CREATE TABLE</span> child (
+  child_id NUMBER <span class="sql-kw">PRIMARY KEY</span>,
+  parent_id NUMBER <span class="sql-kw">REFERENCES</span> parent(parent_id)
 );</pre>
       </div>
       <div class="guide-grid">
@@ -936,12 +947,12 @@
                   <div class="question-meta">第1回 模擬試験 / 問1 / 正答 B.C.E / 自己回答 -</div>
                   <div class="block-title">問題文</div>
                   <pre>リレーショナル・データベースの表間の関係の定義について正しいのはどれでしょうか。（3つ選択）
-(1)		A.　主キーにはNULL値を持たせることができます。
-(2)		B.　主キーにはNULL値を持たせることができません。
-(3)		C.　外部キーにはNULL値を持たせることができます。
-(4)		D.　外部キーにはNULL値を持たせることができません。
-(5)		E.　一意キーにはNULL値を持たせることはできます。
-(6)		F.　一意キーにはNULL値を持たせることはできません。</pre>
+(<span class="sql-num">1</span>)		A.　主キーにはNULL値を持たせることができます。
+(<span class="sql-num">2</span>)		B.　主キーにはNULL値を持たせることができません。
+(<span class="sql-num">3</span>)		C.　外部キーにはNULL値を持たせることができます。
+(<span class="sql-num">4</span>)		D.　外部キーにはNULL値を持たせることができません。
+(<span class="sql-num">5</span>)		E.　一意キーにはNULL値を持たせることはできます。
+(<span class="sql-num">6</span>)		F.　一意キーにはNULL値を持たせることはできません。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問の論点は「主キー・外部キー・一意キーと NULL」です。問題文は「リレーショナル・データベースの表間の関係の定義について正しいのはどれでしょうか。（3つ選択）」という条件を満たす説明または SQL を求めています。主キーは NOT NULL かつ一意、外部キーは NULL 可、一意キーも NULL を許せる。キー制約ごとの NULL 許容差が基本である。 この設問では正答 B「主キーにはNULL値を持たせることができません。」 / C「外部キーにはNULL値を持たせることができます。」 / E「一意キーにはNULL値を持たせることはできます。」 を選べており、成立条件を正しく読めています。</p>
@@ -1023,10 +1034,10 @@ ENGINEER_ID ENGINEER_NAME TEAM_ID TEAM_NAME
 
 最適なERDを設計にする場合、正しい記述はどれでしょうか。
 
-(1)		A.　ENGINEERSエンティティとTEAMSエンティティはN:Nの関係となっており、1:Nの関係にする必要があります。
-(2)		B.　ENGINEERSエンティティとTEAMSエンティティは1:Nの関係となっています。
-(3)		C.　TEAM_NAMEは、TEAMSエンティティの主キーであり、ENGINEERSエンティティの外部キーである必要があります。
-(4)		D.　ENGINEER_NAMEは、ENGINEERSエンティティの主キーであり、TEAMSエンティティの外部キーである必要があります。</pre>
+(<span class="sql-num">1</span>)		A.　ENGINEERSエンティティとTEAMSエンティティはN:Nの関係となっており、<span class="sql-num">1</span>:Nの関係にする必要があります。
+(<span class="sql-num">2</span>)		B.　ENGINEERSエンティティとTEAMSエンティティは1:Nの関係となっています。
+(<span class="sql-num">3</span>)		C.　TEAM_NAMEは、TEAMSエンティティの主キーであり、ENGINEERSエンティティの外部キーである必要があります。
+(<span class="sql-num">4</span>)		D.　ENGINEER_NAMEは、ENGINEERSエンティティの主キーであり、TEAMSエンティティの外部キーである必要があります。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問の論点は「主キー・外部キー・一意キーと NULL」です。問題文は「以下の条件でERDを設計するとします。 ・各技術者は複数のチームに所属することができる ・各チームには複数の技術者を所属させることができる この条件において以下の表示をするとします。 ENGINEER_ID ENGINEER_NAME T…」という条件を満たす説明または SQL を求めています。主キーは NOT NULL かつ一意、外部キーは NULL 可、一意キーも NULL を許せる。キー制約ごとの NULL 許容差が基本である。 この設問では正答 A「ENGINEERSエンティティとTEAMSエンティティはN:Nの関係となっており、1:Nの関係にする必要があり…」 を選べており、成立条件を正しく読めています。</p>
@@ -1081,10 +1092,10 @@ ENGINEER_ID ENGINEER_NAME TEAM_ID TEAM_NAME
                   <div class="question-meta">第2回 模擬試験 / 問1 / 正答 AC / 自己回答 -</div>
                   <div class="block-title">問題文</div>
                   <pre>制約に関しての記述として以下正しいのはどれでしょうか。 (2つ選択)
-(1)		A.　外部キーにはNULL値を持たせることができます。
-(2)		B.　主キーにはNULL値を持たせることができます。
-(3)		C.　一意キーにはNULL値を持たせることができます。
-(4)		D.　制約は、UPDATE文の操作でのみ設定されます。</pre>
+(<span class="sql-num">1</span>)		A.　外部キーにはNULL値を持たせることができます。
+(<span class="sql-num">2</span>)		B.　主キーにはNULL値を持たせることができます。
+(<span class="sql-num">3</span>)		C.　一意キーにはNULL値を持たせることができます。
+(<span class="sql-num">4</span>)		D.　制約は、UPDATE文の操作でのみ設定されます。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問の論点は「主キー・外部キー・一意キーと NULL」です。問題文は「制約に関しての記述として以下正しいのはどれでしょうか。 (2つ選択)」という条件を満たす説明または SQL を求めています。主キーは NOT NULL かつ一意、外部キーは NULL 可、一意キーも NULL を許せる。キー制約ごとの NULL 許容差が基本である。 この設問では正答 A「外部キーにはNULL値を持たせることができます。」 / C「一意キーにはNULL値を持たせることができます。」 を選べており、成立条件を正しく読めています。</p>
@@ -1139,12 +1150,12 @@ ENGINEER_ID ENGINEER_NAME TEAM_ID TEAM_NAME
                   <div class="question-meta">第3回 模擬試験 / 問50 / 正答 AD / 自己回答 -</div>
                   <div class="block-title">問題文</div>
                   <pre>Oracle データベースについて、正しいものを2つ選んでください。
-(1)		A. DATE 型のカラムは、NULL 値を持つことができる。
-(2)		B. 1つのテーブルに複数のプライマリキーを持つことができる。
-(3)		C. カラム定義に複数のデータ型を指定できる。
-(4)		D. テーブルに複数の外部キーを持たせることができる。
-(5)		E. NUMBER 型のカラムは、ゼロ値を持つことができない。
-(6)		F. テーブルには、NOT NULL 制約を複数のカラムに指定できない。</pre>
+(<span class="sql-num">1</span>)		A. DATE 型のカラムは、<span class="sql-kw">NULL</span> 値を持つことができる。
+(<span class="sql-num">2</span>)		B. 1つのテーブルに複数のプライマリキーを持つことができる。
+(<span class="sql-num">3</span>)		C. カラム定義に複数のデータ型を指定できる。
+(<span class="sql-num">4</span>)		D. テーブルに複数の外部キーを持たせることができる。
+(<span class="sql-num">5</span>)		E. NUMBER 型のカラムは、ゼロ値を持つことができない。
+(<span class="sql-num">6</span>)		F. テーブルには、<span class="sql-kw">NOT NULL</span> 制約を複数のカラムに指定できない。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問の論点は「主キー・外部キー・一意キーと NULL」です。問題文は「Oracle データベースについて、正しいものを2つ選んでください。」という条件を満たす説明または SQL を求めています。主キーは NOT NULL かつ一意、外部キーは NULL 可、一意キーも NULL を許せる。キー制約ごとの NULL 許容差が基本である。 この設問では正答 A「DATE 型のカラムは、NULL 値を持つことができる。」 / D「テーブルに複数の外部キーを持たせることができる。」 を選べており、成立条件を正しく読めています。</p>
@@ -1233,9 +1244,9 @@ ENGINEER_ID ENGINEER_NAME TEAM_ID TEAM_NAME
 <span class="note">-- DDL/DML/DCL/TCL は役割で分類する（CREATE=DDL、INSERT=DML、GRANT=DCL、COMMIT=TCL）。</span></div></div>
       <div class="guide-block">
         <div class="guide-title">この論点の基本形</div>
-        <pre>CREATE TABLE child (
-  child_id NUMBER PRIMARY KEY,
-  parent_id NUMBER REFERENCES parent(parent_id)
+        <pre><span class="sql-kw">CREATE TABLE</span> child (
+  child_id NUMBER <span class="sql-kw">PRIMARY KEY</span>,
+  parent_id NUMBER <span class="sql-kw">REFERENCES</span> parent(parent_id)
 );</pre>
       </div>
       <div class="guide-grid">
@@ -1256,12 +1267,12 @@ ENGINEER_ID ENGINEER_NAME TEAM_ID TEAM_NAME
                   <div class="question-meta">第3回 模擬試験 / 問1 / 正答 DF / 自己回答 -</div>
                   <div class="block-title">問題文</div>
                   <pre>次のうち、Oracle SQLとして正しい構文を2つ選択してください。
-(1)		A. SELECT q&#x27;(I&#x27;m Student.&#x27;) FROM DUAL;
-(2)		B. SELECT &#x27;I\&#x27;m Student.&#x27; FROM DUAL;
-(3)		C. SELECT &#x27;I&#x27;m Student.&#x27; FROM DUAL;
-(4)		D. SELECT q&#x27;[I&#x27;m Student.]&#x27; FROM DUAL;
-(5)		E. SELECT q”[I&#x27;m Student.]” FROM DUAL;
-(6)		F. SELECT q&#x27;(I&#x27;m Student.)&#x27; FROM DUAL;</pre>
+(<span class="sql-num">1</span>)		A. <span class="sql-kw">SELECT</span> q&#x27;(I&#x27;m Student.&#x27;) <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;
+(<span class="sql-num">2</span>)		B. <span class="sql-kw">SELECT</span> &#x27;I\&#x27;m Student.&#x27; <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;
+(<span class="sql-num">3</span>)		C. <span class="sql-kw">SELECT</span> &#x27;I&#x27;m Student.&#x27; <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;
+(<span class="sql-num">4</span>)		D. <span class="sql-kw">SELECT</span> q&#x27;[I&#x27;m Student.]&#x27; <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;
+(<span class="sql-num">5</span>)		E. <span class="sql-kw">SELECT</span> q”[I&#x27;m Student.]” <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;
+(<span class="sql-num">6</span>)		F. <span class="sql-kw">SELECT</span> q&#x27;(I&#x27;m Student.)&#x27; <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問の論点は「DUAL と Oracle 基礎」です。問題文は「次のうち、Oracle SQLとして正しい構文を2つ選択してください。」という条件を満たす説明または SQL を求めています。DUAL は 1 行 1 列の疑似表で、式や関数の確認に使う。所有者や構造を含め、Oracle 固有の基礎知識として出題される。 この設問では正答 D「SELECT q&#x27;[I&#x27;m Student.]&#x27; FROM DUAL;」 / F「SELECT q&#x27;(I&#x27;m Student.)&#x27; FROM DUAL;」 を選べており、成立条件を正しく読めています。</p>

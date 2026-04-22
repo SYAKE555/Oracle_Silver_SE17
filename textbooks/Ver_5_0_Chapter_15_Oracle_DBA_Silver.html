@@ -25,6 +25,17 @@ code{font-family:"Consolas","Monaco",monospace;font-size:.88rem}
 .table-wrap{overflow:auto}.table-wrap table{width:100%;border-collapse:collapse}.table-wrap th,.table-wrap td{border:1px solid #d8e4f5;padding:9px;vertical-align:top}.table-wrap th{background:#eef4fd;text-align:left}
 .top{text-align:right;margin-top:12px}
 @media(max-width:1120px){.layout{grid-template-columns:1fr}.sidebar{position:static;max-height:none}}
+
+  pre .sql-kw { color: #fbbf24; font-weight: 700; }
+  pre .sql-fn { color: #60a5fa; font-weight: 600; }
+  pre .sql-str { color: #86efac; }
+  pre .sql-num { color: #fca5a5; }
+  pre .sql-cmt { color: #94a3b8; font-style: italic; }
+  code .sql-kw { color: #b45309; font-weight: 700; }
+  code .sql-fn { color: #1d4ed8; font-weight: 600; }
+  code .sql-str { color: #047857; }
+  code .sql-num { color: #b91c1c; }
+  code .sql-cmt { color: #64748b; font-style: italic; }
 </style>
 </head>
 <body>
@@ -65,10 +76,10 @@ code{font-family:"Consolas","Monaco",monospace;font-size:.88rem}
 <section class="card" id="prefix">
 <h2>15.2 USER_/ALL_/DBA_ の違い</h2>
 <p>`USER_`は自スキーマ対象、`ALL_`はアクセス可能対象、`DBA_`はDB全体対象を示す。試験ではこの接頭辞の意味差が最重要ポイントである。実務では、権限不足で`DBA_`が見えない場面も多いため、まず`USER_`/`ALL_`で確認し、必要時に管理者へ依頼する運用が現実的である。接頭辞の意味を誤解すると、存在しないと誤判定したり、監査範囲を取り違えたりする。ビュー名暗記だけでなく「どの視点の情報か」を常に意識することが重要である。</p>
-<pre><code>SELECT table_name FROM user_tables;
-SELECT owner, table_name FROM all_tables WHERE table_name = 'EMPLOYEES';
--- DBA権限がある場合
-SELECT owner, table_name FROM dba_tables WHERE table_name = 'EMPLOYEES';</code></pre>
+<pre><code><span class="sql-kw">SELECT</span> table_name <span class="sql-kw">FROM</span> user_tables;
+<span class="sql-kw">SELECT</span> owner, table_name <span class="sql-kw">FROM</span> all_tables <span class="sql-kw">WHERE</span> table_name = <span class="sql-str">'EMPLOYEES'</span>;
+<span class="sql-cmt">-- DBA権限がある場合</span>
+<span class="sql-kw">SELECT</span> owner, table_name <span class="sql-kw">FROM</span> dba_tables <span class="sql-kw">WHERE</span> table_name = <span class="sql-str">'EMPLOYEES'</span>;</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="objects">
@@ -79,17 +90,17 @@ SELECT owner, table_name FROM dba_tables WHERE table_name = 'EMPLOYEES';</code><
 <section class="card" id="columns">
 <h2>15.4 列定義と制約確認ビュー</h2>
 <p>列定義確認は`USER_TAB_COLUMNS`、制約確認は`USER_CONSTRAINTS`と`USER_CONS_COLUMNS`が基本である。試験では制約種別コード（`P`主キー、`R`外部キー等）の意味が問われる場合がある。実務では「列は追加されたがNOT NULLが有効か」「FKは期待通り有効か」を検証するため、制約状態（ENABLED/DISABLED）まで確認する。DDL実行だけで満足すると、無効制約のまま本番運用に入り品質事故につながる。定義と状態を両方確認するのが実務の基本である。</p>
-<pre><code>SELECT constraint_name, constraint_type, status
-FROM user_constraints
-WHERE table_name = 'PROJECT_TASKS'
-ORDER BY constraint_name;</code></pre>
+<pre><code><span class="sql-kw">SELECT</span> constraint_name, constraint_type, status
+<span class="sql-kw">FROM</span> user_constraints
+<span class="sql-kw">WHERE</span> table_name = <span class="sql-str">'PROJECT_TASKS'</span>
+<span class="sql-kw">ORDER BY</span> constraint_name;</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="privs">
 <h2>15.5 権限確認ビュー</h2>
 <p>権限周りは`USER_SYS_PRIVS`、`USER_TAB_PRIVS`、`USER_ROLE_PRIVS`が中心である。試験では「どのビューでシステム権限を見るか」など対応関係の知識が問われる。実務では権限申請対応後に、対象ユーザーへ必要権限が付与済みか、不要権限が残っていないかを確認する。権限エラー対応で手作業推測を続けると復旧が遅れるため、辞書ビューで事実確認する手順を固定化することが有効である。監査対応でもこの出力がそのまま証拠になる。</p>
-<pre><code>SELECT privilege FROM user_sys_privs ORDER BY privilege;
-SELECT table_name, privilege FROM user_tab_privs ORDER BY table_name, privilege;</code></pre>
+<pre><code><span class="sql-kw">SELECT</span> privilege <span class="sql-kw">FROM</span> user_sys_privs <span class="sql-kw">ORDER BY</span> privilege;
+<span class="sql-kw">SELECT</span> table_name, privilege <span class="sql-kw">FROM</span> user_tab_privs <span class="sql-kw">ORDER BY</span> table_name, privilege;</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="monitor">

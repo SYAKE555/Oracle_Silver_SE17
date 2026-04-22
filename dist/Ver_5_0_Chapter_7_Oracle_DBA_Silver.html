@@ -35,6 +35,17 @@ table{width:100%;min-width:860px;border-collapse:collapse}
 th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef5ff}
 .top{text-align:right;margin-top:12px}
 @media(max-width:1120px){.layout{grid-template-columns:1fr}.sidebar{position:static;max-height:none}}
+
+  pre .sql-kw { color: #fbbf24; font-weight: 700; }
+  pre .sql-fn { color: #60a5fa; font-weight: 600; }
+  pre .sql-str { color: #86efac; }
+  pre .sql-num { color: #fca5a5; }
+  pre .sql-cmt { color: #94a3b8; font-style: italic; }
+  code .sql-kw { color: #b45309; font-weight: 700; }
+  code .sql-fn { color: #1d4ed8; font-weight: 600; }
+  code .sql-str { color: #047857; }
+  code .sql-num { color: #b91c1c; }
+  code .sql-cmt { color: #64748b; font-style: italic; }
 </style>
 </head>
 <body>
@@ -77,18 +88,18 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 <section class="card" id="inner">
 <h2>7.2 INNER JOIN</h2>
 <p>INNER JOINは結合条件に一致した行のみ返す。最も基本的な結合で、マスタ整合が担保されたデータ参照に向く。試験ではJOIN条件列の選択や別名の使い方が問われる。実務では一致しない行が消えるため、欠損原因の切り分けで「条件不一致による脱落」を最初に疑う必要がある。INNER JOINを使う時は、欠損行を意図的に除外してよいかを事前合意するべきである。</p>
-<pre><code><span class="kw">SELECT</span> <span class="obj">e.employee_id</span>, <span class="obj">d.department_name</span>
-<span class="kw">FROM</span> <span class="obj">employees</span> <span class="obj">e</span>
-<span class="kw">INNER JOIN</span> <span class="obj">departments</span> <span class="obj">d</span>
-  <span class="kw">ON</span> <span class="obj">e.department_id</span> = <span class="obj">d.department_id</span>;</code></pre>
+<pre><code><span class="kw"><span class="sql-kw">SELECT</span></span> <span class="obj">e.employee_id</span>, <span class="obj">d.department_name</span>
+<span class="kw"><span class="sql-kw">FROM</span></span> <span class="obj">employees</span> <span class="obj">e</span>
+<span class="kw"><span class="sql-kw">INNER JOIN</span></span> <span class="obj">departments</span> <span class="obj">d</span>
+  <span class="kw"><span class="sql-kw">ON</span></span> <span class="obj">e.department_id</span> = <span class="obj">d.department_id</span>;</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="outer">
 <h2>7.3 OUTER JOIN（LEFT/RIGHT）</h2>
 <p>OUTER JOINは不一致行を保持するための結合で、LEFTは左表全行、RIGHTは右表全行を残す。一致しない側はNULLで埋まる。実務では「未割当社員」「注文明細なし顧客」など欠損の可視化に有効である。試験ではLEFT/RIGHTの向きと結果件数差が典型論点になる。アンチパターンはLEFT JOIN後にWHEREで右表列を絞って内結合化してしまうこと。欠損を残したいなら条件配置をON句へ寄せる必要がある。</p>
-<div class="figure"><pre><code>INNER JOIN: 一致行のみ
-LEFT JOIN : 左表全行 + 右不一致はNULL
-RIGHT JOIN: 右表全行 + 左不一致はNULL</code></pre></div>
+<div class="figure"><pre><code><span class="sql-kw">INNER JOIN</span>: 一致行のみ
+<span class="sql-kw">LEFT JOIN</span> : 左表全行 + 右不一致はNULL
+<span class="sql-kw">RIGHT JOIN</span>: 右表全行 + 左不一致はNULL</code></pre></div>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="cross">

@@ -68,7 +68,18 @@
         .breadcrumb { padding: 12px 24px; background: white; border-bottom: 1px solid #e2e8f0; font-size: 0.85rem; }
         .breadcrumb a { color: #c0392b; text-decoration: none; }
         .intro-box { background: #fff8f8; border: 1px solid #f0a0a0; border-radius: 8px; padding: 16px; margin-bottom: 24px; }
-        </style>
+        
+  pre .sql-kw { color: #fbbf24; font-weight: 700; }
+  pre .sql-fn { color: #60a5fa; font-weight: 600; }
+  pre .sql-str { color: #86efac; }
+  pre .sql-num { color: #fca5a5; }
+  pre .sql-cmt { color: #94a3b8; font-style: italic; }
+  code .sql-kw { color: #b45309; font-weight: 700; }
+  code .sql-fn { color: #1d4ed8; font-weight: 600; }
+  code .sql-str { color: #047857; }
+  code .sql-num { color: #b91c1c; }
+  code .sql-cmt { color: #64748b; font-style: italic; }
+</style>
 </head>
 <body>
 <div class="breadcrumb">
@@ -102,7 +113,7 @@
         <td>内側と外側の実行順、単一行・複数行の違い</td>
       </tr>
       <tr>
-        <td><code>IN（サブクエリ）</code></td>
+        <td><code><span class="sql-kw">IN</span>（サブクエリ）</code></td>
         <td>サブクエリが返したリストのいずれかと等しい</td>
         <td>「INはリストの中に入っているか」</td>
         <td>複数の候補値と一致する行の抽出</td>
@@ -110,7 +121,7 @@
         <td>= ANY との同等性、NULLを含む場合の挙動</td>
       </tr>
       <tr>
-        <td><code>NOT IN</code></td>
+        <td><code><span class="sql-kw">NOT IN</span></code></td>
         <td>サブクエリが返したリストのいずれとも等しくない</td>
         <td>「NOT IN はリストの外—でもNULLが潜むと全滅」</td>
         <td>特定リストに含まれない行の抽出</td>
@@ -118,7 +129,7 @@
         <td>リストにNULLが含まれると結果が0行になる</td>
       </tr>
       <tr>
-        <td><code>EXISTS</code></td>
+        <td><code><span class="sql-kw">EXISTS</span></code></td>
         <td>サブクエリが1行以上返せばTRUE</td>
         <td>「EXISTS は存在チェック—中身より存在感」</td>
         <td>関連レコードの存在確認</td>
@@ -126,7 +137,7 @@
         <td>SELECT 1が使える、NOT EXISTSとNULLの関係</td>
       </tr>
       <tr>
-        <td><code>NOT EXISTS</code></td>
+        <td><code><span class="sql-kw">NOT EXISTS</span></code></td>
         <td>サブクエリが0行を返す場合にTRUE</td>
         <td>「NOT EXISTS は存在しないことを確認」</td>
         <td>関連レコードが存在しない行の抽出</td>
@@ -134,7 +145,7 @@
         <td>NOT INとのNULL挙動の違いが頻出</td>
       </tr>
       <tr>
-        <td><code>ANY / ALL</code></td>
+        <td><code><span class="sql-kw">ANY</span> / <span class="sql-kw">ALL</span></code></td>
         <td>ANY：いずれかの値と条件を満たす / ALL：すべての値と条件を満たす</td>
         <td>「ANYはどれか1つでOK、ALLは全員クリア必須」</td>
         <td>リストの最小値・最大値との比較</td>
@@ -142,7 +153,7 @@
         <td>&gt;ANY=最小値より大きい、&gt;ALL=最大値より大きい</td>
       </tr>
       <tr>
-        <td><code>UNION</code></td>
+        <td><code><span class="sql-kw">UNION</span></code></td>
         <td>2つのSELECT結果を結合し重複を除去</td>
         <td>「UNIONは合併—同じ会社が2度現れないように整理」</td>
         <td>2つのクエリ結果を1つにまとめる</td>
@@ -150,7 +161,7 @@
         <td>列数・型の一致が必要、ORDER BYは最後に1回</td>
       </tr>
       <tr>
-        <td><code>UNION ALL</code></td>
+        <td><code><span class="sql-kw">UNION ALL</span></code></td>
         <td>2つのSELECT結果を結合し重複を保持</td>
         <td>「UNION ALLは全部込み—重複も削除せずそのまま」</td>
         <td>重複を保持したい結合、または高速な結合</td>
@@ -158,7 +169,7 @@
         <td>UNIONとの行数の違い、ソート不要で高速</td>
       </tr>
       <tr>
-        <td><code>INTERSECT</code></td>
+        <td><code><span class="sql-kw">INTERSECT</span></code></td>
         <td>2つのSELECT結果の共通部分のみ返す</td>
         <td>「INTERSECTは交差点—両方の道が通る場所だけ」</td>
         <td>2つの結果セットに共通するデータの抽出</td>
@@ -166,7 +177,7 @@
         <td>ベン図の重なり部分、重複は除去される</td>
       </tr>
       <tr>
-        <td><code>MINUS</code></td>
+        <td><code><span class="sql-kw">MINUS</span></code></td>
         <td>左のSELECT結果から右のSELECT結果を引いた差集合</td>
         <td>「MINUSは引き算—左から右を差し引く」</td>
         <td>差分データの抽出（左にあり右にない行）</td>
@@ -194,200 +205,200 @@
         <th>意味</th>
       </tr>
       <tr>
-        <td><code>UNION</code></td>
+        <td><code><span class="sql-kw">UNION</span></code></td>
         <td>Union（和集合）</td>
         <td>2つの SELECT 結果を1つにまとめる集合演算子。重複行は除去される。UNION ALL では重複を保持する。</td>
       </tr>
       <tr>
-        <td><code>INTERSECT</code></td>
+        <td><code><span class="sql-kw">INTERSECT</span></code></td>
         <td>Intersection（積集合・共通集合）</td>
         <td>2つの SELECT 結果に共通する行のみを返す集合演算子。ベン図の重なり部分に相当する。</td>
       </tr>
       <tr>
-        <td><code>MINUS</code></td>
+        <td><code><span class="sql-kw">MINUS</span></code></td>
         <td>Minus / EXCEPT（差集合）</td>
         <td>左の SELECT 結果から右の SELECT 結果に含まれる行を除いた差集合を返す。標準SQLでは EXCEPT。</td>
       </tr>
       <tr>
-        <td><code>EXISTS</code></td>
+        <td><code><span class="sql-kw">EXISTS</span></code></td>
         <td>EXISTS（存在確認演算子）</td>
         <td>サブクエリが1行以上の結果を返すかどうかを確認する演算子。値ではなく存在のみをチェックするため SELECT 1 でよい。</td>
       </tr>
       <tr>
-        <td><code>ANY</code></td>
+        <td><code><span class="sql-kw">ANY</span></code></td>
         <td>ANY / SOME（いずれかの値）</td>
         <td>複数行サブクエリの返す値のうち、いずれか1つと比較条件を満たす場合にTRUEになる。= ANY は IN と同等。</td>
       </tr>
       <tr>
-        <td><code>ALL</code></td>
+        <td><code><span class="sql-kw">ALL</span></code></td>
         <td>ALL（すべての値）</td>
         <td>複数行サブクエリの返すすべての値と比較条件を満たす場合にTRUEになる。&gt; ALL は最大値より大きいことと同等。</td>
       </tr>
     </table>
   </div>
 
-  <div class="section-card"><div class="section-title">単一行サブクエリ</div><div class="topic-chips"><span class="chip">サブクエリ</span><span class="chip">単一行サブクエリ</span><span class="chip">スカラーサブクエリ</span></div><div class="section-content"><h3>サブクエリとは</h3><p>サブクエリは SELECT 文の中に入れ子にした別の SELECT 文です。内側のクエリ（サブクエリ）が先に実行され、その結果を外側のクエリが使います。</p><h3>単一行サブクエリ</h3><p>1行1列だけを返すサブクエリ。= や &gt; などの比較演算子と組み合わせます。</p><pre><code>-- Abel と同じ部署の従業員
-SELECT LAST_NAME, DEPARTMENT_ID
-FROM   EMPLOYEES
-WHERE  DEPARTMENT_ID = (
-    SELECT DEPARTMENT_ID
-    FROM   EMPLOYEES
-    WHERE  LAST_NAME = 'Abel'
+  <div class="section-card"><div class="section-title">単一行サブクエリ</div><div class="topic-chips"><span class="chip">サブクエリ</span><span class="chip">単一行サブクエリ</span><span class="chip">スカラーサブクエリ</span></div><div class="section-content"><h3>サブクエリとは</h3><p>サブクエリは SELECT 文の中に入れ子にした別の SELECT 文です。内側のクエリ（サブクエリ）が先に実行され、その結果を外側のクエリが使います。</p><h3>単一行サブクエリ</h3><p>1行1列だけを返すサブクエリ。= や &gt; などの比較演算子と組み合わせます。</p><pre><code><span class="sql-cmt">-- Abel と同じ部署の従業員</span>
+<span class="sql-kw">SELECT</span> LAST_NAME, DEPARTMENT_ID
+<span class="sql-kw">FROM</span>   EMPLOYEES
+<span class="sql-kw">WHERE</span>  DEPARTMENT_ID = (
+    <span class="sql-kw">SELECT</span> DEPARTMENT_ID
+    <span class="sql-kw">FROM</span>   EMPLOYEES
+    <span class="sql-kw">WHERE</span>  LAST_NAME = <span class="sql-str">'Abel'</span>
 );
--- 実行結果例：
--- LAST_NAME            DEPARTMENT_ID
--- -------------------- -------------
--- Zlotkey                         80
--- Abel                            80
--- ...（サブクエリがAbelの部署ID=80を返し、同じ部署の全員が結果に含まれる）
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- LAST_NAME            DEPARTMENT_ID</span>
+<span class="sql-cmt">-- -------------------- -------------</span>
+<span class="sql-cmt">-- Zlotkey                         80</span>
+<span class="sql-cmt">-- Abel                            80</span>
+<span class="sql-cmt">-- ...（サブクエリがAbelの部署ID=80を返し、同じ部署の全員が結果に含まれる）</span>
 
--- 最低給与よりも多く稼ぐ従業員
-SELECT LAST_NAME, SALARY
-FROM   EMPLOYEES
-WHERE  SALARY > (
-    SELECT MIN(SALARY)
-    FROM   EMPLOYEES
+<span class="sql-cmt">-- 最低給与よりも多く稼ぐ従業員</span>
+<span class="sql-kw">SELECT</span> LAST_NAME, SALARY
+<span class="sql-kw">FROM</span>   EMPLOYEES
+<span class="sql-kw">WHERE</span>  SALARY > (
+    <span class="sql-kw">SELECT</span> <span class="sql-fn">MIN</span>(SALARY)
+    <span class="sql-kw">FROM</span>   EMPLOYEES
 );
--- 実行結果例：
--- LAST_NAME            SALARY
--- -------------------- ------
--- King                  24000
--- Kochhar               17000
--- ...（MIN(SALARY)=2100より大きい給与を持つ社員が返る）</code></pre><h3>スカラーサブクエリ</h3><p>SELECT リストや WHERE 句で1値を返すサブクエリです。</p><pre><code>SELECT LAST_NAME,
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- LAST_NAME            SALARY</span>
+<span class="sql-cmt">-- -------------------- ------</span>
+<span class="sql-cmt">-- King                  24000</span>
+<span class="sql-cmt">-- Kochhar               17000</span>
+<span class="sql-cmt">-- ...（MIN(SALARY)=2100より大きい給与を持つ社員が返る）</span></code></pre><h3>スカラーサブクエリ</h3><p>SELECT リストや WHERE 句で1値を返すサブクエリです。</p><pre><code><span class="sql-kw">SELECT</span> LAST_NAME,
        SALARY,
-       (SELECT AVG(SALARY) FROM EMPLOYEES) AS 全体平均
-FROM   EMPLOYEES;
--- 実行結果例：
--- LAST_NAME            SALARY  全体平均
--- -------------------- ------- --------
--- King                  24000  6462.00
--- Kochhar               17000  6462.00
--- ...（全員の行に同じ全体平均値が付加される）</code></pre><div class='tip-box'><strong>試験のポイント：</strong> 単一行サブクエリが複数行を返すと ORA-01427 エラーになります。スカラーサブクエリが0行を返す場合は NULL が返ります。</div></div><div class="problem-section-title">練習問題</div><div class="problem-card" id="prob-OSLV-D6-001"><div class="problem-header">問題 1 <span class="qid">#OSLV-D6-001</span></div><p class="problem-text">以下のSQL文の動作として正しいものはどれか。<br>```sql<br>SELECT last_name, salary<br>FROM employees<br>WHERE salary > (SELECT AVG(salary) FROM employees);<br>```</p><ul class="choices"><li>A. 全社員の平均給与より高い給与を受け取る社員の名前と給与を返す</li><li>B. 部署ごとの平均給与より高い給与を受け取る社員を返す</li><li>C. エラーになる（WHERE句にサブクエリは使えない）</li><li>D. サブクエリが複数行返す場合にエラーになる</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> A. 全社員の平均給与より高い給与を受け取る社員の名前と給与を返す</p><p>正解は「全社員の平均給与より高い給与を受け取る社員の名前と給与を返す」である。このサブクエリは単一行サブクエリ（AVGは1つの値を返す）であり、=, >, <, >=, <=などの単一行比較演算子と使用できる。外側のクエリはサブクエリが返した平均値と各行のsalaryを比較する。WHERE句にサブクエリは使用可能。サブクエリが複数行を返す可能性がある場合はIN, ANY, ALLなどの複数行演算子を使う必要がある。</p></div></details></div><div class="problem-card" id="prob-OSLV-D6-002"><div class="problem-header">問題 2 <span class="qid">#OSLV-D6-002</span></div><p class="problem-text">以下のSQL文の動作として正しいものはどれか。<br>```sql<br>SELECT last_name, salary<br>FROM employees<br>WHERE salary = ANY (<br>  SELECT MIN(salary)<br>  FROM employees<br>  GROUP BY department_id<br>);<br>```</p><ul class="choices"><li>A. 全部署の最低給与と一致する給与を持つ社員のみを返す</li><li>B. いずれかの部署の最低給与と一致する給与を持つ社員を返す</li><li>C. 最低給与が最も低い部署の社員のみを返す</li><li>D. エラーになる（= ANY は不正な構文）</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> B. いずれかの部署の最低給与と一致する給与を持つ社員を返す</p><p>正解は「いずれかの部署の最低給与と一致する給与を持つ社員を返す」である。= ANY は複数行サブクエリで使用し、「いずれかの値と等しい」という意味になる（INと同等の動作）。サブクエリは部署ごとの最低給与をリストで返す。外側のクエリはそのリスト内のいずれかの値とsalaryが一致する社員を返す。= ALLは「すべての値と等しい」、> ANYは「いずれかの値より大きい（最小値より大きい）」、> ALLは「すべての値より大きい（最大値より大きい）」を意味する。</p></div></details></div><div class="problem-card" id="prob-OSLV-D6-003"><div class="problem-header">問題 3 <span class="qid">#OSLV-D6-003</span></div><p class="problem-text">以下のSQL文で EXISTS を使う効果として正しいものはどれか。<br>```sql<br>SELECT department_id, department_name<br>FROM departments d<br>WHERE EXISTS (<br>  SELECT 1 FROM employees e<br>  WHERE e.department_id = d.department_id<br>);<br>```</p><ul class="choices"><li>A. 全部署の社員数を返す</li><li>B. 社員が1名もいない部署のみを返す</li><li>C. 少なくとも1名の社員が所属する部署のみを返す</li><li>D. エラーになる（相関サブクエリのSELECTは * のみ使用可能）</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> C. 少なくとも1名の社員が所属する部署のみを返す</p><p>正解は「少なくとも1名の社員が所属する部署のみを返す（選択肢C）」である。EXISTSは相関サブクエリが1行以上の結果を返せばTRUE、0行ならFALSEとなる。SELECT 1（またはSELECT *）は実際の値ではなくEXISTSの存在チェックに使うため、列の内容は何でもよい。外側クエリのdをサブクエリ内で参照している（d.department_id）のが相関の部分。NOT EXISTSにすると社員が1名もいない部署を返す。</p></div></details></div></div><div class="section-card"><div class="section-title">複数行サブクエリ</div><div class="topic-chips"><span class="chip">複数行サブクエリ</span><span class="chip">IN</span><span class="chip">ANY</span><span class="chip">ALL</span><span class="chip">NOT IN</span></div><div class="section-content"><h3>複数行サブクエリ</h3><p>複数行を返すサブクエリには IN, ANY, ALL などの演算子を使います。</p><table class='summary-table'><tr><th>演算子</th><th>説明</th></tr><tr><td>IN</td><td>リストのどれかと等しい</td></tr><tr><td>NOT IN</td><td>リストのどれとも等しくない</td></tr><tr><td>ANY (SOME)</td><td>リストの少なくとも1つと比較条件を満たす</td></tr><tr><td>ALL</td><td>リストのすべての値と比較条件を満たす</td></tr></table><pre><code>-- 部署 20 または 50 のジョブ ID のいずれかに一致する従業員
-SELECT LAST_NAME, JOB_ID
-FROM   EMPLOYEES
-WHERE  JOB_ID IN (
-    SELECT JOB_ID
-    FROM   EMPLOYEES
-    WHERE  DEPARTMENT_ID IN (20, 50)
+       (<span class="sql-kw">SELECT</span> <span class="sql-fn">AVG</span>(SALARY) <span class="sql-kw">FROM</span> EMPLOYEES) <span class="sql-kw">AS</span> 全体平均
+<span class="sql-kw">FROM</span>   EMPLOYEES;
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- LAST_NAME            SALARY  全体平均</span>
+<span class="sql-cmt">-- -------------------- ------- --------</span>
+<span class="sql-cmt">-- King                  24000  6462.00</span>
+<span class="sql-cmt">-- Kochhar               17000  6462.00</span>
+<span class="sql-cmt">-- ...（全員の行に同じ全体平均値が付加される）</span></code></pre><div class='tip-box'><strong>試験のポイント：</strong> 単一行サブクエリが複数行を返すと ORA-01427 エラーになります。スカラーサブクエリが0行を返す場合は NULL が返ります。</div></div><div class="problem-section-title">練習問題</div><div class="problem-card" id="prob-OSLV-D6-001"><div class="problem-header">問題 1 <span class="qid">#OSLV-D6-001</span></div><p class="problem-text">以下のSQL文の動作として正しいものはどれか。<br>```sql<br>SELECT last_name, salary<br>FROM employees<br>WHERE salary > (SELECT AVG(salary) FROM employees);<br>```</p><ul class="choices"><li>A. 全社員の平均給与より高い給与を受け取る社員の名前と給与を返す</li><li>B. 部署ごとの平均給与より高い給与を受け取る社員を返す</li><li>C. エラーになる（WHERE句にサブクエリは使えない）</li><li>D. サブクエリが複数行返す場合にエラーになる</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> A. 全社員の平均給与より高い給与を受け取る社員の名前と給与を返す</p><p>正解は「全社員の平均給与より高い給与を受け取る社員の名前と給与を返す」である。このサブクエリは単一行サブクエリ（AVGは1つの値を返す）であり、=, >, <, >=, <=などの単一行比較演算子と使用できる。外側のクエリはサブクエリが返した平均値と各行のsalaryを比較する。WHERE句にサブクエリは使用可能。サブクエリが複数行を返す可能性がある場合はIN, ANY, ALLなどの複数行演算子を使う必要がある。</p></div></details></div><div class="problem-card" id="prob-OSLV-D6-002"><div class="problem-header">問題 2 <span class="qid">#OSLV-D6-002</span></div><p class="problem-text">以下のSQL文の動作として正しいものはどれか。<br>```sql<br>SELECT last_name, salary<br>FROM employees<br>WHERE salary = ANY (<br>  SELECT MIN(salary)<br>  FROM employees<br>  GROUP BY department_id<br>);<br>```</p><ul class="choices"><li>A. 全部署の最低給与と一致する給与を持つ社員のみを返す</li><li>B. いずれかの部署の最低給与と一致する給与を持つ社員を返す</li><li>C. 最低給与が最も低い部署の社員のみを返す</li><li>D. エラーになる（= ANY は不正な構文）</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> B. いずれかの部署の最低給与と一致する給与を持つ社員を返す</p><p>正解は「いずれかの部署の最低給与と一致する給与を持つ社員を返す」である。= ANY は複数行サブクエリで使用し、「いずれかの値と等しい」という意味になる（INと同等の動作）。サブクエリは部署ごとの最低給与をリストで返す。外側のクエリはそのリスト内のいずれかの値とsalaryが一致する社員を返す。= ALLは「すべての値と等しい」、> ANYは「いずれかの値より大きい（最小値より大きい）」、> ALLは「すべての値より大きい（最大値より大きい）」を意味する。</p></div></details></div><div class="problem-card" id="prob-OSLV-D6-003"><div class="problem-header">問題 3 <span class="qid">#OSLV-D6-003</span></div><p class="problem-text">以下のSQL文で EXISTS を使う効果として正しいものはどれか。<br>```sql<br>SELECT department_id, department_name<br>FROM departments d<br>WHERE EXISTS (<br>  SELECT 1 FROM employees e<br>  WHERE e.department_id = d.department_id<br>);<br>```</p><ul class="choices"><li>A. 全部署の社員数を返す</li><li>B. 社員が1名もいない部署のみを返す</li><li>C. 少なくとも1名の社員が所属する部署のみを返す</li><li>D. エラーになる（相関サブクエリのSELECTは * のみ使用可能）</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> C. 少なくとも1名の社員が所属する部署のみを返す</p><p>正解は「少なくとも1名の社員が所属する部署のみを返す（選択肢C）」である。EXISTSは相関サブクエリが1行以上の結果を返せばTRUE、0行ならFALSEとなる。SELECT 1（またはSELECT *）は実際の値ではなくEXISTSの存在チェックに使うため、列の内容は何でもよい。外側クエリのdをサブクエリ内で参照している（d.department_id）のが相関の部分。NOT EXISTSにすると社員が1名もいない部署を返す。</p></div></details></div></div><div class="section-card"><div class="section-title">複数行サブクエリ</div><div class="topic-chips"><span class="chip">複数行サブクエリ</span><span class="chip">IN</span><span class="chip">ANY</span><span class="chip">ALL</span><span class="chip">NOT IN</span></div><div class="section-content"><h3>複数行サブクエリ</h3><p>複数行を返すサブクエリには IN, ANY, ALL などの演算子を使います。</p><table class='summary-table'><tr><th>演算子</th><th>説明</th></tr><tr><td>IN</td><td>リストのどれかと等しい</td></tr><tr><td>NOT IN</td><td>リストのどれとも等しくない</td></tr><tr><td>ANY (SOME)</td><td>リストの少なくとも1つと比較条件を満たす</td></tr><tr><td>ALL</td><td>リストのすべての値と比較条件を満たす</td></tr></table><pre><code><span class="sql-cmt">-- 部署 20 または 50 のジョブ ID のいずれかに一致する従業員</span>
+<span class="sql-kw">SELECT</span> LAST_NAME, JOB_ID
+<span class="sql-kw">FROM</span>   EMPLOYEES
+<span class="sql-kw">WHERE</span>  JOB_ID <span class="sql-kw">IN</span> (
+    <span class="sql-kw">SELECT</span> JOB_ID
+    <span class="sql-kw">FROM</span>   EMPLOYEES
+    <span class="sql-kw">WHERE</span>  DEPARTMENT_ID <span class="sql-kw">IN</span> (<span class="sql-num">20</span>, <span class="sql-num">50</span>)
 );
--- 実行結果例：
--- LAST_NAME            JOB_ID
--- -------------------- ----------
--- Hartstein            MK_MAN
--- Fay                  MK_REP
--- ...（部署20か50に存在するJOB_IDと一致する社員が返る）
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- LAST_NAME            JOB_ID</span>
+<span class="sql-cmt">-- -------------------- ----------</span>
+<span class="sql-cmt">-- Hartstein            MK_MAN</span>
+<span class="sql-cmt">-- Fay                  MK_REP</span>
+<span class="sql-cmt">-- ...（部署20か50に存在するJOB_IDと一致する社員が返る）</span>
 
--- ANY: 部署 50 の誰かより給与が多い
-SELECT LAST_NAME, SALARY
-FROM   EMPLOYEES
-WHERE  SALARY > ANY (
-    SELECT SALARY
-    FROM   EMPLOYEES
-    WHERE  DEPARTMENT_ID = 50
+<span class="sql-cmt">-- ANY: 部署 50 の誰かより給与が多い</span>
+<span class="sql-kw">SELECT</span> LAST_NAME, SALARY
+<span class="sql-kw">FROM</span>   EMPLOYEES
+<span class="sql-kw">WHERE</span>  SALARY > <span class="sql-kw">ANY</span> (
+    <span class="sql-kw">SELECT</span> SALARY
+    <span class="sql-kw">FROM</span>   EMPLOYEES
+    <span class="sql-kw">WHERE</span>  DEPARTMENT_ID = <span class="sql-num">50</span>
 );
--- 実行結果例：
--- LAST_NAME            SALARY
--- -------------------- ------
--- King                  24000
--- Kochhar               17000
--- ...（部署50の最低給与2100より大きい全社員が返る）
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- LAST_NAME            SALARY</span>
+<span class="sql-cmt">-- -------------------- ------</span>
+<span class="sql-cmt">-- King                  24000</span>
+<span class="sql-cmt">-- Kochhar               17000</span>
+<span class="sql-cmt">-- ...（部署50の最低給与2100より大きい全社員が返る）</span>
 
--- ALL: 部署 50 の全員より給与が多い
-SELECT LAST_NAME, SALARY
-FROM   EMPLOYEES
-WHERE  SALARY > ALL (
-    SELECT SALARY
-    FROM   EMPLOYEES
-    WHERE  DEPARTMENT_ID = 50
+<span class="sql-cmt">-- ALL: 部署 50 の全員より給与が多い</span>
+<span class="sql-kw">SELECT</span> LAST_NAME, SALARY
+<span class="sql-kw">FROM</span>   EMPLOYEES
+<span class="sql-kw">WHERE</span>  SALARY > <span class="sql-kw">ALL</span> (
+    <span class="sql-kw">SELECT</span> SALARY
+    <span class="sql-kw">FROM</span>   EMPLOYEES
+    <span class="sql-kw">WHERE</span>  DEPARTMENT_ID = <span class="sql-num">50</span>
 );
--- 実行結果例：
--- LAST_NAME            SALARY
--- -------------------- ------
--- King                  24000
--- Kochhar               17000
--- ...（部署50の最高給与8200より大きい社員のみが返る）</code></pre><div class='tip-box'><strong>試験のポイント：</strong> NOT IN のリストに NULL が含まれると、結果は0行になります（NULL との比較が不定のため）。&gt; ANY は「最小値より大きい」、&gt; ALL は「最大値より大きい」と覚えましょう。</div></div><div class="problem-section-title">練習問題</div><div class="problem-card" id="prob-OSLV-D6-001"><div class="problem-header">問題 1 <span class="qid">#OSLV-D6-001</span></div><p class="problem-text">以下のSQL文の動作として正しいものはどれか。<br>```sql<br>SELECT last_name, salary<br>FROM employees<br>WHERE salary > (SELECT AVG(salary) FROM employees);<br>```</p><ul class="choices"><li>A. 全社員の平均給与より高い給与を受け取る社員の名前と給与を返す</li><li>B. 部署ごとの平均給与より高い給与を受け取る社員を返す</li><li>C. エラーになる（WHERE句にサブクエリは使えない）</li><li>D. サブクエリが複数行返す場合にエラーになる</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> A. 全社員の平均給与より高い給与を受け取る社員の名前と給与を返す</p><p>正解は「全社員の平均給与より高い給与を受け取る社員の名前と給与を返す」である。このサブクエリは単一行サブクエリ（AVGは1つの値を返す）であり、=, >, <, >=, <=などの単一行比較演算子と使用できる。外側のクエリはサブクエリが返した平均値と各行のsalaryを比較する。WHERE句にサブクエリは使用可能。サブクエリが複数行を返す可能性がある場合はIN, ANY, ALLなどの複数行演算子を使う必要がある。</p></div></details></div><div class="problem-card" id="prob-OSLV-D6-002"><div class="problem-header">問題 2 <span class="qid">#OSLV-D6-002</span></div><p class="problem-text">以下のSQL文の動作として正しいものはどれか。<br>```sql<br>SELECT last_name, salary<br>FROM employees<br>WHERE salary = ANY (<br>  SELECT MIN(salary)<br>  FROM employees<br>  GROUP BY department_id<br>);<br>```</p><ul class="choices"><li>A. 全部署の最低給与と一致する給与を持つ社員のみを返す</li><li>B. いずれかの部署の最低給与と一致する給与を持つ社員を返す</li><li>C. 最低給与が最も低い部署の社員のみを返す</li><li>D. エラーになる（= ANY は不正な構文）</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> B. いずれかの部署の最低給与と一致する給与を持つ社員を返す</p><p>正解は「いずれかの部署の最低給与と一致する給与を持つ社員を返す」である。= ANY は複数行サブクエリで使用し、「いずれかの値と等しい」という意味になる（INと同等の動作）。サブクエリは部署ごとの最低給与をリストで返す。外側のクエリはそのリスト内のいずれかの値とsalaryが一致する社員を返す。= ALLは「すべての値と等しい」、> ANYは「いずれかの値より大きい（最小値より大きい）」、> ALLは「すべての値より大きい（最大値より大きい）」を意味する。</p></div></details></div></div><div class="section-card"><div class="section-title">集合演算子（UNION / INTERSECT / MINUS）</div><div class="topic-chips"><span class="chip">UNION</span><span class="chip">UNION ALL</span><span class="chip">INTERSECT</span><span class="chip">MINUS</span><span class="chip">集合演算子</span></div><div class="section-content"><h3>集合演算子の基本</h3><p>複数の SELECT 結果を集合として結合・比較します。SELECT の列数とデータ型互換が必要です。</p><table class='summary-table'><tr><th>演算子</th><th>説明</th></tr><tr><td>UNION</td><td>重複を除去して結合</td></tr><tr><td>UNION ALL</td><td>重複を保持して結合</td></tr><tr><td>INTERSECT</td><td>共通部分のみ抽出</td></tr><tr><td>MINUS</td><td>左にあり右にない行を抽出</td></tr></table><pre><code>-- 部署10と20の従業員IDを統合（重複除去）
-SELECT EMPLOYEE_ID FROM EMPLOYEES WHERE DEPARTMENT_ID = 10
-UNION
-SELECT EMPLOYEE_ID FROM EMPLOYEES WHERE DEPARTMENT_ID = 20;
--- 実行結果例：
--- EMPLOYEE_ID
--- -----------
---         200
---         201
---         202
--- ...（両部署の社員IDを重複なくまとめた結果）
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- LAST_NAME            SALARY</span>
+<span class="sql-cmt">-- -------------------- ------</span>
+<span class="sql-cmt">-- King                  24000</span>
+<span class="sql-cmt">-- Kochhar               17000</span>
+<span class="sql-cmt">-- ...（部署50の最高給与8200より大きい社員のみが返る）</span></code></pre><div class='tip-box'><strong>試験のポイント：</strong> NOT IN のリストに NULL が含まれると、結果は0行になります（NULL との比較が不定のため）。&gt; ANY は「最小値より大きい」、&gt; ALL は「最大値より大きい」と覚えましょう。</div></div><div class="problem-section-title">練習問題</div><div class="problem-card" id="prob-OSLV-D6-001"><div class="problem-header">問題 1 <span class="qid">#OSLV-D6-001</span></div><p class="problem-text">以下のSQL文の動作として正しいものはどれか。<br>```sql<br>SELECT last_name, salary<br>FROM employees<br>WHERE salary > (SELECT AVG(salary) FROM employees);<br>```</p><ul class="choices"><li>A. 全社員の平均給与より高い給与を受け取る社員の名前と給与を返す</li><li>B. 部署ごとの平均給与より高い給与を受け取る社員を返す</li><li>C. エラーになる（WHERE句にサブクエリは使えない）</li><li>D. サブクエリが複数行返す場合にエラーになる</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> A. 全社員の平均給与より高い給与を受け取る社員の名前と給与を返す</p><p>正解は「全社員の平均給与より高い給与を受け取る社員の名前と給与を返す」である。このサブクエリは単一行サブクエリ（AVGは1つの値を返す）であり、=, >, <, >=, <=などの単一行比較演算子と使用できる。外側のクエリはサブクエリが返した平均値と各行のsalaryを比較する。WHERE句にサブクエリは使用可能。サブクエリが複数行を返す可能性がある場合はIN, ANY, ALLなどの複数行演算子を使う必要がある。</p></div></details></div><div class="problem-card" id="prob-OSLV-D6-002"><div class="problem-header">問題 2 <span class="qid">#OSLV-D6-002</span></div><p class="problem-text">以下のSQL文の動作として正しいものはどれか。<br>```sql<br>SELECT last_name, salary<br>FROM employees<br>WHERE salary = ANY (<br>  SELECT MIN(salary)<br>  FROM employees<br>  GROUP BY department_id<br>);<br>```</p><ul class="choices"><li>A. 全部署の最低給与と一致する給与を持つ社員のみを返す</li><li>B. いずれかの部署の最低給与と一致する給与を持つ社員を返す</li><li>C. 最低給与が最も低い部署の社員のみを返す</li><li>D. エラーになる（= ANY は不正な構文）</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> B. いずれかの部署の最低給与と一致する給与を持つ社員を返す</p><p>正解は「いずれかの部署の最低給与と一致する給与を持つ社員を返す」である。= ANY は複数行サブクエリで使用し、「いずれかの値と等しい」という意味になる（INと同等の動作）。サブクエリは部署ごとの最低給与をリストで返す。外側のクエリはそのリスト内のいずれかの値とsalaryが一致する社員を返す。= ALLは「すべての値と等しい」、> ANYは「いずれかの値より大きい（最小値より大きい）」、> ALLは「すべての値より大きい（最大値より大きい）」を意味する。</p></div></details></div></div><div class="section-card"><div class="section-title">集合演算子（UNION / INTERSECT / MINUS）</div><div class="topic-chips"><span class="chip">UNION</span><span class="chip">UNION ALL</span><span class="chip">INTERSECT</span><span class="chip">MINUS</span><span class="chip">集合演算子</span></div><div class="section-content"><h3>集合演算子の基本</h3><p>複数の SELECT 結果を集合として結合・比較します。SELECT の列数とデータ型互換が必要です。</p><table class='summary-table'><tr><th>演算子</th><th>説明</th></tr><tr><td>UNION</td><td>重複を除去して結合</td></tr><tr><td>UNION ALL</td><td>重複を保持して結合</td></tr><tr><td>INTERSECT</td><td>共通部分のみ抽出</td></tr><tr><td>MINUS</td><td>左にあり右にない行を抽出</td></tr></table><pre><code><span class="sql-cmt">-- 部署10と20の従業員IDを統合（重複除去）</span>
+<span class="sql-kw">SELECT</span> EMPLOYEE_ID <span class="sql-kw">FROM</span> EMPLOYEES <span class="sql-kw">WHERE</span> DEPARTMENT_ID = <span class="sql-num">10</span>
+<span class="sql-kw">UNION</span>
+<span class="sql-kw">SELECT</span> EMPLOYEE_ID <span class="sql-kw">FROM</span> EMPLOYEES <span class="sql-kw">WHERE</span> DEPARTMENT_ID = <span class="sql-num">20</span>;
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- EMPLOYEE_ID</span>
+<span class="sql-cmt">-- -----------</span>
+<span class="sql-cmt">--         200</span>
+<span class="sql-cmt">--         201</span>
+<span class="sql-cmt">--         202</span>
+<span class="sql-cmt">-- ...（両部署の社員IDを重複なくまとめた結果）</span>
 
--- 重複を保持して統合
-SELECT EMPLOYEE_ID FROM EMPLOYEES WHERE DEPARTMENT_ID = 10
-UNION ALL
-SELECT EMPLOYEE_ID FROM EMPLOYEES WHERE DEPARTMENT_ID = 20;
--- 実行結果例：
--- EMPLOYEE_ID
--- -----------
---         200
---         201
---         202
--- ...（重複があればそのまま含まれる。UNIONより行数が多くなる場合がある）
+<span class="sql-cmt">-- 重複を保持して統合</span>
+<span class="sql-kw">SELECT</span> EMPLOYEE_ID <span class="sql-kw">FROM</span> EMPLOYEES <span class="sql-kw">WHERE</span> DEPARTMENT_ID = <span class="sql-num">10</span>
+<span class="sql-kw">UNION ALL</span>
+<span class="sql-kw">SELECT</span> EMPLOYEE_ID <span class="sql-kw">FROM</span> EMPLOYEES <span class="sql-kw">WHERE</span> DEPARTMENT_ID = <span class="sql-num">20</span>;
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- EMPLOYEE_ID</span>
+<span class="sql-cmt">-- -----------</span>
+<span class="sql-cmt">--         200</span>
+<span class="sql-cmt">--         201</span>
+<span class="sql-cmt">--         202</span>
+<span class="sql-cmt">-- ...（重複があればそのまま含まれる。UNIONより行数が多くなる場合がある）</span>
 
--- 共通する JOB_ID
-SELECT JOB_ID FROM EMPLOYEES WHERE DEPARTMENT_ID = 10
-INTERSECT
-SELECT JOB_ID FROM EMPLOYEES WHERE DEPARTMENT_ID = 20;
--- 実行結果例：
--- JOB_ID
--- ----------
--- （両方の部署に共通するJOB_IDのみ。存在しなければ0行）
+<span class="sql-cmt">-- 共通する JOB_ID</span>
+<span class="sql-kw">SELECT</span> JOB_ID <span class="sql-kw">FROM</span> EMPLOYEES <span class="sql-kw">WHERE</span> DEPARTMENT_ID = <span class="sql-num">10</span>
+<span class="sql-kw">INTERSECT</span>
+<span class="sql-kw">SELECT</span> JOB_ID <span class="sql-kw">FROM</span> EMPLOYEES <span class="sql-kw">WHERE</span> DEPARTMENT_ID = <span class="sql-num">20</span>;
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- JOB_ID</span>
+<span class="sql-cmt">-- ----------</span>
+<span class="sql-cmt">-- （両方の部署に共通するJOB_IDのみ。存在しなければ0行）</span>
 
--- 部署10にいて部署20にはいない従業員
-SELECT EMPLOYEE_ID FROM EMPLOYEES WHERE DEPARTMENT_ID = 10
-MINUS
-SELECT EMPLOYEE_ID FROM EMPLOYEES WHERE DEPARTMENT_ID = 20;
--- 実行結果例：
--- EMPLOYEE_ID
--- -----------
---         200
--- （部署10だけに存在し部署20には存在しない社員IDが返る）</code></pre><div class='tip-box'><strong>試験のポイント：</strong> 重複排除が不要なら UNION ALL が高速です。ORDER BY は原則として最後の SELECT 全体に対して1回だけ指定します。</div></div></div><div class="section-card"><div class="section-title">相関サブクエリとEXISTS</div><div class="topic-chips"><span class="chip">EXISTS</span><span class="chip">NOT EXISTS</span><span class="chip">相関サブクエリ</span><span class="chip">相関</span></div><div class="section-content"><h3>相関サブクエリ</h3><p>外側のクエリの列を参照するサブクエリです。外側の行ごとに繰り返し実行されます。</p><pre><code>-- 自分の部署の平均給与より高い従業員
-SELECT o.LAST_NAME, o.SALARY, o.DEPARTMENT_ID
-FROM   EMPLOYEES o
-WHERE  o.SALARY > (
-    SELECT AVG(i.SALARY)
-    FROM   EMPLOYEES i
-    WHERE  i.DEPARTMENT_ID = o.DEPARTMENT_ID
+<span class="sql-cmt">-- 部署10にいて部署20にはいない従業員</span>
+<span class="sql-kw">SELECT</span> EMPLOYEE_ID <span class="sql-kw">FROM</span> EMPLOYEES <span class="sql-kw">WHERE</span> DEPARTMENT_ID = <span class="sql-num">10</span>
+<span class="sql-kw">MINUS</span>
+<span class="sql-kw">SELECT</span> EMPLOYEE_ID <span class="sql-kw">FROM</span> EMPLOYEES <span class="sql-kw">WHERE</span> DEPARTMENT_ID = <span class="sql-num">20</span>;
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- EMPLOYEE_ID</span>
+<span class="sql-cmt">-- -----------</span>
+<span class="sql-cmt">--         200</span>
+<span class="sql-cmt">-- （部署10だけに存在し部署20には存在しない社員IDが返る）</span></code></pre><div class='tip-box'><strong>試験のポイント：</strong> 重複排除が不要なら UNION ALL が高速です。ORDER BY は原則として最後の SELECT 全体に対して1回だけ指定します。</div></div></div><div class="section-card"><div class="section-title">相関サブクエリとEXISTS</div><div class="topic-chips"><span class="chip">EXISTS</span><span class="chip">NOT EXISTS</span><span class="chip">相関サブクエリ</span><span class="chip">相関</span></div><div class="section-content"><h3>相関サブクエリ</h3><p>外側のクエリの列を参照するサブクエリです。外側の行ごとに繰り返し実行されます。</p><pre><code><span class="sql-cmt">-- 自分の部署の平均給与より高い従業員</span>
+<span class="sql-kw">SELECT</span> o.LAST_NAME, o.SALARY, o.DEPARTMENT_ID
+<span class="sql-kw">FROM</span>   EMPLOYEES o
+<span class="sql-kw">WHERE</span>  o.SALARY > (
+    <span class="sql-kw">SELECT</span> <span class="sql-fn">AVG</span>(i.SALARY)
+    <span class="sql-kw">FROM</span>   EMPLOYEES i
+    <span class="sql-kw">WHERE</span>  i.DEPARTMENT_ID = o.DEPARTMENT_ID
 );
--- 実行結果例：
--- LAST_NAME            SALARY  DEPARTMENT_ID
--- -------------------- ------- -------------
--- King                  24000             90
--- Kochhar               17000             90
--- ...（各社員は自分の部署の平均と比較されるため、部署ごとに基準値が異なる）</code></pre><h3>EXISTS / NOT EXISTS</h3><p>EXISTS はサブクエリが1行以上返す場合に真になります。IN より効率的な場合があります。</p><pre><code>-- 部下が存在する従業員（管理職）
-SELECT e.LAST_NAME, e.EMPLOYEE_ID
-FROM   EMPLOYEES e
-WHERE  EXISTS (
-    SELECT 1
-    FROM   EMPLOYEES sub
-    WHERE  sub.MANAGER_ID = e.EMPLOYEE_ID
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- LAST_NAME            SALARY  DEPARTMENT_ID</span>
+<span class="sql-cmt">-- -------------------- ------- -------------</span>
+<span class="sql-cmt">-- King                  24000             90</span>
+<span class="sql-cmt">-- Kochhar               17000             90</span>
+<span class="sql-cmt">-- ...（各社員は自分の部署の平均と比較されるため、部署ごとに基準値が異なる）</span></code></pre><h3>EXISTS / NOT EXISTS</h3><p>EXISTS はサブクエリが1行以上返す場合に真になります。IN より効率的な場合があります。</p><pre><code><span class="sql-cmt">-- 部下が存在する従業員（管理職）</span>
+<span class="sql-kw">SELECT</span> e.LAST_NAME, e.EMPLOYEE_ID
+<span class="sql-kw">FROM</span>   EMPLOYEES e
+<span class="sql-kw">WHERE</span>  <span class="sql-kw">EXISTS</span> (
+    <span class="sql-kw">SELECT</span> <span class="sql-num">1</span>
+    <span class="sql-kw">FROM</span>   EMPLOYEES sub
+    <span class="sql-kw">WHERE</span>  sub.MANAGER_ID = e.EMPLOYEE_ID
 );
--- 実行結果例：
--- LAST_NAME            EMPLOYEE_ID
--- -------------------- -----------
--- King                         100
--- Kochhar                      101
--- ...（部下が1名以上いる管理職のみが返る）
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- LAST_NAME            EMPLOYEE_ID</span>
+<span class="sql-cmt">-- -------------------- -----------</span>
+<span class="sql-cmt">-- King                         100</span>
+<span class="sql-cmt">-- Kochhar                      101</span>
+<span class="sql-cmt">-- ...（部下が1名以上いる管理職のみが返る）</span>
 
--- 部下がいない従業員
-SELECT e.LAST_NAME, e.EMPLOYEE_ID
-FROM   EMPLOYEES e
-WHERE  NOT EXISTS (
-    SELECT 1
-    FROM   EMPLOYEES sub
-    WHERE  sub.MANAGER_ID = e.EMPLOYEE_ID
+<span class="sql-cmt">-- 部下がいない従業員</span>
+<span class="sql-kw">SELECT</span> e.LAST_NAME, e.EMPLOYEE_ID
+<span class="sql-kw">FROM</span>   EMPLOYEES e
+<span class="sql-kw">WHERE</span>  <span class="sql-kw">NOT EXISTS</span> (
+    <span class="sql-kw">SELECT</span> <span class="sql-num">1</span>
+    <span class="sql-kw">FROM</span>   EMPLOYEES sub
+    <span class="sql-kw">WHERE</span>  sub.MANAGER_ID = e.EMPLOYEE_ID
 );
--- 実行結果例：
--- LAST_NAME            EMPLOYEE_ID
--- -------------------- -----------
--- Whalen                       200
--- Fay                          202
--- ...（部下が1名もいない一般社員のみが返る。NULLの影響を受けない点がNOT INと異なる）</code></pre><div class='tip-box'><strong>試験のポイント：</strong> EXISTS はサブクエリが行を返すかどうかだけを確認するため、SELECT リストは SELECT 1 や SELECT * でも問題ありません。NOT IN と NOT EXISTS は NULL の扱いが異なります。NOT IN は NULL が含まれると0行ですが、NOT EXISTS は NULL の影響を受けません。</div></div><div class="problem-section-title">練習問題</div><div class="problem-card" id="prob-OSLV-D6-003"><div class="problem-header">問題 1 <span class="qid">#OSLV-D6-003</span></div><p class="problem-text">以下のSQL文で EXISTS を使う効果として正しいものはどれか。<br>```sql<br>SELECT department_id, department_name<br>FROM departments d<br>WHERE EXISTS (<br>  SELECT 1 FROM employees e<br>  WHERE e.department_id = d.department_id<br>);<br>```</p><ul class="choices"><li>A. 全部署の社員数を返す</li><li>B. 社員が1名もいない部署のみを返す</li><li>C. 少なくとも1名の社員が所属する部署のみを返す</li><li>D. エラーになる（相関サブクエリのSELECTは * のみ使用可能）</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> C. 少なくとも1名の社員が所属する部署のみを返す</p><p>正解は「少なくとも1名の社員が所属する部署のみを返す（選択肢C）」である。EXISTSは相関サブクエリが1行以上の結果を返せばTRUE、0行ならFALSEとなる。SELECT 1（またはSELECT *）は実際の値ではなくEXISTSの存在チェックに使うため、列の内容は何でもよい。外側クエリのdをサブクエリ内で参照している（d.department_id）のが相関の部分。NOT EXISTSにすると社員が1名もいない部署を返す。</p></div></details></div></div>
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- LAST_NAME            EMPLOYEE_ID</span>
+<span class="sql-cmt">-- -------------------- -----------</span>
+<span class="sql-cmt">-- Whalen                       200</span>
+<span class="sql-cmt">-- Fay                          202</span>
+<span class="sql-cmt">-- ...（部下が1名もいない一般社員のみが返る。NULLの影響を受けない点がNOT INと異なる）</span></code></pre><div class='tip-box'><strong>試験のポイント：</strong> EXISTS はサブクエリが行を返すかどうかだけを確認するため、SELECT リストは SELECT 1 や SELECT * でも問題ありません。NOT IN と NOT EXISTS は NULL の扱いが異なります。NOT IN は NULL が含まれると0行ですが、NOT EXISTS は NULL の影響を受けません。</div></div><div class="problem-section-title">練習問題</div><div class="problem-card" id="prob-OSLV-D6-003"><div class="problem-header">問題 1 <span class="qid">#OSLV-D6-003</span></div><p class="problem-text">以下のSQL文で EXISTS を使う効果として正しいものはどれか。<br>```sql<br>SELECT department_id, department_name<br>FROM departments d<br>WHERE EXISTS (<br>  SELECT 1 FROM employees e<br>  WHERE e.department_id = d.department_id<br>);<br>```</p><ul class="choices"><li>A. 全部署の社員数を返す</li><li>B. 社員が1名もいない部署のみを返す</li><li>C. 少なくとも1名の社員が所属する部署のみを返す</li><li>D. エラーになる（相関サブクエリのSELECTは * のみ使用可能）</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> C. 少なくとも1名の社員が所属する部署のみを返す</p><p>正解は「少なくとも1名の社員が所属する部署のみを返す（選択肢C）」である。EXISTSは相関サブクエリが1行以上の結果を返せばTRUE、0行ならFALSEとなる。SELECT 1（またはSELECT *）は実際の値ではなくEXISTSの存在チェックに使うため、列の内容は何でもよい。外側クエリのdをサブクエリ内で参照している（d.department_id）のが相関の部分。NOT EXISTSにすると社員が1名もいない部署を返す。</p></div></details></div></div>
 </div>
 </body>
 </html>

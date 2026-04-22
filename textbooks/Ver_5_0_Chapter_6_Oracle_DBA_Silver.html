@@ -35,6 +35,17 @@ table{width:100%;min-width:860px;border-collapse:collapse}
 th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef5ff}
 .top{text-align:right;margin-top:12px}
 @media(max-width:1120px){.layout{grid-template-columns:1fr}.sidebar{position:static;max-height:none}}
+
+  pre .sql-kw { color: #fbbf24; font-weight: 700; }
+  pre .sql-fn { color: #60a5fa; font-weight: 600; }
+  pre .sql-str { color: #86efac; }
+  pre .sql-num { color: #fca5a5; }
+  pre .sql-cmt { color: #94a3b8; font-style: italic; }
+  code .sql-kw { color: #b45309; font-weight: 700; }
+  code .sql-fn { color: #1d4ed8; font-weight: 600; }
+  code .sql-str { color: #047857; }
+  code .sql-num { color: #b91c1c; }
+  code .sql-cmt { color: #64748b; font-style: italic; }
 </style>
 </head>
 <body>
@@ -77,26 +88,26 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 <section class="card" id="count-diff">
 <h2>6.2 COUNT(*) と COUNT(col)</h2>
 <p>COUNT(*)は行数を数え、COUNT(col)はNULLを除いた非NULL行数を数える。この差は試験の定番論点であり、実務でも監査件数不一致の原因になる。例えば「登録件数」をCOUNT(col)で算出すると、NULL行が除外され想定より少なく見える。要件が「全件数」か「有効値件数」かを明示し、関数選択を固定しなければならない。集計式は短いが意味差が大きいため、定義書にCOUNTの種類を明記する運用が有効である。</p>
-<pre><code><span class="kw">SELECT</span> <span class="kw">COUNT</span>(*) <span class="kw">AS</span> <span class="obj">all_rows</span>,
-       <span class="kw">COUNT</span>(<span class="obj">commission_pct</span>) <span class="kw">AS</span> <span class="obj">non_null_comm</span>
-<span class="kw">FROM</span> <span class="obj">employees</span>;</code></pre>
+<pre><code><span class="kw"><span class="sql-kw">SELECT</span></span> <span class="kw">COUNT</span>(*) <span class="kw"><span class="sql-kw">AS</span></span> <span class="obj">all_rows</span>,
+       <span class="kw">COUNT</span>(<span class="obj">commission_pct</span>) <span class="kw"><span class="sql-kw">AS</span></span> <span class="obj">non_null_comm</span>
+<span class="kw"><span class="sql-kw">FROM</span></span> <span class="obj">employees</span>;</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="groupby">
 <h2>6.3 GROUP BY</h2>
 <p>GROUP BYは集約単位を定義する句であり、同じキー値を持つ行をひとつのグループとして扱う。GROUP BYに含まれない非集約列をSELECTするとORA-00979が発生する。これは制約ではなく、集約結果の一意性を守るための仕様である。実務では、キー粒度が粗すぎると情報が潰れ、細かすぎると指標が分散するため、業務要件に合う粒度設計が必要になる。GROUP BYは文法ではなく「何を1単位として語るか」の定義である。</p>
-<pre><code><span class="kw">SELECT</span> <span class="obj">department_id</span>, <span class="kw">AVG</span>(<span class="obj">salary</span>) <span class="kw">AS</span> <span class="obj">avg_sal</span>
-<span class="kw">FROM</span> <span class="obj">employees</span>
-<span class="kw">GROUP BY</span> <span class="obj">department_id</span>;</code></pre>
+<pre><code><span class="kw"><span class="sql-kw">SELECT</span></span> <span class="obj">department_id</span>, <span class="kw">AVG</span>(<span class="obj">salary</span>) <span class="kw"><span class="sql-kw">AS</span></span> <span class="obj">avg_sal</span>
+<span class="kw"><span class="sql-kw">FROM</span></span> <span class="obj">employees</span>
+<span class="kw"><span class="sql-kw">GROUP BY</span></span> <span class="obj">department_id</span>;</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="having">
 <h2>6.4 HAVING</h2>
 <p>HAVINGは集約後のグループに対する条件句であり、集約値を使った絞り込みに使う。WHEREは行を絞る、HAVINGはグループを絞るという役割分離が基本である。実務ではHAVINGへ行条件を入れてしまい、無駄に集約して性能を落とすケースが多い。試験ではWHEREとの違いが頻出で、評価段階を理解していないと誤答しやすい。HAVINGを使う時は「この条件は集約後でしか判定できないか」を確認するのが定石である。</p>
-<pre><code><span class="kw">SELECT</span> <span class="obj">department_id</span>, <span class="kw">AVG</span>(<span class="obj">salary</span>) <span class="kw">AS</span> <span class="obj">avg_sal</span>
-<span class="kw">FROM</span> <span class="obj">employees</span>
-<span class="kw">GROUP BY</span> <span class="obj">department_id</span>
-<span class="kw">HAVING</span> <span class="kw">AVG</span>(<span class="obj">salary</span>) &gt;= <span class="obj">9000</span>;</code></pre>
+<pre><code><span class="kw"><span class="sql-kw">SELECT</span></span> <span class="obj">department_id</span>, <span class="kw">AVG</span>(<span class="obj">salary</span>) <span class="kw"><span class="sql-kw">AS</span></span> <span class="obj">avg_sal</span>
+<span class="kw"><span class="sql-kw">FROM</span></span> <span class="obj">employees</span>
+<span class="kw"><span class="sql-kw">GROUP BY</span></span> <span class="obj">department_id</span>
+<span class="kw"><span class="sql-kw">HAVING</span></span> <span class="kw">AVG</span>(<span class="obj">salary</span>) &gt;= <span class="obj"><span class="sql-num">9000</span></span>;</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="where-vs-having">
@@ -112,9 +123,9 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 <section class="card" id="pseudo">
 <h2>6.7 疑似列（ROWID / ROWNUM）</h2>
 <p>ROWIDは行の物理的な位置識別子、ROWNUMは取得順に付与される疑似列である。ROWNUMはORDER BY適用前に評価される文脈があるため、上位N件抽出で誤解されやすい。実務ではROWIDを更新対象特定に使う場面があるが、永続キー代替として使うべきではない。試験では疑似列の用途差と制約が問われるため、通常列と同等に扱わないことが重要である。</p>
-<pre><code><span class="kw">SELECT</span> <span class="obj">rowid</span>, <span class="obj">employee_id</span>
-<span class="kw">FROM</span> <span class="obj">employees</span>
-<span class="kw">WHERE</span> <span class="obj">rownum</span> &lt;= <span class="obj">5</span>;</code></pre>
+<pre><code><span class="kw"><span class="sql-kw">SELECT</span></span> <span class="obj">rowid</span>, <span class="obj">employee_id</span>
+<span class="kw"><span class="sql-kw">FROM</span></span> <span class="obj">employees</span>
+<span class="kw"><span class="sql-kw">WHERE</span></span> <span class="obj">rownum</span> &lt;= <span class="obj"><span class="sql-num">5</span></span>;</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="errors">

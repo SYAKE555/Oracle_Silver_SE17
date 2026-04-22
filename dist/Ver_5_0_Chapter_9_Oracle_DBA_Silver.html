@@ -35,6 +35,17 @@ table{width:100%;min-width:860px;border-collapse:collapse}
 th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef5ff}
 .top{text-align:right;margin-top:12px}
 @media(max-width:1120px){.layout{grid-template-columns:1fr}.sidebar{position:static;max-height:none}}
+
+  pre .sql-kw { color: #fbbf24; font-weight: 700; }
+  pre .sql-fn { color: #60a5fa; font-weight: 600; }
+  pre .sql-str { color: #86efac; }
+  pre .sql-num { color: #fca5a5; }
+  pre .sql-cmt { color: #94a3b8; font-style: italic; }
+  code .sql-kw { color: #b45309; font-weight: 700; }
+  code .sql-fn { color: #1d4ed8; font-weight: 600; }
+  code .sql-str { color: #047857; }
+  code .sql-num { color: #b91c1c; }
+  code .sql-cmt { color: #64748b; font-style: italic; }
 </style>
 </head>
 <body>
@@ -82,9 +93,9 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 <section class="card" id="union-all">
 <h2>9.3 UNION ALL</h2>
 <p>UNION ALLは重複を除去せず結果を連結する。件数は通常、各SELECTの合計に近くなる。重複が業務上意味を持つログ系や監査系ではUNION ALLが自然である。試験では「性能重視はUNION ALL」が定番。実務でも重複排除が不要な場面ではまずUNION ALLを選び、必要時のみ別途重複処理を設計する方が明確である。</p>
-<pre><code><span class="kw">SELECT</span> <span class="obj">employee_id</span> <span class="kw">FROM</span> <span class="obj">employees</span> <span class="kw">WHERE</span> <span class="obj">department_id</span> = <span class="obj">10</span>
-<span class="kw">UNION ALL</span>
-<span class="kw">SELECT</span> <span class="obj">employee_id</span> <span class="kw">FROM</span> <span class="obj">employees</span> <span class="kw">WHERE</span> <span class="obj">department_id</span> = <span class="obj">20</span>;</code></pre>
+<pre><code><span class="kw"><span class="sql-kw">SELECT</span></span> <span class="obj">employee_id</span> <span class="kw"><span class="sql-kw">FROM</span></span> <span class="obj">employees</span> <span class="kw"><span class="sql-kw">WHERE</span></span> <span class="obj">department_id</span> = <span class="obj"><span class="sql-num">10</span></span>
+<span class="kw"><span class="sql-kw">UNION ALL</span></span>
+<span class="kw"><span class="sql-kw">SELECT</span></span> <span class="obj">employee_id</span> <span class="kw"><span class="sql-kw">FROM</span></span> <span class="obj">employees</span> <span class="kw"><span class="sql-kw">WHERE</span></span> <span class="obj">department_id</span> = <span class="obj"><span class="sql-num">20</span></span>;</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="intersect">

@@ -68,7 +68,18 @@
         .breadcrumb { padding: 12px 24px; background: white; border-bottom: 1px solid #e2e8f0; font-size: 0.85rem; }
         .breadcrumb a { color: #c0392b; text-decoration: none; }
         .intro-box { background: #fff8f8; border: 1px solid #f0a0a0; border-radius: 8px; padding: 16px; margin-bottom: 24px; }
-        </style>
+        
+  pre .sql-kw { color: #fbbf24; font-weight: 700; }
+  pre .sql-fn { color: #60a5fa; font-weight: 600; }
+  pre .sql-str { color: #86efac; }
+  pre .sql-num { color: #fca5a5; }
+  pre .sql-cmt { color: #94a3b8; font-style: italic; }
+  code .sql-kw { color: #b45309; font-weight: 700; }
+  code .sql-fn { color: #1d4ed8; font-weight: 600; }
+  code .sql-str { color: #047857; }
+  code .sql-num { color: #b91c1c; }
+  code .sql-cmt { color: #64748b; font-style: italic; }
+</style>
 </head>
 <body>
 <div class="breadcrumb">
@@ -323,110 +334,110 @@
     </table>
   </div>
 
-  <div class="section-card"><div class="section-title">文字列関数</div><div class="topic-chips"><span class="chip">UPPER</span><span class="chip">LOWER</span><span class="chip">SUBSTR</span><span class="chip">LENGTH</span><span class="chip">INSTR</span><span class="chip">REPLACE</span><span class="chip">TRIM</span><span class="chip">LPAD</span><span class="chip">RPAD</span></div><div class="section-content"><h3>主要な文字列関数</h3><table class='summary-table'><tr><th>関数</th><th>構文</th><th>説明</th></tr><tr><td>UPPER</td><td>UPPER(str)</td><td>大文字に変換</td></tr><tr><td>LOWER</td><td>LOWER(str)</td><td>小文字に変換</td></tr><tr><td>INITCAP</td><td>INITCAP(str)</td><td>先頭を大文字、残りを小文字</td></tr><tr><td>LENGTH</td><td>LENGTH(str)</td><td>文字数を返す</td></tr><tr><td>SUBSTR</td><td>SUBSTR(str, start [,len])</td><td>部分文字列を取り出す</td></tr><tr><td>INSTR</td><td>INSTR(str, search)</td><td>文字列の位置を返す</td></tr><tr><td>REPLACE</td><td>REPLACE(str, from, to)</td><td>文字を置換する</td></tr><tr><td>TRIM</td><td>TRIM(str)</td><td>前後の空白（または指定文字）を除去</td></tr><tr><td>LPAD</td><td>LPAD(str, len, pad)</td><td>左側を指定文字で埋める</td></tr><tr><td>RPAD</td><td>RPAD(str, len, pad)</td><td>右側を指定文字で埋める</td></tr></table><pre><code>SELECT UPPER('hello'),        -- HELLO
-       LOWER('WORLD'),        -- world
-       LENGTH('Oracle'),      -- 6
-       SUBSTR('Oracle', 2, 3),-- rac
-       INSTR('Oracle', 'a'),  -- 3
-       REPLACE('abc', 'b', 'B'), -- aBc
-       LPAD('42', 5, '0'),    -- 00042
-       TRIM('  hello  ')      -- hello
-FROM DUAL;
--- 実行結果例：
--- UPPER('HELLO')  LOWER('WORLD')  LENGTH('ORACLE')  SUBSTR('ORACLE',2,3)  INSTR('ORACLE','A')  REPLACE('ABC','B','B')  LPAD('42',5,'0')  TRIM('  HELLO  ')
--- --------------  --------------  ----------------  --------------------  -------------------  ----------------------  ----------------  -----------------
--- HELLO           world                          6  rac                                     3  aBc                     00042             hello</code></pre><div class='tip-box'><strong>試験のポイント：</strong> SUBSTR の開始位置は 1 から始まります（0 を指定すると 1 と同じ動作）。負の値を指定すると末尾からカウントします。INSTR は見つからない場合 0 を返します（NULL ではない）。</div></div><div class="problem-section-title">練習問題</div><div class="problem-card" id="prob-OSLV-D3-003"><div class="problem-header">問題 1 <span class="qid">#OSLV-D3-003</span></div><p class="problem-text">以下のSQL文の実行結果として正しいものはどれか。<br>```sql<br>SELECT SUBSTR('ABCDEFG', 3, 4) FROM DUAL;<br>```</p><ul class="choices"><li>A. BCD</li><li>B. CDEF</li><li>C. ABCD</li><li>D. BCDE</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> B. CDEF</p><p>正解は「CDEF」である。SUBSTR(string, start, length)はstringのstart位置からlength文字を取り出す。Oracleの文字列インデックスは1始まりである。'ABCDEFG'の3番目の文字は'C'であり、そこから4文字（C, D, E, F）を取り出すと'CDEF'となる。選択肢AはSUBSTR('ABCDEFG', 2, 3)の結果。選択肢DはSUBSTR('ABCDEFG', 2, 4)の結果。Oracle SQL Reference §SUBSTR参照。</p></div></details></div></div><div class="section-card"><div class="section-title">数値関数</div><div class="topic-chips"><span class="chip">ROUND</span><span class="chip">TRUNC</span><span class="chip">MOD</span><span class="chip">CEIL</span><span class="chip">FLOOR</span></div><div class="section-content"><h3>主要な数値関数</h3><table class='summary-table'><tr><th>関数</th><th>構文</th><th>説明</th></tr><tr><td>ROUND</td><td>ROUND(n [,d])</td><td>四捨五入。d は小数点以下の桁数</td></tr><tr><td>TRUNC</td><td>TRUNC(n [,d])</td><td>切り捨て。d は小数点以下の桁数</td></tr><tr><td>MOD</td><td>MOD(m, n)</td><td>m を n で割った余り</td></tr><tr><td>CEIL</td><td>CEIL(n)</td><td>n 以上の最小整数（切り上げ）</td></tr><tr><td>FLOOR</td><td>FLOOR(n)</td><td>n 以下の最大整数（切り下げ）</td></tr></table><pre><code>SELECT ROUND(45.926, 2),   -- 45.93
-       ROUND(45.926, 0),   -- 46
-       ROUND(45.926, -1),  -- 50
-       TRUNC(45.926, 2),   -- 45.92
-       TRUNC(45.926, -1),  -- 40
-       MOD(1600, 300),     -- 100
-       CEIL(2.3),          -- 3
-       FLOOR(2.7)          -- 2
-FROM DUAL;
--- 実行結果例：
--- ROUND(45.926,2)  ROUND(45.926,0)  ROUND(45.926,-1)  TRUNC(45.926,2)  TRUNC(45.926,-1)  MOD(1600,300)  CEIL(2.3)  FLOOR(2.7)
--- ---------------  ---------------  ----------------  ---------------  ----------------  -------------  ---------  ----------
---           45.93               46                50            45.92                40            100          3           2</code></pre><div class='tip-box'><strong>試験のポイント：</strong> ROUND と TRUNC の第2引数（桁数）は省略すると 0（整数）として扱われます。負の値（例: -1）を指定すると十の位で丸めます。MOD(m, n) は m が負の場合も使えます（結果の符号は m に依存）。</div></div><div class="problem-section-title">練習問題</div><div class="problem-card" id="prob-OSLV-D3-001"><div class="problem-header">問題 1 <span class="qid">#OSLV-D3-001</span></div><p class="problem-text">以下のSQL文の実行結果として正しいものはどれか。<br>```sql<br>SELECT ROUND(45.926, 2), TRUNC(45.926, 2)<br>FROM DUAL;<br>```</p><ul class="choices"><li>A. 45.92 と 45.93</li><li>B. 45.93 と 45.92</li><li>C. 46 と 45</li><li>D. 45.926 と 45.926</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> B. 45.93 と 45.92</p><p>正解は「45.93 と 45.92」である。ROUND(45.926, 2)は小数点第2位で四捨五入する。第3位が6（5以上）なので第2位が繰り上がり 45.93 となる。TRUNC(45.926, 2)は小数点第2位以下を切り捨てる（四捨五入しない）。したがって 45.92 となる。DUALは計算結果など値を返すためだけに使うOracleの仮想表。選択肢Cは第0位での操作の結果であり誤り。Oracle SQL Reference §ROUND, TRUNC参照。</p></div></details></div></div><div class="section-card"><div class="section-title">日付関数</div><div class="topic-chips"><span class="chip">SYSDATE</span><span class="chip">ADD_MONTHS</span><span class="chip">MONTHS_BETWEEN</span><span class="chip">TO_DATE</span><span class="chip">TO_CHAR</span><span class="chip">LAST_DAY</span></div><div class="section-content"><h3>日付の基本</h3><p>Oracle では日付型は DATE 型で、日付と時刻の両方を保持します。</p><pre><code>-- 現在日時
-SELECT SYSDATE FROM DUAL;
--- 実行結果例：
--- SYSDATE
--- -------------------
--- 2024-04-03 10:30:00
+  <div class="section-card"><div class="section-title">文字列関数</div><div class="topic-chips"><span class="chip">UPPER</span><span class="chip">LOWER</span><span class="chip">SUBSTR</span><span class="chip">LENGTH</span><span class="chip">INSTR</span><span class="chip">REPLACE</span><span class="chip">TRIM</span><span class="chip">LPAD</span><span class="chip">RPAD</span></div><div class="section-content"><h3>主要な文字列関数</h3><table class='summary-table'><tr><th>関数</th><th>構文</th><th>説明</th></tr><tr><td>UPPER</td><td>UPPER(str)</td><td>大文字に変換</td></tr><tr><td>LOWER</td><td>LOWER(str)</td><td>小文字に変換</td></tr><tr><td>INITCAP</td><td>INITCAP(str)</td><td>先頭を大文字、残りを小文字</td></tr><tr><td>LENGTH</td><td>LENGTH(str)</td><td>文字数を返す</td></tr><tr><td>SUBSTR</td><td>SUBSTR(str, start [,len])</td><td>部分文字列を取り出す</td></tr><tr><td>INSTR</td><td>INSTR(str, search)</td><td>文字列の位置を返す</td></tr><tr><td>REPLACE</td><td>REPLACE(str, from, to)</td><td>文字を置換する</td></tr><tr><td>TRIM</td><td>TRIM(str)</td><td>前後の空白（または指定文字）を除去</td></tr><tr><td>LPAD</td><td>LPAD(str, len, pad)</td><td>左側を指定文字で埋める</td></tr><tr><td>RPAD</td><td>RPAD(str, len, pad)</td><td>右側を指定文字で埋める</td></tr></table><pre><code><span class="sql-kw">SELECT</span> <span class="sql-fn">UPPER</span>(<span class="sql-str">'hello'</span>),        <span class="sql-cmt">-- HELLO</span>
+       <span class="sql-fn">LOWER</span>(<span class="sql-str">'WORLD'</span>),        <span class="sql-cmt">-- world</span>
+       <span class="sql-fn">LENGTH</span>(<span class="sql-str">'Oracle'</span>),      <span class="sql-cmt">-- 6</span>
+       <span class="sql-fn">SUBSTR</span>(<span class="sql-str">'Oracle'</span>, <span class="sql-num">2</span>, <span class="sql-num">3</span>),<span class="sql-cmt">-- rac</span>
+       <span class="sql-fn">INSTR</span>(<span class="sql-str">'Oracle'</span>, <span class="sql-str">'a'</span>),  <span class="sql-cmt">-- 3</span>
+       <span class="sql-fn">REPLACE</span>(<span class="sql-str">'abc'</span>, <span class="sql-str">'b'</span>, <span class="sql-str">'B'</span>), <span class="sql-cmt">-- aBc</span>
+       <span class="sql-fn">LPAD</span>(<span class="sql-str">'42'</span>, <span class="sql-num">5</span>, <span class="sql-str">'0'</span>),    <span class="sql-cmt">-- 00042</span>
+       <span class="sql-fn">TRIM</span>(<span class="sql-str">'  hello  '</span>)      <span class="sql-cmt">-- hello</span>
+<span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- UPPER('HELLO')  LOWER('WORLD')  LENGTH('ORACLE')  SUBSTR('ORACLE',2,3)  INSTR('ORACLE','A')  REPLACE('ABC','B','B')  LPAD('42',5,'0')  TRIM('  HELLO  ')</span>
+<span class="sql-cmt">-- --------------  --------------  ----------------  --------------------  -------------------  ----------------------  ----------------  -----------------</span>
+<span class="sql-cmt">-- HELLO           world                          6  rac                                     3  aBc                     00042             hello</span></code></pre><div class='tip-box'><strong>試験のポイント：</strong> SUBSTR の開始位置は 1 から始まります（0 を指定すると 1 と同じ動作）。負の値を指定すると末尾からカウントします。INSTR は見つからない場合 0 を返します（NULL ではない）。</div></div><div class="problem-section-title">練習問題</div><div class="problem-card" id="prob-OSLV-D3-003"><div class="problem-header">問題 1 <span class="qid">#OSLV-D3-003</span></div><p class="problem-text">以下のSQL文の実行結果として正しいものはどれか。<br>```sql<br>SELECT SUBSTR('ABCDEFG', 3, 4) FROM DUAL;<br>```</p><ul class="choices"><li>A. BCD</li><li>B. CDEF</li><li>C. ABCD</li><li>D. BCDE</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> B. CDEF</p><p>正解は「CDEF」である。SUBSTR(string, start, length)はstringのstart位置からlength文字を取り出す。Oracleの文字列インデックスは1始まりである。'ABCDEFG'の3番目の文字は'C'であり、そこから4文字（C, D, E, F）を取り出すと'CDEF'となる。選択肢AはSUBSTR('ABCDEFG', 2, 3)の結果。選択肢DはSUBSTR('ABCDEFG', 2, 4)の結果。Oracle SQL Reference §SUBSTR参照。</p></div></details></div></div><div class="section-card"><div class="section-title">数値関数</div><div class="topic-chips"><span class="chip">ROUND</span><span class="chip">TRUNC</span><span class="chip">MOD</span><span class="chip">CEIL</span><span class="chip">FLOOR</span></div><div class="section-content"><h3>主要な数値関数</h3><table class='summary-table'><tr><th>関数</th><th>構文</th><th>説明</th></tr><tr><td>ROUND</td><td>ROUND(n [,d])</td><td>四捨五入。d は小数点以下の桁数</td></tr><tr><td>TRUNC</td><td>TRUNC(n [,d])</td><td>切り捨て。d は小数点以下の桁数</td></tr><tr><td>MOD</td><td>MOD(m, n)</td><td>m を n で割った余り</td></tr><tr><td>CEIL</td><td>CEIL(n)</td><td>n 以上の最小整数（切り上げ）</td></tr><tr><td>FLOOR</td><td>FLOOR(n)</td><td>n 以下の最大整数（切り下げ）</td></tr></table><pre><code><span class="sql-kw">SELECT</span> <span class="sql-fn">ROUND</span>(<span class="sql-num">45.926</span>, <span class="sql-num">2</span>),   <span class="sql-cmt">-- 45.93</span>
+       <span class="sql-fn">ROUND</span>(<span class="sql-num">45.926</span>, <span class="sql-num">0</span>),   <span class="sql-cmt">-- 46</span>
+       <span class="sql-fn">ROUND</span>(<span class="sql-num">45.926</span>, -<span class="sql-num">1</span>),  <span class="sql-cmt">-- 50</span>
+       <span class="sql-fn">TRUNC</span>(<span class="sql-num">45.926</span>, <span class="sql-num">2</span>),   <span class="sql-cmt">-- 45.92</span>
+       <span class="sql-fn">TRUNC</span>(<span class="sql-num">45.926</span>, -<span class="sql-num">1</span>),  <span class="sql-cmt">-- 40</span>
+       <span class="sql-fn">MOD</span>(<span class="sql-num">1600</span>, <span class="sql-num">300</span>),     <span class="sql-cmt">-- 100</span>
+       <span class="sql-fn">CEIL</span>(<span class="sql-num">2.3</span>),          <span class="sql-cmt">-- 3</span>
+       <span class="sql-fn">FLOOR</span>(<span class="sql-num">2.7</span>)          <span class="sql-cmt">-- 2</span>
+<span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- ROUND(45.926,2)  ROUND(45.926,0)  ROUND(45.926,-1)  TRUNC(45.926,2)  TRUNC(45.926,-1)  MOD(1600,300)  CEIL(2.3)  FLOOR(2.7)</span>
+<span class="sql-cmt">-- ---------------  ---------------  ----------------  ---------------  ----------------  -------------  ---------  ----------</span>
+<span class="sql-cmt">--           45.93               46                50            45.92                40            100          3           2</span></code></pre><div class='tip-box'><strong>試験のポイント：</strong> ROUND と TRUNC の第2引数（桁数）は省略すると 0（整数）として扱われます。負の値（例: -1）を指定すると十の位で丸めます。MOD(m, n) は m が負の場合も使えます（結果の符号は m に依存）。</div></div><div class="problem-section-title">練習問題</div><div class="problem-card" id="prob-OSLV-D3-001"><div class="problem-header">問題 1 <span class="qid">#OSLV-D3-001</span></div><p class="problem-text">以下のSQL文の実行結果として正しいものはどれか。<br>```sql<br>SELECT ROUND(45.926, 2), TRUNC(45.926, 2)<br>FROM DUAL;<br>```</p><ul class="choices"><li>A. 45.92 と 45.93</li><li>B. 45.93 と 45.92</li><li>C. 46 と 45</li><li>D. 45.926 と 45.926</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> B. 45.93 と 45.92</p><p>正解は「45.93 と 45.92」である。ROUND(45.926, 2)は小数点第2位で四捨五入する。第3位が6（5以上）なので第2位が繰り上がり 45.93 となる。TRUNC(45.926, 2)は小数点第2位以下を切り捨てる（四捨五入しない）。したがって 45.92 となる。DUALは計算結果など値を返すためだけに使うOracleの仮想表。選択肢Cは第0位での操作の結果であり誤り。Oracle SQL Reference §ROUND, TRUNC参照。</p></div></details></div></div><div class="section-card"><div class="section-title">日付関数</div><div class="topic-chips"><span class="chip">SYSDATE</span><span class="chip">ADD_MONTHS</span><span class="chip">MONTHS_BETWEEN</span><span class="chip">TO_DATE</span><span class="chip">TO_CHAR</span><span class="chip">LAST_DAY</span></div><div class="section-content"><h3>日付の基本</h3><p>Oracle では日付型は DATE 型で、日付と時刻の両方を保持します。</p><pre><code><span class="sql-cmt">-- 現在日時</span>
+<span class="sql-kw">SELECT</span> SYSDATE <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- SYSDATE</span>
+<span class="sql-cmt">-- -------------------</span>
+<span class="sql-cmt">-- 2024-04-03 10:30:00</span>
 
--- 日付の加減算（1日単位）
-SELECT SYSDATE + 7 AS 1週間後,
-       SYSDATE - 1 AS 昨日
-FROM DUAL;
--- 実行結果例：
--- 1週間後              昨日
--- -------------------  -------------------
--- 2024-04-10 10:30:00  2024-04-02 10:30:00</code></pre><h3>主要な日付関数</h3><table class='summary-table'><tr><th>関数</th><th>説明</th><th>例</th></tr><tr><td>ADD_MONTHS(d, n)</td><td>日付に n ヶ月加算</td><td>ADD_MONTHS(SYSDATE, 3)</td></tr><tr><td>MONTHS_BETWEEN(d1, d2)</td><td>2日付間の月数</td><td>MONTHS_BETWEEN(d1, d2)</td></tr><tr><td>LAST_DAY(d)</td><td>月の末日を返す</td><td>LAST_DAY(SYSDATE)</td></tr><tr><td>NEXT_DAY(d, day)</td><td>次の指定曜日の日付</td><td>NEXT_DAY(SYSDATE, 'MONDAY')</td></tr><tr><td>ROUND(d, fmt)</td><td>日付の四捨五入</td><td>ROUND(SYSDATE, 'MONTH')</td></tr><tr><td>TRUNC(d, fmt)</td><td>日付の切り捨て</td><td>TRUNC(SYSDATE, 'YEAR')</td></tr></table><h3>TO_CHAR / TO_DATE（変換関数）</h3><pre><code>-- 日付を文字列に変換
-SELECT TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS') FROM DUAL;
--- 実行結果例：
--- TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI:SS')
--- ----------------------------------------
--- 2024-04-03 10:30:00
+<span class="sql-cmt">-- 日付の加減算（1日単位）</span>
+<span class="sql-kw">SELECT</span> SYSDATE + <span class="sql-num">7</span> <span class="sql-kw">AS</span> 1週間後,
+       SYSDATE - <span class="sql-num">1</span> <span class="sql-kw">AS</span> 昨日
+<span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- 1週間後              昨日</span>
+<span class="sql-cmt">-- -------------------  -------------------</span>
+<span class="sql-cmt">-- 2024-04-10 10:30:00  2024-04-02 10:30:00</span></code></pre><h3>主要な日付関数</h3><table class='summary-table'><tr><th>関数</th><th>説明</th><th>例</th></tr><tr><td>ADD_MONTHS(d, n)</td><td>日付に n ヶ月加算</td><td>ADD_MONTHS(SYSDATE, 3)</td></tr><tr><td>MONTHS_BETWEEN(d1, d2)</td><td>2日付間の月数</td><td>MONTHS_BETWEEN(d1, d2)</td></tr><tr><td>LAST_DAY(d)</td><td>月の末日を返す</td><td>LAST_DAY(SYSDATE)</td></tr><tr><td>NEXT_DAY(d, day)</td><td>次の指定曜日の日付</td><td>NEXT_DAY(SYSDATE, 'MONDAY')</td></tr><tr><td>ROUND(d, fmt)</td><td>日付の四捨五入</td><td>ROUND(SYSDATE, 'MONTH')</td></tr><tr><td>TRUNC(d, fmt)</td><td>日付の切り捨て</td><td>TRUNC(SYSDATE, 'YEAR')</td></tr></table><h3>TO_CHAR / TO_DATE（変換関数）</h3><pre><code><span class="sql-cmt">-- 日付を文字列に変換</span>
+<span class="sql-kw">SELECT</span> <span class="sql-fn">TO_CHAR</span>(SYSDATE, <span class="sql-str">'YYYY-MM-DD HH24:MI:SS'</span>) <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI:SS')</span>
+<span class="sql-cmt">-- ----------------------------------------</span>
+<span class="sql-cmt">-- 2024-04-03 10:30:00</span>
 
--- 文字列を日付に変換
-SELECT TO_DATE('2024-01-15', 'YYYY-MM-DD') FROM DUAL;
--- 実行結果例：
--- TO_DATE('2024-01-15','YYYY-MM-DD')
--- ----------------------------------
--- 2024-01-15 00:00:00
+<span class="sql-cmt">-- 文字列を日付に変換</span>
+<span class="sql-kw">SELECT</span> <span class="sql-fn">TO_DATE</span>(<span class="sql-str">'2024-01-15'</span>, <span class="sql-str">'YYYY-MM-DD'</span>) <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- TO_DATE('2024-01-15','YYYY-MM-DD')</span>
+<span class="sql-cmt">-- ----------------------------------</span>
+<span class="sql-cmt">-- 2024-01-15 00:00:00</span>
 
--- 数値を文字列に変換
-SELECT TO_CHAR(12345.67, '999,999.99') FROM DUAL;
--- 実行結果例：
--- TO_CHAR(12345.67,'999,999.99')
--- ------------------------------
---  12,345.67</code></pre><div class='tip-box'><strong>試験のポイント：</strong> 日付同士の減算は日数（小数）を返します。MONTHS_BETWEEN の結果は小数になることがあります（整数にするなら TRUNC や FLOOR を使用）。TO_CHAR のフォーマット: YYYY=4桁年, MM=月, DD=日, HH24=24時間形式, MI=分, SS=秒。</div></div></div><div class="section-card"><div class="section-title">NULL関数と条件式</div><div class="topic-chips"><span class="chip">NVL</span><span class="chip">NVL2</span><span class="chip">COALESCE</span><span class="chip">NULLIF</span><span class="chip">DECODE</span><span class="chip">CASE</span></div><div class="section-content"><h3>NULL を扱う関数</h3><table class='summary-table'><tr><th>関数</th><th>構文</th><th>説明</th></tr><tr><td>NVL</td><td>NVL(expr, alt)</td><td>NULL なら alt を返す</td></tr><tr><td>NVL2</td><td>NVL2(expr, notnull, null)</td><td>NULL なら null_val、そうでなければ notnull_val を返す</td></tr><tr><td>COALESCE</td><td>COALESCE(e1, e2, ...)</td><td>NULL でない最初の値を返す</td></tr><tr><td>NULLIF</td><td>NULLIF(e1, e2)</td><td>e1 = e2 なら NULL、異なれば e1 を返す</td></tr></table><pre><code>-- NVL: コミッションが NULL なら 0 を使う
-SELECT LAST_NAME,
-       SALARY * (1 + NVL(COMMISSION_PCT, 0)) AS 合計給与
-FROM   EMPLOYEES;
--- 実行結果例：
--- LAST_NAME   合計給与
--- ----------  --------
--- King           24000
--- Abel           14300
--- （COMMISSION_PCT が NULL の King は SALARY * 1 = 24000、
---   Abel は SALARY(11000) * (1 + 0.30) = 14300）
+<span class="sql-cmt">-- 数値を文字列に変換</span>
+<span class="sql-kw">SELECT</span> <span class="sql-fn">TO_CHAR</span>(<span class="sql-num">12345.67</span>, <span class="sql-str">'999,999.99'</span>) <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- TO_CHAR(12345.67,'999,999.99')</span>
+<span class="sql-cmt">-- ------------------------------</span>
+<span class="sql-cmt">--  12,345.67</span></code></pre><div class='tip-box'><strong>試験のポイント：</strong> 日付同士の減算は日数（小数）を返します。MONTHS_BETWEEN の結果は小数になることがあります（整数にするなら TRUNC や FLOOR を使用）。TO_CHAR のフォーマット: YYYY=4桁年, MM=月, DD=日, HH24=24時間形式, MI=分, SS=秒。</div></div></div><div class="section-card"><div class="section-title">NULL関数と条件式</div><div class="topic-chips"><span class="chip">NVL</span><span class="chip">NVL2</span><span class="chip">COALESCE</span><span class="chip">NULLIF</span><span class="chip">DECODE</span><span class="chip">CASE</span></div><div class="section-content"><h3>NULL を扱う関数</h3><table class='summary-table'><tr><th>関数</th><th>構文</th><th>説明</th></tr><tr><td>NVL</td><td>NVL(expr, alt)</td><td>NULL なら alt を返す</td></tr><tr><td>NVL2</td><td>NVL2(expr, notnull, null)</td><td>NULL なら null_val、そうでなければ notnull_val を返す</td></tr><tr><td>COALESCE</td><td>COALESCE(e1, e2, ...)</td><td>NULL でない最初の値を返す</td></tr><tr><td>NULLIF</td><td>NULLIF(e1, e2)</td><td>e1 = e2 なら NULL、異なれば e1 を返す</td></tr></table><pre><code><span class="sql-cmt">-- NVL: コミッションが NULL なら 0 を使う</span>
+<span class="sql-kw">SELECT</span> LAST_NAME,
+       SALARY * (<span class="sql-num">1</span> + <span class="sql-fn">NVL</span>(COMMISSION_PCT, <span class="sql-num">0</span>)) <span class="sql-kw">AS</span> 合計給与
+<span class="sql-kw">FROM</span>   EMPLOYEES;
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- LAST_NAME   合計給与</span>
+<span class="sql-cmt">-- ----------  --------</span>
+<span class="sql-cmt">-- King           24000</span>
+<span class="sql-cmt">-- Abel           14300</span>
+<span class="sql-cmt">-- （COMMISSION_PCT が NULL の King は SALARY * 1 = 24000、</span>
+<span class="sql-cmt">--   Abel は SALARY(11000) * (1 + 0.30) = 14300）</span>
 
--- COALESCE: 最初の非 NULL 値
-SELECT COALESCE(NULL, NULL, 'Hello', 'World') FROM DUAL; -- Hello
--- 実行結果例：
--- COALESCE(NULL,NULL,'Hello','World')
--- -----------------------------------
--- Hello</code></pre><h3>条件式（CASE / DECODE）</h3><pre><code>-- CASE 式（標準 SQL）
-SELECT LAST_NAME,
-       CASE JOB_ID
-           WHEN 'IT_PROG' THEN 'IT部門'
-           WHEN 'SA_REP'  THEN '営業部門'
-           ELSE 'その他'
-       END AS 部門名
-FROM   EMPLOYEES;
--- 実行結果例：
--- LAST_NAME   部門名
--- ----------  --------
--- Hunold      IT部門
--- Abel        営業部門
--- King        その他
--- （JOB_ID に応じて部門名が割り当てられる。一致しない場合は ELSE の値）
+<span class="sql-cmt">-- COALESCE: 最初の非 NULL 値</span>
+<span class="sql-kw">SELECT</span> <span class="sql-fn">COALESCE</span>(<span class="sql-kw">NULL</span>, <span class="sql-kw">NULL</span>, <span class="sql-str">'Hello'</span>, <span class="sql-str">'World'</span>) <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>; <span class="sql-cmt">-- Hello</span>
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- COALESCE(NULL,NULL,'Hello','World')</span>
+<span class="sql-cmt">-- -----------------------------------</span>
+<span class="sql-cmt">-- Hello</span></code></pre><h3>条件式（CASE / DECODE）</h3><pre><code><span class="sql-cmt">-- CASE 式（標準 SQL）</span>
+<span class="sql-kw">SELECT</span> LAST_NAME,
+       <span class="sql-kw">CASE</span> JOB_ID
+           <span class="sql-kw">WHEN</span> <span class="sql-str">'IT_PROG'</span> <span class="sql-kw">THEN</span> <span class="sql-str">'IT部門'</span>
+           <span class="sql-kw">WHEN</span> <span class="sql-str">'SA_REP'</span>  <span class="sql-kw">THEN</span> <span class="sql-str">'営業部門'</span>
+           <span class="sql-kw">ELSE</span> <span class="sql-str">'その他'</span>
+       <span class="sql-kw">END</span> <span class="sql-kw">AS</span> 部門名
+<span class="sql-kw">FROM</span>   EMPLOYEES;
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- LAST_NAME   部門名</span>
+<span class="sql-cmt">-- ----------  --------</span>
+<span class="sql-cmt">-- Hunold      IT部門</span>
+<span class="sql-cmt">-- Abel        営業部門</span>
+<span class="sql-cmt">-- King        その他</span>
+<span class="sql-cmt">-- （JOB_ID に応じて部門名が割り当てられる。一致しない場合は ELSE の値）</span>
 
--- DECODE（Oracle 独自）
-SELECT LAST_NAME,
-       DECODE(JOB_ID,
-              'IT_PROG', 'IT部門',
-              'SA_REP',  '営業部門',
-              'その他') AS 部門名
-FROM   EMPLOYEES;
--- 実行結果例：
--- LAST_NAME   部門名
--- ----------  --------
--- Hunold      IT部門
--- Abel        営業部門
--- King        その他
--- （CASE 式と同等の結果。DECODE は Oracle 独自構文）</code></pre><div class='tip-box'><strong>試験のポイント：</strong> NVL と NVL2 は引数のデータ型が一致している必要があります。COALESCE は標準 SQL で移植性が高いです。DECODE は Oracle 独自です。CASE 式の方が標準 SQL に準拠しています。CASE 式には「単純 CASE（WHEN 値）」と「検索 CASE（WHEN 条件）」の2種類があります。</div></div><div class="problem-section-title">練習問題</div><div class="problem-card" id="prob-OSLV-D3-002"><div class="problem-header">問題 1 <span class="qid">#OSLV-D3-002</span></div><p class="problem-text">以下のSQL文の実行結果として正しいものはどれか。<br>```sql<br>SELECT NVL2(commission_pct, salary * commission_pct, 0)<br>FROM employees<br>WHERE employee_id = 100;<br>```<br>employee_id=100 は commission_pct = NULL, salary = 24000 とする。</p><ul class="choices"><li>A. 24000</li><li>B. NULL</li><li>C. 0</li><li>D. エラーになる</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> C. 0</p><p>正解は「0」である。NVL2(expr1, expr2, expr3)は expr1 がNULLでなければ expr2 を返し、NULLであれば expr3 を返す。commission_pctがNULLのため、expr3である0が返される。NVL(expr1, expr2)との違いは、NVLはNULLのとき代替値を返すだけだが、NVL2はNULLでない場合の式も指定できる点。この例はNULLでない場合は歩合給計算、NULLの場合は0を返す典型的な使い方。Oracle SQL Reference §NVL2参照。</p></div></details></div><div class="problem-card" id="prob-OSLV-D3-004"><div class="problem-header">問題 2 <span class="qid">#OSLV-D3-004</span></div><p class="problem-text">以下のSQL文の実行結果として正しいものはどれか。<br>```sql<br>SELECT<br>  CASE job_id<br>    WHEN 'IT_PROG' THEN '開発'<br>    WHEN 'SA_MAN'  THEN '営業'<br>    ELSE 'その他'<br>  END AS job_type<br>FROM employees<br>WHERE employee_id = 200;<br>```<br>employee_id=200 の job_id = 'HR_REP' とする。</p><ul class="choices"><li>A. 開発</li><li>B. 営業</li><li>C. NULL</li><li>D. その他</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> D. その他</p><p>正解は「その他」である。CASE式の単純CASE形式はWHEN節で指定した値と一致するかを順番に比較する。job_id = 'HR_REP'は'IT_PROG'にも'SA_MAN'にも一致しないため、ELSEの'その他'が返される。ELSE句がない場合、どのWHEN条件にも一致しないときNULLが返される。CASE式はSELECT句・WHERE句・ORDER BY句などで使用できる。Oracle SQL Reference §CASE式参照。</p></div></details></div></div>
+<span class="sql-cmt">-- DECODE（Oracle 独自）</span>
+<span class="sql-kw">SELECT</span> LAST_NAME,
+       <span class="sql-fn">DECODE</span>(JOB_ID,
+              <span class="sql-str">'IT_PROG'</span>, <span class="sql-str">'IT部門'</span>,
+              <span class="sql-str">'SA_REP'</span>,  <span class="sql-str">'営業部門'</span>,
+              <span class="sql-str">'その他'</span>) <span class="sql-kw">AS</span> 部門名
+<span class="sql-kw">FROM</span>   EMPLOYEES;
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- LAST_NAME   部門名</span>
+<span class="sql-cmt">-- ----------  --------</span>
+<span class="sql-cmt">-- Hunold      IT部門</span>
+<span class="sql-cmt">-- Abel        営業部門</span>
+<span class="sql-cmt">-- King        その他</span>
+<span class="sql-cmt">-- （CASE 式と同等の結果。DECODE は Oracle 独自構文）</span></code></pre><div class='tip-box'><strong>試験のポイント：</strong> NVL と NVL2 は引数のデータ型が一致している必要があります。COALESCE は標準 SQL で移植性が高いです。DECODE は Oracle 独自です。CASE 式の方が標準 SQL に準拠しています。CASE 式には「単純 CASE（WHEN 値）」と「検索 CASE（WHEN 条件）」の2種類があります。</div></div><div class="problem-section-title">練習問題</div><div class="problem-card" id="prob-OSLV-D3-002"><div class="problem-header">問題 1 <span class="qid">#OSLV-D3-002</span></div><p class="problem-text">以下のSQL文の実行結果として正しいものはどれか。<br>```sql<br>SELECT NVL2(commission_pct, salary * commission_pct, 0)<br>FROM employees<br>WHERE employee_id = 100;<br>```<br>employee_id=100 は commission_pct = NULL, salary = 24000 とする。</p><ul class="choices"><li>A. 24000</li><li>B. NULL</li><li>C. 0</li><li>D. エラーになる</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> C. 0</p><p>正解は「0」である。NVL2(expr1, expr2, expr3)は expr1 がNULLでなければ expr2 を返し、NULLであれば expr3 を返す。commission_pctがNULLのため、expr3である0が返される。NVL(expr1, expr2)との違いは、NVLはNULLのとき代替値を返すだけだが、NVL2はNULLでない場合の式も指定できる点。この例はNULLでない場合は歩合給計算、NULLの場合は0を返す典型的な使い方。Oracle SQL Reference §NVL2参照。</p></div></details></div><div class="problem-card" id="prob-OSLV-D3-004"><div class="problem-header">問題 2 <span class="qid">#OSLV-D3-004</span></div><p class="problem-text">以下のSQL文の実行結果として正しいものはどれか。<br>```sql<br>SELECT<br>  CASE job_id<br>    WHEN 'IT_PROG' THEN '開発'<br>    WHEN 'SA_MAN'  THEN '営業'<br>    ELSE 'その他'<br>  END AS job_type<br>FROM employees<br>WHERE employee_id = 200;<br>```<br>employee_id=200 の job_id = 'HR_REP' とする。</p><ul class="choices"><li>A. 開発</li><li>B. 営業</li><li>C. NULL</li><li>D. その他</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> D. その他</p><p>正解は「その他」である。CASE式の単純CASE形式はWHEN節で指定した値と一致するかを順番に比較する。job_id = 'HR_REP'は'IT_PROG'にも'SA_MAN'にも一致しないため、ELSEの'その他'が返される。ELSE句がない場合、どのWHEN条件にも一致しないときNULLが返される。CASE式はSELECT句・WHERE句・ORDER BY句などで使用できる。Oracle SQL Reference §CASE式参照。</p></div></details></div></div>
 </div>
 </body>
 </html>

@@ -62,6 +62,17 @@
     .concept-section h3 { flex-direction: column; align-items: flex-start; }
     .option-review-head { flex-direction: column; align-items: flex-start; }
   }
+
+  pre .sql-kw { color: #fbbf24; font-weight: 700; }
+  pre .sql-fn { color: #60a5fa; font-weight: 600; }
+  pre .sql-str { color: #86efac; }
+  pre .sql-num { color: #fca5a5; }
+  pre .sql-cmt { color: #94a3b8; font-style: italic; }
+  code .sql-kw { color: #b45309; font-weight: 700; }
+  code .sql-fn { color: #1d4ed8; font-weight: 600; }
+  code .sql-str { color: #047857; }
+  code .sql-num { color: #b91c1c; }
+  code .sql-cmt { color: #64748b; font-style: italic; }
 </style>
 </head>
 <body>
@@ -117,10 +128,10 @@
 <span class="note">-- Oracle 独自 (+) は FULL OUTER JOIN と NATURAL JOIN をサポートしない。</span></div></div>
       <div class="guide-block">
         <div class="guide-title">この論点の基本形</div>
-        <pre>SELECT e.employee_id, m.employee_id AS manager_id
-FROM   employees e
-JOIN   employees m
-ON     e.manager_id = m.employee_id;</pre>
+        <pre><span class="sql-kw">SELECT</span> e.employee_id, m.employee_id <span class="sql-kw">AS</span> manager_id
+<span class="sql-kw">FROM</span>   employees e
+<span class="sql-kw">JOIN</span>   employees m
+<span class="sql-kw">ON</span>     e.manager_id = m.employee_id;</pre>
       </div>
       <div class="guide-grid">
         <div class="guide-block">
@@ -141,11 +152,11 @@ ON     e.manager_id = m.employee_id;</pre>
                   <div class="block-title">問題文</div>
                   <pre>自己結合について正しい記述はどれでしょうか。（2つ選択）
 
-(1)		A.　USING句を指定することができます。
-(2)		B.　表別名が必要です。
-(3)		C.　LEFT OUTER JOIN、もしくはRIGHT OUTER JOINにする必要があります。
-(4)		D.　FULL OUTER JOINにする必要があります。
-(5)		E.　INNER JOINにすることができます。</pre>
+(<span class="sql-num">1</span>)		A.　USING句を指定することができます。
+(<span class="sql-num">2</span>)		B.　表別名が必要です。
+(<span class="sql-num">3</span>)		C.　<span class="sql-kw">LEFT OUTER JOIN</span>、もしくはRIGHT <span class="sql-kw">OUTER</span> JOINにする必要があります。
+(<span class="sql-num">4</span>)		D.　<span class="sql-kw">FULL</span> <span class="sql-kw">OUTER</span> JOINにする必要があります。
+(<span class="sql-num">5</span>)		E.　<span class="sql-kw">INNER</span> JOINにすることができます。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「FULL OUTER JOIN」です。問題文は「自己結合について正しい記述はどれでしょうか。（2つ選択）」を満たす記述または SQL を求めています。FULL OUTER JOIN は左右両方の表の全行を返し、一致しない側は NULL で埋める。デカルト積ではなく、Oracle 独自の (+) 構文では表現できない。 そのため、成立条件を満たす正答は B「表別名が必要です。」 / E「INNER JOINにすることができます。」 です。</p>
@@ -208,12 +219,12 @@ ON     e.manager_id = m.employee_id;</pre>
                 <article class="question-card">
                   <div class="question-meta">第2回 模擬試験 / 問57 / 正答 AD / 自己回答 AB</div>
                   <div class="block-title">問題文</div>
-                  <pre>次のうち、FULL OUTER JOINの特徴として正しいものはどれでしょうか。（2つ選択）
-(1)		A. 両方の表の全行を出力し、結合条件に一致しない行はNULLで埋める
-(2)		B. 実行結果はデカルト積と同じになる
-(3)		C. 結合条件に一致する行のみを返し、一致しない行は含まれない
-(4)		D. Oracle独自結合構文ではサポートされていない
-(5)		E. OUTER JOIN にFULLを付けた場合、INNER JOINと同義である</pre>
+                  <pre>次のうち、<span class="sql-kw">FULL</span> <span class="sql-kw">OUTER</span> JOINの特徴として正しいものはどれでしょうか。（2つ選択）
+(<span class="sql-num">1</span>)		A. 両方の表の全行を出力し、結合条件に一致しない行はNULLで埋める
+(<span class="sql-num">2</span>)		B. 実行結果はデカルト積と同じになる
+(<span class="sql-num">3</span>)		C. 結合条件に一致する行のみを返し、一致しない行は含まれない
+(<span class="sql-num">4</span>)		D. Oracle独自結合構文ではサポートされていない
+(<span class="sql-num">5</span>)		E. <span class="sql-kw">OUTER JOIN</span> にFULLを付けた場合、<span class="sql-kw">INNER</span> JOINと同義である</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「FULL OUTER JOIN」です。問題文は「次のうち、FULL OUTER JOINの特徴として正しいものはどれでしょうか。（2つ選択）」を満たす記述または SQL を求めています。FULL OUTER JOIN は左右両方の表の全行を返し、一致しない側は NULL で埋める。デカルト積ではなく、Oracle 独自の (+) 構文では表現できない。 そのため、成立条件を満たす正答は A「両方の表の全行を出力し、結合条件に一致しない行はNULLで埋める」 / D「Oracle独自結合構文ではサポートされていない」 です。</p>
@@ -277,11 +288,11 @@ ON     e.manager_id = m.employee_id;</pre>
                   <div class="question-meta">第3回 模擬試験 / 問74 / 正答 BD / 自己回答 AB</div>
                   <div class="block-title">問題文</div>
                   <pre>内部結合と外部結合 についての次の記載のうち、正しいものを2つ選んでください。
-(1)		A. Oracle独自構文ではFULL OUTER JOIN と同等機能をサポートしている。
-(2)		B. FULL OUTER JOIN は、一致する行と一致しない行の両方を返す。
-(3)		C. RIGHT OUTER JOIN は、一致しない行のみを返す。
-(4)		D. INNER JOIN は、2つのテーブル間で複数の結合条件を指定する場合に使用できる。
-(5)		E. OUTER JOIN は、クエリごとに2つのテーブル間のみで使用できる。</pre>
+(<span class="sql-num">1</span>)		A. Oracle独自構文ではFULL <span class="sql-kw">OUTER JOIN</span> と同等機能をサポートしている。
+(<span class="sql-num">2</span>)		B. <span class="sql-kw">FULL OUTER JOIN</span> は、一致する行と一致しない行の両方を返す。
+(<span class="sql-num">3</span>)		C. <span class="sql-kw">RIGHT OUTER JOIN</span> は、一致しない行のみを返す。
+(<span class="sql-num">4</span>)		D. <span class="sql-kw">INNER JOIN</span> は、2つのテーブル間で複数の結合条件を指定する場合に使用できる。
+(<span class="sql-num">5</span>)		E. <span class="sql-kw">OUTER JOIN</span> は、クエリごとに2つのテーブル間のみで使用できる。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「FULL OUTER JOIN」です。問題文は「内部結合と外部結合 についての次の記載のうち、正しいものを2つ選んでください。」を満たす記述または SQL を求めています。FULL OUTER JOIN は左右両方の表の全行を返し、一致しない側は NULL で埋める。デカルト積ではなく、Oracle 独自の (+) 構文では表現できない。 そのため、成立条件を満たす正答は B「FULL OUTER JOIN は、一致する行と一致しない行の両方を返す。」 / D「INNER JOIN は、2つのテーブル間で複数の結合条件を指定する場合に使用できる。」 です。</p>
@@ -344,11 +355,11 @@ ON     e.manager_id = m.employee_id;</pre>
                 <article class="question-card">
                   <div class="question-meta">第3回 模擬試験 / 問77 / 正答 A / 自己回答 C</div>
                   <div class="block-title">問題文</div>
-                  <pre>ANSI JOIN 構文と比較した場合のOracle独自JOIN 構文の記載について、正しいものを1つ選んでください。
-(1)		A. Oracle 独自の JOIN 構文とANSI JOIN 構文では、性能に大きな差はない。
-(2)		B. Oracle 独自の JOIN 構文では 、自然結合をサポートしている。
-(3)		C. Oracle 独自の JOIN 構文では、 FULL OUTER JOIN 機能をサポートしている。
-(4)		D. Oracle独自 の JOIN 構文は、右外部結合のみをサポートしている。</pre>
+                  <pre>ANSI <span class="sql-kw">JOIN</span> 構文と比較した場合のOracle独自JOIN 構文の記載について、正しいものを1つ選んでください。
+(<span class="sql-num">1</span>)		A. Oracle 独自の <span class="sql-kw">JOIN</span> 構文とANSI <span class="sql-kw">JOIN</span> 構文では、性能に大きな差はない。
+(<span class="sql-num">2</span>)		B. Oracle 独自の <span class="sql-kw">JOIN</span> 構文では 、自然結合をサポートしている。
+(<span class="sql-num">3</span>)		C. Oracle 独自の <span class="sql-kw">JOIN</span> 構文では、 <span class="sql-kw">FULL OUTER JOIN</span> 機能をサポートしている。
+(<span class="sql-num">4</span>)		D. Oracle独自 の <span class="sql-kw">JOIN</span> 構文は、右外部結合のみをサポートしている。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「FULL OUTER JOIN」です。問題文は「ANSI JOIN 構文と比較した場合のOracle独自JOIN 構文の記載について、正しいものを1つ選んでください。」を満たす記述または SQL を求めています。FULL OUTER JOIN は左右両方の表の全行を返し、一致しない側は NULL で埋める。デカルト積ではなく、Oracle 独自の (+) 構文では表現できない。 そのため、成立条件を満たす正答は A「Oracle 独自の JOIN 構文とANSI JOIN 構文では、性能に大きな差はない。」 です。</p>
@@ -422,10 +433,10 @@ ON     e.manager_id = m.employee_id;</pre>
 <span class="note">-- Oracle 独自 (+) は FULL OUTER JOIN と NATURAL JOIN をサポートしない。</span></div></div>
       <div class="guide-block">
         <div class="guide-title">この論点の基本形</div>
-        <pre>SELECT e.employee_id, m.employee_id AS manager_id
-FROM   employees e
-JOIN   employees m
-ON     e.manager_id = m.employee_id;</pre>
+        <pre><span class="sql-kw">SELECT</span> e.employee_id, m.employee_id <span class="sql-kw">AS</span> manager_id
+<span class="sql-kw">FROM</span>   employees e
+<span class="sql-kw">JOIN</span>   employees m
+<span class="sql-kw">ON</span>     e.manager_id = m.employee_id;</pre>
       </div>
       <div class="guide-grid">
         <div class="guide-block">
@@ -445,11 +456,11 @@ ON     e.manager_id = m.employee_id;</pre>
                   <div class="question-meta">第3回 模擬試験 / 問54 / 正答 ABE / 自己回答 ADE</div>
                   <div class="block-title">問題文</div>
                   <pre>自己結合の説明として、正しいものはどれですか。3つ選択してください。
-(1)		A. INNER JOINにすることができます。
-(2)		B. ON句を指定することができます。
-(3)		C. 特定列を指定した絞り込みはできません。
-(4)		D. 等価結合にする必要があります。
-(5)		E. 表別名が必要です。</pre>
+(<span class="sql-num">1</span>)		A. <span class="sql-kw">INNER</span> JOINにすることができます。
+(<span class="sql-num">2</span>)		B. ON句を指定することができます。
+(<span class="sql-num">3</span>)		C. 特定列を指定した絞り込みはできません。
+(<span class="sql-num">4</span>)		D. 等価結合にする必要があります。
+(<span class="sql-num">5</span>)		E. 表別名が必要です。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「自己結合」です。問題文は「自己結合の説明として、正しいものはどれですか。3つ選択してください。」を満たす記述または SQL を求めています。自己結合は同じ表を別名で2回参照する結合であり、表別名が必須である。INNER JOIN にもでき、OUTER JOIN に限定されない。 そのため、成立条件を満たす正答は A「INNER JOINにすることができます。」 / B「ON句を指定することができます。」 / E「表別名が必要です。」 です。</p>

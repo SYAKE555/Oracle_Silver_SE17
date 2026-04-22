@@ -62,6 +62,17 @@
     .concept-section h3 { flex-direction: column; align-items: flex-start; }
     .option-review-head { flex-direction: column; align-items: flex-start; }
   }
+
+  pre .sql-kw { color: #fbbf24; font-weight: 700; }
+  pre .sql-fn { color: #60a5fa; font-weight: 600; }
+  pre .sql-str { color: #86efac; }
+  pre .sql-num { color: #fca5a5; }
+  pre .sql-cmt { color: #94a3b8; font-style: italic; }
+  code .sql-kw { color: #b45309; font-weight: 700; }
+  code .sql-fn { color: #1d4ed8; font-weight: 600; }
+  code .sql-str { color: #047857; }
+  code .sql-num { color: #b91c1c; }
+  code .sql-cmt { color: #64748b; font-style: italic; }
 </style>
 </head>
 <body>
@@ -114,11 +125,11 @@
 <span class="note">-- COUNT(*) は全行、COUNT(列) は NULL を除く。SUM/AVG/MIN/MAX は NULL を無視。</span></div></div>
       <div class="guide-block">
         <div class="guide-title">この論点の基本形</div>
-        <pre>SELECT department_id, COUNT(*)
-FROM   employees
-WHERE  salary IS NOT NULL
-GROUP  BY department_id
-HAVING COUNT(*) &gt;= 2;</pre>
+        <pre><span class="sql-kw">SELECT</span> department_id, <span class="sql-fn">COUNT</span>(*)
+<span class="sql-kw">FROM</span>   employees
+<span class="sql-kw">WHERE</span>  salary <span class="sql-kw">IS NOT NULL</span>
+GROUP  <span class="sql-kw">BY</span> department_id
+<span class="sql-kw">HAVING</span> <span class="sql-fn">COUNT</span>(*) &gt;= <span class="sql-num">2</span>;</pre>
       </div>
       <div class="guide-grid">
         <div class="guide-block">
@@ -142,10 +153,10 @@ HAVING COUNT(*) &gt;= 2;</pre>
 以下のSQLで正常に実行されるものはどれでしょうか。（2つ選択）
 　
 拡大する
-(1)		A.　SELECT SUM(ITEM_TYPE1+ITEM_TYPE2) FROM ITEM WHERE ITEM_NAME LIKE &#x27;R%&#x27;;
-(2)		B.　SELECT SUM(ITEM_TYPE1+ITEM_TYPE2),ITEM_NAME FROM ITEM WHERE ITEM_NAME LIKE &#x27;R%&#x27;;
-(3)		C.　SELECT SUM(DISTINCT ITEM_TYPE1), MIN(ITEM_TYPE1) FROM ITEM WHERE ITEM_NAME LIKE &#x27;R%&#x27;;
-(4)		D.　SELECT AVG(ITEM_PRICE) FROM ITEM WHERE AVG(ITEM_PRICE) &gt;= 500 GROUP BY ITEM_ID;</pre>
+(<span class="sql-num">1</span>)		A.　<span class="sql-kw">SELECT</span> <span class="sql-fn">SUM</span>(ITEM_TYPE1+ITEM_TYPE2) <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> ITEM_NAME <span class="sql-kw">LIKE</span> &#x27;R%&#x27;;
+(<span class="sql-num">2</span>)		B.　<span class="sql-kw">SELECT</span> <span class="sql-fn">SUM</span>(ITEM_TYPE1+ITEM_TYPE2),ITEM_NAME <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> ITEM_NAME <span class="sql-kw">LIKE</span> &#x27;R%&#x27;;
+(<span class="sql-num">3</span>)		C.　<span class="sql-kw">SELECT</span> <span class="sql-fn">SUM</span>(<span class="sql-kw">DISTINCT</span> ITEM_TYPE1), <span class="sql-fn">MIN</span>(ITEM_TYPE1) <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> ITEM_NAME <span class="sql-kw">LIKE</span> &#x27;R%&#x27;;
+(<span class="sql-num">4</span>)		D.　<span class="sql-kw">SELECT</span> <span class="sql-fn">AVG</span>(ITEM_PRICE) <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> <span class="sql-fn">AVG</span>(ITEM_PRICE) &gt;= <span class="sql-num">500</span> <span class="sql-kw">GROUP BY</span> ITEM_ID;</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「WHERE と HAVING」です。問題文は「図のような表があります。 以下のSQLで正常に実行されるものはどれでしょうか。（2つ選択）」を満たす記述または SQL を求めています。WHERE は集計前の行条件、HAVING は集計後のグループ条件である。集計関数を WHERE に直接書くとエラーになる。 そのため、成立条件を満たす正答は A「SELECT SUM(ITEM_TYPE1+ITEM_TYPE2) FROM ITEM WHERE ITEM_…」 / C「SELECT SUM(DISTINCT ITEM_TYPE1), MIN(ITEM_TYPE1) FROM I…」 です。</p>
@@ -200,10 +211,10 @@ HAVING COUNT(*) &gt;= 2;</pre>
                   <div class="question-meta">第3回 模擬試験 / 問38 / 正答 AB / 自己回答 BC</div>
                   <div class="block-title">問題文</div>
                   <pre>EMPLOYEES テーブルには、NUMBER型の DEPT_ID 列と SALARY 列があります。 次のうち、正常に実行できるクエリを2つ選んでください。
-(1)		A. SELECT dept_id, COUNT(dept_id) FROM employees WHERE salary &gt; 215000 GROUP BY dept_id HAVING COUNT(*) &gt; 5;
-(2)		B. SELECT dept_id FROM employees WHERE salary &gt; 215000 GROUP BY dept_id HAVING COUNT(*) &gt; 5;
-(3)		C. SELECT COUNT(dept_id) FROM employees GROUP BY dept_id WHERE salary &gt; 215000;
-(4)		D. SELECT dept_id FROM employees WHERE salary &gt; 215000 AND COUNT(*) &gt; 5 GROUP BY COUNT(*);</pre>
+(<span class="sql-num">1</span>)		A. <span class="sql-kw">SELECT</span> dept_id, <span class="sql-fn">COUNT</span>(dept_id) <span class="sql-kw">FROM</span> employees <span class="sql-kw">WHERE</span> salary &gt; <span class="sql-num">215000</span> <span class="sql-kw">GROUP BY</span> dept_id <span class="sql-kw">HAVING</span> <span class="sql-fn">COUNT</span>(*) &gt; <span class="sql-num">5</span>;
+(<span class="sql-num">2</span>)		B. <span class="sql-kw">SELECT</span> dept_id <span class="sql-kw">FROM</span> employees <span class="sql-kw">WHERE</span> salary &gt; <span class="sql-num">215000</span> <span class="sql-kw">GROUP BY</span> dept_id <span class="sql-kw">HAVING</span> <span class="sql-fn">COUNT</span>(*) &gt; <span class="sql-num">5</span>;
+(<span class="sql-num">3</span>)		C. <span class="sql-kw">SELECT</span> <span class="sql-fn">COUNT</span>(dept_id) <span class="sql-kw">FROM</span> employees <span class="sql-kw">GROUP BY</span> dept_id <span class="sql-kw">WHERE</span> salary &gt; <span class="sql-num">215000</span>;
+(<span class="sql-num">4</span>)		D. <span class="sql-kw">SELECT</span> dept_id <span class="sql-kw">FROM</span> employees <span class="sql-kw">WHERE</span> salary &gt; <span class="sql-num">215000</span> <span class="sql-kw">AND</span> <span class="sql-fn">COUNT</span>(*) &gt; <span class="sql-num">5</span> <span class="sql-kw">GROUP BY</span> <span class="sql-fn">COUNT</span>(*);</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「WHERE と HAVING」です。問題文は「EMPLOYEES テーブルには、NUMBER型の DEPT_ID 列と SALARY 列があります。 次のうち、正常に実行できるクエリを2つ選んでください。」を満たす記述または SQL を求めています。WHERE は集計前の行条件、HAVING は集計後のグループ条件である。集計関数を WHERE に直接書くとエラーになる。 そのため、成立条件を満たす正答は A「SELECT dept_id, COUNT(dept_id) FROM employees WHERE sal…」 / B「SELECT dept_id FROM employees WHERE salary &gt; 215000 GRO…」 です。</p>
@@ -259,16 +270,16 @@ HAVING COUNT(*) &gt;= 2;</pre>
                   <div class="block-title">問題文</div>
                   <pre>次のSQLはエラーが発生します。その理由を1つ選択してください。
 
-SELECT dept_id AS &quot;Department&quot;, AVG(salary) AS AvgSal, MAX(salary) AS &quot;MaxSal&quot;
-FROM employees
-WHERE salary &gt; 23000
-GROUP BY &quot;Department&quot;
-ORDER BY AvgSal;
+<span class="sql-kw">SELECT</span> dept_id <span class="sql-kw">AS</span> &quot;Department&quot;, <span class="sql-fn">AVG</span>(salary) <span class="sql-kw">AS</span> AvgSal, <span class="sql-fn">MAX</span>(salary) <span class="sql-kw">AS</span> &quot;MaxSal&quot;
+<span class="sql-kw">FROM</span> employees
+<span class="sql-kw">WHERE</span> salary &gt; <span class="sql-num">23000</span>
+<span class="sql-kw">GROUP BY</span> &quot;Department&quot;
+<span class="sql-kw">ORDER BY</span> AvgSal;
 
-(1)		A. 別名は常に二重引用符で指定しなければならない。
-(2)		B. 別名は GROUP BY 句で使用できない。
-(3)		C. 別名は ORDER BY 句で使用できない。
-(4)		D. 別名（alias）はスペースを含めてはならない。</pre>
+(<span class="sql-num">1</span>)		A. 別名は常に二重引用符で指定しなければならない。
+(<span class="sql-num">2</span>)		B. 別名は <span class="sql-kw">GROUP BY</span> 句で使用できない。
+(<span class="sql-num">3</span>)		C. 別名は <span class="sql-kw">ORDER BY</span> 句で使用できない。
+(<span class="sql-num">4</span>)		D. 別名（alias）はスペースを含めてはならない。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「WHERE と HAVING」です。問題文は「次のSQLはエラーが発生します。その理由を1つ選択してください。 SELECT dept_id AS "Department", AVG(salary) AS AvgSal, MAX(salary) AS "MaxSal" FROM em…」を満たす記述または SQL を求めています。WHERE は集計前の行条件、HAVING は集計後のグループ条件である。集計関数を WHERE に直接書くとエラーになる。 そのため、成立条件を満たす正答は B「別名は GROUP BY 句で使用できない。」 です。</p>
@@ -323,33 +334,33 @@ ORDER BY AvgSal;
                   <div class="question-meta">第3回 模擬試験 / 問60 / 正答 B / 自己回答 D</div>
                   <div class="block-title">問題文</div>
                   <pre>A.
-SELECT dept_id, COUNT(*) FROM employees
-GROUP BY dept_id
-HAVING COUNT(*) &gt;= 4
-ORDER BY dept_id;
+<span class="sql-kw">SELECT</span> dept_id, <span class="sql-fn">COUNT</span>(*) <span class="sql-kw">FROM</span> employees
+<span class="sql-kw">GROUP BY</span> dept_id
+<span class="sql-kw">HAVING</span> <span class="sql-fn">COUNT</span>(*) &gt;= <span class="sql-num">4</span>
+<span class="sql-kw">ORDER BY</span> dept_id;
 
 B.
-SELECT dept_id, COUNT(*) FROM employees
-WHERE dept_id &lt;&gt; 100 AND COUNT(*) &gt;= 4
-GROUP BY dept_id;
+<span class="sql-kw">SELECT</span> dept_id, <span class="sql-fn">COUNT</span>(*) <span class="sql-kw">FROM</span> employees
+<span class="sql-kw">WHERE</span> dept_id &lt;&gt; <span class="sql-num">100</span> <span class="sql-kw">AND</span> <span class="sql-fn">COUNT</span>(*) &gt;= <span class="sql-num">4</span>
+<span class="sql-kw">GROUP BY</span> dept_id;
 
 C.
-SELECT dept_id, COUNT(*) FROM employees
-WHERE dept_id &lt;&gt; 100
-GROUP BY dept_id
-HAVING COUNT(*) &gt;= 4;
+<span class="sql-kw">SELECT</span> dept_id, <span class="sql-fn">COUNT</span>(*) <span class="sql-kw">FROM</span> employees
+<span class="sql-kw">WHERE</span> dept_id &lt;&gt; <span class="sql-num">100</span>
+<span class="sql-kw">GROUP BY</span> dept_id
+<span class="sql-kw">HAVING</span> <span class="sql-fn">COUNT</span>(*) &gt;= <span class="sql-num">4</span>;
 
 D.
-SELECT dept_id, COUNT(*) FROM employees
-GROUP BY dept_id
-HAVING COUNT(*) &gt;= 4;
+<span class="sql-kw">SELECT</span> dept_id, <span class="sql-fn">COUNT</span>(*) <span class="sql-kw">FROM</span> employees
+<span class="sql-kw">GROUP BY</span> dept_id
+<span class="sql-kw">HAVING</span> <span class="sql-fn">COUNT</span>(*) &gt;= <span class="sql-num">4</span>;
 
 Employees表に対して以下のクエリを実行する場合、エラーとなるものはどれですか。1つ選択してください。
 
-(1)		A
-(2)		B
-(3)		C
-(4)		D</pre>
+(<span class="sql-num">1</span>)		A
+(<span class="sql-num">2</span>)		B
+(<span class="sql-num">3</span>)		C
+(<span class="sql-num">4</span>)		D</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「WHERE と HAVING」です。問題文は「設問条件の読み取り」を満たす記述または SQL を求めています。WHERE は集計前の行条件、HAVING は集計後のグループ条件である。集計関数を WHERE に直接書くとエラーになる。 そのため、成立条件を満たす正答は B「SELECT dept_id, COUNT(*) FROM employees WHERE dept_id &lt;…」 です。</p>
@@ -420,11 +431,11 @@ Employees表に対して以下のクエリを実行する場合、エラーと�
 <span class="note">-- COUNT(*) は全行、COUNT(列) は NULL を除く。SUM/AVG/MIN/MAX は NULL を無視。</span></div></div>
       <div class="guide-block">
         <div class="guide-title">この論点の基本形</div>
-        <pre>SELECT department_id, COUNT(*)
-FROM   employees
-WHERE  salary IS NOT NULL
-GROUP  BY department_id
-HAVING COUNT(*) &gt;= 2;</pre>
+        <pre><span class="sql-kw">SELECT</span> department_id, <span class="sql-fn">COUNT</span>(*)
+<span class="sql-kw">FROM</span>   employees
+<span class="sql-kw">WHERE</span>  salary <span class="sql-kw">IS NOT NULL</span>
+GROUP  <span class="sql-kw">BY</span> department_id
+<span class="sql-kw">HAVING</span> <span class="sql-fn">COUNT</span>(*) &gt;= <span class="sql-num">2</span>;</pre>
       </div>
       <div class="guide-grid">
         <div class="guide-block">
@@ -445,10 +456,10 @@ HAVING COUNT(*) &gt;= 2;</pre>
                   <div class="block-title">問題文</div>
                   <pre>以下のSQLで正常に実行されるものはどれでしょうか。（2つ選択）
 
-(1)		A.　SELECT ITEM_ID,MADE_DATE,AVG(ITEM_PRICE) FROM ITEM GROUP BY ITEM_ID,MADE_DATE;
-(2)		B.　SELECT ITEM_ID,MADE_DATE,SUM(ITEM_PRICE) FROM ITEM GROUP BY ITEM_ID;
-(3)		C.　SELECT MIN(AVG(ITEM_PRICE)) FROM ITEM GROUP BY ITEM_ID;
-(4)		D.　SELECT ITEM_ID,MAX(AVG(ITEM_PRICE)) FROM ITEM GROUP BY ITEM_ID;</pre>
+(<span class="sql-num">1</span>)		A.　<span class="sql-kw">SELECT</span> ITEM_ID,MADE_DATE,<span class="sql-fn">AVG</span>(ITEM_PRICE) <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">GROUP BY</span> ITEM_ID,MADE_DATE;
+(<span class="sql-num">2</span>)		B.　<span class="sql-kw">SELECT</span> ITEM_ID,MADE_DATE,<span class="sql-fn">SUM</span>(ITEM_PRICE) <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">GROUP BY</span> ITEM_ID;
+(<span class="sql-num">3</span>)		C.　<span class="sql-kw">SELECT</span> <span class="sql-fn">MIN</span>(<span class="sql-fn">AVG</span>(ITEM_PRICE)) <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">GROUP BY</span> ITEM_ID;
+(<span class="sql-num">4</span>)		D.　<span class="sql-kw">SELECT</span> ITEM_ID,<span class="sql-fn">MAX</span>(<span class="sql-fn">AVG</span>(ITEM_PRICE)) <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">GROUP BY</span> ITEM_ID;</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「COUNT・AVG と NULL」です。問題文は「以下のSQLで正常に実行されるものはどれでしょうか。（2つ選択）」を満たす記述または SQL を求めています。COUNT(*) は行数、COUNT(col) は NULL を除く列数、AVG(col) は NULL を平均計算から除外する。集計関数ごとに NULL の扱いが異なる。 そのため、成立条件を満たす正答は A「SELECT ITEM_ID,MADE_DATE,AVG(ITEM_PRICE) FROM ITEM GROU…」 / C「SELECT MIN(AVG(ITEM_PRICE)) FROM ITEM GROUP BY ITEM_ID;」 です。</p>
@@ -503,12 +514,12 @@ HAVING COUNT(*) &gt;= 2;</pre>
                   <div class="question-meta">第2回 模擬試験 / 問59 / 正答 ADE / 自己回答 ABC</div>
                   <div class="block-title">問題文</div>
                   <pre>次のSQL文のうち、正しく動作するものはどれでしょうか。3つ選んでください。
-(1)		A. SELECT dept_id, COUNT(*) FROM employees GROUP BY dept_id;
-(2)		B. SELECT dept_id, name, COUNT(*) FROM employees GROUP BY dept_id;
-(3)		C. SELECT dept_id, MAX(SUM(salary)) FROM employees GROUP BY dept_id;
-(4)		D. SELECT MAX(SUM(salary)) FROM employees GROUP BY dept_id;
-(5)		E. SELECT MAX(salary),SUM(salary) FROM employees GROUP BY dept_id;
-(6)		F. SELECT AVG(MAX(SUM(salary))) FROM employees;</pre>
+(<span class="sql-num">1</span>)		A. <span class="sql-kw">SELECT</span> dept_id, <span class="sql-fn">COUNT</span>(*) <span class="sql-kw">FROM</span> employees <span class="sql-kw">GROUP BY</span> dept_id;
+(<span class="sql-num">2</span>)		B. <span class="sql-kw">SELECT</span> dept_id, name, <span class="sql-fn">COUNT</span>(*) <span class="sql-kw">FROM</span> employees <span class="sql-kw">GROUP BY</span> dept_id;
+(<span class="sql-num">3</span>)		C. <span class="sql-kw">SELECT</span> dept_id, <span class="sql-fn">MAX</span>(<span class="sql-fn">SUM</span>(salary)) <span class="sql-kw">FROM</span> employees <span class="sql-kw">GROUP BY</span> dept_id;
+(<span class="sql-num">4</span>)		D. <span class="sql-kw">SELECT</span> <span class="sql-fn">MAX</span>(<span class="sql-fn">SUM</span>(salary)) <span class="sql-kw">FROM</span> employees <span class="sql-kw">GROUP BY</span> dept_id;
+(<span class="sql-num">5</span>)		E. <span class="sql-kw">SELECT</span> <span class="sql-fn">MAX</span>(salary),<span class="sql-fn">SUM</span>(salary) <span class="sql-kw">FROM</span> employees <span class="sql-kw">GROUP BY</span> dept_id;
+(<span class="sql-num">6</span>)		F. <span class="sql-kw">SELECT</span> <span class="sql-fn">AVG</span>(<span class="sql-fn">MAX</span>(<span class="sql-fn">SUM</span>(salary))) <span class="sql-kw">FROM</span> employees;</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「COUNT・AVG と NULL」です。問題文は「次のSQL文のうち、正しく動作するものはどれでしょうか。3つ選んでください。」を満たす記述または SQL を求めています。COUNT(*) は行数、COUNT(col) は NULL を除く列数、AVG(col) は NULL を平均計算から除外する。集計関数ごとに NULL の扱いが異なる。 そのため、成立条件を満たす正答は A「SELECT dept_id, COUNT(*) FROM employees GROUP BY dept_i…」 / D「SELECT MAX(SUM(salary)) FROM employees GROUP BY dept_id;」 / E「SELECT MAX(salary),SUM(salary) FROM employees GROUP BY …」 です。</p>

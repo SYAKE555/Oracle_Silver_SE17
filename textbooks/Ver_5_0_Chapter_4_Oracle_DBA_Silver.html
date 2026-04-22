@@ -35,6 +35,17 @@ table{width:100%;min-width:860px;border-collapse:collapse}
 th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef5ff}
 .top{text-align:right;margin-top:12px}
 @media(max-width:1120px){.layout{grid-template-columns:1fr}.sidebar{position:static;max-height:none}}
+
+  pre .sql-kw { color: #fbbf24; font-weight: 700; }
+  pre .sql-fn { color: #60a5fa; font-weight: 600; }
+  pre .sql-str { color: #86efac; }
+  pre .sql-num { color: #fca5a5; }
+  pre .sql-cmt { color: #94a3b8; font-style: italic; }
+  code .sql-kw { color: #b45309; font-weight: 700; }
+  code .sql-fn { color: #1d4ed8; font-weight: 600; }
+  code .sql-str { color: #047857; }
+  code .sql-num { color: #b91c1c; }
+  code .sql-cmt { color: #64748b; font-style: italic; }
 </style>
 </head>
 <body>
@@ -86,27 +97,27 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 <section class="card" id="char-func">
 <h2>4.2 文字関数</h2>
 <p>文字関数は表記揺れを抑え、検索精度と表示品質を上げる。`UPPER`/`LOWER`/`INITCAP`で文字種を揃え、`SUBSTR`/`INSTR`で位置と部分抽出を扱い、`TRIM`/`REPLACE`で不要文字を除去する。注意点は、WHERE句で列に直接文字関数を適用すると索引が効きにくくなること、またNLS比較規則によって一致判定が変わり得ることだ。試験では戻り値型や引数順が問われる。実務では入力標準化を保存時に行うか参照時に行うかを決める必要があり、運用方針が曖昧だと検索漏れが多発する。</p>
-<pre><code><span class="kw">SELECT</span> <span class="kw">UPPER</span>(<span class="obj">last_name</span>) <span class="kw">AS</span> <span class="obj">last_name_upper</span>,
-       <span class="kw">SUBSTR</span>(<span class="obj">email</span>, <span class="obj">1</span>, <span class="obj">5</span>) <span class="kw">AS</span> <span class="obj">email_head</span>
-<span class="kw">FROM</span> <span class="obj">employees</span>;</code></pre>
+<pre><code><span class="kw"><span class="sql-kw">SELECT</span></span> <span class="kw">UPPER</span>(<span class="obj">last_name</span>) <span class="kw"><span class="sql-kw">AS</span></span> <span class="obj">last_name_upper</span>,
+       <span class="kw">SUBSTR</span>(<span class="obj">email</span>, <span class="obj"><span class="sql-num">1</span></span>, <span class="obj"><span class="sql-num">5</span></span>) <span class="kw"><span class="sql-kw">AS</span></span> <span class="obj">email_head</span>
+<span class="kw"><span class="sql-kw">FROM</span></span> <span class="obj">employees</span>;</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="num-func">
 <h2>4.3 数値関数</h2>
 <p>数値関数は計算精度と表示ルールを制御する。`ROUND`と`TRUNC`は似て非なる関数で、端数処理方針の違いが会計値に影響する。`MOD`は周期判定、`ABS`は差分比較で有効だ。アンチパターンは丸め位置を決めずに部署ごとに異なる計算式を使うこと。これにより部門間で数値不一致が発生する。試験ではROUND/TRUNCの挙動差が頻出。実務では「計算」「表示」「保存」のどこで丸めるかを規約化しないと、同じデータでも出力値が揺れる。数値関数は短いが、品質影響が大きい機能である。</p>
-<pre><code><span class="kw">SELECT</span> <span class="obj">salary</span>,
-       <span class="kw">ROUND</span>(<span class="obj">salary</span>, <span class="obj">-3</span>) <span class="kw">AS</span> <span class="obj">salary_round</span>,
-       <span class="kw">TRUNC</span>(<span class="obj">salary</span>, <span class="obj">-3</span>) <span class="kw">AS</span> <span class="obj">salary_trunc</span>
-<span class="kw">FROM</span> <span class="obj">employees</span>;</code></pre>
+<pre><code><span class="kw"><span class="sql-kw">SELECT</span></span> <span class="obj">salary</span>,
+       <span class="kw">ROUND</span>(<span class="obj">salary</span>, <span class="obj">-<span class="sql-num">3</span></span>) <span class="kw"><span class="sql-kw">AS</span></span> <span class="obj">salary_round</span>,
+       <span class="kw">TRUNC</span>(<span class="obj">salary</span>, <span class="obj">-<span class="sql-num">3</span></span>) <span class="kw"><span class="sql-kw">AS</span></span> <span class="obj">salary_trunc</span>
+<span class="kw"><span class="sql-kw">FROM</span></span> <span class="obj">employees</span>;</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="date-func">
 <h2>4.4 日付関数</h2>
 <p>日付関数は締め処理や有効期限判定の基盤である。`SYSDATE`、`CURRENT_DATE`、`ADD_MONTHS`、`MONTHS_BETWEEN`、`LAST_DAY`、`NEXT_DAY`を正しく使うことで期間演算を安定化できる。注意点は、日付と時刻の混在、タイムゾーン差、書式変換エラーである。`TO_DATE`の書式不一致はORA-01861の典型原因になる。試験では関数意味と戻り型が問われる。実務では「何時点を基準にするか（DBサーバ時刻かセッション時刻か）」を仕様として固定することが重要で、ここが曖昧だとバッチ結果が環境ごとに変わる。</p>
-<pre><code><span class="kw">SELECT</span> <span class="obj">hire_date</span>,
-       <span class="kw">ADD_MONTHS</span>(<span class="obj">hire_date</span>, <span class="obj">3</span>) <span class="kw">AS</span> <span class="obj">after_3_months</span>,
-       <span class="kw">LAST_DAY</span>(<span class="obj">hire_date</span>) <span class="kw">AS</span> <span class="obj">month_end</span>
-<span class="kw">FROM</span> <span class="obj">employees</span>;</code></pre>
+<pre><code><span class="kw"><span class="sql-kw">SELECT</span></span> <span class="obj">hire_date</span>,
+       <span class="kw">ADD_MONTHS</span>(<span class="obj">hire_date</span>, <span class="obj"><span class="sql-num">3</span></span>) <span class="kw"><span class="sql-kw">AS</span></span> <span class="obj">after_3_months</span>,
+       <span class="kw">LAST_DAY</span>(<span class="obj">hire_date</span>) <span class="kw"><span class="sql-kw">AS</span></span> <span class="obj">month_end</span>
+<span class="kw"><span class="sql-kw">FROM</span></span> <span class="obj">employees</span>;</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="nesting">
@@ -117,16 +128,16 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 <section class="card" id="null-behavior">
 <h2>4.6 NULLと関数戻り値の挙動</h2>
 <p>多くの関数はNULL入力でNULLを返すが、例外的挙動を持つ関数もある。NULL混在を前提に式を設計しないと結果が想定より欠損しやすい。例えば算術式と関数を組み合わせた列でNULL補完を忘れると、業務上は値が必要な列までNULLになる。試験ではNVL系との違いを含めて問われる。実務では「NULLを保持すべきか補完すべきか」を列単位で定義し、関数利用時にその方針を守ることが品質維持の鍵になる。</p>
-<pre><code><span class="kw">SELECT</span> <span class="obj">employee_id</span>,
-       <span class="kw">NVL</span>(<span class="obj">commission_pct</span>, <span class="obj">0</span>) <span class="kw">AS</span> <span class="obj">commission_safe</span>
-<span class="kw">FROM</span> <span class="obj">employees</span>;</code></pre>
+<pre><code><span class="kw"><span class="sql-kw">SELECT</span></span> <span class="obj">employee_id</span>,
+       <span class="kw">NVL</span>(<span class="obj">commission_pct</span>, <span class="obj"><span class="sql-num">0</span></span>) <span class="kw"><span class="sql-kw">AS</span></span> <span class="obj">commission_safe</span>
+<span class="kw"><span class="sql-kw">FROM</span></span> <span class="obj">employees</span>;</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="type-conv">
 <h2>4.7 暗黙変換と明示変換の境界</h2>
 <p>暗黙変換に依存すると、NLS設定やデータ品質で結果が変わるため、試験でも実務でも危険である。`TO_CHAR`、`TO_DATE`、`TO_NUMBER`などの明示変換を使い、入力書式と変換書式を一致させることが必須だ。典型エラーはORA-01861（書式不一致）とORA-01722（無効な数値）。実務では変換前検証を入れ、異常値を除外または監視する運用が必要になる。変換は文法ではなく境界制御の設計である。</p>
-<div class="warn"><b>失敗例(ORA-01861):</b> <code>TO_DATE('2026/04/01','YYYY-MM-DD')</code> / <b>修正:</b> <code>TO_DATE('2026-04-01','YYYY-MM-DD')</code></div>
-<div class="warn"><b>失敗例(ORA-01722):</b> <code>TO_NUMBER('12A')</code> / <b>修正:</b> 変換前バリデーションで非数値を排除</div>
+<div class="warn"><b>失敗例(ORA-01861):</b> <code><span class="sql-fn">TO_DATE</span>(<span class="sql-str">'2026/04/01'</span>,<span class="sql-str">'YYYY-MM-DD'</span>)</code> / <b>修正:</b> <code><span class="sql-fn">TO_DATE</span>(<span class="sql-str">'2026-04-01'</span>,<span class="sql-str">'YYYY-MM-DD'</span>)</code></div>
+<div class="warn"><b>失敗例(ORA-01722):</b> <code><span class="sql-fn">TO_NUMBER</span>(<span class="sql-str">'12A'</span>)</code> / <b>修正:</b> 変換前バリデーションで非数値を排除</div>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="index-impact">

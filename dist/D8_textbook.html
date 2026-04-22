@@ -68,7 +68,18 @@
         .breadcrumb { padding: 12px 24px; background: white; border-bottom: 1px solid #e2e8f0; font-size: 0.85rem; }
         .breadcrumb a { color: #c0392b; text-decoration: none; }
         .intro-box { background: #fff8f8; border: 1px solid #f0a0a0; border-radius: 8px; padding: 16px; margin-bottom: 24px; }
-        </style>
+        
+  pre .sql-kw { color: #fbbf24; font-weight: 700; }
+  pre .sql-fn { color: #60a5fa; font-weight: 600; }
+  pre .sql-str { color: #86efac; }
+  pre .sql-num { color: #fca5a5; }
+  pre .sql-cmt { color: #94a3b8; font-style: italic; }
+  code .sql-kw { color: #b45309; font-weight: 700; }
+  code .sql-fn { color: #1d4ed8; font-weight: 600; }
+  code .sql-str { color: #047857; }
+  code .sql-num { color: #b91c1c; }
+  code .sql-cmt { color: #64748b; font-style: italic; }
+</style>
 </head>
 <body>
 <div class="breadcrumb">
@@ -94,7 +105,7 @@
         <th>試験での出方（頻出パターン）</th>
       </tr>
       <tr>
-        <td><code>CREATE TABLE</code></td>
+        <td><code><span class="sql-kw">CREATE TABLE</span></code></td>
         <td>テーブルを新規作成する</td>
         <td>「CREATEは創造—テーブルという器を作る」</td>
         <td>新しいテーブルの定義・作成</td>
@@ -102,7 +113,7 @@
         <td>制約の定義方法（列レベル/テーブルレベル）、DEFAULTは制約ではない</td>
       </tr>
       <tr>
-        <td><code>ALTER TABLE</code></td>
+        <td><code><span class="sql-kw">ALTER TABLE</span></code></td>
         <td>既存テーブルの定義を変更する</td>
         <td>「ALTERは変更—テーブルの設計図を書き直す」</td>
         <td>列追加・変更・削除、制約の追加・削除</td>
@@ -110,7 +121,7 @@
         <td>ADD/MODIFY/DROP COLUMNの使い分け</td>
       </tr>
       <tr>
-        <td><code>DROP TABLE</code></td>
+        <td><code><span class="sql-kw">DROP TABLE</span></code></td>
         <td>テーブルを削除する（データごと）</td>
         <td>「DROPは落とす—テーブルをごみ箱へ投げ捨てる」</td>
         <td>不要なテーブルの完全削除</td>
@@ -118,7 +129,7 @@
         <td>ごみ箱（RECYCLEBIN）とFLASHBACK、PURGEで即時削除</td>
       </tr>
       <tr>
-        <td><code>CONSTRAINT</code></td>
+        <td><code><span class="sql-kw">CONSTRAINT</span></code></td>
         <td>テーブルのデータ整合性ルールを定義する</td>
         <td>「CONSTRAINTは制約—データのルール違反を防ぐ番人」</td>
         <td>データ品質・整合性の保証</td>
@@ -126,7 +137,7 @@
         <td>列レベルvs.テーブルレベルの記述場所、複合PKはテーブルレベルのみ</td>
       </tr>
       <tr>
-        <td><code>PRIMARY KEY</code></td>
+        <td><code><span class="sql-kw">PRIMARY KEY</span></code></td>
         <td>行を一意に識別する主キー制約（NOT NULL + UNIQUE）</td>
         <td>「PRIMARY KEYは主役の鍵—絶対に一意でNULLは許さない」</td>
         <td>テーブルの主キー定義</td>
@@ -134,7 +145,7 @@
         <td>1テーブルに1つのみ、自動的にインデックスが作成される</td>
       </tr>
       <tr>
-        <td><code>FOREIGN KEY</code></td>
+        <td><code><span class="sql-kw">FOREIGN KEY</span></code></td>
         <td>他テーブルの主キーを参照する外部キー制約</td>
         <td>「FOREIGN KEYは外国のパスポート—他テーブルのIDを参照」</td>
         <td>テーブル間の参照整合性の保証</td>
@@ -142,7 +153,7 @@
         <td>ON DELETE CASCADE/SET NULL、親テーブル削除順序</td>
       </tr>
       <tr>
-        <td><code>UNIQUE</code></td>
+        <td><code><span class="sql-kw">UNIQUE</span></code></td>
         <td>列の値を一意に保つ制約（NULLは複数可）</td>
         <td>「UNIQUEはユニーク—同じ値は2つ存在できない（NULLを除く）」</td>
         <td>メールアドレスや社員番号などの重複防止</td>
@@ -150,7 +161,7 @@
         <td>NULLは複数行に存在可、自動的にインデックスが作成される</td>
       </tr>
       <tr>
-        <td><code>NOT NULL</code></td>
+        <td><code><span class="sql-kw">NOT NULL</span></code></td>
         <td>列にNULL値を禁止する制約</td>
         <td>「NOT NULLは空欄禁止—必ず値を入れること」</td>
         <td>必須入力項目の定義</td>
@@ -158,7 +169,7 @@
         <td>列レベル制約のみ（テーブルレベルでは定義不可）</td>
       </tr>
       <tr>
-        <td><code>CHECK</code></td>
+        <td><code><span class="sql-kw">CHECK</span></code></td>
         <td>列の値が指定した条件を満たすことを保証する制約</td>
         <td>「CHECKは検問—条件に合わない値は入れさせない」</td>
         <td>値の範囲・形式の制限</td>
@@ -166,7 +177,7 @@
         <td>NULLはCHECKをパスする（NOT NULLとの組み合わせが推奨）</td>
       </tr>
       <tr>
-        <td><code>CREATE VIEW</code></td>
+        <td><code><span class="sql-kw">CREATE VIEW</span></code></td>
         <td>仮想表（ビュー）を作成する</td>
         <td>「VIEWはのぞき窓—テーブルを安全に見せる仮想の窓口」</td>
         <td>セキュリティ、複雑クエリの簡略化</td>
@@ -174,7 +185,7 @@
         <td>実データを持たない、OR REPLACEで再定義可能</td>
       </tr>
       <tr>
-        <td><code>CREATE SEQUENCE</code></td>
+        <td><code><span class="sql-kw">CREATE SEQUENCE</span></code></td>
         <td>連番を生成するシーケンスオブジェクトを作成する</td>
         <td>「SEQUENCEは番号発券機—呼ぶたびに次の番号を渡す」</td>
         <td>主キーの自動採番</td>
@@ -182,7 +193,7 @@
         <td>NEXTVALで次の値、CURRVALは同一セッションでNEXTVAL後のみ使用可</td>
       </tr>
       <tr>
-        <td><code>CREATE INDEX</code></td>
+        <td><code><span class="sql-kw">CREATE INDEX</span></code></td>
         <td>検索を高速化するインデックスを作成する</td>
         <td>「INDEXは本の索引—探す場所をすぐに特定できる」</td>
         <td>クエリパフォーマンスの向上</td>
@@ -190,7 +201,7 @@
         <td>INSERT/UPDATE/DELETEは遅くなる、PK/UNIQUEで自動作成</td>
       </tr>
       <tr>
-        <td><code>CREATE SYNONYM</code></td>
+        <td><code><span class="sql-kw">CREATE SYNONYM</span></code></td>
         <td>オブジェクトの別名（シノニム）を作成する</td>
         <td>「SYNONYMは別名—スキーマ名を省略してアクセス可能に」</td>
         <td>他スキーマのオブジェクトへの簡単アクセス</td>
@@ -198,7 +209,7 @@
         <td>PUBLIC SYNONYMはDBA権限が必要、PRIVATE SYNONYMは不要</td>
       </tr>
       <tr>
-        <td><code>GRANT</code></td>
+        <td><code><span class="sql-kw">GRANT</span></code></td>
         <td>ユーザーやロールに権限を付与する</td>
         <td>「GRANTは認可—アクセス許可証を発行する」</td>
         <td>ユーザーへのアクセス権限付与</td>
@@ -206,7 +217,7 @@
         <td>WITH GRANT OPTIONで権限の再付与を許可</td>
       </tr>
       <tr>
-        <td><code>REVOKE</code></td>
+        <td><code><span class="sql-kw">REVOKE</span></code></td>
         <td>ユーザーやロールから権限を取り消す</td>
         <td>「REVOKEは取り消し—一度渡した許可証を回収する」</td>
         <td>不要になった権限の削除</td>
@@ -258,183 +269,183 @@
     </table>
   </div>
 
-  <div class="section-card"><div class="section-title">CREATE TABLE と制約</div><div class="topic-chips"><span class="chip">CREATE TABLE</span><span class="chip">ALTER TABLE</span><span class="chip">DROP TABLE</span><span class="chip">PRIMARY KEY</span><span class="chip">FOREIGN KEY</span><span class="chip">NOT NULL</span><span class="chip">UNIQUE</span><span class="chip">CHECK</span><span class="chip">DEFAULT</span></div><div class="section-content"><h3>CREATE TABLE の基本</h3><pre><code>CREATE TABLE EMPLOYEES (
-    EMPLOYEE_ID   NUMBER(6)     CONSTRAINT emp_pk PRIMARY KEY,
-    FIRST_NAME    VARCHAR2(20),
-    LAST_NAME     VARCHAR2(25)  CONSTRAINT emp_lname_nn NOT NULL,
-    EMAIL         VARCHAR2(25)  CONSTRAINT emp_email_uk UNIQUE,
-    HIRE_DATE     DATE          DEFAULT SYSDATE,
-    SALARY        NUMBER(8,2)   CONSTRAINT emp_salary_ck CHECK (SALARY > 0),
-    DEPARTMENT_ID NUMBER(4)     CONSTRAINT emp_dept_fk
-                               REFERENCES DEPARTMENTS(DEPARTMENT_ID)
+  <div class="section-card"><div class="section-title">CREATE TABLE と制約</div><div class="topic-chips"><span class="chip">CREATE TABLE</span><span class="chip">ALTER TABLE</span><span class="chip">DROP TABLE</span><span class="chip">PRIMARY KEY</span><span class="chip">FOREIGN KEY</span><span class="chip">NOT NULL</span><span class="chip">UNIQUE</span><span class="chip">CHECK</span><span class="chip">DEFAULT</span></div><div class="section-content"><h3>CREATE TABLE の基本</h3><pre><code><span class="sql-kw">CREATE TABLE</span> EMPLOYEES (
+    EMPLOYEE_ID   NUMBER(<span class="sql-num">6</span>)     <span class="sql-kw">CONSTRAINT</span> emp_pk <span class="sql-kw">PRIMARY KEY</span>,
+    FIRST_NAME    VARCHAR2(<span class="sql-num">20</span>),
+    LAST_NAME     VARCHAR2(<span class="sql-num">25</span>)  <span class="sql-kw">CONSTRAINT</span> emp_lname_nn <span class="sql-kw">NOT NULL</span>,
+    EMAIL         VARCHAR2(<span class="sql-num">25</span>)  <span class="sql-kw">CONSTRAINT</span> emp_email_uk <span class="sql-kw">UNIQUE</span>,
+    HIRE_DATE     DATE          <span class="sql-kw">DEFAULT</span> SYSDATE,
+    SALARY        NUMBER(<span class="sql-num">8</span>,<span class="sql-num">2</span>)   <span class="sql-kw">CONSTRAINT</span> emp_salary_ck <span class="sql-kw">CHECK</span> (SALARY > <span class="sql-num">0</span>),
+    DEPARTMENT_ID NUMBER(<span class="sql-num">4</span>)     <span class="sql-kw">CONSTRAINT</span> emp_dept_fk
+                               <span class="sql-kw">REFERENCES</span> DEPARTMENTS(DEPARTMENT_ID)
 );
--- 実行結果例：
--- テーブルが作成されました。
--- （各制約が自動的に有効化される。PRIMARY KEY と UNIQUE には自動でインデックスが作成される）</code></pre><h3>制約の種類</h3><table class='summary-table'><tr><th>制約</th><th>説明</th></tr><tr><td>PRIMARY KEY</td><td>行を一意に識別。NOT NULL + UNIQUE の組み合わせ</td></tr><tr><td>FOREIGN KEY</td><td>別テーブルの主キーを参照。参照整合性を保証</td></tr><tr><td>UNIQUE</td><td>列の値を一意に保つ（NULL は複数可）</td></tr><tr><td>NOT NULL</td><td>NULL 値を禁止する</td></tr><tr><td>CHECK</td><td>列の値が条件を満たすことを保証</td></tr><tr><td>DEFAULT</td><td>値が指定されない場合のデフォルト値（制約ではなく列オプション）</td></tr></table><h3>ALTER TABLE / DROP TABLE</h3><pre><code>-- 列の追加
-ALTER TABLE EMPLOYEES ADD (NOTES VARCHAR2(100));
--- 実行結果例：
--- テーブルが変更されました。
--- （NOTES列がNULL可で追加される）
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- テーブルが作成されました。</span>
+<span class="sql-cmt">-- （各制約が自動的に有効化される。PRIMARY KEY と UNIQUE には自動でインデックスが作成される）</span></code></pre><h3>制約の種類</h3><table class='summary-table'><tr><th>制約</th><th>説明</th></tr><tr><td>PRIMARY KEY</td><td>行を一意に識別。NOT NULL + UNIQUE の組み合わせ</td></tr><tr><td>FOREIGN KEY</td><td>別テーブルの主キーを参照。参照整合性を保証</td></tr><tr><td>UNIQUE</td><td>列の値を一意に保つ（NULL は複数可）</td></tr><tr><td>NOT NULL</td><td>NULL 値を禁止する</td></tr><tr><td>CHECK</td><td>列の値が条件を満たすことを保証</td></tr><tr><td>DEFAULT</td><td>値が指定されない場合のデフォルト値（制約ではなく列オプション）</td></tr></table><h3>ALTER TABLE / DROP TABLE</h3><pre><code><span class="sql-cmt">-- 列の追加</span>
+<span class="sql-kw">ALTER TABLE</span> EMPLOYEES <span class="sql-kw">ADD</span> (NOTES VARCHAR2(<span class="sql-num">100</span>));
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- テーブルが変更されました。</span>
+<span class="sql-cmt">-- （NOTES列がNULL可で追加される）</span>
 
--- 列の変更
-ALTER TABLE EMPLOYEES MODIFY (FIRST_NAME VARCHAR2(30));
--- 実行結果例：
--- テーブルが変更されました。
--- （FIRST_NAMEのサイズが20から30に拡張される。既存データがある列のサイズ縮小はエラーになる場合がある）
+<span class="sql-cmt">-- 列の変更</span>
+<span class="sql-kw">ALTER TABLE</span> EMPLOYEES <span class="sql-kw">MODIFY</span> (FIRST_NAME VARCHAR2(<span class="sql-num">30</span>));
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- テーブルが変更されました。</span>
+<span class="sql-cmt">-- （FIRST_NAMEのサイズが20から30に拡張される。既存データがある列のサイズ縮小はエラーになる場合がある）</span>
 
--- 列の削除
-ALTER TABLE EMPLOYEES DROP COLUMN NOTES;
--- 実行結果例：
--- テーブルが変更されました。
--- （NOTES列とそのデータが削除される）
+<span class="sql-cmt">-- 列の削除</span>
+<span class="sql-kw">ALTER TABLE</span> EMPLOYEES <span class="sql-kw">DROP COLUMN</span> NOTES;
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- テーブルが変更されました。</span>
+<span class="sql-cmt">-- （NOTES列とそのデータが削除される）</span>
 
--- テーブルの削除（データも削除）
-DROP TABLE COPY_EMPLOYEES;
--- 実行結果例：
--- テーブルが削除されました。
--- （テーブルはごみ箱（RECYCLEBIN）に入る。FLASHBACK TABLE で復元可能）
+<span class="sql-cmt">-- テーブルの削除（データも削除）</span>
+<span class="sql-kw">DROP TABLE</span> COPY_EMPLOYEES;
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- テーブルが削除されました。</span>
+<span class="sql-cmt">-- （テーブルはごみ箱（RECYCLEBIN）に入る。FLASHBACK TABLE で復元可能）</span>
 
--- テーブルの削除（PURGE: ごみ箱に入れない）
-DROP TABLE COPY_EMPLOYEES PURGE;
--- 実行結果例：
--- テーブルが削除されました。
--- （ごみ箱に入らず即時削除。FLASHBACK TABLE による復元は不可）</code></pre><div class='tip-box'><strong>試験のポイント：</strong> PRIMARY KEY は1テーブルに1つだけ設定可能です。UNIQUE は複数可。FOREIGN KEY の参照先テーブルを削除するには ON DELETE CASCADE または先に子テーブルを削除する必要があります。DROP TABLE はデフォルトでごみ箱（RECYCLEBIN）に入り、FLASHBACK TABLE で復元可能です。</div></div><div class="problem-section-title">練習問題</div><div class="problem-card" id="prob-OSLV-D8-001"><div class="problem-header">問題 1 <span class="qid">#OSLV-D8-001</span></div><p class="problem-text">以下のCREATE TABLE文で定義された制約の説明として正しいものはどれか。<br>```sql<br>CREATE TABLE orders (<br>  order_id    NUMBER(6)    CONSTRAINT pk_orders PRIMARY KEY,<br>  customer_id NUMBER(6)    NOT NULL,<br>  order_date  DATE         DEFAULT SYSDATE,<br>  status      VARCHAR2(10) CONSTRAINT chk_status<br>                           CHECK (status IN ('PENDING','SHIPPED','DONE'))<br>);<br>```</p><ul class="choices"><li>A. order_idは重複可能だがNOT NULL。statusはNULLも許可される</li><li>B. order_idは重複不可かつNOT NULL。order_dateは省略するとSYSDATEが入る。statusは3種の値のみ許可</li><li>C. customer_idはNULLを許可する。order_dateは省略するとNULLになる</li><li>D. PRIMARY KEY制約はNULLを許可するUNIQUE制約と同じ</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> B. order_idは重複不可かつNOT NULL。order_dateは省略するとSYSDATEが入る。statusは3種の値のみ許可</p><p>正解は「order_idは重複不可かつNOT NULL。order_dateは省略するとSYSDATEが入る。statusは3種の値のみ許可」である。PRIMARY KEY = UNIQUE + NOT NULL の制約。customer_idはNOT NULL制約があるのでNULL不可。order_dateのDEFAULT SYSDATEはINSERT時に値を省略した場合に現在日時が自動設定される。CHECK制約はstatusが'PENDING','SHIPPED','DONE'の3値のみ許可（NULLはCHECKをパスするためNOT NULLと組み合わせが推奨）。</p></div></details></div></div><div class="section-card"><div class="section-title">VIEW・SEQUENCE・INDEX</div><div class="topic-chips"><span class="chip">VIEW</span><span class="chip">CREATE VIEW</span><span class="chip">SEQUENCE</span><span class="chip">NEXTVAL</span><span class="chip">CURRVAL</span><span class="chip">INDEX</span><span class="chip">SYNONYM</span></div><div class="section-content"><h3>VIEW（ビュー）</h3><p>ビューは保存された SELECT 文です。テーブルのようにアクセスできます。</p><pre><code>-- ビューの作成
-CREATE VIEW emp_dept_vu AS
-    SELECT e.EMPLOYEE_ID, e.LAST_NAME, e.DEPARTMENT_ID,
+<span class="sql-cmt">-- テーブルの削除（PURGE: ごみ箱に入れない）</span>
+<span class="sql-kw">DROP TABLE</span> COPY_EMPLOYEES PURGE;
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- テーブルが削除されました。</span>
+<span class="sql-cmt">-- （ごみ箱に入らず即時削除。FLASHBACK TABLE による復元は不可）</span></code></pre><div class='tip-box'><strong>試験のポイント：</strong> PRIMARY KEY は1テーブルに1つだけ設定可能です。UNIQUE は複数可。FOREIGN KEY の参照先テーブルを削除するには ON DELETE CASCADE または先に子テーブルを削除する必要があります。DROP TABLE はデフォルトでごみ箱（RECYCLEBIN）に入り、FLASHBACK TABLE で復元可能です。</div></div><div class="problem-section-title">練習問題</div><div class="problem-card" id="prob-OSLV-D8-001"><div class="problem-header">問題 1 <span class="qid">#OSLV-D8-001</span></div><p class="problem-text">以下のCREATE TABLE文で定義された制約の説明として正しいものはどれか。<br>```sql<br>CREATE TABLE orders (<br>  order_id    NUMBER(6)    CONSTRAINT pk_orders PRIMARY KEY,<br>  customer_id NUMBER(6)    NOT NULL,<br>  order_date  DATE         DEFAULT SYSDATE,<br>  status      VARCHAR2(10) CONSTRAINT chk_status<br>                           CHECK (status IN ('PENDING','SHIPPED','DONE'))<br>);<br>```</p><ul class="choices"><li>A. order_idは重複可能だがNOT NULL。statusはNULLも許可される</li><li>B. order_idは重複不可かつNOT NULL。order_dateは省略するとSYSDATEが入る。statusは3種の値のみ許可</li><li>C. customer_idはNULLを許可する。order_dateは省略するとNULLになる</li><li>D. PRIMARY KEY制約はNULLを許可するUNIQUE制約と同じ</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> B. order_idは重複不可かつNOT NULL。order_dateは省略するとSYSDATEが入る。statusは3種の値のみ許可</p><p>正解は「order_idは重複不可かつNOT NULL。order_dateは省略するとSYSDATEが入る。statusは3種の値のみ許可」である。PRIMARY KEY = UNIQUE + NOT NULL の制約。customer_idはNOT NULL制約があるのでNULL不可。order_dateのDEFAULT SYSDATEはINSERT時に値を省略した場合に現在日時が自動設定される。CHECK制約はstatusが'PENDING','SHIPPED','DONE'の3値のみ許可（NULLはCHECKをパスするためNOT NULLと組み合わせが推奨）。</p></div></details></div></div><div class="section-card"><div class="section-title">VIEW・SEQUENCE・INDEX</div><div class="topic-chips"><span class="chip">VIEW</span><span class="chip">CREATE VIEW</span><span class="chip">SEQUENCE</span><span class="chip">NEXTVAL</span><span class="chip">CURRVAL</span><span class="chip">INDEX</span><span class="chip">SYNONYM</span></div><div class="section-content"><h3>VIEW（ビュー）</h3><p>ビューは保存された SELECT 文です。テーブルのようにアクセスできます。</p><pre><code><span class="sql-cmt">-- ビューの作成</span>
+<span class="sql-kw">CREATE VIEW</span> emp_dept_vu <span class="sql-kw">AS</span>
+    <span class="sql-kw">SELECT</span> e.EMPLOYEE_ID, e.LAST_NAME, e.DEPARTMENT_ID,
            d.DEPARTMENT_NAME
-    FROM   EMPLOYEES e
-    JOIN   DEPARTMENTS d
-    ON     e.DEPARTMENT_ID = d.DEPARTMENT_ID;
--- 実行結果例：
--- ビューが作成されました。
--- （実データは保存されない。SELECTのたびにベーステーブルを参照する）
+    <span class="sql-kw">FROM</span>   EMPLOYEES e
+    <span class="sql-kw">JOIN</span>   DEPARTMENTS d
+    <span class="sql-kw">ON</span>     e.DEPARTMENT_ID = d.DEPARTMENT_ID;
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- ビューが作成されました。</span>
+<span class="sql-cmt">-- （実データは保存されない。SELECTのたびにベーステーブルを参照する）</span>
 
--- ビューの使用
-SELECT * FROM emp_dept_vu WHERE DEPARTMENT_NAME = 'Sales';
--- 実行結果例：
--- EMPLOYEE_ID LAST_NAME            DEPARTMENT_ID DEPARTMENT_NAME
--- ----------- -------------------- ------------- ---------------
---         145 Russell                         80 Sales
---         146 Partners                        80 Sales
--- ...（ビュー定義のSELECTが実行され、最新データが返る）
+<span class="sql-cmt">-- ビューの使用</span>
+<span class="sql-kw">SELECT</span> * <span class="sql-kw">FROM</span> emp_dept_vu <span class="sql-kw">WHERE</span> DEPARTMENT_NAME = <span class="sql-str">'Sales'</span>;
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- EMPLOYEE_ID LAST_NAME            DEPARTMENT_ID DEPARTMENT_NAME</span>
+<span class="sql-cmt">-- ----------- -------------------- ------------- ---------------</span>
+<span class="sql-cmt">--         145 Russell                         80 Sales</span>
+<span class="sql-cmt">--         146 Partners                        80 Sales</span>
+<span class="sql-cmt">-- ...（ビュー定義のSELECTが実行され、最新データが返る）</span>
 
--- ビューの削除
-DROP VIEW emp_dept_vu;
--- 実行結果例：
--- ビューが削除されました。</code></pre><h3>SEQUENCE（シーケンス）</h3><p>シーケンスは連番を生成するオブジェクトです。主キーの自動採番に使います。</p><pre><code>-- シーケンスの作成
-CREATE SEQUENCE emp_seq
-    START WITH 1
-    INCREMENT BY 1
-    MAXVALUE 99999
+<span class="sql-cmt">-- ビューの削除</span>
+<span class="sql-kw">DROP VIEW</span> emp_dept_vu;
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- ビューが削除されました。</span></code></pre><h3>SEQUENCE（シーケンス）</h3><p>シーケンスは連番を生成するオブジェクトです。主キーの自動採番に使います。</p><pre><code><span class="sql-cmt">-- シーケンスの作成</span>
+<span class="sql-kw">CREATE SEQUENCE</span> emp_seq
+    <span class="sql-kw">START WITH</span> <span class="sql-num">1</span>
+    <span class="sql-kw">INCREMENT BY</span> <span class="sql-num">1</span>
+    MAXVALUE <span class="sql-num">99999</span>
     NOCACHE
     NOCYCLE;
--- 実行結果例：
--- シーケンスが作成されました。
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- シーケンスが作成されました。</span>
 
--- 次の値を取得（NEXTVAL）
-INSERT INTO EMPLOYEES (EMPLOYEE_ID, LAST_NAME)
-VALUES (emp_seq.NEXTVAL, 'Smith');
--- 実行結果例：
--- 1 行が挿入されました。
--- （EMPLOYEE_ID に emp_seq の次の値（初回は1）が自動設定される）
+<span class="sql-cmt">-- 次の値を取得（NEXTVAL）</span>
+<span class="sql-kw">INSERT INTO</span> EMPLOYEES (EMPLOYEE_ID, LAST_NAME)
+<span class="sql-kw">VALUES</span> (emp_seq.<span class="sql-kw">NEXTVAL</span>, <span class="sql-str">'Smith'</span>);
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- 1 行が挿入されました。</span>
+<span class="sql-cmt">-- （EMPLOYEE_ID に emp_seq の次の値（初回は1）が自動設定される）</span>
 
--- 現在の値を確認（CURRVAL: NEXTVAL を1度呼んだ後のみ使用可）
-SELECT emp_seq.CURRVAL FROM DUAL;
--- 実行結果例：
--- CURRVAL
--- -------
---       1
--- （同一セッション内でNEXTVALを呼んだ後のみ使用可。呼ぶたびに値は進まない）</code></pre><h3>INDEX（インデックス）</h3><pre><code>-- インデックスの作成
-CREATE INDEX emp_lname_idx
-ON EMPLOYEES (LAST_NAME);
--- 実行結果例：
--- インデックスが作成されました。
--- （LAST_NAME列の検索が高速化される。INSERT/UPDATE/DELETEはやや低速になる）
+<span class="sql-cmt">-- 現在の値を確認（CURRVAL: NEXTVAL を1度呼んだ後のみ使用可）</span>
+<span class="sql-kw">SELECT</span> emp_seq.<span class="sql-kw">CURRVAL</span> <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- CURRVAL</span>
+<span class="sql-cmt">-- -------</span>
+<span class="sql-cmt">--       1</span>
+<span class="sql-cmt">-- （同一セッション内でNEXTVALを呼んだ後のみ使用可。呼ぶたびに値は進まない）</span></code></pre><h3>INDEX（インデックス）</h3><pre><code><span class="sql-cmt">-- インデックスの作成</span>
+<span class="sql-kw">CREATE INDEX</span> emp_lname_idx
+<span class="sql-kw">ON</span> EMPLOYEES (LAST_NAME);
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- インデックスが作成されました。</span>
+<span class="sql-cmt">-- （LAST_NAME列の検索が高速化される。INSERT/UPDATE/DELETEはやや低速になる）</span>
 
--- インデックスの削除
-DROP INDEX emp_lname_idx;
--- 実行結果例：
--- インデックスが削除されました。</code></pre><h3>SYNONYM（シノニム）</h3><pre><code>-- パブリックシノニムの作成（DBA 権限が必要）
-CREATE PUBLIC SYNONYM emp FOR EMPLOYEES;
--- 実行結果例：
--- シノニムが作成されました。
--- （すべてのユーザーがスキーマ名なしで "emp" としてEMPLOYEESにアクセスできる）
+<span class="sql-cmt">-- インデックスの削除</span>
+<span class="sql-kw">DROP INDEX</span> emp_lname_idx;
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- インデックスが削除されました。</span></code></pre><h3>SYNONYM（シノニム）</h3><pre><code><span class="sql-cmt">-- パブリックシノニムの作成（DBA 権限が必要）</span>
+<span class="sql-kw">CREATE</span> <span class="sql-kw">PUBLIC</span> <span class="sql-kw">SYNONYM</span> emp <span class="sql-kw">FOR</span> EMPLOYEES;
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- シノニムが作成されました。</span>
+<span class="sql-cmt">-- （すべてのユーザーがスキーマ名なしで "emp" としてEMPLOYEESにアクセスできる）</span>
 
--- プライベートシノニム
-CREATE SYNONYM emp FOR EMPLOYEES;
--- 実行結果例：
--- シノニムが作成されました。
--- （作成したユーザーのみが "emp" としてEMPLOYEESにアクセスできる）
+<span class="sql-cmt">-- プライベートシノニム</span>
+<span class="sql-kw">CREATE SYNONYM</span> emp <span class="sql-kw">FOR</span> EMPLOYEES;
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- シノニムが作成されました。</span>
+<span class="sql-cmt">-- （作成したユーザーのみが "emp" としてEMPLOYEESにアクセスできる）</span>
 
--- シノニムの削除
-DROP SYNONYM emp;
--- 実行結果例：
--- シノニムが削除されました。
--- （シノニムを削除してもベーステーブルのデータは削除されない）</code></pre><div class='tip-box'><strong>試験のポイント：</strong> CURRVAL は NEXTVAL を同じセッションで1回以上呼び出してから使用できます。シーケンスに CACHE を設定するとシステム障害時に番号が欠番になることがあります。INDEX は検索を高速化しますが、INSERT/UPDATE/DELETE は遅くなります。PRIMARY KEY と UNIQUE 制約を作成すると、自動的にインデックスが作成されます。</div></div><div class="problem-section-title">練習問題</div><div class="problem-card" id="prob-OSLV-D8-002"><div class="problem-header">問題 1 <span class="qid">#OSLV-D8-002</span></div><p class="problem-text">以下のビュー(VIEW)に関する説明として正しいものはどれか。<br>```sql<br>CREATE OR REPLACE VIEW emp_view AS<br>SELECT employee_id, last_name, salary<br>FROM employees<br>WHERE salary > 10000;<br>```</p><ul class="choices"><li>A. ビューはデータを物理的にコピーして保存するため、ベーステーブル変更後も古いデータを返す</li><li>B. このビューからはINSERT/UPDATEができない（ビューは常に読み取り専用）</li><li>C. ビューは実データを持たない仮想表。ベーステーブルが更新されると自動的に最新データを反映する</li><li>D. OR REPLACEを使うと既存のビューを削除して新規作成するためエラーが発生する</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> C. ビューは実データを持たない仮想表。ベーステーブルが更新されると自動的に最新データを反映する</p><p>正解は「ビューは実データを持たない仮想表。ベーステーブルが更新されると自動的に最新データを反映する」である。ビューはSELECT定義を保存するだけで実データは持たない。参照時にSQLを実行するためベーステーブルの変更をリアルタイムに反映する。OR REPLACEは既存ビューがあっても削除せずに置き換える（エラーにならない）。単純ビュー（グループ関数・DISTINCT・JOIN・演算列などがない）はDML操作も可能。</p></div></details></div><div class="problem-card" id="prob-OSLV-D8-003"><div class="problem-header">問題 2 <span class="qid">#OSLV-D8-003</span></div><p class="problem-text">以下のSQL文の実行結果として正しいものはどれか。<br>```sql<br>CREATE SEQUENCE emp_seq<br>  START WITH 100<br>  INCREMENT BY 10<br>  MAXVALUE 200<br>  NOCYCLE;<br><br>SELECT emp_seq.NEXTVAL FROM DUAL;<br>SELECT emp_seq.NEXTVAL FROM DUAL;<br>SELECT emp_seq.CURRVAL FROM DUAL;<br>```</p><ul class="choices"><li>A. 100, 110, 100</li><li>B. 100, 110, 110</li><li>C. 100, 100, 100</li><li>D. 110, 120, 120</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> B. 100, 110, 110</p><p>正解は「100, 110, 110」である。NEXTVALは呼び出すたびにシーケンスをINCREMENT BY分進めて現在値を返す。最初のNEXTVAL: START WITH 100 なので 100。2回目のNEXTVAL: 100 + 10 = 110。CURRVALは現在のシーケンス値を返す（進めない）ため 110。NOCYCLEはMAXVALUEに達した後さらに呼ぶとエラーになる設定（CYCLEならSTART WITHから再開）。CURRVALはNEXTVALを一度も呼んでいないセッションでは使用できない点に注意。</p></div></details></div></div><div class="section-card"><div class="section-title">権限・ロール・辞書ビュー・タイムゾーン</div><div class="topic-chips"><span class="chip">GRANT</span><span class="chip">REVOKE</span><span class="chip">ROLE</span><span class="chip">USER_TABLES</span><span class="chip">ALL_TAB_COLUMNS</span><span class="chip">CURRENT_TIMESTAMP</span><span class="chip">AT TIME ZONE</span><span class="chip">INTERVAL</span></div><div class="section-content"><h3>権限とロール</h3><pre><code>-- 権限付与
-GRANT SELECT, INSERT ON EMPLOYEES TO app_user;
--- 実行結果例：
--- 権限付与が成功しました。
--- （app_userはEMPLOYEESテーブルのSELECTとINSERTが可能になる）
+<span class="sql-cmt">-- シノニムの削除</span>
+<span class="sql-kw">DROP SYNONYM</span> emp;
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- シノニムが削除されました。</span>
+<span class="sql-cmt">-- （シノニムを削除してもベーステーブルのデータは削除されない）</span></code></pre><div class='tip-box'><strong>試験のポイント：</strong> CURRVAL は NEXTVAL を同じセッションで1回以上呼び出してから使用できます。シーケンスに CACHE を設定するとシステム障害時に番号が欠番になることがあります。INDEX は検索を高速化しますが、INSERT/UPDATE/DELETE は遅くなります。PRIMARY KEY と UNIQUE 制約を作成すると、自動的にインデックスが作成されます。</div></div><div class="problem-section-title">練習問題</div><div class="problem-card" id="prob-OSLV-D8-002"><div class="problem-header">問題 1 <span class="qid">#OSLV-D8-002</span></div><p class="problem-text">以下のビュー(VIEW)に関する説明として正しいものはどれか。<br>```sql<br>CREATE OR REPLACE VIEW emp_view AS<br>SELECT employee_id, last_name, salary<br>FROM employees<br>WHERE salary > 10000;<br>```</p><ul class="choices"><li>A. ビューはデータを物理的にコピーして保存するため、ベーステーブル変更後も古いデータを返す</li><li>B. このビューからはINSERT/UPDATEができない（ビューは常に読み取り専用）</li><li>C. ビューは実データを持たない仮想表。ベーステーブルが更新されると自動的に最新データを反映する</li><li>D. OR REPLACEを使うと既存のビューを削除して新規作成するためエラーが発生する</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> C. ビューは実データを持たない仮想表。ベーステーブルが更新されると自動的に最新データを反映する</p><p>正解は「ビューは実データを持たない仮想表。ベーステーブルが更新されると自動的に最新データを反映する」である。ビューはSELECT定義を保存するだけで実データは持たない。参照時にSQLを実行するためベーステーブルの変更をリアルタイムに反映する。OR REPLACEは既存ビューがあっても削除せずに置き換える（エラーにならない）。単純ビュー（グループ関数・DISTINCT・JOIN・演算列などがない）はDML操作も可能。</p></div></details></div><div class="problem-card" id="prob-OSLV-D8-003"><div class="problem-header">問題 2 <span class="qid">#OSLV-D8-003</span></div><p class="problem-text">以下のSQL文の実行結果として正しいものはどれか。<br>```sql<br>CREATE SEQUENCE emp_seq<br>  START WITH 100<br>  INCREMENT BY 10<br>  MAXVALUE 200<br>  NOCYCLE;<br><br>SELECT emp_seq.NEXTVAL FROM DUAL;<br>SELECT emp_seq.NEXTVAL FROM DUAL;<br>SELECT emp_seq.CURRVAL FROM DUAL;<br>```</p><ul class="choices"><li>A. 100, 110, 100</li><li>B. 100, 110, 110</li><li>C. 100, 100, 100</li><li>D. 110, 120, 120</li></ul><details class="answer-details"><summary>解答・解説を見る</summary><div class="answer-content"><p><strong>正解:</strong> B. 100, 110, 110</p><p>正解は「100, 110, 110」である。NEXTVALは呼び出すたびにシーケンスをINCREMENT BY分進めて現在値を返す。最初のNEXTVAL: START WITH 100 なので 100。2回目のNEXTVAL: 100 + 10 = 110。CURRVALは現在のシーケンス値を返す（進めない）ため 110。NOCYCLEはMAXVALUEに達した後さらに呼ぶとエラーになる設定（CYCLEならSTART WITHから再開）。CURRVALはNEXTVALを一度も呼んでいないセッションでは使用できない点に注意。</p></div></details></div></div><div class="section-card"><div class="section-title">権限・ロール・辞書ビュー・タイムゾーン</div><div class="topic-chips"><span class="chip">GRANT</span><span class="chip">REVOKE</span><span class="chip">ROLE</span><span class="chip">USER_TABLES</span><span class="chip">ALL_TAB_COLUMNS</span><span class="chip">CURRENT_TIMESTAMP</span><span class="chip">AT TIME ZONE</span><span class="chip">INTERVAL</span></div><div class="section-content"><h3>権限とロール</h3><pre><code><span class="sql-cmt">-- 権限付与</span>
+<span class="sql-kw">GRANT</span> <span class="sql-kw">SELECT</span>, <span class="sql-kw">INSERT</span> <span class="sql-kw">ON</span> EMPLOYEES <span class="sql-kw">TO</span> app_user;
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- 権限付与が成功しました。</span>
+<span class="sql-cmt">-- （app_userはEMPLOYEESテーブルのSELECTとINSERTが可能になる）</span>
 
--- ロール作成と付与
-CREATE ROLE report_reader;
-GRANT SELECT ON EMPLOYEES TO report_reader;
-GRANT report_reader TO app_user;
--- 実行結果例：
--- ロールが作成されました。
--- 権限付与が成功しました。
--- 権限付与が成功しました。
--- （ロールを介してapp_userにSELECT権限が付与される）
+<span class="sql-cmt">-- ロール作成と付与</span>
+<span class="sql-kw">CREATE</span> ROLE report_reader;
+<span class="sql-kw">GRANT</span> <span class="sql-kw">SELECT</span> <span class="sql-kw">ON</span> EMPLOYEES <span class="sql-kw">TO</span> report_reader;
+<span class="sql-kw">GRANT</span> report_reader <span class="sql-kw">TO</span> app_user;
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- ロールが作成されました。</span>
+<span class="sql-cmt">-- 権限付与が成功しました。</span>
+<span class="sql-cmt">-- 権限付与が成功しました。</span>
+<span class="sql-cmt">-- （ロールを介してapp_userにSELECT権限が付与される）</span>
 
--- 権限の剥奪
-REVOKE INSERT ON EMPLOYEES FROM app_user;
--- 実行結果例：
--- 権限が取り消されました。
--- （app_userのINSERT権限が削除される。SELECT権限は残る）</code></pre><h3>データ・ディクショナリ・ビュー</h3><pre><code>-- 自スキーマの表一覧
-SELECT TABLE_NAME FROM USER_TABLES ORDER BY TABLE_NAME;
--- 実行結果例：
--- TABLE_NAME
--- --------------------
--- DEPARTMENTS
--- EMPLOYEES
--- JOB_HISTORY
--- ...（自分が所有するテーブルのみ表示される）
+<span class="sql-cmt">-- 権限の剥奪</span>
+<span class="sql-kw">REVOKE</span> <span class="sql-kw">INSERT</span> <span class="sql-kw">ON</span> EMPLOYEES <span class="sql-kw">FROM</span> app_user;
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- 権限が取り消されました。</span>
+<span class="sql-cmt">-- （app_userのINSERT権限が削除される。SELECT権限は残る）</span></code></pre><h3>データ・ディクショナリ・ビュー</h3><pre><code><span class="sql-cmt">-- 自スキーマの表一覧</span>
+<span class="sql-kw">SELECT</span> TABLE_NAME <span class="sql-kw">FROM</span> USER_TABLES <span class="sql-kw">ORDER BY</span> TABLE_NAME;
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- TABLE_NAME</span>
+<span class="sql-cmt">-- --------------------</span>
+<span class="sql-cmt">-- DEPARTMENTS</span>
+<span class="sql-cmt">-- EMPLOYEES</span>
+<span class="sql-cmt">-- JOB_HISTORY</span>
+<span class="sql-cmt">-- ...（自分が所有するテーブルのみ表示される）</span>
 
--- 参照可能な列定義
-SELECT OWNER, TABLE_NAME, COLUMN_NAME, DATA_TYPE
-FROM   ALL_TAB_COLUMNS
-WHERE  TABLE_NAME = 'EMPLOYEES';
--- 実行結果例：
--- OWNER  TABLE_NAME  COLUMN_NAME    DATA_TYPE
--- ------ ----------- -------------- ---------
--- HR     EMPLOYEES   EMPLOYEE_ID    NUMBER
--- HR     EMPLOYEES   LAST_NAME      VARCHAR2
--- HR     EMPLOYEES   EMAIL          VARCHAR2
--- ...（自分がアクセス権を持つすべてのスキーマのEMPLOYEES列が表示される）</code></pre><h3>日時・タイムゾーン</h3><pre><code>-- 現在日時（セッションタイムゾーン）
-SELECT CURRENT_DATE, CURRENT_TIMESTAMP FROM DUAL;
--- 実行結果例：
--- CURRENT_DATE CURRENT_TIMESTAMP
--- ------------ ------------------------------
--- 26-3月 -26  26-3月 -26 10.30.00.000000 +09:00
--- （CURRENT_DATEは日付のみ、CURRENT_TIMESTAMPはタイムゾーン付きの日時を返す）
+<span class="sql-cmt">-- 参照可能な列定義</span>
+<span class="sql-kw">SELECT</span> OWNER, TABLE_NAME, COLUMN_NAME, DATA_TYPE
+<span class="sql-kw">FROM</span>   ALL_TAB_COLUMNS
+<span class="sql-kw">WHERE</span>  TABLE_NAME = <span class="sql-str">'EMPLOYEES'</span>;
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- OWNER  TABLE_NAME  COLUMN_NAME    DATA_TYPE</span>
+<span class="sql-cmt">-- ------ ----------- -------------- ---------</span>
+<span class="sql-cmt">-- HR     EMPLOYEES   EMPLOYEE_ID    NUMBER</span>
+<span class="sql-cmt">-- HR     EMPLOYEES   LAST_NAME      VARCHAR2</span>
+<span class="sql-cmt">-- HR     EMPLOYEES   EMAIL          VARCHAR2</span>
+<span class="sql-cmt">-- ...（自分がアクセス権を持つすべてのスキーマのEMPLOYEES列が表示される）</span></code></pre><h3>日時・タイムゾーン</h3><pre><code><span class="sql-cmt">-- 現在日時（セッションタイムゾーン）</span>
+<span class="sql-kw">SELECT</span> CURRENT_DATE, CURRENT_TIMESTAMP <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span>;
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- CURRENT_DATE CURRENT_TIMESTAMP</span>
+<span class="sql-cmt">-- ------------ ------------------------------</span>
+<span class="sql-cmt">-- 26-3月 -26  26-3月 -26 10.30.00.000000 +09:00</span>
+<span class="sql-cmt">-- （CURRENT_DATEは日付のみ、CURRENT_TIMESTAMPはタイムゾーン付きの日時を返す）</span>
 
--- タイムゾーン変換
-SELECT CURRENT_TIMESTAMP AT TIME ZONE '+00:00' AS UTC_TIME
-FROM   DUAL;
--- 実行結果例：
--- UTC_TIME
--- ------------------------------
--- 26-3月 -26 01.30.00.000000 +00:00
--- （日本時間+09:00から9時間引いたUTC時刻に変換される）
+<span class="sql-cmt">-- タイムゾーン変換</span>
+<span class="sql-kw">SELECT</span> CURRENT_TIMESTAMP AT TIME ZONE <span class="sql-str">'+00:00'</span> <span class="sql-kw">AS</span> UTC_TIME
+<span class="sql-kw">FROM</span>   <span class="sql-kw">DUAL</span>;
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- UTC_TIME</span>
+<span class="sql-cmt">-- ------------------------------</span>
+<span class="sql-cmt">-- 26-3月 -26 01.30.00.000000 +00:00</span>
+<span class="sql-cmt">-- （日本時間+09:00から9時間引いたUTC時刻に変換される）</span>
 
--- INTERVAL の利用例
-SELECT CURRENT_TIMESTAMP + INTERVAL '2' HOUR AS PLUS_2H
-FROM   DUAL;
--- 実行結果例：
--- PLUS_2H
--- ------------------------------
--- 26-3月 -26 12.30.00.000000 +09:00
--- （現在時刻に2時間を加算した結果が返る）</code></pre><div class='tip-box'><strong>試験のポイント：</strong> 権限は最小権限で付与し、役割単位ではロールを使います。辞書ビュー（USER_/ALL_/DBA_）は参照範囲が異なります。CURRENT_TIMESTAMP はタイムゾーンを保持し、AT TIME ZONE で変換できます。</div></div></div>
+<span class="sql-cmt">-- INTERVAL の利用例</span>
+<span class="sql-kw">SELECT</span> CURRENT_TIMESTAMP + INTERVAL <span class="sql-str">'2'</span> HOUR <span class="sql-kw">AS</span> PLUS_2H
+<span class="sql-kw">FROM</span>   <span class="sql-kw">DUAL</span>;
+<span class="sql-cmt">-- 実行結果例：</span>
+<span class="sql-cmt">-- PLUS_2H</span>
+<span class="sql-cmt">-- ------------------------------</span>
+<span class="sql-cmt">-- 26-3月 -26 12.30.00.000000 +09:00</span>
+<span class="sql-cmt">-- （現在時刻に2時間を加算した結果が返る）</span></code></pre><div class='tip-box'><strong>試験のポイント：</strong> 権限は最小権限で付与し、役割単位ではロールを使います。辞書ビュー（USER_/ALL_/DBA_）は参照範囲が異なります。CURRENT_TIMESTAMP はタイムゾーンを保持し、AT TIME ZONE で変換できます。</div></div></div>
 </div>
 </body>
 </html>

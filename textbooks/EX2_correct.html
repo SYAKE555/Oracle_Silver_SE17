@@ -62,6 +62,17 @@
     .concept-section h3 { flex-direction: column; align-items: flex-start; }
     .option-review-head { flex-direction: column; align-items: flex-start; }
   }
+
+  pre .sql-kw { color: #fbbf24; font-weight: 700; }
+  pre .sql-fn { color: #60a5fa; font-weight: 600; }
+  pre .sql-str { color: #86efac; }
+  pre .sql-num { color: #fca5a5; }
+  pre .sql-cmt { color: #94a3b8; font-style: italic; }
+  code .sql-kw { color: #b45309; font-weight: 700; }
+  code .sql-fn { color: #1d4ed8; font-weight: 600; }
+  code .sql-str { color: #047857; }
+  code .sql-num { color: #b91c1c; }
+  code .sql-cmt { color: #64748b; font-style: italic; }
 </style>
 </head>
 <body>
@@ -117,12 +128,12 @@
 <span class="note">-- 集合演算は各 SELECT の列数・型が一致。列名は先頭 SELECT 基準。</span></div></div>
       <div class="guide-block">
         <div class="guide-title">この論点の基本形</div>
-        <pre>SELECT col1, col2
-FROM   table_a
-UNION | UNION ALL | INTERSECT | MINUS
-SELECT col1, col2
-FROM   table_b
-ORDER BY 1;</pre>
+        <pre><span class="sql-kw">SELECT</span> col1, col2
+<span class="sql-kw">FROM</span>   table_a
+<span class="sql-kw">UNION</span> | <span class="sql-kw">UNION ALL</span> | <span class="sql-kw">INTERSECT</span> | <span class="sql-kw">MINUS</span>
+<span class="sql-kw">SELECT</span> col1, col2
+<span class="sql-kw">FROM</span>   table_b
+<span class="sql-kw">ORDER BY</span> <span class="sql-num">1</span>;</pre>
       </div>
       <div class="guide-grid">
         <div class="guide-block">
@@ -142,11 +153,11 @@ ORDER BY 1;</pre>
                   <div class="question-meta">第1回 模擬試験 / 問33 / 正答 A / 自己回答 -</div>
                   <div class="block-title">問題文</div>
                   <pre>複合問合せで使用されるINTERSECT演算子について正しい記述はどれでしょうか。
-(1)		A.　複合問合せに含まれる各SELECT文の順番を入れ替えても結果は同じです。
-(2)		B.　NULLは無視して処理されます。
-(3)		C.　INTERSECT演算子は、UNIONよりも優先順位が高くなります。
-(4)		D.　複数のINTERSECT演算子を使用することはできません。
-(5)		E.　重複データは重複状態のまま処理されます。</pre>
+(<span class="sql-num">1</span>)		A.　複合問合せに含まれる各SELECT文の順番を入れ替えても結果は同じです。
+(<span class="sql-num">2</span>)		B.　NULLは無視して処理されます。
+(<span class="sql-num">3</span>)		C.　INTERSECT演算子は、UNIONよりも優先順位が高くなります。
+(<span class="sql-num">4</span>)		D.　複数のINTERSECT演算子を使用することはできません。
+(<span class="sql-num">5</span>)		E.　重複データは重複状態のまま処理されます。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問の論点は「INTERSECT を含む集合演算の基本」です。問題文は「複合問合せで使用されるINTERSECT演算子について正しい記述はどれでしょうか。」という条件を満たす説明または SQL を求めています。複合問合せでは、各 SELECT の列数と対応するデータ型をそろえる必要がある。INTERSECT は両方の結果に共通する行を返し、NULL を含む行も比較対象になる。 この設問では正答 A「複合問合せに含まれる各SELECT文の順番を入れ替えても結果は同じです。」 を選べており、成立条件を正しく読めています。</p>
@@ -210,32 +221,32 @@ ORDER BY 1;</pre>
                   <div class="question-meta">第3回 模擬試験 / 問37 / 正答 A / 自己回答 -</div>
                   <div class="block-title">問題文</div>
                   <pre>A.
-SELECT dept_id FROM departments
-MINUS
-SELECT dept_id FROM employees;
+<span class="sql-kw">SELECT</span> dept_id <span class="sql-kw">FROM</span> departments
+<span class="sql-kw">MINUS</span>
+<span class="sql-kw">SELECT</span> dept_id <span class="sql-kw">FROM</span> employees;
 
 B.
-SELECT dept_id FROM departments
-INTERSECT
-SELECT dept_id FROM employees;
+<span class="sql-kw">SELECT</span> dept_id <span class="sql-kw">FROM</span> departments
+<span class="sql-kw">INTERSECT</span>
+<span class="sql-kw">SELECT</span> dept_id <span class="sql-kw">FROM</span> employees;
 
 C.
-SELECT * FROM departments d
-WHERE EXISTS (
-  SELECT 1 FROM employees e WHERE e.dept_id = d.dept_id
+<span class="sql-kw">SELECT</span> * <span class="sql-kw">FROM</span> departments d
+<span class="sql-kw">WHERE</span> <span class="sql-kw">EXISTS</span> (
+  <span class="sql-kw">SELECT</span> <span class="sql-num">1</span> <span class="sql-kw">FROM</span> employees e <span class="sql-kw">WHERE</span> e.dept_id = d.dept_id
 );
 
 D.
-SELECT * FROM departments
-MINUS
-SELECT * FROM employees;
+<span class="sql-kw">SELECT</span> * <span class="sql-kw">FROM</span> departments
+<span class="sql-kw">MINUS</span>
+<span class="sql-kw">SELECT</span> * <span class="sql-kw">FROM</span> employees;
 
 Employees テーブルにはまだ所属者がいない部門（Departments テーブルにのみ存在する部門）を取得したいとします。これを実現するSQLはどれですか。1つ選択してください。
 
-(1)		A
-(2)		B
-(3)		C
-(4)		D</pre>
+(<span class="sql-num">1</span>)		A
+(<span class="sql-num">2</span>)		B
+(<span class="sql-num">3</span>)		C
+(<span class="sql-num">4</span>)		D</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問の論点は「INTERSECT を含む集合演算の基本」です。問題文は「設問条件の読み取り」という条件を満たす説明または SQL を求めています。複合問合せでは、各 SELECT の列数と対応するデータ型をそろえる必要がある。INTERSECT は両方の結果に共通する行を返し、NULL を含む行も比較対象になる。 この設問では正答 A「SELECT dept_id FROM departments MINUS SELECT dept_id FR…」 を選べており、成立条件を正しく読めています。</p>
@@ -309,12 +320,12 @@ Employees テーブルにはまだ所属者がいない部門（Departments テ�
 <span class="note">-- 集合演算は各 SELECT の列数・型が一致。列名は先頭 SELECT 基準。</span></div></div>
       <div class="guide-block">
         <div class="guide-title">この論点の基本形</div>
-        <pre>SELECT o.col
-FROM   outer_table o
-WHERE  o.value &gt; (
-         SELECT AVG(i.value)
-         FROM   inner_table i
-         WHERE  i.group_id = o.group_id
+        <pre><span class="sql-kw">SELECT</span> o.col
+<span class="sql-kw">FROM</span>   outer_table o
+<span class="sql-kw">WHERE</span>  o.value &gt; (
+         <span class="sql-kw">SELECT</span> <span class="sql-fn">AVG</span>(i.value)
+         <span class="sql-kw">FROM</span>   inner_table i
+         <span class="sql-kw">WHERE</span>  i.group_id = o.group_id
        );</pre>
       </div>
       <div class="guide-grid">
@@ -336,10 +347,10 @@ WHERE  o.value &gt; (
                   <div class="block-title">問題文</div>
                   <pre>ITEM_TYPEが&#x27;FOOD&#x27;であるITEMの全ての製造年月日（MADE_DATE）と比較して、
 製造年月日が新しいITEMの情報を表示するSQLはどれでしょうか。
-(1)		A.　SELECT ITEM_NAME, MADE_DATE FROM ITEM WHERE MADE_DATE &gt; SELECT MAX (MADE_DATE) FROM ITEM WHERE ITEM_TYPE= &#x27;FOOD&#x27;;
-(2)		B.　SELECT ITEM_NAME, MADE_DATE FROM ITEM WHERE MADE_DATE &gt; ALL (SELECT MADE_DATE FROM ITEM WHERE ITEM_TYPE = &#x27;FOOD&#x27;);
-(3)		C.　SELECT ITEM_NAME, MADE_DATE FROM ITEM WHERE MADE_DATE &gt; ANY (SELECT MADE_DATE FROM ITEM WHERE ITEM_TYPE= &#x27;FOOD&#x27;);
-(4)		D.　SELECT ITEM_NAME, MADE_DATE FROM ITEM WHERE MADE_DATE IN (SELECT MADE_DATE FROM ITEM WHERE ITEM_TYPE= &#x27;FOOD&#x27;);</pre>
+(<span class="sql-num">1</span>)		A.　<span class="sql-kw">SELECT</span> ITEM_NAME, MADE_DATE <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> MADE_DATE &gt; <span class="sql-kw">SELECT</span> <span class="sql-fn">MAX</span> (MADE_DATE) <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> ITEM_TYPE= &#x27;FOOD&#x27;;
+(<span class="sql-num">2</span>)		B.　<span class="sql-kw">SELECT</span> ITEM_NAME, MADE_DATE <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> MADE_DATE &gt; <span class="sql-kw">ALL</span> (<span class="sql-kw">SELECT</span> MADE_DATE <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> ITEM_TYPE = &#x27;FOOD&#x27;);
+(<span class="sql-num">3</span>)		C.　<span class="sql-kw">SELECT</span> ITEM_NAME, MADE_DATE <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> MADE_DATE &gt; <span class="sql-kw">ANY</span> (<span class="sql-kw">SELECT</span> MADE_DATE <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> ITEM_TYPE= &#x27;FOOD&#x27;);
+(<span class="sql-num">4</span>)		D.　<span class="sql-kw">SELECT</span> ITEM_NAME, MADE_DATE <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> MADE_DATE <span class="sql-kw">IN</span> (<span class="sql-kw">SELECT</span> MADE_DATE <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> ITEM_TYPE= &#x27;FOOD&#x27;);</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問の論点は「ANY・ALL・平均比較」です。問題文は「ITEM_TYPEが'FOOD'であるITEMの全ての製造年月日（MADE_DATE）と比較して、 製造年月日が新しいITEMの情報を表示するSQLはどれでしょうか。」という条件を満たす説明または SQL を求めています。サブクエリ結果が複数行になるときは、IN、ANY、ALL を使って比較する。部門別平均より高い給与のような問題では、相関サブクエリか集約結果との結合で表現する。 この設問では正答 B「SELECT ITEM_NAME, MADE_DATE FROM ITEM WHERE MADE_DATE &gt;…」 を選べており、成立条件を正しく読めています。</p>
@@ -413,12 +424,12 @@ WHERE  o.value &gt; (
 <span class="note">-- 集合演算は各 SELECT の列数・型が一致。列名は先頭 SELECT 基準。</span></div></div>
       <div class="guide-block">
         <div class="guide-title">この論点の基本形</div>
-        <pre>SELECT col1, col2
-FROM   table_a
-UNION | UNION ALL | INTERSECT | MINUS
-SELECT col1, col2
-FROM   table_b
-ORDER BY 1;</pre>
+        <pre><span class="sql-kw">SELECT</span> col1, col2
+<span class="sql-kw">FROM</span>   table_a
+<span class="sql-kw">UNION</span> | <span class="sql-kw">UNION ALL</span> | <span class="sql-kw">INTERSECT</span> | <span class="sql-kw">MINUS</span>
+<span class="sql-kw">SELECT</span> col1, col2
+<span class="sql-kw">FROM</span>   table_b
+<span class="sql-kw">ORDER BY</span> <span class="sql-num">1</span>;</pre>
       </div>
       <div class="guide-grid">
         <div class="guide-block">
@@ -445,11 +456,11 @@ ORDER BY 1;</pre>
 
 必要な出力を生成する集合演算子はどれでしょうか。
 
-(1)		A.　MINUS
-(2)		B.　PLUS
-(3)		C.　SUBTRACT
-(4)		D.　UNION
-(5)		E.　UNION ALL</pre>
+(<span class="sql-num">1</span>)		A.　<span class="sql-kw">MINUS</span>
+(<span class="sql-num">2</span>)		B.　PLUS
+(<span class="sql-num">3</span>)		C.　SUBTRACT
+(<span class="sql-num">4</span>)		D.　<span class="sql-kw">UNION</span>
+(<span class="sql-num">5</span>)		E.　<span class="sql-kw">UNION ALL</span></pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問の論点は「UNION と UNION ALL の違い」です。問題文は「地方新聞社の顧客表が地域毎に同じ形式で存在しています。 一部の顧客データが両方の表で重複しているとします。 顧客表1に存在しない顧客表2の行を表示したいとします。 必要な出力を生成する集合演算子はどれでしょうか。」という条件を満たす説明または SQL を求めています。UNION は列数と型をそろえたうえで重複行を削除する。UNION ALL は重複を残し、重複排除のソート処理も行わない。 この設問では正答 A「MINUS」 を選べており、成立条件を正しく読めています。</p>
@@ -532,12 +543,12 @@ ORDER BY 1;</pre>
 <span class="note">-- 集合演算は各 SELECT の列数・型が一致。列名は先頭 SELECT 基準。</span></div></div>
       <div class="guide-block">
         <div class="guide-title">この論点の基本形</div>
-        <pre>SELECT o.col
-FROM   outer_table o
-WHERE  o.value &gt; (
-         SELECT AVG(i.value)
-         FROM   inner_table i
-         WHERE  i.group_id = o.group_id
+        <pre><span class="sql-kw">SELECT</span> o.col
+<span class="sql-kw">FROM</span>   outer_table o
+<span class="sql-kw">WHERE</span>  o.value &gt; (
+         <span class="sql-kw">SELECT</span> <span class="sql-fn">AVG</span>(i.value)
+         <span class="sql-kw">FROM</span>   inner_table i
+         <span class="sql-kw">WHERE</span>  i.group_id = o.group_id
        );</pre>
       </div>
       <div class="guide-grid">
@@ -558,11 +569,11 @@ WHERE  o.value &gt; (
                   <div class="question-meta">第1回 模擬試験 / 問29 / 正答 A / 自己回答 -</div>
                   <div class="block-title">問題文</div>
                   <pre>単一行副問合せの記述はどれでしょうか。
-(1)		A.　内側の問合せは外側の問合せに1つの値を返します。
-(2)		B.　内側の問合せは外側の問合せに1つ以上の値を返します。
-(3)		C.　列には、使用する表の名前またはエイリアスを付与する必要があります。
-(4)		D.　内側の問合せは1つ以上の値を返し、外側の問合せは1つの値を返します。
-(5)		E.　内側の問合せは2つ以上の値を返し、外側の問合せは1つの値を返します。</pre>
+(<span class="sql-num">1</span>)		A.　内側の問合せは外側の問合せに1つの値を返します。
+(<span class="sql-num">2</span>)		B.　内側の問合せは外側の問合せに1つ以上の値を返します。
+(<span class="sql-num">3</span>)		C.　列には、使用する表の名前またはエイリアスを付与する必要があります。
+(<span class="sql-num">4</span>)		D.　内側の問合せは1つ以上の値を返し、外側の問合せは1つの値を返します。
+(<span class="sql-num">5</span>)		E.　内側の問合せは2つ以上の値を返し、外側の問合せは1つの値を返します。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問の論点は「サブクエリ総合」です。問題文は「単一行副問合せの記述はどれでしょうか。」という条件を満たす説明または SQL を求めています。サブクエリは返す行数と比較演算子の組合せで意味が決まる。まず単一行か複数行か、相関か非相関かを切り分ける必要がある。 この設問では正答 A「内側の問合せは外側の問合せに1つの値を返します。」 を選べており、成立条件を正しく読めています。</p>
@@ -645,12 +656,12 @@ WHERE  o.value &gt; (
 <span class="note">-- 集合演算は各 SELECT の列数・型が一致。列名は先頭 SELECT 基準。</span></div></div>
       <div class="guide-block">
         <div class="guide-title">この論点の基本形</div>
-        <pre>SELECT o.col
-FROM   outer_table o
-WHERE  o.value &gt; (
-         SELECT AVG(i.value)
-         FROM   inner_table i
-         WHERE  i.group_id = o.group_id
+        <pre><span class="sql-kw">SELECT</span> o.col
+<span class="sql-kw">FROM</span>   outer_table o
+<span class="sql-kw">WHERE</span>  o.value &gt; (
+         <span class="sql-kw">SELECT</span> <span class="sql-fn">AVG</span>(i.value)
+         <span class="sql-kw">FROM</span>   inner_table i
+         <span class="sql-kw">WHERE</span>  i.group_id = o.group_id
        );</pre>
       </div>
       <div class="guide-grid">
@@ -671,12 +682,12 @@ WHERE  o.value &gt; (
                   <div class="question-meta">第1回 模擬試験 / 問30 / 正答 B.C.E / 自己回答 -</div>
                   <div class="block-title">問題文</div>
                   <pre>複数行の副問合せについて正しい記述はどれでしょうか。（3つ選択）
-(1)		A.　複数の列と行を返すことができます。
-(2)		B.　1列のみの複数行を返すことができます。
-(3)		C.　副問合せ内に副問合せを含めることができます。
-(4)		D.　副問合せ内に副問合せを含めることはできません。
-(5)		E.　GROUP BY句とORDER BY句を含めることができます。
-(6)		F.　GROUP BY句とORDER BY句を含めることはできません。</pre>
+(<span class="sql-num">1</span>)		A.　複数の列と行を返すことができます。
+(<span class="sql-num">2</span>)		B.　1列のみの複数行を返すことができます。
+(<span class="sql-num">3</span>)		C.　副問合せ内に副問合せを含めることができます。
+(<span class="sql-num">4</span>)		D.　副問合せ内に副問合せを含めることはできません。
+(<span class="sql-num">5</span>)		E.　GROUP BY句とORDER BY句を含めることができます。
+(<span class="sql-num">6</span>)		F.　GROUP BY句とORDER BY句を含めることはできません。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問の論点は「複数行サブクエリの性質」です。問題文は「複数行の副問合せについて正しい記述はどれでしょうか。（3つ選択）」という条件を満たす説明または SQL を求めています。複数行サブクエリは、複数行を返し得る副問合せであり、WHERE、HAVING、GROUP BY を内部に持つこともできる。比較では IN、ANY、ALL など複数行対応の演算子を使う必要がある。 この設問では正答 B「1列のみの複数行を返すことができます。」 / C「副問合せ内に副問合せを含めることができます。」 / E「GROUP BY句とORDER BY句を含めることができます。」 を選べており、成立条件を正しく読めています。</p>

@@ -35,6 +35,17 @@ table{width:100%;min-width:860px;border-collapse:collapse}
 th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef5ff}
 .top{text-align:right;margin-top:12px}
 @media(max-width:1120px){.layout{grid-template-columns:1fr}.sidebar{position:static;max-height:none}}
+
+  pre .sql-kw { color: #fbbf24; font-weight: 700; }
+  pre .sql-fn { color: #60a5fa; font-weight: 600; }
+  pre .sql-str { color: #86efac; }
+  pre .sql-num { color: #fca5a5; }
+  pre .sql-cmt { color: #94a3b8; font-style: italic; }
+  code .sql-kw { color: #b45309; font-weight: 700; }
+  code .sql-fn { color: #1d4ed8; font-weight: 600; }
+  code .sql-str { color: #047857; }
+  code .sql-num { color: #b91c1c; }
+  code .sql-cmt { color: #64748b; font-style: italic; }
 </style>
 </head>
 <body>
@@ -77,11 +88,11 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 <section class="card" id="single-row">
 <h2>8.2 単一行副問合せ</h2>
 <p>単一行副問合せは1行1値を返し、`=`、`&gt;`、`&lt;`など単一値比較演算子と組み合わせる。典型例は「全体平均以上」「最大値と一致」などである。試験では単一行比較に複数行が返る誤り（ORA-01427）が頻出。実務では副問合せの結果が本当に単一になるかを先に単体実行して確認するのが安全である。単一前提が揺らぐならINやANY/ALLへ切替えるべきである。</p>
-<pre><code><span class="kw">SELECT</span> <span class="obj">employee_id</span>, <span class="obj">salary</span>
-<span class="kw">FROM</span> <span class="obj">employees</span>
-<span class="kw">WHERE</span> <span class="obj">salary</span> &gt; (
-  <span class="kw">SELECT</span> <span class="kw">AVG</span>(<span class="obj">salary</span>)
-  <span class="kw">FROM</span> <span class="obj">employees</span>
+<pre><code><span class="kw"><span class="sql-kw">SELECT</span></span> <span class="obj">employee_id</span>, <span class="obj">salary</span>
+<span class="kw"><span class="sql-kw">FROM</span></span> <span class="obj">employees</span>
+<span class="kw"><span class="sql-kw">WHERE</span></span> <span class="obj">salary</span> &gt; (
+  <span class="kw"><span class="sql-kw">SELECT</span></span> <span class="kw">AVG</span>(<span class="obj">salary</span>)
+  <span class="kw"><span class="sql-kw">FROM</span></span> <span class="obj">employees</span>
 );</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
@@ -98,12 +109,12 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 <section class="card" id="correlated">
 <h2>8.5 相関副問合せ</h2>
 <p>相関副問合せは外側SQLの各行値を内側SQLで参照し、行ごとに再評価される。例として「同部署平均以上の社員抽出」がある。非相関より表現力は高いが、行ごと評価のため性能に注意が必要である。試験では評価順を問う設問が多く、内側が外側列を参照する構造を見抜けるかが鍵になる。実務では必要に応じてJOIN+集約へ書換え、実行計画を比較することが推奨される。</p>
-<pre><code><span class="kw">SELECT</span> <span class="obj">e.employee_id</span>
-<span class="kw">FROM</span> <span class="obj">employees</span> <span class="obj">e</span>
-<span class="kw">WHERE</span> <span class="obj">e.salary</span> &gt; (
-  <span class="kw">SELECT</span> <span class="kw">AVG</span>(<span class="obj">i.salary</span>)
-  <span class="kw">FROM</span> <span class="obj">employees</span> <span class="obj">i</span>
-  <span class="kw">WHERE</span> <span class="obj">i.department_id</span> = <span class="obj">e.department_id</span>
+<pre><code><span class="kw"><span class="sql-kw">SELECT</span></span> <span class="obj">e.employee_id</span>
+<span class="kw"><span class="sql-kw">FROM</span></span> <span class="obj">employees</span> <span class="obj">e</span>
+<span class="kw"><span class="sql-kw">WHERE</span></span> <span class="obj">e.salary</span> &gt; (
+  <span class="kw"><span class="sql-kw">SELECT</span></span> <span class="kw">AVG</span>(<span class="obj">i.salary</span>)
+  <span class="kw"><span class="sql-kw">FROM</span></span> <span class="obj">employees</span> <span class="obj">i</span>
+  <span class="kw"><span class="sql-kw">WHERE</span></span> <span class="obj">i.department_id</span> = <span class="obj">e.department_id</span>
 );</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>

@@ -35,6 +35,17 @@ table{width:100%;min-width:860px;border-collapse:collapse}
 th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef5ff}
 .top{text-align:right;margin-top:12px}
 @media(max-width:1120px){.layout{grid-template-columns:1fr}.sidebar{position:static;max-height:none}}
+
+  pre .sql-kw { color: #fbbf24; font-weight: 700; }
+  pre .sql-fn { color: #60a5fa; font-weight: 600; }
+  pre .sql-str { color: #86efac; }
+  pre .sql-num { color: #fca5a5; }
+  pre .sql-cmt { color: #94a3b8; font-style: italic; }
+  code .sql-kw { color: #b45309; font-weight: 700; }
+  code .sql-fn { color: #1d4ed8; font-weight: 600; }
+  code .sql-str { color: #047857; }
+  code .sql-num { color: #b91c1c; }
+  code .sql-cmt { color: #64748b; font-style: italic; }
 </style>
 </head>
 <body>
@@ -109,9 +120,9 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 <p>アンチパターンは可変の業務値を主キーにすること。メールアドレスや社員番号運用桁は変更される可能性があり、変更時に関連表を連鎖更新する必要が生じる。複合主キーを無秩序に増やす設計も外部キー定義を複雑化し保守性を落とす。複合キーは業務上一意条件として不可欠な場合のみ採用し、不要なら代理キーとUNIQUE制約の併用が扱いやすい。主キー未定義で開発を進める設計は重複防止機構を失うため、実務では受け入れ不可である。</p>
 <h3>5) 試験・実務の急所</h3>
 <p>試験ではPRIMARY KEYのNULL不可、1表1主キー（列組可）、UNIQUEとの違いが典型出題である。実務では主キー戦略を最初に確定することで、後続表の外部キー設計が安定する。新人が誤りやすいのは「業務上読みやすい値=主キー」という誤解であり、可読性は表示列に分離すべきである。レビューでは「10年後も不変か」「他システム連携で競合しないか」を確認する。主キー設計が固まるとDML運用、データ移行、障害復旧の難易度が大幅に下がる。</p>
-<pre><code><span class="kw">CREATE TABLE</span> <span class="obj">customers</span>(
-  <span class="obj">customer_id</span> <span class="kw">NUMBER</span> <span class="kw">PRIMARY KEY</span>,
-  <span class="obj">customer_name</span> <span class="kw">VARCHAR2</span>(<span class="obj">100</span>) <span class="kw">NOT NULL</span>
+<pre><code><span class="kw"><span class="sql-kw">CREATE TABLE</span></span> <span class="obj">customers</span>(
+  <span class="obj">customer_id</span> <span class="kw">NUMBER</span> <span class="kw"><span class="sql-kw">PRIMARY KEY</span></span>,
+  <span class="obj">customer_name</span> <span class="kw">VARCHAR2</span>(<span class="obj"><span class="sql-num">100</span></span>) <span class="kw"><span class="sql-kw">NOT NULL</span></span>
 );</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
@@ -127,10 +138,10 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 <p>アンチパターンは削除ポリシー未定義のまま外部キーを設定すること。運用で親削除要件が発生した際、参照制約エラーで手順停止する。逆に意味を理解せずCASCADEを乱用すると、親1件削除で大量子データが消える事故を引き起こす。性能を理由に外部キーを一律除去する判断も危険で、整合性崩壊リスクをDB外へ押し出すだけである。性能問題は索引や処理設計で解くべきで、制約削除は最終手段。設計段階で「削除時に何を残し何を消すか」を必ず文章化してから制約を定義すること。</p>
 <h3>5) 試験・実務の急所</h3>
 <p>試験では親キー種別、参照整合違反時の挙動、削除時ルールが頻出である。実務では親子投入順序と削除順序を誤るとバッチが停止するため、運用手順書へSQL順序を明示する必要がある。監査では外部キー定義が整合性担保の強い証拠となる。外部キーなしで運用する場合、同等検証をアプリとバッチ双方で再実装する必要があり、漏れが生じやすい。したがって要件上許す限り、整合性はDB制約で担保するのが定石である。</p>
-<pre><code><span class="kw">CREATE TABLE</span> <span class="obj">orders</span>(
-  <span class="obj">order_id</span> <span class="kw">NUMBER</span> <span class="kw">PRIMARY KEY</span>,
-  <span class="obj">customer_id</span> <span class="kw">NUMBER</span> <span class="kw">CONSTRAINT</span> <span class="obj">orders_customer_fk</span>
-    <span class="kw">REFERENCES</span> <span class="obj">customers</span>(<span class="obj">customer_id</span>)
+<pre><code><span class="kw"><span class="sql-kw">CREATE TABLE</span></span> <span class="obj">orders</span>(
+  <span class="obj">order_id</span> <span class="kw">NUMBER</span> <span class="kw"><span class="sql-kw">PRIMARY KEY</span></span>,
+  <span class="obj">customer_id</span> <span class="kw">NUMBER</span> <span class="kw"><span class="sql-kw">CONSTRAINT</span></span> <span class="obj">orders_customer_fk</span>
+    <span class="kw"><span class="sql-kw">REFERENCES</span></span> <span class="obj">customers</span>(<span class="obj">customer_id</span>)
 );</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
@@ -146,9 +157,9 @@ th,td{border:1px solid #dbe6f5;padding:8px;vertical-align:top}th{background:#eef
 <p>代表的アンチパターンは、NULLを等号比較する、NOT INへNULL混在集合を渡す、未入力を0保存する、の3つである。NOT IN + NULLは条件全体がUNKNOWN化し、期待外れの0件を返しやすい。修正はNOT EXISTS活用、または比較集合のNULL除去である。NULL許容を無方針に広げると、業務必須値欠損が増えデータ品質が低下する。NULLは必要な場面だけ許容し、必須項目はNOT NULLで入口遮断する。設計時に「未知を許容する理由」を明記する習慣が有効である。</p>
 <h3>5) 試験・実務の急所</h3>
 <p>試験ではNULL比較、3値論理、COUNT差分が高確率で出題される。実務では帳票件数不一致の原因としてNULL判定誤りが多い。障害調査の初手としてNULL条件と集計関数の使い分けを確認する習慣を持つと復旧が速い。開発規約として「NULL判定はIS NULL明示」「NOT IN使用時はNULL混在検査」「計算前にNVL方針定義」を固定すると事故を減らせる。NULLは難解概念ではなく、規則的に扱えば制御可能である。</p>
-<pre><code><span class="kw">SELECT</span> <span class="obj">employee_id</span>
-<span class="kw">FROM</span> <span class="obj">employees</span>
-<span class="kw">WHERE</span> <span class="obj">commission_pct</span> <span class="kw">IS NULL</span>;</code></pre>
+<pre><code><span class="kw"><span class="sql-kw">SELECT</span></span> <span class="obj">employee_id</span>
+<span class="kw"><span class="sql-kw">FROM</span></span> <span class="obj">employees</span>
+<span class="kw"><span class="sql-kw">WHERE</span></span> <span class="obj">commission_pct</span> <span class="kw"><span class="sql-kw">IS NULL</span></span>;</code></pre>
 <div class="top"><a href="#scope">▲ トップへ戻る</a></div>
 </section>
 <section class="card" id="sqlclass">

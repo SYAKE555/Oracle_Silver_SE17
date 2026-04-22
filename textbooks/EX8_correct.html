@@ -62,6 +62,17 @@
     .concept-section h3 { flex-direction: column; align-items: flex-start; }
     .option-review-head { flex-direction: column; align-items: flex-start; }
   }
+
+  pre .sql-kw { color: #fbbf24; font-weight: 700; }
+  pre .sql-fn { color: #60a5fa; font-weight: 600; }
+  pre .sql-str { color: #86efac; }
+  pre .sql-num { color: #fca5a5; }
+  pre .sql-cmt { color: #94a3b8; font-style: italic; }
+  code .sql-kw { color: #b45309; font-weight: 700; }
+  code .sql-fn { color: #1d4ed8; font-weight: 600; }
+  code .sql-str { color: #047857; }
+  code .sql-num { color: #b91c1c; }
+  code .sql-cmt { color: #64748b; font-style: italic; }
 </style>
 </head>
 <body>
@@ -114,13 +125,13 @@
 <span class="note">-- ROWNUM は ORDER BY より先に振られるため、並び替え後の上位取得は副問合せか FETCH。</span></div></div>
       <div class="guide-block">
         <div class="guide-title">この論点の基本形</div>
-        <pre>SELECT item_name, item_price
-FROM   item
-WHERE  item_name IS NOT NULL
-AND    item_price IS NOT NULL
-AND    item_name LIKE &#x27;T%&#x27;
-ORDER  BY item_price
-FETCH FIRST 10 ROWS ONLY;</pre>
+        <pre><span class="sql-kw">SELECT</span> item_name, item_price
+<span class="sql-kw">FROM</span>   item
+<span class="sql-kw">WHERE</span>  item_name <span class="sql-kw">IS NOT NULL</span>
+<span class="sql-kw">AND</span>    item_price <span class="sql-kw">IS NOT NULL</span>
+<span class="sql-kw">AND</span>    item_name <span class="sql-kw">LIKE</span> &#x27;T%&#x27;
+ORDER  <span class="sql-kw">BY</span> item_price
+<span class="sql-kw">FETCH FIRST</span> <span class="sql-num">10</span> <span class="sql-kw">ROWS ONLY</span>;</pre>
       </div>
       <div class="guide-grid">
         <div class="guide-block">
@@ -141,13 +152,13 @@ FETCH FIRST 10 ROWS ONLY;</pre>
                   <div class="block-title">問題文</div>
                   <pre>以下のSQLを実行するとします。
 
-SELECT * FROM ITEM WHERE ROWNUM &lt;= 3 ORDER BY ITEM_PRICE;
+<span class="sql-kw">SELECT</span> * <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> ROWNUM &lt;= <span class="sql-num">3</span> <span class="sql-kw">ORDER BY</span> ITEM_PRICE;
 
 実行結果について正しい記述はどれでしょうか。
-(1)		A.　ROWNUMとORDER BYを同時に使用できないため、エラーになります。
-(2)		B.　ITEM表の中で、登録順最初の3件以下の行が、価格の安いもの順に表示されます。
-(3)		C.　ITEM表の中で、価格の高いものから3件以下の行が表示されます。
-(4)		D.　ITEM表の中で、価格の安いものから3件以下の行が表示されます。</pre>
+(<span class="sql-num">1</span>)		A.　ROWNUMとORDER BYを同時に使用できないため、エラーになります。
+(<span class="sql-num">2</span>)		B.　ITEM表の中で、登録順最初の3件以下の行が、価格の安いもの順に表示されます。
+(<span class="sql-num">3</span>)		C.　ITEM表の中で、価格の高いものから3件以下の行が表示されます。
+(<span class="sql-num">4</span>)		D.　ITEM表の中で、価格の安いものから3件以下の行が表示されます。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問の論点は「ORDER BY・ROWNUM・FETCH」です。問題文は「以下のSQLを実行するとします。 SELECT * FROM ITEM WHERE ROWNUM <= 3 ORDER BY ITEM_PRICE; 実行結果について正しい記述はどれでしょうか。」という条件を満たす説明または SQL を求めています。ROWNUM は ORDER BY より前に振られるため、並べ替えてから上位 n 件を取りたいなら副問合せや FETCH FIRST を使う。ORDER BY の列別名や位置番号も正しく使う必要がある。 この設問では正答 B「ITEM表の中で、登録順最初の3件以下の行が、価格の安いもの順に表示されます。」 を選べており、成立条件を正しく読めています。</p>
@@ -203,13 +214,13 @@ SELECT * FROM ITEM WHERE ROWNUM &lt;= 3 ORDER BY ITEM_PRICE;
                   <div class="block-title">問題文</div>
                   <pre>以下のSQLを実行するとします。
 
-SELECT ITEM_TYPE,ITEM_PRICE,ITEM_NAME INAME FROM ITEM ORDER BY 1, INAME ASC;
+<span class="sql-kw">SELECT</span> ITEM_TYPE,ITEM_PRICE,ITEM_NAME INAME <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">ORDER BY</span> <span class="sql-num">1</span>, INAME <span class="sql-kw">ASC</span>;
 
 実行結果について正しい記述はどれでしょうか。
-(1)		A.　すべてのITEM_TYPEが昇順で表示され、さらにITEM_NAMEが昇順でソートされます。
-(2)		B.　すべてのITEM_TYPEが降順で表示され、さらにITEM_NAMEが降順でソートされます。
-(3)		C.　ORDER BY句で列別名を使用できないため、失敗します。
-(4)		D.　ORDER BY句で列番号と列別名を一緒に使用できないため、失敗します。</pre>
+(<span class="sql-num">1</span>)		A.　すべてのITEM_TYPEが昇順で表示され、さらにITEM_NAMEが昇順でソートされます。
+(<span class="sql-num">2</span>)		B.　すべてのITEM_TYPEが降順で表示され、さらにITEM_NAMEが降順でソートされます。
+(<span class="sql-num">3</span>)		C.　ORDER BY句で列別名を使用できないため、失敗します。
+(<span class="sql-num">4</span>)		D.　ORDER BY句で列番号と列別名を一緒に使用できないため、失敗します。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問の論点は「ORDER BY・ROWNUM・FETCH」です。問題文は「以下のSQLを実行するとします。 SELECT ITEM_TYPE,ITEM_PRICE,ITEM_NAME INAME FROM ITEM ORDER BY 1, INAME ASC; 実行結果について正しい記述はどれでしょうか。」という条件を満たす説明または SQL を求めています。ROWNUM は ORDER BY より前に振られるため、並べ替えてから上位 n 件を取りたいなら副問合せや FETCH FIRST を使う。ORDER BY の列別名や位置番号も正しく使う必要がある。 この設問では正答 A「すべてのITEM_TYPEが昇順で表示され、さらにITEM_NAMEが昇順でソートされます。」 を選べており、成立条件を正しく読めています。</p>
@@ -266,10 +277,10 @@ SELECT ITEM_TYPE,ITEM_PRICE,ITEM_NAME INAME FROM ITEM ORDER BY 1, INAME ASC;
                   <pre>ITEM表から、価格（ITEM_PRICE）が最も安い順に並べて、全行の25%の件数の行を表示するとします。
 かつ、行の25%を超える場合でも同じ価格の行は含めたいとします。
 以下のどのSQLを実行すればいいでしょうか。
-(1)		A.　SELECT * FROM ITEM ORDER BY ITEM_PRICE FETCH FIRST 25 PERCENT ROWS;
-(2)		B.　SELECT * FROM ITEM ORDER BY ITEM_PRICE FETCH FIRST 25 PERCENT ROWS WITH TIES;
-(3)		C.　SELECT * FROM ITEM ORDER BY ITEM_PRICE FETCH FIRST 25 PERCENT ROWS WITH ONLY;
-(4)		D.　SELECT * FROM ITEM ORDER BY ITEM_PRICE FETCH FIRST 25 PERCENT ROWS ONLY WITH TIES;</pre>
+(<span class="sql-num">1</span>)		A.　<span class="sql-kw">SELECT</span> * <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">ORDER BY</span> ITEM_PRICE <span class="sql-kw">FETCH FIRST</span> <span class="sql-num">25</span> PERCENT <span class="sql-kw">ROWS</span>;
+(<span class="sql-num">2</span>)		B.　<span class="sql-kw">SELECT</span> * <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">ORDER BY</span> ITEM_PRICE <span class="sql-kw">FETCH FIRST</span> <span class="sql-num">25</span> PERCENT <span class="sql-kw">ROWS</span> <span class="sql-kw">WITH</span> TIES;
+(<span class="sql-num">3</span>)		C.　<span class="sql-kw">SELECT</span> * <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">ORDER BY</span> ITEM_PRICE <span class="sql-kw">FETCH FIRST</span> <span class="sql-num">25</span> PERCENT <span class="sql-kw">ROWS</span> <span class="sql-kw">WITH</span> <span class="sql-kw">ONLY</span>;
+(<span class="sql-num">4</span>)		D.　<span class="sql-kw">SELECT</span> * <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">ORDER BY</span> ITEM_PRICE <span class="sql-kw">FETCH FIRST</span> <span class="sql-num">25</span> PERCENT <span class="sql-kw">ROWS ONLY</span> <span class="sql-kw">WITH</span> TIES;</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問の論点は「ORDER BY・ROWNUM・FETCH」です。問題文は「ITEM表から、価格（ITEM_PRICE）が最も安い順に並べて、全行の25%の件数の行を表示するとします。 かつ、行の25%を超える場合でも同じ価格の行は含めたいとします。 以下のどのSQLを実行すればいいでしょうか。」という条件を満たす説明または SQL を求めています。ROWNUM は ORDER BY より前に振られるため、並べ替えてから上位 n 件を取りたいなら副問合せや FETCH FIRST を使う。ORDER BY の列別名や位置番号も正しく使う必要がある。 この設問では正答 B「SELECT * FROM ITEM ORDER BY ITEM_PRICE FETCH FIRST 25 P…」 を選べており、成立条件を正しく読めています。</p>
@@ -325,10 +336,10 @@ SELECT ITEM_TYPE,ITEM_PRICE,ITEM_NAME INAME FROM ITEM ORDER BY 1, INAME ASC;
                   <div class="block-title">問題文</div>
                   <pre>部門ごとに異なる給与額を調査したいため、部門ごとのユニークなSALARY（給与）を表示したいとします。
 使用できるクエリを1つ選んでください。
-(1)		A. SELECT DISTINCT salary || &#x27; in &#x27; || DISTINCT dept_id FROM employees ORDER BY 1;
-(2)		B. SELECT DISTINCT dept_id, salary FROM employees ORDER BY 1;
-(3)		C. SELECT dept_id, DISTINCT salary, FROM employees ORDER BY 2;
-(4)		D. SELECT salary, dept_id FROM employees ORDER BY 1;</pre>
+(<span class="sql-num">1</span>)		A. <span class="sql-kw">SELECT</span> <span class="sql-kw">DISTINCT</span> salary || &#x27; in &#x27; || <span class="sql-kw">DISTINCT</span> dept_id <span class="sql-kw">FROM</span> employees <span class="sql-kw">ORDER BY</span> <span class="sql-num">1</span>;
+(<span class="sql-num">2</span>)		B. <span class="sql-kw">SELECT</span> <span class="sql-kw">DISTINCT</span> dept_id, salary <span class="sql-kw">FROM</span> employees <span class="sql-kw">ORDER BY</span> <span class="sql-num">1</span>;
+(<span class="sql-num">3</span>)		C. <span class="sql-kw">SELECT</span> dept_id, <span class="sql-kw">DISTINCT</span> salary, <span class="sql-kw">FROM</span> employees <span class="sql-kw">ORDER BY</span> <span class="sql-num">2</span>;
+(<span class="sql-num">4</span>)		D. <span class="sql-kw">SELECT</span> salary, dept_id <span class="sql-kw">FROM</span> employees <span class="sql-kw">ORDER BY</span> <span class="sql-num">1</span>;</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問の論点は「ORDER BY・ROWNUM・FETCH」です。問題文は「部門ごとに異なる給与額を調査したいため、部門ごとのユニークなSALARY（給与）を表示したいとします。 使用できるクエリを1つ選んでください。」という条件を満たす説明または SQL を求めています。ROWNUM は ORDER BY より前に振られるため、並べ替えてから上位 n 件を取りたいなら副問合せや FETCH FIRST を使う。ORDER BY の列別名や位置番号も正しく使う必要がある。 この設問では正答 B「SELECT DISTINCT dept_id, salary FROM employees ORDER BY…」 を選べており、成立条件を正しく読めています。</p>
@@ -383,15 +394,15 @@ SELECT ITEM_TYPE,ITEM_PRICE,ITEM_NAME INAME FROM ITEM ORDER BY 1, INAME ASC;
                   <div class="question-meta">第3回 模擬試験 / 問32 / 正答 AB / 自己回答 -</div>
                   <div class="block-title">問題文</div>
                   <pre>以下のSQLの部分を確認してください。
-SELECT location, last_name AS lname FROM employees 「」;
+<span class="sql-kw">SELECT</span> location, last_name <span class="sql-kw">AS</span> lname <span class="sql-kw">FROM</span> employees 「」;
 
 TOK を含む場所名のみを昇順で表示し、同じ場所の中では last_name を降順にソートしたい場合、 「」内に追加すべき句を2つ選んでください。
-(1)		A. ORDER BY 1, lname DESC
-(2)		B. WHERE location LIKE &#x27;%TOK%&#x27;
-(3)		C. ORDER BY 1, 2
-(4)		D. WHERE location IN (&#x27;%TOK%&#x27;)
-(5)		E. WHERE location = &#x27;%TOK%&#x27;
-(6)		F. ORDER BY last_name DESC, location ASC</pre>
+(<span class="sql-num">1</span>)		A. <span class="sql-kw">ORDER BY</span> <span class="sql-num">1</span>, lname <span class="sql-kw">DESC</span>
+(<span class="sql-num">2</span>)		B. <span class="sql-kw">WHERE</span> location <span class="sql-kw">LIKE</span> &#x27;%TOK%&#x27;
+(<span class="sql-num">3</span>)		C. <span class="sql-kw">ORDER BY</span> <span class="sql-num">1</span>, <span class="sql-num">2</span>
+(<span class="sql-num">4</span>)		D. <span class="sql-kw">WHERE</span> location <span class="sql-kw">IN</span> (&#x27;%TOK%&#x27;)
+(<span class="sql-num">5</span>)		E. <span class="sql-kw">WHERE</span> location = &#x27;%TOK%&#x27;
+(<span class="sql-num">6</span>)		F. <span class="sql-kw">ORDER BY</span> last_name <span class="sql-kw">DESC</span>, location <span class="sql-kw">ASC</span></pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問の論点は「ORDER BY・ROWNUM・FETCH」です。問題文は「以下のSQLの部分を確認してください。 SELECT location, last_name AS lname FROM employees 「」; TOK を含む場所名のみを昇順で表示し、同じ場所の中では last_name を降順にソ…」という条件を満たす説明または SQL を求めています。ROWNUM は ORDER BY より前に振られるため、並べ替えてから上位 n 件を取りたいなら副問合せや FETCH FIRST を使う。ORDER BY の列別名や位置番号も正しく使う必要がある。 この設問では正答 A「ORDER BY 1, lname DESC」 / B「WHERE location LIKE &#x27;%TOK%&#x27;」 を選べており、成立条件を正しく読めています。</p>
@@ -465,11 +476,11 @@ TOK を含む場所名のみを昇順で表示し、同じ場所の中では las
                   <div class="block-title">問題文</div>
                   <pre>次のクエリのうち、エラーとなるものを3つ選んでください。
 
-(1)		A. SELECT last_name, 12 * salary AS yearly_pay FROM employees WHERE 12 * salary &gt; 100000 ORDER BY 12 * salary;
-(2)		B. SELECT first_name, last_name FROM employees;
-(3)		C. SELECT last_name, 12 * salary AS yearly_pay FROM employees WHERE yearly_pay &gt; 100000 ORDER BY 12 * salary;
-(4)		D. SELECT first_name last_name FROM employees WHERE yearly_pay &gt; 100000 ORDER BY 12 * salary;
-(5)		E. SELECT last_nme, 12 * salary AS yearly_pay FROM employees WHERE yearly_pay &gt; 100000 ORDER BY yearly_pay;</pre>
+(<span class="sql-num">1</span>)		A. <span class="sql-kw">SELECT</span> last_name, <span class="sql-num">12</span> * salary <span class="sql-kw">AS</span> yearly_pay <span class="sql-kw">FROM</span> employees <span class="sql-kw">WHERE</span> <span class="sql-num">12</span> * salary &gt; <span class="sql-num">100000</span> <span class="sql-kw">ORDER BY</span> <span class="sql-num">12</span> * salary;
+(<span class="sql-num">2</span>)		B. <span class="sql-kw">SELECT</span> first_name, last_name <span class="sql-kw">FROM</span> employees;
+(<span class="sql-num">3</span>)		C. <span class="sql-kw">SELECT</span> last_name, <span class="sql-num">12</span> * salary <span class="sql-kw">AS</span> yearly_pay <span class="sql-kw">FROM</span> employees <span class="sql-kw">WHERE</span> yearly_pay &gt; <span class="sql-num">100000</span> <span class="sql-kw">ORDER BY</span> <span class="sql-num">12</span> * salary;
+(<span class="sql-num">4</span>)		D. <span class="sql-kw">SELECT</span> first_name last_name <span class="sql-kw">FROM</span> employees <span class="sql-kw">WHERE</span> yearly_pay &gt; <span class="sql-num">100000</span> <span class="sql-kw">ORDER BY</span> <span class="sql-num">12</span> * salary;
+(<span class="sql-num">5</span>)		E. <span class="sql-kw">SELECT</span> last_nme, <span class="sql-num">12</span> * salary <span class="sql-kw">AS</span> yearly_pay <span class="sql-kw">FROM</span> employees <span class="sql-kw">WHERE</span> yearly_pay &gt; <span class="sql-num">100000</span> <span class="sql-kw">ORDER BY</span> yearly_pay;</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問の論点は「ORDER BY・ROWNUM・FETCH」です。問題文は「次のクエリのうち、エラーとなるものを3つ選んでください。」という条件を満たす説明または SQL を求めています。ROWNUM は ORDER BY より前に振られるため、並べ替えてから上位 n 件を取りたいなら副問合せや FETCH FIRST を使う。ORDER BY の列別名や位置番号も正しく使う必要がある。 この設問では正答 C「SELECT last_name, 12 * salary AS yearly_pay FROM employ…」 / D「SELECT first_name last_name FROM employees WHERE yearly…」 / E「SELECT last_nme, 12 * salary AS yearly_pay FROM employe…」 を選べており、成立条件を正しく読めています。</p>
@@ -549,13 +560,13 @@ TOK を含む場所名のみを昇順で表示し、同じ場所の中では las
 <span class="note">-- ROWNUM は ORDER BY より先に振られるため、並び替え後の上位取得は副問合せか FETCH。</span></div></div>
       <div class="guide-block">
         <div class="guide-title">この論点の基本形</div>
-        <pre>SELECT item_name, item_price
-FROM   item
-WHERE  item_name IS NOT NULL
-AND    item_price IS NOT NULL
-AND    item_name LIKE &#x27;T%&#x27;
-ORDER  BY item_price
-FETCH FIRST 10 ROWS ONLY;</pre>
+        <pre><span class="sql-kw">SELECT</span> item_name, item_price
+<span class="sql-kw">FROM</span>   item
+<span class="sql-kw">WHERE</span>  item_name <span class="sql-kw">IS NOT NULL</span>
+<span class="sql-kw">AND</span>    item_price <span class="sql-kw">IS NOT NULL</span>
+<span class="sql-kw">AND</span>    item_name <span class="sql-kw">LIKE</span> &#x27;T%&#x27;
+ORDER  <span class="sql-kw">BY</span> item_price
+<span class="sql-kw">FETCH FIRST</span> <span class="sql-num">10</span> <span class="sql-kw">ROWS ONLY</span>;</pre>
       </div>
       <div class="guide-grid">
         <div class="guide-block">
@@ -576,14 +587,14 @@ FETCH FIRST 10 ROWS ONLY;</pre>
                   <div class="block-title">問題文</div>
                   <pre>次のSQL文を実行するとします。
 
-SELECT * FROM ITEM
-WHERE ITEM_TYPE = &#x27;GOODS&#x27; OR ITEM_TYPE = &#x27;CASUAL&#x27; AND ITEM_PRICE &gt;= 2000;
+<span class="sql-kw">SELECT</span> * <span class="sql-kw">FROM</span> ITEM
+<span class="sql-kw">WHERE</span> ITEM_TYPE = &#x27;GOODS&#x27; <span class="sql-kw">OR</span> ITEM_TYPE = &#x27;CASUAL&#x27; <span class="sql-kw">AND</span> ITEM_PRICE &gt;= <span class="sql-num">2000</span>;
 
 実行結果として正しいものはどれでしょうか。
-(1)		A.　ITEM_TYPE列がGOODSかCASUALである商品と、ITEM_PRICE列が2000以上の商品が表示されます。
-(2)		B.　ITEM_TYPE列がGOODSかCASUALである商品のうち、ITEM_PRICE列が2000以上の商品が表示されます。
-(3)		C.　ITEM_TYPE列がGOODSでかつITEM_PRICE列が2000以上の商品と、ITEM_TYPE列がCASUALでかつITEM_PRICE列が2000以上の商品が表示されます。
-(4)		D.　ITEM_TYPE列がGOODSである商品と、ITEM_TYPE列がCASUALでかつITEM_PRICE列が2000以上の商品が表示されます。</pre>
+(<span class="sql-num">1</span>)		A.　ITEM_TYPE列がGOODSかCASUALである商品と、ITEM_PRICE列が2000以上の商品が表示されます。
+(<span class="sql-num">2</span>)		B.　ITEM_TYPE列がGOODSかCASUALである商品のうち、ITEM_PRICE列が2000以上の商品が表示されます。
+(<span class="sql-num">3</span>)		C.　ITEM_TYPE列がGOODSでかつITEM_PRICE列が2000以上の商品と、ITEM_TYPE列がCASUALでかつITEM_PRICE列が2000以上の商品が表示されます。
+(<span class="sql-num">4</span>)		D.　ITEM_TYPE列がGOODSである商品と、ITEM_TYPE列がCASUALでかつITEM_PRICE列が2000以上の商品が表示されます。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問の論点は「演算子優先順位」です。問題文は「次のSQL文を実行するとします。 SELECT * FROM ITEM WHERE ITEM_TYPE = 'GOODS' OR ITEM_TYPE = 'CASUAL' AND ITEM_PRICE >= 2000; 実行結果として正し…」という条件を満たす説明または SQL を求めています。AND は OR より先、算術演算は比較より先など、優先順位を知らないと WHERE 条件の意味が変わる。必要なら括弧で明示する。 この設問では正答 D「ITEM_TYPE列がGOODSである商品と、ITEM_TYPE列がCASUALでかつITEM_PRICE列が…」 を選べており、成立条件を正しく読めています。</p>
@@ -639,10 +650,10 @@ WHERE ITEM_TYPE = &#x27;GOODS&#x27; OR ITEM_TYPE = &#x27;CASUAL&#x27; AND ITEM_P
                   <div class="block-title">問題文</div>
                   <pre>DEPT_IDが10101,10102に所属する社員の名前と給与を表示するSQLはどれでしょうか。(2つ選択)
 　
-(1)		A.　SELECT NAME, SALARY FROM EMP WHERE DEPT_ID = 10101 OR DEPT_ID = 10102;
-(2)		B.　SELECT NAME, SALARY FROM EMP WHERE DEPT_ID = 10101 AND DEPT_ID = 10102;
-(3)		C.　SELECT NAME, SALARY FROM EMP WHERE DEPT_ID LIKE &#x27;1%&#x27;;
-(4)		D.　SELECT NAME, SALARY FROM EMP WHERE DEPT_ID IN (10101, 10102);</pre>
+(<span class="sql-num">1</span>)		A.　<span class="sql-kw">SELECT</span> NAME, SALARY <span class="sql-kw">FROM</span> EMP <span class="sql-kw">WHERE</span> DEPT_ID = <span class="sql-num">10101</span> <span class="sql-kw">OR</span> DEPT_ID = <span class="sql-num">10102</span>;
+(<span class="sql-num">2</span>)		B.　<span class="sql-kw">SELECT</span> NAME, SALARY <span class="sql-kw">FROM</span> EMP <span class="sql-kw">WHERE</span> DEPT_ID = <span class="sql-num">10101</span> <span class="sql-kw">AND</span> DEPT_ID = <span class="sql-num">10102</span>;
+(<span class="sql-num">3</span>)		C.　<span class="sql-kw">SELECT</span> NAME, SALARY <span class="sql-kw">FROM</span> EMP <span class="sql-kw">WHERE</span> DEPT_ID <span class="sql-kw">LIKE</span> &#x27;<span class="sql-num">1</span>%&#x27;;
+(<span class="sql-num">4</span>)		D.　<span class="sql-kw">SELECT</span> NAME, SALARY <span class="sql-kw">FROM</span> EMP <span class="sql-kw">WHERE</span> DEPT_ID <span class="sql-kw">IN</span> (<span class="sql-num">10101</span>, <span class="sql-num">10102</span>);</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問の論点は「演算子優先順位」です。問題文は「DEPT_IDが10101,10102に所属する社員の名前と給与を表示するSQLはどれでしょうか。(2つ選択)」という条件を満たす説明または SQL を求めています。AND は OR より先、算術演算は比較より先など、優先順位を知らないと WHERE 条件の意味が変わる。必要なら括弧で明示する。 この設問では正答 A「SELECT NAME, SALARY FROM EMP WHERE DEPT_ID = 10101 OR D…」 / D「SELECT NAME, SALARY FROM EMP WHERE DEPT_ID IN (10101, 1…」 を選べており、成立条件を正しく読めています。</p>
@@ -697,10 +708,10 @@ WHERE ITEM_TYPE = &#x27;GOODS&#x27; OR ITEM_TYPE = &#x27;CASUAL&#x27; AND ITEM_P
                   <div class="question-meta">第3回 模擬試験 / 問17 / 正答 AB / 自己回答 -</div>
                   <div class="block-title">問題文</div>
                   <pre>以下のうち、正しいものを2つ選んでください。
-(1)		A. ADD_MONTHS は、日付にカレンダーベースの月数を追加する。
-(2)		B. MONTHS_BETWEEN は、2つの日付の間の月数を計算する。
-(3)		C. CEIL は、指定された数値以下の最大の整数を返す。
-(4)		D. LAST_DAY は、現在の月の最終日の日付のみを返す。</pre>
+(<span class="sql-num">1</span>)		A. ADD_MONTHS は、日付にカレンダーベースの月数を追加する。
+(<span class="sql-num">2</span>)		B. MONTHS_BETWEEN は、2つの日付の間の月数を計算する。
+(<span class="sql-num">3</span>)		C. CEIL は、指定された数値以下の最大の整数を返す。
+(<span class="sql-num">4</span>)		D. LAST_DAY は、現在の月の最終日の日付のみを返す。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問の論点は「演算子優先順位」です。問題文は「以下のうち、正しいものを2つ選んでください。」という条件を満たす説明または SQL を求めています。AND は OR より先、算術演算は比較より先など、優先順位を知らないと WHERE 条件の意味が変わる。必要なら括弧で明示する。 この設問では正答 A「ADD_MONTHS は、日付にカレンダーベースの月数を追加する。」 / B「MONTHS_BETWEEN は、2つの日付の間の月数を計算する。」 を選べており、成立条件を正しく読めています。</p>
@@ -771,13 +782,13 @@ WHERE ITEM_TYPE = &#x27;GOODS&#x27; OR ITEM_TYPE = &#x27;CASUAL&#x27; AND ITEM_P
 <span class="note">-- ROWNUM は ORDER BY より先に振られるため、並び替え後の上位取得は副問合せか FETCH。</span></div></div>
       <div class="guide-block">
         <div class="guide-title">この論点の基本形</div>
-        <pre>SELECT item_name, item_price
-FROM   item
-WHERE  item_name IS NOT NULL
-AND    item_price IS NOT NULL
-AND    item_name LIKE &#x27;T%&#x27;
-ORDER  BY item_price
-FETCH FIRST 10 ROWS ONLY;</pre>
+        <pre><span class="sql-kw">SELECT</span> item_name, item_price
+<span class="sql-kw">FROM</span>   item
+<span class="sql-kw">WHERE</span>  item_name <span class="sql-kw">IS NOT NULL</span>
+<span class="sql-kw">AND</span>    item_price <span class="sql-kw">IS NOT NULL</span>
+<span class="sql-kw">AND</span>    item_name <span class="sql-kw">LIKE</span> &#x27;T%&#x27;
+ORDER  <span class="sql-kw">BY</span> item_price
+<span class="sql-kw">FETCH FIRST</span> <span class="sql-num">10</span> <span class="sql-kw">ROWS ONLY</span>;</pre>
       </div>
       <div class="guide-grid">
         <div class="guide-block">
@@ -798,11 +809,11 @@ FETCH FIRST 10 ROWS ONLY;</pre>
                   <div class="block-title">問題文</div>
                   <pre>実行結果が以下の文と同じになる文を1つ選択してください。
 
-SELECT empno,name FROM employees;
-(1)		A.　SELECT empno,name FROM employees WHERE 1 = 1;
-(2)		B.　SELECT empno,name FROM employees WHERE 1 &lt;&gt; 1;
-(3)		C.　SELECT empno,name FROM employees WHERE 1 == 1;
-(4)		D.　SELECT empno,name FROM employees WHERE 1 IS NOT 1;</pre>
+<span class="sql-kw">SELECT</span> empno,name <span class="sql-kw">FROM</span> employees;
+(<span class="sql-num">1</span>)		A.　<span class="sql-kw">SELECT</span> empno,name <span class="sql-kw">FROM</span> employees <span class="sql-kw">WHERE</span> <span class="sql-num">1</span> = <span class="sql-num">1</span>;
+(<span class="sql-num">2</span>)		B.　<span class="sql-kw">SELECT</span> empno,name <span class="sql-kw">FROM</span> employees <span class="sql-kw">WHERE</span> <span class="sql-num">1</span> &lt;&gt; <span class="sql-num">1</span>;
+(<span class="sql-num">3</span>)		C.　<span class="sql-kw">SELECT</span> empno,name <span class="sql-kw">FROM</span> employees <span class="sql-kw">WHERE</span> <span class="sql-num">1</span> == <span class="sql-num">1</span>;
+(<span class="sql-num">4</span>)		D.　<span class="sql-kw">SELECT</span> empno,name <span class="sql-kw">FROM</span> employees <span class="sql-kw">WHERE</span> <span class="sql-num">1</span> <span class="sql-kw">IS</span> <span class="sql-kw">NOT</span> <span class="sql-num">1</span>;</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問の論点は「検索条件総合」です。問題文は「実行結果が以下の文と同じになる文を1つ選択してください。 SELECT empno,name FROM employees;」という条件を満たす説明または SQL を求めています。WHERE 条件問題では、NULL、ワイルドカード、優先順位、行制限など論点が混ざる。条件を日本語へ戻してから式へ落とすのが最も安全である。 この設問では正答 A「SELECT empno,name FROM employees WHERE 1 = 1;」 を選べており、成立条件を正しく読めています。</p>
@@ -858,15 +869,15 @@ SELECT empno,name FROM employees;
                   <div class="block-title">問題文</div>
                   <pre>次のSQLを実行するとエラーが発生します。
 
-SELECT ITEM_NAME || &#x27; It&#x27;s FOODS!!&#x27;
-FROM ITEM
-WHERE ITEM_TYPE = &#x27;FOOD&#x27;;
+<span class="sql-kw">SELECT</span> ITEM_NAME || &#x27; It&#x27;s FOODS!!&#x27;
+<span class="sql-kw">FROM</span> ITEM
+<span class="sql-kw">WHERE</span> ITEM_TYPE = &#x27;FOOD&#x27;;
 
 エラーを発生させないで指定のリテラル文字列を表示するには、どうすればいいでしょうか。
-(1)		A.　文字リテラル文字列内の一重引用符をエスケープします
-(2)		B.　文字リテラル文字列内の一重引用符を削除します
-(3)		C.　文字リテラル文字列を二重引用符ではさみます
-(4)		D.　文字リテラル文字列内の一重引用符を一重引用符ではさみます</pre>
+(<span class="sql-num">1</span>)		A.　文字リテラル文字列内の一重引用符をエスケープします
+(<span class="sql-num">2</span>)		B.　文字リテラル文字列内の一重引用符を削除します
+(<span class="sql-num">3</span>)		C.　文字リテラル文字列を二重引用符ではさみます
+(<span class="sql-num">4</span>)		D.　文字リテラル文字列内の一重引用符を一重引用符ではさみます</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問の論点は「検索条件総合」です。問題文は「次のSQLを実行するとエラーが発生します。 SELECT ITEM_NAME || ' It's FOODS!!' FROM ITEM WHERE ITEM_TYPE = 'FOOD'; エラーを発生させないで指定のリテラル文字列を表示す…」という条件を満たす説明または SQL を求めています。WHERE 条件問題では、NULL、ワイルドカード、優先順位、行制限など論点が混ざる。条件を日本語へ戻してから式へ落とすのが最も安全である。 この設問では正答 A「文字リテラル文字列内の一重引用符をエスケープします」 を選べており、成立条件を正しく読めています。</p>
@@ -937,13 +948,13 @@ WHERE ITEM_TYPE = &#x27;FOOD&#x27;;
 <span class="note">-- ROWNUM は ORDER BY より先に振られるため、並び替え後の上位取得は副問合せか FETCH。</span></div></div>
       <div class="guide-block">
         <div class="guide-title">この論点の基本形</div>
-        <pre>SELECT item_name, item_price
-FROM   item
-WHERE  item_name IS NOT NULL
-AND    item_price IS NOT NULL
-AND    item_name LIKE &#x27;T%&#x27;
-ORDER  BY item_price
-FETCH FIRST 10 ROWS ONLY;</pre>
+        <pre><span class="sql-kw">SELECT</span> item_name, item_price
+<span class="sql-kw">FROM</span>   item
+<span class="sql-kw">WHERE</span>  item_name <span class="sql-kw">IS NOT NULL</span>
+<span class="sql-kw">AND</span>    item_price <span class="sql-kw">IS NOT NULL</span>
+<span class="sql-kw">AND</span>    item_name <span class="sql-kw">LIKE</span> &#x27;T%&#x27;
+ORDER  <span class="sql-kw">BY</span> item_price
+<span class="sql-kw">FETCH FIRST</span> <span class="sql-num">10</span> <span class="sql-kw">ROWS ONLY</span>;</pre>
       </div>
       <div class="guide-grid">
         <div class="guide-block">
@@ -963,11 +974,11 @@ FETCH FIRST 10 ROWS ONLY;</pre>
                   <div class="question-meta">第1回 模擬試験 / 問11 / 正答 B / 自己回答 -</div>
                   <div class="block-title">問題文</div>
                   <pre>以下の置換変数についての記述で正しいのはどれでしょうか。
-(1)		A.　置換変数は、SQL*Plusコマンドのみで使用できます。
-(2)		B.　&amp;で始まる置換変数は、SQL実行後に破棄されます。
-(3)		C.　&amp;&amp;で始まる置換変数は、SQL実行後に破棄されます。
-(4)		D.　プロンプトで入力する置換変数は、単一引用符で囲む必要があります。
-(5)		E.　プロンプトで入力する置換変数は、二重引用符で囲む必要があります。</pre>
+(<span class="sql-num">1</span>)		A.　置換変数は、SQL*Plusコマンドのみで使用できます。
+(<span class="sql-num">2</span>)		B.　&amp;で始まる置換変数は、SQL実行後に破棄されます。
+(<span class="sql-num">3</span>)		C.　&amp;&amp;で始まる置換変数は、SQL実行後に破棄されます。
+(<span class="sql-num">4</span>)		D.　プロンプトで入力する置換変数は、単一引用符で囲む必要があります。
+(<span class="sql-num">5</span>)		E.　プロンプトで入力する置換変数は、二重引用符で囲む必要があります。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問の論点は「置換変数と VERIFY」です。問題文は「以下の置換変数についての記述で正しいのはどれでしょうか。」という条件を満たす説明または SQL を求めています。SQL*Plus 系の置換変数では & は毎回入力、&& は再利用される。DEFINE 済みかどうか、VERIFY の役割も含めて読む必要がある。 この設問では正答 B「&amp;で始まる置換変数は、SQL実行後に破棄されます。」 を選べており、成立条件を正しく読めています。</p>
@@ -1032,14 +1043,14 @@ FETCH FIRST 10 ROWS ONLY;</pre>
                   <div class="block-title">問題文</div>
                   <pre>以下のクエリを確認してください。
 
-SELECT product_id, product_name, price FROM products WHERE release_date &gt; &#x27;&amp;1&#x27;;
+<span class="sql-kw">SELECT</span> product_id, product_name, price <span class="sql-kw">FROM</span> products <span class="sql-kw">WHERE</span> release_date &gt; &#x27;&amp;<span class="sql-num">1</span>&#x27;;
 
 このクエリを実行する際に、release_date の入力を求められないようにする方法を 2つ 選んでください。
-(1)		A. クエリをスクリプトに保存し、スクリプト実行時に &amp;1 の値を渡す。
-(2)		B. クエリ内の &amp;1 を &#x27;&amp;1&#x27; に置き換える。
-(3)		C. クエリを実行する前に DEFINE コマンドを使用する。
-(4)		D. クエリを実行する前に UNDEFINE コマンドを使用する。
-(5)		E. クエリを実行する前に SET VERIFY ON コマンドを実行する。</pre>
+(<span class="sql-num">1</span>)		A. クエリをスクリプトに保存し、スクリプト実行時に &amp;<span class="sql-num">1</span> の値を渡す。
+(<span class="sql-num">2</span>)		B. クエリ内の &amp;<span class="sql-num">1</span> を &#x27;&amp;<span class="sql-num">1</span>&#x27; に置き換える。
+(<span class="sql-num">3</span>)		C. クエリを実行する前に DEFINE コマンドを使用する。
+(<span class="sql-num">4</span>)		D. クエリを実行する前に UNDEFINE コマンドを使用する。
+(<span class="sql-num">5</span>)		E. クエリを実行する前に <span class="sql-kw">SET</span> VERIFY <span class="sql-kw">ON</span> コマンドを実行する。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問の論点は「置換変数と VERIFY」です。問題文は「以下のクエリを確認してください。 SELECT product_id, product_name, price FROM products WHERE release_date > '&1'; このクエリを実行する際に、release_d…」という条件を満たす説明または SQL を求めています。SQL*Plus 系の置換変数では & は毎回入力、&& は再利用される。DEFINE 済みかどうか、VERIFY の役割も含めて読む必要がある。 この設問では正答 A「クエリをスクリプトに保存し、スクリプト実行時に &amp;1 の値を渡す。」 / C「クエリを実行する前に DEFINE コマンドを使用する。」 を選べており、成立条件を正しく読めています。</p>
@@ -1119,13 +1130,13 @@ SELECT product_id, product_name, price FROM products WHERE release_date &gt; &#x
 <span class="note">-- ROWNUM は ORDER BY より先に振られるため、並び替え後の上位取得は副問合せか FETCH。</span></div></div>
       <div class="guide-block">
         <div class="guide-title">この論点の基本形</div>
-        <pre>SELECT item_name, item_price
-FROM   item
-WHERE  item_name IS NOT NULL
-AND    item_price IS NOT NULL
-AND    item_name LIKE &#x27;T%&#x27;
-ORDER  BY item_price
-FETCH FIRST 10 ROWS ONLY;</pre>
+        <pre><span class="sql-kw">SELECT</span> item_name, item_price
+<span class="sql-kw">FROM</span>   item
+<span class="sql-kw">WHERE</span>  item_name <span class="sql-kw">IS NOT NULL</span>
+<span class="sql-kw">AND</span>    item_price <span class="sql-kw">IS NOT NULL</span>
+<span class="sql-kw">AND</span>    item_name <span class="sql-kw">LIKE</span> &#x27;T%&#x27;
+ORDER  <span class="sql-kw">BY</span> item_price
+<span class="sql-kw">FETCH FIRST</span> <span class="sql-num">10</span> <span class="sql-kw">ROWS ONLY</span>;</pre>
       </div>
       <div class="guide-grid">
         <div class="guide-block">
@@ -1146,11 +1157,11 @@ FETCH FIRST 10 ROWS ONLY;</pre>
                   <div class="block-title">問題文</div>
                   <pre>ITEM_NAME列の値がTで始まる行のみが表示されるSQLを1つ選択してください。
 
-(1)		A.　SELECT * FROM ITEM WHERE ITEM_NAME LIKE &#x27;T&#x27;;
-(2)		B.　SELECT * FROM ITEM WHERE ITEM_NAME LIKE &#x27;%T%&#x27;;
-(3)		C.　SELECT * FROM ITEM WHERE ITEM_NAME LIKE &#x27;%T&#x27;;
-(4)		D.　SELECT * FROM ITEM WHERE ITEM_NAME LIKE &#x27;T%&#x27;;
-(5)		E.　SELECT * FROM ITEM WHERE ITEM_NAME = &#x27;T%&#x27;;</pre>
+(<span class="sql-num">1</span>)		A.　<span class="sql-kw">SELECT</span> * <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> ITEM_NAME <span class="sql-kw">LIKE</span> &#x27;T&#x27;;
+(<span class="sql-num">2</span>)		B.　<span class="sql-kw">SELECT</span> * <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> ITEM_NAME <span class="sql-kw">LIKE</span> &#x27;%T%&#x27;;
+(<span class="sql-num">3</span>)		C.　<span class="sql-kw">SELECT</span> * <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> ITEM_NAME <span class="sql-kw">LIKE</span> &#x27;%T&#x27;;
+(<span class="sql-num">4</span>)		D.　<span class="sql-kw">SELECT</span> * <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> ITEM_NAME <span class="sql-kw">LIKE</span> &#x27;T%&#x27;;
+(<span class="sql-num">5</span>)		E.　<span class="sql-kw">SELECT</span> * <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> ITEM_NAME = &#x27;T%&#x27;;</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問の論点は「LIKE とワイルドカード」です。問題文は「ITEM_NAME列の値がTで始まる行のみが表示されるSQLを1つ選択してください。」という条件を満たす説明または SQL を求めています。_ は1文字、% は0文字以上を表す。先頭一致・末尾一致・部分一致のパターンを正確に書き分けるのが基本である。 この設問では正答 D「SELECT * FROM ITEM WHERE ITEM_NAME LIKE &#x27;T%&#x27;;」 を選べており、成立条件を正しく読めています。</p>
@@ -1230,13 +1241,13 @@ FETCH FIRST 10 ROWS ONLY;</pre>
 <span class="note">-- ROWNUM は ORDER BY より先に振られるため、並び替え後の上位取得は副問合せか FETCH。</span></div></div>
       <div class="guide-block">
         <div class="guide-title">この論点の基本形</div>
-        <pre>SELECT item_name, item_price
-FROM   item
-WHERE  item_name IS NOT NULL
-AND    item_price IS NOT NULL
-AND    item_name LIKE &#x27;T%&#x27;
-ORDER  BY item_price
-FETCH FIRST 10 ROWS ONLY;</pre>
+        <pre><span class="sql-kw">SELECT</span> item_name, item_price
+<span class="sql-kw">FROM</span>   item
+<span class="sql-kw">WHERE</span>  item_name <span class="sql-kw">IS NOT NULL</span>
+<span class="sql-kw">AND</span>    item_price <span class="sql-kw">IS NOT NULL</span>
+<span class="sql-kw">AND</span>    item_name <span class="sql-kw">LIKE</span> &#x27;T%&#x27;
+ORDER  <span class="sql-kw">BY</span> item_price
+<span class="sql-kw">FETCH FIRST</span> <span class="sql-num">10</span> <span class="sql-kw">ROWS ONLY</span>;</pre>
       </div>
       <div class="guide-grid">
         <div class="guide-block">
@@ -1258,10 +1269,10 @@ FETCH FIRST 10 ROWS ONLY;</pre>
                   <pre>ITEM_PRICEがNULLのものをカウントするSQLはどれでしょうか。
 　
 拡大する
-(1)		A.　SELECT COUNT(*) FROM ITEM WHERE ITEM_PRICE = NULL;
-(2)		B.　SELECT COUNT ITEM_PRICE FROM ITEM WHERE ITEM_PRICE IS NULL;
-(3)		C.　SELECT COUNT(*) FROM ITEM WHERE ITEM_PRICE IS NULL;
-(4)		D.　SELECT ITEM_PRICE FROM ITEM WHERE ITEM_PRICE IS NULL;</pre>
+(<span class="sql-num">1</span>)		A.　<span class="sql-kw">SELECT</span> <span class="sql-fn">COUNT</span>(*) <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> ITEM_PRICE = <span class="sql-kw">NULL</span>;
+(<span class="sql-num">2</span>)		B.　<span class="sql-kw">SELECT</span> COUNT ITEM_PRICE <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> ITEM_PRICE <span class="sql-kw">IS NULL</span>;
+(<span class="sql-num">3</span>)		C.　<span class="sql-kw">SELECT</span> <span class="sql-fn">COUNT</span>(*) <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> ITEM_PRICE <span class="sql-kw">IS NULL</span>;
+(<span class="sql-num">4</span>)		D.　<span class="sql-kw">SELECT</span> ITEM_PRICE <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> ITEM_PRICE <span class="sql-kw">IS NULL</span>;</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問の論点は「NULL 判定と WHERE 条件」です。問題文は「ITEM_PRICEがNULLのものをカウントするSQLはどれでしょうか。」という条件を満たす説明または SQL を求めています。NULL 判定は = NULL ではなく IS NULL / IS NOT NULL を使う。複数列の NULL 条件は列ごとに明示する必要がある。 この設問では正答 C「SELECT COUNT(*) FROM ITEM WHERE ITEM_PRICE IS NULL;」 を選べており、成立条件を正しく読めています。</p>
