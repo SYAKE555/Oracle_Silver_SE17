@@ -28,17 +28,35 @@
   .concept-section h3 { display: flex; justify-content: space-between; gap: 12px; align-items: center; font-size: 1.15rem; margin-bottom: 8px; color: #0f172a; }
   .concept-section h3 span { font-size: .82rem; padding: 5px 10px; border-radius: 999px; background: #c0392b; color: white; }
   .concept-copy { color: #475569; font-size: .92rem; margin-bottom: 16px; }
+  .concept-guide { border-top: 5px solid #c0392b; background: #f8fafc; border-radius: 16px; padding: 16px; margin-bottom: 18px; }
+  .guide-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+  .guide-block { margin-bottom: 12px; }
+  .guide-title { font-size: .82rem; font-weight: 900; color: #c0392b; margin-bottom: 6px; }
+  .guide-block p { color: #334155; font-size: .9rem; }
+  .guide-list { padding-left: 20px; color: #334155; font-size: .9rem; }
+  .guide-list li { margin-bottom: 5px; }
+  .guide-note { background: #fff7ed; border-left: 4px solid #c0392b; border-radius: 10px; padding: 10px 12px; color: #7c2d12; font-size: .88rem; margin-top: 6px; }
   .question-card { border: 1px solid #dbe4ef; border-radius: 16px; padding: 16px; margin-bottom: 14px; background: #fcfdff; }
   .question-meta { font-size: .8rem; color: #64748b; margin-bottom: 10px; font-weight: 700; }
   .block-title { font-size: .85rem; font-weight: 800; color: #c0392b; margin: 10px 0 6px; }
   pre { white-space: pre-wrap; word-break: break-word; background: #0f172a; color: #e2e8f0; border-radius: 12px; padding: 14px; font-size: .84rem; overflow-x: auto; }
   .analysis-block p { color: #334155; font-size: .9rem; margin-bottom: 8px; }
-  .rebuild-list { padding-left: 20px; color: #334155; font-size: .9rem; }
-  .rebuild-list li { margin-bottom: 5px; }
+  .option-review-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 10px; margin-bottom: 8px; }
+  .option-review { border-radius: 14px; padding: 12px; border: 1px solid #dbe4ef; background: white; }
+  .option-review.correct { border-left: 5px solid #16a34a; }
+  .option-review.wrong { border-left: 5px solid #c0392b; }
+  .option-review-head { display: flex; justify-content: space-between; gap: 10px; align-items: center; margin-bottom: 8px; }
+  .option-review-key { font-size: .92rem; font-weight: 900; color: #0f172a; }
+  .option-review-badges span { display: inline-block; background: #eef2f7; color: #334155; font-size: .74rem; font-weight: 800; border-radius: 999px; padding: 3px 8px; margin-left: 6px; }
+  .option-review-text { color: #1f2937; font-size: .88rem; margin-bottom: 8px; }
+  .option-review-reason { color: #475569; font-size: .86rem; }
+  .study-step-list { padding-left: 20px; color: #334155; font-size: .9rem; }
+  .study-step-list li { margin-bottom: 5px; }
   @media (max-width: 720px) {
     .page-header h1 { font-size: 1.55rem; }
     .container { padding: 18px; }
     .concept-section h3 { flex-direction: column; align-items: flex-start; }
+    .option-review-head { flex-direction: column; align-items: flex-start; }
   }
 </style>
 </head>
@@ -78,6 +96,34 @@
               <h3>INTERSECT を含む集合演算の基本<span>2問</span></h3>
               <p class="concept-copy">複合問合せでは、各 SELECT の列数と対応するデータ型をそろえる必要がある。INTERSECT は両方の結果に共通する行を返し、NULL を含む行も比較対象になる。</p>
               
+    <div class="concept-guide" style="border-top-color:#c0392b">
+      <div class="guide-block">
+        <div class="guide-title">論点の定義</div>
+        <p>集合演算は、複数の SELECT 文の結果を 1 つの結果集合として扱う構文である。各 SELECT で列数を一致させ、対応する列のデータ型も互換にする必要がある。</p>
+      </div>
+      <div class="guide-block">
+        <div class="guide-title">正式構文・基本形</div>
+        <pre>SELECT col1, col2
+FROM   table_a
+UNION | UNION ALL | INTERSECT | MINUS
+SELECT col1, col2
+FROM   table_b
+ORDER BY 1;</pre>
+      </div>
+      <div class="guide-grid">
+        <div class="guide-block">
+          <div class="guide-title">成立条件</div>
+          <ul class="guide-list"><li>ORDER BY は複合問合せ全体の末尾に 1 回だけ書く。</li><li>列名は先頭の SELECT 側を基準に解釈される。</li><li>UNION は重複除去、UNION ALL は重複保持、INTERSECT は共通部分、MINUS は左辺から右辺を除いた差集合を返す。</li></ul>
+        </div>
+        <div class="guide-block">
+          <div class="guide-title">判定手順</div>
+          <ol class="guide-list ordered"><li>まず各 SELECT の列数と型の対応を確認する。</li><li>次に設問が求める集合関係が和集合・共通部分・差集合のどれかを判定する。</li><li>最後に ORDER BY の位置と列指定が複合問合せ全体の文法に合っているか確認する。</li></ol>
+        </div>
+      </div>
+      <div class="guide-note">失点しやすい点: 列名まで一致必須と思い込んだり、列数・型の一致条件と、INTERSECT が返す行の意味を切り分けられずに失点しやすい。</div>
+    </div>
+    
+              
                 <article class="question-card">
                   <div class="question-meta">第1回 模擬試験 / 問33 / 正答 A / 自己回答 -</div>
                   <div class="block-title">問題文</div>
@@ -88,13 +134,60 @@
 (4)		D.　複数のINTERSECT演算子を使用することはできません。
 (5)		E.　重複データは重複状態のまま処理されます。</pre>
                   <div class="analysis-block">
-                    <div class="block-title">なぜそうなるか</div>
-                    <p>この問題の論点は「INTERSECT を含む集合演算の基本」です。複合問合せでは、各 SELECT の列数と対応するデータ型をそろえる必要がある。INTERSECT は両方の結果に共通する行を返し、NULL を含む行も比較対象になる。 この設問では正答 A「複合問合せに含まれる各SELECT文の順番を入れ替えても結果は同じです。」 を選べており、論点自体は取れています。</p>
-                    <div class="block-title">維持ポイント</div>
-                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
-                    <div class="block-title">叩き直しポイント</div>
-                    <ul class="rebuild-list">
-                      <li>集合演算はまず『列数一致』『対応型一致』を確認する。</li><li>UNION は和、INTERSECT は共通、MINUS は差集合と役割を分ける。</li><li>列名は先頭 SELECT 基準で決まり、完全一致は必須ではない。</li>
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「INTERSECT を含む集合演算の基本」です。問題文は「複合問合せで使用されるINTERSECT演算子について正しい記述はどれでしょうか。」という条件を満たす説明または SQL を求めています。複合問合せでは、各 SELECT の列数と対応するデータ型をそろえる必要がある。INTERSECT は両方の結果に共通する行を返し、NULL を含む行も比較対象になる。 この設問では正答 A「複合問合せに含まれる各SELECT文の順番を入れ替えても結果は同じです。」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">複合問合せに含まれる各SELECT文の順番を入れ替えても結果は同じです。</div>
+              <div class="option-review-reason">正しい。 副問合せでは返却行数、相関の有無、比較演算子の整合が成立条件になります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">NULLは無視して処理されます。</div>
+              <div class="option-review-reason">誤り。 この選択肢は「複合問合せで使用されるINTERSECT演算子について正しい記述はどれでしょうか。」という設問条件に対して、INTERSECT を含む集合演算の基本 の成立条件または文法要件を満たしていません。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">INTERSECT演算子は、UNIONよりも優先順位が高くなります。</div>
+              <div class="option-review-reason">誤り。 UNION は重複を除去して結果集合を結合します。 INTERSECT は左右両方に存在する行だけを返します。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">複数のINTERSECT演算子を使用することはできません。</div>
+              <div class="option-review-reason">誤り。 INTERSECT は左右両方に存在する行だけを返します。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">E</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">重複データは重複状態のまま処理されます。</div>
+              <div class="option-review-reason">誤り。 この選択肢は「複合問合せで使用されるINTERSECT演算子について正しい記述はどれでしょうか。」という設問条件に対して、INTERSECT を含む集合演算の基本 の成立条件または文法要件を満たしていません。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>まず各 SELECT の列数と型の対応を確認する。</li><li>次に設問が求める集合関係が和集合・共通部分・差集合のどれかを判定する。</li><li>最後に ORDER BY の位置と列指定が複合問合せ全体の文法に合っているか確認する。</li>
                     </ul>
                   </div>
                 </article>
@@ -130,13 +223,51 @@ Employees テーブルにはまだ所属者がいない部門（Departments テ�
 (3)		C
 (4)		D</pre>
                   <div class="analysis-block">
-                    <div class="block-title">なぜそうなるか</div>
-                    <p>この問題の論点は「INTERSECT を含む集合演算の基本」です。複合問合せでは、各 SELECT の列数と対応するデータ型をそろえる必要がある。INTERSECT は両方の結果に共通する行を返し、NULL を含む行も比較対象になる。 この設問では正答 A「SELECT dept_id FROM departments MINUS SELECT dept_id FR…」 を選べており、論点自体は取れています。</p>
-                    <div class="block-title">維持ポイント</div>
-                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
-                    <div class="block-title">叩き直しポイント</div>
-                    <ul class="rebuild-list">
-                      <li>集合演算はまず『列数一致』『対応型一致』を確認する。</li><li>UNION は和、INTERSECT は共通、MINUS は差集合と役割を分ける。</li><li>列名は先頭 SELECT 基準で決まり、完全一致は必須ではない。</li>
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「INTERSECT を含む集合演算の基本」です。問題文は「設問条件の読み取り」という条件を満たす説明または SQL を求めています。複合問合せでは、各 SELECT の列数と対応するデータ型をそろえる必要がある。INTERSECT は両方の結果に共通する行を返し、NULL を含む行も比較対象になる。 この設問では正答 A「SELECT dept_id FROM departments MINUS SELECT dept_id FR…」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT dept_id FROM departments<br>MINUS<br>SELECT dept_id FROM employees;</div>
+              <div class="option-review-reason">正しい。 MINUS は左側にあり右側にはない行だけを返します。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT dept_id FROM departments<br>INTERSECT<br>SELECT dept_id FROM employees;</div>
+              <div class="option-review-reason">誤り。 INTERSECT は左右両方に存在する行だけを返します。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT * FROM departments d<br>WHERE EXISTS (<br>  SELECT 1 FROM employees e WHERE e.dept_id = d.dept_id<br>);</div>
+              <div class="option-review-reason">誤り。 EXISTS は返却列ではなく、副問合せが 1 行でも存在するかどうかだけを判定します。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT * FROM departments<br>MINUS<br>SELECT * FROM employees;<br>Employees テーブルにはまだ所属者がいない部門（Departments テーブルにのみ存在する部門）を取得したいとします。これを実現するSQLはどれですか。1つ選択してください。</div>
+              <div class="option-review-reason">誤り。 MINUS は左側にあり右側にはない行だけを返します。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>まず各 SELECT の列数と型の対応を確認する。</li><li>次に設問が求める集合関係が和集合・共通部分・差集合のどれかを判定する。</li><li>最後に ORDER BY の位置と列指定が複合問合せ全体の文法に合っているか確認する。</li>
                     </ul>
                   </div>
                 </article>
@@ -146,6 +277,35 @@ Employees テーブルにはまだ所属者がいない部門（Departments テ�
             <section class="concept-section" id="d6-2">
               <h3>ANY・ALL・平均比較<span>1問</span></h3>
               <p class="concept-copy">サブクエリ結果が複数行になるときは、IN、ANY、ALL を使って比較する。部門別平均より高い給与のような問題では、相関サブクエリか集約結果との結合で表現する。</p>
+              
+    <div class="concept-guide" style="border-top-color:#c0392b">
+      <div class="guide-block">
+        <div class="guide-title">論点の定義</div>
+        <p>副問合せは、外側の検索条件や出力列で利用する値集合を別の SELECT 文で求める構文である。単一行・複数行・相関の区別が先に必要になる。</p>
+      </div>
+      <div class="guide-block">
+        <div class="guide-title">正式構文・基本形</div>
+        <pre>SELECT o.col
+FROM   outer_table o
+WHERE  o.value &gt; (
+         SELECT AVG(i.value)
+         FROM   inner_table i
+         WHERE  i.group_id = o.group_id
+       );</pre>
+      </div>
+      <div class="guide-grid">
+        <div class="guide-block">
+          <div class="guide-title">成立条件</div>
+          <ul class="guide-list"><li>外側列を内側が参照していれば相関サブクエリであり、外側行ごとに評価される。</li><li>副問合せの返却行数に応じて =、IN、ANY、ALL、EXISTS を使い分ける。</li><li>比較用の値を先に作るのか、存在だけを見るのかを日本語で判定すると構文を選びやすい。</li></ul>
+        </div>
+        <div class="guide-block">
+          <div class="guide-title">判定手順</div>
+          <ol class="guide-list ordered"><li>副問合せが 1 行か複数行かを最初に判定する。</li><li>次に相関の有無を見て、評価回数と結び付き条件を確認する。</li><li>最後に比較演算子が返却行数と整合しているかを確認する。</li></ol>
+        </div>
+      </div>
+      <div class="guide-note">失点しやすい点: 複数行サブクエリに対して = や &gt; をそのまま使ったり、ANY と ALL の意味を逆に覚えやすい。</div>
+    </div>
+    
               
                 <article class="question-card">
                   <div class="question-meta">第2回 模擬試験 / 問29 / 正答 B / 自己回答 -</div>
@@ -157,13 +317,51 @@ Employees テーブルにはまだ所属者がいない部門（Departments テ�
 (3)		C.　SELECT ITEM_NAME, MADE_DATE FROM ITEM WHERE MADE_DATE &gt; ANY (SELECT MADE_DATE FROM ITEM WHERE ITEM_TYPE= &#x27;FOOD&#x27;);
 (4)		D.　SELECT ITEM_NAME, MADE_DATE FROM ITEM WHERE MADE_DATE IN (SELECT MADE_DATE FROM ITEM WHERE ITEM_TYPE= &#x27;FOOD&#x27;);</pre>
                   <div class="analysis-block">
-                    <div class="block-title">なぜそうなるか</div>
-                    <p>この問題の論点は「ANY・ALL・平均比較」です。サブクエリ結果が複数行になるときは、IN、ANY、ALL を使って比較する。部門別平均より高い給与のような問題では、相関サブクエリか集約結果との結合で表現する。 この設問では正答 B「SELECT ITEM_NAME, MADE_DATE FROM ITEM WHERE MADE_DATE &gt;…」 を選べており、論点自体は取れています。</p>
-                    <div class="block-title">維持ポイント</div>
-                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
-                    <div class="block-title">叩き直しポイント</div>
-                    <ul class="rebuild-list">
-                      <li>複数行が返るなら IN/ANY/ALL を考える。</li><li>部門別平均より高い、は相関サブクエリか集約結果 JOIN で書く。</li><li>ANY はどれか1つ、ALL は全て、という日本語で確認する。</li>
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「ANY・ALL・平均比較」です。問題文は「ITEM_TYPEが'FOOD'であるITEMの全ての製造年月日（MADE_DATE）と比較して、 製造年月日が新しいITEMの情報を表示するSQLはどれでしょうか。」という条件を満たす説明または SQL を求めています。サブクエリ結果が複数行になるときは、IN、ANY、ALL を使って比較する。部門別平均より高い給与のような問題では、相関サブクエリか集約結果との結合で表現する。 この設問では正答 B「SELECT ITEM_NAME, MADE_DATE FROM ITEM WHERE MADE_DATE &gt;…」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT ITEM_NAME, MADE_DATE FROM ITEM WHERE MADE_DATE &gt; SELECT MAX (MADE_DATE) FROM ITEM WHERE ITEM_TYPE= &#x27;FOOD&#x27;;</div>
+              <div class="option-review-reason">誤り。 副問合せでは返却行数、相関の有無、比較演算子の整合が成立条件になります。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT ITEM_NAME, MADE_DATE FROM ITEM WHERE MADE_DATE &gt; ALL (SELECT MADE_DATE FROM ITEM WHERE ITEM_TYPE = &#x27;FOOD&#x27;);</div>
+              <div class="option-review-reason">正しい。 副問合せでは返却行数、相関の有無、比較演算子の整合が成立条件になります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT ITEM_NAME, MADE_DATE FROM ITEM WHERE MADE_DATE &gt; ANY (SELECT MADE_DATE FROM ITEM WHERE ITEM_TYPE= &#x27;FOOD&#x27;);</div>
+              <div class="option-review-reason">誤り。 副問合せでは返却行数、相関の有無、比較演算子の整合が成立条件になります。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT ITEM_NAME, MADE_DATE FROM ITEM WHERE MADE_DATE IN (SELECT MADE_DATE FROM ITEM WHERE ITEM_TYPE= &#x27;FOOD&#x27;);</div>
+              <div class="option-review-reason">誤り。 副問合せでは返却行数、相関の有無、比較演算子の整合が成立条件になります。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>副問合せが 1 行か複数行かを最初に判定する。</li><li>次に相関の有無を見て、評価回数と結び付き条件を確認する。</li><li>最後に比較演算子が返却行数と整合しているかを確認する。</li>
                     </ul>
                   </div>
                 </article>
@@ -173,6 +371,34 @@ Employees テーブルにはまだ所属者がいない部門（Departments テ�
             <section class="concept-section" id="d6-3">
               <h3>UNION と UNION ALL の違い<span>1問</span></h3>
               <p class="concept-copy">UNION は列数と型をそろえたうえで重複行を削除する。UNION ALL は重複を残し、重複排除のソート処理も行わない。</p>
+              
+    <div class="concept-guide" style="border-top-color:#c0392b">
+      <div class="guide-block">
+        <div class="guide-title">論点の定義</div>
+        <p>集合演算は、複数の SELECT 文の結果を 1 つの結果集合として扱う構文である。各 SELECT で列数を一致させ、対応する列のデータ型も互換にする必要がある。</p>
+      </div>
+      <div class="guide-block">
+        <div class="guide-title">正式構文・基本形</div>
+        <pre>SELECT col1, col2
+FROM   table_a
+UNION | UNION ALL | INTERSECT | MINUS
+SELECT col1, col2
+FROM   table_b
+ORDER BY 1;</pre>
+      </div>
+      <div class="guide-grid">
+        <div class="guide-block">
+          <div class="guide-title">成立条件</div>
+          <ul class="guide-list"><li>ORDER BY は複合問合せ全体の末尾に 1 回だけ書く。</li><li>列名は先頭の SELECT 側を基準に解釈される。</li><li>UNION は重複除去、UNION ALL は重複保持、INTERSECT は共通部分、MINUS は左辺から右辺を除いた差集合を返す。</li></ul>
+        </div>
+        <div class="guide-block">
+          <div class="guide-title">判定手順</div>
+          <ol class="guide-list ordered"><li>まず各 SELECT の列数と型の対応を確認する。</li><li>次に設問が求める集合関係が和集合・共通部分・差集合のどれかを判定する。</li><li>最後に ORDER BY の位置と列指定が複合問合せ全体の文法に合っているか確認する。</li></ol>
+        </div>
+      </div>
+      <div class="guide-note">失点しやすい点: 列名まで完全一致が必要と思い込んだり、UNION ALL でも重複排除やソートが起きると誤解しやすい。</div>
+    </div>
+    
               
                 <article class="question-card">
                   <div class="question-meta">第2回 模擬試験 / 問35 / 正答 A / 自己回答 -</div>
@@ -191,13 +417,60 @@ Employees テーブルにはまだ所属者がいない部門（Departments テ�
 (4)		D.　UNION
 (5)		E.　UNION ALL</pre>
                   <div class="analysis-block">
-                    <div class="block-title">なぜそうなるか</div>
-                    <p>この問題の論点は「UNION と UNION ALL の違い」です。UNION は列数と型をそろえたうえで重複行を削除する。UNION ALL は重複を残し、重複排除のソート処理も行わない。 この設問では正答 A「MINUS」 を選べており、論点自体は取れています。</p>
-                    <div class="block-title">維持ポイント</div>
-                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
-                    <div class="block-title">叩き直しポイント</div>
-                    <ul class="rebuild-list">
-                      <li>必要なのは列数と対応する型であり、列名一致は必須ではない。</li><li>UNION=重複削除あり、UNION ALL=重複削除なしで分けて覚える。</li><li>性能面では通常 UNION ALL の方が軽い。</li>
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「UNION と UNION ALL の違い」です。問題文は「地方新聞社の顧客表が地域毎に同じ形式で存在しています。 一部の顧客データが両方の表で重複しているとします。 顧客表1に存在しない顧客表2の行を表示したいとします。 必要な出力を生成する集合演算子はどれでしょうか。」という条件を満たす説明または SQL を求めています。UNION は列数と型をそろえたうえで重複行を削除する。UNION ALL は重複を残し、重複排除のソート処理も行わない。 この設問では正答 A「MINUS」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">MINUS</div>
+              <div class="option-review-reason">正しい。 MINUS は左側にあり右側にはない行だけを返します。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">PLUS</div>
+              <div class="option-review-reason">誤り。 この選択肢は「地方新聞社の顧客表が地域毎に同じ形式で存在しています。 一部の顧客データが両方の表で重複しているとします。 顧客表1に存在しない顧客表2の行を表示したいとします。 必要な出力を生成する集合演算子はどれでしょうか。」という設問条件に対して、UNION と UNION ALL の違い の成立条件または文法要件を満たしていません。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">SUBTRACT</div>
+              <div class="option-review-reason">誤り。 この選択肢は「地方新聞社の顧客表が地域毎に同じ形式で存在しています。 一部の顧客データが両方の表で重複しているとします。 顧客表1に存在しない顧客表2の行を表示したいとします。 必要な出力を生成する集合演算子はどれでしょうか。」という設問条件に対して、UNION と UNION ALL の違い の成立条件または文法要件を満たしていません。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">UNION</div>
+              <div class="option-review-reason">誤り。 UNION は重複を除去して結果集合を結合します。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">E</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">UNION ALL</div>
+              <div class="option-review-reason">誤り。 UNION ALL は重複行を残したまま結果集合を連結します。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>まず各 SELECT の列数と型の対応を確認する。</li><li>次に設問が求める集合関係が和集合・共通部分・差集合のどれかを判定する。</li><li>最後に ORDER BY の位置と列指定が複合問合せ全体の文法に合っているか確認する。</li>
                     </ul>
                   </div>
                 </article>
@@ -207,6 +480,35 @@ Employees テーブルにはまだ所属者がいない部門（Departments テ�
             <section class="concept-section" id="d6-4">
               <h3>サブクエリ総合<span>1問</span></h3>
               <p class="concept-copy">サブクエリは返す行数と比較演算子の組合せで意味が決まる。まず単一行か複数行か、相関か非相関かを切り分ける必要がある。</p>
+              
+    <div class="concept-guide" style="border-top-color:#c0392b">
+      <div class="guide-block">
+        <div class="guide-title">論点の定義</div>
+        <p>副問合せは、外側の検索条件や出力列で利用する値集合を別の SELECT 文で求める構文である。単一行・複数行・相関の区別が先に必要になる。</p>
+      </div>
+      <div class="guide-block">
+        <div class="guide-title">正式構文・基本形</div>
+        <pre>SELECT o.col
+FROM   outer_table o
+WHERE  o.value &gt; (
+         SELECT AVG(i.value)
+         FROM   inner_table i
+         WHERE  i.group_id = o.group_id
+       );</pre>
+      </div>
+      <div class="guide-grid">
+        <div class="guide-block">
+          <div class="guide-title">成立条件</div>
+          <ul class="guide-list"><li>外側列を内側が参照していれば相関サブクエリであり、外側行ごとに評価される。</li><li>副問合せの返却行数に応じて =、IN、ANY、ALL、EXISTS を使い分ける。</li><li>比較用の値を先に作るのか、存在だけを見るのかを日本語で判定すると構文を選びやすい。</li></ul>
+        </div>
+        <div class="guide-block">
+          <div class="guide-title">判定手順</div>
+          <ol class="guide-list ordered"><li>副問合せが 1 行か複数行かを最初に判定する。</li><li>次に相関の有無を見て、評価回数と結び付き条件を確認する。</li><li>最後に比較演算子が返却行数と整合しているかを確認する。</li></ol>
+        </div>
+      </div>
+      <div class="guide-note">失点しやすい点: 行数判定を飛ばして記号だけで選ぶと、正しそうな選択肢に流れやすい。</div>
+    </div>
+    
               
                 <article class="question-card">
                   <div class="question-meta">第1回 模擬試験 / 問29 / 正答 A / 自己回答 -</div>
@@ -218,13 +520,60 @@ Employees テーブルにはまだ所属者がいない部門（Departments テ�
 (4)		D.　内側の問合せは1つ以上の値を返し、外側の問合せは1つの値を返します。
 (5)		E.　内側の問合せは2つ以上の値を返し、外側の問合せは1つの値を返します。</pre>
                   <div class="analysis-block">
-                    <div class="block-title">なぜそうなるか</div>
-                    <p>この問題の論点は「サブクエリ総合」です。サブクエリは返す行数と比較演算子の組合せで意味が決まる。まず単一行か複数行か、相関か非相関かを切り分ける必要がある。 この設問では正答 A「内側の問合せは外側の問合せに1つの値を返します。」 を選べており、論点自体は取れています。</p>
-                    <div class="block-title">維持ポイント</div>
-                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
-                    <div class="block-title">叩き直しポイント</div>
-                    <ul class="rebuild-list">
-                      <li>1行か複数行かを先に判定する。</li><li>相関か非相関かを次に判定する。</li><li>最後に比較演算子が合っているかを確認する。</li>
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「サブクエリ総合」です。問題文は「単一行副問合せの記述はどれでしょうか。」という条件を満たす説明または SQL を求めています。サブクエリは返す行数と比較演算子の組合せで意味が決まる。まず単一行か複数行か、相関か非相関かを切り分ける必要がある。 この設問では正答 A「内側の問合せは外側の問合せに1つの値を返します。」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">内側の問合せは外側の問合せに1つの値を返します。</div>
+              <div class="option-review-reason">正しい。 この選択肢は「単一行副問合せの記述はどれでしょうか。」という設問条件に対して、サブクエリ総合 の成立条件を満たしています。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">内側の問合せは外側の問合せに1つ以上の値を返します。</div>
+              <div class="option-review-reason">誤り。 この選択肢は「単一行副問合せの記述はどれでしょうか。」という設問条件に対して、サブクエリ総合 の成立条件または文法要件を満たしていません。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">列には、使用する表の名前またはエイリアスを付与する必要があります。</div>
+              <div class="option-review-reason">誤り。 この選択肢は「単一行副問合せの記述はどれでしょうか。」という設問条件に対して、サブクエリ総合 の成立条件または文法要件を満たしていません。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">内側の問合せは1つ以上の値を返し、外側の問合せは1つの値を返します。</div>
+              <div class="option-review-reason">誤り。 この選択肢は「単一行副問合せの記述はどれでしょうか。」という設問条件に対して、サブクエリ総合 の成立条件または文法要件を満たしていません。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">E</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">内側の問合せは2つ以上の値を返し、外側の問合せは1つの値を返します。</div>
+              <div class="option-review-reason">誤り。 この選択肢は「単一行副問合せの記述はどれでしょうか。」という設問条件に対して、サブクエリ総合 の成立条件または文法要件を満たしていません。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>副問合せが 1 行か複数行かを最初に判定する。</li><li>次に相関の有無を見て、評価回数と結び付き条件を確認する。</li><li>最後に比較演算子が返却行数と整合しているかを確認する。</li>
                     </ul>
                   </div>
                 </article>
@@ -234,6 +583,35 @@ Employees テーブルにはまだ所属者がいない部門（Departments テ�
             <section class="concept-section" id="d6-5">
               <h3>複数行サブクエリの性質<span>1問</span></h3>
               <p class="concept-copy">複数行サブクエリは、複数行を返し得る副問合せであり、WHERE、HAVING、GROUP BY を内部に持つこともできる。比較では IN、ANY、ALL など複数行対応の演算子を使う必要がある。</p>
+              
+    <div class="concept-guide" style="border-top-color:#c0392b">
+      <div class="guide-block">
+        <div class="guide-title">論点の定義</div>
+        <p>副問合せは、外側の検索条件や出力列で利用する値集合を別の SELECT 文で求める構文である。単一行・複数行・相関の区別が先に必要になる。</p>
+      </div>
+      <div class="guide-block">
+        <div class="guide-title">正式構文・基本形</div>
+        <pre>SELECT o.col
+FROM   outer_table o
+WHERE  o.value &gt; (
+         SELECT AVG(i.value)
+         FROM   inner_table i
+         WHERE  i.group_id = o.group_id
+       );</pre>
+      </div>
+      <div class="guide-grid">
+        <div class="guide-block">
+          <div class="guide-title">成立条件</div>
+          <ul class="guide-list"><li>外側列を内側が参照していれば相関サブクエリであり、外側行ごとに評価される。</li><li>副問合せの返却行数に応じて =、IN、ANY、ALL、EXISTS を使い分ける。</li><li>比較用の値を先に作るのか、存在だけを見るのかを日本語で判定すると構文を選びやすい。</li></ul>
+        </div>
+        <div class="guide-block">
+          <div class="guide-title">判定手順</div>
+          <ol class="guide-list ordered"><li>副問合せが 1 行か複数行かを最初に判定する。</li><li>次に相関の有無を見て、評価回数と結び付き条件を確認する。</li><li>最後に比較演算子が返却行数と整合しているかを確認する。</li></ol>
+        </div>
+      </div>
+      <div class="guide-note">失点しやすい点: 複数行サブクエリなのに 2 行以上が必須だと思い込んだり、WHERE や GROUP BY を書けないと誤認しやすい。</div>
+    </div>
+    
               
                 <article class="question-card">
                   <div class="question-meta">第1回 模擬試験 / 問30 / 正答 B.C.E / 自己回答 -</div>
@@ -246,13 +624,69 @@ Employees テーブルにはまだ所属者がいない部門（Departments テ�
 (5)		E.　GROUP BY句とORDER BY句を含めることができます。
 (6)		F.　GROUP BY句とORDER BY句を含めることはできません。</pre>
                   <div class="analysis-block">
-                    <div class="block-title">なぜそうなるか</div>
-                    <p>この問題の論点は「複数行サブクエリの性質」です。複数行サブクエリは、複数行を返し得る副問合せであり、WHERE、HAVING、GROUP BY を内部に持つこともできる。比較では IN、ANY、ALL など複数行対応の演算子を使う必要がある。 この設問では正答 B「1列のみの複数行を返すことができます。」 / C「副問合せ内に副問合せを含めることができます。」 / E「GROUP BY句とORDER BY句を含めることができます。」 を選べており、論点自体は取れています。</p>
-                    <div class="block-title">維持ポイント</div>
-                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
-                    <div class="block-title">叩き直しポイント</div>
-                    <ul class="rebuild-list">
-                      <li>複数行サブクエリは『複数行になり得る』のであって、常に複数行とは限らない。</li><li>内部では WHERE、GROUP BY、HAVING も通常どおり使える。</li><li>外側との比較演算子が複数行対応かを必ず確認する。</li>
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「複数行サブクエリの性質」です。問題文は「複数行の副問合せについて正しい記述はどれでしょうか。（3つ選択）」という条件を満たす説明または SQL を求めています。複数行サブクエリは、複数行を返し得る副問合せであり、WHERE、HAVING、GROUP BY を内部に持つこともできる。比較では IN、ANY、ALL など複数行対応の演算子を使う必要がある。 この設問では正答 B「1列のみの複数行を返すことができます。」 / C「副問合せ内に副問合せを含めることができます。」 / E「GROUP BY句とORDER BY句を含めることができます。」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">複数の列と行を返すことができます。</div>
+              <div class="option-review-reason">誤り。 この選択肢は「複数行の副問合せについて正しい記述はどれでしょうか。（3つ選択）」という設問条件に対して、複数行サブクエリの性質 の成立条件または文法要件を満たしていません。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">1列のみの複数行を返すことができます。</div>
+              <div class="option-review-reason">正しい。 この選択肢は「複数行の副問合せについて正しい記述はどれでしょうか。（3つ選択）」という設問条件に対して、複数行サブクエリの性質 の成立条件を満たしています。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">副問合せ内に副問合せを含めることができます。</div>
+              <div class="option-review-reason">正しい。 この選択肢は「複数行の副問合せについて正しい記述はどれでしょうか。（3つ選択）」という設問条件に対して、複数行サブクエリの性質 の成立条件を満たしています。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">副問合せ内に副問合せを含めることはできません。</div>
+              <div class="option-review-reason">誤り。 この選択肢は「複数行の副問合せについて正しい記述はどれでしょうか。（3つ選択）」という設問条件に対して、複数行サブクエリの性質 の成立条件または文法要件を満たしていません。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">E</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">GROUP BY句とORDER BY句を含めることができます。</div>
+              <div class="option-review-reason">正しい。 この選択肢は「複数行の副問合せについて正しい記述はどれでしょうか。（3つ選択）」という設問条件に対して、複数行サブクエリの性質 の成立条件を満たしています。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">F</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">GROUP BY句とORDER BY句を含めることはできません。</div>
+              <div class="option-review-reason">誤り。 この選択肢は「複数行の副問合せについて正しい記述はどれでしょうか。（3つ選択）」という設問条件に対して、複数行サブクエリの性質 の成立条件または文法要件を満たしていません。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>副問合せが 1 行か複数行かを最初に判定する。</li><li>次に相関の有無を見て、評価回数と結び付き条件を確認する。</li><li>最後に比較演算子が返却行数と整合しているかを確認する。</li>
                     </ul>
                   </div>
                 </article>

@@ -819,59 +819,626 @@ def render_option_refs(parsed: dict, keys: list[str]) -> str:
     return " / ".join(labels)
 
 
+def summarize_requirement(parsed: dict) -> str:
+    stem = re.sub(r"\s+", " ", (parsed.get("stem") or "").strip())
+    return short_text(stem or "設問条件の読み取り", 120)
+
+
+def concept_teaching_pack(domain: str, concept_id: str) -> dict[str, object]:
+    if domain == "D6":
+        if concept_id in {"set_operator_general", "union_order", "union_vs_unionall", "minus_set"}:
+            return {
+                "definition": "集合演算は、複数の SELECT 文の結果を 1 つの結果集合として扱う構文である。各 SELECT で列数を一致させ、対応する列のデータ型も互換にする必要がある。",
+                "syntax": (
+                    "SELECT col1, col2\n"
+                    "FROM   table_a\n"
+                    "UNION | UNION ALL | INTERSECT | MINUS\n"
+                    "SELECT col1, col2\n"
+                    "FROM   table_b\n"
+                    "ORDER BY 1;"
+                ),
+                "principles": [
+                    "ORDER BY は複合問合せ全体の末尾に 1 回だけ書く。",
+                    "列名は先頭の SELECT 側を基準に解釈される。",
+                    "UNION は重複除去、UNION ALL は重複保持、INTERSECT は共通部分、MINUS は左辺から右辺を除いた差集合を返す。",
+                ],
+                "procedure": [
+                    "まず各 SELECT の列数と型の対応を確認する。",
+                    "次に設問が求める集合関係が和集合・共通部分・差集合のどれかを判定する。",
+                    "最後に ORDER BY の位置と列指定が複合問合せ全体の文法に合っているか確認する。",
+                ],
+            }
+        if concept_id == "exists_notexists":
+            return {
+                "definition": "EXISTS は副問合せが 1 行でも返れば真となる存在判定であり、返す列値そのものではなく行の存在だけを評価する。",
+                "syntax": (
+                    "SELECT outer_col\n"
+                    "FROM   outer_table o\n"
+                    "WHERE  EXISTS (\n"
+                    "         SELECT 1\n"
+                    "         FROM   inner_table i\n"
+                    "         WHERE  i.key = o.key\n"
+                    "       );"
+                ),
+                "principles": [
+                    "EXISTS では SELECT 句の値は本質ではなく、通常は SELECT 1 でよい。",
+                    "存在否定は NOT EXISTS を使うと、NOT IN の NULL 問題を避けやすい。",
+                    "外側の列を内側で参照していれば相関サブクエリである。",
+                ],
+                "procedure": [
+                    "設問が値比較ではなく存在確認を求めているかを読む。",
+                    "NULL を含む可能性がある除外条件なら NOT IN より NOT EXISTS を優先する。",
+                    "外側表と内側表の結び付き条件が副問合せ内にあるかを確認する。",
+                ],
+            }
+        if concept_id == "scalar_subquery":
+            return {
+                "definition": "スカラサブクエリは 1 行 1 列だけを返す副問合せであり、式が書ける場所に埋め込める。0 行なら NULL、2 行以上なら ORA-01427 エラーとなる。",
+                "syntax": (
+                    "SELECT col,\n"
+                    "       (SELECT MAX(inner_col)\n"
+                    "        FROM   inner_table\n"
+                    "        WHERE  key = outer_table.key) AS max_val\n"
+                    "FROM   outer_table;"
+                ),
+                "principles": [
+                    "戻り値は常に 1 列でなければならない。",
+                    "SELECT 句、WHERE 句、VALUES 句など式の位置で利用できる。",
+                    "複数行が返る可能性があるなら IN、ANY、ALL などへ切り替える。",
+                ],
+                "procedure": [
+                    "副問合せが 1 値に収束する集約または主キー条件になっているか確認する。",
+                    "0 行時の戻り値が NULL であることを前提に式全体を読む。",
+                    "複数行の可能性があるならスカラサブクエリとして不成立と判断する。",
+                ],
+            }
+        if concept_id in {"corr_subquery", "subquery_usage", "subquery_comparison", "multiple_row_subquery", "generic_subquery", "self_join_vs_subquery"}:
+            return {
+                "definition": "副問合せは、外側の検索条件や出力列で利用する値集合を別の SELECT 文で求める構文である。単一行・複数行・相関の区別が先に必要になる。",
+                "syntax": (
+                    "SELECT o.col\n"
+                    "FROM   outer_table o\n"
+                    "WHERE  o.value > (\n"
+                    "         SELECT AVG(i.value)\n"
+                    "         FROM   inner_table i\n"
+                    "         WHERE  i.group_id = o.group_id\n"
+                    "       );"
+                ),
+                "principles": [
+                    "外側列を内側が参照していれば相関サブクエリであり、外側行ごとに評価される。",
+                    "副問合せの返却行数に応じて =、IN、ANY、ALL、EXISTS を使い分ける。",
+                    "比較用の値を先に作るのか、存在だけを見るのかを日本語で判定すると構文を選びやすい。",
+                ],
+                "procedure": [
+                    "副問合せが 1 行か複数行かを最初に判定する。",
+                    "次に相関の有無を見て、評価回数と結び付き条件を確認する。",
+                    "最後に比較演算子が返却行数と整合しているかを確認する。",
+                ],
+            }
+    if domain == "D3":
+        if concept_id in {"like_case_functions", "string_extract"}:
+            return {
+                "definition": "文字列関数は 1 行ずつ入力を受け取り、変換後の文字列または位置情報を返す。大文字小文字の正規化、部分抽出、位置探索は役割を分けて扱う。",
+                "syntax": (
+                    "SELECT UPPER(item_name),\n"
+                    "       SUBSTR(item_name, 1, 3),\n"
+                    "       INSTR(item_name, ' ') \n"
+                    "FROM   item\n"
+                    "WHERE  UPPER(item_name) LIKE 'S%';"
+                ),
+                "principles": [
+                    "LIKE のワイルドカードは % が 0 文字以上、_ が 1 文字である。",
+                    "INSTR は位置、SUBSTR は切り出し、TRIM は前後除去、REPLACE は置換に使う。",
+                    "UPPER や LOWER を使うなら比較側の文字列も同じ規則でそろえる。",
+                ],
+                "procedure": [
+                    "まず要求が前方一致・部分一致・文字抽出のどれかを判定する。",
+                    "次に正規化関数を列側と比較値側の両方へ必要か確認する。",
+                    "位置を使う処理なら INSTR、切り出しなら SUBSTR と機能を分ける。",
+                ],
+            }
+        if concept_id == "conversion_format":
+            return {
+                "definition": "型変換関数は、内部計算のために元の型へ戻す処理と、表示形式へ整える処理を分けて書く。数値演算の前に TO_NUMBER、日付演算の前に TO_DATE、表示の直前に TO_CHAR を使う。",
+                "syntax": (
+                    "SELECT TO_CHAR(\n"
+                    "         TO_NUMBER(shohin_kakaku, '999,999.99') * 0.30,\n"
+                    "         '999,999.00'\n"
+                    "       ) AS discount_price\n"
+                    "FROM   shohin;"
+                ),
+                "principles": [
+                    "文字列として保存された数値へ直接乗算や加算を行う前に、TO_NUMBER で数値へ変換する。",
+                    "表示形式を指定する最終段階では TO_CHAR を使い、TO_NUMBER を外側に置かない。",
+                    "書式モデルは元データまたは出力形式と桁数・小数点位置が一致していなければならない。",
+                ],
+                "procedure": [
+                    "まず元データの型が文字列か数値か日付かを確認する。",
+                    "次に演算前の型変換と表示直前の書式変換を分離して読む。",
+                    "最後に書式モデルが入力側・出力側のどちらへ掛かっているかを確認する。",
+                ],
+            }
+        if concept_id == "date_arithmetic":
+            return {
+                "definition": "DATE 型の減算結果は日数であり、月単位の計算には MONTHS_BETWEEN や ADD_MONTHS を用いる。表示形式の整形は TO_CHAR、演算前の型変換は TO_DATE や TO_NUMBER が担当する。",
+                "syntax": (
+                    "SELECT ADD_MONTHS(made_date, 24) AS two_years_later,\n"
+                    "       MONTHS_BETWEEN(SYSDATE, made_date) AS elapsed_months,\n"
+                    "       TO_CHAR(made_date, 'YYYY-MM-DD') AS made_ymd\n"
+                    "FROM   item;"
+                ),
+                "principles": [
+                    "DATE の差は日数、月差は MONTHS_BETWEEN(date1, date2) を使う。",
+                    "2 年以上経過のような条件は、日本語を `SYSDATE - 730 >= made_date` などへ書き換えて判定する。",
+                    "型変換は演算前、書式変換は表示直前に行う。",
+                ],
+                "procedure": [
+                    "まず設問が日数計算か月数計算かを分ける。",
+                    "次に不等号の向きを『いつより古いか』という日本語で確認する。",
+                    "文字列との比較や表示整形がある場合は変換順序を確認する。",
+                ],
+            }
+        if concept_id in {"null_case", "single_row_function_basics", "numeric_functions", "generic_functions"}:
+            return {
+                "definition": "単一行関数は各行に対して 1 つの結果を返し、文字列・数値・日付・NULL・条件分岐の各カテゴリで役割が分かれる。",
+                "syntax": (
+                    "SELECT ROUND(price, 2),\n"
+                    "       NVL(discount, 0),\n"
+                    "       CASE WHEN quantity IS NULL THEN 0 ELSE quantity END\n"
+                    "FROM   item;"
+                ),
+                "principles": [
+                    "ROUND は四捨五入、TRUNC は切り捨てであり、結果が変わる境界値を意識する。",
+                    "NVL と NVL2 は引数の意味が異なり、CASE は一般的な条件分岐に使える。",
+                    "単一行関数は SELECT 句だけでなく WHERE 句や ORDER BY でも利用できる。",
+                ],
+                "procedure": [
+                    "何を変換したいのかを文字列・数値・日付・NULL 処理に分ける。",
+                    "入力型と戻り値型が式全体で整合しているか確認する。",
+                    "境界値が変わる関数では、丸め・切り捨て・NULL 代替の効果を具体的に追う。",
+                ],
+            }
+    if domain == "D8":
+        if concept_id in {"default_and_add_column", "constraints", "ddl_rules", "generic_object"}:
+            return {
+                "definition": "DDL は表定義や制約を変更する文であり、列定義・制約定義・既存データへの影響を同時に読む必要がある。DEFAULT は値省略時に補完されるが、列指定や VALUES 個数との対応は別に守られる。",
+                "syntax": (
+                    "ALTER TABLE item\n"
+                    "ADD status VARCHAR2(10) DEFAULT 'NEW' NOT NULL;\n\n"
+                    "INSERT INTO item (item_id, item_name)\n"
+                    "VALUES ('1001', 'ITEM1');"
+                ),
+                "principles": [
+                    "既存行がある表へ NOT NULL 列を追加する場合、DEFAULT を伴わないと成立しない。",
+                    "INSERT 文で DEFAULT を使うなら、列リストと VALUES の対応を厳密に守る。",
+                    "DDL は暗黙 COMMIT を伴うため、DML や TCL と切り分けて理解する。",
+                ],
+                "procedure": [
+                    "対象が表定義変更かデータ操作かを最初に分類する。",
+                    "次に既存行の有無、NULL 許容、DEFAULT 補完の関係を確認する。",
+                    "最後に列数・列順・制約条件が SQL 文法どおりかを確認する。",
+                ],
+            }
+        if concept_id == "merge_object":
+            return {
+                "definition": "MERGE は一致時 UPDATE、非一致時 INSERT を 1 文で行う DML である。更新対象は 1 表だけで、USING には比較元の表や副問合せを置く。",
+                "syntax": (
+                    "MERGE INTO target t\n"
+                    "USING source s\n"
+                    "ON (t.id = s.id)\n"
+                    "WHEN MATCHED THEN\n"
+                    "  UPDATE SET t.name = s.name\n"
+                    "WHEN NOT MATCHED THEN\n"
+                    "  INSERT (id, name) VALUES (s.id, s.name);"
+                ),
+                "principles": [
+                    "MATCHED 側は UPDATE、NOT MATCHED 側は INSERT が基本形である。",
+                    "比較条件は ON 句で指定し、更新対象表は MERGE INTO 側に 1 つだけ書く。",
+                    "USING には表、ビュー、副問合せを置ける。",
+                ],
+                "procedure": [
+                    "対象表と比較元の役割を切り分ける。",
+                    "ON 句で一致条件を読んだ後、MATCHED/NOT MATCHED の処理内容を確認する。",
+                    "複数表更新のように見える選択肢は MERGE の文法外として除外する。",
+                ],
+            }
+        if concept_id in {"view_rules", "sequence_synonym_index", "privileges_roles", "datetime_types"}:
+            return {
+                "definition": "Oracle のオブジェクト管理問題では、ビュー、索引、シーケンス、シノニム、権限、日時型のそれぞれに固有の成立条件がある。",
+                "syntax": (
+                    "CREATE VIEW v_item AS\n"
+                    "SELECT item_id, item_name FROM item;\n\n"
+                    "CREATE SEQUENCE seq_item START WITH 1;\n"
+                    "GRANT SELECT ON item TO user_name;"
+                ),
+                "principles": [
+                    "ビューは定義を保持するオブジェクトであり、基表そのものを複製するわけではない。",
+                    "シーケンスの CURRVAL は同一セッションで NEXTVAL 実行後にのみ参照できる。",
+                    "オブジェクト権限とシステム権限では付与オプションが異なる。",
+                ],
+                "procedure": [
+                    "何のオブジェクトを操作している文かを最初に確定する。",
+                    "そのオブジェクト固有の使用条件や制約を確認する。",
+                    "権限・時刻・索引のような副作用の有無を最後に判定する。",
+                ],
+            }
+    if domain == "D7":
+        if concept_id in {"transaction_control", "truncate_delete", "generic_dml"}:
+            return {
+                "definition": "トランザクションは COMMIT または ROLLBACK で区切られる 1 まとまりの処理である。DML は未確定状態を持てるが、DDL 実行時には暗黙 COMMIT が発生する。",
+                "syntax": (
+                    "SAVEPOINT before_update;\n"
+                    "UPDATE invoices\n"
+                    "SET    status = 'PAID'\n"
+                    "WHERE  invoice_id = 10;\n"
+                    "ROLLBACK TO before_update;\n"
+                    "COMMIT;"
+                ),
+                "principles": [
+                    "COMMIT は変更確定とロック解放、SAVEPOINT 消去を行う。",
+                    "ROLLBACK TO SAVEPOINT は指定地点以降の変更だけを戻す。",
+                    "TRUNCATE や ALTER などの DDL はトランザクション境界を強制する。",
+                ],
+                "procedure": [
+                    "まず文が DML か DDL かを分類する。",
+                    "次に変更が未確定で残るか、即時確定されるかを判断する。",
+                    "SAVEPOINT がある場合は、どこまで戻せるかを時系列で追う。",
+                ],
+            }
+        if concept_id in {"update_syntax", "update_subquery", "multitable_insert", "merge_dml"}:
+            return {
+                "definition": "DML 文は、対象行の決定、変更内容の記述、確定/取消の可否を文法どおりに記述する必要がある。UPDATE や INSERT ALL/FIRST、MERGE は句の位置が崩れると不成立になる。",
+                "syntax": (
+                    "UPDATE invoices i\n"
+                    "SET    amount = (\n"
+                    "         SELECT SUM(l.amount)\n"
+                    "         FROM   invoice_lines l\n"
+                    "         WHERE  l.invoice_id = i.invoice_id\n"
+                    "       )\n"
+                    "WHERE  i.status = 'OPEN';"
+                ),
+                "principles": [
+                    "UPDATE の SET は 1 回だけ書き、複数列代入はカンマで並べる。",
+                    "相関サブクエリを使う場合は更新行ごとに副問合せが評価される。",
+                    "INSERT ALL は一致したすべて、INSERT FIRST は最初に一致した INTO のみへ挿入する。",
+                ],
+                "procedure": [
+                    "まず対象行を決める WHERE や ON 句を確認する。",
+                    "次に SET、VALUES、WHEN 節が Oracle の文法順に並んでいるかを見る。",
+                    "副問合せがある場合は単一行保証または条件分岐の位置を確認する。",
+                ],
+            }
+    if domain == "D5":
+        return {
+            "definition": "結合問題では、どの表の行を残すか、同名列をどう結び付けるか、自己結合か外部結合かを区別して読む必要がある。",
+            "syntax": (
+                "SELECT e.employee_id, m.employee_id AS manager_id\n"
+                "FROM   employees e\n"
+                "JOIN   employees m\n"
+                "ON     e.manager_id = m.employee_id;"
+            ),
+            "principles": [
+                "INNER JOIN は一致行のみ、LEFT/RIGHT OUTER JOIN は片側全件、FULL OUTER JOIN は両側全件を返す。",
+                "自己結合では同じ表を別名で複数回参照するため、表別名が必須である。",
+                "USING は同名列だけ、ON は任意条件、NATURAL は同名列自動判定である。",
+            ],
+            "procedure": [
+                "どの表の行を必ず残したいかを先に判断する。",
+                "同一表の比較なら自己結合として表別名の有無を確認する。",
+                "JOIN 種類と条件記述方式 USING/ON/NATURAL を分けて判定する。",
+            ],
+        }
+    if domain == "D4":
+        return {
+            "definition": "集計問題では、行条件は WHERE、グループ条件は HAVING、集計関数以外の列は GROUP BY に含める、という基本規則を守る必要がある。",
+            "syntax": (
+                "SELECT department_id, COUNT(*)\n"
+                "FROM   employees\n"
+                "WHERE  salary IS NOT NULL\n"
+                "GROUP  BY department_id\n"
+                "HAVING COUNT(*) >= 2;"
+            ),
+            "principles": [
+                "WHERE は集計前、HAVING は集計後に適用される。",
+                "COUNT(*) は全行、COUNT(col) は NULL を除く行数を返す。",
+                "SELECT に出す非集計列は GROUP BY にすべて含める。",
+            ],
+            "procedure": [
+                "条件が行単位かグループ単位かを最初に判定する。",
+                "次に SELECT 列と GROUP BY 列の整合を確認する。",
+                "NULL を含む列では COUNT(*) と COUNT(col) の違いを明示的に追う。",
+            ],
+        }
+    if domain == "D1":
+        return {
+            "definition": "SQL と RDB の基礎問題では、制約、キー、ER 図、SQL 分類など、文法以前のデータベース原則を正確に押さえる必要がある。",
+            "syntax": (
+                "CREATE TABLE child (\n"
+                "  child_id NUMBER PRIMARY KEY,\n"
+                "  parent_id NUMBER REFERENCES parent(parent_id)\n"
+                ");"
+            ),
+            "principles": [
+                "主キーは NOT NULL かつ一意、外部キーは NULL を許容できる。",
+                "N:N 関係は中間表へ分解し、1:N 関係は外部キーで表す。",
+                "DDL、DML、DCL、TCL は役割ごとに分類して理解する。",
+            ],
+            "procedure": [
+                "まず設問が制約・ERD・SQL 分類のどれを問うているかを判定する。",
+                "次にキーの性質や関係の多重度を日本語で言い換える。",
+                "最後に Oracle 固有の基礎知識である DUAL や SQL 分類へ当てはめる。",
+            ],
+        }
+    return {
+        "definition": "検索条件問題では、LIKE、NULL 判定、AND/OR の優先順位、ORDER BY、行制限の評価順をそれぞれ分けて読む必要がある。",
+        "syntax": (
+            "SELECT item_name, item_price\n"
+            "FROM   item\n"
+            "WHERE  item_name IS NOT NULL\n"
+            "AND    item_price IS NOT NULL\n"
+            "AND    item_name LIKE 'T%'\n"
+            "ORDER  BY item_price\n"
+            "FETCH FIRST 10 ROWS ONLY;"
+        ),
+        "principles": [
+            "LIKE 'T%' は T で始まる文字列、IS NULL / IS NOT NULL は NULL 判定専用である。",
+            "AND は OR より先に評価されるため、必要なら括弧で意味を固定する。",
+            "ROWNUM は ORDER BY より前、FETCH FIRST は ORDER BY 後に書く。",
+        ],
+        "procedure": [
+            "問題文を行条件へ分解して、各条件を SQL 断片へ置き換える。",
+            "NULL 条件は各列ごとに明示し、通常比較と混在させない。",
+            "行制限がある場合は ORDER BY との評価順まで確認する。",
+        ],
+    }
+
+
+def render_concept_guide(domain: str, concept_id: str, color: str) -> str:
+    meta = CONCEPT_META[concept_id]
+    pack = concept_teaching_pack(domain, concept_id)
+    syntax_html = html.escape(str(pack["syntax"]))
+    principles = "".join(f"<li>{html.escape(item)}</li>" for item in pack["principles"])
+    procedure = "".join(f"<li>{html.escape(item)}</li>" for item in pack["procedure"])
+    return f"""
+    <div class="concept-guide" style="border-top-color:{color}">
+      <div class="guide-block">
+        <div class="guide-title">論点の定義</div>
+        <p>{html.escape(str(pack["definition"]))}</p>
+      </div>
+      <div class="guide-block">
+        <div class="guide-title">正式構文・基本形</div>
+        <pre>{syntax_html}</pre>
+      </div>
+      <div class="guide-grid">
+        <div class="guide-block">
+          <div class="guide-title">成立条件</div>
+          <ul class="guide-list">{principles}</ul>
+        </div>
+        <div class="guide-block">
+          <div class="guide-title">判定手順</div>
+          <ol class="guide-list ordered">{procedure}</ol>
+        </div>
+      </div>
+      <div class="guide-note">失点しやすい点: {html.escape(meta["pitfall"])}</div>
+    </div>
+    """
+
+
+def option_observations(domain: str, concept_id: str, option_text: str) -> list[str]:
+    compact = re.sub(r"\s+", " ", option_text.strip())
+    upper = compact.upper()
+    observations: list[str] = []
+
+    if "PRIMARY KEY" in upper and "NULL" in compact:
+        observations.append("主キーは NOT NULL 制約を含むため、NULL を許容しません。")
+    if "FOREIGN KEY" in upper and "NULL" in compact:
+        observations.append("外部キーは参照先が未定の状態を表す NULL を保持できます。")
+    if ("UNIQUE" in upper or "一意キー" in compact) and "NULL" in compact:
+        observations.append("一意キーは主キーと異なり、NULL を保持できます。")
+    if "LIKE 'T'" in upper and "LIKE 'T%'" not in upper:
+        observations.append("`LIKE 'T'` は T 一文字との一致であり、T で始まる文字列全体は対象にできません。")
+    if "LIKE '%T%'" in upper:
+        observations.append("`LIKE '%T%'` は前方一致ではなく、途中または末尾に T を含む行まで対象にします。")
+    if "LIKE '%T'" in upper and "LIKE '%T%'" not in upper:
+        observations.append("`LIKE '%T'` は末尾が T の文字列を対象にします。")
+    if "= 'T%'" in upper:
+        observations.append("`= 'T%'` はワイルドカード解釈ではなく、文字列 `T%` そのものとの比較です。")
+    if "ROUND(" in upper and "ITEM_PRICE" in upper:
+        observations.append("ROUND による四捨五入は、価格条件の境界値を変えるため、問題文が単純比較を求める場合は不要または不適切です。")
+    if "TRUNC(" in upper and "ITEM_PRICE" in upper:
+        observations.append("TRUNC は小数点以下を切り捨てるため、価格列の扱いを整数化したうえで比較する文になります。")
+    if "TO_CHAR" in upper and "TO_NUMBER" in upper and "* .30" in upper:
+        observations.append("文字列価格を TO_NUMBER で数値へ直してから乗算し、最後に TO_CHAR で書式整形しているなら、型変換の順序として適切です。")
+    if "TO_CHAR" in upper and "* .30" in upper and "TO_NUMBER" not in upper:
+        observations.append("文字列列へ直接乗算しているなら、演算前の数値変換が不足しています。")
+    if upper.startswith("SELECT TO_NUMBER(TO_NUMBER("):
+        observations.append("最終出力の書式整形段階では TO_NUMBER ではなく TO_CHAR を使う必要があります。")
+    if "AVG(MADE_DATE)" in upper:
+        observations.append("AVG 集計は DATE 型へ適用できないため、この式はエラーになります。")
+    if "MIN(SYSDATE - MADE_DATE)" in upper or "MAX(MADE_DATE)" in upper:
+        observations.append("DATE の減算結果は数値であり、MIN/MAX はその型へ適用できます。")
+    if "TO_CHAR(SYSDATE - MADE_DATE)" in upper:
+        observations.append("`SYSDATE - MADE_DATE` は日数を表す数値であり、TO_CHAR による文字列化自体は成立します。")
+    if "BETWEEN" in upper and "%" in upper:
+        observations.append("BETWEEN は大小比較であり、LIKE のワイルドカード判定を代替できません。")
+    if "SYSDATE - 2*365" in upper:
+        observations.append("`SYSDATE - 2*365 >= made_date` の形なら、2 年以上前に製造された行を抽出できます。")
+    if "MADE_DATE >= SYSDATE - 2*365" in upper:
+        observations.append("この不等号の向きでは、古い商品ではなく直近 2 年以内の商品を残してしまいます。")
+    if "UNION ALL" in upper:
+        observations.append("UNION ALL は重複行を残したまま結果集合を連結します。")
+    elif "UNION" in upper:
+        observations.append("UNION は重複を除去して結果集合を結合します。")
+    if "INTERSECT" in upper:
+        observations.append("INTERSECT は左右両方に存在する行だけを返します。")
+    if "MINUS" in upper:
+        observations.append("MINUS は左側にあり右側にはない行だけを返します。")
+    if "EXISTS" in upper:
+        observations.append("EXISTS は返却列ではなく、副問合せが 1 行でも存在するかどうかだけを判定します。")
+    if "NOT IN" in upper:
+        observations.append("NOT IN は副問合せ結果に NULL が含まれると判定不能になりやすいため、NOT EXISTS より危険です。")
+    if "LEFT OUTER JOIN" in upper:
+        observations.append("LEFT OUTER JOIN は左側表の全行を保持し、右側に一致しない行は NULL で埋めます。")
+    if "RIGHT OUTER JOIN" in upper:
+        observations.append("RIGHT OUTER JOIN は右側表の全行を保持します。表の並びと保持側を取り違えると要件から外れます。")
+    if "FULL OUTER JOIN" in upper:
+        observations.append("FULL OUTER JOIN は左右両方の全行を返し、デカルト積ではありません。")
+    if "INNER JOIN" in upper:
+        observations.append("INNER JOIN は結合条件に一致した行だけを返します。")
+    if "USING" in upper:
+        observations.append("USING 句は同名列に対してだけ使え、列参照では表別名を付けられません。")
+    if "NATURAL JOIN" in upper:
+        observations.append("NATURAL JOIN は同名列を自動で結合に使うため、ON 句や USING 句とは併用しません。")
+    if "HAVING" in upper:
+        observations.append("HAVING は集計後のグループに対して条件を適用します。")
+    if "WHERE" in upper and re.search(r"WHERE .*COUNT\(", upper):
+        observations.append("集計関数を WHERE に直接書くことはできず、集計後条件なら HAVING が必要です。")
+    if "COUNT(*)" in upper:
+        observations.append("COUNT(*) は NULL の有無に関係なく行数全体を数えます。")
+    if "COUNT(" in upper and "COUNT(*)" not in upper:
+        observations.append("COUNT(列) はその列が NULL の行を数えません。")
+    if "IS NOT NULL" in upper or "IS NULL" in upper:
+        observations.append("NULL 判定は `= NULL` ではなく `IS NULL` / `IS NOT NULL` を使います。")
+    if "ROWNUM" in upper:
+        observations.append("ROWNUM は ORDER BY より前に振られるため、並べ替え後の上位抽出には副問合せや FETCH FIRST が必要です。")
+    if "FETCH FIRST" in upper or "OFFSET" in upper:
+        observations.append("FETCH / OFFSET は ORDER BY の後に続く行制限構文です。")
+    if "DEFAULT" in upper:
+        observations.append("DEFAULT は列値を省略したとき、または VALUES 句で DEFAULT を明示したときに補完されます。")
+    if "INSERT INTO" in upper and "VALUES" in upper:
+        observations.append("INSERT 文では、列リストと VALUES 内の値の個数・順序が一致していなければなりません。")
+    if "MERGE INTO" in upper:
+        observations.append("MERGE は `MERGE INTO 対象表 USING 比較元 ON 条件` の順に書き、一致時 UPDATE、非一致時 INSERT を分岐します。")
+    if "SAVEPOINT" in upper:
+        observations.append("SAVEPOINT はロールバック復帰点であり、COMMIT すると消去されます。")
+    if "COMMIT" in upper:
+        observations.append("COMMIT は変更を確定し、ロックを解放してトランザクションを終了させます。")
+    if "ROLLBACK" in upper:
+        observations.append("ROLLBACK は未確定変更を取り消します。SAVEPOINT 指定ならその地点以降だけを戻します。")
+    if "DDL" in upper or any(word in upper for word in ["ALTER ", "CREATE ", "DROP ", "TRUNCATE "]):
+        observations.append("DDL は定義変更であり、Oracle では暗黙 COMMIT を伴います。")
+    if "CURRENT_TIMESTAMP" in upper or "SYSTIMESTAMP" in upper:
+        observations.append("CURRENT_TIMESTAMP はセッションタイムゾーン、SYSTIMESTAMP はサーバ側タイムスタンプを返します。")
+    if "DUAL" in upper:
+        observations.append("DUAL は Oracle 固有の 1 行 1 列の疑似表で、式や関数結果の確認に使います。")
+    if not observations and domain == "D6" and ("SELECT" in upper or "WHERE" in upper):
+        observations.append("副問合せでは返却行数、相関の有無、比較演算子の整合が成立条件になります。")
+    if not observations and domain == "D3":
+        observations.append("単一行関数では、入力型・戻り値型・境界値への影響を同時に確認する必要があります。")
+    if not observations and domain == "D8":
+        observations.append("オブジェクト管理問題では、対象オブジェクトの性質と文法要件が一致しているかを確認する必要があります。")
+    if not observations and domain == "D7":
+        observations.append("DML/TCL 問題では、対象行、変更内容、確定/取消の可否を順番に確認する必要があります。")
+    if not observations and domain == "D5":
+        observations.append("結合問題では、保持側の表と結合条件の書き方が要件と一致しているかが判定基準になります。")
+    if not observations and domain == "D4":
+        observations.append("集計問題では、WHERE・GROUP BY・HAVING の役割分担を崩していないかが判定基準です。")
+    if not observations and domain == "D1":
+        observations.append("基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。")
+    if not observations and domain == "D2":
+        observations.append("検索条件問題では、NULL 判定、ワイルドカード、優先順位、行制限の評価順が成立条件です。")
+    return observations
+
+
+def build_option_review(question: dict, parsed: dict, concept_id: str) -> str:
+    if not parsed["options"]:
+        return ""
+
+    correct_keys = split_answer(question["ans"])
+    self_keys = split_answer(question.get("self_ans"))
+    requirement = summarize_requirement(parsed)
+    items = []
+    for option in parsed["options"]:
+        is_correct = option["key"] in correct_keys
+        selected = option["key"] in self_keys
+        classes = ["option-review", "correct" if is_correct else "wrong"]
+        labels = ["正答肢" if is_correct else "非正答肢"]
+        if selected:
+            labels.append("自己回答")
+        badge_html = "".join(f"<span>{html.escape(label)}</span>" for label in labels)
+        option_text_html = html.escape(option["text"]).replace("\n", "<br>")
+        observations = option_observations(question["domain"], concept_id, option["text"])
+        if observations:
+            reason = " ".join(observations)
+        elif is_correct:
+            reason = f"この選択肢は「{requirement}」という設問条件に対して、{CONCEPT_META[concept_id]['title']} の成立条件を満たしています。"
+        else:
+            reason = f"この選択肢は「{requirement}」という設問条件に対して、{CONCEPT_META[concept_id]['title']} の成立条件または文法要件を満たしていません。"
+        items.append(
+            f"""
+            <div class="{' '.join(classes)}">
+              <div class="option-review-head">
+                <div class="option-review-key">{html.escape(option['key'])}</div>
+                <div class="option-review-badges">{badge_html}</div>
+              </div>
+              <div class="option-review-text">{option_text_html}</div>
+              <div class="option-review-reason">{'正しい。' if is_correct else '誤り。'} {html.escape(reason)}</div>
+            </div>
+            """
+        )
+    return f'<div class="option-review-grid">{"".join(items)}</div>'
+
+
 def build_question_commentary(question: dict, parsed: dict, concept_id: str) -> tuple[str, str, list[str]]:
     meta = CONCEPT_META[concept_id]
+    pack = concept_teaching_pack(question["domain"], concept_id)
     correct_keys = split_answer(question["ans"])
     self_keys = split_answer(question.get("self_ans"))
     wrong_selected = [key for key in self_keys if key not in correct_keys]
     hit_selected = [key for key in self_keys if key in correct_keys]
+    requirement = summarize_requirement(parsed)
 
     correct_ref = render_option_refs(parsed, correct_keys) if correct_keys else html.escape(question["ans"] or "正答未記録")
     explain = (
-        f"この問題の論点は「{meta['title']}」です。{meta['why']} "
-        f"したがって正答は {correct_ref} になります。"
+        f"この設問で確定させる論点は「{meta['title']}」です。"
+        f"問題文は「{requirement}」を満たす記述または SQL を求めています。"
+        f"{meta['why']} そのため、成立条件を満たす正答は {correct_ref} です。"
     )
 
     if self_keys:
         if wrong_selected and hit_selected:
             mistake = (
                 f"自己回答は {render_option_refs(parsed, self_keys)} でした。"
-                f"一部は当たっていますが、{render_option_refs(parsed, wrong_selected)} に引っ張られて取りこぼしています。"
-                f"{meta['pitfall']}"
+                f"一部は論点を捉えていますが、{render_option_refs(parsed, wrong_selected)} を混在させたことで正答条件を外しています。"
+                f"失点要因は {meta['pitfall']}"
             )
         elif wrong_selected:
             mistake = (
                 f"自己回答は {render_option_refs(parsed, self_keys)} でした。"
-                f"{meta['pitfall']} 正答との差は、条件の向き、句の置き場所、またはオブジェクトの性質を正確に読み切れていない点にあります。"
+                f"失点要因は {meta['pitfall']} "
+                f"正答との差は、条件の向き、句の位置、返却行数、またはオブジェクトの性質を正式定義のレベルで確認し切れていない点にあります。"
             )
         else:
-            mistake = "自己回答の記録はありますが、誤選択肢情報の不足により差分説明は省略します。"
+            mistake = "自己回答の記録はありますが、誤選択肢の差分が残っていないため、ここでは成立条件の固定に集中します。"
     else:
-        mistake = "自己回答の記録がないため、正答根拠だけを固定し直します。"
+        mistake = "自己回答の記録がないため、ここでは正答が成立する条件と、誤りになりやすい境界を固定します。"
 
-    return explain, mistake, meta["rebuild"]
+    return explain, mistake, list(pack["procedure"])
 
 
 def build_correct_question_commentary(question: dict, parsed: dict, concept_id: str) -> tuple[str, str, list[str]]:
     meta = CONCEPT_META[concept_id]
+    pack = concept_teaching_pack(question["domain"], concept_id)
     correct_keys = split_answer(question["ans"])
     self_keys = split_answer(question.get("self_ans"))
+    requirement = summarize_requirement(parsed)
     correct_ref = render_option_refs(parsed, correct_keys) if correct_keys else html.escape(question["ans"] or "正答未記録")
 
     explain = (
-        f"この問題の論点は「{meta['title']}」です。{meta['why']} "
-        f"この設問では正答 {correct_ref} を選べており、論点自体は取れています。"
+        f"この設問の論点は「{meta['title']}」です。"
+        f"問題文は「{requirement}」という条件を満たす説明または SQL を求めています。"
+        f"{meta['why']} この設問では正答 {correct_ref} を選べており、成立条件を正しく読めています。"
     )
 
     if self_keys:
         maintain = (
             f"自己回答は {render_option_refs(parsed, self_keys)} で、正答と一致しています。"
-            f"本番で取り切れた理由は、条件の向き・句の置き場所・オブジェクトの性質を正しく読めていた点にあります。"
+            f"得点できた理由は、条件の向き、句の位置、返却行数、オブジェクトの性質を正式定義どおりに読めていた点にあります。"
         )
     else:
-        maintain = "自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。"
+        maintain = "自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。"
 
-    return explain, maintain, meta["rebuild"]
+    return explain, maintain, list(pack["procedure"])
 
 
 def review_filename(ex_id: str, review_mode: str) -> str:
@@ -964,16 +1531,16 @@ def build_domain_page(domain_info: dict, review_mode: str = "wrong") -> str:
     for concept_index, concept_id in enumerate(sorted_concepts, start=1):
         anchor = f"{domain.lower()}-{concept_index}"
         meta = CONCEPT_META[concept_id]
+        concept_guide = render_concept_guide(domain, concept_id, color)
         questions_html = []
         for question in sorted(grouped[concept_id], key=lambda item: (item["exam"], item["q"])):
-            correct_keys = split_answer(question["ans"])
-            self_keys = split_answer(question.get("self_ans"))
             if review_mode == "wrong":
-                explain, secondary_copy, rebuild = build_question_commentary(question, question["parsed"], concept_id)
-                secondary_title = "今回の誤り"
+                explain, secondary_copy, study_steps = build_question_commentary(question, question["parsed"], concept_id)
+                secondary_title = "今回の失点要因"
             else:
-                explain, secondary_copy, rebuild = build_correct_question_commentary(question, question["parsed"], concept_id)
-                secondary_title = "維持ポイント"
+                explain, secondary_copy, study_steps = build_correct_question_commentary(question, question["parsed"], concept_id)
+                secondary_title = "得点できた理由"
+            option_review = build_option_review(question, question["parsed"], concept_id)
             questions_html.append(
                 f"""
                 <article class="question-card">
@@ -981,13 +1548,15 @@ def build_domain_page(domain_info: dict, review_mode: str = "wrong") -> str:
                   <div class="block-title">問題文</div>
                   {html_pre(question['text'])}
                   <div class="analysis-block">
-                    <div class="block-title">なぜそうなるか</div>
+                    <div class="block-title">設問の読み解き</div>
                     <p>{explain}</p>
                     <div class="block-title">{secondary_title}</div>
                     <p>{secondary_copy}</p>
-                    <div class="block-title">叩き直しポイント</div>
-                    <ul class="rebuild-list">
-                      {''.join(f'<li>{html.escape(item)}</li>' for item in rebuild)}
+                    <div class="block-title">選択肢ごとの判定</div>
+                    {option_review}
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      {''.join(f'<li>{html.escape(item)}</li>' for item in study_steps)}
                     </ul>
                   </div>
                 </article>
@@ -1002,6 +1571,7 @@ def build_domain_page(domain_info: dict, review_mode: str = "wrong") -> str:
             <section class="concept-section" id="{anchor}">
               <h3>{html.escape(meta['title'])}<span>{len(grouped[concept_id])}問</span></h3>
               <p class="concept-copy">{html.escape(meta['why'])}</p>
+              {concept_guide}
               {''.join(questions_html)}
             </section>
             """
@@ -1050,17 +1620,35 @@ def build_domain_page(domain_info: dict, review_mode: str = "wrong") -> str:
   .concept-section h3 {{ display: flex; justify-content: space-between; gap: 12px; align-items: center; font-size: 1.15rem; margin-bottom: 8px; color: #0f172a; }}
   .concept-section h3 span {{ font-size: .82rem; padding: 5px 10px; border-radius: 999px; background: {color}; color: white; }}
   .concept-copy {{ color: #475569; font-size: .92rem; margin-bottom: 16px; }}
+  .concept-guide {{ border-top: 5px solid {color}; background: #f8fafc; border-radius: 16px; padding: 16px; margin-bottom: 18px; }}
+  .guide-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }}
+  .guide-block {{ margin-bottom: 12px; }}
+  .guide-title {{ font-size: .82rem; font-weight: 900; color: {color}; margin-bottom: 6px; }}
+  .guide-block p {{ color: #334155; font-size: .9rem; }}
+  .guide-list {{ padding-left: 20px; color: #334155; font-size: .9rem; }}
+  .guide-list li {{ margin-bottom: 5px; }}
+  .guide-note {{ background: #fff7ed; border-left: 4px solid {color}; border-radius: 10px; padding: 10px 12px; color: #7c2d12; font-size: .88rem; margin-top: 6px; }}
   .question-card {{ border: 1px solid #dbe4ef; border-radius: 16px; padding: 16px; margin-bottom: 14px; background: #fcfdff; }}
   .question-meta {{ font-size: .8rem; color: #64748b; margin-bottom: 10px; font-weight: 700; }}
   .block-title {{ font-size: .85rem; font-weight: 800; color: {color}; margin: 10px 0 6px; }}
   pre {{ white-space: pre-wrap; word-break: break-word; background: #0f172a; color: #e2e8f0; border-radius: 12px; padding: 14px; font-size: .84rem; overflow-x: auto; }}
   .analysis-block p {{ color: #334155; font-size: .9rem; margin-bottom: 8px; }}
-  .rebuild-list {{ padding-left: 20px; color: #334155; font-size: .9rem; }}
-  .rebuild-list li {{ margin-bottom: 5px; }}
+  .option-review-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 10px; margin-bottom: 8px; }}
+  .option-review {{ border-radius: 14px; padding: 12px; border: 1px solid #dbe4ef; background: white; }}
+  .option-review.correct {{ border-left: 5px solid #16a34a; }}
+  .option-review.wrong {{ border-left: 5px solid #c0392b; }}
+  .option-review-head {{ display: flex; justify-content: space-between; gap: 10px; align-items: center; margin-bottom: 8px; }}
+  .option-review-key {{ font-size: .92rem; font-weight: 900; color: #0f172a; }}
+  .option-review-badges span {{ display: inline-block; background: #eef2f7; color: #334155; font-size: .74rem; font-weight: 800; border-radius: 999px; padding: 3px 8px; margin-left: 6px; }}
+  .option-review-text {{ color: #1f2937; font-size: .88rem; margin-bottom: 8px; }}
+  .option-review-reason {{ color: #475569; font-size: .86rem; }}
+  .study-step-list {{ padding-left: 20px; color: #334155; font-size: .9rem; }}
+  .study-step-list li {{ margin-bottom: 5px; }}
   @media (max-width: 720px) {{
     .page-header h1 {{ font-size: 1.55rem; }}
     .container {{ padding: 18px; }}
     .concept-section h3 {{ flex-direction: column; align-items: flex-start; }}
+    .option-review-head {{ flex-direction: column; align-items: flex-start; }}
   }}
 </style>
 </head>

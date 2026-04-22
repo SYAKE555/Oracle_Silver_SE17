@@ -28,17 +28,35 @@
   .concept-section h3 { display: flex; justify-content: space-between; gap: 12px; align-items: center; font-size: 1.15rem; margin-bottom: 8px; color: #0f172a; }
   .concept-section h3 span { font-size: .82rem; padding: 5px 10px; border-radius: 999px; background: #f1c40f; color: white; }
   .concept-copy { color: #475569; font-size: .92rem; margin-bottom: 16px; }
+  .concept-guide { border-top: 5px solid #f1c40f; background: #f8fafc; border-radius: 16px; padding: 16px; margin-bottom: 18px; }
+  .guide-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+  .guide-block { margin-bottom: 12px; }
+  .guide-title { font-size: .82rem; font-weight: 900; color: #f1c40f; margin-bottom: 6px; }
+  .guide-block p { color: #334155; font-size: .9rem; }
+  .guide-list { padding-left: 20px; color: #334155; font-size: .9rem; }
+  .guide-list li { margin-bottom: 5px; }
+  .guide-note { background: #fff7ed; border-left: 4px solid #f1c40f; border-radius: 10px; padding: 10px 12px; color: #7c2d12; font-size: .88rem; margin-top: 6px; }
   .question-card { border: 1px solid #dbe4ef; border-radius: 16px; padding: 16px; margin-bottom: 14px; background: #fcfdff; }
   .question-meta { font-size: .8rem; color: #64748b; margin-bottom: 10px; font-weight: 700; }
   .block-title { font-size: .85rem; font-weight: 800; color: #f1c40f; margin: 10px 0 6px; }
   pre { white-space: pre-wrap; word-break: break-word; background: #0f172a; color: #e2e8f0; border-radius: 12px; padding: 14px; font-size: .84rem; overflow-x: auto; }
   .analysis-block p { color: #334155; font-size: .9rem; margin-bottom: 8px; }
-  .rebuild-list { padding-left: 20px; color: #334155; font-size: .9rem; }
-  .rebuild-list li { margin-bottom: 5px; }
+  .option-review-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 10px; margin-bottom: 8px; }
+  .option-review { border-radius: 14px; padding: 12px; border: 1px solid #dbe4ef; background: white; }
+  .option-review.correct { border-left: 5px solid #16a34a; }
+  .option-review.wrong { border-left: 5px solid #c0392b; }
+  .option-review-head { display: flex; justify-content: space-between; gap: 10px; align-items: center; margin-bottom: 8px; }
+  .option-review-key { font-size: .92rem; font-weight: 900; color: #0f172a; }
+  .option-review-badges span { display: inline-block; background: #eef2f7; color: #334155; font-size: .74rem; font-weight: 800; border-radius: 999px; padding: 3px 8px; margin-left: 6px; }
+  .option-review-text { color: #1f2937; font-size: .88rem; margin-bottom: 8px; }
+  .option-review-reason { color: #475569; font-size: .86rem; }
+  .study-step-list { padding-left: 20px; color: #334155; font-size: .9rem; }
+  .study-step-list li { margin-bottom: 5px; }
   @media (max-width: 720px) {
     .page-header h1 { font-size: 1.55rem; }
     .container { padding: 18px; }
     .concept-section h3 { flex-direction: column; align-items: flex-start; }
+    .option-review-head { flex-direction: column; align-items: flex-start; }
   }
 </style>
 </head>
@@ -78,6 +96,32 @@
               <h3>SQL 分類の基礎<span>11問</span></h3>
               <p class="concept-copy">DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。各文をどこへ分類するかが基礎力になる。</p>
               
+    <div class="concept-guide" style="border-top-color:#f1c40f">
+      <div class="guide-block">
+        <div class="guide-title">論点の定義</div>
+        <p>SQL と RDB の基礎問題では、制約、キー、ER 図、SQL 分類など、文法以前のデータベース原則を正確に押さえる必要がある。</p>
+      </div>
+      <div class="guide-block">
+        <div class="guide-title">正式構文・基本形</div>
+        <pre>CREATE TABLE child (
+  child_id NUMBER PRIMARY KEY,
+  parent_id NUMBER REFERENCES parent(parent_id)
+);</pre>
+      </div>
+      <div class="guide-grid">
+        <div class="guide-block">
+          <div class="guide-title">成立条件</div>
+          <ul class="guide-list"><li>主キーは NOT NULL かつ一意、外部キーは NULL を許容できる。</li><li>N:N 関係は中間表へ分解し、1:N 関係は外部キーで表す。</li><li>DDL、DML、DCL、TCL は役割ごとに分類して理解する。</li></ul>
+        </div>
+        <div class="guide-block">
+          <div class="guide-title">判定手順</div>
+          <ol class="guide-list ordered"><li>まず設問が制約・ERD・SQL 分類のどれを問うているかを判定する。</li><li>次にキーの性質や関係の多重度を日本語で言い換える。</li><li>最後に Oracle 固有の基礎知識である DUAL や SQL 分類へ当てはめる。</li></ol>
+        </div>
+      </div>
+      <div class="guide-note">失点しやすい点: TRUNCATE や COMMIT の分類が曖昧で、設問を読む前に迷いが生じやすい。</div>
+    </div>
+    
+              
                 <article class="question-card">
                   <div class="question-meta">第1回 模擬試験 / 問3 / 正答 A.B.C / 自己回答 -</div>
                   <div class="block-title">問題文</div>
@@ -89,13 +133,69 @@
 (5)		E.　カプセル化を定義するために使用されます。
 (6)		F.　ポリモーフィズムを定義するために使用されます。</pre>
                   <div class="analysis-block">
-                    <div class="block-title">なぜそうなるか</div>
-                    <p>この問題の論点は「SQL 分類の基礎」です。DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。各文をどこへ分類するかが基礎力になる。 この設問では正答 A「データ操作言語をDMLと言います。」 / B「リレーショナル・データベース管理システムに含まれるデータを取得します。」 / C「一貫性を保証します。」 を選べており、論点自体は取れています。</p>
-                    <div class="block-title">維持ポイント</div>
-                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
-                    <div class="block-title">叩き直しポイント</div>
-                    <ul class="rebuild-list">
-                      <li>CREATE/ALTER/DROP/TRUNCATE は DDL。</li><li>INSERT/UPDATE/DELETE/MERGE は DML。</li><li>COMMIT/ROLLBACK/SAVEPOINT は TCL、GRANT/REVOKE は DCL。</li>
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「SQL 分類の基礎」です。問題文は「SQL（構造化問合せ言語）について、正しい記述はどれでしょうか。（3つ選択）」という条件を満たす説明または SQL を求めています。DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。各文をどこへ分類するかが基礎力になる。 この設問では正答 A「データ操作言語をDMLと言います。」 / B「リレーショナル・データベース管理システムに含まれるデータを取得します。」 / C「一貫性を保証します。」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">データ操作言語をDMLと言います。</div>
+              <div class="option-review-reason">正しい。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">リレーショナル・データベース管理システムに含まれるデータを取得します。</div>
+              <div class="option-review-reason">正しい。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">一貫性を保証します。</div>
+              <div class="option-review-reason">正しい。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">オブジェクト型データベース管理システムに含まれるデータを取得します。</div>
+              <div class="option-review-reason">誤り。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">E</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">カプセル化を定義するために使用されます。</div>
+              <div class="option-review-reason">誤り。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">F</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">ポリモーフィズムを定義するために使用されます。</div>
+              <div class="option-review-reason">誤り。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>まず設問が制約・ERD・SQL 分類のどれを問うているかを判定する。</li><li>次にキーの性質や関係の多重度を日本語で言い換える。</li><li>最後に Oracle 固有の基礎知識である DUAL や SQL 分類へ当てはめる。</li>
                     </ul>
                   </div>
                 </article>
@@ -113,13 +213,60 @@
 (4)		D.　SELECT S_NAME IS スポーツ FROM SPORTS;
 (5)		E.　SELECT S_NAME スポーツ FROM SPORTS;</pre>
                   <div class="analysis-block">
-                    <div class="block-title">なぜそうなるか</div>
-                    <p>この問題の論点は「SQL 分類の基礎」です。DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。各文をどこへ分類するかが基礎力になる。 この設問では正答 C「SELECT S_NAME AS スポーツ FROM SPORTS;」 / E「SELECT S_NAME スポーツ FROM SPORTS;」 を選べており、論点自体は取れています。</p>
-                    <div class="block-title">維持ポイント</div>
-                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
-                    <div class="block-title">叩き直しポイント</div>
-                    <ul class="rebuild-list">
-                      <li>CREATE/ALTER/DROP/TRUNCATE は DDL。</li><li>INSERT/UPDATE/DELETE/MERGE は DML。</li><li>COMMIT/ROLLBACK/SAVEPOINT は TCL、GRANT/REVOKE は DCL。</li>
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「SQL 分類の基礎」です。問題文は「S_NAMEの列名を日本語で表示したいとします。 どのSQL文を実行すればいいでしょうか。(2つ選択)」という条件を満たす説明または SQL を求めています。DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。各文をどこへ分類するかが基礎力になる。 この設問では正答 C「SELECT S_NAME AS スポーツ FROM SPORTS;」 / E「SELECT S_NAME スポーツ FROM SPORTS;」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT S_NAME AS &#x27;スポーツ&#x27; FROM SPORTS;</div>
+              <div class="option-review-reason">誤り。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT S_NAME IS &#x27;スポーツ&#x27; FROM SPORTS;</div>
+              <div class="option-review-reason">誤り。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT S_NAME AS スポーツ FROM SPORTS;</div>
+              <div class="option-review-reason">正しい。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT S_NAME IS スポーツ FROM SPORTS;</div>
+              <div class="option-review-reason">誤り。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">E</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT S_NAME スポーツ FROM SPORTS;</div>
+              <div class="option-review-reason">正しい。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>まず設問が制約・ERD・SQL 分類のどれを問うているかを判定する。</li><li>次にキーの性質や関係の多重度を日本語で言い換える。</li><li>最後に Oracle 固有の基礎知識である DUAL や SQL 分類へ当てはめる。</li>
                     </ul>
                   </div>
                 </article>
@@ -136,13 +283,51 @@
 (3)		C.　SELECT DISTINCT ITEM_TYPE, DISTINCT ITEM_PRICE * 0.80 AS &quot;20% OFF&quot; FROM ITEM
 (4)		D.　SELECT ITEM_TYPE || &#x27; &#x27; || ITEM_PRICE * 0.80 AS &quot;20% OFF&quot; DISTINCT FROM ITEM</pre>
                   <div class="analysis-block">
-                    <div class="block-title">なぜそうなるか</div>
-                    <p>この問題の論点は「SQL 分類の基礎」です。DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。各文をどこへ分類するかが基礎力になる。 この設問では正答 A「SELECT DISTINCT ITEM_TYPE || &#x27; &#x27; || ITEM_PRICE * 0.80 A…」 を選べており、論点自体は取れています。</p>
-                    <div class="block-title">維持ポイント</div>
-                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
-                    <div class="block-title">叩き直しポイント</div>
-                    <ul class="rebuild-list">
-                      <li>CREATE/ALTER/DROP/TRUNCATE は DDL。</li><li>INSERT/UPDATE/DELETE/MERGE は DML。</li><li>COMMIT/ROLLBACK/SAVEPOINT は TCL、GRANT/REVOKE は DCL。</li>
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「SQL 分類の基礎」です。問題文は「ITEM表を使用して、各ITEM_TYPEの各価格の20%OFFを表示する必要があります。 また表示からITEM_TYPEの重複行を取り除く必要があります。 上記条件に当てはまる結果を表示するSQLはどれでしょうか。」という条件を満たす説明または SQL を求めています。DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。各文をどこへ分類するかが基礎力になる。 この設問では正答 A「SELECT DISTINCT ITEM_TYPE || &#x27; &#x27; || ITEM_PRICE * 0.80 A…」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT DISTINCT ITEM_TYPE || &#x27; &#x27; || ITEM_PRICE * 0.80 AS &quot;20% OFF&quot; FROM ITEM</div>
+              <div class="option-review-reason">正しい。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT ITEM_TYPE, DISTINCT ITEM_PRICE * 0.80 AS &quot;20% OFF&quot; FROM ITEM</div>
+              <div class="option-review-reason">誤り。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT DISTINCT ITEM_TYPE, DISTINCT ITEM_PRICE * 0.80 AS &quot;20% OFF&quot; FROM ITEM</div>
+              <div class="option-review-reason">誤り。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT ITEM_TYPE || &#x27; &#x27; || ITEM_PRICE * 0.80 AS &quot;20% OFF&quot; DISTINCT FROM ITEM</div>
+              <div class="option-review-reason">誤り。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>まず設問が制約・ERD・SQL 分類のどれを問うているかを判定する。</li><li>次にキーの性質や関係の多重度を日本語で言い換える。</li><li>最後に Oracle 固有の基礎知識である DUAL や SQL 分類へ当てはめる。</li>
                     </ul>
                   </div>
                 </article>
@@ -157,13 +342,60 @@
 (4)		D.　外部表のデータは、データベースの外部に保存されます。
 (5)		E.　外部表のメタデータは、データベースの外部に保存されます。</pre>
                   <div class="analysis-block">
-                    <div class="block-title">なぜそうなるか</div>
-                    <p>この問題の論点は「SQL 分類の基礎」です。DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。各文をどこへ分類するかが基礎力になる。 この設問では正答 B「外部表からデータベース内の表にデータをアップロードできます。」 / D「外部表のデータは、データベースの外部に保存されます。」 を選べており、論点自体は取れています。</p>
-                    <div class="block-title">維持ポイント</div>
-                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
-                    <div class="block-title">叩き直しポイント</div>
-                    <ul class="rebuild-list">
-                      <li>CREATE/ALTER/DROP/TRUNCATE は DDL。</li><li>INSERT/UPDATE/DELETE/MERGE は DML。</li><li>COMMIT/ROLLBACK/SAVEPOINT は TCL、GRANT/REVOKE は DCL。</li>
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「SQL 分類の基礎」です。問題文は「外部表に関して正しい記述はどれでしょうか。（2つ選択）」という条件を満たす説明または SQL を求めています。DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。各文をどこへ分類するかが基礎力になる。 この設問では正答 B「外部表からデータベース内の表にデータをアップロードできます。」 / D「外部表のデータは、データベースの外部に保存されます。」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">索引を使用することができます。</div>
+              <div class="option-review-reason">誤り。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">外部表からデータベース内の表にデータをアップロードできます。</div>
+              <div class="option-review-reason">正しい。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">外部表で使用するORACLE_LOADERとORACLE_DATAPUMPは、全く同じ機能となります。</div>
+              <div class="option-review-reason">誤り。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">外部表のデータは、データベースの外部に保存されます。</div>
+              <div class="option-review-reason">正しい。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">E</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">外部表のメタデータは、データベースの外部に保存されます。</div>
+              <div class="option-review-reason">誤り。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>まず設問が制約・ERD・SQL 分類のどれを問うているかを判定する。</li><li>次にキーの性質や関係の多重度を日本語で言い換える。</li><li>最後に Oracle 固有の基礎知識である DUAL や SQL 分類へ当てはめる。</li>
                     </ul>
                   </div>
                 </article>
@@ -183,13 +415,51 @@
 (3)		C.　SELECT NAME AS &quot;Name&quot;, SALARY + 10000 AS &quot;NEW SALARY&quot; FROM EMP;
 (4)		D.　SELECT NAME AS &quot;Name&quot;, SALARY + 10000 AS &quot;New Salary&quot; FROM EMP;</pre>
                   <div class="analysis-block">
-                    <div class="block-title">なぜそうなるか</div>
-                    <p>この問題の論点は「SQL 分類の基礎」です。DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。各文をどこへ分類するかが基礎力になる。 この設問では正答 D「SELECT NAME AS &quot;Name&quot;, SALARY + 10000 AS &quot;New Salary&quot; F…」 を選べており、論点自体は取れています。</p>
-                    <div class="block-title">維持ポイント</div>
-                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
-                    <div class="block-title">叩き直しポイント</div>
-                    <ul class="rebuild-list">
-                      <li>CREATE/ALTER/DROP/TRUNCATE は DDL。</li><li>INSERT/UPDATE/DELETE/MERGE は DML。</li><li>COMMIT/ROLLBACK/SAVEPOINT は TCL、GRANT/REVOKE は DCL。</li>
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「SQL 分類の基礎」です。問題文は「従業員の給与が10000円昇給させる場合のレポートを作成する必要があります。 出力では、 従業員の名前の見出しに Name、 昇給後の見出しに New Salary という列見出しが表示される必要があります。 列見出しには、各単語の最初の…」という条件を満たす説明または SQL を求めています。DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。各文をどこへ分類するかが基礎力になる。 この設問では正答 D「SELECT NAME AS &quot;Name&quot;, SALARY + 10000 AS &quot;New Salary&quot; F…」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT NAME AS Name, SALARY + 10000 AS New Salary FROM EMP;</div>
+              <div class="option-review-reason">誤り。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT NAME AS &quot;NAME&quot;, SALARY + 10000 &quot;New Salary&quot; FROM EMP;</div>
+              <div class="option-review-reason">誤り。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT NAME AS &quot;Name&quot;, SALARY + 10000 AS &quot;NEW SALARY&quot; FROM EMP;</div>
+              <div class="option-review-reason">誤り。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT NAME AS &quot;Name&quot;, SALARY + 10000 AS &quot;New Salary&quot; FROM EMP;</div>
+              <div class="option-review-reason">正しい。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>まず設問が制約・ERD・SQL 分類のどれを問うているかを判定する。</li><li>次にキーの性質や関係の多重度を日本語で言い換える。</li><li>最後に Oracle 固有の基礎知識である DUAL や SQL 分類へ当てはめる。</li>
                     </ul>
                   </div>
                 </article>
@@ -204,13 +474,60 @@
 (4)		D.　連結演算子 || は、乗算より先に評価されます。
 (5)		E.　優先順位の等しい算術演算子は、式内の左から右の順に評価されます。</pre>
                   <div class="analysis-block">
-                    <div class="block-title">なぜそうなるか</div>
-                    <p>この問題の論点は「SQL 分類の基礎」です。DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。各文をどこへ分類するかが基礎力になる。 この設問では正答 C「カッコを使用して、式内の演算子の優先順位を制御できます 。」 / E「優先順位の等しい算術演算子は、式内の左から右の順に評価されます。」 を選べており、論点自体は取れています。</p>
-                    <div class="block-title">維持ポイント</div>
-                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
-                    <div class="block-title">叩き直しポイント</div>
-                    <ul class="rebuild-list">
-                      <li>CREATE/ALTER/DROP/TRUNCATE は DDL。</li><li>INSERT/UPDATE/DELETE/MERGE は DML。</li><li>COMMIT/ROLLBACK/SAVEPOINT は TCL、GRANT/REVOKE は DCL。</li>
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「SQL 分類の基礎」です。問題文は「演算子の優先順位について正しい記載はどれでしょうか。（2つ選択）」という条件を満たす説明または SQL を求めています。DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。各文をどこへ分類するかが基礎力になる。 この設問では正答 C「カッコを使用して、式内の演算子の優先順位を制御できます 。」 / E「優先順位の等しい算術演算子は、式内の左から右の順に評価されます。」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">比較演算子は、算術演算子より先に評価されます。</div>
+              <div class="option-review-reason">誤り。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">+演算子は、-演算子より先に評価されます。</div>
+              <div class="option-review-reason">誤り。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">カッコを使用して、式内の演算子の優先順位を制御できます 。</div>
+              <div class="option-review-reason">正しい。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">連結演算子 || は、乗算より先に評価されます。</div>
+              <div class="option-review-reason">誤り。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">E</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">優先順位の等しい算術演算子は、式内の左から右の順に評価されます。</div>
+              <div class="option-review-reason">正しい。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>まず設問が制約・ERD・SQL 分類のどれを問うているかを判定する。</li><li>次にキーの性質や関係の多重度を日本語で言い換える。</li><li>最後に Oracle 固有の基礎知識である DUAL や SQL 分類へ当てはめる。</li>
                     </ul>
                   </div>
                 </article>
@@ -226,13 +543,69 @@
 (5)		E.　Oracle結合構文は、左外部結合のみに対応しています。
 (6)		F.　ANSI結合構文は、クロス結合に対応しています。</pre>
                   <div class="analysis-block">
-                    <div class="block-title">なぜそうなるか</div>
-                    <p>この問題の論点は「SQL 分類の基礎」です。DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。各文をどこへ分類するかが基礎力になる。 この設問では正答 C「ANSI結合構文は、自然結合に対応しています」 / F「ANSI結合構文は、クロス結合に対応しています。」 を選べており、論点自体は取れています。</p>
-                    <div class="block-title">維持ポイント</div>
-                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
-                    <div class="block-title">叩き直しポイント</div>
-                    <ul class="rebuild-list">
-                      <li>CREATE/ALTER/DROP/TRUNCATE は DDL。</li><li>INSERT/UPDATE/DELETE/MERGE は DML。</li><li>COMMIT/ROLLBACK/SAVEPOINT は TCL、GRANT/REVOKE は DCL。</li>
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「SQL 分類の基礎」です。問題文は「Oracle結合構文・ANSI結合構文について正しい記述はどれでしょうか。（2つ選択）」という条件を満たす説明または SQL を求めています。DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。各文をどこへ分類するかが基礎力になる。 この設問では正答 C「ANSI結合構文は、自然結合に対応しています」 / F「ANSI結合構文は、クロス結合に対応しています。」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">Oracle結合構文は、ANSI結合構文よりもパフォーマンスが低くなります。</div>
+              <div class="option-review-reason">誤り。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">Oracle結合構文は、ANSI結合構文よりもパフォーマンスは優れています。</div>
+              <div class="option-review-reason">誤り。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">ANSI結合構文は、自然結合に対応しています</div>
+              <div class="option-review-reason">正しい。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">Oracle結合構文は、右外部結合のみに対応しています。</div>
+              <div class="option-review-reason">誤り。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">E</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">Oracle結合構文は、左外部結合のみに対応しています。</div>
+              <div class="option-review-reason">誤り。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">F</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">ANSI結合構文は、クロス結合に対応しています。</div>
+              <div class="option-review-reason">正しい。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>まず設問が制約・ERD・SQL 分類のどれを問うているかを判定する。</li><li>次にキーの性質や関係の多重度を日本語で言い換える。</li><li>最後に Oracle 固有の基礎知識である DUAL や SQL 分類へ当てはめる。</li>
                     </ul>
                   </div>
                 </article>
@@ -247,13 +620,60 @@
 (4)		D. SELECT emp_id, salary || &#x27; Adjusted&#x27;, salary + bonus - tax FROM employees;
 (5)		E. SELECT emp_id, salary + bonus FROM employees;</pre>
                   <div class="analysis-block">
-                    <div class="block-title">なぜそうなるか</div>
-                    <p>この問題の論点は「SQL 分類の基礎」です。DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。各文をどこへ分類するかが基礎力になる。 この設問では正答 B「SELECT emp_id, (salary * 0.15 / (4.75 + 552.25)) FROM e…」 / C「SELECT emp_id, birth_date - hire_date + 2 FROM employee…」 / E「SELECT emp_id, salary + bonus FROM employees;」 を選べており、論点自体は取れています。</p>
-                    <div class="block-title">維持ポイント</div>
-                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
-                    <div class="block-title">叩き直しポイント</div>
-                    <ul class="rebuild-list">
-                      <li>CREATE/ALTER/DROP/TRUNCATE は DDL。</li><li>INSERT/UPDATE/DELETE/MERGE は DML。</li><li>COMMIT/ROLLBACK/SAVEPOINT は TCL、GRANT/REVOKE は DCL。</li>
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「SQL 分類の基礎」です。問題文は「以下のうち、有効なSQLの式を含むクエリ を 3つ 選んでください。」という条件を満たす説明または SQL を求めています。DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。各文をどこへ分類するかが基礎力になる。 この設問では正答 B「SELECT emp_id, (salary * 0.15 / (4.75 + 552.25)) FROM e…」 / C「SELECT emp_id, birth_date - hire_date + 2 FROM employee…」 / E「SELECT emp_id, salary + bonus FROM employees;」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT emp_id, salary, &#x27; Adjusted&#x27;, salary + bonus - tax FROM employees;</div>
+              <div class="option-review-reason">誤り。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT emp_id, (salary * 0.15 / (4.75 + 552.25)) FROM employees;</div>
+              <div class="option-review-reason">正しい。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT emp_id, birth_date - hire_date + 2 FROM employees;</div>
+              <div class="option-review-reason">正しい。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT emp_id, salary || &#x27; Adjusted&#x27;, salary + bonus - tax FROM employees;</div>
+              <div class="option-review-reason">誤り。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">E</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT emp_id, salary + bonus FROM employees;</div>
+              <div class="option-review-reason">正しい。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>まず設問が制約・ERD・SQL 分類のどれを問うているかを判定する。</li><li>次にキーの性質や関係の多重度を日本語で言い換える。</li><li>最後に Oracle 固有の基礎知識である DUAL や SQL 分類へ当てはめる。</li>
                     </ul>
                   </div>
                 </article>
@@ -267,13 +687,51 @@
 (3)		C. 使用する結合構文の違いは、パフォーマンスには影響しない。
 (4)		D. 結合対象の列にインデックスがあると、パフォーマンスが向上する可能性がある。</pre>
                   <div class="analysis-block">
-                    <div class="block-title">なぜそうなるか</div>
-                    <p>この問題の論点は「SQL 分類の基礎」です。DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。各文をどこへ分類するかが基礎力になる。 この設問では正答 C「使用する結合構文の違いは、パフォーマンスには影響しない。」 / D「結合対象の列にインデックスがあると、パフォーマンスが向上する可能性がある。」 を選べており、論点自体は取れています。</p>
-                    <div class="block-title">維持ポイント</div>
-                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
-                    <div class="block-title">叩き直しポイント</div>
-                    <ul class="rebuild-list">
-                      <li>CREATE/ALTER/DROP/TRUNCATE は DDL。</li><li>INSERT/UPDATE/DELETE/MERGE は DML。</li><li>COMMIT/ROLLBACK/SAVEPOINT は TCL、GRANT/REVOKE は DCL。</li>
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「SQL 分類の基礎」です。問題文は「Oracleのパフォーマンス について正しいものを 2つ 選んでください。」という条件を満たす説明または SQL を求めています。DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。各文をどこへ分類するかが基礎力になる。 この設問では正答 C「使用する結合構文の違いは、パフォーマンスには影響しない。」 / D「結合対象の列にインデックスがあると、パフォーマンスが向上する可能性がある。」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">結合条件に関係のない列をSELECT句に含めた場合でも、パフォーマンスに影響はない。</div>
+              <div class="option-review-reason">誤り。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">Oracleの結合構文は、SQL:1999準拠のANSI結合構文よりもパフォーマンスが優れている。</div>
+              <div class="option-review-reason">誤り。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">使用する結合構文の違いは、パフォーマンスには影響しない。</div>
+              <div class="option-review-reason">正しい。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">結合対象の列にインデックスがあると、パフォーマンスが向上する可能性がある。</div>
+              <div class="option-review-reason">正しい。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>まず設問が制約・ERD・SQL 分類のどれを問うているかを判定する。</li><li>次にキーの性質や関係の多重度を日本語で言い換える。</li><li>最後に Oracle 固有の基礎知識である DUAL や SQL 分類へ当てはめる。</li>
                     </ul>
                   </div>
                 </article>
@@ -289,13 +747,69 @@
 (5)		E. 関係データベースで多態性（ポリモーフィズム）を定義および実装するために使用される。
 (6)		F. 階層型データストレージを必要とする。</pre>
                   <div class="analysis-block">
-                    <div class="block-title">なぜそうなるか</div>
-                    <p>この問題の論点は「SQL 分類の基礎」です。DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。各文をどこへ分類するかが基礎力になる。 この設問では正答 A「リレーショナルデータベースに最も適している。」 / B「ACID（Atomicity, Consistency, Isolation, Durability）特性を保…」 / C「物理ストレージから独立し、論理データ構造の操作を可能にする。」 を選べており、論点自体は取れています。</p>
-                    <div class="block-title">維持ポイント</div>
-                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
-                    <div class="block-title">叩き直しポイント</div>
-                    <ul class="rebuild-list">
-                      <li>CREATE/ALTER/DROP/TRUNCATE は DDL。</li><li>INSERT/UPDATE/DELETE/MERGE は DML。</li><li>COMMIT/ROLLBACK/SAVEPOINT は TCL、GRANT/REVOKE は DCL。</li>
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「SQL 分類の基礎」です。問題文は「SQLに関する正しい説明を3つ選んでください。」という条件を満たす説明または SQL を求めています。DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。各文をどこへ分類するかが基礎力になる。 この設問では正答 A「リレーショナルデータベースに最も適している。」 / B「ACID（Atomicity, Consistency, Isolation, Durability）特性を保…」 / C「物理ストレージから独立し、論理データ構造の操作を可能にする。」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">リレーショナルデータベースに最も適している。</div>
+              <div class="option-review-reason">正しい。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">ACID（Atomicity, Consistency, Isolation, Durability）特性を保証する。</div>
+              <div class="option-review-reason">正しい。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">物理ストレージから独立し、論理データ構造の操作を可能にする。</div>
+              <div class="option-review-reason">正しい。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">オブジェクト指向データベースの両方で使用できる唯一の言語である。</div>
+              <div class="option-review-reason">誤り。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">E</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">関係データベースで多態性（ポリモーフィズム）を定義および実装するために使用される。</div>
+              <div class="option-review-reason">誤り。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">F</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">階層型データストレージを必要とする。</div>
+              <div class="option-review-reason">誤り。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>まず設問が制約・ERD・SQL 分類のどれを問うているかを判定する。</li><li>次にキーの性質や関係の多重度を日本語で言い換える。</li><li>最後に Oracle 固有の基礎知識である DUAL や SQL 分類へ当てはめる。</li>
                     </ul>
                   </div>
                 </article>
@@ -310,13 +824,60 @@
 (4)		D. AND と OR は、条件内で同じ優先順位を持つ。
 (5)		E. 演算子は条件よりも先に評価される。</pre>
                   <div class="analysis-block">
-                    <div class="block-title">なぜそうなるか</div>
-                    <p>この問題の論点は「SQL 分類の基礎」です。DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。各文をどこへ分類するかが基礎力になる。 この設問では正答 A「NOT 演算子は、AND や OR よりも優先順位が高い。」 / C「|| 演算子は *（乗算）演算子よりも優先順位が低い。」 を選べており、論点自体は取れています。</p>
-                    <div class="block-title">維持ポイント</div>
-                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
-                    <div class="block-title">叩き直しポイント</div>
-                    <ul class="rebuild-list">
-                      <li>CREATE/ALTER/DROP/TRUNCATE は DDL。</li><li>INSERT/UPDATE/DELETE/MERGE は DML。</li><li>COMMIT/ROLLBACK/SAVEPOINT は TCL、GRANT/REVOKE は DCL。</li>
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「SQL 分類の基礎」です。問題文は「演算子と条件の優先順位について、正しいものを2つ選んでください。」という条件を満たす説明または SQL を求めています。DDL は定義変更、DML はデータ操作、DCL は権限制御、TCL はトランザクション制御である。各文をどこへ分類するかが基礎力になる。 この設問では正答 A「NOT 演算子は、AND や OR よりも優先順位が高い。」 / C「|| 演算子は *（乗算）演算子よりも優先順位が低い。」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">NOT 演算子は、AND や OR よりも優先順位が高い。</div>
+              <div class="option-review-reason">正しい。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">+（加算）演算子は *（乗算）演算子よりも優先順位が高い。</div>
+              <div class="option-review-reason">誤り。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">|| 演算子は *（乗算）演算子よりも優先順位が低い。</div>
+              <div class="option-review-reason">正しい。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">AND と OR は、条件内で同じ優先順位を持つ。</div>
+              <div class="option-review-reason">誤り。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">E</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">演算子は条件よりも先に評価される。</div>
+              <div class="option-review-reason">誤り。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>まず設問が制約・ERD・SQL 分類のどれを問うているかを判定する。</li><li>次にキーの性質や関係の多重度を日本語で言い換える。</li><li>最後に Oracle 固有の基礎知識である DUAL や SQL 分類へ当てはめる。</li>
                     </ul>
                   </div>
                 </article>
@@ -326,6 +887,32 @@
             <section class="concept-section" id="d1-2">
               <h3>主キー・外部キー・一意キーと NULL<span>4問</span></h3>
               <p class="concept-copy">主キーは NOT NULL かつ一意、外部キーは NULL 可、一意キーも NULL を許せる。キー制約ごとの NULL 許容差が基本である。</p>
+              
+    <div class="concept-guide" style="border-top-color:#f1c40f">
+      <div class="guide-block">
+        <div class="guide-title">論点の定義</div>
+        <p>SQL と RDB の基礎問題では、制約、キー、ER 図、SQL 分類など、文法以前のデータベース原則を正確に押さえる必要がある。</p>
+      </div>
+      <div class="guide-block">
+        <div class="guide-title">正式構文・基本形</div>
+        <pre>CREATE TABLE child (
+  child_id NUMBER PRIMARY KEY,
+  parent_id NUMBER REFERENCES parent(parent_id)
+);</pre>
+      </div>
+      <div class="guide-grid">
+        <div class="guide-block">
+          <div class="guide-title">成立条件</div>
+          <ul class="guide-list"><li>主キーは NOT NULL かつ一意、外部キーは NULL を許容できる。</li><li>N:N 関係は中間表へ分解し、1:N 関係は外部キーで表す。</li><li>DDL、DML、DCL、TCL は役割ごとに分類して理解する。</li></ul>
+        </div>
+        <div class="guide-block">
+          <div class="guide-title">判定手順</div>
+          <ol class="guide-list ordered"><li>まず設問が制約・ERD・SQL 分類のどれを問うているかを判定する。</li><li>次にキーの性質や関係の多重度を日本語で言い換える。</li><li>最後に Oracle 固有の基礎知識である DUAL や SQL 分類へ当てはめる。</li></ol>
+        </div>
+      </div>
+      <div class="guide-note">失点しやすい点: 主キーと一意キーを同じ扱いで覚えたり、外部キーが必ず値を持つと考えやすい。</div>
+    </div>
+    
               
                 <article class="question-card">
                   <div class="question-meta">第1回 模擬試験 / 問1 / 正答 B.C.E / 自己回答 -</div>
@@ -338,13 +925,69 @@
 (5)		E.　一意キーにはNULL値を持たせることはできます。
 (6)		F.　一意キーにはNULL値を持たせることはできません。</pre>
                   <div class="analysis-block">
-                    <div class="block-title">なぜそうなるか</div>
-                    <p>この問題の論点は「主キー・外部キー・一意キーと NULL」です。主キーは NOT NULL かつ一意、外部キーは NULL 可、一意キーも NULL を許せる。キー制約ごとの NULL 許容差が基本である。 この設問では正答 B「主キーにはNULL値を持たせることができません。」 / C「外部キーにはNULL値を持たせることができます。」 / E「一意キーにはNULL値を持たせることはできます。」 を選べており、論点自体は取れています。</p>
-                    <div class="block-title">維持ポイント</div>
-                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
-                    <div class="block-title">叩き直しポイント</div>
-                    <ul class="rebuild-list">
-                      <li>PK は NULL 不可、UK と FK は NULL 可で分ける。</li><li>NULL は『未定』であって参照違反ではないことを理解する。</li><li>キー問題では制約の目的を日本語で言い換える。</li>
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「主キー・外部キー・一意キーと NULL」です。問題文は「リレーショナル・データベースの表間の関係の定義について正しいのはどれでしょうか。（3つ選択）」という条件を満たす説明または SQL を求めています。主キーは NOT NULL かつ一意、外部キーは NULL 可、一意キーも NULL を許せる。キー制約ごとの NULL 許容差が基本である。 この設問では正答 B「主キーにはNULL値を持たせることができません。」 / C「外部キーにはNULL値を持たせることができます。」 / E「一意キーにはNULL値を持たせることはできます。」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">主キーにはNULL値を持たせることができます。</div>
+              <div class="option-review-reason">誤り。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">主キーにはNULL値を持たせることができません。</div>
+              <div class="option-review-reason">正しい。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">外部キーにはNULL値を持たせることができます。</div>
+              <div class="option-review-reason">正しい。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">外部キーにはNULL値を持たせることができません。</div>
+              <div class="option-review-reason">誤り。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">E</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">一意キーにはNULL値を持たせることはできます。</div>
+              <div class="option-review-reason">正しい。 一意キーは主キーと異なり、NULL を保持できます。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">F</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">一意キーにはNULL値を持たせることはできません。</div>
+              <div class="option-review-reason">誤り。 一意キーは主キーと異なり、NULL を保持できます。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>まず設問が制約・ERD・SQL 分類のどれを問うているかを判定する。</li><li>次にキーの性質や関係の多重度を日本語で言い換える。</li><li>最後に Oracle 固有の基礎知識である DUAL や SQL 分類へ当てはめる。</li>
                     </ul>
                   </div>
                 </article>
@@ -367,13 +1010,51 @@ ENGINEER_ID ENGINEER_NAME TEAM_ID TEAM_NAME
 (3)		C.　TEAM_NAMEは、TEAMSエンティティの主キーであり、ENGINEERSエンティティの外部キーである必要があります。
 (4)		D.　ENGINEER_NAMEは、ENGINEERSエンティティの主キーであり、TEAMSエンティティの外部キーである必要があります。</pre>
                   <div class="analysis-block">
-                    <div class="block-title">なぜそうなるか</div>
-                    <p>この問題の論点は「主キー・外部キー・一意キーと NULL」です。主キーは NOT NULL かつ一意、外部キーは NULL 可、一意キーも NULL を許せる。キー制約ごとの NULL 許容差が基本である。 この設問では正答 A「ENGINEERSエンティティとTEAMSエンティティはN:Nの関係となっており、1:Nの関係にする必要があり…」 を選べており、論点自体は取れています。</p>
-                    <div class="block-title">維持ポイント</div>
-                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
-                    <div class="block-title">叩き直しポイント</div>
-                    <ul class="rebuild-list">
-                      <li>PK は NULL 不可、UK と FK は NULL 可で分ける。</li><li>NULL は『未定』であって参照違反ではないことを理解する。</li><li>キー問題では制約の目的を日本語で言い換える。</li>
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「主キー・外部キー・一意キーと NULL」です。問題文は「以下の条件でERDを設計するとします。 ・各技術者は複数のチームに所属することができる ・各チームには複数の技術者を所属させることができる この条件において以下の表示をするとします。 ENGINEER_ID ENGINEER_NAME T…」という条件を満たす説明または SQL を求めています。主キーは NOT NULL かつ一意、外部キーは NULL 可、一意キーも NULL を許せる。キー制約ごとの NULL 許容差が基本である。 この設問では正答 A「ENGINEERSエンティティとTEAMSエンティティはN:Nの関係となっており、1:Nの関係にする必要があり…」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">ENGINEERSエンティティとTEAMSエンティティはN:Nの関係となっており、1:Nの関係にする必要があります。</div>
+              <div class="option-review-reason">正しい。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">ENGINEERSエンティティとTEAMSエンティティは1:Nの関係となっています。</div>
+              <div class="option-review-reason">誤り。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">TEAM_NAMEは、TEAMSエンティティの主キーであり、ENGINEERSエンティティの外部キーである必要があります。</div>
+              <div class="option-review-reason">誤り。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">ENGINEER_NAMEは、ENGINEERSエンティティの主キーであり、TEAMSエンティティの外部キーである必要があります。</div>
+              <div class="option-review-reason">誤り。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>まず設問が制約・ERD・SQL 分類のどれを問うているかを判定する。</li><li>次にキーの性質や関係の多重度を日本語で言い換える。</li><li>最後に Oracle 固有の基礎知識である DUAL や SQL 分類へ当てはめる。</li>
                     </ul>
                   </div>
                 </article>
@@ -387,13 +1068,51 @@ ENGINEER_ID ENGINEER_NAME TEAM_ID TEAM_NAME
 (3)		C.　一意キーにはNULL値を持たせることができます。
 (4)		D.　制約は、UPDATE文の操作でのみ設定されます。</pre>
                   <div class="analysis-block">
-                    <div class="block-title">なぜそうなるか</div>
-                    <p>この問題の論点は「主キー・外部キー・一意キーと NULL」です。主キーは NOT NULL かつ一意、外部キーは NULL 可、一意キーも NULL を許せる。キー制約ごとの NULL 許容差が基本である。 この設問では正答 A「外部キーにはNULL値を持たせることができます。」 / C「一意キーにはNULL値を持たせることができます。」 を選べており、論点自体は取れています。</p>
-                    <div class="block-title">維持ポイント</div>
-                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
-                    <div class="block-title">叩き直しポイント</div>
-                    <ul class="rebuild-list">
-                      <li>PK は NULL 不可、UK と FK は NULL 可で分ける。</li><li>NULL は『未定』であって参照違反ではないことを理解する。</li><li>キー問題では制約の目的を日本語で言い換える。</li>
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「主キー・外部キー・一意キーと NULL」です。問題文は「制約に関しての記述として以下正しいのはどれでしょうか。 (2つ選択)」という条件を満たす説明または SQL を求めています。主キーは NOT NULL かつ一意、外部キーは NULL 可、一意キーも NULL を許せる。キー制約ごとの NULL 許容差が基本である。 この設問では正答 A「外部キーにはNULL値を持たせることができます。」 / C「一意キーにはNULL値を持たせることができます。」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">外部キーにはNULL値を持たせることができます。</div>
+              <div class="option-review-reason">正しい。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">主キーにはNULL値を持たせることができます。</div>
+              <div class="option-review-reason">誤り。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">一意キーにはNULL値を持たせることができます。</div>
+              <div class="option-review-reason">正しい。 一意キーは主キーと異なり、NULL を保持できます。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">制約は、UPDATE文の操作でのみ設定されます。</div>
+              <div class="option-review-reason">誤り。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>まず設問が制約・ERD・SQL 分類のどれを問うているかを判定する。</li><li>次にキーの性質や関係の多重度を日本語で言い換える。</li><li>最後に Oracle 固有の基礎知識である DUAL や SQL 分類へ当てはめる。</li>
                     </ul>
                   </div>
                 </article>
@@ -409,13 +1128,69 @@ ENGINEER_ID ENGINEER_NAME TEAM_ID TEAM_NAME
 (5)		E. NUMBER 型のカラムは、ゼロ値を持つことができない。
 (6)		F. テーブルには、NOT NULL 制約を複数のカラムに指定できない。</pre>
                   <div class="analysis-block">
-                    <div class="block-title">なぜそうなるか</div>
-                    <p>この問題の論点は「主キー・外部キー・一意キーと NULL」です。主キーは NOT NULL かつ一意、外部キーは NULL 可、一意キーも NULL を許せる。キー制約ごとの NULL 許容差が基本である。 この設問では正答 A「DATE 型のカラムは、NULL 値を持つことができる。」 / D「テーブルに複数の外部キーを持たせることができる。」 を選べており、論点自体は取れています。</p>
-                    <div class="block-title">維持ポイント</div>
-                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
-                    <div class="block-title">叩き直しポイント</div>
-                    <ul class="rebuild-list">
-                      <li>PK は NULL 不可、UK と FK は NULL 可で分ける。</li><li>NULL は『未定』であって参照違反ではないことを理解する。</li><li>キー問題では制約の目的を日本語で言い換える。</li>
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「主キー・外部キー・一意キーと NULL」です。問題文は「Oracle データベースについて、正しいものを2つ選んでください。」という条件を満たす説明または SQL を求めています。主キーは NOT NULL かつ一意、外部キーは NULL 可、一意キーも NULL を許せる。キー制約ごとの NULL 許容差が基本である。 この設問では正答 A「DATE 型のカラムは、NULL 値を持つことができる。」 / D「テーブルに複数の外部キーを持たせることができる。」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">DATE 型のカラムは、NULL 値を持つことができる。</div>
+              <div class="option-review-reason">正しい。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">1つのテーブルに複数のプライマリキーを持つことができる。</div>
+              <div class="option-review-reason">誤り。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">カラム定義に複数のデータ型を指定できる。</div>
+              <div class="option-review-reason">誤り。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">テーブルに複数の外部キーを持たせることができる。</div>
+              <div class="option-review-reason">正しい。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">E</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">NUMBER 型のカラムは、ゼロ値を持つことができない。</div>
+              <div class="option-review-reason">誤り。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">F</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">テーブルには、NOT NULL 制約を複数のカラムに指定できない。</div>
+              <div class="option-review-reason">誤り。 基礎問題では、キー制約や SQL 分類の正式定義に合致しているかを確認します。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>まず設問が制約・ERD・SQL 分類のどれを問うているかを判定する。</li><li>次にキーの性質や関係の多重度を日本語で言い換える。</li><li>最後に Oracle 固有の基礎知識である DUAL や SQL 分類へ当てはめる。</li>
                     </ul>
                   </div>
                 </article>
@@ -425,6 +1200,32 @@ ENGINEER_ID ENGINEER_NAME TEAM_ID TEAM_NAME
             <section class="concept-section" id="d1-3">
               <h3>DUAL と Oracle 基礎<span>1問</span></h3>
               <p class="concept-copy">DUAL は 1 行 1 列の疑似表で、式や関数の確認に使う。所有者や構造を含め、Oracle 固有の基礎知識として出題される。</p>
+              
+    <div class="concept-guide" style="border-top-color:#f1c40f">
+      <div class="guide-block">
+        <div class="guide-title">論点の定義</div>
+        <p>SQL と RDB の基礎問題では、制約、キー、ER 図、SQL 分類など、文法以前のデータベース原則を正確に押さえる必要がある。</p>
+      </div>
+      <div class="guide-block">
+        <div class="guide-title">正式構文・基本形</div>
+        <pre>CREATE TABLE child (
+  child_id NUMBER PRIMARY KEY,
+  parent_id NUMBER REFERENCES parent(parent_id)
+);</pre>
+      </div>
+      <div class="guide-grid">
+        <div class="guide-block">
+          <div class="guide-title">成立条件</div>
+          <ul class="guide-list"><li>主キーは NOT NULL かつ一意、外部キーは NULL を許容できる。</li><li>N:N 関係は中間表へ分解し、1:N 関係は外部キーで表す。</li><li>DDL、DML、DCL、TCL は役割ごとに分類して理解する。</li></ul>
+        </div>
+        <div class="guide-block">
+          <div class="guide-title">判定手順</div>
+          <ol class="guide-list ordered"><li>まず設問が制約・ERD・SQL 分類のどれを問うているかを判定する。</li><li>次にキーの性質や関係の多重度を日本語で言い換える。</li><li>最後に Oracle 固有の基礎知識である DUAL や SQL 分類へ当てはめる。</li></ol>
+        </div>
+      </div>
+      <div class="guide-note">失点しやすい点: 列名や所有者を誤記しやすく、通常の業務表と同じ感覚で読んでしまいやすい。</div>
+    </div>
+    
               
                 <article class="question-card">
                   <div class="question-meta">第3回 模擬試験 / 問1 / 正答 DF / 自己回答 -</div>
@@ -437,13 +1238,69 @@ ENGINEER_ID ENGINEER_NAME TEAM_ID TEAM_NAME
 (5)		E. SELECT q”[I&#x27;m Student.]” FROM DUAL;
 (6)		F. SELECT q&#x27;(I&#x27;m Student.)&#x27; FROM DUAL;</pre>
                   <div class="analysis-block">
-                    <div class="block-title">なぜそうなるか</div>
-                    <p>この問題の論点は「DUAL と Oracle 基礎」です。DUAL は 1 行 1 列の疑似表で、式や関数の確認に使う。所有者や構造を含め、Oracle 固有の基礎知識として出題される。 この設問では正答 D「SELECT q&#x27;[I&#x27;m Student.]&#x27; FROM DUAL;」 / F「SELECT q&#x27;(I&#x27;m Student.)&#x27; FROM DUAL;」 を選べており、論点自体は取れています。</p>
-                    <div class="block-title">維持ポイント</div>
-                    <p>自己回答の記録はありませんが、正答の論点を固定し直して再現性を上げます。</p>
-                    <div class="block-title">叩き直しポイント</div>
-                    <ul class="rebuild-list">
-                      <li>DUAL は 1 行 1 列で関数確認用と覚える。</li><li>DUMMY 列を持つこと、SYS 所有であることを確認する。</li><li>式だけ返す SELECT のときは DUAL を思い出す。</li>
+                    <div class="block-title">設問の読み解き</div>
+                    <p>この設問の論点は「DUAL と Oracle 基礎」です。問題文は「次のうち、Oracle SQLとして正しい構文を2つ選択してください。」という条件を満たす説明または SQL を求めています。DUAL は 1 行 1 列の疑似表で、式や関数の確認に使う。所有者や構造を含め、Oracle 固有の基礎知識として出題される。 この設問では正答 D「SELECT q&#x27;[I&#x27;m Student.]&#x27; FROM DUAL;」 / F「SELECT q&#x27;(I&#x27;m Student.)&#x27; FROM DUAL;」 を選べており、成立条件を正しく読めています。</p>
+                    <div class="block-title">得点できた理由</div>
+                    <p>自己回答の記録はありませんが、正答が成立する条件を言語化して、次回も同じ論点を再現できる状態にします。</p>
+                    <div class="block-title">選択肢ごとの判定</div>
+                    <div class="option-review-grid">
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">A</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT q&#x27;(I&#x27;m Student.&#x27;) FROM DUAL;</div>
+              <div class="option-review-reason">誤り。 DUAL は Oracle 固有の 1 行 1 列の疑似表で、式や関数結果の確認に使います。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">B</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT &#x27;I\&#x27;m Student.&#x27; FROM DUAL;</div>
+              <div class="option-review-reason">誤り。 DUAL は Oracle 固有の 1 行 1 列の疑似表で、式や関数結果の確認に使います。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">C</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT &#x27;I&#x27;m Student.&#x27; FROM DUAL;</div>
+              <div class="option-review-reason">誤り。 DUAL は Oracle 固有の 1 行 1 列の疑似表で、式や関数結果の確認に使います。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">D</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT q&#x27;[I&#x27;m Student.]&#x27; FROM DUAL;</div>
+              <div class="option-review-reason">正しい。 DUAL は Oracle 固有の 1 行 1 列の疑似表で、式や関数結果の確認に使います。</div>
+            </div>
+            
+            <div class="option-review wrong">
+              <div class="option-review-head">
+                <div class="option-review-key">E</div>
+                <div class="option-review-badges"><span>非正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT q”[I&#x27;m Student.]” FROM DUAL;</div>
+              <div class="option-review-reason">誤り。 DUAL は Oracle 固有の 1 行 1 列の疑似表で、式や関数結果の確認に使います。</div>
+            </div>
+            
+            <div class="option-review correct">
+              <div class="option-review-head">
+                <div class="option-review-key">F</div>
+                <div class="option-review-badges"><span>正答肢</span></div>
+              </div>
+              <div class="option-review-text">SELECT q&#x27;(I&#x27;m Student.)&#x27; FROM DUAL;</div>
+              <div class="option-review-reason">正しい。 DUAL は Oracle 固有の 1 行 1 列の疑似表で、式や関数結果の確認に使います。</div>
+            </div>
+            </div>
+                    <div class="block-title">解く順序</div>
+                    <ul class="study-step-list">
+                      <li>まず設問が制約・ERD・SQL 分類のどれを問うているかを判定する。</li><li>次にキーの性質や関係の多重度を日本語で言い換える。</li><li>最後に Oracle 固有の基礎知識である DUAL や SQL 分類へ当てはめる。</li>
                     </ul>
                   </div>
                 </article>

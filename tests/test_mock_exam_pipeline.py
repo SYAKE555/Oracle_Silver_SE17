@@ -123,6 +123,23 @@ class TestMockExamPipeline(unittest.TestCase):
         self.assertNotIn("（抽出）", html)
         self.assertIn('SELECT dummy &quot;DUMMY1&quot; FROM DUAL', html)
         self.assertIn("INTERSECT", html)
+        self.assertIn("正式構文・基本形", html)
+        self.assertIn("選択肢ごとの判定", html)
+        self.assertIn("正答肢", html)
+        self.assertIn("非正答肢", html)
+
+    def test_domain_page_includes_textbook_style_guidance_for_both_modes(self):
+        ranked = split_ex_pages.priority_data()
+        split_ex_pages.assign_phases(ranked)
+        ex3 = next(item for item in ranked if item["ex_id"] == "EX3")
+
+        wrong_html = split_ex_pages.build_domain_page(ex3, review_mode="wrong")
+        correct_html = split_ex_pages.build_domain_page(ex3, review_mode="correct")
+
+        self.assertIn("論点の定義", wrong_html)
+        self.assertIn("判定手順", wrong_html)
+        self.assertIn("得点できた理由", correct_html)
+        self.assertIn("選択肢ごとの判定", correct_html)
 
 
 if __name__ == "__main__":
