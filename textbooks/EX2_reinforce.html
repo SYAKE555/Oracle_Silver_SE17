@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EX2 サブクエリ・集合演算 - 弱点強化ユニット</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', 'Hiragino Sans', Arial, sans-serif; background: #f5f7fa; color: #2d3748; line-height: 1.7; }
+  .page-header { background: linear-gradient(135deg, #8e2de2 0%, #4a00e0 50%, #c0392b 100%); color: white; padding: 36px 24px; text-align: center; }
+  .page-header h1 { font-size: 1.7rem; margin-bottom: 6px; }
+  .page-header .subtitle { opacity: .9; font-size: .92rem; }
+  .container { max-width: 1000px; margin: 0 auto; padding: 24px; }
+  .nav-back { display: inline-block; padding: 8px 16px; background: white; border-radius: 6px; text-decoration: none; color: #2d3748; box-shadow: 0 2px 4px rgba(0,0,0,.08); font-size: .88rem; margin-bottom: 16px; }
+
+  .toc { background: white; border-radius: 12px; padding: 18px 22px; box-shadow: 0 2px 8px rgba(0,0,0,.08); margin-bottom: 28px; }
+  .toc h2 { font-size: 1rem; margin-bottom: 10px; color: #4a00e0; }
+  .toc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; }
+  .toc a { display: block; padding: 8px 12px; background: #f7fafc; border-radius: 6px; text-decoration: none; color: #2d3748; font-size: .88rem; border-left: 3px solid #cbd5e0; }
+  .toc a:hover { background: #edf2f7; border-left-color: #4a00e0; }
+  .toc a.high { border-left-color: #c0392b; background: #fef5f5; }
+  .toc a.mid { border-left-color: #e67e22; background: #fef8f0; }
+
+  .domain-block { background: white; border-radius: 14px; padding: 28px 30px; box-shadow: 0 3px 12px rgba(0,0,0,.08); margin-bottom: 28px; scroll-margin-top: 16px; }
+  .domain-block h2 { font-size: 1.4rem; padding-bottom: 10px; border-bottom: 3px solid; margin-bottom: 18px; display: flex; align-items: center; gap: 12px; }
+  .d-tag { background: #4a00e0; color: white; padding: 3px 10px; border-radius: 6px; font-size: 1rem; font-weight: 900; }
+  .priority-pill { margin-left: auto; font-size: .8rem; padding: 4px 10px; border-radius: 10px; font-weight: 700; }
+  .p-high { background: #c0392b; color: white; }
+  .p-mid { background: #e67e22; color: white; }
+  .p-low { background: #f1c40f; color: #4a3800; }
+  .p-ok { background: #2ecc71; color: white; }
+
+  .domain-block h3 { font-size: 1.05rem; margin: 20px 0 10px; padding: 8px 12px; background: #f7fafc; border-left: 4px solid #4a00e0; border-radius: 4px; }
+  .domain-block h3.mistakes { border-left-color: #c0392b; }
+  .domain-block h3.rules { border-left-color: #2ecc71; }
+  .domain-block h3.check { border-left-color: #3498db; }
+  .domain-block h3.quiz { border-left-color: #e67e22; }
+
+  .mistake-list { list-style: none; padding: 0; }
+  .mistake-list li { padding: 8px 0 8px 28px; border-bottom: 1px dashed #e2e8f0; position: relative; font-size: .92rem; }
+  .mistake-list li::before { content: "⚠"; position: absolute; left: 6px; top: 8px; color: #c0392b; font-weight: 700; }
+  .mistake-list b.correct { color: #2ecc71; }
+  .mistake-list b.wrong { color: #c0392b; text-decoration: line-through; }
+
+  .rule-list { padding-left: 22px; font-size: .92rem; }
+  .rule-list li { margin-bottom: 6px; }
+  .rule-list code { background: #edf2f7; padding: 1px 6px; border-radius: 4px; font-size: .85em; color: #2d3748; }
+
+  table.check-tbl { width: 100%; border-collapse: collapse; font-size: .88rem; margin-top: 6px; }
+  table.check-tbl th, table.check-tbl td { padding: 8px 10px; border: 1px solid #e2e8f0; text-align: left; vertical-align: top; }
+  table.check-tbl th { background: #f7fafc; font-weight: 700; }
+  table.check-tbl td code { background: #edf2f7; padding: 1px 4px; border-radius: 3px; font-size: .92em; }
+
+  .quiz { background: #fef5eb; padding: 12px 16px; border-radius: 8px; margin-bottom: 10px; }
+  .quiz .q { font-weight: 700; font-size: .92rem; margin-bottom: 6px; }
+  .quiz .a { font-size: .88rem; color: #4a5568; padding-top: 6px; border-top: 1px dashed #e2e8f0; }
+  .quiz .a b { color: #2ecc71; }
+
+  pre { background: #2d3748; color: #f7fafc; padding: 10px 14px; border-radius: 6px; overflow-x: auto; font-size: .82rem; margin: 6px 0; }
+  code.inline { background: #edf2f7; padding: 1px 6px; border-radius: 3px; font-size: .9em; }
+
+  @media (max-width: 640px) {
+    .domain-block { padding: 18px; }
+    .domain-block h2 { font-size: 1.1rem; flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+<div class="page-header" style="background:linear-gradient(135deg,#2c3e50 0%,#c0392b 100%)">
+  <h1>EX2 弱点強化ユニット</h1>
+  <div class="subtitle">サブクエリ・集合演算（独立EXユニット）</div>
+</div>
+<div class="container">
+  <a class="nav-back" href="mock_exam_report.html">← 結果レポート</a><a class="nav-back" href="index.html" style="margin-left:8px">📚 教科書トップ</a><a class="nav-back" href="mock_exam_reinforce.html" style="margin-left:8px">🗂 EX 一覧</a>
+  
+    <div style="background:linear-gradient(135deg,#c0392b15,#c0392b08);border-radius:12px;padding:18px 22px;margin-bottom:20px;border-left:6px solid #c0392b">
+      <div style="font-size:.85rem;color:#c0392b;font-weight:700;letter-spacing:.1em">EX2 / 弱点強化ユニット（独立）</div>
+      <div style="font-size:1.4rem;font-weight:800;margin-top:4px">サブクエリ・集合演算</div>
+      <div style="font-size:.85rem;color:#718096;margin-top:4px">元ドメイン: D6 ／ 優先度: <b style="color:#c0392b">最優先</b></div>
+    </div>
+    
+  <div class="domain-block" id="d6" style="border-top:5px solid #c0392b">
+    <h2 style="border-bottom-color:#c0392b"><span class="d-tag" style="background:#c0392b">D6</span>サブクエリ・集合演算<span class="priority-pill p-high">最優先</span></h2>
+
+    <h3 class="mistakes">🔥 模試で落とした典型ミス</h3>
+    <ul class="mistake-list">
+      <li>相関サブクエリの実行順を逆に覚えた。<b class="correct">正：外側の各行ごとに内側が実行される</b> / <b class="wrong">誤：内側→外側の1回実行</b></li>
+      <li>UNION の ORDER BY は最後のSELECT にしか書けないと誤認。<b class="correct">正：ORDER BY は文末に1つのみ、列は最初のSELECTの列名 or 位置番号で指定</b></li>
+      <li>UNION ALL と UNION の違い：<b class="correct">UNION は重複削除＋ソート / UNION ALL は重複保持・ソートなし（高速）</b></li>
+      <li>「一度も取引のない商品」を取得するのに UNION / INTERSECT を選択。<b class="correct">正：MINUS（差集合）</b></li>
+      <li>EXISTS と IN の挙動差、NOT IN に NULL が混ざるときの罠を見落とす。</li>
+    </ul>
+
+    <h3 class="rules">📌 必修ルール</h3>
+    <ul class="rule-list">
+      <li><b>サブクエリの実行順：</b>通常（非相関）は内→外。<b>相関</b>は外の各行ごとに内を再実行。</li>
+      <li><b>単一行サブクエリ：</b>= / &lt; / &gt; を使用。2行以上返ると <code>ORA-01427</code>。</li>
+      <li><b>複数行サブクエリ：</b>IN / ANY / ALL を使用。<code>&gt; ANY</code>＝最小より大、<code>&gt; ALL</code>＝最大より大。</li>
+      <li><b>NOT IN と NULL：</b>サブクエリ結果に NULL が1つでもあると NOT IN は必ず空集合。EXISTS で書き換える。</li>
+      <li><b>EXISTS：</b>真偽のみ判定、サブクエリの SELECT リストの内容は評価しない（<code>SELECT 1</code> で十分）。</li>
+      <li><b>集合演算：</b>UNION＝和（重複削除）、UNION ALL＝和（重複保持）、INTERSECT＝積、MINUS＝差。列数と型の対応が必須。</li>
+      <li><b>集合演算のソート：</b>ORDER BY は最後に1回のみ。列名は最初の SELECT のもの、または位置指定（<code>ORDER BY 1</code>）。</li>
+      <li><b>UNION の暗黙ソート：</b>UNION / INTERSECT / MINUS は重複排除のため内部でソートする（UNION ALL はソートなし）。</li>
+    </ul>
+
+    <h3 class="check">✅ 構文・語彙チェックリスト</h3>
+    <table class="check-tbl">
+      <tr><th>用途</th><th>使う演算子</th></tr>
+      <tr><td>両方の表に存在する行を取る</td><td><code>INTERSECT</code></td></tr>
+      <tr><td>A にあって B にない行を取る</td><td><code>A MINUS B</code></td></tr>
+      <tr><td>両方を重複込みで連結</td><td><code>UNION ALL</code>（高速・ソートなし）</td></tr>
+      <tr><td>NULL を返す可能性のあるサブクエリで除外</td><td><code>NOT EXISTS</code>（NOT IN は NULL で罠）</td></tr>
+      <tr><td>副問合せの「存在確認のみ」</td><td><code>WHERE EXISTS (SELECT 1 FROM ...)</code></td></tr>
+    </table>
+
+    <h3 class="quiz">🎯 ミニ演習（3問）</h3>
+    <div class="quiz">
+      <div class="q">Q1. 「一度も注文のない顧客」を取る最も自然な書き方は？</div>
+      <div class="a">A. <b>customer MINUS ordered_customer</b>、または <code>NOT EXISTS (SELECT 1 FROM orders ...)</code>。NOT IN は NULL で罠。</div>
+    </div>
+    <div class="quiz">
+      <div class="q">Q2. <code class="inline">SELECT a FROM t1 UNION SELECT b FROM t2 ORDER BY a;</code> は正しいか？</div>
+      <div class="a">A. <b>正しい</b>。ORDER BY は最後の文末に1回だけ、列名は最初の SELECT のもの。</div>
+    </div>
+    <div class="quiz">
+      <div class="q">Q3. UNION ALL と UNION どちらが速いか？</div>
+      <div class="a">A. <b>UNION ALL</b>。重複排除のソート処理がないため。重複を気にしない場面では必ず ALL を選ぶ。</div>
+    </div>
+  </div>
+
+  
+  <div style="margin-top:20px;padding:14px 18px;background:white;border-radius:8px;box-shadow:0 2px 6px rgba(0,0,0,.06);font-size:.88rem;color:#4a5568">
+    <b>次のユニット：</b> <a href="mock_exam_reinforce.html">🗂 EX 一覧へ戻る</a>
+  </div>
+  <div style="text-align:center;color:#a0aec0;font-size:.78rem;margin-top:30px;padding-top:16px;border-top:1px solid #e2e8f0">
+    EX2 / 弱点強化ユニット — 模擬試験 Phase 2
+  </div>
+</div>
+</body>
+</html>
