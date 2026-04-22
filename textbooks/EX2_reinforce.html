@@ -174,9 +174,9 @@
 (<span class="sql-num">5</span>)		<span class="sql-kw">UNION ALL</span></pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
-                    <p>この設問で確定させる論点は「<span class="sql-kw">INTERSECT</span> を含む集合演算の基本」です。<br>問題文は「商品情報マスター表と、商品取引履歴表が存在していて、 商品の取引があると商品取引履歴表に取引情報を登録するとします。 履歴は商品毎に1件のみ、商品情報マスター表と同じ形式のものを登録します。 一度も取引が無い商品情報を取得するには、以下の…」を満たす記述または SQL を求めています。<br>複合問合せでは、各 <span class="sql-kw">SELECT</span> の列数と対応するデータ型をそろえる必要がある。<br><span class="sql-kw">INTERSECT</span> は両方の結果に共通する行を返し、<span class="sql-kw">NULL</span> を含む行も比較対象になる。 そのため、成立条件を満たす正答は <span class="sql-num">2</span>「<span class="sql-kw">MINUS</span>」 です。</p>
+                    <p>「一度も取引がない商品」＝マスターに存在して履歴には存在しない行、という差集合の要件です。差集合は <span class="sql-kw">MINUS</span>（左にあって右にない行を返す）で表現します。INTERSECT は両方に存在する行（=取引あり）を返すため逆。UNION/UNION ALL は全行を合算するだけで絞り込みにならない。正答は 2「MINUS」。</p>
                     <div class="block-title">今回の失点要因</div>
-                    <p>自己回答は <span class="sql-num">5</span>「<span class="sql-kw">UNION ALL</span>」 でした。<br>失点要因は 列名まで一致必須と思い込んだり、列数・型の一致条件と、<span class="sql-kw">INTERSECT</span> が返す行の意味を切り分けられずに失点しやすい。 正答との差は、条件の向き、句の位置、返却行数、またはオブジェクトの性質を正式定義のレベルで確認し切れていない点にあります。</p>
+                    <p><span class="sql-kw">UNION ALL</span> を選んだことが失点原因です。「マスターと履歴を合わせる」という発想でUNION系を選んだと思われますが、UNION ALLは全行を重複込みで連結するだけで「取引なし」の絞り込みはできません。「A にあって B にない」という差集合の要件は MINUS で表現することを確実に紐付けてください。</p>
                     <div class="block-title">選択肢ごとの判定</div>
                     <div class="option-review-grid">
             <div class="option-review wrong">
@@ -185,7 +185,7 @@
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
               <div class="option-review-text"><span class="sql-kw">INTERSECT</span></div>
-              <div class="option-review-reason">誤り。 <span class="sql-kw">INTERSECT</span> は左右両方に存在する行だけを返します。</div>
+              <div class="option-review-reason">誤り。INTERSECT は両方の結果に共通する行（＝取引ありの商品）を返すため、「取引なし」の絞り込みには使えません。</div>
             </div>
             
             <div class="option-review correct">
@@ -194,7 +194,7 @@
                 <div class="option-review-badges"><span>正答肢</span></div>
               </div>
               <div class="option-review-text"><span class="sql-kw">MINUS</span></div>
-              <div class="option-review-reason">正しい。 <span class="sql-kw">MINUS</span> は左側にあり右側にはない行だけを返します。</div>
+              <div class="option-review-reason">正しい。<code>マスター MINUS 履歴</code> とすることで、マスターにあって履歴にない行（＝一度も取引がない商品）を取得できます。</div>
             </div>
             
             <div class="option-review wrong">
@@ -203,7 +203,7 @@
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
               <div class="option-review-text"><span class="sql-kw">MINUS</span> <span class="sql-kw">ALL</span></div>
-              <div class="option-review-reason">誤り。 <span class="sql-kw">MINUS</span> は左側にあり右側にはない行だけを返します。</div>
+              <div class="option-review-reason">誤り。Oracle SQL に <code>MINUS ALL</code> という構文は存在しません。実行するとエラーになります。</div>
             </div>
             
             <div class="option-review wrong">
@@ -212,7 +212,7 @@
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
               <div class="option-review-text"><span class="sql-kw">UNION</span></div>
-              <div class="option-review-reason">誤り。 <span class="sql-kw">UNION</span> は重複を除去して結果集合を結合します。</div>
+              <div class="option-review-reason">誤り。UNION はマスターと履歴の全商品を重複除去して合算します。「取引あり」の商品も含まれるため要件を満たしません。</div>
             </div>
             
             <div class="option-review wrong">
@@ -221,7 +221,7 @@
                 <div class="option-review-badges"><span>非正答肢</span><span>自己回答</span></div>
               </div>
               <div class="option-review-text"><span class="sql-kw">UNION ALL</span></div>
-              <div class="option-review-reason">誤り。 <span class="sql-kw">UNION ALL</span> は重複行を残したまま結果集合を連結します。</div>
+              <div class="option-review-reason">誤り（自己回答）。UNION ALL は重複行を保持したまま全行を連結するだけで、「取引なし」の絞り込みは一切できません。</div>
             </div>
             </div>
                     <div class="block-title">解く順序</div>
@@ -242,9 +242,9 @@
 (<span class="sql-num">5</span>)		E.　INTERSECT演算子は、結果にNULLがあった場合、データを抽出しません。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
-                    <p>この設問で確定させる論点は「<span class="sql-kw">INTERSECT</span> を含む集合演算の基本」です。<br>問題文は「複合問合せで <span class="sql-kw">INTERSECT</span> 演算子を使用した結果について正しいのはどれでしょうか。<br>（2つ選択）」を満たす記述または SQL を求めています。<br>複合問合せでは、各 <span class="sql-kw">SELECT</span> の列数と対応するデータ型をそろえる必要がある。<br><span class="sql-kw">INTERSECT</span> は両方の結果に共通する行を返し、<span class="sql-kw">NULL</span> を含む行も比較対象になる。 そのため、成立条件を満たす正答は B「複合問合せの各SELECT文の列名は異なる場合があります。<br>」 / D「INTERSECT演算子は、結果にNULLがあった場合、データを抽出します。<br>」 です。</p>
+                    <p>集合演算の必須条件（列数・型）と任意条件（列名）を正確に区別する問題です。B「列名は異なってもよい」が正解で、列名は先頭 SELECT が基準になります。D「NULL も抽出対象になる」が正解で、INTERSECT は NULL を「NULL＝NULL」として一致判定します。正答 BD。</p>
                     <div class="block-title">今回の失点要因</div>
-                    <p>自己回答は A「複合問合せの各SELECT文の列数は異なる場合があります。<br>」 / D「INTERSECT演算子は、結果にNULLがあった場合、データを抽出します。<br>」 でした。<br>一部は論点を捉えていますが、A「複合問合せの各SELECT文の列数は異なる場合があります。<br>」 を混在させたことで正答条件を外しています。<br>失点要因は 列名まで一致必須と思い込んだり、列数・型の一致条件と、<span class="sql-kw">INTERSECT</span> が返す行の意味を切り分けられずに失点しやすい。</p>
+                    <p>A「列数は異なる場合がある」を選んでしまったことが失点原因です。集合演算では列数の一致は絶対条件で、列数が違うと ORA-01789 エラーになります。「列名は同一不要（B）」という正しい知識と「列数も不要」という誤った知識を混同しています。列名・列数・データ型の3つをそれぞれ個別に覚えてください。</p>
                     <div class="block-title">選択肢ごとの判定</div>
                     <div class="option-review-grid">
             <div class="option-review wrong">
@@ -253,7 +253,7 @@
                 <div class="option-review-badges"><span>非正答肢</span><span>自己回答</span></div>
               </div>
               <div class="option-review-text">複合問合せの各SELECT文の列数は異なる場合があります。</div>
-              <div class="option-review-reason">誤り。 副問合せでは返却行数、相関の有無、比較演算子の整合が成立条件になります。</div>
+              <div class="option-review-reason">誤り（自己回答）。列数の一致は集合演算の絶対条件です。<code>SELECT a, b UNION SELECT c</code> のように列数が違うと ORA-01789 エラーになります。</div>
             </div>
             
             <div class="option-review correct">
@@ -262,7 +262,7 @@
                 <div class="option-review-badges"><span>正答肢</span></div>
               </div>
               <div class="option-review-text">複合問合せの各SELECT文の列名は異なる場合があります。</div>
-              <div class="option-review-reason">正しい。 副問合せでは返却行数、相関の有無、比較演算子の整合が成立条件になります。</div>
+              <div class="option-review-reason">正しい。結果セットの列名は先頭 SELECT の列名が採用され、第2 SELECT 以降の列名は無視されます。例：<code>SELECT name FROM a UNION SELECT emp_name FROM b</code> では結果列名は「name」になります。</div>
             </div>
             
             <div class="option-review wrong">
@@ -271,7 +271,7 @@
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
               <div class="option-review-text">複合問合せの各SELECT文のデータ型は異なる場合があります。</div>
-              <div class="option-review-reason">誤り。 副問合せでは返却行数、相関の有無、比較演算子の整合が成立条件になります。</div>
+              <div class="option-review-reason">誤り。対応する列のデータ型は互換でなければなりません。NUMBER と VARCHAR2 を直接組み合わせるとエラーになります（暗黙変換が可能な型の組み合わせは例外）。</div>
             </div>
             
             <div class="option-review correct">
@@ -280,7 +280,7 @@
                 <div class="option-review-badges"><span>正答肢</span><span>自己回答</span></div>
               </div>
               <div class="option-review-text">INTERSECT演算子は、結果にNULLがあった場合、データを抽出します。</div>
-              <div class="option-review-reason">正しい。 <span class="sql-kw">INTERSECT</span> は左右両方に存在する行だけを返します。</div>
+              <div class="option-review-reason">正しい。INTERSECT は通常の比較と異なり NULL を「NULL＝NULL」として一致とみなします。したがって、両方の SELECT 結果に同じ NULL を含む行があれば、その行も抽出されます。</div>
             </div>
             
             <div class="option-review wrong">
@@ -289,7 +289,7 @@
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
               <div class="option-review-text">INTERSECT演算子は、結果にNULLがあった場合、データを抽出しません。</div>
-              <div class="option-review-reason">誤り。 <span class="sql-kw">INTERSECT</span> は左右両方に存在する行だけを返します。</div>
+              <div class="option-review-reason">誤り。通常の WHERE 句では <code>NULL = NULL</code> が FALSE になりますが、INTERSECT では NULL も一致として扱い抽出されます。</div>
             </div>
             </div>
                     <div class="block-title">解く順序</div>
@@ -319,9 +319,9 @@
 (<span class="sql-num">4</span>)		D.　<span class="sql-kw">SELECT</span> NAME, PASS_PRICE, START_DATE <span class="sql-kw">FROM</span> EMP <span class="sql-kw">WHERE</span> START_DATE &gt; SYSDATE-<span class="sql-num">365</span> <span class="sql-kw">AND</span> DEPT_ID = &#x27;<span class="sql-num">10101</span>&#x27; <span class="sql-kw">UNION</span> <span class="sql-kw">SELECT</span> NAME, PASS_PRICE, START_DATE <span class="sql-kw">FROM</span> EMP <span class="sql-kw">WHERE</span> PASS_PRICE &gt; <span class="sql-num">50000</span>;</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
-                    <p>この設問で確定させる論点は「<span class="sql-kw">INTERSECT</span> を含む集合演算の基本」です。<br>問題文は「図のような表があります。 以下の従業員の詳細を表示する必要があります。 ・DEPT_ID <span class="sql-str">'10101'</span> の部署に所属 ・入社年数(START_DATE)が1年以下 ・月の定期代(PASS_PRICE)が5万円を超える 必要な結果を取得す…」を満たす記述または SQL を求めています。<br>複合問合せでは、各 <span class="sql-kw">SELECT</span> の列数と対応するデータ型をそろえる必要がある。<br><span class="sql-kw">INTERSECT</span> は両方の結果に共通する行を返し、<span class="sql-kw">NULL</span> を含む行も比較対象になる。 そのため、成立条件を満たす正答は A「<span class="sql-kw">SELECT</span> NAME, PASS_PRICE, START_DATE <span class="sql-kw">FROM</span> EMP <span class="sql-kw">WHERE</span> STAR…」 / B「<span class="sql-kw">SELECT</span> NAME, PASS_PRICE, START_DATE <span class="sql-kw">FROM</span> EMP <span class="sql-kw">WHERE</span> PASS…」 です。</p>
+                    <p>3つの条件（部署・入社年数・定期代）を全て満たす行を取得する問題です。「全て満たす」は AND 条件＝集合の共通部分なので INTERSECT を使います。A と B はどちらも INTERSECT を使い、左右 SELECT に3条件を2つずつ振り分けており等価です。C と D は UNION 系で「いずれかを満たす」行を返す全く別の結果になります。正答 AB。</p>
                     <div class="block-title">今回の失点要因</div>
-                    <p>自己回答は A「<span class="sql-kw">SELECT</span> NAME, PASS_PRICE, START_DATE <span class="sql-kw">FROM</span> EMP <span class="sql-kw">WHERE</span> STAR…」 / D「<span class="sql-kw">SELECT</span> NAME, PASS_PRICE, START_DATE <span class="sql-kw">FROM</span> EMP <span class="sql-kw">WHERE</span> STAR…」 でした。<br>一部は論点を捉えていますが、D「<span class="sql-kw">SELECT</span> NAME, PASS_PRICE, START_DATE <span class="sql-kw">FROM</span> EMP <span class="sql-kw">WHERE</span> STAR…」 を混在させたことで正答条件を外しています。<br>失点要因は 列名まで一致必須と思い込んだり、列数・型の一致条件と、<span class="sql-kw">INTERSECT</span> が返す行の意味を切り分けられずに失点しやすい。</p>
+                    <p>D（UNION）を選んでしまったことが失点原因です。UNION は2つの SELECT の和集合を返すため、「部署10101 かつ 1年以内」または「定期代5万超」のどちらかを満たす行が全て含まれます。これは「全条件AND」とは異なります。B が正解であることを見落とした理由は A と B の違い（条件の振り分け方）が表面上似ているためですが、どちらも INTERSECT で3条件の交差を取るため同じ結果になります。</p>
                     <div class="block-title">選択肢ごとの判定</div>
                     <div class="option-review-grid">
             <div class="option-review correct">
@@ -378,9 +378,9 @@
 (<span class="sql-num">5</span>)		E. NULL値は無視される</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
-                    <p>この設問で確定させる論点は「<span class="sql-kw">INTERSECT</span> を含む集合演算の基本」です。<br>問題文は「複合問合せ（<span class="sql-kw">UNION</span> / <span class="sql-kw">INTERSECT</span> / <span class="sql-kw">MINUS</span> 等）において、次の記述のうち正しいものを2つ選択してください。<br>」を満たす記述または SQL を求めています。<br>複合問合せでは、各 <span class="sql-kw">SELECT</span> の列数と対応するデータ型をそろえる必要がある。<br><span class="sql-kw">INTERSECT</span> は両方の結果に共通する行を返し、<span class="sql-kw">NULL</span> を含む行も比較対象になる。 そのため、成立条件を満たす正答は A「SELECT句の列数はすべて同一である必要がある」 / C「ORDER BY句は最初のSELECTの列を指定する」 です。</p>
+                    <p>複合問合せのルールを2つ選ぶ問題です。A「列数は全て同一が必要」は絶対条件（違うとORA-01789）。C「ORDER BY は最初の SELECT の列を指定する」は ORDER BY 基準の列名が先頭 SELECT 準拠であることを指しています。D「最後のSELECTの列名」は誤りで「先頭」が正しい。E「NULL は無視」は誤りで集合演算はNULLも処理対象。正答 AC。</p>
                     <div class="block-title">今回の失点要因</div>
-                    <p>自己回答は D「結果セットの列名は、指定した最後のSELECTの列名が使用される」 / E「NULL値は無視される」 でした。<br>失点要因は 列名まで一致必須と思い込んだり、列数・型の一致条件と、<span class="sql-kw">INTERSECT</span> が返す行の意味を切り分けられずに失点しやすい。 正答との差は、条件の向き、句の位置、返却行数、またはオブジェクトの性質を正式定義のレベルで確認し切れていない点にあります。</p>
+                    <p>D「列名は最後の SELECT が使用される」と E「NULL は無視される」を両方選んでしまったことが失点原因です。D は「先頭」と「最後」を取り違えたミスです。実際、<code>SELECT a UNION SELECT b ORDER BY b</code> はエラーになり、<code>ORDER BY a</code> か位置番号しか使えません。E は集合演算でも NULL は「NULL＝NULL」として比較対象になることを見落としています。</p>
                     <div class="block-title">選択肢ごとの判定</div>
                     <div class="option-review-grid">
             <div class="option-review correct">
@@ -389,7 +389,7 @@
                 <div class="option-review-badges"><span>正答肢</span></div>
               </div>
               <div class="option-review-text">SELECT句の列数はすべて同一である必要がある</div>
-              <div class="option-review-reason">正しい。 副問合せでは返却行数、相関の有無、比較演算子の整合が成立条件になります。</div>
+              <div class="option-review-reason">正しい。列数が異なると ORA-01789 エラーになります。これは UNION/INTERSECT/MINUS 全てに共通する絶対条件です。</div>
             </div>
             
             <div class="option-review wrong">
@@ -398,7 +398,7 @@
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
               <div class="option-review-text">SELECT句の列名はすべて同一である必要がある</div>
-              <div class="option-review-reason">誤り。 副問合せでは返却行数、相関の有無、比較演算子の整合が成立条件になります。</div>
+              <div class="option-review-reason">誤り。列名の一致は不要です。結果セットの列名は先頭 SELECT の列名が採用されます。</div>
             </div>
             
             <div class="option-review correct">
@@ -407,7 +407,7 @@
                 <div class="option-review-badges"><span>正答肢</span></div>
               </div>
               <div class="option-review-text">ORDER BY句は最初のSELECTの列を指定する</div>
-              <div class="option-review-reason">正しい。 副問合せでは返却行数、相関の有無、比較演算子の整合が成立条件になります。</div>
+              <div class="option-review-reason">正しい。複合問合せの ORDER BY では先頭 SELECT の列名、または位置番号（1, 2…）を指定します。第2以降の SELECT の列名を ORDER BY で使用するとエラーになります。</div>
             </div>
             
             <div class="option-review wrong">
@@ -416,7 +416,7 @@
                 <div class="option-review-badges"><span>非正答肢</span><span>自己回答</span></div>
               </div>
               <div class="option-review-text">結果セットの列名は、指定した最後のSELECTの列名が使用される</div>
-              <div class="option-review-reason">誤り。 副問合せでは返却行数、相関の有無、比較演算子の整合が成立条件になります。</div>
+              <div class="option-review-reason">誤り（自己回答）。「最後」ではなく「先頭」の SELECT の列名が使われます。この誤りが失点の直接原因です。</div>
             </div>
             
             <div class="option-review wrong">
@@ -425,7 +425,7 @@
                 <div class="option-review-badges"><span>非正答肢</span><span>自己回答</span></div>
               </div>
               <div class="option-review-text">NULL値は無視される</div>
-              <div class="option-review-reason">誤り。 この選択肢は「複合問合せ（<span class="sql-kw">UNION</span> / <span class="sql-kw">INTERSECT</span> / <span class="sql-kw">MINUS</span> 等）において、次の記述のうち正しいものを2つ選択してください。<br>」という設問条件に対して、<span class="sql-kw">INTERSECT</span> を含む集合演算の基本 の成立条件または文法要件を満たしていません。</div>
+              <div class="option-review-reason">誤り（自己回答）。集合演算では NULL も比較対象になります。INTERSECT で両側に NULL が含まれる行があれば一致とみなし抽出されます。「NULL は無視」は WHERE 句の <code>col = NULL</code> が常に偽になる挙動と混同しないでください。</div>
             </div>
             </div>
                     <div class="block-title">解く順序</div>
@@ -446,9 +446,9 @@
 (<span class="sql-num"><span class="sql-num">5</span></span>)		E. SELECT文の順番を入れ替えても結果は変わらない</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
-                    <p>この設問で確定させる論点は「<span class="sql-kw">INTERSECT</span> を含む集合演算の基本」です。<br>問題文は「INTERSECTの特徴として正しいものを2つ選択してください。<br>」を満たす記述または SQL を求めています。<br>複合問合せでは、各 <span class="sql-kw">SELECT</span> の列数と対応するデータ型をそろえる必要がある。<br><span class="sql-kw">INTERSECT</span> は両方の結果に共通する行を返し、<span class="sql-kw">NULL</span> を含む行も比較対象になる。 そのため、成立条件を満たす正答は B「2つの結果の共通する行を選択する」 / E「SELECT文の順番を入れ替えても結果は変わらない」 です。</p>
+                    <p>INTERSECT の特徴を2つ選ぶ問題です。B「共通行を返す」は定義通り正解。E「順番を入れ替えても結果は変わらない」は集合論の可換性（A∩B＝B∩A）から正解。D「NULL は除外」は誤りで、INTERSECT は NULL も一致対象として扱います。C「ソートされない」は誤りで、重複排除のため内部ソートが行われます。正答 BE。</p>
                     <div class="block-title">今回の失点要因</div>
-                    <p>自己回答は B「2つの結果の共通する行を選択する」 / D「NULL値は除外される」 でした。<br>一部は論点を捉えていますが、D「NULL値は除外される」 を混在させたことで正答条件を外しています。<br>失点要因は 列名まで一致必須と思い込んだり、列数・型の一致条件と、<span class="sql-kw">INTERSECT</span> が返す行の意味を切り分けられずに失点しやすい。</p>
+                    <p>D「NULL値は除外される」を選んでしまったことが失点原因です。通常の WHERE 句では <code>col = NULL</code> は常に偽（NULL は比較不可）ですが、INTERSECT は「行全体の一致判定」を行い、NULL カラムも「NULL＝NULL」として一致扱いします。E「順番を入れ替えても結果は変わらない」は INTERSECT が可換演算であるという集合論の性質です。この性質を見落として B だけで止まったことも失点要因の一つです。</p>
                     <div class="block-title">選択肢ごとの判定</div>
                     <div class="option-review-grid">
             <div class="option-review wrong">
@@ -457,7 +457,7 @@
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
               <div class="option-review-text">列数やデータ型が異なるSELECT同士でも使用できる</div>
-              <div class="option-review-reason">誤り。 副問合せでは返却行数、相関の有無、比較演算子の整合が成立条件になります。</div>
+              <div class="option-review-reason">誤り。列数が異なると ORA-01789、データ型が互換でないと ORA-01790 エラーになります。列名のみ異なっても問題ありません。</div>
             </div>
             
             <div class="option-review correct">
@@ -466,7 +466,7 @@
                 <div class="option-review-badges"><span>正答肢</span><span>自己回答</span></div>
               </div>
               <div class="option-review-text">2つの結果の共通する行を選択する</div>
-              <div class="option-review-reason">正しい。 この選択肢は「INTERSECTの特徴として正しいものを2つ選択してください。<br>」という設問条件に対して、<span class="sql-kw">INTERSECT</span> を含む集合演算の基本 の成立条件を満たしています。</div>
+              <div class="option-review-reason">正しい。INTERSECT は集合論の積集合（A∩B）で、両方の SELECT 結果に含まれる行だけを返します。</div>
             </div>
             
             <div class="option-review wrong">
@@ -475,7 +475,7 @@
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
               <div class="option-review-text">結果はソートされない</div>
-              <div class="option-review-reason">誤り。 この選択肢は「INTERSECTの特徴として正しいものを2つ選択してください。<br>」という設問条件に対して、<span class="sql-kw">INTERSECT</span> を含む集合演算の基本 の成立条件または文法要件を満たしていません。</div>
+              <div class="option-review-reason">誤り。INTERSECT は重複排除のために内部的にソートを行うため、結果がソートされることがあります（保証はしないが「しない」とも断言できません）。UNION ALL のみがソートなしです。</div>
             </div>
             
             <div class="option-review wrong">
@@ -484,7 +484,7 @@
                 <div class="option-review-badges"><span>非正答肢</span><span>自己回答</span></div>
               </div>
               <div class="option-review-text">NULL値は除外される</div>
-              <div class="option-review-reason">誤り。 この選択肢は「INTERSECTの特徴として正しいものを2つ選択してください。<br>」という設問条件に対して、<span class="sql-kw">INTERSECT</span> を含む集合演算の基本 の成立条件または文法要件を満たしていません。</div>
+              <div class="option-review-reason">誤り（自己回答）。INTERSECT は NULL を除外しません。両側の結果に同じ NULL 値を含む行が存在すれば、その行も結果に含まれます。</div>
             </div>
             
             <div class="option-review correct">
@@ -493,7 +493,7 @@
                 <div class="option-review-badges"><span>正答肢</span></div>
               </div>
               <div class="option-review-text">SELECT文の順番を入れ替えても結果は変わらない</div>
-              <div class="option-review-reason">正しい。 副問合せでは返却行数、相関の有無、比較演算子の整合が成立条件になります。</div>
+              <div class="option-review-reason">正しい。INTERSECT は可換（A∩B＝B∩A）なので、左右の SELECT を入れ替えても同じ結果になります。MINUS は非可換（A−B≠B−A）なので入れ替えると結果が変わります。</div>
             </div>
             </div>
                     <div class="block-title">解く順序</div>
@@ -519,9 +519,9 @@
 (<span class="sql-num">4</span>)		D. エラーになる</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
-                    <p>この設問で確定させる論点は「<span class="sql-kw">INTERSECT</span> を含む集合演算の基本」です。<br>問題文は「次のクエリを実行して検索される行数は何行でしょうか。<br>1つ選択してください。 <span class="sql-kw">SELECT</span> dummy "DUMMY1" <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span> <span class="sql-kw">INTERSECT</span> <span class="sql-kw">SELECT</span> dummy <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span> <span class="sql-kw">INTERSECT</span> <span class="sql-kw">SELECT</span>…」を満たす記述または SQL を求めています。<br>複合問合せでは、各 <span class="sql-kw">SELECT</span> の列数と対応するデータ型をそろえる必要がある。<br><span class="sql-kw">INTERSECT</span> は両方の結果に共通する行を返し、<span class="sql-kw">NULL</span> を含む行も比較対象になる。 そのため、成立条件を満たす正答は B「<span class="sql-num">1</span>」 です。</p>
+                    <p>DUAL は常に1行1列（VARCHAR2(1)値 'X'）を返す疑似表です。3つの SELECT とも列数1・型 VARCHAR2 で一致しており、列名（DUMMY1/dummy/DUMMY3）が異なっても問題ありません。3つの INTERSECT の共通行は 'X' の1行のみ。正答は B「1行」。エラーにはなりません。</p>
                     <div class="block-title">今回の失点要因</div>
-                    <p>自己回答は D「エラーになる」 でした。<br>失点要因は 列名まで一致必須と思い込んだり、列数・型の一致条件と、<span class="sql-kw">INTERSECT</span> が返す行の意味を切り分けられずに失点しやすい。 正答との差は、条件の向き、句の位置、返却行数、またはオブジェクトの性質を正式定義のレベルで確認し切れていない点にあります。</p>
+                    <p>「エラーになる」を選んだ原因は、列名（DUMMY1・dummy・DUMMY3）が異なることをエラー条件と判断したためです。しかし集合演算でエラーになるのは「列数の不一致」または「データ型の非互換」です。列名の違いはエラーにならず、結果列名は先頭 SELECT の "DUMMY1" になります。DUAL の仕様（常に1行）と集合演算のエラー条件を両方押さえることで正答できます。</p>
                     <div class="block-title">選択肢ごとの判定</div>
                     <div class="option-review-grid">
             <div class="option-review wrong">
@@ -530,7 +530,7 @@
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
               <div class="option-review-text"><span class="sql-num">0</span></div>
-              <div class="option-review-reason">誤り。 この選択肢は「次のクエリを実行して検索される行数は何行でしょうか。<br>1つ選択してください。 <span class="sql-kw">SELECT</span> dummy &quot;DUMMY1&quot; <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span> <span class="sql-kw">INTERSECT</span> <span class="sql-kw">SELECT</span> dummy <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span> <span class="sql-kw">INTERSECT</span> <span class="sql-kw">SELECT</span>…」という設問条件に対して、<span class="sql-kw">INTERSECT</span> を含む集合演算の基本 の成立条件または文法要件を満たしていません。</div>
+              <div class="option-review-reason">誤り。3つとも DUAL から同じ 'X' を返すため、INTERSECT の共通行は必ず存在します。0行にはなりません。</div>
             </div>
             
             <div class="option-review correct">
@@ -539,7 +539,7 @@
                 <div class="option-review-badges"><span>正答肢</span></div>
               </div>
               <div class="option-review-text"><span class="sql-num">1</span></div>
-              <div class="option-review-reason">正しい。 この選択肢は「次のクエリを実行して検索される行数は何行でしょうか。<br>1つ選択してください。 <span class="sql-kw">SELECT</span> dummy &quot;DUMMY1&quot; <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span> <span class="sql-kw">INTERSECT</span> <span class="sql-kw">SELECT</span> dummy <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span> <span class="sql-kw">INTERSECT</span> <span class="sql-kw">SELECT</span>…」という設問条件に対して、<span class="sql-kw">INTERSECT</span> を含む集合演算の基本 の成立条件を満たしています。</div>
+              <div class="option-review-reason">正しい。DUAL は常に1行（'X'）を返します。3つの SELECT の共通部分は 'X' の1行のみです。列名が異なってもエラーにならず正常実行されます。</div>
             </div>
             
             <div class="option-review wrong">
@@ -548,7 +548,7 @@
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
               <div class="option-review-text"><span class="sql-num">3</span></div>
-              <div class="option-review-reason">誤り。 この選択肢は「次のクエリを実行して検索される行数は何行でしょうか。<br>1つ選択してください。 <span class="sql-kw">SELECT</span> dummy &quot;DUMMY1&quot; <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span> <span class="sql-kw">INTERSECT</span> <span class="sql-kw">SELECT</span> dummy <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span> <span class="sql-kw">INTERSECT</span> <span class="sql-kw">SELECT</span>…」という設問条件に対して、<span class="sql-kw">INTERSECT</span> を含む集合演算の基本 の成立条件または文法要件を満たしていません。</div>
+              <div class="option-review-reason">誤り。SELECT が3つあっても INTERSECT は共通部分を返すので行数は増えません。DUAL がそれぞれ1行を返し共通部分も1行です。</div>
             </div>
             
             <div class="option-review wrong">
@@ -557,7 +557,7 @@
                 <div class="option-review-badges"><span>非正答肢</span><span>自己回答</span></div>
               </div>
               <div class="option-review-text">エラーになる</div>
-              <div class="option-review-reason">誤り。 この選択肢は「次のクエリを実行して検索される行数は何行でしょうか。<br>1つ選択してください。 <span class="sql-kw">SELECT</span> dummy &quot;DUMMY1&quot; <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span> <span class="sql-kw">INTERSECT</span> <span class="sql-kw">SELECT</span> dummy <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span> <span class="sql-kw">INTERSECT</span> <span class="sql-kw">SELECT</span>…」という設問条件に対して、<span class="sql-kw">INTERSECT</span> を含む集合演算の基本 の成立条件または文法要件を満たしていません。</div>
+              <div class="option-review-reason">誤り（自己回答）。列名が DUMMY1/dummy/DUMMY3 と異なることをエラーと判断したと思われますが、集合演算のエラー条件は「列数の不一致」または「データ型の非互換」です。列名の違いはエラーになりません。</div>
             </div>
             </div>
                     <div class="block-title">解く順序</div>
@@ -621,9 +621,9 @@
 (<span class="sql-num"><span class="sql-num">4</span></span>)		D.　ORDER BY句には、最初のSELECT文の列名を指定します。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
-                    <p>この設問で確定させる論点は「集合演算と <span class="sql-kw">ORDER BY</span>」です。<br>問題文は「SQLのUNION演算子でORDER BY句を使用する場合の説明で正しい記述はどれでしょうか。<br>」を満たす記述または SQL を求めています。<br><span class="sql-kw">UNION</span>、<span class="sql-kw">INTERSECT</span>、<span class="sql-kw">MINUS</span> を使った文では、<span class="sql-kw">ORDER BY</span> は最後に1回だけ書ける。<br>列名は先頭 <span class="sql-kw">SELECT</span> の列名、または位置番号で指定する。 そのため、成立条件を満たす正答は D「ORDER BY句には、最初のSELECT文の列名を指定します。<br>」 です。</p>
+                    <p>UNIONの ORDER BY ルールを問う問題です。ORDER BY は複合問合せ全体の末尾に一回だけ書け、先頭 SELECT の列名または位置番号で指定します。D「ORDER BY には最初の SELECT の列名を指定」が正解。正答 D。</p>
                     <div class="block-title">今回の失点要因</div>
-                    <p>自己回答は C「ORDER BY句がない場合は、最初のSELECT文の最初の列名でソートされます。<br>」 でした。<br>失点要因は 各 <span class="sql-kw">SELECT</span> ごとに <span class="sql-kw">ORDER BY</span> が書ける、または任意の列番号を指定できると誤認しやすい。 正答との差は、条件の向き、句の位置、返却行数、またはオブジェクトの性質を正式定義のレベルで確認し切れていない点にあります。</p>
+                    <p>C「ORDER BY がない場合は最初の SELECT の最初の列でソートされる」を選んでしまったことが失点原因です。ORDER BY なしの場合、ソート順は保証されません。「先頭列で自動ソート」というルールは存在しません。</p>
                     <div class="block-title">選択肢ごとの判定</div>
                     <div class="option-review-grid">
             <div class="option-review wrong">
@@ -632,7 +632,7 @@
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
               <div class="option-review-text">各SELECT文には、それぞれORDER BY句が必要です。</div>
-              <div class="option-review-reason">誤り。 副問合せでは返却行数、相関の有無、比較演算子の整合が成立条件になります。</div>
+              <div class="option-review-reason">誤り。各 SELECT に個別に ORDER BY を書くことはできません。ORDER BY は複合問合せ全体の末尾に一回だけ書いて、全 SELECT の結果に対して一括でソートします。</div>
             </div>
             
             <div class="option-review wrong">
@@ -641,7 +641,7 @@
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
               <div class="option-review-text">ORDER BY句では、列名ではなく位置で指定する必要があります。</div>
-              <div class="option-review-reason">誤り。 この選択肢は「SQLのUNION演算子でORDER BY句を使用する場合の説明で正しい記述はどれでしょうか。<br>」という設問条件に対して、集合演算と <span class="sql-kw">ORDER BY</span> の成立条件または文法要件を満たしていません。</div>
+              <div class="option-review-reason">誤り。列名か位置番号のどちらでも指定できます。列名の場合は先頭 SELECT の列名を基準にします。「位置番号のみ」という制約はありません。</div>
             </div>
             
             <div class="option-review wrong">
@@ -650,7 +650,7 @@
                 <div class="option-review-badges"><span>非正答肢</span><span>自己回答</span></div>
               </div>
               <div class="option-review-text">ORDER BY句がない場合は、最初のSELECT文の最初の列名でソートされます。</div>
-              <div class="option-review-reason">誤り。 副問合せでは返却行数、相関の有無、比較演算子の整合が成立条件になります。</div>
+              <div class="option-review-reason">誤り（自己回答）。ORDER BY なしの場合、結果のソート順は保証されません。「先頭列で自動ソート」というルールは存在しません。</div>
             </div>
             
             <div class="option-review correct">
@@ -659,7 +659,7 @@
                 <div class="option-review-badges"><span>正答肢</span></div>
               </div>
               <div class="option-review-text">ORDER BY句には、最初のSELECT文の列名を指定します。</div>
-              <div class="option-review-reason">正しい。 副問合せでは返却行数、相関の有無、比較演算子の整合が成立条件になります。</div>
+              <div class="option-review-reason">正しい。複合問合せの ORDER BY では先頭 SELECT の列名または位置番号のみ使用可能です。第2以降の SELECT の列名は ORDER BY に指定できません。</div>
             </div>
             </div>
                     <div class="block-title">解く順序</div>
@@ -690,9 +690,9 @@
 (<span class="sql-num">5</span>)		E.　<span class="sql-kw">ORDER BY</span> <span class="sql-num">2</span>, ITEM_ID</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
-                    <p>この設問で確定させる論点は「集合演算と <span class="sql-kw">ORDER BY</span>」です。<br>問題文は「次のSQLを確認してください。 <span class="sql-kw">SELECT</span> ITEM_ID, ITEM_NAME "商品名" <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> ITEM_TYPE = <span class="sql-str">'FOOD'</span> <span class="sql-kw">UNION</span> <span class="sql-kw">SELECT</span> ITEM_ID ITEM_TYPE, ITEM…」を満たす記述または SQL を求めています。<br><span class="sql-kw">UNION</span>、<span class="sql-kw">INTERSECT</span>、<span class="sql-kw">MINUS</span> を使った文では、<span class="sql-kw">ORDER BY</span> は最後に1回だけ書ける。<br>列名は先頭 <span class="sql-kw">SELECT</span> の列名、または位置番号で指定する。 そのため、成立条件を満たす正答は A「<span class="sql-kw">ORDER BY</span> &quot;商品名&quot;」 / C「<span class="sql-kw">ORDER BY</span> <span class="sql-num">1</span>」 / E「<span class="sql-kw">ORDER BY</span> <span class="sql-num">2</span>, ITEM_ID」 です。</p>
+                    <p>先頭 SELECT の列名は ITEM_ID（別名なし）と "商品名"（ITEM_NAME の別名）の2列です。ORDER BY に使えるのはこの中の列名か位置番号のみ。A（"商品名"）・C（1）・E（2, ITEM_ID）が有効。D「ORDER BY ITEM_TYPE」は第2 SELECT で ITEM_ID に付けた別名で、先頭 SELECT には存在しないためエラー。正答 ACE。</p>
                     <div class="block-title">今回の失点要因</div>
-                    <p>自己回答は C「<span class="sql-kw">ORDER BY</span> <span class="sql-num">1</span>」 / D「<span class="sql-kw">ORDER BY</span> ITEM_TYPE」 / E「<span class="sql-kw">ORDER BY</span> <span class="sql-num">2</span>, ITEM_ID」 でした。<br>一部は論点を捉えていますが、D「<span class="sql-kw">ORDER BY</span> ITEM_TYPE」 を混在させたことで正答条件を外しています。<br>失点要因は 各 <span class="sql-kw">SELECT</span> ごとに <span class="sql-kw">ORDER BY</span> が書ける、または任意の列番号を指定できると誤認しやすい。</p>
+                    <p>D「ORDER BY ITEM_TYPE」を選んでしまったことが失点原因です。ITEM_TYPE は第2 SELECT で <code>SELECT ITEM_ID ITEM_TYPE</code> と ITEM_ID に付けた別名ですが、ORDER BY の基準は先頭 SELECT（列名: ITEM_ID・"商品名"）のみで、ITEM_TYPE は ORDER BY で使えずエラー。A「"商品名"」が正解であることも見落とした点が追加の失点要因です。</p>
                     <div class="block-title">選択肢ごとの判定</div>
                     <div class="option-review-grid">
             <div class="option-review correct">
@@ -701,7 +701,7 @@
                 <div class="option-review-badges"><span>正答肢</span></div>
               </div>
               <div class="option-review-text"><span class="sql-kw">ORDER BY</span> &quot;商品名&quot;</div>
-              <div class="option-review-reason">正しい。 この選択肢は「次のSQLを確認してください。 <span class="sql-kw">SELECT</span> ITEM_ID, ITEM_NAME &quot;商品名&quot; <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> ITEM_TYPE = &#x27;FOOD&#x27; <span class="sql-kw">UNION</span> <span class="sql-kw">SELECT</span> ITEM_ID ITEM_TYPE, ITEM…」という設問条件に対して、集合演算と <span class="sql-kw">ORDER BY</span> の成立条件を満たしています。</div>
+              <div class="option-review-reason">正しい。"商品名" は先頭 SELECT の ITEM_NAME に付けた列別名として存在するため ORDER BY で使用できます。</div>
             </div>
             
             <div class="option-review wrong">
@@ -710,7 +710,7 @@
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
               <div class="option-review-text"><span class="sql-kw">ORDER BY</span> &quot;ITEM_TYPE&quot;</div>
-              <div class="option-review-reason">誤り。 この選択肢は「次のSQLを確認してください。 <span class="sql-kw">SELECT</span> ITEM_ID, ITEM_NAME &quot;商品名&quot; <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> ITEM_TYPE = &#x27;FOOD&#x27; <span class="sql-kw">UNION</span> <span class="sql-kw">SELECT</span> ITEM_ID ITEM_TYPE, ITEM…」という設問条件に対して、集合演算と <span class="sql-kw">ORDER BY</span> の成立条件または文法要件を満たしていません。</div>
+              <div class="option-review-reason">誤り。"ITEM_TYPE"（ダブルクォート付き）は先頭 SELECT に存在しません。先頭 SELECT の列名は ITEM_ID と "商品名" のみです。</div>
             </div>
             
             <div class="option-review correct">
@@ -719,7 +719,7 @@
                 <div class="option-review-badges"><span>正答肢</span><span>自己回答</span></div>
               </div>
               <div class="option-review-text"><span class="sql-kw">ORDER BY</span> <span class="sql-num">1</span></div>
-              <div class="option-review-reason">正しい。 この選択肢は「次のSQLを確認してください。 <span class="sql-kw">SELECT</span> ITEM_ID, ITEM_NAME &quot;商品名&quot; <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> ITEM_TYPE = &#x27;FOOD&#x27; <span class="sql-kw">UNION</span> <span class="sql-kw">SELECT</span> ITEM_ID ITEM_TYPE, ITEM…」という設問条件に対して、集合演算と <span class="sql-kw">ORDER BY</span> の成立条件を満たしています。</div>
+              <div class="option-review-reason">正しい。位置番号 1 は先頭 SELECT の第1列（ITEM_ID）に対応します。位置番号は列数の範囲内なら常に有効です。</div>
             </div>
             
             <div class="option-review wrong">
@@ -728,7 +728,7 @@
                 <div class="option-review-badges"><span>非正答肢</span><span>自己回答</span></div>
               </div>
               <div class="option-review-text"><span class="sql-kw">ORDER BY</span> ITEM_TYPE</div>
-              <div class="option-review-reason">誤り。 この選択肢は「次のSQLを確認してください。 <span class="sql-kw">SELECT</span> ITEM_ID, ITEM_NAME &quot;商品名&quot; <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> ITEM_TYPE = &#x27;FOOD&#x27; <span class="sql-kw">UNION</span> <span class="sql-kw">SELECT</span> ITEM_ID ITEM_TYPE, ITEM…」という設問条件に対して、集合演算と <span class="sql-kw">ORDER BY</span> の成立条件または文法要件を満たしていません。</div>
+              <div class="option-review-reason">誤り（自己回答）。ITEM_TYPE は第2 SELECT で ITEM_ID に付けた別名ですが、ORDER BY の列名基準は先頭 SELECT（ITEM_ID・"商品名"）のみなので、ITEM_TYPE はエラーになります。</div>
             </div>
             
             <div class="option-review correct">
@@ -737,7 +737,7 @@
                 <div class="option-review-badges"><span>正答肢</span><span>自己回答</span></div>
               </div>
               <div class="option-review-text"><span class="sql-kw">ORDER BY</span> <span class="sql-num">2</span>, ITEM_ID</div>
-              <div class="option-review-reason">正しい。 この選択肢は「次のSQLを確認してください。 <span class="sql-kw">SELECT</span> ITEM_ID, ITEM_NAME &quot;商品名&quot; <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> ITEM_TYPE = &#x27;FOOD&#x27; <span class="sql-kw">UNION</span> <span class="sql-kw">SELECT</span> ITEM_ID ITEM_TYPE, ITEM…」という設問条件に対して、集合演算と <span class="sql-kw">ORDER BY</span> の成立条件を満たしています。</div>
+              <div class="option-review-reason">正しい。位置番号 2（"商品名"）と先頭 SELECT の列名 ITEM_ID の組み合わせです。位置番号と列名を混在して ORDER BY に指定することは有効です。</div>
             </div>
             </div>
                     <div class="block-title">解く順序</div>
@@ -773,9 +773,9 @@
 (<span class="sql-num">4</span>)		D.　正常に実行されますが、ORDER BY句が無視され、ソートされません。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
-                    <p>この設問で確定させる論点は「集合演算と <span class="sql-kw">ORDER BY</span>」です。<br>問題文は「以下のSQL文を実行するとします。 <span class="sql-kw">SELECT</span> ITEM_ID, MAKER_ID <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> MAKER_ID <span class="sql-kw">LIKE</span> <span class="sql-str">'1%'</span> <span class="sql-kw">ORDER BY</span> MAKER_ID <span class="sql-kw">UNION</span> <span class="sql-kw">SELECT</span> ITEM_ID, M…」を満たす記述または SQL を求めています。<br><span class="sql-kw">UNION</span>、<span class="sql-kw">INTERSECT</span>、<span class="sql-kw">MINUS</span> を使った文では、<span class="sql-kw">ORDER BY</span> は最後に1回だけ書ける。<br>列名は先頭 <span class="sql-kw">SELECT</span> の列名、または位置番号で指定する。 そのため、成立条件を満たす正答は C「ORDER BY句は最後のSELECT文に記述する必要があるため、エラーとなります。<br>」 です。</p>
+                    <p>最初の SELECT の後ろに ORDER BY が書かれ、その後に UNION が続く構造です。複合問合せでは ORDER BY は全体末尾に一回だけ書かなければ文法エラー（ORA-00933）になります。正答は C「最後の SELECT の後ろに記述する必要があるためエラー」。</p>
                     <div class="block-title">今回の失点要因</div>
-                    <p>自己回答は D「正常に実行されますが、ORDER BY句が無視され、ソートされません。<br>」 でした。<br>失点要因は 各 <span class="sql-kw">SELECT</span> ごとに <span class="sql-kw">ORDER BY</span> が書ける、または任意の列番号を指定できると誤認しやすい。 正答との差は、条件の向き、句の位置、返却行数、またはオブジェクトの性質を正式定義のレベルで確認し切れていない点にあります。</p>
+                    <p>D「正常実行されるが ORDER BY が無視される」を選んでしまったことが失点原因です。Oracle は途中に書かれた ORDER BY を無視するのではなく、文法エラー（ORA-00933）として拒否します。UNION 使用時は ORDER BY を必ず最後の SELECT の後ろに一回だけ書くと覚えてください。</p>
                     <div class="block-title">選択肢ごとの判定</div>
                     <div class="option-review-grid">
             <div class="option-review wrong">
@@ -784,7 +784,7 @@
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
               <div class="option-review-text">正常に実行され、すべての行がMAKER_IDの昇順で表示されます。</div>
-              <div class="option-review-reason">誤り。 この選択肢は「以下のSQL文を実行するとします。 <span class="sql-kw">SELECT</span> ITEM_ID, MAKER_ID <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> MAKER_ID <span class="sql-kw">LIKE</span> &#x27;<span class="sql-num">1</span>%&#x27; <span class="sql-kw">ORDER BY</span> MAKER_ID <span class="sql-kw">UNION</span> <span class="sql-kw">SELECT</span> ITEM_ID, M…」という設問条件に対して、集合演算と <span class="sql-kw">ORDER BY</span> の成立条件または文法要件を満たしていません。</div>
+              <div class="option-review-reason">誤り。ORDER BY が最初の SELECT の後ろに書かれており文法エラーになるため、正常実行はされません。</div>
             </div>
             
             <div class="option-review wrong">
@@ -793,7 +793,7 @@
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
               <div class="option-review-text">列名の代わりに位置番号（数値）をORDER BY句で使用する必要があるため、エラーとなります。</div>
-              <div class="option-review-reason">誤り。 この選択肢は「以下のSQL文を実行するとします。 <span class="sql-kw">SELECT</span> ITEM_ID, MAKER_ID <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> MAKER_ID <span class="sql-kw">LIKE</span> &#x27;<span class="sql-num">1</span>%&#x27; <span class="sql-kw">ORDER BY</span> MAKER_ID <span class="sql-kw">UNION</span> <span class="sql-kw">SELECT</span> ITEM_ID, M…」という設問条件に対して、集合演算と <span class="sql-kw">ORDER BY</span> の成立条件または文法要件を満たしていません。</div>
+              <div class="option-review-reason">誤り。列名でも ORDER BY に使えます（先頭 SELECT 列名準拠）。エラーの原因は ORDER BY の列名制限ではなく、ORDER BY の書き場所（UNION の途中）です。</div>
             </div>
             
             <div class="option-review correct">
@@ -802,7 +802,7 @@
                 <div class="option-review-badges"><span>正答肢</span></div>
               </div>
               <div class="option-review-text">ORDER BY句は最後のSELECT文に記述する必要があるため、エラーとなります。</div>
-              <div class="option-review-reason">正しい。 副問合せでは返却行数、相関の有無、比較演算子の整合が成立条件になります。</div>
+              <div class="option-review-reason">正しい。複合問合せの ORDER BY は「複合問合せ全体の末尾＝最後の SELECT の後ろ」に一回だけ書かなければ ORA-00933 エラーになります。</div>
             </div>
             
             <div class="option-review wrong">
@@ -811,7 +811,7 @@
                 <div class="option-review-badges"><span>非正答肢</span><span>自己回答</span></div>
               </div>
               <div class="option-review-text">正常に実行されますが、ORDER BY句が無視され、ソートされません。</div>
-              <div class="option-review-reason">誤り。 この選択肢は「以下のSQL文を実行するとします。 <span class="sql-kw">SELECT</span> ITEM_ID, MAKER_ID <span class="sql-kw">FROM</span> ITEM <span class="sql-kw">WHERE</span> MAKER_ID <span class="sql-kw">LIKE</span> &#x27;<span class="sql-num">1</span>%&#x27; <span class="sql-kw">ORDER BY</span> MAKER_ID <span class="sql-kw">UNION</span> <span class="sql-kw">SELECT</span> ITEM_ID, M…」という設問条件に対して、集合演算と <span class="sql-kw">ORDER BY</span> の成立条件または文法要件を満たしていません。</div>
+              <div class="option-review-reason">誤り（自己回答）。Oracle は無視するのではなく ORA-00933 文法エラーとして拒否します。これが失点の直接原因です。</div>
             </div>
             </div>
                     <div class="block-title">解く順序</div>
@@ -870,9 +870,9 @@ F.
 (<span class="sql-num">6</span>)		F</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
-                    <p>この設問で確定させる論点は「集合演算と <span class="sql-kw">ORDER BY</span>」です。<br>問題文は「次の SQL 文のうち、正常に実行されるものはどれですか？（2つ選択）」を満たす記述または SQL を求めています。<br><span class="sql-kw">UNION</span>、<span class="sql-kw">INTERSECT</span>、<span class="sql-kw">MINUS</span> を使った文では、<span class="sql-kw">ORDER BY</span> は最後に1回だけ書ける。<br>列名は先頭 <span class="sql-kw">SELECT</span> の列名、または位置番号で指定する。 そのため、成立条件を満たす正答は A「<span class="sql-kw">SELECT</span> <span class="sql-num">1</span>, <span class="sql-num">2</span> <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span> <span class="sql-kw">UNION</span> <span class="sql-kw">SELECT</span> <span class="sql-num">3</span>, <span class="sql-num">4</span> <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span> ORDER…」 / C「<span class="sql-kw">SELECT</span> <span class="sql-num">1</span>, <span class="sql-num">2</span> <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span> <span class="sql-kw">UNION</span> <span class="sql-kw">SELECT</span> <span class="sql-num">3</span>, <span class="sql-num">4</span> <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span> ORDER…」 です。</p>
+                    <p>ORDER BY の位置番号が結果セットの列数内に収まっているか、列数が一致しているか、ORDER BY の場所が適切かを確認する問題です。A（2列、ORDER BY 2→有効）・C（2列、ORDER BY 1,2→有効）が正常。B（2列に ORDER BY 3,4→列数超えるとエラー）・D（1列に ORDER BY 1,2→2列目がないとエラー）・E（1列対2列で列数不一致→ORA-01789）・F（ORDER BY が UNION の途中→文法エラー）。正答 AC。</p>
                     <div class="block-title">今回の失点要因</div>
-                    <p>自己回答は B「<span class="sql-kw">SELECT</span> <span class="sql-num">1</span>, <span class="sql-num">2</span> <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span> <span class="sql-kw">UNION</span> <span class="sql-kw">SELECT</span> <span class="sql-num">3</span>, <span class="sql-num">4</span> <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span> ORDER…」 / E「<span class="sql-kw">SELECT</span> <span class="sql-num">2</span> <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span> <span class="sql-kw">UNION</span> <span class="sql-kw">SELECT</span> <span class="sql-num">2</span>, <span class="sql-num">3</span> <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span> <span class="sql-kw">ORDER BY</span>…」 でした。<br>失点要因は 各 <span class="sql-kw">SELECT</span> ごとに <span class="sql-kw">ORDER BY</span> が書ける、または任意の列番号を指定できると誤認しやすい。 正答との差は、条件の向き、句の位置、返却行数、またはオブジェクトの性質を正式定義のレベルで確認し切れていない点にあります。</p>
+                    <p>B（ORDER BY 3,4）と E（列数不一致）を選んでしまったことが失点原因です。B は結果セットが2列なのに ORDER BY 3,4 と存在しない列番号を指定しておりエラーです。E は SELECT の列数が1対2で不一致（ORA-01789）なのでエラーです。各選択肢を「列数一致」「位置番号が列数内か」「ORDER BY の位置」の3点で機械的にチェックすることで正解できます。</p>
                     <div class="block-title">選択肢ごとの判定</div>
                     <div class="option-review-grid">
             <div class="option-review correct">
@@ -881,7 +881,7 @@ F.
                 <div class="option-review-badges"><span>正答肢</span></div>
               </div>
               <div class="option-review-text"><span class="sql-kw">SELECT</span> <span class="sql-num">1</span>, <span class="sql-num">2</span> <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span><br><span class="sql-kw">UNION</span><br><span class="sql-kw">SELECT</span> <span class="sql-num">3</span>, <span class="sql-num">4</span> <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span><br><span class="sql-kw">ORDER BY</span> <span class="sql-num">2</span>;</div>
-              <div class="option-review-reason">正しい。 <span class="sql-kw">UNION</span> は重複を除去して結果集合を結合します。 <span class="sql-kw">DUAL</span> は Oracle 固有の <span class="sql-num">1</span> 行 <span class="sql-num">1</span> 列の疑似表で、式や関数結果の確認に使います。</div>
+              <div class="option-review-reason">正しい。2列の結果に ORDER BY 2（位置番号 2→第2列）は列数内に収まるため有効です。</div>
             </div>
             
             <div class="option-review wrong">
@@ -890,7 +890,7 @@ F.
                 <div class="option-review-badges"><span>非正答肢</span><span>自己回答</span></div>
               </div>
               <div class="option-review-text"><span class="sql-kw">SELECT</span> <span class="sql-num">1</span>, <span class="sql-num">2</span> <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span><br><span class="sql-kw">UNION</span><br><span class="sql-kw">SELECT</span> <span class="sql-num">3</span>, <span class="sql-num">4</span> <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span><br><span class="sql-kw">ORDER BY</span> <span class="sql-num">3</span>, <span class="sql-num">4</span>;</div>
-              <div class="option-review-reason">誤り。 <span class="sql-kw">UNION</span> は重複を除去して結果集合を結合します。 <span class="sql-kw">DUAL</span> は Oracle 固有の <span class="sql-num">1</span> 行 <span class="sql-num">1</span> 列の疑似表で、式や関数結果の確認に使います。</div>
+              <div class="option-review-reason">誤り（自己回答）。2列の結果に ORDER BY 3, 4 は3列目・4列目を指定しており、列数を超えるためエラーになります。</div>
             </div>
             
             <div class="option-review correct">
@@ -899,7 +899,7 @@ F.
                 <div class="option-review-badges"><span>正答肢</span></div>
               </div>
               <div class="option-review-text"><span class="sql-kw">SELECT</span> <span class="sql-num">1</span>, <span class="sql-num">2</span> <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span><br><span class="sql-kw">UNION</span><br><span class="sql-kw">SELECT</span> <span class="sql-num">3</span>, <span class="sql-num">4</span> <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span><br><span class="sql-kw">ORDER BY</span> <span class="sql-num">1</span>, <span class="sql-num">2</span>;</div>
-              <div class="option-review-reason">正しい。 <span class="sql-kw">UNION</span> は重複を除去して結果集合を結合します。 <span class="sql-kw">DUAL</span> は Oracle 固有の <span class="sql-num">1</span> 行 <span class="sql-num">1</span> 列の疑似表で、式や関数結果の確認に使います。</div>
+              <div class="option-review-reason">正しい。2列の結果に ORDER BY 1, 2（位置番号 1・2）は列数内に収まるため有効です。</div>
             </div>
             
             <div class="option-review wrong">
@@ -908,7 +908,7 @@ F.
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
               <div class="option-review-text"><span class="sql-kw">SELECT</span> <span class="sql-num">1</span> <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span><br><span class="sql-kw">UNION</span><br><span class="sql-kw">SELECT</span> <span class="sql-num">2</span> <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span><br><span class="sql-kw">ORDER BY</span> <span class="sql-num">1</span>, <span class="sql-num">2</span>;</div>
-              <div class="option-review-reason">誤り。 <span class="sql-kw">UNION</span> は重複を除去して結果集合を結合します。 <span class="sql-kw">DUAL</span> は Oracle 固有の <span class="sql-num">1</span> 行 <span class="sql-num">1</span> 列の疑似表で、式や関数結果の確認に使います。</div>
+              <div class="option-review-reason">誤り。1列の結果に ORDER BY 1, 2 は2列目を指定していますが、結果は1列しかないためエラーになります。</div>
             </div>
             
             <div class="option-review wrong">
@@ -917,7 +917,7 @@ F.
                 <div class="option-review-badges"><span>非正答肢</span><span>自己回答</span></div>
               </div>
               <div class="option-review-text"><span class="sql-kw">SELECT</span> <span class="sql-num">2</span> <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span><br><span class="sql-kw">UNION</span><br><span class="sql-kw">SELECT</span> <span class="sql-num">2</span>, <span class="sql-num">3</span> <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span><br><span class="sql-kw">ORDER BY</span> <span class="sql-num">2</span>;</div>
-              <div class="option-review-reason">誤り。 <span class="sql-kw">UNION</span> は重複を除去して結果集合を結合します。 <span class="sql-kw">DUAL</span> は Oracle 固有の <span class="sql-num">1</span> 行 <span class="sql-num">1</span> 列の疑似表で、式や関数結果の確認に使います。</div>
+              <div class="option-review-reason">誤り（自己回答）。先頭 SELECT の列数が1、第2 SELECT の列数が2で不一致（ORA-01789）。列数がそろっていないときは ORDER BY を見る前にまず列数エラーに気づきましょう。</div>
             </div>
             
             <div class="option-review wrong">
@@ -926,7 +926,7 @@ F.
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
               <div class="option-review-text"><span class="sql-kw">SELECT</span> <span class="sql-num">1</span>, <span class="sql-num">2</span> <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span><br><span class="sql-kw">ORDER BY</span> <span class="sql-num">1</span>;<br><span class="sql-kw">UNION</span><br><span class="sql-kw">SELECT</span> <span class="sql-num">3</span>, <span class="sql-num">4</span> <span class="sql-kw">FROM</span> <span class="sql-kw">DUAL</span><br><span class="sql-kw">ORDER BY</span> <span class="sql-num">2</span>;</div>
-              <div class="option-review-reason">誤り。 <span class="sql-kw">UNION</span> は重複を除去して結果集合を結合します。 <span class="sql-kw">DUAL</span> は Oracle 固有の <span class="sql-num">1</span> 行 <span class="sql-num">1</span> 列の疑似表で、式や関数結果の確認に使います。</div>
+              <div class="option-review-reason">誤り。ORDER BY が UNION の途中（先頭 SELECT の後）に書かれており文法エラーになります。各 SELECT に個別に ORDER BY を書くことはできません。</div>
             </div>
             </div>
                     <div class="block-title">解く順序</div>
@@ -991,9 +991,9 @@ F.
 (<span class="sql-num"><span class="sql-num">4</span></span>)		D.　内側の文の1行ごとに、外側の文を実行します。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
-                    <p>この設問で確定させる論点は「相関サブクエリの実行順」です。<br>問題文は「相関副問合せの実行に関して正しいのはどれでしょうか。<br>（2つ選択）」を満たす記述または SQL を求めています。<br>相関サブクエリは、外側問い合わせの行を1行ずつ評価し、その行ごとに内側問い合わせを再実行する。<br>非相関サブクエリのように内側が先に1回だけ動くわけではない。 そのため、成立条件を満たす正答は B「内側の文は、外側の文が実行された後に実行されます。<br>」 / C「外側の文の1行ごとに、内側の文を実行します。<br>」 です。</p>
+                    <p>相関サブクエリの実行順を問う問題です。相関サブクエリは「外側が1行処理されるたびに内側が再実行される」ため、B「内側は外側が実行された後に実行」と C「外側の1行ごとに内側を実行」が正解。A「内側が最初」は非相関サブクエリの動き、D「内側の1行ごとに外側を実行」は内外逆転で誤り。正答 BC。</p>
                     <div class="block-title">今回の失点要因</div>
-                    <p>自己回答は A「内側の文が最初に実行され、次に外側の文が実行されます。<br>」 / D「内側の文の1行ごとに、外側の文を実行します。<br>」 でした。<br>失点要因は 非相関サブクエリの実行順と混同すると、内側先行や内外逆転の選択肢を選びやすい。 正答との差は、条件の向き、句の位置、返却行数、またはオブジェクトの性質を正式定義のレベルで確認し切れていない点にあります。</p>
+                    <p>A「内側が最初に実行され、次に外側が実行」と D「内側の1行ごとに外側を実行」を選んでしまったことが失点原因です。A は非相関サブクエリ（内側が外側を参照しない）の動きです。相関サブクエリの定義は「内側が外側の列を参照し、外側の各行に対して内側が再実行される」です。D は内外が逆転しており誤りです。</p>
                     <div class="block-title">選択肢ごとの判定</div>
                     <div class="option-review-grid">
             <div class="option-review wrong">
@@ -1002,7 +1002,7 @@ F.
                 <div class="option-review-badges"><span>非正答肢</span><span>自己回答</span></div>
               </div>
               <div class="option-review-text">内側の文が最初に実行され、次に外側の文が実行されます。</div>
-              <div class="option-review-reason">誤り。 この選択肢は「相関副問合せの実行に関して正しいのはどれでしょうか。<br>（2つ選択）」という設問条件に対して、相関サブクエリの実行順 の成立条件または文法要件を満たしていません。</div>
+              <div class="option-review-reason">誤り（自己回答）。「内側が最初に実行される」のは非相関サブクエリの動きです。相関サブクエリは内側が外側の列を参照するため、外側が先に動きます。</div>
             </div>
             
             <div class="option-review correct">
@@ -1011,7 +1011,7 @@ F.
                 <div class="option-review-badges"><span>正答肢</span></div>
               </div>
               <div class="option-review-text">内側の文は、外側の文が実行された後に実行されます。</div>
-              <div class="option-review-reason">正しい。 この選択肢は「相関副問合せの実行に関して正しいのはどれでしょうか。<br>（2つ選択）」という設問条件に対して、相関サブクエリの実行順 の成立条件を満たしています。</div>
+              <div class="option-review-reason">正しい。相関サブクエリは内側が外側の列を参照するため、外側の行が確定した後に内側が実行されます。</div>
             </div>
             
             <div class="option-review correct">
@@ -1020,7 +1020,7 @@ F.
                 <div class="option-review-badges"><span>正答肢</span></div>
               </div>
               <div class="option-review-text">外側の文の1行ごとに、内側の文を実行します。</div>
-              <div class="option-review-reason">正しい。 この選択肢は「相関副問合せの実行に関して正しいのはどれでしょうか。<br>（2つ選択）」という設問条件に対して、相関サブクエリの実行順 の成立条件を満たしています。</div>
+              <div class="option-review-reason">正しい。相関サブクエリの最大の特徴は「外側の各行に対して内側が再実行される」ことです。</div>
             </div>
             
             <div class="option-review wrong">
@@ -1029,7 +1029,7 @@ F.
                 <div class="option-review-badges"><span>非正答肢</span><span>自己回答</span></div>
               </div>
               <div class="option-review-text">内側の文の1行ごとに、外側の文を実行します。</div>
-              <div class="option-review-reason">誤り。 この選択肢は「相関副問合せの実行に関して正しいのはどれでしょうか。<br>（2つ選択）」という設問条件に対して、相関サブクエリの実行順 の成立条件または文法要件を満たしていません。</div>
+              <div class="option-review-reason">誤り（自己回答）。内外が逆転しています。相関サブクエリでは外側の各行に対して内側が実行されるのであり、内側の行ごとに外側が実行されるのではありません。</div>
             </div>
             </div>
                     <div class="block-title">解く順序</div>
@@ -1049,9 +1049,9 @@ F.
 (<span class="sql-num"><span class="sql-num">4</span></span>)		D.　外部問合せによって取得された値が、内部問合せの結果に存在するかどうかを判定するために使用されます。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
-                    <p>この設問で確定させる論点は「相関サブクエリの実行順」です。<br>問題文は「相関副問合せのEXISTS演算子に関して正しい記述はどれでしょうか。<br>（2つ選択）」を満たす記述または SQL を求めています。<br>相関サブクエリは、外側問い合わせの行を1行ずつ評価し、その行ごとに内側問い合わせを再実行する。<br>非相関サブクエリのように内側が先に1回だけ動くわけではない。 そのため、成立条件を満たす正答は A「内部問合せ結果にNULL値以外の値が見つかると、外部問合せは内部問合せの実行を中断します。<br>」 / D「外部問合せによって取得された値が、内部問合せの結果に存在するかどうかを判定するために使用されます。<br>」 です。</p>
+                    <p>EXISTS 演算子の挙動を問う問題です。EXISTS()は「内側が1行でも返すか」を判定し、外側の現在行に対して内側がヒットした時点で内側スキャンを中断（early termination）します。A「内部にNULL値以外の値が見つかると内部の実行を中断」が正解。D「外側の値が内側結果に存在するか判定」が正解。C「内側→外側」は方向が逆で誤り。正答 AD。</p>
                     <div class="block-title">今回の失点要因</div>
-                    <p>自己回答は C「内部問合せによって取得された値が、外部問合せの結果に存在するかどうかを判定するために使用されます。<br>」 / D「外部問合せによって取得された値が、内部問合せの結果に存在するかどうかを判定するために使用されます。<br>」 でした。<br>一部は論点を捉えていますが、C「内部問合せによって取得された値が、外部問合せの結果に存在するかどうかを判定するために使用されます。<br>」 を混在させたことで正答条件を外しています。<br>失点要因は 非相関サブクエリの実行順と混同すると、内側先行や内外逆転の選択肢を選びやすい。</p>
+                    <p>C「内部問合せの値が外部問合せに存在するか判定」を選んでしまったことが失点原因です。EXISTS は「外側の現在行に対して内側に一致する行があるか」を判定するので、常に外側→内側の方向です。INと混同しがちですが、EXISTS は値の一致ではなく「存在するか」を判定し、外側の列参照が内側で使われる柘造サブクエリの一種です。</p>
                     <div class="block-title">選択肢ごとの判定</div>
                     <div class="option-review-grid">
             <div class="option-review correct">
@@ -1060,7 +1060,7 @@ F.
                 <div class="option-review-badges"><span>正答肢</span></div>
               </div>
               <div class="option-review-text">内部問合せ結果にNULL値以外の値が見つかると、外部問合せは内部問合せの実行を中断します。</div>
-              <div class="option-review-reason">正しい。 この選択肢は「相関副問合せのEXISTS演算子に関して正しい記述はどれでしょうか。<br>（2つ選択）」という設問条件に対して、相関サブクエリの実行順 の成立条件を満たしています。</div>
+              <div class="option-review-reason">正しい。EXISTS は内側が1行でも返した時点で内側スキャンを即座に中断（early termination）します。NULL 値以外の値が見つかるたびに TRUE を返して内側実行を打ち切ります。</div>
             </div>
             
             <div class="option-review wrong">
@@ -1069,7 +1069,7 @@ F.
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
               <div class="option-review-text">外部問合せは、副問合せのすべての結果の実行が完了するまで、内部問合せを実行し続けます。</div>
-              <div class="option-review-reason">誤り。 この選択肢は「相関副問合せのEXISTS演算子に関して正しい記述はどれでしょうか。<br>（2つ選択）」という設問条件に対して、相関サブクエリの実行順 の成立条件または文法要件を満たしていません。</div>
+              <div class="option-review-reason">誤り。EXISTS は全行スキャンを完了させません。最初の一致で内側スキャンを中断します（early termination）。</div>
             </div>
             
             <div class="option-review wrong">
@@ -1078,7 +1078,7 @@ F.
                 <div class="option-review-badges"><span>非正答肢</span><span>自己回答</span></div>
               </div>
               <div class="option-review-text">内部問合せによって取得された値が、外部問合せの結果に存在するかどうかを判定するために使用されます。</div>
-              <div class="option-review-reason">誤り。 この選択肢は「相関副問合せのEXISTS演算子に関して正しい記述はどれでしょうか。<br>（2つ選択）」という設問条件に対して、相関サブクエリの実行順 の成立条件または文法要件を満たしていません。</div>
+              <div class="option-review-reason">誤り（自己回答）。方向が逆です。EXISTS は「外側の現在行に対して内側に一致行があるか」を判定します。内部→外部の方向の判定には使いません。</div>
             </div>
             
             <div class="option-review correct">
@@ -1087,7 +1087,7 @@ F.
                 <div class="option-review-badges"><span>正答肢</span><span>自己回答</span></div>
               </div>
               <div class="option-review-text">外部問合せによって取得された値が、内部問合せの結果に存在するかどうかを判定するために使用されます。</div>
-              <div class="option-review-reason">正しい。 この選択肢は「相関副問合せのEXISTS演算子に関して正しい記述はどれでしょうか。<br>（2つ選択）」という設問条件に対して、相関サブクエリの実行順 の成立条件を満たしています。</div>
+              <div class="option-review-reason">正しい。EXISTS は「外側問合せの値が内側問合せの結果に存在するか」を判定します。常に外側が内側を参照する方向です。</div>
             </div>
             </div>
                     <div class="block-title">解く順序</div>
@@ -1144,9 +1144,9 @@ D.
 (<span class="sql-num">4</span>)		D</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
-                    <p>この設問で確定させる論点は「相関サブクエリの実行順」です。<br>問題文は「EMPLOYEES テーブルの構造を確認し、各部門の平均給与よりも高い給与を得ている従業員の行を返すクエリを2つ選んでください。 | Name | Null? | Type | |<span class="sql-cmt">---------|-----------|-------…」を満たす記述または SQL を求めています。<br>相関サブクエリは、外側問い合わせの行を1行ずつ評価し、その行ごとに内側問い合わせを再実行する。<br>非相関サブクエリのように内側が先に1回だけ動くわけではない。 そのため、成立条件を満たす正答は A「SELECT * FROM employees e1 WHERE salary &gt; ( SELECT AVG(…」 / B「SELECT e1.* FROM employees e1 JOIN ( SELECT dept_id, AV…」 です。<br></span></p>
+                    <p>「各部門の平均給与より高い給与」という条件を正確に表現できているのはどれかを判定する問題です。A（e1.dept_id = e2.dept_id で外側を参照する相関サブクエリ）と B（インラインビューで部門別 avg_sal を事前計算して JOIN）が正确に「自部門の平均」と比較。C（&gt; ANY）は「いずれかの部門平均より高い」＝最小部門平均より高い行を返すので要件と合わない。D（&gt; で GROUP BY 複数行式）は ORA-01427 エラー。正答 AB。</p>
                     <div class="block-title">今回の失点要因</div>
-                    <p>自己回答は B「<span class="sql-kw">SELECT</span> e1.* <span class="sql-kw">FROM</span> employees e1 <span class="sql-kw">JOIN</span> ( <span class="sql-kw">SELECT</span> dept_id, AV…」 / C「<span class="sql-kw">SELECT</span> * <span class="sql-kw">FROM</span> employees <span class="sql-kw">WHERE</span> salary &gt; <span class="sql-kw">ANY</span> ( <span class="sql-kw">SELECT</span> AVG…」 でした。<br>一部は論点を捉えていますが、C「<span class="sql-kw">SELECT</span> * <span class="sql-kw">FROM</span> employees <span class="sql-kw">WHERE</span> salary &gt; <span class="sql-kw">ANY</span> ( <span class="sql-kw">SELECT</span> AVG…」 を混在させたことで正答条件を外しています。<br>失点要因は 非相関サブクエリの実行順と混同すると、内側先行や内外逆転の選択肢を選びやすい。</p>
+                    <p>C（&gt; ANY）を選んでしまったことが失点原因です。ANY は「いずれかの値より大きい」＝全部門平均の中の最小値より大きい行を返します。これは「自分の部門平均より高い」とは異なります。B（正解）はインラインビュー JOIN で正確に部門別平均と比較していることに気づかなかったことも失点の一因です。</p>
                     <div class="block-title">選択肢ごとの判定</div>
                     <div class="option-review-grid">
             <div class="option-review correct">
@@ -1155,7 +1155,7 @@ D.
                 <div class="option-review-badges"><span>正答肢</span></div>
               </div>
               <div class="option-review-text"><span class="sql-kw">SELECT</span> * <span class="sql-kw">FROM</span> employees e1<br><span class="sql-kw">WHERE</span> salary &gt; (<br>  <span class="sql-kw">SELECT</span> <span class="sql-fn">AVG</span>(salary) <span class="sql-kw">FROM</span> employees e2<br>  <span class="sql-kw">WHERE</span> e1.dept_id = e2.dept_id<br>);</div>
-              <div class="option-review-reason">正しい。 副問合せでは返却行数、相関の有無、比較演算子の整合が成立条件になります。</div>
+              <div class="option-review-reason">正しい。<code>e1.dept_id = e2.dept_id</code> で外側の dept_id を内側が参照する相関サブクエリです。外側の各行に対して自部門の AVG(salary) を計算し salary と比較するため、正確に「各自部門の平均より高い」件を表現できます。</div>
             </div>
             
             <div class="option-review correct">
@@ -1164,7 +1164,7 @@ D.
                 <div class="option-review-badges"><span>正答肢</span><span>自己回答</span></div>
               </div>
               <div class="option-review-text"><span class="sql-kw">SELECT</span> e1.* <span class="sql-kw">FROM</span> employees e1<br><span class="sql-kw">JOIN</span> (<br>  <span class="sql-kw">SELECT</span> dept_id, <span class="sql-fn">AVG</span>(salary) <span class="sql-kw">AS</span> avg_sal <span class="sql-kw">FROM</span> employees<br>  <span class="sql-kw">GROUP BY</span> dept_id<br>) e2 <span class="sql-kw">ON</span> e1.dept_id = e2.dept_id<br><span class="sql-kw">WHERE</span> e1.salary &gt; e2.avg_sal;</div>
-              <div class="option-review-reason">正しい。 副問合せでは返却行数、相関の有無、比較演算子の整合が成立条件になります。</div>
+              <div class="option-review-reason">正しい。インラインビューで dept_id ごとの avg_sal を事前計算し、ON e1.dept_id = e2.dept_id で JOIN してから salary &gt; avg_sal で絞り込みます。相関サブクエリと等価の結果を返します。</div>
             </div>
             
             <div class="option-review wrong">
@@ -1173,7 +1173,7 @@ D.
                 <div class="option-review-badges"><span>非正答肢</span><span>自己回答</span></div>
               </div>
               <div class="option-review-text"><span class="sql-kw">SELECT</span> * <span class="sql-kw">FROM</span> employees<br><span class="sql-kw">WHERE</span> salary &gt; <span class="sql-kw">ANY</span> (<br>  <span class="sql-kw">SELECT</span> <span class="sql-fn">AVG</span>(salary) <span class="sql-kw">FROM</span> employees<br>  <span class="sql-kw">GROUP BY</span> dept_id<br>);</div>
-              <div class="option-review-reason">誤り。 副問合せでは返却行数、相関の有無、比較演算子の整合が成立条件になります。</div>
+              <div class="option-review-reason">誤り（自己回答）。<code>&gt; ANY (全部門のAVG)</code> は「いずれかの部門平均より高い」＝最小部門平均より高い行を返すため、「自分の部門平均より高い」という条件を正確に表現できていません。</div>
             </div>
             
             <div class="option-review wrong">
@@ -1182,7 +1182,7 @@ D.
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
               <div class="option-review-text"><span class="sql-kw">SELECT</span> * <span class="sql-kw">FROM</span> employees<br><span class="sql-kw">WHERE</span> salary &gt; (<br>  <span class="sql-kw">SELECT</span> <span class="sql-fn">AVG</span>(salary) <span class="sql-kw">FROM</span> employees<br>  <span class="sql-kw">GROUP BY</span> dept_id<br>);</div>
-              <div class="option-review-reason">誤り。 副問合せでは返却行数、相関の有無、比較演算子の整合が成立条件になります。</div>
+              <div class="option-review-reason">誤り。<code>&gt;</code> で複数行式（GROUP BY dept_id により複数行が返る可能性）を受けているため ORA-01427 エラーになります。複数行サブクエリには IN/ANY/ALL を使います。</div>
             </div>
             </div>
                     <div class="block-title">解く順序</div>
@@ -1262,9 +1262,9 @@ D.
 (<span class="sql-num">5</span>)		E. ALL内でグループ関数やGROUP BYを使用したサブクエリは使用できる</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
-                    <p>この設問で確定させる論点は「<span class="sql-kw">ANY</span>・<span class="sql-kw">ALL</span>・平均比較」です。<br>問題文は「以下のSELECT文について、正しい記載を2つ選択してください。 <span class="sql-kw">SELECT</span> product_id, price - cost <span class="sql-kw">AS</span> profit <span class="sql-kw">FROM</span> Products <span class="sql-kw">WHERE</span> price - cost < ALL ( SEL…」を満たす記述または SQL を求めています。サブクエリ結果が複数行になるときは、IN、ANY、ALL を使って比較する。部門別平均より高い給与のような問題では、相関サブクエリか集約結果との結合で表現する。 そのため、成立条件を満たす正答は A「製品ごとの利益が全ての部門平均利益より小さい製品を抽出する」 / E「ALL内でグループ関数やGROUP BYを使用したサブクエリは使用できる」 です。</p>
+                    <p><code>price - cost &lt; ALL (サブクエリ)</code> の読み方と、WHERE 句内のサブクエリ文法を問う問題です。<code>&lt; ALL</code> は「サブクエリの全ての値より小さい」 = 最小値よりも小さい行を返すため A が正解。WHERE 句内で AVG を直接使うのはエラーですが、サブクエリ内部は SELECT 句内なので問題ないため C は誤り。GROUP BY の列を SELECT に並べる必要はないため D は誤り。ALL 内のサブクエリで AVG/GROUP BY は使用可能なため E が正解。正答 AE。</p>
                     <div class="block-title">今回の失点要因</div>
-                    <p>自己回答は C「WHERE句で集合関数を使用しているためエラーになる」 / D「サブクエリのGROUP BYで指定した列名をサブクエリのSELECT句で使用していないためエラーになる」 でした。<br>失点要因は 複数行サブクエリに対して = や > をそのまま使ったり、<span class="sql-kw">ANY</span> と <span class="sql-kw">ALL</span> の意味を逆に覚えやすい。 正答との差は、条件の向き、句の位置、返却行数、またはオブジェクトの性質を正式定義のレベルで確認し切れていない点にあります。</p>
+                    <p>C「WHERE 句で集合関数を使用しているためエラー」と D「GROUP BY の列を SELECT に指定していないためエラー」を選んでしまったことが失点原因です。C は「WHERE 句に直接 AVG() を書く」ことと「サブクエリの SELECT 内で AVG() を使う」ことを混同しています。D は GROUP BY の列を必ず SELECT に列挙しなければならないと誤解していますが、SELECT 句に AVG() だけ返せば GROUP BY を列挙しなくても問題ありません。</p>
                     <div class="block-title">選択肢ごとの判定</div>
                     <div class="option-review-grid">
             <div class="option-review correct">
@@ -1273,7 +1273,7 @@ D.
                 <div class="option-review-badges"><span>正答肢</span></div>
               </div>
               <div class="option-review-text">製品ごとの利益が全ての部門平均利益より小さい製品を抽出する</div>
-              <div class="option-review-reason">正しい。 この選択肢は「以下のSELECT文について、正しい記載を2つ選択してください。 <span class="sql-kw">SELECT</span> product_id, price - cost <span class="sql-kw">AS</span> profit <span class="sql-kw">FROM</span> Products <span class="sql-kw">WHERE</span> price - cost &lt; <span class="sql-kw">ALL</span> ( SEL…」という設問条件に対して、<span class="sql-kw">ANY</span>・<span class="sql-kw">ALL</span>・平均比較 の成立条件を満たしています。</div>
+              <div class="option-review-reason">正しい。<code>&lt; ALL</code> は「サブクエリの全ての値より小さい」 = 全部門平均利益の最小値よりも小さい製品の利益を返すため、「全ての部門平均利益より小さい」と正確に対応します。</div>
             </div>
             
             <div class="option-review wrong">
@@ -1282,7 +1282,7 @@ D.
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
               <div class="option-review-text">製品ごとの利益が全ての部門平均利益より大きい製品を抽出する</div>
-              <div class="option-review-reason">誤り。 この選択肢は「以下のSELECT文について、正しい記載を2つ選択してください。 <span class="sql-kw">SELECT</span> product_id, price - cost <span class="sql-kw">AS</span> profit <span class="sql-kw">FROM</span> Products <span class="sql-kw">WHERE</span> price - cost &lt; <span class="sql-kw">ALL</span> ( SEL…」という設問条件に対して、<span class="sql-kw">ANY</span>・<span class="sql-kw">ALL</span>・平均比較 の成立条件または文法要件を満たしていません。</div>
+              <div class="option-review-reason">誤り。<code>&lt; ALL</code> は「全ての値より小さい」の意味で、製品利益が大きい製品を抽出するには使いません。</div>
             </div>
             
             <div class="option-review wrong">
@@ -1291,7 +1291,7 @@ D.
                 <div class="option-review-badges"><span>非正答肢</span><span>自己回答</span></div>
               </div>
               <div class="option-review-text">WHERE句で集合関数を使用しているためエラーになる</div>
-              <div class="option-review-reason">誤り。 副問合せでは返却行数、相関の有無、比較演算子の整合が成立条件になります。</div>
+              <div class="option-review-reason">誤り（自己回答）。WHERE 句に直接 AVG() を書くことはエラーですが、サブクエリ内部の SELECT 句内で AVG() を使うことは有効です。この SQL の AVG() は WHERE 句が直接呼び出しているのではなく、ALL のサブクエリ内で使われているため正常です。</div>
             </div>
             
             <div class="option-review wrong">
@@ -1300,7 +1300,7 @@ D.
                 <div class="option-review-badges"><span>非正答肢</span><span>自己回答</span></div>
               </div>
               <div class="option-review-text">サブクエリのGROUP BYで指定した列名をサブクエリのSELECT句で使用していないためエラーになる</div>
-              <div class="option-review-reason">誤り。 副問合せでは返却行数、相関の有無、比較演算子の整合が成立条件になります。</div>
+              <div class="option-review-reason">誤り（自己回答）。GROUP BY の列を必ず SELECT に列挙しなければいけないというルールはありません。SELECT 句に AVG() だけ返せば正常です。GROUP BY dept_id で dept_id を SELECT に列挙しなくても、集約関数 AVG() のみを返す構文は有効です。</div>
             </div>
             
             <div class="option-review correct">
@@ -1309,7 +1309,7 @@ D.
                 <div class="option-review-badges"><span>正答肢</span></div>
               </div>
               <div class="option-review-text">ALL内でグループ関数やGROUP BYを使用したサブクエリは使用できる</div>
-              <div class="option-review-reason">正しい。 この選択肢は「以下のSELECT文について、正しい記載を2つ選択してください。 <span class="sql-kw">SELECT</span> product_id, price - cost <span class="sql-kw">AS</span> profit <span class="sql-kw">FROM</span> Products <span class="sql-kw">WHERE</span> price - cost &lt; <span class="sql-kw">ALL</span> ( SEL…」という設問条件に対して、<span class="sql-kw">ANY</span>・<span class="sql-kw">ALL</span>・平均比較 の成立条件を満たしています。</div>
+              <div class="option-review-reason">正しい。ANY/ALL のサブクエリ内では、GROUP BY・集約関数・HAVING などの構文を自由に使用できます。</div>
             </div>
             </div>
                     <div class="block-title">解く順序</div>
@@ -1375,9 +1375,9 @@ D.
 (<span class="sql-num">6</span>)		F.　<span class="sql-kw">UNION</span> ALL演算子を使用すると、重複行は削除されます。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
-                    <p>この設問で確定させる論点は「<span class="sql-kw">UNION</span> と <span class="sql-kw">UNION ALL</span> の違い」です。<br>問題文は「UNION演算子とUNION ALL演算子について、正しい記述はどれでしょうか。<br>(3つ選択)」を満たす記述または SQL を求めています。<br><span class="sql-kw">UNION</span> は列数と型をそろえたうえで重複行を削除する。<br><span class="sql-kw">UNION ALL</span> は重複を残し、重複排除のソート処理も行わない。 そのため、成立条件を満たす正答は B「それぞれのSELECT文で抽出された列の数は同数である必要があります。<br>」 / C「UNION演算子を使用すると、ソートされます。<br>」 / D「UNION演算子を使用すると、重複行は削除されます。<br>」 です。</p>
+                    <p>UNION と UNION ALL の相違点を正確に識別する問題です。UNION：重複除去＋内部ソートあり。UNION ALL：重複保持＋ソートなし。列数一致は両者の必須条件。B（列数同数必須）・C（UNION でソート）・D（UNION で重複除去）が正解。正答 BCD。</p>
                     <div class="block-title">今回の失点要因</div>
-                    <p>自己回答は B「それぞれのSELECT文で抽出された列の数は同数である必要があります。<br>」 / D「UNION演算子を使用すると、重複行は削除されます。<br>」 / E「<span class="sql-kw">UNION</span> ALL演算子を使用すると、ソートされます。<br>」 でした。<br>一部は論点を捉えていますが、E「<span class="sql-kw">UNION</span> ALL演算子を使用すると、ソートされます。<br>」 を混在させたことで正答条件を外しています。<br>失点要因は 列名まで完全一致が必要と思い込んだり、<span class="sql-kw">UNION ALL</span> でも重複排除やソートが起きると誤解しやすい。</p>
+                    <p>E「UNION ALL を使用するとソートされる」を選んでしまったことが失点原因です。UNION ALL は重複排除のためのソートを一切行いません。ソートが起きるのは UNION（重複除去のため内部ソートが必要）のみです。C（UNION のソート）が正解であることを見落としていた点も失点要因の一つです。</p>
                     <div class="block-title">選択肢ごとの判定</div>
                     <div class="option-review-grid">
             <div class="option-review wrong">
@@ -1386,7 +1386,7 @@ D.
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
               <div class="option-review-text">それぞれのSELECT文で抽出された列の名前は同じである必要があります。</div>
-              <div class="option-review-reason">誤り。 副問合せでは返却行数、相関の有無、比較演算子の整合が成立条件になります。</div>
+              <div class="option-review-reason">誤り。列名の一致は集合演算の条件ではありません。結果列名は先頭 SELECT の列名が採用され、第2 SELECT の列名は無視されます。</div>
             </div>
             
             <div class="option-review correct">
@@ -1395,7 +1395,7 @@ D.
                 <div class="option-review-badges"><span>正答肢</span><span>自己回答</span></div>
               </div>
               <div class="option-review-text">それぞれのSELECT文で抽出された列の数は同数である必要があります。</div>
-              <div class="option-review-reason">正しい。 副問合せでは返却行数、相関の有無、比較演算子の整合が成立条件になります。</div>
+              <div class="option-review-reason">正しい。列数の一致は UNION/INTERSECT/MINUS 全てに共通する絶対条件です。列数が違うと ORA-01789 エラーになります。</div>
             </div>
             
             <div class="option-review correct">
@@ -1404,7 +1404,7 @@ D.
                 <div class="option-review-badges"><span>正答肢</span></div>
               </div>
               <div class="option-review-text">UNION演算子を使用すると、ソートされます。</div>
-              <div class="option-review-reason">正しい。 <span class="sql-kw">UNION</span> は重複を除去して結果集合を結合します。</div>
+              <div class="option-review-reason">正しい。UNION は重複除去のために内部ソートを行います（ORDER BY を指定しなくても結果がソートされる可能性があります）。</div>
             </div>
             
             <div class="option-review correct">
@@ -1413,7 +1413,7 @@ D.
                 <div class="option-review-badges"><span>正答肢</span><span>自己回答</span></div>
               </div>
               <div class="option-review-text">UNION演算子を使用すると、重複行は削除されます。</div>
-              <div class="option-review-reason">正しい。 <span class="sql-kw">UNION</span> は重複を除去して結果集合を結合します。</div>
+              <div class="option-review-reason">正しい。UNION は内部ソートにより重複行を検出して除去します。</div>
             </div>
             
             <div class="option-review wrong">
@@ -1422,7 +1422,7 @@ D.
                 <div class="option-review-badges"><span>非正答肢</span><span>自己回答</span></div>
               </div>
               <div class="option-review-text"><span class="sql-kw">UNION</span> ALL演算子を使用すると、ソートされます。</div>
-              <div class="option-review-reason">誤り。 <span class="sql-kw">UNION ALL</span> は重複行を残したまま結果集合を連結します。</div>
+              <div class="option-review-reason">誤り（自己回答）。UNION ALL は重複除去のソートを一切行いません。ソートが起きるのは UNION だけです。これが失点の直接原因です。</div>
             </div>
             
             <div class="option-review wrong">
@@ -1431,7 +1431,7 @@ D.
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
               <div class="option-review-text"><span class="sql-kw">UNION</span> ALL演算子を使用すると、重複行は削除されます。</div>
-              <div class="option-review-reason">誤り。 <span class="sql-kw">UNION ALL</span> は重複行を残したまま結果集合を連結します。</div>
+              <div class="option-review-reason">誤り。UNION ALL は重複をすべてそのまま返します。重複除去は UNION の専属機能です。</div>
             </div>
             </div>
                     <div class="block-title">解く順序</div>

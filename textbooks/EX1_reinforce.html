@@ -169,9 +169,9 @@
 (<span class="sql-num">5</span>)		E.　<span class="sql-kw">INNER</span> JOINにすることができます。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
-                    <p>この設問で確定させる論点は「<span class="sql-kw">FULL OUTER JOIN</span>」です。<br>問題文は「自己結合について正しい記述はどれでしょうか。<br>（2つ選択）」を満たす記述または SQL を求めています。<br><span class="sql-kw">FULL OUTER JOIN</span> は左右両方の表の全行を返し、一致しない側は <span class="sql-kw">NULL</span> で埋める。<br>デカルト積ではなく、Oracle 独自の (+) 構文では表現できない。 そのため、成立条件を満たす正答は B「表別名が必要です。<br>」 / E「<span class="sql-kw">INNER</span> JOINにすることができます。<br>」 です。</p>
+                    <p>自己結合は「同一の表を異なる別名で2回 FROM に書く」結合手法です。結合種類（INNER／OUTER）は問わず、要件に応じて自由に選べます。必ず2つの表別名が必要で、条件は ON 句で記述します。正答は B「表別名が必要」と E「INNER JOIN にすることができる」。</p>
                     <div class="block-title">今回の失点要因</div>
-                    <p>自己回答は A「USING句を指定することができます。<br>」 / B「表別名が必要です。<br>」 でした。<br>一部は論点を捉えていますが、A「USING句を指定することができます。<br>」 を混在させたことで正答条件を外しています。<br>失点要因は 両表の全行という言葉から全組合せを連想して、デカルト積と混同しやすい。</p>
+                    <p>A の USING 句を「使える」と誤解したことが失点の原因です。自己結合で <span class="sql-kw">USING(col)</span> を指定すると、同じ表の同一列どうしを照合するため全行が一致してしまい意味のある結合にならない上、USING 列は SELECT 句で表別名を付けて参照できないという制約もあります。また C・D の「必要があります」という表現を見逃さないこと――自己結合に特定の JOIN 種類は必須ではありません。</p>
                     <div class="block-title">選択肢ごとの判定</div>
                     <div class="option-review-grid">
             <div class="option-review wrong">
@@ -180,7 +180,7 @@
                 <div class="option-review-badges"><span>非正答肢</span><span>自己回答</span></div>
               </div>
               <div class="option-review-text">USING句を指定することができます。</div>
-              <div class="option-review-reason">誤り。 <span class="sql-kw">USING</span> 句は同名列に対してだけ使え、列参照では表別名を付けられません。</div>
+              <div class="option-review-reason">誤り。自己結合では同一表を2つの別名で参照するため、<span class="sql-kw">USING(col)</span> を指定すると自分自身の同じ列と照合することになり、全行が一致してしまいます。加えて USING 列は SELECT 句で「別名.列名」と修飾できないため、自己参照の文脈では実用上使えません。</div>
             </div>
             
             <div class="option-review correct">
@@ -189,7 +189,7 @@
                 <div class="option-review-badges"><span>正答肢</span><span>自己回答</span></div>
               </div>
               <div class="option-review-text">表別名が必要です。</div>
-              <div class="option-review-reason">正しい。 結合問題では、保持側の表と結合条件の書き方が要件と一致しているかが判定基準になります。</div>
+              <div class="option-review-reason">正しい。同一表を FROM に2回書いた場合、SQL エンジンはどちらの行を参照するか区別できません。<code>FROM emp e JOIN emp m ON e.manager_id = m.emp_id</code> のように、必ず2つの異なる別名を付ける必要があります。</div>
             </div>
             
             <div class="option-review wrong">
@@ -198,7 +198,7 @@
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
               <div class="option-review-text"><span class="sql-kw">LEFT OUTER JOIN</span>、もしくはRIGHT <span class="sql-kw">OUTER</span> JOINにする必要があります。</div>
-              <div class="option-review-reason">誤り。 <span class="sql-kw">LEFT OUTER JOIN</span> は左側表の全行を保持し、右側に一致しない行は <span class="sql-kw">NULL</span> で埋めます。 <span class="sql-kw">RIGHT OUTER JOIN</span> は右側表の全行を保持します。<br>表の並びと保持側を取り違えると要件から外れます。</div>
+              <div class="option-review-reason">誤り。「必要があります」が誤りです。自己結合は INNER JOIN でも外部結合でも実装でき、どの JOIN 種類を選ぶかはビジネス要件次第です。外部結合が必須という制約はありません。</div>
             </div>
             
             <div class="option-review wrong">
@@ -207,7 +207,7 @@
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
               <div class="option-review-text"><span class="sql-kw">FULL</span> <span class="sql-kw">OUTER</span> JOINにする必要があります。</div>
-              <div class="option-review-reason">誤り。 <span class="sql-kw">FULL OUTER JOIN</span> は左右両方の全行を返し、デカルト積ではありません。</div>
+              <div class="option-review-reason">誤り。FULL OUTER JOIN も必須ではありません。C と同様に「必要があります」という点が誤りで、自己結合の JOIN 種類は自由に選択できます。</div>
             </div>
             
             <div class="option-review correct">
@@ -216,7 +216,7 @@
                 <div class="option-review-badges"><span>正答肢</span></div>
               </div>
               <div class="option-review-text"><span class="sql-kw">INNER</span> JOINにすることができます。</div>
-              <div class="option-review-reason">正しい。 <span class="sql-kw">INNER JOIN</span> は結合条件に一致した行だけを返します。</div>
+              <div class="option-review-reason">正しい。自己結合で INNER JOIN を使う例として、社員テーブルから部下と上司の対を取得する <code>FROM emp e JOIN emp m ON e.manager_id = m.emp_id</code> が代表的です。JOIN 種類に制限はなく INNER JOIN は当然使えます。</div>
             </div>
             </div>
                     <div class="block-title">解く順序</div>
@@ -239,7 +239,7 @@
                     <div class="block-title">設問の読み解き</div>
                     <p>この設問で確定させる論点は「<span class="sql-kw">FULL OUTER JOIN</span>」です。<br>問題文は「次のうち、<span class="sql-kw">FULL</span> <span class="sql-kw">OUTER</span> JOINの特徴として正しいものはどれでしょうか。<br>（2つ選択）」を満たす記述または SQL を求めています。<br><span class="sql-kw">FULL OUTER JOIN</span> は左右両方の表の全行を返し、一致しない側は <span class="sql-kw">NULL</span> で埋める。<br>デカルト積ではなく、Oracle 独自の (+) 構文では表現できない。 そのため、成立条件を満たす正答は A「両方の表の全行を出力し、結合条件に一致しない行はNULLで埋める」 / D「Oracle独自結合構文ではサポートされていない」 です。</p>
                     <div class="block-title">今回の失点要因</div>
-                    <p>自己回答は A「両方の表の全行を出力し、結合条件に一致しない行はNULLで埋める」 / B「実行結果はデカルト積と同じになる」 でした。<br>一部は論点を捉えていますが、B「実行結果はデカルト積と同じになる」 を混在させたことで正答条件を外しています。<br>失点要因は 両表の全行という言葉から全組合せを連想して、デカルト積と混同しやすい。</p>
+                    <p>B「実行結果はデカルト積と同じになる」を誤って選んだことが失点原因です。FULL OUTER JOIN は結合条件に基づいて一致する行を結合し、不一致行を NULL で補完します。一方デカルト積（CROSS JOIN）は結合条件が存在せず、m行×n行のすべての組合せを返します。「両方の全行を出力する」という点だけに着目してデカルト積と混同しないようにしてください。</p>
                     <div class="block-title">選択肢ごとの判定</div>
                     <div class="option-review-grid">
             <div class="option-review correct">
@@ -248,7 +248,7 @@
                 <div class="option-review-badges"><span>正答肢</span><span>自己回答</span></div>
               </div>
               <div class="option-review-text">両方の表の全行を出力し、結合条件に一致しない行はNULLで埋める</div>
-              <div class="option-review-reason">正しい。 結合問題では、保持側の表と結合条件の書き方が要件と一致しているかが判定基準になります。</div>
+              <div class="option-review-reason">正しい。FULL OUTER JOIN の定義そのものです。左表のみに存在する行は右側列が NULL、右表のみに存在する行は左側列が NULL になります。</div>
             </div>
             
             <div class="option-review wrong">
@@ -257,7 +257,7 @@
                 <div class="option-review-badges"><span>非正答肢</span><span>自己回答</span></div>
               </div>
               <div class="option-review-text">実行結果はデカルト積と同じになる</div>
-              <div class="option-review-reason">誤り。 結合問題では、保持側の表と結合条件の書き方が要件と一致しているかが判定基準になります。</div>
+              <div class="option-review-reason">誤り。デカルト積（CROSS JOIN）は ON 句なしで全行の組合せを返し行数は m×n になります。FULL OUTER JOIN は結合条件で一致させた後に不一致行を NULL 補完するため、行数は最大 m+n になります。まったく異なる動作です。</div>
             </div>
             
             <div class="option-review wrong">
@@ -266,7 +266,7 @@
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
               <div class="option-review-text">結合条件に一致する行のみを返し、一致しない行は含まれない</div>
-              <div class="option-review-reason">誤り。 結合問題では、保持側の表と結合条件の書き方が要件と一致しているかが判定基準になります。</div>
+              <div class="option-review-reason">誤り。これは INNER JOIN の説明です。FULL OUTER JOIN はまさに「一致しない行も含める」ために使う結合であり、どちらか一方にしか存在しない行もNULL補完して出力します。</div>
             </div>
             
             <div class="option-review correct">
@@ -275,7 +275,7 @@
                 <div class="option-review-badges"><span>正答肢</span></div>
               </div>
               <div class="option-review-text">Oracle独自結合構文ではサポートされていない</div>
-              <div class="option-review-reason">正しい。 結合問題では、保持側の表と結合条件の書き方が要件と一致しているかが判定基準になります。</div>
+              <div class="option-review-reason">正しい。Oracle 独自の (+) 演算子は LEFT/RIGHT OUTER JOIN を表現できますが、FULL OUTER JOIN は (+) を両辺に付けることができず記述不可能です。FULL OUTER JOIN は ANSI JOIN 構文（<code>FROM t1 FULL OUTER JOIN t2 ON ...</code>）でのみ使用できます。</div>
             </div>
             
             <div class="option-review wrong">
@@ -284,7 +284,7 @@
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
               <div class="option-review-text"><span class="sql-kw">OUTER JOIN</span> にFULLを付けた場合、<span class="sql-kw">INNER</span> JOINと同義である</div>
-              <div class="option-review-reason">誤り。 <span class="sql-kw">INNER JOIN</span> は結合条件に一致した行だけを返します。</div>
+              <div class="option-review-reason">誤り。INNER JOIN は一致した行のみを返しますが、FULL OUTER JOIN は一致しない行もNULL補完して返します。FULL を付けることで出力行数は増え、動作は INNER JOIN とは正反対の方向になります。</div>
             </div>
             </div>
                     <div class="block-title">解く順序</div>
@@ -305,9 +305,9 @@
 (<span class="sql-num">5</span>)		E. <span class="sql-kw">OUTER JOIN</span> は、クエリごとに2つのテーブル間のみで使用できる。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
-                    <p>この設問で確定させる論点は「<span class="sql-kw">FULL OUTER JOIN</span>」です。<br>問題文は「内部結合と外部結合 についての次の記載のうち、正しいものを2つ選んでください。<br>」を満たす記述または SQL を求めています。<br><span class="sql-kw">FULL OUTER JOIN</span> は左右両方の表の全行を返し、一致しない側は <span class="sql-kw">NULL</span> で埋める。<br>デカルト積ではなく、Oracle 独自の (+) 構文では表現できない。 そのため、成立条件を満たす正答は B「<span class="sql-kw">FULL OUTER JOIN</span> は、一致する行と一致しない行の両方を返す。<br>」 / D「<span class="sql-kw">INNER JOIN</span> は、2つのテーブル間で複数の結合条件を指定する場合に使用できる。<br>」 です。</p>
+                    <p>内部結合・外部結合の各種類の動作を正確に問う問題です。正答は B「FULL OUTER JOIN は一致・不一致両方を返す」と D「INNER JOIN は複数結合条件を指定できる」。自己回答 A「Oracle独自構文で FULL OUTER JOIN をサポート」は (+) 演算子の馴点を正確に込めたかが判定局面です。</p>
                     <div class="block-title">今回の失点要因</div>
-                    <p>自己回答は A「Oracle独自構文ではFULL <span class="sql-kw">OUTER JOIN</span> と同等機能をサポートしている。<br>」 / B「<span class="sql-kw">FULL OUTER JOIN</span> は、一致する行と一致しない行の両方を返す。<br>」 でした。<br>一部は論点を捉えていますが、A「Oracle独自構文ではFULL <span class="sql-kw">OUTER JOIN</span> と同等機能をサポートしている。<br>」 を混在させたことで正答条件を外しています。<br>失点要因は 両表の全行という言葉から全組合せを連想して、デカルト積と混同しやすい。</p>
+                    <p>A「Oracle独自構文で FULL OUTER JOIN と同等機能をサポートしている」を誤って選んだことが失点原因です。Oracle 独自の (+) 演算子は LEFT/RIGHT OUTER JOIN には対応していますが、FULL OUTER JOIN は (+) を両辺に付けることができず記述不可能です。また D「INNER JOIN は複数結合条件を指定できる」を見通しています――ON 句に AND で複数条件を組み合わせることはどの JOIN 種類でも可能です。</p>
                     <div class="block-title">選択肢ごとの判定</div>
                     <div class="option-review-grid">
             <div class="option-review wrong">
@@ -316,7 +316,7 @@
                 <div class="option-review-badges"><span>非正答肢</span><span>自己回答</span></div>
               </div>
               <div class="option-review-text">Oracle独自構文ではFULL <span class="sql-kw">OUTER JOIN</span> と同等機能をサポートしている。</div>
-              <div class="option-review-reason">誤り。 <span class="sql-kw">FULL OUTER JOIN</span> は左右両方の全行を返し、デカルト積ではありません。</div>
+              <div class="option-review-reason">誤り。Oracle 独自の (+) 演算子は <code>WHERE a.col = b.col(+)</code>（左外部）や <code>WHERE a.col(+) = b.col</code>（右外部）を表現できますが、(+) を両辺に付けることはできず FULL OUTER JOIN を表現できません。FULL OUTER JOIN は ANSI 構文でのみ記述可能です。</div>
             </div>
             
             <div class="option-review correct">
@@ -325,7 +325,7 @@
                 <div class="option-review-badges"><span>正答肢</span><span>自己回答</span></div>
               </div>
               <div class="option-review-text"><span class="sql-kw">FULL OUTER JOIN</span> は、一致する行と一致しない行の両方を返す。</div>
-              <div class="option-review-reason">正しい。 <span class="sql-kw">FULL OUTER JOIN</span> は左右両方の全行を返し、デカルト積ではありません。</div>
+              <div class="option-review-reason">正しい。「FULL」とは左も右も両方の全行を保持するという意味です。一方にしか存在しない行も NULL 補完して返します。</div>
             </div>
             
             <div class="option-review wrong">
@@ -334,7 +334,7 @@
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
               <div class="option-review-text"><span class="sql-kw">RIGHT OUTER JOIN</span> は、一致しない行のみを返す。</div>
-              <div class="option-review-reason">誤り。 <span class="sql-kw">RIGHT OUTER JOIN</span> は右側表の全行を保持します。<br>表の並びと保持側を取り違えると要件から外れます。</div>
+              <div class="option-review-reason">誤り。RIGHT OUTER JOIN は「右表の全行＋左表で一致した行」を返します。「一致しない行のみ」を返すのではなく、一致した行も含むことに注意してください。一致しない左側の列は NULL になります。</div>
             </div>
             
             <div class="option-review correct">
@@ -343,7 +343,7 @@
                 <div class="option-review-badges"><span>正答肢</span></div>
               </div>
               <div class="option-review-text"><span class="sql-kw">INNER JOIN</span> は、2つのテーブル間で複数の結合条件を指定する場合に使用できる。</div>
-              <div class="option-review-reason">正しい。 <span class="sql-kw">INNER JOIN</span> は結合条件に一致した行だけを返します。</div>
+              <div class="option-review-reason">正しい。ON 句に AND で複数条件を組み合わせることができます（例：<code>ON e.dept_id = d.dept_id AND e.type = d.type</code>）。INNER JOIN にこの用途への制限は一切ありません。</div>
             </div>
             
             <div class="option-review wrong">
@@ -352,7 +352,7 @@
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
               <div class="option-review-text"><span class="sql-kw">OUTER JOIN</span> は、クエリごとに2つのテーブル間のみで使用できる。</div>
-              <div class="option-review-reason">誤り。 結合問題では、保持側の表と結合条件の書き方が要件と一致しているかが判定基準になります。</div>
+              <div class="option-review-reason">誤り。OUTER JOIN は3表以上の結合でも使用できます。例えば <code>A LEFT JOIN B LEFT JOIN C</code> のように連続して記述でき、「2表間のみ」という制限はありません。</div>
             </div>
             </div>
                     <div class="block-title">解く順序</div>
@@ -372,9 +372,9 @@
 (<span class="sql-num">4</span>)		D. Oracle独自 の <span class="sql-kw">JOIN</span> 構文は、右外部結合のみをサポートしている。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
-                    <p>この設問で確定させる論点は「<span class="sql-kw">FULL OUTER JOIN</span>」です。<br>問題文は「ANSI <span class="sql-kw">JOIN</span> 構文と比較した場合のOracle独自JOIN 構文の記載について、正しいものを1つ選んでください。<br>」を満たす記述または SQL を求めています。<br><span class="sql-kw">FULL OUTER JOIN</span> は左右両方の表の全行を返し、一致しない側は <span class="sql-kw">NULL</span> で埋める。<br>デカルト積ではなく、Oracle 独自の (+) 構文では表現できない。 そのため、成立条件を満たす正答は A「Oracle 独自の <span class="sql-kw">JOIN</span> 構文とANSI <span class="sql-kw">JOIN</span> 構文では、性能に大きな差はない。<br>」 です。</p>
+                    <p>Oracle 独自 JOIN 構文と ANSI JOIN 構文の相違点を問う問題です。Oracle 独自の (+) 構文の制約（FULL OUTER JOIN / NATURAL JOIN 不可）を正確に把握できているかが判定局面です。正答は A「性能差はない」の1つ。</p>
                     <div class="block-title">今回の失点要因</div>
-                    <p>自己回答は C「Oracle 独自の <span class="sql-kw">JOIN</span> 構文では、 <span class="sql-kw">FULL OUTER JOIN</span> 機能をサポートしている。<br>」 でした。<br>失点要因は 両表の全行という言葉から全組合せを連想して、デカルト積と混同しやすい。 正答との差は、条件の向き、句の位置、返却行数、またはオブジェクトの性質を正式定義のレベルで確認し切れていない点にあります。</p>
+                    <p>C「Oracle 独自構文では FULL OUTER JOIN 機能をサポートしている」を選んでしまったことが失点原因です。Oracle の (+) 演算子は <code>WHERE a.col = b.col(+)</code>（左外部）や <code>WHERE a.col(+) = b.col</code>（右外部）を表現できますが、(+) を両辺に付けることはできず FULL OUTER JOIN は記述不可能です。A「性能差はない」は Oracle が公式に認めている内容です。</p>
                     <div class="block-title">選択肢ごとの判定</div>
                     <div class="option-review-grid">
             <div class="option-review correct">
@@ -383,7 +383,7 @@
                 <div class="option-review-badges"><span>正答肢</span></div>
               </div>
               <div class="option-review-text">Oracle 独自の <span class="sql-kw">JOIN</span> 構文とANSI <span class="sql-kw">JOIN</span> 構文では、性能に大きな差はない。</div>
-              <div class="option-review-reason">正しい。 結合問題では、保持側の表と結合条件の書き方が要件と一致しているかが判定基準になります。</div>
+              <div class="option-review-reason">正しい。Oracle 内部ではどちらの記法でも同じ実行計画（ハッシュ結合・ネステッドループなど）を使用するため、パフォーマンスに実質的な差はありません。記述スタイルの違いで動作は変わりません。</div>
             </div>
             
             <div class="option-review wrong">
@@ -392,7 +392,7 @@
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
               <div class="option-review-text">Oracle 独自の <span class="sql-kw">JOIN</span> 構文では 、自然結合をサポートしている。</div>
-              <div class="option-review-reason">誤り。 結合問題では、保持側の表と結合条件の書き方が要件と一致しているかが判定基準になります。</div>
+              <div class="option-review-reason">誤り。NATURAL JOIN は ANSI SQL 構文の機能で、Oracle 独自の (+) 構文ではサポートされていません。NATURAL JOIN は <code>FROM t1 NATURAL JOIN t2</code> という ANSI 記法でのみ使用できます。</div>
             </div>
             
             <div class="option-review wrong">
@@ -401,7 +401,7 @@
                 <div class="option-review-badges"><span>非正答肢</span><span>自己回答</span></div>
               </div>
               <div class="option-review-text">Oracle 独自の <span class="sql-kw">JOIN</span> 構文では、 <span class="sql-kw">FULL OUTER JOIN</span> 機能をサポートしている。</div>
-              <div class="option-review-reason">誤り。 <span class="sql-kw">FULL OUTER JOIN</span> は左右両方の全行を返し、デカルト積ではありません。</div>
+              <div class="option-review-reason">誤り。選んでしまった誤答肢です。Oracle の (+) 演算子は両辺に付けることができず、FULL OUTER JOIN は記述不可能です。FULL OUTER JOIN は必ず ANSI 構文で書く必要があります。</div>
             </div>
             
             <div class="option-review wrong">
@@ -410,7 +410,7 @@
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
               <div class="option-review-text">Oracle独自 の <span class="sql-kw">JOIN</span> 構文は、右外部結合のみをサポートしている。</div>
-              <div class="option-review-reason">誤り。 結合問題では、保持側の表と結合条件の書き方が要件と一致しているかが判定基準になります。</div>
+              <div class="option-review-reason">誤り。Oracle 独自構文は左外部結合（(+) を右辺に付ける）と右外部結合（(+) を左辺に付ける）の両方をサポートしています。右外部結合のみという制限はありません。ただし FULL OUTER JOIN は不可能です。</div>
             </div>
             </div>
                     <div class="block-title">解く順序</div>
@@ -473,9 +473,9 @@
 (<span class="sql-num">5</span>)		E. 表別名が必要です。</pre>
                   <div class="analysis-block">
                     <div class="block-title">設問の読み解き</div>
-                    <p>この設問で確定させる論点は「自己結合」です。<br>問題文は「自己結合の説明として、正しいものはどれですか。<br>3つ選択してください。<br>」を満たす記述または SQL を求めています。<br>自己結合は同じ表を別名で2回参照する結合であり、表別名が必須である。<br><span class="sql-kw">INNER JOIN</span> にもでき、<span class="sql-kw">OUTER JOIN</span> に限定されない。 そのため、成立条件を満たす正答は A「<span class="sql-kw">INNER</span> JOINにすることができます。<br>」 / B「ON句を指定することができます。<br>」 / E「表別名が必要です。<br>」 です。</p>
+                    <p>自己結合の性質を3つ選ぶ問題です。正答は A「INNER JOIN にすることができる」、B「ON 句を指定できる」、E「表別名が必要」。自己回答の D「等価結合にする必要がある」が局面のポイントです。</p>
                     <div class="block-title">今回の失点要因</div>
-                    <p>自己回答は A「<span class="sql-kw">INNER</span> JOINにすることができます。<br>」 / D「等価結合にする必要があります。<br>」 / E「表別名が必要です。<br>」 でした。<br>一部は論点を捉えていますが、D「等価結合にする必要があります。<br>」 を混在させたことで正答条件を外しています。<br>失点要因は 自己結合だから特殊な <span class="sql-kw">JOIN</span> 種類が必須だと思い込み、表別名の必須性を軽視しやすい。</p>
+                    <p>D「等価結合にする必要がある」を選んでしまったことが失点原因です。自己結合に等価条件（=）は必須ではなく、非等価条件（&lt;、&gt;、BETWEEN など）でも実装できます。例：「自分より給与の高い同部署の社員を検索」は <code>WHERE e1.salary &lt; e2.salary</code> という非等価構文で自己結合を使います。また、B「ON 句を指定できる」を見通したことも失点要因の一つです。</p>
                     <div class="block-title">選択肢ごとの判定</div>
                     <div class="option-review-grid">
             <div class="option-review correct">
@@ -484,7 +484,7 @@
                 <div class="option-review-badges"><span>正答肢</span><span>自己回答</span></div>
               </div>
               <div class="option-review-text"><span class="sql-kw">INNER</span> JOINにすることができます。</div>
-              <div class="option-review-reason">正しい。 <span class="sql-kw">INNER JOIN</span> は結合条件に一致した行だけを返します。</div>
+              <div class="option-review-reason">正しい。自己結合で INNER JOIN を使う例として <code>FROM emp e JOIN emp m ON e.manager_id = m.emp_id</code> が代表的です。JOIN 種類の制限はなく、INNER JOIN は自己結合で当然使えます。</div>
             </div>
             
             <div class="option-review correct">
@@ -493,7 +493,7 @@
                 <div class="option-review-badges"><span>正答肢</span></div>
               </div>
               <div class="option-review-text">ON句を指定することができます。</div>
-              <div class="option-review-reason">正しい。 結合問題では、保持側の表と結合条件の書き方が要件と一致しているかが判定基準になります。</div>
+              <div class="option-review-reason">正しい。自己結合は同一表を別名で2回参照し、ON 句で結合条件を記述します。同名列がないため USING/NATURAL は実用上使えず、ON 句が標準的な記述方法です。</div>
             </div>
             
             <div class="option-review wrong">
@@ -502,7 +502,7 @@
                 <div class="option-review-badges"><span>非正答肢</span></div>
               </div>
               <div class="option-review-text">特定列を指定した絞り込みはできません。</div>
-              <div class="option-review-reason">誤り。 結合問題では、保持側の表と結合条件の書き方が要件と一致しているかが判定基準になります。</div>
+              <div class="option-review-reason">誤り。自己結合した結果は WHERE 句でも SELECT 句でも自由に列を指定できます。「絞り込みできない」という制約は一切存在しません。</div>
             </div>
             
             <div class="option-review wrong">
@@ -511,7 +511,7 @@
                 <div class="option-review-badges"><span>非正答肢</span><span>自己回答</span></div>
               </div>
               <div class="option-review-text">等価結合にする必要があります。</div>
-              <div class="option-review-reason">誤り。 結合問題では、保持側の表と結合条件の書き方が要件と一致しているかが判定基準になります。</div>
+              <div class="option-review-reason">誤り。自己結合に等価条件（=）は必須ではありません。非等価条件（&lt;、&gt;、BETWEEN など）でも実装できます。例えば「自分より給与高い同部署社員を検索」は <code>WHERE e1.salary &lt; e2.salary</code> という非等価構文の自己結合で実現します。</div>
             </div>
             
             <div class="option-review correct">
@@ -520,7 +520,7 @@
                 <div class="option-review-badges"><span>正答肢</span><span>自己回答</span></div>
               </div>
               <div class="option-review-text">表別名が必要です。</div>
-              <div class="option-review-reason">正しい。 結合問題では、保持側の表と結合条件の書き方が要件と一致しているかが判定基準になります。</div>
+              <div class="option-review-reason">正しい。同一表を FROM に2回書くと SQL エンジンはどちらの行を参照するか区別できません。<code>FROM emp e JOIN emp m ON ...</code> のように2つの異なる別名が必ず必要です。</div>
             </div>
             </div>
                     <div class="block-title">解く順序</div>
